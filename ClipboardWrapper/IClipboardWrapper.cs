@@ -10,5 +10,7 @@ namespace ClipboardWrapper
         void RegisterClipboardViewer(IntPtr handle);
 
         void UnRegisterClipboardViewer(IntPtr handle);
+
+        void SendToClipboard(string data);
     }
 }

@@ -9,6 +9,9 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
+        private ICloudClipboard _cloudClipboard;
+        private bool _sendingDataToClipboard;
+
         public bool IsNotificationIconVisible
         {
             get { return NotifyIcon.Visible; }
@@ -19,7 +22,22 @@ namespace ClipboardWatcher
         public IClipboardWrapper ClipboardWrapper { get; set; }
 
         [Inject]
-        public ICloudClipboard CloudClipboard { get; set; }
+        public ICloudClipboard CloudClipboard
+        {
+            get
+            {
+                return _cloudClipboard;
+            }
+
+            set
+            {
+                _cloudClipboard = value;
+                if (_cloudClipboard != null)
+                {
+                    _cloudClipboard.DataReceived += CloudClipboardOnDataReceived;
+                }
+            }
+        }
 
         public MainForm()
         {
@@ -47,7 +65,7 @@ namespace ClipboardWatcher
             {
                 base.WndProc(ref message);
             }
-            else if(pasteDataFromMessage.MessageData != null)
+            else if (pasteDataFromMessage.MessageData != null && !_sendingDataToClipboard)
             {
                 CloudClipboard.Copy(pasteDataFromMessage.MessageData);
             }
@@ -65,6 +83,19 @@ namespace ClipboardWatcher
             var exStyle = (int)User32.GetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
             exStyle |= ExtendedWindowStyles.WS_EX_TOOLWINDOW;
             WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+        }
+
+        private void CloudClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
+        {
+            Delegate toInvoke = new MethodInvoker(() => SendDataToClipboard(clipboardEventArgs));
+            Invoke(toInvoke, clipboardEventArgs);
+        }
+
+        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
+        {
+            _sendingDataToClipboard = true;
+            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
+            _sendingDataToClipboard = false;
         }
     }
 }

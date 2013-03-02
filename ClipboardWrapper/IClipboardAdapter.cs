@@ -5,5 +5,7 @@ namespace ClipboardWrapper
     public interface IClipboardAdapter
     {
         IDataObject GetDataObject();
+
+        void SetData(string data);
     }
 }

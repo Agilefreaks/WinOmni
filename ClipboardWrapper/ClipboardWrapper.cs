@@ -77,6 +77,11 @@ namespace ClipboardWrapper
             User32.ChangeClipboardChain(handle, _clipboardViewerNext);
         }
 
+        public void SendToClipboard(string data)
+        {
+            ClipboardAdapter.SetData(data);
+        }
+
         private IDataObject GetClipboardData()
         {
             //

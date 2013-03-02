@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace ClipboardWatcher.Core.Impl.PubNub
 {
@@ -18,7 +20,7 @@ namespace ClipboardWatcher.Core.Impl.PubNub
                      ConfigurationManager.AppSettings["secret-key"],
                      string.Empty,
                      true);
-            _pubnub.subscribe(_channel, o => OnDataReceived(new ClipboardEventArgs { Data = o as string }));
+            _pubnub.subscribe(_channel, HandleMessageReceived);
         }
 
         public void Copy(string str)
@@ -33,8 +35,18 @@ namespace ClipboardWatcher.Core.Impl.PubNub
 
         protected virtual void OnDataReceived(ClipboardEventArgs e)
         {
-            var handler = DataReceived;
-            if (handler != null) handler(this, e);
+            if (DataReceived != null)
+            {
+                DataReceived(this, e);
+            }
+        }
+
+        private void HandleMessageReceived(object receivedMessage)
+        {
+            var dataOject = ((IEnumerable<object>) receivedMessage).First();
+            var value = ((Newtonsoft.Json.Linq.JValue) dataOject).Value;
+
+            OnDataReceived(new ClipboardEventArgs { Data = value.ToString() });
         }
     }
 }

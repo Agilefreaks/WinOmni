@@ -8,5 +8,10 @@ namespace ClipboardWrapper
         {
             return Clipboard.GetDataObject();
         }
+
+        public void SetData(string data)
+        {
+            Clipboard.SetData(DataFormats.Text, data);
+        }
     }
 }
