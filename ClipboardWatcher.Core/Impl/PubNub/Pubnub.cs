@@ -15,29 +15,27 @@ using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.Concurrent;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Configuration;
 using Microsoft.Win32;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 #if (SILVERLIGHT || WINDOWS_PHONE)
 using System.Windows.Threading;
 using System.IO.IsolatedStorage;
 
 #endif
-namespace PubNub_Messaging
+namespace ClipboardWatcher.Core.Impl.PubNub
 {
-    // INotifyPropertyChanged provides a standard event for objects to notify clients that one of its properties has changed
-
     public class Pubnub : INotifyPropertyChanged
     {
         const int PUBNUB_WEBREQUEST_CALLBACK_INTERVAL_IN_SEC = 310;
         const int PUBNUB_NETWORK_TCP_CHECK_INTERVAL_IN_SEC = 15;
         const int PUBNUB_NETWORK_CHECK_RETRIES = 50;
         const int PUBNUB_WEBREQUEST_RETRY_INTERVAL_IN_SEC = 10;
-        bool OVERRIDE_TCP_KEEP_ALIVE = true;
+        private const bool OVERRIDE_TCP_KEEP_ALIVE = true;
         const LoggingMethod.Level LOG_LEVEL = LoggingMethod.Level.Error;
 
         // Common property changed event
@@ -51,13 +49,13 @@ namespace PubNub_Messaging
             }
         }
 
-        ConcurrentDictionary<string, long> _channelSubscription = new ConcurrentDictionary<string, long>();
-        ConcurrentDictionary<string, long> _channelPresence = new ConcurrentDictionary<string, long>();
-        ConcurrentDictionary<string, RequestState> _channelRequest = new ConcurrentDictionary<string, RequestState>();
-        ConcurrentDictionary<string, bool> _channelInternetStatus = new ConcurrentDictionary<string, bool>();
-        ConcurrentDictionary<string, int> _channelInternetRetry = new ConcurrentDictionary<string, int>();
-        ConcurrentDictionary<string, Timer> _channelReconnectTimer = new ConcurrentDictionary<string, Timer>();
-        ConcurrentDictionary<Uri, Timer> _channelHeartbeatTimer = new ConcurrentDictionary<Uri, Timer>();
+        private readonly ConcurrentDictionary<string, long> _channelSubscription = new ConcurrentDictionary<string, long>();
+        private readonly ConcurrentDictionary<string, long> _channelPresence = new ConcurrentDictionary<string, long>();
+        private readonly ConcurrentDictionary<string, RequestState> _channelRequest = new ConcurrentDictionary<string, RequestState>();
+        private readonly ConcurrentDictionary<string, bool> _channelInternetStatus = new ConcurrentDictionary<string, bool>();
+        private readonly ConcurrentDictionary<string, int> _channelInternetRetry = new ConcurrentDictionary<string, int>();
+        private readonly ConcurrentDictionary<string, Timer> _channelReconnectTimer = new ConcurrentDictionary<string, Timer>();
+        private readonly ConcurrentDictionary<Uri, Timer> _channelHeartbeatTimer = new ConcurrentDictionary<Uri, Timer>();
 
         private IPubnubUnitTest _pubnubUnitTest;
         public IPubnubUnitTest PubnubUnitTest
