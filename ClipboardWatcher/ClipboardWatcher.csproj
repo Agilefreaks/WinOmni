@@ -57,9 +57,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Imports\Msgs.cs" />
-    <Compile Include="Imports\Shell32.cs" />
-    <Compile Include="Imports\User32.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

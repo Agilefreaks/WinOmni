@@ -6,7 +6,7 @@ namespace ClipboardWrapper
     {
         public override void Load()
         {
-            Kernel.Bind<IClipboardManager>().To<ClipboardManager>();
+            Kernel.Bind<IClipboardWrapper>().To<ClipboardWrapper>();
         }
     }
 }

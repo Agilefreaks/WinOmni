@@ -1,5 +1,8 @@
-﻿using ClipboardWatcher;
+﻿using System.Windows.Forms;
+using ClipboardWatcher;
+using ClipboardWrapper;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace ClipboardWatcherTests
@@ -7,12 +10,25 @@ namespace ClipboardWatcherTests
     [TestFixture]
     public class MainFormTests
     {
-        MainForm _subject;
+        private class MainFormWrapper : MainForm
+        {
+            public void CallWndProc(Message message)
+            {
+                base.WndProc(ref message);
+            }
+        }
+
+        MainFormWrapper _subject;
+        private Mock<IClipboardWrapper> _mockClipboardWrapper;
 
         [SetUp]
         public void Setup()
         {
-            _subject = new MainForm();
+            _mockClipboardWrapper = new Mock<IClipboardWrapper>();
+            _subject = new MainFormWrapper
+                {
+                    ClipboardWrapper = _mockClipboardWrapper.Object
+                };
         }
 
         [Test]
@@ -21,6 +37,15 @@ namespace ClipboardWatcherTests
             _subject.Activate();
 
             _subject.IsNotificationIconVisible.Should().BeTrue();
+        }
+
+        [Test]
+        public void WndProc_Always_ShouldCallClipboardWrapperHandleClipboardMessage()
+        {
+            var message = new Message();
+            _subject.CallWndProc(message);
+
+            _mockClipboardWrapper.Verify(cw => cw.HandleClipboardMessage(message), Times.Once());
         }
     }
 }

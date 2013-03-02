@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ClipboardWatcher.Imports
+namespace ClipboardWrapper.Imports
 {
 	/// <summary>
 	/// API Declarations for the Windows Shell32 library

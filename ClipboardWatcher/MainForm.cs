@@ -7,7 +7,7 @@ namespace ClipboardWatcher
     public partial class MainForm : Form
     {
         [Inject]
-        public IClipboardManager ClipboardManager { get; set; }
+        public IClipboardWrapper ClipboardWrapper { get; set; }
 
         public bool IsNotificationIconVisible
         {
@@ -20,9 +20,13 @@ namespace ClipboardWatcher
             InitializeComponent();
         }
 
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref Message message)
         {
-
+            var pasteDataFromMessage = ClipboardWrapper.HandleClipboardMessage(message);
+            if (!pasteDataFromMessage.MessageHandled)
+            {
+                base.WndProc(ref message);
+            }
         }
 
         protected override void OnActivated(System.EventArgs e)
