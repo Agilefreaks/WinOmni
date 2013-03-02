@@ -15,6 +15,10 @@ namespace ClipboardWatcher
             InitializeComponent();
         }
 
+        protected override void WndProc(ref Message m)
+        {
+        }
+
         protected override void OnActivated(System.EventArgs e)
         {
             IsNotificationIconVisible = true;
