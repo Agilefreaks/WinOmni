@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using ClipboardWatcher;
 using ClipboardWrapper;
 using FluentAssertions;
@@ -15,6 +16,11 @@ namespace ClipboardWatcherTests
             public void CallWndProc(Message message)
             {
                 base.WndProc(ref message);
+            }
+
+            public void CallOnHandleCreated()
+            {
+                OnHandleCreated(new EventArgs());
             }
         }
 

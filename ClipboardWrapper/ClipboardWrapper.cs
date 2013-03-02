@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
 using ClipboardWrapper.Imports;
+using Ninject;
 
 namespace ClipboardWrapper
 {
     public class ClipboardWrapper : IClipboardWrapper
     {
         IntPtr _clipboardViewerNext;
+
+        [Inject]
+        public IClipboardAdapter ClipboardAdapter { get; set; }
 
         public ClipboardMessageHandleResult HandleClipboardMessage(Message message)
         {
@@ -44,6 +48,55 @@ namespace ClipboardWrapper
             return messageHandleResult;
         }
 
+        public string GetClipboardText()
+        {
+            string text = null;
+            var iData = GetClipboardData();
+            if (iData != null)
+            {
+                if (iData.GetDataPresent(DataFormats.Text))
+                {
+                    text = (string)iData.GetData(DataFormats.Text);
+                }
+                else
+                {
+                    text = "(cannot display this format)";
+                }
+            }
+
+            return text;
+        }
+
+        public void RegisterClipboardViewer(IntPtr handle)
+        {
+            _clipboardViewerNext = User32.SetClipboardViewer(handle);
+        }
+
+        public void UnRegisterClipboardViewer(IntPtr handle)
+        {
+            User32.ChangeClipboardChain(handle, _clipboardViewerNext);
+        }
+
+        private IDataObject GetClipboardData()
+        {
+            //
+            // Data on the clipboard uses the 
+            // IDataObject interface
+            //
+            IDataObject iData;
+            try
+            {
+                iData = ClipboardAdapter.GetDataObject();
+            }
+            catch (System.Runtime.InteropServices.ExternalException externEx)
+            {
+                // Copying a field definition in Access 2002 causes this sometimes?
+                return null;
+            }
+
+            return iData;
+        }
+
         private void HandleClipboardChainChanged(Message message)
         {
             // When a clipboard viewer window receives the WM_CHANGECBCHAIN message, 
@@ -74,9 +127,7 @@ namespace ClipboardWrapper
 
         private string HandleDrawClipboard(Message message)
         {
-            //ToDo implement GetClipboardData
-            var data = string.Empty;
-            //GetClipboardData();
+            var data = GetClipboardText();
 
             //
             // Each window that receives the WM_DRAWCLIPBOARD message 
@@ -84,6 +135,7 @@ namespace ClipboardWrapper
             // on to the next window in the clipboard viewer chain.
             //
             User32.SendMessage(_clipboardViewerNext, message.Msg, message.WParam, message.LParam);
+
             return data;
         }
     }

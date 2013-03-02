@@ -20,6 +20,18 @@ namespace ClipboardWatcher
             InitializeComponent();
         }
 
+        protected override void OnHandleCreated(System.EventArgs e)
+        {
+            ClipboardWrapper.RegisterClipboardViewer(Handle);
+            base.OnHandleCreated(e);
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+            base.OnClosing(e);
+        }
+
         protected override void WndProc(ref Message message)
         {
             var pasteDataFromMessage = ClipboardWrapper.HandleClipboardMessage(message);
@@ -27,11 +39,16 @@ namespace ClipboardWatcher
             {
                 base.WndProc(ref message);
             }
+            else
+            {
+                
+            }
         }
 
         protected override void OnActivated(System.EventArgs e)
         {
             IsNotificationIconVisible = true;
+            Visible = false;
         }
     }
 }
