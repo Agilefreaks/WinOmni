@@ -1,9 +1,14 @@
 ﻿using System.Windows.Forms;
+using ClipboardWrapper;
+using Ninject;
 
 namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
+        [Inject]
+        public IClipboardManager ClipboardManager { get; set; }
+
         public bool IsNotificationIconVisible
         {
             get { return NotifyIcon.Visible; }
@@ -17,6 +22,7 @@ namespace ClipboardWatcher
 
         protected override void WndProc(ref Message m)
         {
+
         }
 
         protected override void OnActivated(System.EventArgs e)

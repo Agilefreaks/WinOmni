@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using ClipboardWrapper;
+using Ninject;
 
 namespace ClipboardWatcher
 {
@@ -13,7 +15,9 @@ namespace ClipboardWatcher
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            var kernel = new StandardKernel(new ClipboardWrapperModule(), new MainModule());
+            var form = kernel.Get<MainForm>();
+            Application.Run(form);
         }
     }
 }
