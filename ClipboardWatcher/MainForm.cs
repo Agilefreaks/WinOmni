@@ -4,6 +4,12 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
+        public bool IsNotificationIconVisible
+        {
+            get { return NotifyIcon.Visible; }
+            set { NotifyIcon.Visible = value; }
+        }
+
         public MainForm()
         {
             InitializeComponent();
@@ -11,7 +17,7 @@ namespace ClipboardWatcher
 
         protected override void OnActivated(System.EventArgs e)
         {
-            NotifyIcon.Visible = true;
+            IsNotificationIconVisible = true;
         }
     }
 }

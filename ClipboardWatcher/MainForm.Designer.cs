@@ -29,19 +29,21 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // NotifyIcon
             // 
-            this.NotifyIcon.Text = "notifyIcon1";
+            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
+            this.NotifyIcon.Text = "ClipboardWatcher";
             this.NotifyIcon.Visible = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(303, 0);
+            this.ClientSize = new System.Drawing.Size(303, 23);
             this.ControlBox = false;
             this.Name = "MainForm";
             this.ShowInTaskbar = false;
@@ -54,6 +56,8 @@
         #endregion
 
         private System.Windows.Forms.NotifyIcon NotifyIcon;
+
+
     }
 }
 
