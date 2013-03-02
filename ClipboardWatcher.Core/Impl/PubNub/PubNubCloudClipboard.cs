@@ -12,16 +12,12 @@ namespace ClipboardWatcher.Core.Impl.PubNub
 
         public PubNubCloudClipboard()
         {
+            _channel = ConfigurationManager.AppSettings["channel"];
             _pubnub = new Pubnub(ConfigurationManager.AppSettings["publish-key"],
-                                 ConfigurationManager.AppSettings["subscribe-key"],
-                                 ConfigurationManager.AppSettings["secret-key"],
-                                 string.Empty,
-                                 true);
-        }
-
-        public PubNubCloudClipboard(string channel)
-        {
-            _channel = channel;
+                     ConfigurationManager.AppSettings["subscribe-key"],
+                     ConfigurationManager.AppSettings["secret-key"],
+                     string.Empty,
+                     true);
             _pubnub.subscribe(_channel, o => OnDataReceived(new ClipboardEventArgs { Data = o as string }));
         }
 

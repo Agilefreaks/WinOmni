@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using ClipboardWatcher.Core;
 using ClipboardWrapper;
 using ClipboardWrapper.Imports;
 using Ninject;
@@ -16,6 +17,9 @@ namespace ClipboardWatcher
 
         [Inject]
         public IClipboardWrapper ClipboardWrapper { get; set; }
+
+        [Inject]
+        public ICloudClipboard CloudClipboard { get; set; }
 
         public MainForm()
         {
@@ -42,6 +46,10 @@ namespace ClipboardWatcher
             if (!pasteDataFromMessage.MessageHandled)
             {
                 base.WndProc(ref message);
+            }
+            else if(pasteDataFromMessage.MessageData != null)
+            {
+                CloudClipboard.Copy(pasteDataFromMessage.MessageData);
             }
         }
 
