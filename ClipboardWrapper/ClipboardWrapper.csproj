@@ -52,6 +52,8 @@
     <Compile Include="ClipboardWrapperModule.cs" />
     <Compile Include="IClipboardAdapter.cs" />
     <Compile Include="IClipboardWrapper.cs" />
+    <Compile Include="Imports\ExtendedWindowStyles.cs" />
+    <Compile Include="Imports\GetWindowLongFields.cs" />
     <Compile Include="Imports\Msgs.cs" />
     <Compile Include="Imports\Shell32.cs" />
     <Compile Include="Imports\User32.cs" />

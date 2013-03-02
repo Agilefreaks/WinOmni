@@ -17,11 +17,6 @@ namespace ClipboardWatcherTests
             {
                 base.WndProc(ref message);
             }
-
-            public void CallOnHandleCreated()
-            {
-                OnHandleCreated(new EventArgs());
-            }
         }
 
         MainFormWrapper _subject;
@@ -49,6 +44,8 @@ namespace ClipboardWatcherTests
         public void WndProc_Always_ShouldCallClipboardWrapperHandleClipboardMessage()
         {
             var message = new Message();
+            _mockClipboardWrapper.Setup(cw => cw.HandleClipboardMessage(message)).Returns(new ClipboardMessageHandleResult());
+
             _subject.CallWndProc(message);
 
             _mockClipboardWrapper.Verify(cw => cw.HandleClipboardMessage(message), Times.Once());

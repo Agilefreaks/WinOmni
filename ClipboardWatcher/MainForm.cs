@@ -1,26 +1,28 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using ClipboardWrapper;
+using ClipboardWrapper.Imports;
 using Ninject;
 
 namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
-        [Inject]
-        public IClipboardWrapper ClipboardWrapper { get; set; }
-
         public bool IsNotificationIconVisible
         {
             get { return NotifyIcon.Visible; }
             set { NotifyIcon.Visible = value; }
         }
 
+        [Inject]
+        public IClipboardWrapper ClipboardWrapper { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
         }
 
-        protected override void OnHandleCreated(System.EventArgs e)
+        protected override void OnHandleCreated(EventArgs e)
         {
             ClipboardWrapper.RegisterClipboardViewer(Handle);
             base.OnHandleCreated(e);
@@ -29,6 +31,8 @@ namespace ClipboardWatcher
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+            IsNotificationIconVisible = false;
+
             base.OnClosing(e);
         }
 
@@ -39,16 +43,20 @@ namespace ClipboardWatcher
             {
                 base.WndProc(ref message);
             }
-            else
-            {
-                
-            }
         }
 
-        protected override void OnActivated(System.EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
             IsNotificationIconVisible = true;
-            Visible = false;
+            HideWindowFromAltTab();
+        }
+
+        private void HideWindowFromAltTab()
+        {
+            var exStyle = (int)User32.GetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
+            exStyle |= ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+            WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
         }
     }
 }

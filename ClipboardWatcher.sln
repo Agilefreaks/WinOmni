@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4457A5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWrapperTests", "ClipboardWrapperTests\ClipboardWrapperTests.csproj", "{EA7CF533-7F33-4104-B7DB-18F9B6774D06}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B427A33-480F-4312-A049-06BFE5C4EBCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{EA7CF533-7F33-4104-B7DB-18F9B6774D06} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal
