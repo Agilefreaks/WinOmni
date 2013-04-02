@@ -10,6 +10,7 @@ namespace ClipboardWatcher
     public partial class MainForm : Form
     {
         private ICloudClipboard _cloudClipboard;
+
         private bool _sendingDataToClipboard;
 
         public bool IsNotificationIconVisible
@@ -42,6 +43,13 @@ namespace ClipboardWatcher
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
+        {
+            _sendingDataToClipboard = true;
+            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
+            _sendingDataToClipboard = false;
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -89,13 +97,6 @@ namespace ClipboardWatcher
         {
             Delegate toInvoke = new MethodInvoker(() => SendDataToClipboard(clipboardEventArgs));
             Invoke(toInvoke, clipboardEventArgs);
-        }
-
-        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
-        {
-            _sendingDataToClipboard = true;
-            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
-            _sendingDataToClipboard = false;
         }
     }
 }
