@@ -93,14 +93,13 @@ namespace ClipboardWatcher
 
         private void AssureClipboardIsInitialized()
         {
-            if (!CloudClipboard.IsInitialized)
-            {
-                var configureForm = new ConfigureForm();
-                configureForm.ShowDialog();
-                ConfigurationService.UpdateCommunicationChannel(configureForm.Email);
-                CloudClipboard.Reinitialize();
-                AssureClipboardIsInitialized();
-            }
+            if (CloudClipboard.IsInitialized) return;
+
+            var configureForm = new ConfigureForm();
+            configureForm.ShowDialog();
+            ConfigurationService.UpdateCommunicationChannel(configureForm.Email);
+            CloudClipboard.Initialize();
+            AssureClipboardIsInitialized();
         }
 
         private void HideWindowFromAltTab()
