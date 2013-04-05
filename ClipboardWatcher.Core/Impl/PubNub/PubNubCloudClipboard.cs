@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
+using ClipboardWatcher.Core.Services;
 
 namespace ClipboardWatcher.Core.Impl.PubNub
 {
@@ -12,12 +12,13 @@ namespace ClipboardWatcher.Core.Impl.PubNub
 
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
-        public PubNubCloudClipboard()
+        public PubNubCloudClipboard(IConfigurationService configurationService)
         {
-            _channel = ConfigurationManager.AppSettings["channel"];
-            _pubnub = new Pubnub(ConfigurationManager.AppSettings["publish-key"],
-                     ConfigurationManager.AppSettings["subscribe-key"],
-                     ConfigurationManager.AppSettings["secret-key"],
+            var communicationSettings = configurationService.CommunicationSettings;
+            _channel = communicationSettings.Channel;
+            _pubnub = new Pubnub(communicationSettings.PublishKey,
+                     communicationSettings.SubscribeKey,
+                     communicationSettings.SecretKey,
                      string.Empty,
                      true);
             _pubnub.subscribe(_channel, HandleMessageReceived);

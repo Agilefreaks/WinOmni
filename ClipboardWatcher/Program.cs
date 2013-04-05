@@ -16,8 +16,7 @@ namespace ClipboardWatcher
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var kernel = new StandardKernel(new ClipboardWrapperModule(), new ClipboardWatcherCoreModule(),
-                                            new MainModule());
+            var kernel = new StandardKernel(new MainModule(), new ClipboardWrapperModule(), new ClipboardWatcherCoreModule());
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }
