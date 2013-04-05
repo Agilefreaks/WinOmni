@@ -1,10 +1,10 @@
 ﻿namespace ClipboardWatcher.Core.Impl.PubNub
 {
     public class PubNubClientFactory : IPubNubClientFactory
-    {
-        private const string PublishKey = "pub-c-4022c9ea-2a2d-4e82-a47f-236087d30af3";
-        private const string SecretKey = "sec-c-OWJlYzIwNGMtN2VhZC00YjYwLThmMzAtOTRjZjNjY2YxMTI0";
-        private const string SubscribeKey = "sub-c-bbc72840-830c-11e2-9881-12313f022c90";
+    {        
+        private const string PublishKey = "pub-c-f6c56076-b928-407d-8e27-462dbf25e722";
+        private const string SecretKey = "sec-c-Y2FiOTQzYjEtOTE5NC00YTQ0LWI4YzQtYjYzNjhhNTE1ZTYw";
+        private const string SubscribeKey = "sub-c-9f339926-9855-11e2-ac20-12313f022c90";
 
         public Pubnub Create()
         {

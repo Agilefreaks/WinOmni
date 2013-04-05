@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using ClipboardWatcher.Core.ExtensionMethods;
 
 namespace ClipboardWatcher.Core.Services
 {
@@ -40,9 +41,10 @@ namespace ClipboardWatcher.Core.Services
                     value = element.Descendants("Value").First().Value;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 value = null;
+                this.Log(exception);
             }
 
             return value;
@@ -59,9 +61,10 @@ namespace ClipboardWatcher.Core.Services
                 SaveToFile(GetProtectedData(document));
                 saved = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 saved = false;
+                this.Log(exception);
             }
 
             return saved;
