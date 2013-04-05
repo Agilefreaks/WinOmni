@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWatcher", "Clipboa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWatcherTests", "ClipboardWatcherTests\ClipboardWatcherTests.csproj", "{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWatcher.Core", "ClipboardWatcher.Core\ClipboardWatcher.Core.csproj", "{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudClipboard", "ClipboardWatcher.Core\CloudClipboard.csproj", "{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWrapper", "ClipboardWrapper\ClipboardWrapper.csproj", "{B9433285-2390-4575-A612-395E0CB289E2}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardWrapperTests", "ClipboardWrapperTests\ClipboardWrapperTests.csproj", "{EA7CF533-7F33-4104-B7DB-18F9B6774D06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B427A33-480F-4312-A049-06BFE5C4EBCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudClipboardTests", "CloudClipboardTests\CloudClipboardTests.csproj", "{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +48,17 @@ Global
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal

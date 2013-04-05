@@ -11,9 +11,10 @@ namespace ClipboardWatcher.Core
     {
         public override void Load()
         {
-            Kernel.Bind<ICloudClipboard>().To<PubNubCloudClipboard>().InSingletonScope();
+            Kernel.Bind<IPubNubCloudClipboard>().To<PubNubCloudClipboard>().InSingletonScope();
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigurationService>().ToMethod(c => Kernel.Get<ConfigurationService>());
+            Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>();
             PerfornStartupTasks();
         }
 

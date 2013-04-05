@@ -55,7 +55,10 @@
     <Compile Include="ClipboardWatcherCoreModule.cs" />
     <Compile Include="CommunicationSettings.cs" />
     <Compile Include="ICloudClipboard.cs" />
+    <Compile Include="Impl\PubNub\IPubNubClientFactory.cs" />
+    <Compile Include="Impl\PubNub\PubNubClientFactory.cs" />
     <Compile Include="Impl\PubNub\PubNubCloudClipboard.cs" />
+    <Compile Include="IPubNubCloudClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\PubNub\Pubnub.cs" />
     <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />

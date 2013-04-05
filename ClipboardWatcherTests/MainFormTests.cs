@@ -21,13 +21,13 @@ namespace ClipboardWatcherTests
 
         MainFormWrapper _subject;
         private Mock<IClipboardWrapper> _mockClipboardWrapper;
-        private Mock<ICloudClipboard> _mockCloudClipboard;
+        private Mock<IPubNubCloudClipboard> _mockCloudClipboard;
 
         [SetUp]
         public void Setup()
         {
             _mockClipboardWrapper = new Mock<IClipboardWrapper>();
-            _mockCloudClipboard = new Mock<ICloudClipboard>();
+            _mockCloudClipboard = new Mock<IPubNubCloudClipboard>();
             _subject = new MainFormWrapper
                 {
                     ClipboardWrapper = _mockClipboardWrapper.Object,

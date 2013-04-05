@@ -2,7 +2,7 @@
 
 namespace ClipboardWatcher.Core
 {
-    public interface ICloudClipboard : IDisposable
+    public interface ICloudClipboard
     {
         event EventHandler<ClipboardEventArgs> DataReceived;
 

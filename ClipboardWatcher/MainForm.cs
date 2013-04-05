@@ -9,8 +9,8 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
-        private ICloudClipboard _cloudClipboard;
         private bool _sendingDataToClipboard;
+        private IPubNubCloudClipboard _cloudClipboard;
 
         public bool IsNotificationIconVisible
         {
@@ -22,7 +22,7 @@ namespace ClipboardWatcher
         public IClipboardWrapper ClipboardWrapper { get; set; }
 
         [Inject]
-        public ICloudClipboard CloudClipboard
+        public IPubNubCloudClipboard CloudClipboard
         {
             get
             {
@@ -60,6 +60,7 @@ namespace ClipboardWatcher
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+            CloudClipboard.Dispose();
             IsNotificationIconVisible = false;
 
             base.OnClosing(e);

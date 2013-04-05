@@ -5,23 +5,25 @@ using ClipboardWatcher.Core.Services;
 
 namespace ClipboardWatcher.Core.Impl.PubNub
 {
-    public class PubNubCloudClipboard : ICloudClipboard
+    public class PubNubCloudClipboard : IPubNubCloudClipboard
     {
-        private readonly string _channel;
-        private readonly Pubnub _pubnub;
+        private readonly IConfigurationService _configurationService;
+        private readonly IPubNubClientFactory _clientFactory;
+        private string _channel;
+        private Pubnub _pubnub;
 
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
-        public PubNubCloudClipboard(IConfigurationService configurationService)
+        public bool IsInitialized
         {
-            var communicationSettings = configurationService.CommunicationSettings;
-            _channel = communicationSettings.Channel;
-            _pubnub = new Pubnub(communicationSettings.PublishKey,
-                     communicationSettings.SubscribeKey,
-                     communicationSettings.SecretKey,
-                     string.Empty,
-                     true);
-            _pubnub.subscribe(_channel, HandleMessageReceived);
+            get { return _pubnub != null; }
+        }
+
+        public PubNubCloudClipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
+        {
+            _configurationService = configurationService;
+            _clientFactory = clientFactory;
+            Initialize();
         }
 
         public void Copy(string str)
@@ -31,7 +33,19 @@ namespace ClipboardWatcher.Core.Impl.PubNub
 
         public void Dispose()
         {
-            _pubnub.EndPendingRequests();
+            if (IsInitialized)
+            {
+                _pubnub.EndPendingRequests();
+            }
+        }
+
+        public void Initialize()
+        {
+            var communicationSettings = _configurationService.CommunicationSettings;
+            if (string.IsNullOrEmpty(communicationSettings.Channel)) return;
+            _channel = communicationSettings.Channel;
+            _pubnub = _clientFactory.Create(communicationSettings);
+            _pubnub.subscribe(_channel, HandleMessageReceived);
         }
 
         protected virtual void OnDataReceived(ClipboardEventArgs e)
@@ -44,8 +58,8 @@ namespace ClipboardWatcher.Core.Impl.PubNub
 
         private void HandleMessageReceived(object receivedMessage)
         {
-            var dataOject = ((IEnumerable<object>) receivedMessage).First();
-            var value = ((Newtonsoft.Json.Linq.JValue) dataOject).Value;
+            var dataOject = ((IEnumerable<object>)receivedMessage).First();
+            var value = ((Newtonsoft.Json.Linq.JValue)dataOject).Value;
 
             OnDataReceived(new ClipboardEventArgs { Data = value.ToString() });
         }
