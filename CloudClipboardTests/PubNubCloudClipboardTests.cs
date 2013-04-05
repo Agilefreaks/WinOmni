@@ -39,13 +39,13 @@ namespace CloudClipboardTests
             var settings = new CommunicationSettings { Channel = "asd" };
             var communicationSettings = settings;
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
-            _mockPubNubClientFactory.Setup(x => x.Create(settings)).Returns(new Pubnub("test", "test"));
+            _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
             // ReSharper disable ObjectCreationAsStatement
             new PubNubCloudClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
             // ReSharper restore ObjectCreationAsStatement
 
-            _mockPubNubClientFactory.Verify(x => x.Create(settings), Times.Once());
+            _mockPubNubClientFactory.Verify(x => x.Create(), Times.Once());
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace CloudClipboardTests
         {
             var communicationSettings = new CommunicationSettings { Channel = "asda" };
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
-            _mockPubNubClientFactory.Setup(x => x.Create(It.IsAny<CommunicationSettings>())).Returns(new Pubnub("test", "test"));
+            _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
             var cloudClipboard = new PubNubCloudClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 

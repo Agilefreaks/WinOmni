@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Threading">
       <HintPath>..\packages\Pubnub.3.3.0.2\lib\net35\System.Threading.dll</HintPath>
     </Reference>

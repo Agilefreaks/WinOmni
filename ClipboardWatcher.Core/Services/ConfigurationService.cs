@@ -1,6 +1,6 @@
 ﻿namespace ClipboardWatcher.Core.Services
 {
-    public class ConfigurationService : IConfigurationService 
+    public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
 
@@ -26,10 +26,7 @@
         {
             CommunicationSettings = new CommunicationSettings
                 {
-                    Channel = _configurationProvider.GetValue("channel"),
-                    PublishKey = _configurationProvider.GetValue("publish-key"),
-                    SecretKey = _configurationProvider.GetValue("secret-key"),
-                    SubscribeKey = _configurationProvider.GetValue("subscribe-key")
+                    Channel = _configurationProvider.GetValue("channel")
                 };
         }
     }

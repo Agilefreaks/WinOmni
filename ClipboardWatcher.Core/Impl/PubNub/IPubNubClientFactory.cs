@@ -2,6 +2,6 @@
 {
     public interface IPubNubClientFactory
     {
-        Pubnub Create(CommunicationSettings communicationSettings);
+        Pubnub Create();
     }
 }

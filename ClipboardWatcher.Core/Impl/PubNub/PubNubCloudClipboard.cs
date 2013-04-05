@@ -44,7 +44,7 @@ namespace ClipboardWatcher.Core.Impl.PubNub
             var communicationSettings = _configurationService.CommunicationSettings;
             if (string.IsNullOrEmpty(communicationSettings.Channel)) return;
             _channel = communicationSettings.Channel;
-            _pubnub = _clientFactory.Create(communicationSettings);
+            _pubnub = _clientFactory.Create();
             _pubnub.subscribe(_channel, HandleMessageReceived);
         }
 
