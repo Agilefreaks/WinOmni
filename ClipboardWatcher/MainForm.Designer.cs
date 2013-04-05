@@ -31,13 +31,32 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.trayIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ExitButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayIconContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // NotifyIcon
             // 
+            this.NotifyIcon.ContextMenuStrip = this.trayIconContextMenuStrip;
             this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
             this.NotifyIcon.Text = "ClipboardWatcher";
             this.NotifyIcon.Visible = true;
+            // 
+            // trayIconContextMenuStrip
+            // 
+            this.trayIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ExitButton});
+            this.trayIconContextMenuStrip.Name = "trayIconContextMenuStrip";
+            this.trayIconContextMenuStrip.Size = new System.Drawing.Size(134, 26);
+            // 
+            // ExitButton
+            // 
+            this.ExitButton.Name = "ExitButton";
+            this.ExitButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.ExitButton.Size = new System.Drawing.Size(133, 22);
+            this.ExitButton.Text = "Exit";
+            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
             // MainForm
             // 
@@ -50,6 +69,7 @@
             this.ShowInTaskbar = false;
             this.Text = "ClipboardWatcher";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.trayIconContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -57,6 +77,8 @@
         #endregion
 
         private System.Windows.Forms.NotifyIcon NotifyIcon;
+        private System.Windows.Forms.ContextMenuStrip trayIconContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem ExitButton;
 
 
     }

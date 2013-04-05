@@ -44,6 +44,13 @@ namespace ClipboardWatcher
             InitializeComponent();
         }
 
+        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
+        {
+            _sendingDataToClipboard = true;
+            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
+            _sendingDataToClipboard = false;
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             ClipboardWrapper.RegisterClipboardViewer(Handle);
@@ -91,11 +98,9 @@ namespace ClipboardWatcher
             Invoke(toInvoke, clipboardEventArgs);
         }
 
-        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
+        private void ExitButton_Click(object sender, EventArgs e)
         {
-            _sendingDataToClipboard = true;
-            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
-            _sendingDataToClipboard = false;
+            Close();
         }
     }
 }
