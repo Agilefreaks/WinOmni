@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using ClipboardWatcher.Core;
+using ClipboardWatcher.Core.Services;
 using ClipboardWrapper;
 using ClipboardWrapper.Imports;
 using Ninject;
@@ -9,8 +10,8 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
-        private bool _sendingDataToClipboard;
         private IPubNubCloudClipboard _cloudClipboard;
+        private bool _candSendData;
 
         public bool IsNotificationIconVisible
         {
@@ -39,6 +40,9 @@ namespace ClipboardWatcher
             }
         }
 
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
@@ -46,9 +50,9 @@ namespace ClipboardWatcher
 
         public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
         {
-            _sendingDataToClipboard = true;
+            _candSendData = false;
             ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
-            _sendingDataToClipboard = false;
+            _candSendData = true;
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -73,7 +77,7 @@ namespace ClipboardWatcher
             {
                 base.WndProc(ref message);
             }
-            else if (pasteDataFromMessage.MessageData != null && !_sendingDataToClipboard)
+            else if (pasteDataFromMessage.MessageData != null && _candSendData)
             {
                 CloudClipboard.Copy(pasteDataFromMessage.MessageData);
             }
@@ -84,6 +88,19 @@ namespace ClipboardWatcher
             base.OnLoad(e);
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
+            AssureClipboardIsInitialized();
+        }
+
+        private void AssureClipboardIsInitialized()
+        {
+            if (!CloudClipboard.IsInitialized)
+            {
+                var configureForm = new ConfigureForm();
+                configureForm.ShowDialog();
+                ConfigurationService.UpdateCommunicationChannel(configureForm.Email);
+                CloudClipboard.Reinitialize();
+                AssureClipboardIsInitialized();
+            }
         }
 
         private void HideWindowFromAltTab()
