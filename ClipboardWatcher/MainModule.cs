@@ -8,7 +8,7 @@ namespace ClipboardWatcher
         public override void Load()
         {
             Kernel.Bind<MainForm>().To<MainForm>();
-            Kernel.Bind<IConfigurationProvider>().To<ConfigurationManagerConfigurationProvider>().InSingletonScope();
+            Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
         }
     }
 }

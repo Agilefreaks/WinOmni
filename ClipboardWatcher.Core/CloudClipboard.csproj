@@ -64,6 +64,7 @@
     <Compile Include="Impl\PubNub\Pubnub.cs" />
     <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\DPAPIConfigurationProvider.cs" />
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\IConfigurationService.cs" />
     <Compile Include="Services\IStartupTask.cs" />
