@@ -5,5 +5,7 @@
         CommunicationSettings CommunicationSettings { get; }
 
         void LoadCommunicationSettings();
+
+        void UpdateCommunicationChannel(string channel);
     }
 }

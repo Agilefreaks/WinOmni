@@ -16,6 +16,12 @@
             LoadCommunicationSettings();
         }
 
+        public void UpdateCommunicationChannel(string channel)
+        {
+            _configurationProvider.SetValue("channel", channel);
+            LoadCommunicationSettings();
+        }
+
         public void LoadCommunicationSettings()
         {
             CommunicationSettings = new CommunicationSettings
