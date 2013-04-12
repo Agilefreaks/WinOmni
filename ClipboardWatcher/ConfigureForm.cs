@@ -1,0 +1,66 @@
+﻿using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Forms;
+using ClipboardWatcher.Core;
+using ClipboardWatcher.Core.Services;
+
+namespace ClipboardWatcher
+{
+    public partial class ConfigureForm : Form
+    {
+        public const int MaxRetryCount = 10;
+
+        private readonly IActivationDataProvider _activationDataProvider;
+        private readonly IConfigurationService _configurationService;
+        private readonly ICloudClipboard _cloudClipboard;
+
+        private int _retryCount;
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            BackgroundWorker.RunWorkerAsync();
+        }
+
+        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, ICloudClipboard cloudClipboard)
+        {
+            InitializeComponent();
+            _activationDataProvider = activationDataProvider;
+            _configurationService = configurationService;
+            _cloudClipboard = cloudClipboard;
+        }
+
+        public void AssureClipboardIsInitialized()
+        {
+            var activationData = _activationDataProvider.GetActivationData();
+            _configurationService.UpdateCommunicationChannel(activationData.Channel);
+            if (!_cloudClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending)
+            {
+                _retryCount++;
+                AssureClipboardIsInitialized();
+            }
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            if (BackgroundWorker.IsBusy)
+            {
+                BackgroundWorker.CancelAsync();
+            }
+
+            Close();
+        }
+
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            AssureClipboardIsInitialized();
+            if (BackgroundWorker.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+
+            Invoke((Action)(Close));
+        }
+    }
+}
