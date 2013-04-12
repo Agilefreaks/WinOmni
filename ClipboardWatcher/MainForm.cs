@@ -10,7 +10,7 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
-        private IPubNubCloudClipboard _cloudClipboard;
+        private ICloudClipboard _cloudClipboard;
         private bool _candSendData;
 
         public bool IsNotificationIconVisible
@@ -23,7 +23,7 @@ namespace ClipboardWatcher
         public IClipboardWrapper ClipboardWrapper { get; set; }
 
         [Inject]
-        public IPubNubCloudClipboard CloudClipboard
+        public ICloudClipboard CloudClipboard
         {
             get
             {
