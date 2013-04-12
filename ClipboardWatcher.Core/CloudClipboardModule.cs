@@ -7,14 +7,18 @@ using Ninject.Modules;
 
 namespace ClipboardWatcher.Core
 {
-    public class ClipboardWatcherCoreModule : NinjectModule
+    public class CloudClipboardModule : NinjectModule
     {
         public override void Load()
         {
-            Kernel.Bind<IPubNubCloudClipboard>().To<PubNubCloudClipboard>().InSingletonScope();
+            //The configuration service will be resolved by both its type (because it implements the StartupTask) 
+            //and the interface's type - as it was designed to be obtained
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigurationService>().ToMethod(c => Kernel.Get<ConfigurationService>());
-            Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>();
+
+            Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>().InSingletonScope();
+            Kernel.Bind<IApplicationDeploymentInfo>().To<ApplicationDeploymentWrapper>().InSingletonScope();
+
             PerfornStartupTasks();
         }
 
