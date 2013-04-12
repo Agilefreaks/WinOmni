@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ClickOnceActivationDataProviderTests.cs" />
+    <Compile Include="Services\ConfigurationServiceTests.cs" />
+    <Compile Include="ExtensionMethods\UriExtensionMethodsTests.cs" />
     <Compile Include="PubNubCloudClipboardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

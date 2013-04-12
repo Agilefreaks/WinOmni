@@ -11,6 +11,7 @@ namespace ClipboardWatcher
         {
             Kernel.Bind<MainForm>().To<MainForm>();
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
+            Kernel.Bind<IActivationDataProvider>().To<ClickOnceActivationDataProvider>().InSingletonScope();
             Kernel.Bind<ICloudClipboard>().To<PubNubCloudClipboard>().InSingletonScope();
         }
     }

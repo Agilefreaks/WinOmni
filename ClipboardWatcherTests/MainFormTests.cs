@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using ClipboardWatcher;
 using ClipboardWatcher.Core;
+using ClipboardWatcher.Core.Services;
 using ClipboardWrapper;
 using FluentAssertions;
 using Moq;
@@ -22,16 +23,19 @@ namespace ClipboardWatcherTests
         MainFormWrapper _subject;
         private Mock<IClipboardWrapper> _mockClipboardWrapper;
         private Mock<ICloudClipboard> _mockCloudClipboard;
+        private Mock<IActivationDataProvider> _mockActivationDataProvider;
 
         [SetUp]
         public void Setup()
         {
             _mockClipboardWrapper = new Mock<IClipboardWrapper>();
             _mockCloudClipboard = new Mock<ICloudClipboard>();
+            _mockActivationDataProvider = new Mock<IActivationDataProvider>();
             _subject = new MainFormWrapper
                 {
                     ClipboardWrapper = _mockClipboardWrapper.Object,
                     CloudClipboard = _mockCloudClipboard.Object,
+                    ActivationDataProvider = _mockActivationDataProvider.Object
                 };
         }
 
