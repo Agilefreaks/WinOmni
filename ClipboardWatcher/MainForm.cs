@@ -10,7 +10,7 @@ namespace ClipboardWatcher
 {
     public partial class MainForm : Form
     {
-        private IPubNubCloudClipboard _cloudClipboard;
+        private ICloudClipboard _cloudClipboard;
         private bool _candSendData;
 
         public bool IsNotificationIconVisible
@@ -23,7 +23,7 @@ namespace ClipboardWatcher
         public IClipboardWrapper ClipboardWrapper { get; set; }
 
         [Inject]
-        public IPubNubCloudClipboard CloudClipboard
+        public ICloudClipboard CloudClipboard
         {
             get
             {
@@ -42,6 +42,9 @@ namespace ClipboardWatcher
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
+
+        [Inject]
+        public IActivationDataProvider ActivationDataProvider { get; set; }
 
         public MainForm()
         {
@@ -91,15 +94,16 @@ namespace ClipboardWatcher
             AssureClipboardIsInitialized();
         }
 
-        private void AssureClipboardIsInitialized()
+        protected void AssureClipboardIsInitialized()
         {
             if (CloudClipboard.IsInitialized) return;
 
-            var configureForm = new ConfigureForm();
+            var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, CloudClipboard);
             configureForm.ShowDialog();
-            ConfigurationService.UpdateCommunicationChannel(configureForm.Email);
-            CloudClipboard.Initialize();
-            AssureClipboardIsInitialized();
+            if (!CloudClipboard.IsInitialized)
+            {
+                Close();
+            }
         }
 
         private void HideWindowFromAltTab()
@@ -111,8 +115,7 @@ namespace ClipboardWatcher
 
         private void CloudClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
         {
-            Delegate toInvoke = new MethodInvoker(() => SendDataToClipboard(clipboardEventArgs));
-            Invoke(toInvoke, clipboardEventArgs);
+            Invoke((Action)(() => SendDataToClipboard(clipboardEventArgs)));
         }
 
         private void ExitButton_Click(object sender, EventArgs e)

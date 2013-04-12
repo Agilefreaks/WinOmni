@@ -5,7 +5,7 @@ using ClipboardWatcher.Core.Services;
 
 namespace ClipboardWatcher.Core.Impl.PubNub
 {
-    public class PubNubCloudClipboard : IPubNubCloudClipboard
+    public class PubNubCloudClipboard : ICloudClipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
@@ -39,13 +39,19 @@ namespace ClipboardWatcher.Core.Impl.PubNub
             }
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
             var communicationSettings = _configurationService.CommunicationSettings;
-            if (string.IsNullOrEmpty(communicationSettings.Channel)) return;
-            _channel = communicationSettings.Channel;
-            _pubnub = _clientFactory.Create();
-            _pubnub.subscribe(_channel, HandleMessageReceived);
+            var result = false;
+            if (!string.IsNullOrEmpty(communicationSettings.Channel))
+            {
+                _channel = communicationSettings.Channel;
+                _pubnub = _clientFactory.Create();
+                _pubnub.subscribe(_channel, HandleMessageReceived);
+                result = true;
+            }
+
+            return result;
         }
 
         protected virtual void OnDataReceived(ClipboardEventArgs e)
