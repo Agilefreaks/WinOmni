@@ -97,6 +97,7 @@ namespace ClipboardWatcher
         protected void AssureClipboardIsInitialized()
         {
             if (CloudClipboard.IsInitialized) return;
+
             var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, CloudClipboard);
             configureForm.ShowDialog();
             if (!CloudClipboard.IsInitialized)

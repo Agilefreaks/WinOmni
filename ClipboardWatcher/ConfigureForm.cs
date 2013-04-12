@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows.Forms;
 using ClipboardWatcher.Core;
 using ClipboardWatcher.Core.Services;
@@ -35,11 +34,16 @@ namespace ClipboardWatcher
         {
             var activationData = _activationDataProvider.GetActivationData();
             _configurationService.UpdateCommunicationChannel(activationData.Channel);
-            if (!_cloudClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending)
+            if (ShouldRetryActivation())
             {
                 _retryCount++;
                 AssureClipboardIsInitialized();
             }
+        }
+
+        private bool ShouldRetryActivation()
+        {
+            return !_cloudClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
