@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardEventArgs.cs" />
-    <Compile Include="ClipboardWatcherCoreModule.cs" />
+    <Compile Include="CloudClipboardModule.cs" />
     <Compile Include="CommunicationSettings.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ICloudClipboard.cs" />
