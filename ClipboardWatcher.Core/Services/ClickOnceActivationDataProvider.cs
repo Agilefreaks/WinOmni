@@ -38,7 +38,7 @@ namespace ClipboardWatcher.Core.Services
 
         private static RestRequest CreateRequest(string token)
         {
-            var request = new RestRequest("activate/{token}", Method.GET);
+            var request = new RestRequest("activate/{token}.json", Method.GET);
             request.AddUrlSegment("token", token);
 
             return request;
