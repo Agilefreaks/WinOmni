@@ -16,12 +16,6 @@ namespace ClipboardWatcher
 
         private int _retryCount;
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            BackgroundWorker.RunWorkerAsync();
-        }
-
         public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, ICloudClipboard cloudClipboard)
         {
             InitializeComponent();
@@ -39,6 +33,12 @@ namespace ClipboardWatcher
                 _retryCount++;
                 AssureClipboardIsInitialized();
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            BackgroundWorker.RunWorkerAsync();
         }
 
         private bool ShouldRetryActivation()
