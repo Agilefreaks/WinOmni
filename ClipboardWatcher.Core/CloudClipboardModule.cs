@@ -11,8 +11,8 @@ namespace ClipboardWatcher.Core
     {
         public override void Load()
         {
-            //The configuration service will be resolved by both its type (because it implements the StartupTask) 
-            //and the interface's type - as it was designed to be obtained
+            // The configuration service will be resolved by both its type (because it implements the StartupTask) 
+            // and the interface's type - as it was designed to be obtained
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigurationService>().ToMethod(c => Kernel.Get<ConfigurationService>());
 
