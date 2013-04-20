@@ -64,7 +64,7 @@ namespace ClipboardWatcher
                 e.Cancel = true;
             }
 
-            Invoke((Action)(Close));
+            Invoke((Action)Close);
         }
     }
 }
