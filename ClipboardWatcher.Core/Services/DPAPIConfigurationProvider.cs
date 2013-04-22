@@ -70,6 +70,21 @@ namespace ClipboardWatcher.Core.Services
             return saved;
         }
 
+        private static XDocument InitializeNewSettingsDocument(string key, string value)
+        {
+            var document = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+            var root = new XElement("Settings");
+            document.Add(root);
+            root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
+
+            return document;
+        }
+
+        private static XElement GetElementForKey(XNode document, string key)
+        {
+            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
+        }
+
         private byte[] GetProtectedData(XDocument document)
         {
             byte[] protectedData;
@@ -99,21 +114,6 @@ namespace ClipboardWatcher.Core.Services
             {
                 file.Write(protectedData, 0, protectedData.Count());
             }
-        }
-
-        private static XDocument InitializeNewSettingsDocument(string key, string value)
-        {
-            var xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
-            var root = new XElement("Settings");
-            xDocument.Add(root);
-            root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
-
-            return xDocument;
-        }
-
-        private static XElement GetElementForKey(XNode xDocument, string key)
-        {
-            return xDocument.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
         }
 
         private XDocument LoadData()

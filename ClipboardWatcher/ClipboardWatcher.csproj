@@ -28,13 +28,16 @@
     <InstallUrl>https://s3.amazonaws.com/omnipaste/win/</InstallUrl>
     <SupportUrl>http://www.omnipasteapp.com/about</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com/about</ErrorReportUrl>
+    <TargetCulture>en</TargetCulture>
+    <ProductName>OmniPaste</ProductName>
+    <PublisherName>Omni</PublisherName>
     <SuiteName>OmniPaste</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
