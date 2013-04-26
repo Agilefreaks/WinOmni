@@ -11,7 +11,8 @@ namespace ClipboardWatcher
     public partial class MainForm : Form
     {
         private ICloudClipboard _cloudClipboard;
-        private bool _canSendData = true;
+
+        public bool CanSendData { get; protected set; }
 
         public bool IsNotificationIconVisible
         {
@@ -53,9 +54,9 @@ namespace ClipboardWatcher
 
         public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
         {
-            this._canSendData = false;
+            CanSendData = false;
             ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
-            this._canSendData = true;
+            CanSendData = true;
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -80,7 +81,7 @@ namespace ClipboardWatcher
             {
                 base.WndProc(ref message);
             }
-            else if (pasteDataFromMessage.MessageData != null && this._canSendData)
+            else if (pasteDataFromMessage.MessageData != null && CanSendData)
             {
                 CloudClipboard.Copy(pasteDataFromMessage.MessageData);
             }
@@ -96,24 +97,24 @@ namespace ClipboardWatcher
 
         protected void AssureClipboardIsInitialized()
         {
-            if (CloudClipboard.IsInitialized)
-            {
-                return;
-            }
-
-            var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, CloudClipboard);
-            configureForm.ShowDialog();
             if (!CloudClipboard.IsInitialized)
             {
-                Close();
+                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, CloudClipboard);
+                configureForm.ShowDialog();
+                if (!CloudClipboard.IsInitialized)
+                {
+                    Close();
+                }
             }
+
+            CanSendData = CloudClipboard.IsInitialized;
         }
 
         private void HideWindowFromAltTab()
         {
-            var exstyle = (int)User32.GetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
-            exstyle |= ExtendedWindowStyles.WS_EX_TOOLWINDOW;
-            WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exstyle);
+            var exStyle = (int)User32.GetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
+            exStyle |= ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+            WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
         }
 
         private void CloudClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)

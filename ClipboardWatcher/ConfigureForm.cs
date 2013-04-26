@@ -41,6 +41,17 @@ namespace ClipboardWatcher
             BackgroundWorker.RunWorkerAsync();
         }
 
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            AssureClipboardIsInitialized();
+            if (BackgroundWorker.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+
+            Invoke((Action)Close);
+        }
+
         private bool ShouldRetryActivation()
         {
             return !_cloudClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
@@ -54,17 +65,6 @@ namespace ClipboardWatcher
             }
 
             Close();
-        }
-
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            AssureClipboardIsInitialized();
-            if (BackgroundWorker.CancellationPending)
-            {
-                e.Cancel = true;
-            }
-
-            Invoke((Action)Close);
         }
     }
 }

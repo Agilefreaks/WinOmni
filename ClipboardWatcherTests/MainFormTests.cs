@@ -18,24 +18,37 @@ namespace ClipboardWatcherTests
             {
                 base.WndProc(ref message);
             }
+
+            public void CallAssureClipboardIsInitialized()
+            {
+                AssureClipboardIsInitialized();
+            }
+
+            public void SetCanSendData(bool value)
+            {
+                CanSendData = value;
+            }
         }
 
         MainFormWrapper _subject;
         private Mock<IClipboardWrapper> _mockClipboardWrapper;
         private Mock<ICloudClipboard> _mockCloudClipboard;
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
+        private Mock<IConfigurationService> _mockConfigurationService;
 
         [SetUp]
         public void Setup()
         {
             _mockClipboardWrapper = new Mock<IClipboardWrapper>();
             _mockCloudClipboard = new Mock<ICloudClipboard>();
-            _mockActivationDataProvider = new Mock<IActivationDataProvider>();
+            _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
+            _mockConfigurationService = new Mock<IConfigurationService>();
             _subject = new MainFormWrapper
                 {
                     ClipboardWrapper = _mockClipboardWrapper.Object,
                     CloudClipboard = _mockCloudClipboard.Object,
-                    ActivationDataProvider = _mockActivationDataProvider.Object
+                    ActivationDataProvider = _mockActivationDataProvider.Object,
+                    ConfigurationService = _mockConfigurationService.Object
                 };
         }
 
@@ -59,7 +72,46 @@ namespace ClipboardWatcherTests
         }
 
         [Test]
-        public void WndProc_MessageWasHandledAndHasData_CallsCloudClipboardCopyWithTheData()
+        public void Ctor_Always_SetsCanSendDataFalse()
+        {
+            _subject.CanSendData.Should().BeFalse();
+        }
+
+        [Test]
+        public void AssureClipboardIsInitialized_CloudClipboardIsInitialized_SetsCanSendDataTrue()
+        {
+            _mockCloudClipboard.Setup(x => x.IsInitialized).Returns(true);
+
+            _subject.CallAssureClipboardIsInitialized();
+
+            _subject.CanSendData.Should().BeTrue();
+        }
+
+        [Test]
+        public void AssureClipboardIsInitialized_CloudClipboardIsNotInitialized_SetsCanSendDataFalse()
+        {
+            _mockCloudClipboard.Setup(x => x.IsInitialized).Returns(false);
+
+            _subject.CallAssureClipboardIsInitialized();
+
+            _subject.CanSendData.Should().BeFalse();
+        }
+
+        [Test]
+        public void WndProc_MessageWasHandledAndHasDataAndCanSendData_CallsCloudClipboardCopyWithTheData()
+        {
+            var message = new Message();
+            var result = new ClipboardMessageHandleResult { MessageHandled = true, MessageData = "tst here" };
+            _mockClipboardWrapper.Setup(cw => cw.HandleClipboardMessage(message)).Returns(result);
+            _subject.SetCanSendData(true);
+
+            _subject.CallWndProc(message);
+
+            _mockCloudClipboard.Verify(x => x.Copy("tst here"), Times.Once());
+        }
+
+        [Test]
+        public void WndProc_MessageWasHandledAndHasDataAndCannotSendData_DoesNotCallCloudClipboardCopyWithTheData()
         {
             var message = new Message();
             var result = new ClipboardMessageHandleResult { MessageHandled = true, MessageData = "tst here" };
@@ -67,7 +119,7 @@ namespace ClipboardWatcherTests
 
             _subject.CallWndProc(message);
 
-            _mockCloudClipboard.Verify(x => x.Copy("tst here"), Times.Once());
+            _mockCloudClipboard.Verify(x => x.Copy("tst here"), Times.Never());
         }
     }
 }
