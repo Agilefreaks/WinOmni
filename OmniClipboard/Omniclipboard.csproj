@@ -82,6 +82,7 @@
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\IConfigurationService.cs" />
     <Compile Include="Services\IStartupTask.cs" />
+    <Compile Include="Services\MockActivationDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
