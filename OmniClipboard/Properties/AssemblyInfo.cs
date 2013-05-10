@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ClipboardWrapper")]
+[assembly: AssemblyTitle("Omniclipboard")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ClipboardWrapper")]
+[assembly: AssemblyProduct("Omniclipboard")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fe3e7e05-5552-4104-8374-642f1ab5fede")]
+[assembly: Guid("b9607f59-2d03-4a78-ab3c-0c468e186f54")]
 
 // Version information for an assembly consists of the following four values:
 //
