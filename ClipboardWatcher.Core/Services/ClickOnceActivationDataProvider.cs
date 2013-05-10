@@ -23,14 +23,14 @@ namespace ClipboardWatcher.Core.Services
                 var request = CreateRequest(token);
                 var restResponse = PerformRequest(request);
                 activationData = restResponse.Data;
-            }            
+            }
 
             return activationData ?? new ActivationData();
         }
 
         private static IRestResponse<ActivationData> PerformRequest(IRestRequest request)
         {
-            var restClient = new RestClient("https://omnipasteapp.com/");
+            var restClient = new RestClient("https://omnipasteapp.com/api");
             var restResponse = restClient.Execute<ActivationData>(request);
 
             return restResponse;
