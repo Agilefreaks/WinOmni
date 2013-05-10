@@ -76,14 +76,14 @@ namespace Omnipaste
 
         protected override void WndProc(ref Message message)
         {
-            var pasteDataFromMessage = ClipboardWrapper.HandleClipboardMessage(message);
-            if (!pasteDataFromMessage.MessageHandled)
+            var handleResult = ClipboardWrapper.HandleClipboardMessage(message);
+            if (!handleResult.MessageHandled)
             {
                 base.WndProc(ref message);
             }
-            else if (pasteDataFromMessage.MessageData != null && CanSendData)
+            else if (handleResult.MessageData != null && CanSendData)
             {
-                Omniclipboard.Copy(pasteDataFromMessage.MessageData);
+                Omniclipboard.Copy(handleResult.MessageData);
             }
         }
 
