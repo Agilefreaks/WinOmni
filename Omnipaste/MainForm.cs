@@ -107,6 +107,7 @@ namespace Omnipaste
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
             AssureClipboardIsInitialized();
+            AddCurrentUserMenuEntry();
         }
 
         protected void OnIsSynchronizationDisabledChanged(bool isSynchronizationDisabled)
@@ -136,6 +137,17 @@ namespace Omnipaste
             }
 
             CanSendData = Omniclipboard.IsInitialized;
+        }
+
+        protected void AddCurrentUserMenuEntry()
+        {
+            var toolStripMenuItem = new ToolStripLabel
+                {
+                    Enabled = false,
+                    Text = string.Format("Logged in as: \"{0}\"", Omniclipboard.Channel)
+                };
+            trayIconContextMenuStrip.Items.Insert(0, toolStripMenuItem);
+            trayIconContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
         }
 
         private void HideWindowFromAltTab()
