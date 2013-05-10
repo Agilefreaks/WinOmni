@@ -9,8 +9,9 @@ namespace Omniclipboard.Impl.PubNub
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
-        private string _channel;
         private Pubnub _pubnub;
+
+        public string Channel { get; private set; }
 
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
@@ -28,7 +29,7 @@ namespace Omniclipboard.Impl.PubNub
 
         public void Copy(string str)
         {
-            _pubnub.publish(_channel, str, o => { });
+            _pubnub.publish(Channel, str, o => { });
         }
 
         public void Dispose()
@@ -36,7 +37,7 @@ namespace Omniclipboard.Impl.PubNub
             if (IsInitialized)
             {
                 _pubnub.EndPendingRequests();
-                _pubnub.unsubscribe(_channel, o => { });
+                _pubnub.unsubscribe(Channel, o => { });
             }
         }
 
@@ -46,9 +47,9 @@ namespace Omniclipboard.Impl.PubNub
             var result = false;
             if (!string.IsNullOrEmpty(communicationSettings.Channel))
             {
-                _channel = communicationSettings.Channel;
+                Channel = communicationSettings.Channel;
                 _pubnub = _clientFactory.Create();
-                _pubnub.subscribe(_channel, HandleMessageReceived);
+                _pubnub.subscribe(Channel, HandleMessageReceived);
                 result = true;
             }
 

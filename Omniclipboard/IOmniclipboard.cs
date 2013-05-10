@@ -8,6 +8,8 @@ namespace Omniclipboard
 
         bool IsInitialized { get; }
 
+        string Channel { get; }
+
         bool Initialize();
 
         void Copy(string str);
