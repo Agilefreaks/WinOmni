@@ -1,4 +1,7 @@
 ﻿using System.Collections.Specialized;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using ClipboardWatcher.Core.ExtensionMethods;
 using RestSharp;
 
@@ -38,10 +41,16 @@ namespace ClipboardWatcher.Core.Services
 
         private static RestRequest CreateRequest(string token)
         {
+            ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidationCallback;
             var request = new RestRequest("activate/{token}.json", Method.GET);
             request.AddUrlSegment("token", token);
 
             return request;
+        }
+
+        private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
 
         private NameValueCollection GetDeploymentParameters()
