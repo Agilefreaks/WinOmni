@@ -36,6 +36,7 @@ namespace Omniclipboard.Impl.PubNub
             if (IsInitialized)
             {
                 _pubnub.EndPendingRequests();
+                _pubnub.unsubscribe(_channel, o => { });
             }
         }
 

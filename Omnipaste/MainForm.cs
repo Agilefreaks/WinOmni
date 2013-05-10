@@ -11,6 +11,7 @@ namespace Omnipaste
     public partial class MainForm : Form
     {
         private IOmniclipboard _omniclipboard;
+        private bool _isSynchronizationDisabled;
 
         public bool CanSendData { get; protected set; }
 
@@ -18,6 +19,19 @@ namespace Omnipaste
         {
             get { return NotifyIcon.Visible; }
             set { NotifyIcon.Visible = value; }
+        }
+
+        public bool IsSynchronizationDisabled
+        {
+            get
+            {
+                return _isSynchronizationDisabled;
+            }
+            private set
+            {
+                _isSynchronizationDisabled = value;
+                OnIsSynchronizationDisabledChanged(IsSynchronizationDisabled);
+            }
         }
 
         [Inject]
@@ -95,6 +109,20 @@ namespace Omnipaste
             AssureClipboardIsInitialized();
         }
 
+        protected void OnIsSynchronizationDisabledChanged(bool isSynchronizationDisabled)
+        {
+            if (isSynchronizationDisabled)
+            {
+                ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+                Omniclipboard.Dispose();
+            }
+            else
+            {
+                ClipboardWrapper.RegisterClipboardViewer(Handle);
+                Omniclipboard.Initialize();
+            }
+        }
+
         protected void AssureClipboardIsInitialized()
         {
             if (!Omniclipboard.IsInitialized)
@@ -125,6 +153,11 @@ namespace Omnipaste
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void DisableButton_Click(object sender, EventArgs e)
+        {
+            IsSynchronizationDisabled = DisableButton.Checked;
         }
     }
 }

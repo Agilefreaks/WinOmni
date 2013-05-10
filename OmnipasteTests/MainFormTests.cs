@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using ClipboardWrapper;
 using FluentAssertions;
 using Moq;
@@ -28,6 +29,11 @@ namespace OmnipasteTests
             {
                 CanSendData = value;
             }
+
+            public void CallOnIsSynchronizationDisabledChanged(bool isSyncDisabled)
+            {
+                OnIsSynchronizationDisabledChanged(isSyncDisabled);
+            }
         }
 
         MainFormWrapper _subject;
@@ -39,10 +45,10 @@ namespace OmnipasteTests
         [SetUp]
         public void Setup()
         {
-            _mockClipboardWrapper = new Mock<IClipboardWrapper>();
-            _mockOmniclipboard = new Mock<IOmniclipboard>();
+            _mockClipboardWrapper = new Mock<IClipboardWrapper> { DefaultValue = DefaultValue.Mock };
+            _mockOmniclipboard = new Mock<IOmniclipboard> { DefaultValue = DefaultValue.Mock };
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
-            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _subject = new MainFormWrapper
                 {
                     ClipboardWrapper = _mockClipboardWrapper.Object,
@@ -120,6 +126,38 @@ namespace OmnipasteTests
             _subject.CallWndProc(message);
 
             _mockOmniclipboard.Verify(x => x.Copy("tst here"), Times.Never());
+        }
+
+        [Test]
+        public void OnIsSynchronizationDisabledChanged_SynchronizationDisabled_ItShouldUnregisterTheClipboardWathcer()
+        {
+            _subject.CallOnIsSynchronizationDisabledChanged(true);
+
+            _mockClipboardWrapper.Verify(x => x.UnRegisterClipboardViewer(It.IsAny<IntPtr>()), Times.Once());
+        }
+
+        [Test]
+        public void OnIsSynchronizationDisabledChanged_SynchronizationDisabled_ItShouldDisposeTheOmniClipboard()
+        {
+            _subject.CallOnIsSynchronizationDisabledChanged(true);
+
+            _mockOmniclipboard.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        public void OnIsSynchronizationDisabledChanged_SynchronizationEnabled_ItShouldRegisterTheClipboardWathcer()
+        {
+            _subject.CallOnIsSynchronizationDisabledChanged(false);
+
+            _mockClipboardWrapper.Verify(x => x.RegisterClipboardViewer(It.IsAny<IntPtr>()));
+        }
+
+        [Test]
+        public void OnIsSynchronizationDisabledChanged_SynchronizationEnabled_ItShouldInitializeTheOmniClipboard()
+        {
+            _subject.CallOnIsSynchronizationDisabledChanged(false);
+
+            _mockOmniclipboard.Verify(x => x.Initialize(), Times.Once());
         }
     }
 }
