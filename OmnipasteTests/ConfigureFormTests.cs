@@ -1,7 +1,7 @@
-﻿using ClipboardWatcher.Core;
-using ClipboardWatcher.Core.Services;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
+using Omniclipboard;
+using Omniclipboard.Services;
 using Omnipaste;
 
 namespace OmnipasteTests

@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}</ProjectGuid>
+    <ProjectGuid>{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OmnipasteTests</RootNamespace>
-    <AssemblyName>OmnipasteTests</AssemblyName>
+    <RootNamespace>Omniclipboard</RootNamespace>
+    <AssemblyName>Omniclipboard</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,44 +33,59 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\net35\FluentAssertions.dll</HintPath>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Pubnub.3.3.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.2-unstable-8\lib\net35\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net35-client\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading">
+      <HintPath>..\packages\Pubnub.3.3.0.2\lib\net35\System.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigureFormTests.cs" />
-    <Compile Include="MainFormTests.cs" />
+    <Compile Include="ApplicationDeploymentWrapper.cs" />
+    <Compile Include="ClipboardEventArgs.cs" />
+    <Compile Include="CloudClipboardModule.cs" />
+    <Compile Include="CommunicationSettings.cs" />
+    <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
+    <Compile Include="IApplicationDeploymentInfo.cs" />
+    <Compile Include="ICloudClipboard.cs" />
+    <Compile Include="Impl\PubNub\IPubNubClientFactory.cs" />
+    <Compile Include="Impl\PubNub\PubNubClientFactory.cs" />
+    <Compile Include="Impl\PubNub\PubNubCloudClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Impl\PubNub\Pubnub.cs" />
+    <Compile Include="Services\ActivationData.cs" />
+    <Compile Include="Services\ClickOnceActivationDataProvider.cs" />
+    <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\DPAPIConfigurationProvider.cs" />
+    <Compile Include="Services\IActivationDataProvider.cs" />
+    <Compile Include="Services\IActivationService.cs" />
+    <Compile Include="Services\IConfigurationProvider.cs" />
+    <Compile Include="Services\IConfigurationService.cs" />
+    <Compile Include="Services\IStartupTask.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ClipboardWrapper\ClipboardWrapper.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>ClipboardWrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OmniClipboard\Omniclipboard.csproj">
-      <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
-      <Name>Omniclipboard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
-      <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
-      <Name>Omnipaste</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

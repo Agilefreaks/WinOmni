@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWatcher.Core;
-using ClipboardWatcher.Core.Services;
 using ClipboardWrapper;
 using ClipboardWrapper.Imports;
 using Ninject;
+using Omniclipboard;
+using Omniclipboard.Services;
 
 namespace Omnipaste
 {

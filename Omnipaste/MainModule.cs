@@ -1,7 +1,7 @@
-﻿using ClipboardWatcher.Core;
-using ClipboardWatcher.Core.Impl.PubNub;
-using ClipboardWatcher.Core.Services;
-using Ninject.Modules;
+﻿using Ninject.Modules;
+using Omniclipboard;
+using Omniclipboard.Impl.PubNub;
+using Omniclipboard.Services;
 
 namespace Omnipaste
 {

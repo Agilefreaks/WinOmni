@@ -1,10 +1,10 @@
 ﻿using System.Windows.Forms;
-using ClipboardWatcher.Core;
-using ClipboardWatcher.Core.Services;
 using ClipboardWrapper;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using Omniclipboard;
+using Omniclipboard.Services;
 using Omnipaste;
 
 namespace OmnipasteTests
