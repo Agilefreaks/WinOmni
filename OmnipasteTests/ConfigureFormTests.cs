@@ -1,10 +1,10 @@
-﻿using ClipboardWatcher;
-using ClipboardWatcher.Core;
+﻿using ClipboardWatcher.Core;
 using ClipboardWatcher.Core.Services;
 using Moq;
 using NUnit.Framework;
+using Omnipaste;
 
-namespace ClipboardWatcherTests
+namespace OmnipasteTests
 {
     [TestFixture]
     public class ConfigureFormTests

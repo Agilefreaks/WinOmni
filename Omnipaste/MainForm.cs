@@ -6,7 +6,7 @@ using ClipboardWrapper;
 using ClipboardWrapper.Imports;
 using Ninject;
 
-namespace ClipboardWatcher
+namespace Omnipaste
 {
     public partial class MainForm : Form
     {

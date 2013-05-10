@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using ClipboardWrapper.Imports;
 
-namespace ClipboardWatcher
+namespace Omnipaste
 {
     public class WindowHelper
     {

@@ -4,7 +4,7 @@ using ClipboardWatcher.Core;
 using ClipboardWrapper;
 using Ninject;
 
-namespace ClipboardWatcher
+namespace Omnipaste
 {
     static class Program
     {

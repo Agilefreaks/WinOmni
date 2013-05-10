@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClipboardWatcher.Properties {
+namespace Omnipaste.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

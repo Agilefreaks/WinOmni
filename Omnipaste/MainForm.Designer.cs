@@ -1,4 +1,4 @@
-﻿namespace ClipboardWatcher
+﻿namespace Omnipaste
 {
     partial class MainForm
     {

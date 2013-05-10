@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using ClipboardWatcher.Core;
 using ClipboardWatcher.Core.Services;
 
-namespace ClipboardWatcher
+namespace Omnipaste
 {
     public partial class ConfigureForm : Form
     {

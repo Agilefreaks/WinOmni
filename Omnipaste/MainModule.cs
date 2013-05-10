@@ -3,7 +3,7 @@ using ClipboardWatcher.Core.Impl.PubNub;
 using ClipboardWatcher.Core.Services;
 using Ninject.Modules;
 
-namespace ClipboardWatcher
+namespace Omnipaste
 {
     public class MainModule : NinjectModule
     {

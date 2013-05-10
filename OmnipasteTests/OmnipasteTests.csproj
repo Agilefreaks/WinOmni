@@ -7,8 +7,8 @@
     <ProjectGuid>{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClipboardWatcherTests</RootNamespace>
-    <AssemblyName>ClipboardWatcherTests</AssemblyName>
+    <RootNamespace>OmnipasteTests</RootNamespace>
+    <AssemblyName>OmnipasteTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -64,13 +64,13 @@
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
       <Name>CloudClipboard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClipboardWatcher\ClipboardWatcher.csproj">
-      <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
-      <Name>ClipboardWatcher</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ClipboardWrapper\ClipboardWrapper.csproj">
       <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
       <Name>ClipboardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
+      <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
+      <Name>Omnipaste</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
