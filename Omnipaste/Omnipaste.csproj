@@ -29,9 +29,9 @@
     <SupportUrl>http://www.omnipasteapp.com/about</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com/about</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>OmniPaste</ProductName>
+    <ProductName>Omnipaste</ProductName>
     <PublisherName>Omni</PublisherName>
-    <SuiteName>OmniPaste</SuiteName>
+    <SuiteName>Omnipaste</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
@@ -63,10 +63,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D58B7B80993CAD3B0B379FAB5E9A3EF7D11FEB56</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0A7715B74D0C2AEC9F55F7598BB0AD1C23E9C245</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ClipboardWatcher_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -124,7 +125,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ClipboardWatcher_TemporaryKey.pfx" />
+    <None Include="Omnipaste_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

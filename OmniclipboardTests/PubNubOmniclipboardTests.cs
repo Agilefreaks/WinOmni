@@ -8,7 +8,7 @@ using Omniclipboard.Services;
 namespace OmniclipboardTests
 {
     [TestFixture]
-    public class PubNubCloudClipboardTests
+    public class PubNubOmniclipboardTests
     {
         private Mock<IConfigurationService> _mockConfigurationService;
         private Mock<IPubNubClientFactory> _mockPubNubClientFactory;
@@ -28,9 +28,9 @@ namespace OmniclipboardTests
             var communicationSettings = new CommunicationSettings { Channel = string.Empty };
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
 
-            var cloudClipboard = new PubNubCloudClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            var omniclipboard = new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 
-            cloudClipboard.IsInitialized.Should().BeFalse();
+            omniclipboard.IsInitialized.Should().BeFalse();
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace OmniclipboardTests
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
             // ReSharper disable ObjectCreationAsStatement
-            new PubNubCloudClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
             // ReSharper restore ObjectCreationAsStatement
 
             _mockPubNubClientFactory.Verify(x => x.Create(), Times.Once());
@@ -55,9 +55,9 @@ namespace OmniclipboardTests
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
-            var cloudClipboard = new PubNubCloudClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            var omniclipboard = new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 
-            cloudClipboard.IsInitialized.Should().BeTrue();
+            omniclipboard.IsInitialized.Should().BeTrue();
         }
     }
 }

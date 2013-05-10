@@ -12,15 +12,15 @@ namespace OmnipasteTests
         ConfigureForm _subject;
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
         private Mock<IConfigurationService> _mockConfigurationService;
-        private Mock<ICloudClipboard> _mockCloudClipboard;
+        private Mock<IOmniclipboard> _mockOmniclipboard;
 
         [SetUp]
         public void Setup()
         {
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _mockCloudClipboard = new Mock<ICloudClipboard>();
-            _subject = new ConfigureForm(_mockActivationDataProvider.Object, _mockConfigurationService.Object, _mockCloudClipboard.Object);
+            _mockOmniclipboard = new Mock<IOmniclipboard>();
+            _subject = new ConfigureForm(_mockActivationDataProvider.Object, _mockConfigurationService.Object, _mockOmniclipboard.Object);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace OmnipasteTests
         [Test]
         public void AssureClipboardIsInitialized_IfTheClipboardInitializationWorks_DoesNotRetryToGetTheActivationData()
         {
-            _mockCloudClipboard.Setup(x => x.Initialize()).Returns(true);
+            _mockOmniclipboard.Setup(x => x.Initialize()).Returns(true);
 
             _subject.AssureClipboardIsInitialized();
 

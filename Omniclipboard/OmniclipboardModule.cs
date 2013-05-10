@@ -7,7 +7,7 @@ using Omniclipboard.Services;
 
 namespace Omniclipboard
 {
-    public class CloudClipboardModule : NinjectModule
+    public class OmniclipboardModule : NinjectModule
     {
         public override void Load()
         {

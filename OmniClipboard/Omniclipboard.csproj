@@ -61,15 +61,15 @@
   <ItemGroup>
     <Compile Include="ApplicationDeploymentWrapper.cs" />
     <Compile Include="ClipboardEventArgs.cs" />
-    <Compile Include="CloudClipboardModule.cs" />
+    <Compile Include="OmniclipboardModule.cs" />
     <Compile Include="CommunicationSettings.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
     <Compile Include="IApplicationDeploymentInfo.cs" />
-    <Compile Include="ICloudClipboard.cs" />
+    <Compile Include="IOmniclipboard.cs" />
     <Compile Include="Impl\PubNub\IPubNubClientFactory.cs" />
     <Compile Include="Impl\PubNub\PubNubClientFactory.cs" />
-    <Compile Include="Impl\PubNub\PubNubCloudClipboard.cs" />
+    <Compile Include="Impl\PubNub\PubNubOmniclipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\PubNub\Pubnub.cs" />
     <Compile Include="Services\ActivationData.cs" />

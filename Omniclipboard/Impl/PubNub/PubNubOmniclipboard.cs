@@ -5,7 +5,7 @@ using Omniclipboard.Services;
 
 namespace Omniclipboard.Impl.PubNub
 {
-    public class PubNubCloudClipboard : ICloudClipboard
+    public class PubNubOmniclipboard : IOmniclipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
@@ -19,7 +19,7 @@ namespace Omniclipboard.Impl.PubNub
             get { return _pubnub != null; }
         }
 
-        public PubNubCloudClipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
+        public PubNubOmniclipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
         {
             _configurationService = configurationService;
             _clientFactory = clientFactory;

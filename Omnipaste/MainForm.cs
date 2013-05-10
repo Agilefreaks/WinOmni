@@ -10,7 +10,7 @@ namespace Omnipaste
 {
     public partial class MainForm : Form
     {
-        private ICloudClipboard _cloudClipboard;
+        private IOmniclipboard _omniclipboard;
 
         public bool CanSendData { get; protected set; }
 
@@ -24,19 +24,19 @@ namespace Omnipaste
         public IClipboardWrapper ClipboardWrapper { get; set; }
 
         [Inject]
-        public ICloudClipboard CloudClipboard
+        public IOmniclipboard Omniclipboard
         {
             get
             {
-                return _cloudClipboard;
+                return _omniclipboard;
             }
 
             set
             {
-                _cloudClipboard = value;
-                if (_cloudClipboard != null)
+                _omniclipboard = value;
+                if (_omniclipboard != null)
                 {
-                    _cloudClipboard.DataReceived += CloudClipboardOnDataReceived;
+                    _omniclipboard.DataReceived += OmniclipboardOnDataReceived;
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Omnipaste
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             ClipboardWrapper.UnRegisterClipboardViewer(Handle);
-            CloudClipboard.Dispose();
+            Omniclipboard.Dispose();
             IsNotificationIconVisible = false;
 
             base.OnClosing(e);
@@ -83,7 +83,7 @@ namespace Omnipaste
             }
             else if (pasteDataFromMessage.MessageData != null && CanSendData)
             {
-                CloudClipboard.Copy(pasteDataFromMessage.MessageData);
+                Omniclipboard.Copy(pasteDataFromMessage.MessageData);
             }
         }
 
@@ -97,17 +97,17 @@ namespace Omnipaste
 
         protected void AssureClipboardIsInitialized()
         {
-            if (!CloudClipboard.IsInitialized)
+            if (!Omniclipboard.IsInitialized)
             {
-                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, CloudClipboard);
+                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, Omniclipboard);
                 configureForm.ShowDialog();
-                if (!CloudClipboard.IsInitialized)
+                if (!Omniclipboard.IsInitialized)
                 {
                     Close();
                 }
             }
 
-            CanSendData = CloudClipboard.IsInitialized;
+            CanSendData = Omniclipboard.IsInitialized;
         }
 
         private void HideWindowFromAltTab()
@@ -117,7 +117,7 @@ namespace Omnipaste
             WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
         }
 
-        private void CloudClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
+        private void OmniclipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
         {
             Invoke((Action)(() => SendDataToClipboard(clipboardEventArgs)));
         }

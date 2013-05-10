@@ -32,7 +32,7 @@ namespace OmnipasteTests
 
         MainFormWrapper _subject;
         private Mock<IClipboardWrapper> _mockClipboardWrapper;
-        private Mock<ICloudClipboard> _mockCloudClipboard;
+        private Mock<IOmniclipboard> _mockOmniclipboard;
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -40,13 +40,13 @@ namespace OmnipasteTests
         public void Setup()
         {
             _mockClipboardWrapper = new Mock<IClipboardWrapper>();
-            _mockCloudClipboard = new Mock<ICloudClipboard>();
+            _mockOmniclipboard = new Mock<IOmniclipboard>();
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService>();
             _subject = new MainFormWrapper
                 {
                     ClipboardWrapper = _mockClipboardWrapper.Object,
-                    CloudClipboard = _mockCloudClipboard.Object,
+                    Omniclipboard = _mockOmniclipboard.Object,
                     ActivationDataProvider = _mockActivationDataProvider.Object,
                     ConfigurationService = _mockConfigurationService.Object
                 };
@@ -78,9 +78,9 @@ namespace OmnipasteTests
         }
 
         [Test]
-        public void AssureClipboardIsInitialized_CloudClipboardIsInitialized_SetsCanSendDataTrue()
+        public void AssureClipboardIsInitialized_OmniclipboardIsInitialized_SetsCanSendDataTrue()
         {
-            _mockCloudClipboard.Setup(x => x.IsInitialized).Returns(true);
+            _mockOmniclipboard.Setup(x => x.IsInitialized).Returns(true);
 
             _subject.CallAssureClipboardIsInitialized();
 
@@ -88,9 +88,9 @@ namespace OmnipasteTests
         }
 
         [Test]
-        public void AssureClipboardIsInitialized_CloudClipboardIsNotInitialized_SetsCanSendDataFalse()
+        public void AssureClipboardIsInitialized_OmniclipboardIsNotInitialized_SetsCanSendDataFalse()
         {
-            _mockCloudClipboard.Setup(x => x.IsInitialized).Returns(false);
+            _mockOmniclipboard.Setup(x => x.IsInitialized).Returns(false);
 
             _subject.CallAssureClipboardIsInitialized();
 
@@ -98,7 +98,7 @@ namespace OmnipasteTests
         }
 
         [Test]
-        public void WndProc_MessageWasHandledAndHasDataAndCanSendData_CallsCloudClipboardCopyWithTheData()
+        public void WndProc_MessageWasHandledAndHasDataAndCanSendData_CallsOmniclipboardCopyWithTheData()
         {
             var message = new Message();
             var result = new ClipboardMessageHandleResult { MessageHandled = true, MessageData = "tst here" };
@@ -107,11 +107,11 @@ namespace OmnipasteTests
 
             _subject.CallWndProc(message);
 
-            _mockCloudClipboard.Verify(x => x.Copy("tst here"), Times.Once());
+            _mockOmniclipboard.Verify(x => x.Copy("tst here"), Times.Once());
         }
 
         [Test]
-        public void WndProc_MessageWasHandledAndHasDataAndCannotSendData_DoesNotCallCloudClipboardCopyWithTheData()
+        public void WndProc_MessageWasHandledAndHasDataAndCannotSendData_DoesNotCallOmniclipboardCopyWithTheData()
         {
             var message = new Message();
             var result = new ClipboardMessageHandleResult { MessageHandled = true, MessageData = "tst here" };
@@ -119,7 +119,7 @@ namespace OmnipasteTests
 
             _subject.CallWndProc(message);
 
-            _mockCloudClipboard.Verify(x => x.Copy("tst here"), Times.Never());
+            _mockOmniclipboard.Verify(x => x.Copy("tst here"), Times.Never());
         }
     }
 }

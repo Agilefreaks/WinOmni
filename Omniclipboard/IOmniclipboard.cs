@@ -2,7 +2,7 @@
 
 namespace Omniclipboard
 {
-    public interface ICloudClipboard : IDisposable
+    public interface IOmniclipboard : IDisposable
     {
         event EventHandler<ClipboardEventArgs> DataReceived;
 
