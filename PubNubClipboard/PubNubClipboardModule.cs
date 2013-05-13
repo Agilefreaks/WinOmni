@@ -11,6 +11,8 @@ namespace PubNubClipboard
     {
         public override void Load()
         {
+            Kernel.Bind<IPubNubClipboard>().To<PubNubOmniclipboard>().InSingletonScope();
+
             // The configuration service will be resolved by both its type (because it implements the StartupTask) 
             // and the interface's type - as it was designed to be obtained
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();

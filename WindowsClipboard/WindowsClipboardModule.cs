@@ -7,7 +7,7 @@ namespace WindowsClipboard
     {
         public override void Load()
         {
-            Kernel.Bind<IWindowsClipboard>().To<WindowsClipboard>();
+            Kernel.Bind<IWindowsClipboard>().To<WindowsClipboard>().InSingletonScope();
             Kernel.Bind<IWindowsClipboardWrapper>().To<WindowsClipboardWrapper>();
         }
     }
