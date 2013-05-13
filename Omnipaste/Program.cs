@@ -17,7 +17,7 @@ namespace Omnipaste
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var kernel = new StandardKernel(new CommonModule(), new MainModule(), new WindowsClipboardModule(),
+            var kernel = new StandardKernel(new MainModule(), new CommonModule(), new WindowsClipboardModule(),
                                             new PubNubClipboardModule());
             var form = kernel.Get<MainForm>();
             Application.Run(form);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OmniCommon;
 using OmniCommon.Interfaces;
-using OmniCommon.Services;
 
 namespace PubNubClipboard.Impl.PubNub
 {
