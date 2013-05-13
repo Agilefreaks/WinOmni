@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Common.Logging;
 using Ninject;
@@ -34,7 +36,7 @@ namespace WindowsClipboard
 
         public void SetData(string data)
         {
-            Clipboard.SetData(DataFormats.Text, data);
+            RunOnAnSTAThread(() => Clipboard.SetData(DataFormats.Text, data));
         }
 
         private bool HandleClipboardMessage(ref Message message)
@@ -103,7 +105,7 @@ namespace WindowsClipboard
             {
                 iData = Clipboard.GetDataObject();
             }
-            catch (System.Runtime.InteropServices.ExternalException externalException)
+            catch (ExternalException externalException)
             {
                 // Copying a field definition in Access 2002 causes this sometimes?
                 Logger.Error(externalException);
@@ -161,6 +163,19 @@ namespace WindowsClipboard
             {
                 DataReceived(this, new ClipboardEventArgs(data));
             }
+        }
+
+        private static void RunOnAnSTAThread(Action action)
+        {
+            var @event = new AutoResetEvent(false);
+            var thread = new Thread(() =>
+                {
+                    action();
+                    @event.Set();
+                });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            @event.WaitOne();
         }
     }
 }
