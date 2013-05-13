@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWrapper;
 using Ninject;
-using Omniclipboard;
+using OmniCommon;
+using PubNubClipboard;
+using WindowsClipboard;
 
 namespace Omnipaste
 {
@@ -16,7 +17,8 @@ namespace Omnipaste
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var kernel = new StandardKernel(new MainModule(), new ClipboardWrapperModule(), new OmniclipboardModule());
+            var kernel = new StandardKernel(new MainModule(), new CommonModule(), new WindowsClipboardModule(),
+                                            new PubNubClipboardModule());
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }

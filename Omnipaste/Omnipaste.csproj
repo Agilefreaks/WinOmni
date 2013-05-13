@@ -37,7 +37,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>14</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -63,11 +63,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0A7715B74D0C2AEC9F55F7598BB0AD1C23E9C245</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>97B0F37A8992E9D3F758EEA23B6A477C8B2C9CCF</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>Omnipaste_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -82,8 +81,14 @@
     <Reference Include="Ninject.Extensions.Conventions">
       <HintPath>..\packages\ninject.extensions.conventions.3.0.2-unstable-2\lib\net35\Ninject.Extensions.Conventions.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.104.1\lib\net35-client\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -108,6 +113,11 @@
     <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationDeploymentWrapper.cs" />
+    <Compile Include="Services\ClickOnceActivationDataProvider.cs" />
+    <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
+    <Compile Include="Services\DPAPIConfigurationProvider.cs" />
+    <Compile Include="Services\MockActivationDataProvider.cs" />
     <Compile Include="WindowHelper.cs" />
     <EmbeddedResource Include="ConfigureForm.resx">
       <DependentUpon>ConfigureForm.cs</DependentUpon>
@@ -146,13 +156,17 @@
     <Content Include="Resources\Icon2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClipboardWrapper\ClipboardWrapper.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>ClipboardWrapper</Name>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
+      <Name>OmniCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OmniClipboard\Omniclipboard.csproj">
+    <ProjectReference Include="..\PubNubClipboard\PubNubClipboard.csproj">
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
-      <Name>Omniclipboard</Name>
+      <Name>PubNubClipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
+      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
+      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
