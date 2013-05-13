@@ -9,6 +9,8 @@ namespace OmniCommon.Services
 
         public IOmniClipboard OmniClipboard { get; private set; }
 
+        protected bool CanProcessData { get; set; }
+
         protected ClipboardEventArgs LastReceivedEventArgs { get; set; }
 
         protected ClipboardEventArgs LastSentEventArgs { get; set; }
@@ -25,10 +27,12 @@ namespace OmniCommon.Services
         {
             LocalClipboard.Initialize();
             OmniClipboard.Initialize();
+            CanProcessData = true;
         }
 
         public void Stop()
         {
+            CanProcessData = false;
             LocalClipboard.Dispose();
             OmniClipboard.Dispose();
         }
@@ -43,10 +47,10 @@ namespace OmniCommon.Services
             LastReceivedEventArgs = ProcessClipboardEvent(clipboardEventArgs, LastSentEventArgs, LocalClipboard);
         }
 
-        private static ClipboardEventArgs ProcessClipboardEvent(ClipboardEventArgs clipboardEventArgs, ClipboardEventArgs oldEventArgs, IClipboard clipboardToSendTo)
+        private ClipboardEventArgs ProcessClipboardEvent(ClipboardEventArgs clipboardEventArgs, ClipboardEventArgs oldEventArgs, IClipboard clipboardToSendTo)
         {
             ClipboardEventArgs sentEventArgs = null;
-            if (!ClipboardEventArgs.Equals(clipboardEventArgs, oldEventArgs) && !clipboardEventArgs.Data.IsNullOrWhiteSpace())
+            if (CanProcessData && !ClipboardEventArgs.Equals(clipboardEventArgs, oldEventArgs) && !clipboardEventArgs.Data.IsNullOrWhiteSpace())
             {
                 clipboardToSendTo.SendData(clipboardEventArgs.Data);
                 sentEventArgs = clipboardEventArgs;

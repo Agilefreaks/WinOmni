@@ -21,12 +21,12 @@ namespace OmniCommonTests
             _mockLocalClipboard = new Mock<ILocalClipboard>();
             _mockOmniClipboard = new Mock<IOmniClipboard>();
             _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object);
-            _subject.Start();
         }
 
         [Test]
         public void OnReceivingRemoteData_Always_WillNotSendItBack()
         {
+            _subject.Start();
             var tasks = new Task[1];
             _mockLocalClipboard.Setup(mock => mock.SendData("test-data"))
                                .Callback<string>(data =>
@@ -48,6 +48,7 @@ namespace OmniCommonTests
         [Test]
         public void OnReceivingLocalData_Always_WillNotSendItBack()
         {
+            _subject.Start();
             var tasks = new Task[1];
             _mockOmniClipboard.Setup(mock => mock.SendData("test-data")).Callback<string>(data =>
                 {
@@ -62,6 +63,22 @@ namespace OmniCommonTests
             Task.WaitAll(tasks);
 
             _mockOmniClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+            _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void OnReceivingLocalData_CannotSendData_WillNotSendDataToRemoteClipboard()
+        {
+            _mockLocalClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
+
+            _mockOmniClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void OnReceivingRemoteData_CannotSendData_WillNotSendDataToLocalClipboard()
+        {
+            _mockOmniClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
+
             _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
         }
     }
