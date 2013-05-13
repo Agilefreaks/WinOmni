@@ -6,7 +6,7 @@ using PubNubClipboard.Services;
 
 namespace PubNubClipboard.Impl.PubNub
 {
-    public class PubNubOmniclipboard : IOmniclipboard
+    public class PubNubOmniclipboard : IPubNubClipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
@@ -28,20 +28,6 @@ namespace PubNubClipboard.Impl.PubNub
             Initialize();
         }
 
-        public void Copy(string str)
-        {
-            _pubnub.publish(Channel, str, o => { });
-        }
-
-        public void Dispose()
-        {
-            if (IsInitialized)
-            {
-                _pubnub.EndPendingRequests();
-                _pubnub.unsubscribe(Channel, o => { });
-            }
-        }
-
         public bool Initialize()
         {
             var communicationSettings = _configurationService.CommunicationSettings;
@@ -57,11 +43,24 @@ namespace PubNubClipboard.Impl.PubNub
             return result;
         }
 
-        protected virtual void OnDataReceived(ClipboardEventArgs e)
+        public void Dispose()
+        {
+            if (!IsInitialized) return;
+
+            _pubnub.EndPendingRequests();
+            _pubnub.unsubscribe(Channel, o => { });
+        }
+
+        public void SendData(string data)
+        {
+            _pubnub.publish(Channel, data, o => { });
+        }
+
+        protected virtual void OnDataReceived(ClipboardEventArgs eventArgs)
         {
             if (DataReceived != null)
             {
-                DataReceived(this, e);
+                DataReceived(this, eventArgs);
             }
         }
 

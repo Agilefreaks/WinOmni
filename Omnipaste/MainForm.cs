@@ -4,19 +4,14 @@ using Ninject;
 using OmniCommon.Interfaces;
 using PubNubClipboard;
 using PubNubClipboard.Services;
-using WindowsClipboard;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
 {
-    public partial class MainForm : Form, IDelegateMessageHandling
+    public partial class MainForm : Form, IDelegateClipboardMessageHandling
     {
-        public event MessageHandler HandleMessage;
-
-        private WindowsClipboardWrapper _windowsClipboardWrapper;
-
-        public bool CanSendData { get; protected set; }
+        public event MessageHandler HandleClipboardMessage;
 
         public bool IsNotificationIconVisible
         {
@@ -31,7 +26,7 @@ namespace Omnipaste
         public IWindowsClipboard WindowsClipboard { get; set; }
 
         [Inject]
-        public IOmniclipboard Omniclipboard { get; set; }
+        public IPubNubClipboard PubNubClipboard { get; set; }
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
@@ -44,12 +39,6 @@ namespace Omnipaste
             InitializeComponent();
         }
 
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            _windowsClipboardWrapper = new WindowsClipboardWrapper(Handle, this);
-            base.OnHandleCreated(e);
-        }
-
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             OmniService.Stop();
@@ -60,7 +49,7 @@ namespace Omnipaste
 
         protected override void WndProc(ref Message message)
         {
-            if (HandleMessage == null || !HandleMessage(ref message))
+            if (HandleClipboardMessage == null || !HandleClipboardMessage(ref message))
             {
                 base.WndProc(ref message);
             }
@@ -71,24 +60,20 @@ namespace Omnipaste
             base.OnLoad(e);
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            AssureClipboardsAreInitialized();
+            OmniService.Start();
+            AssureRemoteClipboardIsInitialized();
             AddCurrentUserMenuEntry();
         }
 
-        protected void AssureClipboardsAreInitialized()
+        protected void AssureRemoteClipboardIsInitialized()
         {
-            WindowsClipboard.WindowsClipboardWrapper = _windowsClipboardWrapper;
-            if (!Omniclipboard.IsInitialized)
+            if (PubNubClipboard.IsInitialized) return;
+            var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, PubNubClipboard);
+            configureForm.ShowDialog();
+            if (!PubNubClipboard.IsInitialized)
             {
-                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, Omniclipboard);
-                configureForm.ShowDialog();
-                if (!Omniclipboard.IsInitialized)
-                {
-                    Close();
-                }
+                Close();
             }
-
-            CanSendData = Omniclipboard.IsInitialized;
         }
 
         protected void AddCurrentUserMenuEntry()
@@ -96,7 +81,7 @@ namespace Omnipaste
             var toolStripMenuItem = new ToolStripLabel
                 {
                     Enabled = false,
-                    Text = string.Format("Logged in as: \"{0}\"", Omniclipboard.Channel)
+                    Text = string.Format("Logged in as: \"{0}\"", PubNubClipboard.Channel)
                 };
             trayIconContextMenuStrip.Items.Insert(0, toolStripMenuItem);
             trayIconContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
@@ -116,7 +101,14 @@ namespace Omnipaste
 
         private void DisableButton_Click(object sender, EventArgs e)
         {
-            OmniService.Stop();
+            if (DisableButton.Checked)
+            {
+                OmniService.Start();
+            }
+            else
+            {
+                OmniService.Stop();
+            }
         }
     }
 }

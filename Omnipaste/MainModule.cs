@@ -2,6 +2,7 @@
 using PubNubClipboard;
 using PubNubClipboard.Impl.PubNub;
 using PubNubClipboard.Services;
+using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
 {
@@ -9,14 +10,16 @@ namespace Omnipaste
     {
         public override void Load()
         {
-            Kernel.Bind<MainForm>().To<MainForm>();
+            var mainForm = new MainForm();
+            Kernel.Bind<MainForm>().ToConstant(mainForm);
+            Kernel.Bind<IDelegateClipboardMessageHandling>().ToConstant(mainForm);
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
 #if DEBUG
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
 #else
             Kernel.Bind<IActivationDataProvider>().To<ClickOnceActivationDataProvider>().InSingletonScope();
 #endif
-            Kernel.Bind<IOmniclipboard>().To<PubNubOmniclipboard>().InSingletonScope();
+            Kernel.Bind<IPubNubClipboard>().To<PubNubOmniclipboard>().InSingletonScope();
         }
     }
 }

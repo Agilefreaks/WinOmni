@@ -60,6 +60,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
       <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
       <Name>Omnipaste</Name>

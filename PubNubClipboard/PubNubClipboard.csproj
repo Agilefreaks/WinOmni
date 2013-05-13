@@ -60,12 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDeploymentWrapper.cs" />
-    <Compile Include="OmniclipboardModule.cs" />
+    <Compile Include="PubNubClipboardModule.cs" />
     <Compile Include="CommunicationSettings.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
     <Compile Include="IApplicationDeploymentInfo.cs" />
-    <Compile Include="IOmniclipboard.cs" />
+    <Compile Include="IPubNubClipboard.cs" />
     <Compile Include="Impl\PubNub\IPubNubClientFactory.cs" />
     <Compile Include="Impl\PubNub\PubNubClientFactory.cs" />
     <Compile Include="Impl\PubNub\PubNubOmniclipboard.cs" />

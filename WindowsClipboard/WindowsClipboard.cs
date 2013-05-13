@@ -1,4 +1,5 @@
 ﻿using System;
+using Ninject;
 using OmniCommon;
 using WindowsClipboard.Interfaces;
 
@@ -9,6 +10,7 @@ namespace WindowsClipboard
         private IWindowsClipboardWrapper _windowsClipboardWrapper;
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
+        [Inject]
         public IWindowsClipboardWrapper WindowsClipboardWrapper
         {
             get

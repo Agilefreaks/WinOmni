@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Common.Logging;
+using Ninject;
 using OmniCommon;
 using OmniCommon.ExtensionMethods;
 using WindowsClipboard.Imports;
@@ -10,30 +11,25 @@ namespace WindowsClipboard
 {
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
-
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
-        private readonly IntPtr _windowHandle;
-        private readonly IDelegateMessageHandling _messageDelegator;
+        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+
         private IntPtr _clipboardViewerNext;
 
-        public WindowsClipboardWrapper(IntPtr windowHandle, IDelegateMessageHandling messageDelegator)
-        {
-            _windowHandle = windowHandle;
-            _messageDelegator = messageDelegator;
-        }
+        [Inject]
+        public IDelegateClipboardMessageHandling ClipboardMessageDelegator { get; set; }
 
         public void StartWatchingClipboard()
         {
-            _messageDelegator.HandleMessage += HandleClipboardMessage;
-            _clipboardViewerNext = User32.SetClipboardViewer(_windowHandle);
+            ClipboardMessageDelegator.HandleClipboardMessage += HandleClipboardMessage;
+            _clipboardViewerNext = User32.SetClipboardViewer(ClipboardMessageDelegator.Handle);
         }
 
         public void StopWatchingClipboard()
         {
-            User32.ChangeClipboardChain(_windowHandle, _clipboardViewerNext);
-            _messageDelegator.HandleMessage -= HandleClipboardMessage;
+            User32.ChangeClipboardChain(ClipboardMessageDelegator.Handle, _clipboardViewerNext);
+            ClipboardMessageDelegator.HandleClipboardMessage -= HandleClipboardMessage;
         }
 
         public void SetData(string data)

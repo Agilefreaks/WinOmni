@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WindowsClipboardWrapper.cs" />
-    <Compile Include="Interfaces\IDelegateMessageHandling.cs" />
+    <Compile Include="Interfaces\IDelegateClipboardMessageHandling.cs" />
     <Compile Include="WindowsClipboard.cs" />
     <Compile Include="WindowsClipboardModule.cs" />
     <Compile Include="Interfaces\IWindowsClipboardWrapper.cs" />
