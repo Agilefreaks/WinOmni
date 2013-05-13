@@ -63,11 +63,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0A7715B74D0C2AEC9F55F7598BB0AD1C23E9C245</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>97B0F37A8992E9D3F758EEA23B6A477C8B2C9CCF</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>Omnipaste_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
