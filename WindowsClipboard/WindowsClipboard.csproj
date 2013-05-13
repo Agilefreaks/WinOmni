@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}</ProjectGuid>
+    <ProjectGuid>{B9433285-2390-4575-A612-395E0CB289E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OmnipasteTests</RootNamespace>
-    <AssemblyName>OmnipasteTests</AssemblyName>
+    <RootNamespace>WindowsClipboard</RootNamespace>
+    <AssemblyName>WindowsClipboard</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -34,14 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\net35\FluentAssertions.dll</HintPath>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.2-unstable-8\lib\net35\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,12 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigureFormTests.cs" />
-    <Compile Include="ExtensionMethods\UriExtensionMethodsTests.cs" />
-    <Compile Include="MainFormTests.cs" />
+    <Compile Include="WindowsClipboardWrapper.cs" />
+    <Compile Include="Interfaces\IDelegateClipboardMessageHandling.cs" />
+    <Compile Include="WindowsClipboard.cs" />
+    <Compile Include="WindowsClipboardModule.cs" />
+    <Compile Include="Interfaces\IWindowsClipboardWrapper.cs" />
+    <Compile Include="Interfaces\IWindowsClipboard.cs" />
+    <Compile Include="Imports\ExtendedWindowStyles.cs" />
+    <Compile Include="Imports\GetWindowLongFields.cs" />
+    <Compile Include="Imports\Msgs.cs" />
+    <Compile Include="Imports\Shell32.cs" />
+    <Compile Include="Imports\User32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ClickOnceActivationDataProviderTests.cs" />
-    <Compile Include="Services\ConfigurationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,18 +68,6 @@
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
-      <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
-      <Name>Omnipaste</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PubNubClipboard\PubNubClipboard.csproj">
-      <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
-      <Name>PubNubClipboard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

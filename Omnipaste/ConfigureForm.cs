@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Omniclipboard;
-using Omniclipboard.Services;
+using OmniCommon.ExtensionMethods;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
+using PubNubClipboard;
 
 namespace Omnipaste
 {
@@ -12,26 +14,32 @@ namespace Omnipaste
 
         private readonly IActivationDataProvider _activationDataProvider;
         private readonly IConfigurationService _configurationService;
-        private readonly IOmniclipboard _omniclipboard;
+        private readonly IPubNubClipboard _pubNubClipboard;
 
         private int _retryCount;
 
-        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, IOmniclipboard omniclipboard)
+        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, IPubNubClipboard pubNubClipboard)
         {
             InitializeComponent();
             _activationDataProvider = activationDataProvider;
             _configurationService = configurationService;
-            _omniclipboard = omniclipboard;
+            _pubNubClipboard = pubNubClipboard;
         }
 
         public void AssureClipboardIsInitialized()
         {
             var activationData = _activationDataProvider.GetActivationData();
-            _configurationService.UpdateCommunicationChannel(activationData.Channel);
-            if (ShouldRetryActivation())
+            if (activationData.Channel.IsNullOrWhiteSpace())
             {
-                _retryCount++;
-                AssureClipboardIsInitialized();
+                if (ShouldRetryActivation())
+                {
+                    _retryCount++;
+                    AssureClipboardIsInitialized();
+                }
+            }
+            else
+            {
+                _configurationService.UpdateCommunicationChannel(activationData.Channel);
             }
         }
 
@@ -54,7 +62,7 @@ namespace Omnipaste
 
         private bool ShouldRetryActivation()
         {
-            return !_omniclipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
+            return !_pubNubClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
