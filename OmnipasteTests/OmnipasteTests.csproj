@@ -60,10 +60,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClipboardWrapper\ClipboardWrapper.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>ClipboardWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OmniClipboard\Omniclipboard.csproj">
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
       <Name>Omniclipboard</Name>
@@ -71,6 +67,10 @@
     <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
       <Project>{34ef1570-1ae5-4f39-acbc-0fd332b1e6a3}</Project>
       <Name>Omnipaste</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
+      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
+      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

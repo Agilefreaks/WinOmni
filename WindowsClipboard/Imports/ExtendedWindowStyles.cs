@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClipboardWrapper.Imports
+namespace WindowsClipboard.Imports
 {
     public static class ExtendedWindowStyles
     {

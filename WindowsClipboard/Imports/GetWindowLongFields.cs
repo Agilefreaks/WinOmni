@@ -1,4 +1,4 @@
-﻿namespace ClipboardWrapper.Imports
+﻿namespace WindowsClipboard.Imports
 {
     public enum GetWindowLongFields
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ClipboardWrapper
+namespace WindowsClipboard
 {
     public interface IClipboardAdapter
     {

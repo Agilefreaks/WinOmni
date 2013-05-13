@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ClipboardWrapper
+namespace WindowsClipboard
 {
-    public interface IClipboardWrapper
+    public interface IClipboardWrapper : IDisposable
     {
         ClipboardMessageHandleResult HandleClipboardMessage(Message message);
 
-        void RegisterClipboardViewer(IntPtr handle);
-
-        void UnRegisterClipboardViewer(IntPtr handle);
+        void Initialize(IntPtr handle);
 
         void SendToClipboard(string data);
     }

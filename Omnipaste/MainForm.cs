@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWrapper;
-using ClipboardWrapper.Imports;
 using Ninject;
 using Omniclipboard;
 using Omniclipboard.Services;
+using WindowsClipboard;
+using WindowsClipboard.Imports;
 
 namespace Omnipaste
 {
@@ -75,13 +75,13 @@ namespace Omnipaste
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            ClipboardWrapper.RegisterClipboardViewer(Handle);
+            ClipboardWrapper.Initialize(Handle);
             base.OnHandleCreated(e);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+            ClipboardWrapper.Dispose();
             Omniclipboard.Dispose();
             IsNotificationIconVisible = false;
 
@@ -114,12 +114,12 @@ namespace Omnipaste
         {
             if (isSynchronizationDisabled)
             {
-                ClipboardWrapper.UnRegisterClipboardViewer(Handle);
+                ClipboardWrapper.Dispose();
                 Omniclipboard.Dispose();
             }
             else
             {
-                ClipboardWrapper.RegisterClipboardViewer(Handle);
+                ClipboardWrapper.Initialize(Handle);
                 Omniclipboard.Initialize();
             }
         }

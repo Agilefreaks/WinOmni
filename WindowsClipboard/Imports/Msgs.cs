@@ -1,4 +1,4 @@
-namespace ClipboardWrapper.Imports
+namespace WindowsClipboard.Imports
 {
     /// <summary>
     /// Windows Event Messages sent to the WindowProc

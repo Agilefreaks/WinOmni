@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWrapper;
 using Ninject;
 using Omniclipboard;
+using WindowsClipboard;
 
 namespace Omnipaste
 {

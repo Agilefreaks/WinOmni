@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWrapper.Imports;
 using Ninject;
+using WindowsClipboard.Imports;
 
-namespace ClipboardWrapper
+namespace WindowsClipboard
 {
     public class ClipboardWrapper : IClipboardWrapper
     {
         IntPtr _clipboardViewerNext;
+        private IntPtr _handle;
 
         [Inject]
         public IClipboardAdapter ClipboardAdapter { get; set; }
@@ -67,14 +68,15 @@ namespace ClipboardWrapper
             return text;
         }
 
-        public void RegisterClipboardViewer(IntPtr handle)
+        public void Initialize(IntPtr handle)
         {
+            _handle = handle;
             _clipboardViewerNext = User32.SetClipboardViewer(handle);
         }
 
-        public void UnRegisterClipboardViewer(IntPtr handle)
+        public void Dispose()
         {
-            User32.ChangeClipboardChain(handle, _clipboardViewerNext);
+            User32.ChangeClipboardChain(_handle, _clipboardViewerNext);
         }
 
         public void SendToClipboard(string data)

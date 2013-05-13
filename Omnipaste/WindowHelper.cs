@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ClipboardWrapper.Imports;
+using WindowsClipboard.Imports;
 
 namespace Omnipaste
 {

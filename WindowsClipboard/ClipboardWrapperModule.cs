@@ -1,6 +1,6 @@
 ﻿using Ninject.Modules;
 
-namespace ClipboardWrapper
+namespace WindowsClipboard
 {
     public class ClipboardWrapperModule : NinjectModule
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
-using ClipboardWrapper;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using Omniclipboard;
 using Omniclipboard.Services;
 using Omnipaste;
+using WindowsClipboard;
 
 namespace OmnipasteTests
 {
@@ -133,7 +133,7 @@ namespace OmnipasteTests
         {
             _subject.CallOnIsSynchronizationDisabledChanged(true);
 
-            _mockClipboardWrapper.Verify(x => x.UnRegisterClipboardViewer(It.IsAny<IntPtr>()), Times.Once());
+            _mockClipboardWrapper.Verify(x => x.Dispose(), Times.Once());
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace OmnipasteTests
         {
             _subject.CallOnIsSynchronizationDisabledChanged(false);
 
-            _mockClipboardWrapper.Verify(x => x.RegisterClipboardViewer(It.IsAny<IntPtr>()));
+            _mockClipboardWrapper.Verify(x => x.Initialize(It.IsAny<IntPtr>()));
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿namespace ClipboardWrapper
+﻿namespace WindowsClipboard
 {
     public class ClipboardMessageHandleResult
     {

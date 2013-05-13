@@ -37,7 +37,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>14</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -146,13 +146,13 @@
     <Content Include="Resources\Icon2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClipboardWrapper\ClipboardWrapper.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>ClipboardWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OmniClipboard\Omniclipboard.csproj">
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
       <Name>Omniclipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
+      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
+      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
