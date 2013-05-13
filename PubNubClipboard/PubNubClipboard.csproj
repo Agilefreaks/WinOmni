@@ -77,7 +77,6 @@
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\DPAPIConfigurationProvider.cs" />
     <Compile Include="Services\IActivationDataProvider.cs" />
-    <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\IConfigurationService.cs" />
     <Compile Include="Services\IStartupTask.cs" />
