@@ -7,6 +7,7 @@ using Omnipaste;
 using PubNubClipboard;
 using PubNubClipboard.Services;
 using WindowsClipboard;
+using WindowsClipboard.Interfaces;
 
 namespace OmnipasteTests
 {
@@ -22,7 +23,7 @@ namespace OmnipasteTests
 
             public void CallAssureClipboardIsInitialized()
             {
-                AssureClipboardIsInitialized();
+                AssureClipboardsAreInitialized();
             }
 
             public void SetCanSendData(bool value)
@@ -37,7 +38,7 @@ namespace OmnipasteTests
         }
 
         MainFormWrapper _subject;
-        private Mock<IClipboardWrapper> _mockClipboardWrapper;
+        private Mock<IWindowsClipboard> _mockClipboardWrapper;
         private Mock<IOmniclipboard> _mockOmniclipboard;
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
         private Mock<IConfigurationService> _mockConfigurationService;
@@ -45,13 +46,13 @@ namespace OmnipasteTests
         [SetUp]
         public void Setup()
         {
-            _mockClipboardWrapper = new Mock<IClipboardWrapper> { DefaultValue = DefaultValue.Mock };
+            _mockClipboardWrapper = new Mock<IWindowsClipboard> { DefaultValue = DefaultValue.Mock };
             _mockOmniclipboard = new Mock<IOmniclipboard> { DefaultValue = DefaultValue.Mock };
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _subject = new MainFormWrapper
                 {
-                    ClipboardWrapper = _mockClipboardWrapper.Object,
+                    WindowsClipboard = _mockClipboardWrapper.Object,
                     Omniclipboard = _mockOmniclipboard.Object,
                     ActivationDataProvider = _mockActivationDataProvider.Object,
                     ConfigurationService = _mockConfigurationService.Object

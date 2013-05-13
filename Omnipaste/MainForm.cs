@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
 using Ninject;
+using OmniCommon.Interfaces;
 using PubNubClipboard;
 using PubNubClipboard.Services;
 using WindowsClipboard;
 using WindowsClipboard.Imports;
+using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IDelegateMessageHandling
     {
-        private IOmniclipboard _omniclipboard;
-        private bool _isSynchronizationDisabled;
+        public event MessageHandler HandleMessage;
+
+        private WindowsClipboardWrapper _windowsClipboardWrapper;
 
         public bool CanSendData { get; protected set; }
 
@@ -21,39 +24,14 @@ namespace Omnipaste
             set { NotifyIcon.Visible = value; }
         }
 
-        public bool IsSynchronizationDisabled
-        {
-            get
-            {
-                return _isSynchronizationDisabled;
-            }
-            private set
-            {
-                _isSynchronizationDisabled = value;
-                OnIsSynchronizationDisabledChanged(IsSynchronizationDisabled);
-            }
-        }
+        [Inject]
+        public IOmniService OmniService { get; set; }
 
         [Inject]
-        public IClipboardWrapper ClipboardWrapper { get; set; }
+        public IWindowsClipboard WindowsClipboard { get; set; }
 
         [Inject]
-        public IOmniclipboard Omniclipboard
-        {
-            get
-            {
-                return _omniclipboard;
-            }
-
-            set
-            {
-                _omniclipboard = value;
-                if (_omniclipboard != null)
-                {
-                    _omniclipboard.DataReceived += OmniclipboardOnDataReceived;
-                }
-            }
-        }
+        public IOmniclipboard Omniclipboard { get; set; }
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
@@ -66,23 +44,15 @@ namespace Omnipaste
             InitializeComponent();
         }
 
-        public void SendDataToClipboard(ClipboardEventArgs clipboardEventArgs)
-        {
-            CanSendData = false;
-            ClipboardWrapper.SendToClipboard(clipboardEventArgs.Data);
-            CanSendData = true;
-        }
-
         protected override void OnHandleCreated(EventArgs e)
         {
-            ClipboardWrapper.Initialize(Handle);
+            _windowsClipboardWrapper = new WindowsClipboardWrapper(Handle, this);
             base.OnHandleCreated(e);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            ClipboardWrapper.Dispose();
-            Omniclipboard.Dispose();
+            OmniService.Stop();
             IsNotificationIconVisible = false;
 
             base.OnClosing(e);
@@ -90,14 +60,9 @@ namespace Omnipaste
 
         protected override void WndProc(ref Message message)
         {
-            var handleResult = ClipboardWrapper.HandleClipboardMessage(message);
-            if (!handleResult.MessageHandled)
+            if (HandleMessage == null || !HandleMessage(ref message))
             {
                 base.WndProc(ref message);
-            }
-            else if (handleResult.MessageData != null && CanSendData)
-            {
-                Omniclipboard.Copy(handleResult.MessageData);
             }
         }
 
@@ -106,26 +71,13 @@ namespace Omnipaste
             base.OnLoad(e);
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            AssureClipboardIsInitialized();
+            AssureClipboardsAreInitialized();
             AddCurrentUserMenuEntry();
         }
 
-        protected void OnIsSynchronizationDisabledChanged(bool isSynchronizationDisabled)
+        protected void AssureClipboardsAreInitialized()
         {
-            if (isSynchronizationDisabled)
-            {
-                ClipboardWrapper.Dispose();
-                Omniclipboard.Dispose();
-            }
-            else
-            {
-                ClipboardWrapper.Initialize(Handle);
-                Omniclipboard.Initialize();
-            }
-        }
-
-        protected void AssureClipboardIsInitialized()
-        {
+            WindowsClipboard.WindowsClipboardWrapper = _windowsClipboardWrapper;
             if (!Omniclipboard.IsInitialized)
             {
                 var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, Omniclipboard);
@@ -157,11 +109,6 @@ namespace Omnipaste
             WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
         }
 
-        private void OmniclipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
-        {
-            Invoke((Action)(() => SendDataToClipboard(clipboardEventArgs)));
-        }
-
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -169,7 +116,7 @@ namespace Omnipaste
 
         private void DisableButton_Click(object sender, EventArgs e)
         {
-            IsSynchronizationDisabled = DisableButton.Checked;
+            OmniService.Stop();
         }
     }
 }

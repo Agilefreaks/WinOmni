@@ -4,22 +4,23 @@ using Moq;
 using NUnit.Framework;
 using WindowsClipboard;
 using WindowsClipboard.Imports;
+using WindowsClipboard.Interfaces;
 
 namespace WindowsClipboardTests
 {
     [TestFixture]
     public class ClipboardWrapperTests
     {
-        ClipboardWrapper _subject;
-        private Mock<IClipboardAdapter> _mockClipboardAdapter;
+        WindowsClipboard.WindowsClipboard _subject;
+        private Mock<IWindowsClipboardWrapper> _mockClipboardAdapter;
 
         [SetUp]
         public void Setup()
         {
-            _mockClipboardAdapter = new Mock<IClipboardAdapter>();
-            _subject = new ClipboardWrapper
+            _mockClipboardAdapter = new Mock<IWindowsClipboardWrapper>();
+            _subject = new WindowsClipboard.WindowsClipboard
                 {
-                    ClipboardAdapter = _mockClipboardAdapter.Object
+                    WindowsClipboardWrapper = _mockClipboardAdapter.Object
                 };
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OmniCommon;
 using PubNubClipboard.Services;
 
 namespace PubNubClipboard.Impl.PubNub

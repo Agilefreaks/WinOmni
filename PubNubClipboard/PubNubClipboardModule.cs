@@ -7,7 +7,7 @@ using PubNubClipboard.Services;
 
 namespace PubNubClipboard
 {
-    public class OmniclipboardModule : NinjectModule
+    public class PubNubClipboardModule : NinjectModule
     {
         public override void Load()
         {

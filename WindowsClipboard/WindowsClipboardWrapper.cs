@@ -1,21 +1,49 @@
 ﻿using System;
 using System.Windows.Forms;
-using Ninject;
+using Common.Logging;
+using OmniCommon;
+using OmniCommon.ExtensionMethods;
 using WindowsClipboard.Imports;
+using WindowsClipboard.Interfaces;
 
 namespace WindowsClipboard
 {
-    public class ClipboardWrapper : IClipboardWrapper
+    public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
-        IntPtr _clipboardViewerNext;
-        private IntPtr _handle;
+        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IClipboardAdapter ClipboardAdapter { get; set; }
+        public event EventHandler<ClipboardEventArgs> DataReceived;
 
-        public ClipboardMessageHandleResult HandleClipboardMessage(Message message)
+        private readonly IntPtr _windowHandle;
+        private readonly IDelegateMessageHandling _messageDelegator;
+        private IntPtr _clipboardViewerNext;
+
+        public WindowsClipboardWrapper(IntPtr windowHandle, IDelegateMessageHandling messageDelegator)
         {
-            var messageHandleResult = new ClipboardMessageHandleResult { MessageHandled = true };
+            _windowHandle = windowHandle;
+            _messageDelegator = messageDelegator;
+        }
+
+        public void StartWatchingClipboard()
+        {
+            _messageDelegator.HandleMessage += HandleClipboardMessage;
+            _clipboardViewerNext = User32.SetClipboardViewer(_windowHandle);
+        }
+
+        public void StopWatchingClipboard()
+        {
+            User32.ChangeClipboardChain(_windowHandle, _clipboardViewerNext);
+            _messageDelegator.HandleMessage -= HandleClipboardMessage;
+        }
+
+        public void SetData(string data)
+        {
+            Clipboard.SetData(DataFormats.Text, data);
+        }
+
+        private bool HandleClipboardMessage(ref Message message)
+        {
+            var messageHandled = true;
             switch ((Msgs)message.Msg)
             {
                 //
@@ -25,7 +53,7 @@ namespace WindowsClipboard
                 // window to display the new content of the clipboard. 
                 //
                 case Msgs.WM_DRAWCLIPBOARD:
-                    messageHandleResult.MessageData = HandleDrawClipboard(message);
+                    CallDataReceived(HandleDrawClipboard(message));
                     break;
 
                 //
@@ -42,14 +70,14 @@ namespace WindowsClipboard
                 // not interested in
                 //
                 default:
-                    messageHandleResult.MessageHandled = false;
+                    messageHandled = false;
                     break;
             }
 
-            return messageHandleResult;
+            return messageHandled;
         }
 
-        public string GetClipboardText()
+        private static string GetClipboardText()
         {
             string text = null;
             var iData = GetClipboardData();
@@ -68,23 +96,7 @@ namespace WindowsClipboard
             return text;
         }
 
-        public void Initialize(IntPtr handle)
-        {
-            _handle = handle;
-            _clipboardViewerNext = User32.SetClipboardViewer(handle);
-        }
-
-        public void Dispose()
-        {
-            User32.ChangeClipboardChain(_handle, _clipboardViewerNext);
-        }
-
-        public void SendToClipboard(string data)
-        {
-            ClipboardAdapter.SetData(data);
-        }
-
-        private IDataObject GetClipboardData()
+        private static IDataObject GetClipboardData()
         {
             //
             // Data on the clipboard uses the 
@@ -93,15 +105,30 @@ namespace WindowsClipboard
             IDataObject iData;
             try
             {
-                iData = ClipboardAdapter.GetDataObject();
+                iData = Clipboard.GetDataObject();
             }
-            catch (System.Runtime.InteropServices.ExternalException externEx)
+            catch (System.Runtime.InteropServices.ExternalException externalException)
             {
                 // Copying a field definition in Access 2002 causes this sometimes?
+                Logger.Error(externalException);
                 return null;
             }
 
             return iData;
+        }
+
+        private string HandleDrawClipboard(Message message)
+        {
+            var data = GetClipboardText();
+
+            //
+            // Each window that receives the WM_DRAWCLIPBOARD message 
+            // must call the SendMessage function to pass the message 
+            // on to the next window in the clipboard viewer chain.
+            //
+            User32.SendMessage(_clipboardViewerNext, message.Msg, message.WParam, message.LParam);
+
+            return data;
         }
 
         private void HandleClipboardChainChanged(Message message)
@@ -132,18 +159,12 @@ namespace WindowsClipboard
             }
         }
 
-        private string HandleDrawClipboard(Message message)
+        private void CallDataReceived(string data)
         {
-            var data = GetClipboardText();
-
-            //
-            // Each window that receives the WM_DRAWCLIPBOARD message 
-            // must call the SendMessage function to pass the message 
-            // on to the next window in the clipboard viewer chain.
-            //
-            User32.SendMessage(_clipboardViewerNext, message.Msg, message.WParam, message.LParam);
-
-            return data;
+            if (DataReceived != null && !data.IsNullOrWhiteSpace())
+            {
+                DataReceived(this, new ClipboardEventArgs(data));
+            }
         }
     }
 }
