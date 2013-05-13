@@ -14,13 +14,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omnipaste", "Omnipaste\Omni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmnipasteTests", "OmnipasteTests\OmnipasteTests.csproj", "{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omniclipboard", "OmniClipboard\Omniclipboard.csproj", "{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniclipboardTests", "OmniclipboardTests\OmniclipboardTests.csproj", "{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsClipboard", "WindowsClipboard\WindowsClipboard.csproj", "{B9433285-2390-4575-A612-395E0CB289E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsClipboardTests", "WindowsClipboardTests\WindowsClipboardTests.csproj", "{EA7CF533-7F33-4104-B7DB-18F9B6774D06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniCommon", "OmniCommon\OmniCommon.csproj", "{1E9C5284-DFDC-4AC1-B257-526CB1989876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubClipboard", "PubNubClipboard\PubNubClipboard.csproj", "{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubClipboardTests", "PubNubClipboardTests\PubNubClipboardTests.csproj", "{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +38,6 @@ Global
 		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9433285-2390-4575-A612-395E0CB289E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9433285-2390-4575-A612-395E0CB289E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9433285-2390-4575-A612-395E0CB289E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,13 +46,25 @@ Global
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BAD2238A-BBCF-4C16-8D0E-E81E4AC13805} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
-		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal

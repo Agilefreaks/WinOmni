@@ -1,8 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Omniclipboard;
-using Omniclipboard.Services;
 using Omnipaste;
+using PubNubClipboard;
+using PubNubClipboard.Services;
 
 namespace OmnipasteTests
 {

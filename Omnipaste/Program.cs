@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Ninject;
-using Omniclipboard;
+using PubNubClipboard;
 using WindowsClipboard;
 
 namespace Omnipaste

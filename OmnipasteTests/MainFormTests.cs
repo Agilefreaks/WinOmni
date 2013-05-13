@@ -3,9 +3,9 @@ using System.Windows.Forms;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using Omniclipboard;
-using Omniclipboard.Services;
 using Omnipaste;
+using PubNubClipboard;
+using PubNubClipboard.Services;
 using WindowsClipboard;
 
 namespace OmnipasteTests

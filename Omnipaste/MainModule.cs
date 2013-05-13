@@ -1,7 +1,7 @@
 ﻿using Ninject.Modules;
-using Omniclipboard;
-using Omniclipboard.Impl.PubNub;
-using Omniclipboard.Services;
+using PubNubClipboard;
+using PubNubClipboard.Impl.PubNub;
+using PubNubClipboard.Services;
 
 namespace Omnipaste
 {

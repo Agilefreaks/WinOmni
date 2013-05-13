@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using Ninject;
-using Omniclipboard;
-using Omniclipboard.Services;
+using PubNubClipboard;
+using PubNubClipboard.Services;
 using WindowsClipboard;
 using WindowsClipboard.Imports;
 
