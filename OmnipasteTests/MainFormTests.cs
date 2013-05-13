@@ -18,11 +18,6 @@ namespace OmnipasteTests
             {
                 base.WndProc(ref message);
             }
-
-            public void CallAssureClipboardIsInitialized()
-            {
-                AssureRemoteClipboardIsInitialized();
-            }
         }
 
         MainFormWrapper _subject;

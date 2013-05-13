@@ -103,11 +103,11 @@ namespace Omnipaste
         {
             if (DisableButton.Checked)
             {
-                OmniService.Start();
+                OmniService.Stop();
             }
             else
             {
-                OmniService.Stop();
+                OmniService.Start();
             }
         }
     }
