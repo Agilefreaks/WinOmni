@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Logging;
 
-namespace PubNubClipboard.ExtensionMethods
+namespace OmniCommon.ExtensionMethods
 {
     public static class ObjectExtensionMethods
     {

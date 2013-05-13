@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using PubNubClipboard.ExtensionMethods;
+using OmniCommon.ExtensionMethods;
 
-namespace PubNubClipboardTests.ExtensionMethods
+namespace OmnipasteTests.ExtensionMethods
 {
     [TestFixture]
     public class UriExtensionMethodsTests

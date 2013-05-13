@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace PubNubClipboard.ExtensionMethods
+namespace OmniCommon.ExtensionMethods
 {
     public static class UriExtensionMethods
     {

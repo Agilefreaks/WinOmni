@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PubNubClipboard.Services;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 
-namespace PubNubClipboardTests.Services
+namespace OmnipasteTests.Services
 {
     [TestFixture]
     public class ConfigurationServiceTests

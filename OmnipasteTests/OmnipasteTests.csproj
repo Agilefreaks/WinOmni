@@ -53,8 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigureFormTests.cs" />
+    <Compile Include="ExtensionMethods\UriExtensionMethodsTests.cs" />
     <Compile Include="MainFormTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClickOnceActivationDataProviderTests.cs" />
+    <Compile Include="Services\ConfigurationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

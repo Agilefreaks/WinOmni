@@ -7,9 +7,10 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using PubNubClipboard.ExtensionMethods;
+using OmniCommon.ExtensionMethods;
+using OmniCommon.Interfaces;
 
-namespace PubNubClipboard.Services
+namespace Omnipaste.Services
 {
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {

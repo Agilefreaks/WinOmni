@@ -81,8 +81,14 @@
     <Reference Include="Ninject.Extensions.Conventions">
       <HintPath>..\packages\ninject.extensions.conventions.3.0.2-unstable-2\lib\net35\Ninject.Extensions.Conventions.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.104.1\lib\net35-client\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -107,6 +113,11 @@
     <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationDeploymentWrapper.cs" />
+    <Compile Include="Services\ClickOnceActivationDataProvider.cs" />
+    <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
+    <Compile Include="Services\DPAPIConfigurationProvider.cs" />
+    <Compile Include="Services\MockActivationDataProvider.cs" />
     <Compile Include="WindowHelper.cs" />
     <EmbeddedResource Include="ConfigureForm.resx">
       <DependentUpon>ConfigureForm.cs</DependentUpon>

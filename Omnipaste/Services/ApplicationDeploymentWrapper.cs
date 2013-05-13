@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Deployment.Application;
+using OmniCommon.Interfaces;
 
-namespace PubNubClipboard
+namespace Omnipaste.Services
 {
     public class ApplicationDeploymentWrapper : IApplicationDeploymentInfo
     {

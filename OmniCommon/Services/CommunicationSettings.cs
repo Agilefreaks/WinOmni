@@ -1,4 +1,4 @@
-﻿namespace PubNubClipboard
+﻿namespace OmniCommon.Services
 {
     public class CommunicationSettings
     {

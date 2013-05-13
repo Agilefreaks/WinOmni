@@ -1,4 +1,7 @@
-﻿namespace PubNubClipboard.Services
+﻿using OmniCommon.Interfaces;
+using OmniCommon.Services;
+
+namespace Omnipaste.Services
 {
     public class MockActivationDataProvider : IActivationDataProvider
     {

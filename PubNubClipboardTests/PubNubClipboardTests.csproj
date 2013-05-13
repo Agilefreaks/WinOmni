@@ -54,9 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ClickOnceActivationDataProviderTests.cs" />
-    <Compile Include="Services\ConfigurationServiceTests.cs" />
-    <Compile Include="ExtensionMethods\UriExtensionMethodsTests.cs" />
     <Compile Include="PubNubOmniclipboardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +69,10 @@
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
       <Name>PubNubClipboard</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtensionMethods\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

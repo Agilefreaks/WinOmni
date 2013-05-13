@@ -1,8 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using OmniCommon.Interfaces;
+using Omnipaste.Services;
 using PubNubClipboard;
-using PubNubClipboard.Services;
 using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
@@ -14,6 +14,7 @@ namespace Omnipaste
             Kernel.Bind<MainForm>().ToSelf().InSingletonScope();
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<MainForm>());
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
+            Kernel.Bind<IApplicationDeploymentInfo>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 #if DEBUG
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
 #else

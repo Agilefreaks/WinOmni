@@ -2,8 +2,8 @@
 using System.Windows.Forms;
 using Ninject;
 using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using PubNubClipboard;
-using PubNubClipboard.Services;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
 

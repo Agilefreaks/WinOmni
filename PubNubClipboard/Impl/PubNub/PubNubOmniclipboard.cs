@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OmniCommon;
-using PubNubClipboard.Services;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 
 namespace PubNubClipboard.Impl.PubNub
 {

@@ -2,9 +2,10 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using Omnipaste;
 using PubNubClipboard;
-using PubNubClipboard.Services;
 using WindowsClipboard.Interfaces;
 
 namespace OmnipasteTests

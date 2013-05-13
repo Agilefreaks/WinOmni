@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PubNubClipboard
+namespace OmniCommon.Interfaces
 {
     public interface IApplicationDeploymentInfo
     {

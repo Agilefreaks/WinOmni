@@ -1,4 +1,4 @@
-﻿namespace PubNubClipboard.Services
+﻿namespace OmniCommon.Interfaces
 {
     public interface IConfigurationProvider
     {

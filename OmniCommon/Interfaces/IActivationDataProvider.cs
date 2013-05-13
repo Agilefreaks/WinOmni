@@ -1,4 +1,6 @@
-﻿namespace PubNubClipboard.Services
+﻿using OmniCommon.Services;
+
+namespace OmniCommon.Interfaces
 {
     public interface IActivationDataProvider
     {

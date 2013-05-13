@@ -2,8 +2,9 @@
 using System.Reflection;
 using Ninject;
 using Ninject.Modules;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using PubNubClipboard.Impl.PubNub;
-using PubNubClipboard.Services;
 
 namespace PubNubClipboard
 {
@@ -19,7 +20,6 @@ namespace PubNubClipboard
             Kernel.Bind<IConfigurationService>().ToMethod(c => Kernel.Get<ConfigurationService>());
 
             Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>().InSingletonScope();
-            Kernel.Bind<IApplicationDeploymentInfo>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 
             PerfornStartupTasks();
         }

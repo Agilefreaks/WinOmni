@@ -1,10 +1,10 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using PubNubClipboard;
-using PubNubClipboard.Services;
+using OmniCommon.Interfaces;
+using Omnipaste.Services;
 
-namespace PubNubClipboardTests.Services
+namespace OmnipasteTests.Services
 {
     [TestFixture]
     public class ClickOnceActivationDataProviderTests

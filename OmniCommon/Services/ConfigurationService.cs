@@ -1,4 +1,6 @@
-﻿namespace PubNubClipboard.Services
+﻿using OmniCommon.Interfaces;
+
+namespace OmniCommon.Services
 {
     public class ConfigurationService : IConfigurationService
     {

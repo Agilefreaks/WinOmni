@@ -2,10 +2,12 @@
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using PubNubClipboard.ExtensionMethods;
+using OmniCommon.ExtensionMethods;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using RestSharp;
 
-namespace PubNubClipboard.Services
+namespace Omnipaste.Services
 {
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {

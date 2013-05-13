@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Configuration;
+using OmniCommon.Interfaces;
 
-namespace PubNubClipboard.Services
+namespace Omnipaste.Services
 {
     public class ConfigurationManagerConfigurationProvider : IConfigurationProvider
     {

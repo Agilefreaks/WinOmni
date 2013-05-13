@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using PubNubClipboard;
 using PubNubClipboard.Impl.PubNub;
-using PubNubClipboard.Services;
 
 namespace PubNubClipboardTests
 {

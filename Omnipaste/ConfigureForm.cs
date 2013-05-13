@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using OmniCommon.ExtensionMethods;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 using PubNubClipboard;
-using PubNubClipboard.Services;
 
 namespace Omnipaste
 {
