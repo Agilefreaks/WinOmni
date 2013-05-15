@@ -37,7 +37,7 @@ namespace OmnipasteTests
             _subject = new MainFormWrapper
                 {
                     WindowsClipboard = _mockClipboardWrapper.Object,
-                    PubNubClipboard = _mockOmniclipboard.Object,
+                    OmniClipboard = _mockOmniclipboard.Object,
                     ActivationDataProvider = _mockActivationDataProvider.Object,
                     ConfigurationService = _mockConfigurationService.Object
                 };

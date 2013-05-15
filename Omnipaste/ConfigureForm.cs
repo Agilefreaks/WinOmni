@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using OmniCommon.ExtensionMethods;
 using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using PubNubClipboard;
 
 namespace Omnipaste
 {
@@ -14,22 +12,22 @@ namespace Omnipaste
 
         private readonly IActivationDataProvider _activationDataProvider;
         private readonly IConfigurationService _configurationService;
-        private readonly IPubNubClipboard _pubNubClipboard;
+        private readonly IOmniClipboard _omniClipboard;
 
         private int _retryCount;
 
-        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, IPubNubClipboard pubNubClipboard)
+        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, IOmniClipboard omniClipboard)
         {
             InitializeComponent();
             _activationDataProvider = activationDataProvider;
             _configurationService = configurationService;
-            _pubNubClipboard = pubNubClipboard;
+            this._omniClipboard = omniClipboard;
         }
 
         public void AssureClipboardIsInitialized()
         {
             var activationData = _activationDataProvider.GetActivationData();
-            if (activationData.Channel.IsNullOrWhiteSpace())
+            if (activationData.Email.IsNullOrWhiteSpace())
             {
                 if (ShouldRetryActivation())
                 {
@@ -39,7 +37,7 @@ namespace Omnipaste
             }
             else
             {
-                _configurationService.UpdateCommunicationChannel(activationData.Channel);
+                _configurationService.UpdateCommunicationChannel(activationData.Email);
             }
         }
 
@@ -62,7 +60,7 @@ namespace Omnipaste
 
         private bool ShouldRetryActivation()
         {
-            return !_pubNubClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
+            return !this._omniClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
