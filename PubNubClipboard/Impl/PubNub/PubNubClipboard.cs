@@ -6,7 +6,7 @@ using OmniCommon.Interfaces;
 
 namespace PubNubClipboard.Impl.PubNub
 {
-    public class PubNubOmniclipboard : IPubNubClipboard
+    public class PubNubClipboard : IPubNubClipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
@@ -21,7 +21,7 @@ namespace PubNubClipboard.Impl.PubNub
             get { return _pubnub != null; }
         }
 
-        public PubNubOmniclipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
+        public PubNubClipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
         {
             _configurationService = configurationService;
             _clientFactory = clientFactory;

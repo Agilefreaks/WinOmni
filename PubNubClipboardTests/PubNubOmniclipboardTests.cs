@@ -8,6 +8,8 @@ using PubNubClipboard.Impl.PubNub;
 
 namespace PubNubClipboardTests
 {
+    using PubNubClipboard = PubNubClipboard.Impl.PubNub.PubNubClipboard;
+
     [TestFixture]
     public class PubNubOmniclipboardTests
     {
@@ -29,7 +31,7 @@ namespace PubNubClipboardTests
             var communicationSettings = new CommunicationSettings { Channel = string.Empty };
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
 
-            var omniclipboard = new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            var omniclipboard = new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 
             omniclipboard.IsInitialized.Should().BeFalse();
         }
@@ -43,7 +45,7 @@ namespace PubNubClipboardTests
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
             // ReSharper disable ObjectCreationAsStatement
-            new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
             // ReSharper restore ObjectCreationAsStatement
 
             _mockPubNubClientFactory.Verify(x => x.Create(), Times.Once());
@@ -56,7 +58,7 @@ namespace PubNubClipboardTests
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
-            var omniclipboard = new PubNubOmniclipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
+            var omniclipboard = new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 
             omniclipboard.IsInitialized.Should().BeTrue();
         }

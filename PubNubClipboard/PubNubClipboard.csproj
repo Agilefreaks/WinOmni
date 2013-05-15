@@ -69,7 +69,7 @@
     <Compile Include="IPubNubClipboard.cs" />
     <Compile Include="Impl\PubNub\IPubNubClientFactory.cs" />
     <Compile Include="Impl\PubNub\PubNubClientFactory.cs" />
-    <Compile Include="Impl\PubNub\PubNubOmniclipboard.cs" />
+    <Compile Include="Impl\PubNub\PubNubClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\PubNub\Pubnub.cs" />
   </ItemGroup>

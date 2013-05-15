@@ -9,6 +9,8 @@ using RestSharp;
 
 namespace Omnipaste.Services
 {
+    using System.Configuration;
+
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {
         private readonly IApplicationDeploymentInfo _applicationDeploymentInfo;
@@ -35,7 +37,7 @@ namespace Omnipaste.Services
 
         private static IRestResponse<ActivationData> PerformRequest(IRestRequest request)
         {
-            var restClient = new RestClient("https://omnipasteapp.com/api/v1");
+            var restClient = new RestClient(ConfigurationManager.AppSettings["baseUrl"]);
             var restResponse = restClient.Execute<ActivationData>(request);
 
             return restResponse;

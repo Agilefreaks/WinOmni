@@ -12,6 +12,8 @@ using OmniCommon.Interfaces;
 
 namespace Omnipaste.Services
 {
+    using System.Diagnostics.CodeAnalysis;
+
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {
         private const string FileName = "settings.cfg";
@@ -30,6 +32,7 @@ namespace Omnipaste.Services
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         public string GetValue(string key)
         {
             string value = null;
@@ -97,8 +100,7 @@ namespace Omnipaste.Services
                 }
 
                 memoryStream.Flush();
-                protectedData = ProtectedData.Protect(memoryStream.ToArray(), _entropy,
-                                                      DataProtectionScope.CurrentUser);
+                protectedData = ProtectedData.Protect(memoryStream.ToArray(), _entropy, DataProtectionScope.CurrentUser);
             }
 
             return protectedData;
@@ -117,6 +119,7 @@ namespace Omnipaste.Services
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private XDocument LoadData()
         {
             var readAllBytes = File.ReadAllBytes(FullSettingsFilePath);
@@ -130,6 +133,7 @@ namespace Omnipaste.Services
             return xDocument;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private XDocument UpdateExistingDocument(string key, string value)
         {
             var xDocument = LoadData();
