@@ -7,7 +7,7 @@ namespace Omnipaste.Services
     {
         public ActivationData GetActivationData()
         {
-            return new ActivationData { Channel = "test@email.com" };
+            return new ActivationData { Email = "test@email.com" };
         }
     }
 }

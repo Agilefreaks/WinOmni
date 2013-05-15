@@ -35,7 +35,7 @@ namespace OmnipasteTests
         [Test]
         public void AssureClipboardIsInitialized_Always_CallsUpdateCommunicationChannelWithTheResultOfGetActivationData()
         {
-            _mockActivationDataProvider.Setup(x => x.GetActivationData()).Returns(new ActivationData { Channel = "testC" });
+            _mockActivationDataProvider.Setup(x => x.GetActivationData()).Returns(new ActivationData { Email = "testC" });
 
             _subject.AssureClipboardIsInitialized();
 

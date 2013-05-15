@@ -35,7 +35,7 @@ namespace Omnipaste.Services
 
         private static IRestResponse<ActivationData> PerformRequest(IRestRequest request)
         {
-            var restClient = new RestClient("https://omnipasteapp.com/api");
+            var restClient = new RestClient("https://omnipasteapp.com/api/v1");
             var restResponse = restClient.Execute<ActivationData>(request);
 
             return restResponse;
@@ -44,7 +44,7 @@ namespace Omnipaste.Services
         private static RestRequest CreateRequest(string token)
         {
             ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidationCallback;
-            var request = new RestRequest("activate/{token}.json", Method.GET);
+            var request = new RestRequest("users/activate/{token}", Method.GET);
             request.AddUrlSegment("token", token);
 
             return request;

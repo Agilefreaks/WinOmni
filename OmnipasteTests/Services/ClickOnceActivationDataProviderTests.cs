@@ -9,7 +9,7 @@ namespace OmnipasteTests.Services
     [TestFixture]
     public class ClickOnceActivationDataProviderTests
     {
-        ClickOnceActivationDataProvider _subject;
+        private ClickOnceActivationDataProvider _subject;
         private Mock<IApplicationDeploymentInfo> _mockActivationInfoProvider;
 
         [SetUp]
