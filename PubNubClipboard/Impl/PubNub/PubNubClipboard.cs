@@ -45,7 +45,10 @@ namespace PubNubClipboard.Impl.PubNub
 
         public void Dispose()
         {
-            if (!IsInitialized) return;
+            if (!IsInitialized)
+            {
+                return;
+            }
 
             _pubnub.EndPendingRequests();
             _pubnub.unsubscribe(Channel, o => { });

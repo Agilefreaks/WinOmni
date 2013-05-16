@@ -3,25 +3,22 @@ using NUnit.Framework;
 using OmniCommon.Interfaces;
 using OmniCommon.Services;
 using Omnipaste;
-using PubNubClipboard;
 
 namespace OmnipasteTests
 {
     [TestFixture]
     public class ConfigureFormTests
     {
-        ConfigureForm _subject;
+        private ConfigureForm _subject;
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
         private Mock<IConfigurationService> _mockConfigurationService;
-        private Mock<IPubNubClipboard> _mockOmniclipboard;
 
         [SetUp]
         public void Setup()
         {
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _mockOmniclipboard = new Mock<IPubNubClipboard>();
-            _subject = new ConfigureForm(_mockActivationDataProvider.Object, _mockConfigurationService.Object, _mockOmniclipboard.Object);
+            _subject = new ConfigureForm(_mockActivationDataProvider.Object, _mockConfigurationService.Object);
         }
 
         [Test]
@@ -48,16 +45,6 @@ namespace OmnipasteTests
             _subject.AssureClipboardIsInitialized();
 
             _mockActivationDataProvider.Verify(x => x.GetActivationData(), Times.Exactly(1 + ConfigureForm.MaxRetryCount));
-        }
-
-        [Test]
-        public void AssureClipboardIsInitialized_IfTheClipboardInitializationWorks_DoesNotRetryToGetTheActivationData()
-        {
-            _mockOmniclipboard.Setup(x => x.Initialize()).Returns(true);
-
-            _subject.AssureClipboardIsInitialized();
-
-            _mockActivationDataProvider.Verify(x => x.GetActivationData(), Times.Exactly(1));
         }
     }
 }

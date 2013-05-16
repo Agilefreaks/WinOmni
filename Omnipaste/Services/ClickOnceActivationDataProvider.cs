@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Configuration;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -9,8 +10,6 @@ using RestSharp;
 
 namespace Omnipaste.Services
 {
-    using System.Configuration;
-
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {
         private readonly IApplicationDeploymentInfo _applicationDeploymentInfo;

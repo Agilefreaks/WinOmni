@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -146,7 +145,6 @@ namespace Omnipaste.Services
             }
             else
             {
-                Debug.Assert(xDocument.Root != null, "The configuration file should have a root");
                 xDocument.Root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
             }
 

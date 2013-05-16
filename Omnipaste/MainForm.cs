@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Deployment.Application;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 using Ninject;
 using OmniCommon.Interfaces;
 using PubNubClipboard;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
+using System.Reflection;
 
 namespace Omnipaste
 {
@@ -37,7 +39,12 @@ namespace Omnipaste
         public MainForm()
         {
             InitializeComponent();
-            NotifyIcon.Text = MainModule.ApplicationName;
+
+            Assembly exeAssembly = Assembly.GetEntryAssembly();
+            AssemblyName exeName = exeAssembly.GetName();
+            Version exeVersion = exeName.Version;
+            string fullVersion = exeVersion.ToString(4);
+            NotifyIcon.Text = string.Format("{0} - {1}", MainModule.ApplicationName, fullVersion);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -59,25 +66,31 @@ namespace Omnipaste
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            OmniService.Start();
             AssureRemoteClipboardIsInitialized();
+
+            OmniService.Start();
             AddCurrentUserMenuEntry();
         }
 
         protected void AssureRemoteClipboardIsInitialized()
         {
-            if (this.OmniClipboard.IsInitialized)
+            if (ApplicationDeployment.IsNetworkDeployed)
             {
-                return;
-            }
+                ApplicationDeployment deployment = ApplicationDeployment.CurrentDeployment;
 
-            var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService, this.OmniClipboard);
-            configureForm.ShowDialog();
-            if (!this.OmniClipboard.IsInitialized)
+                if (deployment.IsFirstRun)
+                {
+                    var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService);
+                    configureForm.ShowDialog();
+                }
+            }
+            else
             {
-                Close();
+                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService);
+                configureForm.ShowDialog();
             }
         }
 

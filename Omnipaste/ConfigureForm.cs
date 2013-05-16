@@ -12,16 +12,14 @@ namespace Omnipaste
 
         private readonly IActivationDataProvider _activationDataProvider;
         private readonly IConfigurationService _configurationService;
-        private readonly IOmniClipboard _omniClipboard;
 
         private int _retryCount;
 
-        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService, IOmniClipboard omniClipboard)
+        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService)
         {
             InitializeComponent();
             _activationDataProvider = activationDataProvider;
             _configurationService = configurationService;
-            this._omniClipboard = omniClipboard;
         }
 
         public void AssureClipboardIsInitialized()
@@ -38,6 +36,7 @@ namespace Omnipaste
             else
             {
                 _configurationService.UpdateCommunicationChannel(activationData.Email);
+                BackgroundWorker.CancelAsync();
             }
         }
 
@@ -60,7 +59,7 @@ namespace Omnipaste
 
         private bool ShouldRetryActivation()
         {
-            return !this._omniClipboard.Initialize() && _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
+            return _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
