@@ -9,6 +9,14 @@ namespace Omnipaste
 {
     public class MainModule : NinjectModule
     {
+#if DEBUG
+        public const string ApplicationName = "Omnipaste-Debug";
+#elif STAGING
+        public const string ApplicationName = "Omnipaste-Staging";
+#else
+        public const string ApplicationName = "Omnipaste";
+#endif
+
         public override void Load()
         {
             Kernel.Bind<MainForm>().ToSelf().InSingletonScope();

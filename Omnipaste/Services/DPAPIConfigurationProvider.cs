@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,8 +13,6 @@ using OmniCommon.Interfaces;
 
 namespace Omnipaste.Services
 {
-    using System.Diagnostics.CodeAnalysis;
-
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {
         private const string FileName = "settings.cfg";
@@ -21,7 +20,10 @@ namespace Omnipaste.Services
 
         public string SettingsFolder
         {
-            get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OmniPaste"); }
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), MainModule.ApplicationName);
+            }
         }
 
         public string FullSettingsFilePath

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Diagnostics.CodeAnalysis;
 using Ninject;
 using OmniCommon.Interfaces;
 using PubNubClipboard;
@@ -8,8 +9,6 @@ using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
 {
-    using System.Diagnostics.CodeAnalysis;
-
     public partial class MainForm : Form, IDelegateClipboardMessageHandling
     {
         public event MessageHandler HandleClipboardMessage;
@@ -38,6 +37,7 @@ namespace Omnipaste
         public MainForm()
         {
             InitializeComponent();
+            NotifyIcon.Text = MainModule.ApplicationName;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

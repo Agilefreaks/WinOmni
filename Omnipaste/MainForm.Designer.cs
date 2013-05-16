@@ -41,7 +41,7 @@
             // 
             this.NotifyIcon.ContextMenuStrip = this.trayIconContextMenuStrip;
             this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
-            this.NotifyIcon.Text = "ClipboardWatcher";
+            this.NotifyIcon.Text = "Omnipaste";
             this.NotifyIcon.Visible = true;
             // 
             // trayIconContextMenuStrip
@@ -50,14 +50,14 @@
             this.DisableButton,
             this.ExitButton});
             this.trayIconContextMenuStrip.Name = "trayIconContextMenuStrip";
-            this.trayIconContextMenuStrip.Size = new System.Drawing.Size(227, 48);
+            this.trayIconContextMenuStrip.Size = new System.Drawing.Size(269, 52);
             // 
             // DisableButton
             // 
             this.DisableButton.CheckOnClick = true;
             this.DisableButton.Name = "DisableButton";
             this.DisableButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.DisableButton.Size = new System.Drawing.Size(226, 22);
+            this.DisableButton.Size = new System.Drawing.Size(268, 24);
             this.DisableButton.Text = "Stop Synchronization";
             this.DisableButton.ToolTipText = "Temporarily stop clipboard synchronization";
             this.DisableButton.Click += new System.EventHandler(this.DisableButton_Click);
@@ -66,17 +66,18 @@
             // 
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.ExitButton.Size = new System.Drawing.Size(226, 22);
+            this.ExitButton.Size = new System.Drawing.Size(268, 24);
             this.ExitButton.Text = "Exit";
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1, 1);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.ShowInTaskbar = false;
             this.Text = "ClipboardWatcher";
