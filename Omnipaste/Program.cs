@@ -17,8 +17,22 @@ namespace Omnipaste
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var kernel = new StandardKernel(new MainModule(), new CommonModule(), new WindowsClipboardModule(),
-                                            new PubNubClipboardModule());
+
+            bool ok;
+            var m = new System.Threading.Mutex(true, "Omnipaste", out ok);
+            if (!ok)
+            {
+                MessageBox.Show("Another instance is already running.");
+                return;
+            }
+
+            ConfigureAndRun();
+        }
+
+        private static void ConfigureAndRun()
+        {
+            var kernel = new StandardKernel(
+                new MainModule(), new CommonModule(), new WindowsClipboardModule(), new PubNubClipboardModule());
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }
