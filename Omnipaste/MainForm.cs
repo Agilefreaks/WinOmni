@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using Ninject;
 using OmniCommon.Interfaces;
-using PubNubClipboard;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
 using System.Reflection;
@@ -24,7 +23,7 @@ namespace Omnipaste
         public IOmniService OmniService { get; set; }
 
         [Inject]
-        public IPubNubClipboard OmniClipboard { get; set; }
+        public IOmniClipboard OmniClipboard { get; set; }
 
         [Inject]
         public IApplicationDeploymentInfoProvider ApplicationDeploymentInfoProvider { get; set; }

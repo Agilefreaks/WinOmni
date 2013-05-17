@@ -2,7 +2,6 @@
 using Ninject.Modules;
 using OmniCommon.Interfaces;
 using Omnipaste.Services;
-using PubNubClipboard;
 using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
@@ -30,8 +29,6 @@ namespace Omnipaste
             Kernel.Bind<IActivationDataProvider>().To<ClickOnceActivationDataProvider>().InSingletonScope();
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 #endif
-            Kernel.Bind<IOmniClipboard>().ToMethod(c => c.Kernel.Get<IPubNubClipboard>());
-            Kernel.Bind<ILocalClipboard>().ToMethod(c => c.Kernel.Get<IWindowsClipboard>());
         }
     }
 }

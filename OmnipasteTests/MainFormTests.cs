@@ -2,8 +2,8 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using OmniCommon.Interfaces;
 using Omnipaste;
-using PubNubClipboard;
 
 namespace OmnipasteTests
 {
@@ -19,12 +19,12 @@ namespace OmnipasteTests
         }
 
         MainFormWrapper _subject;
-        private Mock<IPubNubClipboard> _mockOmniclipboard;
+        private Mock<IOmniClipboard> _mockOmniclipboard;
 
         [SetUp]
         public void Setup()
         {
-            _mockOmniclipboard = new Mock<IPubNubClipboard> { DefaultValue = DefaultValue.Mock };
+            _mockOmniclipboard = new Mock<IOmniClipboard> { DefaultValue = DefaultValue.Mock };
             _subject = new MainFormWrapper
                 {
                     OmniClipboard = _mockOmniclipboard.Object,
