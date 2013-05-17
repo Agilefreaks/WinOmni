@@ -20,13 +20,15 @@ namespace Omnipaste
         public override void Load()
         {
             Kernel.Bind<MainForm>().ToSelf().InSingletonScope();
+            Kernel.Bind<ConfigureForm>().ToSelf().InSingletonScope();
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<MainForm>());
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
-            Kernel.Bind<IApplicationDeploymentInfo>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 #if DEBUG
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
+            Kernel.Bind<IApplicationDeploymentInfoProvider>().To<MockApplicationDeploymentInfoProvider>();
 #else
             Kernel.Bind<IActivationDataProvider>().To<ClickOnceActivationDataProvider>().InSingletonScope();
+            Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 #endif
             Kernel.Bind<IOmniClipboard>().ToMethod(c => c.Kernel.Get<IPubNubClipboard>());
             Kernel.Bind<ILocalClipboard>().ToMethod(c => c.Kernel.Get<IWindowsClipboard>());

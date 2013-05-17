@@ -12,11 +12,11 @@ namespace Omnipaste.Services
 {
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {
-        private readonly IApplicationDeploymentInfo _applicationDeploymentInfo;
+        private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
 
-        public ClickOnceActivationDataProvider(IApplicationDeploymentInfo applicationDeploymentInfo)
+        public ClickOnceActivationDataProvider(IApplicationDeploymentInfoProvider applicationDeploymentInfoProvider)
         {
-            _applicationDeploymentInfo = applicationDeploymentInfo;
+            _applicationDeploymentInfoProvider = applicationDeploymentInfoProvider;
         }
 
         public ActivationData GetActivationData()
@@ -59,9 +59,9 @@ namespace Omnipaste.Services
         private NameValueCollection GetDeploymentParameters()
         {
             var deploymentParameters = new NameValueCollection();
-            if (_applicationDeploymentInfo.HasValidActivationUri)
+            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
             {
-                deploymentParameters = _applicationDeploymentInfo.ActivationUri.GetQueryStringParameters();
+                deploymentParameters = _applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
             }
 
             return deploymentParameters;

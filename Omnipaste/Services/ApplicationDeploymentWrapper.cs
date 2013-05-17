@@ -4,7 +4,7 @@ using OmniCommon.Interfaces;
 
 namespace Omnipaste.Services
 {
-    public class ApplicationDeploymentWrapper : IApplicationDeploymentInfo
+    public class ApplicationDeploymentWrapper : IApplicationDeploymentInfoProvider
     {
         public Uri ActivationUri
         {
@@ -14,6 +14,11 @@ namespace Omnipaste.Services
         public bool HasValidActivationUri
         {
             get { return ApplicationDeployment.IsNetworkDeployed && ActivationUri != null; }
+        }
+
+        public bool IsFirstNetworkRun
+        {
+            get { return ApplicationDeployment.IsNetworkDeployed || ApplicationDeployment.CurrentDeployment.IsFirstRun; }
         }
     }
 }

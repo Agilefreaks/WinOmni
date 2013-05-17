@@ -10,12 +10,12 @@ namespace OmnipasteTests.Services
     public class ClickOnceActivationDataProviderTests
     {
         private ClickOnceActivationDataProvider _subject;
-        private Mock<IApplicationDeploymentInfo> _mockActivationInfoProvider;
+        private Mock<IApplicationDeploymentInfoProvider> _mockActivationInfoProvider;
 
         [SetUp]
         public void Setup()
         {
-            _mockActivationInfoProvider = new Mock<IApplicationDeploymentInfo>();
+            _mockActivationInfoProvider = new Mock<IApplicationDeploymentInfoProvider>();
             _subject = new ClickOnceActivationDataProvider(_mockActivationInfoProvider.Object);
         }
 

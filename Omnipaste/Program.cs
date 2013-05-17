@@ -31,8 +31,8 @@ namespace Omnipaste
 
         private static void ConfigureAndRun()
         {
-            var kernel = new StandardKernel(
-                new MainModule(), new CommonModule(), new WindowsClipboardModule(), new PubNubClipboardModule());
+            var kernel = new StandardKernel(new MainModule(), new CommonModule(), new WindowsClipboardModule(),
+                                            new PubNubClipboardModule());
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }

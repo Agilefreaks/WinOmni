@@ -70,7 +70,7 @@
     <Compile Include="Services\CommunicationSettings.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Interfaces\IActivationDataProvider.cs" />
-    <Compile Include="Interfaces\IApplicationDeploymentInfo.cs" />
+    <Compile Include="Interfaces\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IStartupTask.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Ninject;
 using OmniCommon.ExtensionMethods;
 using OmniCommon.Interfaces;
 
@@ -10,21 +11,22 @@ namespace Omnipaste
     {
         public const int MaxRetryCount = 10;
 
-        private readonly IActivationDataProvider _activationDataProvider;
-        private readonly IConfigurationService _configurationService;
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
+        [Inject]
+        public IActivationDataProvider ActivationDataProvider { get; set; }
 
         private int _retryCount;
 
-        public ConfigureForm(IActivationDataProvider activationDataProvider, IConfigurationService configurationService)
+        public ConfigureForm()
         {
             InitializeComponent();
-            _activationDataProvider = activationDataProvider;
-            _configurationService = configurationService;
         }
 
         public void AssureClipboardIsInitialized()
         {
-            var activationData = _activationDataProvider.GetActivationData();
+            var activationData = ActivationDataProvider.GetActivationData();
             if (activationData.Email.IsNullOrWhiteSpace())
             {
                 if (ShouldRetryActivation())
@@ -35,7 +37,7 @@ namespace Omnipaste
             }
             else
             {
-                _configurationService.UpdateCommunicationChannel(activationData.Email);
+                ConfigurationService.UpdateCommunicationChannel(activationData.Email);
                 BackgroundWorker.CancelAsync();
             }
         }
@@ -43,6 +45,7 @@ namespace Omnipaste
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            _retryCount = 0;
             BackgroundWorker.RunWorkerAsync();
         }
 

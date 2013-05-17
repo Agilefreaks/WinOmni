@@ -2,11 +2,8 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
 using Omnipaste;
 using PubNubClipboard;
-using WindowsClipboard.Interfaces;
 
 namespace OmnipasteTests
 {
@@ -22,24 +19,15 @@ namespace OmnipasteTests
         }
 
         MainFormWrapper _subject;
-        private Mock<IWindowsClipboard> _mockClipboardWrapper;
         private Mock<IPubNubClipboard> _mockOmniclipboard;
-        private Mock<IActivationDataProvider> _mockActivationDataProvider;
-        private Mock<IConfigurationService> _mockConfigurationService;
 
         [SetUp]
         public void Setup()
         {
-            _mockClipboardWrapper = new Mock<IWindowsClipboard> { DefaultValue = DefaultValue.Mock };
             _mockOmniclipboard = new Mock<IPubNubClipboard> { DefaultValue = DefaultValue.Mock };
-            _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
-            _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _subject = new MainFormWrapper
                 {
-                    WindowsClipboard = _mockClipboardWrapper.Object,
                     OmniClipboard = _mockOmniclipboard.Object,
-                    ActivationDataProvider = _mockActivationDataProvider.Object,
-                    ConfigurationService = _mockConfigurationService.Object
                 };
         }
 

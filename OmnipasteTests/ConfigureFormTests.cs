@@ -18,7 +18,11 @@ namespace OmnipasteTests
         {
             _mockActivationDataProvider = new Mock<IActivationDataProvider> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _subject = new ConfigureForm(_mockActivationDataProvider.Object, _mockConfigurationService.Object);
+            _subject = new ConfigureForm
+                {
+                    ActivationDataProvider = _mockActivationDataProvider.Object,
+                    ConfigurationService = _mockConfigurationService.Object
+                };
         }
 
         [Test]

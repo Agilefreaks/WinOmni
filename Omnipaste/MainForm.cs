@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Deployment.Application;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using Ninject;
@@ -25,26 +24,17 @@ namespace Omnipaste
         public IOmniService OmniService { get; set; }
 
         [Inject]
-        public IWindowsClipboard WindowsClipboard { get; set; }
-
-        [Inject]
         public IPubNubClipboard OmniClipboard { get; set; }
 
         [Inject]
-        public IConfigurationService ConfigurationService { get; set; }
+        public IApplicationDeploymentInfoProvider ApplicationDeploymentInfoProvider { get; set; }
 
         [Inject]
-        public IActivationDataProvider ActivationDataProvider { get; set; }
+        public ConfigureForm ConfigureForm { get; set; }
 
         public MainForm()
         {
             InitializeComponent();
-
-            Assembly exeAssembly = Assembly.GetEntryAssembly();
-            AssemblyName exeName = exeAssembly.GetName();
-            Version exeVersion = exeName.Version;
-            string fullVersion = exeVersion.ToString(4);
-            NotifyIcon.Text = string.Format("{0} - {1}", MainModule.ApplicationName, fullVersion);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -66,31 +56,21 @@ namespace Omnipaste
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
+
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            AssureRemoteClipboardIsInitialized();
+            LoadInitialConfiguration();
+            SetVersionInfo();
 
             OmniService.Start();
             AddCurrentUserMenuEntry();
         }
 
-        protected void AssureRemoteClipboardIsInitialized()
+        protected void LoadInitialConfiguration()
         {
-            if (ApplicationDeployment.IsNetworkDeployed)
+            if (ApplicationDeploymentInfoProvider.IsFirstNetworkRun)
             {
-                ApplicationDeployment deployment = ApplicationDeployment.CurrentDeployment;
-
-                if (deployment.IsFirstRun)
-                {
-                    var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService);
-                    configureForm.ShowDialog();
-                }
-            }
-            else
-            {
-                var configureForm = new ConfigureForm(ActivationDataProvider, ConfigurationService);
-                configureForm.ShowDialog();
+                ConfigureForm.ShowDialog();
             }
         }
 
@@ -99,7 +79,7 @@ namespace Omnipaste
             var toolStripMenuItem = new ToolStripLabel
                 {
                     Enabled = false,
-                    Text = string.Format("Logged in as: \"{0}\"", this.OmniClipboard.Channel)
+                    Text = string.Format("Logged in as: \"{0}\"", OmniClipboard.Channel)
                 };
             trayIconContextMenuStrip.Items.Insert(0, toolStripMenuItem);
             trayIconContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
@@ -128,6 +108,15 @@ namespace Omnipaste
             {
                 OmniService.Start();
             }
+        }
+
+        private void SetVersionInfo()
+        {
+            var exeAssembly = Assembly.GetEntryAssembly();
+            var exeName = exeAssembly.GetName();
+            var exeVersion = exeName.Version;
+            var fullVersion = exeVersion.ToString(4);
+            NotifyIcon.Text = string.Format("{0} - {1}", MainModule.ApplicationName, fullVersion);
         }
     }
 }
