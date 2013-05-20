@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Windows.Forms;
 using Ninject;
 using OmniCommon.Interfaces;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
-using System.Reflection;
 
 namespace Omnipaste
 {
@@ -92,12 +92,12 @@ namespace Omnipaste
             WindowHelper.SetWindowLong(Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
         }
 
-        private void ExitButton_Click(object sender, EventArgs e)
+        private void ExitButtonClick(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void DisableButton_Click(object sender, EventArgs e)
+        private void DisableButtonClick(object sender, EventArgs e)
         {
             if (DisableButton.Checked)
             {

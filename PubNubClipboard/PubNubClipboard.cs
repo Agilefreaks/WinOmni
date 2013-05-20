@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using OmniCommon;
 using OmniCommon.Interfaces;
 
-namespace PubNubClipboard.Impl.PubNub
+namespace PubNubClipboard
 {
+    using System.IO;
+
+    using Newtonsoft.Json;
+
     public class PubNubClipboard : IPubNubClipboard
     {
         private readonly IConfigurationService _configurationService;
@@ -25,22 +28,19 @@ namespace PubNubClipboard.Impl.PubNub
         {
             _configurationService = configurationService;
             _clientFactory = clientFactory;
-            Initialize();
         }
 
         public bool Initialize()
         {
             var communicationSettings = _configurationService.CommunicationSettings;
-            var result = false;
-            if (!string.IsNullOrEmpty(communicationSettings.Channel))
+            if (!IsInitialized && !string.IsNullOrEmpty(communicationSettings.Channel))
             {
                 Channel = communicationSettings.Channel;
                 _pubnub = _clientFactory.Create();
-                _pubnub.subscribe(Channel, HandleMessageReceived);
-                result = true;
+                _pubnub.Subscribe<string>(Channel, HandleMessageReceived, o => { });
             }
 
-            return result;
+            return IsInitialized;
         }
 
         public void Dispose()
@@ -51,12 +51,12 @@ namespace PubNubClipboard.Impl.PubNub
             }
 
             _pubnub.EndPendingRequests();
-            _pubnub.unsubscribe(Channel, o => { });
+            _pubnub.Unsubscribe(Channel, o => { }, o => { }, o => { });
         }
 
         public void SendData(string data)
         {
-            _pubnub.publish(Channel, data, o => { });
+            _pubnub.Publish(Channel, data, o => { });
         }
 
         protected virtual void OnDataReceived(ClipboardEventArgs eventArgs)
@@ -67,12 +67,14 @@ namespace PubNubClipboard.Impl.PubNub
             }
         }
 
-        private void HandleMessageReceived(object receivedMessage)
+        private void HandleMessageReceived(string receivedMessage)
         {
-            var dataOject = ((IEnumerable<object>)receivedMessage).First();
-            var value = ((Newtonsoft.Json.Linq.JValue)dataOject).Value;
-
-            OnDataReceived(new ClipboardEventArgs { Data = value.ToString() });
+            var jsonSerializer = new JsonSerializer();
+            var dataEntries = jsonSerializer.Deserialize(new StringReader(receivedMessage), typeof(string[])) as string[];
+            if (dataEntries != null && dataEntries.Any())
+            {
+                OnDataReceived(new ClipboardEventArgs { Data = dataEntries[0] });
+            }
         }
     }
 }

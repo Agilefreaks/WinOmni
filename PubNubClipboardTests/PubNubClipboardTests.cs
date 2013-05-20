@@ -4,14 +4,13 @@ using NUnit.Framework;
 using OmniCommon.Interfaces;
 using OmniCommon.Services;
 using PubNubClipboard;
-using PubNubClipboard.Impl.PubNub;
 
 namespace PubNubClipboardTests
 {
-    using PubNubClipboard = PubNubClipboard.Impl.PubNub.PubNubClipboard;
+    using PubNubClipboard = PubNubClipboard.PubNubClipboard;
 
     [TestFixture]
-    public class PubNubOmniclipboardTests
+    public class PubNubClipboardTests
     {
         private Mock<IConfigurationService> _mockConfigurationService;
         private Mock<IPubNubClientFactory> _mockPubNubClientFactory;
@@ -44,10 +43,9 @@ namespace PubNubClipboardTests
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(new Pubnub("test", "test"));
 
-            // ReSharper disable ObjectCreationAsStatement
-            new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            var pubNubClipboard = new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object);
 
+            pubNubClipboard.Should().NotBeNull();
             _mockPubNubClientFactory.Verify(x => x.Create(), Times.Once());
         }
 
