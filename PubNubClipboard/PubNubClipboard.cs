@@ -28,7 +28,6 @@ namespace PubNubClipboard
         {
             _configurationService = configurationService;
             _clientFactory = clientFactory;
-            Initialize();
         }
 
         public bool Initialize()
