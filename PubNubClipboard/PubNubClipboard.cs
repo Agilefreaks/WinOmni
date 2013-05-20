@@ -5,7 +5,9 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Newtonsoft.Json;
+
     using OmniCommon;
     using OmniCommon.Interfaces;
 
@@ -76,6 +78,7 @@
 
         private Task<bool> InitializePubNubClientAsync()
         {
+            IsInitializing = true;
             return _initializationTask = Task<bool>.Factory.StartNew(InitializePubNubClient);
         }
 

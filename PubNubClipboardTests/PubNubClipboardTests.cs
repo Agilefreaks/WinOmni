@@ -8,6 +8,7 @@ using PubNubClipboard;
 namespace PubNubClipboardTests
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using PubNubWrapper;
@@ -73,6 +74,25 @@ namespace PubNubClipboardTests
             Task.WaitAll(initializeTask);
 
             _subject.IsInitialized.Should().BeTrue();
+        }
+
+        [Test]
+        public void Initialize_InitializeIsRunningAlready_ReturnsTheSameTaskAsFirstTime()
+        {
+            SetupCommnuicationSettings();
+            _mockClient.Setup(
+                x => x.Subscribe(It.IsAny<string>(), It.IsAny<Action<string>>(), It.IsAny<Action<string>>()))
+                      .Callback<string, Action<string>, Action<string>>(
+                          (message, dataCallback, statusCallback) =>
+                              {
+                                  Thread.Sleep(500);
+                                  statusCallback("[1, \"Connected\", \"test@email.com\"]");
+                              });
+
+            var initializeTask = _subject.Initialize();
+            var secondTask = _subject.Initialize();
+
+            initializeTask.Should().BeSameAs(secondTask);
         }
 
         private void SetupCommnuicationSettings()
