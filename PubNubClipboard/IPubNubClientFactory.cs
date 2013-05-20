@@ -1,4 +1,4 @@
-﻿namespace PubNubClipboard.Impl.PubNub
+﻿namespace PubNubClipboard
 {
     public interface IPubNubClientFactory
     {
