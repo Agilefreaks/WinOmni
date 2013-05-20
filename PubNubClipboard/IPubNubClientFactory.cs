@@ -1,7 +1,9 @@
 ﻿namespace PubNubClipboard
 {
+    using PubNubWrapper;
+
     public interface IPubNubClientFactory
     {
-        Pubnub Create();
+        IPubNubClient Create();
     }
 }

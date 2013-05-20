@@ -7,6 +7,8 @@ using OmniCommon.Interfaces;
 
 namespace Omnipaste
 {
+    using Omnipaste.Services;
+
     public partial class ConfigureForm : Form
     {
         public const int MaxRetryCount = 10;
@@ -49,7 +51,7 @@ namespace Omnipaste
             BackgroundWorker.RunWorkerAsync();
         }
 
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
             AssureClipboardIsInitialized();
             if (BackgroundWorker.CancellationPending)
@@ -65,7 +67,7 @@ namespace Omnipaste
             return _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void CancelButtonClick(object sender, EventArgs e)
         {
             if (BackgroundWorker.IsBusy)
             {

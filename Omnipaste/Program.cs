@@ -7,20 +7,20 @@ using WindowsClipboard;
 
 namespace Omnipaste
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bool ok;
-            var m = new System.Threading.Mutex(true, "Omnipaste", out ok);
-            if (!ok)
+            bool createdNewMutex;
+            var mutex = new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex);
+            if (!createdNewMutex)
             {
                 MessageBox.Show("Another instance is already running.");
                 return;
@@ -31,8 +31,10 @@ namespace Omnipaste
 
         private static void ConfigureAndRun()
         {
-            var kernel = new StandardKernel(new MainModule(), new CommonModule(), new WindowsClipboardModule(),
-                                            new PubNubClipboardModule());
+            var mainModule = new MainModule();
+            var kernel = new StandardKernel(
+                mainModule, new CommonModule(), new WindowsClipboardModule(), new PubNubClipboardModule());
+            mainModule.PerfornStartupTasks();
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }
