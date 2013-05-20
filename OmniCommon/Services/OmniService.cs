@@ -32,6 +32,7 @@
                 {
                     Task.WaitAll(LocalClipboard.Initialize(), OmniClipboard.Initialize());
                     CanProcessData = true;
+                    _startTask = null;
                 }));
         }
 

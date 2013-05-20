@@ -107,5 +107,34 @@ namespace OmniCommonTests
 
             _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
         }
+
+        [Test]
+        public void Start_StartIsInProgress_ReturnsTheSameTask()
+        {
+            _mockLocalClipboard.Setup(x => x.Initialize()).Callback(() =>
+                {
+                    Thread.Sleep(500);
+                    Task.Factory.StartNew(() => true);
+                });
+            _mockOmniClipboard.Setup(x => x.Initialize()).Callback(() => Task.Factory.StartNew(() => true));
+
+            var startTask = _subject.Start();
+            var startTask2 = _subject.Start();
+
+            startTask2.Should().BeSameAs(startTask);
+        }
+
+        [Test]
+        public void Start_StartIsNotInProgress_ReturnsANewTask()
+        {
+            _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
+            _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
+
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+            var startTask2 = _subject.Start();
+
+            startTask2.Should().NotBeSameAs(startTask);
+        }
     }
 }
