@@ -36,6 +36,19 @@ namespace Omnipaste
             InitializeComponent();
         }
 
+        public IntPtr GetHandle()
+        {
+            var handle = new IntPtr();
+            Action getHandleDelegate = () => handle = this.Handle;
+            if (InvokeRequired)
+            {
+                Invoke(getHandleDelegate);
+                return handle;
+            }
+
+            return Handle;
+        }
+
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             OmniService.Stop();
