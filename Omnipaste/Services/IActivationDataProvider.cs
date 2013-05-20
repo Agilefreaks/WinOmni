@@ -1,7 +1,7 @@
-﻿using OmniCommon.Services;
-
-namespace OmniCommon.Interfaces
+﻿namespace Omnipaste.Services
 {
+    using OmniCommon.Services;
+
     public interface IActivationDataProvider
     {
         ActivationData GetActivationData();

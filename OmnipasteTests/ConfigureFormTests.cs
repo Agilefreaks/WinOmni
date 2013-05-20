@@ -1,11 +1,11 @@
-﻿using Moq;
-using NUnit.Framework;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using Omnipaste;
-
-namespace OmnipasteTests
+﻿namespace OmnipasteTests
 {
+    using Moq;
+    using NUnit.Framework;
+    using OmniCommon.Interfaces;
+    using Omnipaste;
+    using Omnipaste.Services;
+
     [TestFixture]
     public class ConfigureFormTests
     {

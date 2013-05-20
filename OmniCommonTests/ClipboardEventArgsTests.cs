@@ -7,7 +7,7 @@ namespace OmniCommonTests
     [TestFixture]
     public class ClipboardEventArgsTests
     {
-        ClipboardEventArgs _subject;
+        private ClipboardEventArgs _subject;
 
         [SetUp]
         public void Setup()

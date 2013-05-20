@@ -57,6 +57,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.NET35, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Threading.Tasks.3.0.1\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -77,6 +81,10 @@
     <ProjectReference Include="..\PubNubClipboard\PubNubClipboard.csproj">
       <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
       <Name>PubNubClipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PubNubWrapper\PubNubWrapper.csproj">
+      <Project>{8bbd2391-575a-4ac2-b615-f9bac1ff5081}</Project>
+      <Name>PubNubWrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

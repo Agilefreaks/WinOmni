@@ -1,13 +1,16 @@
-﻿using System;
-using Ninject;
-using OmniCommon;
-using WindowsClipboard.Interfaces;
-
-namespace WindowsClipboard
+﻿namespace WindowsClipboard
 {
+    using System;
+    using System.Threading.Tasks;
+    using Ninject;
+    using OmniCommon;
+
+    using global::WindowsClipboard.Interfaces;
+
     public class WindowsClipboard : IWindowsClipboard
     {
         private IWindowsClipboardWrapper _windowsClipboardWrapper;
+
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
         [Inject]
@@ -17,6 +20,7 @@ namespace WindowsClipboard
             {
                 return _windowsClipboardWrapper;
             }
+
             set
             {
                 HookClipboardAdapter(_windowsClipboardWrapper, value);
@@ -24,11 +28,13 @@ namespace WindowsClipboard
             }
         }
 
-        public bool Initialize()
+        public Task<bool> Initialize()
         {
-            WindowsClipboardWrapper.StartWatchingClipboard();
-
-            return true;
+            return Task<bool>.Factory.StartNew(() =>
+                    {
+                        WindowsClipboardWrapper.StartWatchingClipboard();
+                        return true;
+                    });
         }
 
         public void Dispose()

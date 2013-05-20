@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace OmniCommon.Interfaces
+﻿namespace Omnipaste.Services
 {
+    using System;
+
     public interface IApplicationDeploymentInfoProvider
     {
         Uri ActivationUri { get; }

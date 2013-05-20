@@ -1,7 +1,8 @@
-﻿using OmniCommon.Interfaces;
-
-namespace OmniCommon.Services
+﻿namespace Omnipaste.Services
 {
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
+
     public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
@@ -10,25 +11,25 @@ namespace OmniCommon.Services
 
         public ConfigurationService(IConfigurationProvider configurationProvider)
         {
-            _configurationProvider = configurationProvider;
+            this._configurationProvider = configurationProvider;
         }
 
         public void Startup()
         {
-            LoadCommunicationSettings();
+            this.LoadCommunicationSettings();
         }
 
         public void UpdateCommunicationChannel(string channel)
         {
-            _configurationProvider.SetValue("channel", channel);
-            LoadCommunicationSettings();
+            this._configurationProvider.SetValue("channel", channel);
+            this.LoadCommunicationSettings();
         }
 
         public void LoadCommunicationSettings()
         {
-            CommunicationSettings = new CommunicationSettings
+            this.CommunicationSettings = new CommunicationSettings
                 {
-                    Channel = _configurationProvider.GetValue("channel")
+                    Channel = this._configurationProvider.GetValue("channel")
                 };
         }
     }

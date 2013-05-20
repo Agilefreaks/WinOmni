@@ -8,10 +8,12 @@ using OmniCommon.Services;
 
 namespace OmniCommonTests
 {
+    using FluentAssertions;
+
     [TestFixture]
     public class OmniServiceTests
     {
-        OmniService _subject;
+        private OmniService _subject;
         private Mock<ILocalClipboard> _mockLocalClipboard;
         private Mock<IOmniClipboard> _mockOmniClipboard;
 
@@ -20,49 +22,73 @@ namespace OmniCommonTests
         {
             _mockLocalClipboard = new Mock<ILocalClipboard>();
             _mockOmniClipboard = new Mock<IOmniClipboard>();
+            _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
+            _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object);
+        }
+
+        [Test]
+        public void OnReceivingRemoteData_Always_WillSendItToLocalClipboard()
+        {
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+
+            _mockOmniClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
+
+            _mockLocalClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+        }
+
+        [Test]
+        public void OnReceivingLocalData_Always_WillSendItToRemoteClipboard()
+        {
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+
+            _mockLocalClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
+
+            _mockOmniClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
         }
 
         [Test]
         public void OnReceivingRemoteData_Always_WillNotSendItBack()
         {
-            _subject.Start();
-            var tasks = new Task[1];
-            _mockLocalClipboard.Setup(mock => mock.SendData("test-data"))
-                               .Callback<string>(data =>
-                                   {
-                                       tasks[0] = (Task.Factory.StartNew(() =>
-                                       {
-                                           Thread.Sleep(1000);
-                                           _mockLocalClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs(data));
-                                       }));
-                                   });
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+            Task echoTask = null;
+            _mockLocalClipboard.Setup(mock => mock.SendData("test-data")).Callback<string>(data =>
+                {
+                    echoTask = Task.Factory.StartNew(() =>
+                            {
+                                Thread.Sleep(500);
+                                _mockLocalClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs(data));
+                            });
+                });
+
             _mockOmniClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
 
-            Task.WaitAll(tasks);
-
-            _mockLocalClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+            echoTask.Should().NotBeNull();
+            Task.WaitAll(echoTask);
             _mockOmniClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
         public void OnReceivingLocalData_Always_WillNotSendItBack()
         {
-            _subject.Start();
-            var tasks = new Task[1];
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+            Task echoTask = null;
             _mockOmniClipboard.Setup(mock => mock.SendData("test-data")).Callback<string>(data =>
                 {
-                    tasks[0] = (Task.Factory.StartNew(() =>
+                    echoTask = Task.Factory.StartNew(() =>
                         {
                             Thread.Sleep(1000);
                             _mockOmniClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs(data));
-                        }));
+                        });
                 });
             _mockLocalClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
 
-            Task.WaitAll(tasks);
-
-            _mockOmniClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+            echoTask.Should().NotBeNull();
+            Task.WaitAll(echoTask);
             _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
         }
 
@@ -80,6 +106,35 @@ namespace OmniCommonTests
             _mockOmniClipboard.Raise(mock => mock.DataReceived += null, new ClipboardEventArgs("test-data"));
 
             _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void Start_StartIsInProgress_ReturnsTheSameTask()
+        {
+            _mockLocalClipboard.Setup(x => x.Initialize()).Callback(() =>
+                {
+                    Thread.Sleep(500);
+                    Task.Factory.StartNew(() => true);
+                });
+            _mockOmniClipboard.Setup(x => x.Initialize()).Callback(() => Task.Factory.StartNew(() => true));
+
+            var startTask = _subject.Start();
+            var startTask2 = _subject.Start();
+
+            startTask2.Should().BeSameAs(startTask);
+        }
+
+        [Test]
+        public void Start_StartIsNotInProgress_ReturnsANewTask()
+        {
+            _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
+            _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
+
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+            var startTask2 = _subject.Start();
+
+            startTask2.Should().NotBeSameAs(startTask);
         }
     }
 }

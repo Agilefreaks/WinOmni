@@ -9,6 +9,6 @@ namespace WindowsClipboard.Interfaces
     {
         event MessageHandler HandleClipboardMessage;
 
-        IntPtr Handle { get; }
+        IntPtr GetHandle();
     }
 }

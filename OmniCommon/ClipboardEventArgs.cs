@@ -10,6 +10,14 @@ namespace OmniCommon
         {
         }
 
+        public static bool Equals(ClipboardEventArgs firstEventArgs, ClipboardEventArgs secondEventArgs)
+        {
+            // ReSharper disable PossibleUnintendedReferenceComparison       
+            return (firstEventArgs == secondEventArgs) ||
+                   (firstEventArgs != null && secondEventArgs != null && firstEventArgs.Equals(secondEventArgs));
+            // ReSharper restore PossibleUnintendedReferenceComparison
+        }
+
         public ClipboardEventArgs(string data)
         {
             Data = data;
@@ -25,14 +33,6 @@ namespace OmniCommon
             var eventArgs = obj as ClipboardEventArgs;
 
             return eventArgs != null && eventArgs.Data.Equals(Data);
-        }
-
-        public static bool Equals(ClipboardEventArgs firstEventArgs, ClipboardEventArgs secondEventArgs)
-        {
-            // ReSharper disable PossibleUnintendedReferenceComparison       
-            return (firstEventArgs == secondEventArgs) ||
-                   (firstEventArgs != null && secondEventArgs != null && firstEventArgs.Equals(secondEventArgs));
-            // ReSharper restore PossibleUnintendedReferenceComparison
         }
     }
 }
