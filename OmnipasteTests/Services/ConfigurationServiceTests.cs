@@ -1,11 +1,10 @@
-﻿using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-
-namespace OmnipasteTests.Services
+﻿namespace OmnipasteTests.Services
 {
+    using FluentAssertions;
+    using Moq;
+    using NUnit.Framework;
+    using Omnipaste.Services;
+
     [TestFixture]
     public class ConfigurationServiceTests
     {
