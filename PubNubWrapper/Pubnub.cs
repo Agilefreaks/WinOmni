@@ -38,10 +38,10 @@ using System.Security.Cryptography.X509Certificates;
 #endif
 
 
-namespace PubNubClipboard
+namespace PubNubWrapper
 {
     // INotifyPropertyChanged provides a standard event for objects to notify clients that one of its properties has changed
-    public class Pubnub : INotifyPropertyChanged
+    public class Pubnub : IPubNubClient
     {
         int _pubnubWebRequestCallbackIntervalInSeconds = 310;
         int _pubnubOperationTimeoutIntervalInSeconds = 15;
@@ -76,7 +76,7 @@ namespace PubNubClipboard
         ConcurrentDictionary<string, Timer> _channelReconnectTimer = new ConcurrentDictionary<string, Timer>();
         ConcurrentDictionary<Uri, Timer> _channelHeartbeatTimer = new ConcurrentDictionary<Uri, Timer>();
 
-        public int SubscribeTimeout
+        internal int SubscribeTimeout
         {
             get
             {
@@ -89,7 +89,7 @@ namespace PubNubClipboard
             }
         }
 
-        public int NonSubscribeTimeout
+        internal int NonSubscribeTimeout
         {
             get
             {
@@ -102,7 +102,7 @@ namespace PubNubClipboard
             }
         }
 
-        public int NetworkCheckMaxRetries
+        internal int NetworkCheckMaxRetries
         {
             get
             {
@@ -115,7 +115,7 @@ namespace PubNubClipboard
             }
         }
 
-        public int NetworkCheckRetryInterval
+        internal int NetworkCheckRetryInterval
         {
             get
             {
@@ -128,7 +128,7 @@ namespace PubNubClipboard
             }
         }
 
-        public int HeartbeatInterval
+        internal int HeartbeatInterval
         {
             get
             {
@@ -141,7 +141,7 @@ namespace PubNubClipboard
             }
         }
 
-        public bool EnableResumeOnReconnect
+        internal bool EnableResumeOnReconnect
         {
             get
             {

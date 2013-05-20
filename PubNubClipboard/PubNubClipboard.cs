@@ -9,11 +9,13 @@ namespace PubNubClipboard
 
     using Newtonsoft.Json;
 
+    using PubNubWrapper;
+
     public class PubNubClipboard : IPubNubClipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
-        private Pubnub _pubnub;
+        private IPubNubClient _pubnub;
 
         public string Channel { get; private set; }
 

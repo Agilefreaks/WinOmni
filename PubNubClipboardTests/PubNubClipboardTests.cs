@@ -7,6 +7,8 @@ using PubNubClipboard;
 
 namespace PubNubClipboardTests
 {
+    using PubNubWrapper;
+
     using PubNubClipboard = PubNubClipboard.PubNubClipboard;
 
     [TestFixture]
