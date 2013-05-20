@@ -66,12 +66,7 @@
     <Compile Include="Interfaces\IOmniClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IOmniService.cs" />
-    <Compile Include="Services\ActivationData.cs" />
     <Compile Include="Services\CommunicationSettings.cs" />
-    <Compile Include="Services\ConfigurationService.cs" />
-    <Compile Include="Interfaces\IActivationDataProvider.cs" />
-    <Compile Include="Interfaces\IApplicationDeploymentInfoProvider.cs" />
-    <Compile Include="Interfaces\IConfigurationProvider.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IStartupTask.cs" />
     <Compile Include="Services\OmniService.cs" />

@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Services
+﻿namespace Omnipaste.Services
 {
     public class ActivationData
     {

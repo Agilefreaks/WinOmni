@@ -56,7 +56,7 @@
             this.CancelButton.TabIndex = 2;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.CancelButton.Click += new System.EventHandler(this.CancelButtonClick);
             // 
             // pictureBox1
             // 
@@ -73,7 +73,7 @@
             // BackgroundWorker
             // 
             this.BackgroundWorker.WorkerSupportsCancellation = true;
-            this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
+            this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerDoWork);
             // 
             // ConfigureForm
             // 

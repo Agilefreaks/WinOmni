@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Interfaces
+﻿namespace Omnipaste.Services
 {
     public interface IConfigurationProvider
     {
