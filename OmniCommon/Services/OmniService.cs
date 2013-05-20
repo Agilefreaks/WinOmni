@@ -1,15 +1,18 @@
-﻿using OmniCommon.ExtensionMethods;
-using OmniCommon.Interfaces;
-
-namespace OmniCommon.Services
+﻿namespace OmniCommon.Services
 {
+    using System.Threading.Tasks;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Interfaces;
+
     public class OmniService : IOmniService
     {
+        private Task _startTask;
+
         public ILocalClipboard LocalClipboard { get; private set; }
 
         public IOmniClipboard OmniClipboard { get; private set; }
 
-        protected bool CanProcessData { get; set; }
+        protected bool CanProcessData { get; private set; }
 
         protected ClipboardEventArgs LastReceivedEventArgs { get; set; }
 
@@ -23,11 +26,13 @@ namespace OmniCommon.Services
             OmniClipboard.DataReceived += OmniClipboardOnDataReceived;
         }
 
-        public void Start()
+        public Task Start()
         {
-            LocalClipboard.Initialize();
-            OmniClipboard.Initialize();
-            CanProcessData = true;
+            return _startTask ?? (_startTask = Task.Factory.StartNew(() =>
+                {
+                    Task.WaitAll(LocalClipboard.Initialize(), OmniClipboard.Initialize());
+                    CanProcessData = true;
+                }));
         }
 
         public void Stop()

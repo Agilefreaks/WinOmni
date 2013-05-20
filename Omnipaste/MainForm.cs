@@ -9,6 +9,10 @@ using WindowsClipboard.Interfaces;
 
 namespace Omnipaste
 {
+    using System.Threading.Tasks;
+
+    using Omnipaste.Services;
+
     public partial class MainForm : Form, IDelegateClipboardMessageHandling
     {
         public event MessageHandler HandleClipboardMessage;
@@ -73,9 +77,11 @@ namespace Omnipaste
             HideWindowFromAltTab();
             LoadInitialConfiguration();
             SetVersionInfo();
-
-            OmniService.Start();
-            AddCurrentUserMenuEntry();
+            Task.Factory.StartNew(() =>
+                {
+                    Task.WaitAll(OmniService.Start());
+                    AddCurrentUserMenuEntry();
+                });
         }
 
         protected void LoadInitialConfiguration()
