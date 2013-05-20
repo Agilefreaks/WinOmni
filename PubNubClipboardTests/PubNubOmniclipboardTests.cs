@@ -3,7 +3,6 @@ using Moq;
 using NUnit.Framework;
 using OmniCommon.Interfaces;
 using OmniCommon.Services;
-using PubNubClipboard;
 using PubNubClipboard.Impl.PubNub;
 
 namespace PubNubClipboardTests
