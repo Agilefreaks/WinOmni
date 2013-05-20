@@ -1,12 +1,9 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using OmniCommon.Interfaces;
-using PubNubClipboard.Impl.PubNub;
 
 namespace PubNubClipboard
 {
-    using PubNubClipboard = Impl.PubNub.PubNubClipboard;
-
     public class PubNubClipboardModule : NinjectModule
     {
         public override void Load()

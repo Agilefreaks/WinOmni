@@ -60,7 +60,7 @@
             this.DisableButton.Size = new System.Drawing.Size(268, 24);
             this.DisableButton.Text = "Stop Synchronization";
             this.DisableButton.ToolTipText = "Temporarily stop clipboard synchronization";
-            this.DisableButton.Click += new System.EventHandler(this.DisableButton_Click);
+            this.DisableButton.Click += new System.EventHandler(this.DisableButtonClick);
             // 
             // ExitButton
             // 
@@ -68,7 +68,7 @@
             this.ExitButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.ExitButton.Size = new System.Drawing.Size(268, 24);
             this.ExitButton.Text = "Exit";
-            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
+            this.ExitButton.Click += new System.EventHandler(this.ExitButtonClick);
             // 
             // MainForm
             // 
