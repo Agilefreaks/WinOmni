@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace OmniCommon
+﻿namespace WindowsClipboard
 {
+    using System;
+
     public class ClipboardEventArgs : EventArgs
     {
         public string Data { get; set; }

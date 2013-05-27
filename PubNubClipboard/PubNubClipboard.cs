@@ -5,22 +5,17 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Newtonsoft.Json;
-
-    using OmniCommon;
     using OmniCommon.Interfaces;
-
+    using OmniCommon.Services;
     using PubNubWrapper;
 
-    public class PubNubClipboard : IPubNubClipboard
+    public class PubNubClipboard : ClipboardBase, IPubNubClipboard
     {
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
         private IPubNubClient _pubnub;
         private Task<bool> _initializationTask;
-
-        public event EventHandler<ClipboardEventArgs> DataReceived;
 
         public string Channel { get; private set; }
 
@@ -34,7 +29,7 @@
             _clientFactory = clientFactory;
         }
 
-        public Task<bool> Initialize()
+        public override Task<bool> Initialize()
         {
             var communicationSettings = _configurationService.CommunicationSettings;
             var task = string.IsNullOrEmpty(communicationSettings.Channel)
@@ -44,7 +39,7 @@
             return task;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (!IsInitialized)
             {
@@ -55,17 +50,9 @@
             _pubnub.Unsubscribe(Channel, o => { }, o => { }, o => { });
         }
 
-        public void SendData(string data)
+        public override void SendData(string data)
         {
             _pubnub.Publish(Channel, data, o => { });
-        }
-
-        protected virtual void OnDataReceived(ClipboardEventArgs eventArgs)
-        {
-            if (DataReceived != null)
-            {
-                DataReceived(this, eventArgs);
-            }
         }
 
         private static string[] GetDataEntries(string receivedMessage)
@@ -112,7 +99,7 @@
             var dataEntries = GetDataEntries(receivedMessage);
             if (dataEntries != null && dataEntries.Any())
             {
-                OnDataReceived(new ClipboardEventArgs { Data = dataEntries[0] });
+                OnDataReceived(new ClipboardData(this, dataEntries[0]));
             }
         }
     }

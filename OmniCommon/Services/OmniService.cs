@@ -12,57 +12,59 @@
 
         public IOmniClipboard OmniClipboard { get; private set; }
 
-        protected bool CanProcessData { get; private set; }
+        protected string LastReceivedEventArgs { get; set; }
 
-        protected ClipboardEventArgs LastReceivedEventArgs { get; set; }
-
-        protected ClipboardEventArgs LastSentEventArgs { get; set; }
+        protected string LastSentEventArgs { get; set; }
 
         public OmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard)
         {
             LocalClipboard = localClipboard;
             OmniClipboard = omniClipboard;
-            LocalClipboard.DataReceived += LocalClipboardOnDataReceived;
-            OmniClipboard.DataReceived += OmniClipboardOnDataReceived;
         }
 
         public Task Start()
         {
-            return _startTask ?? (_startTask = Task.Factory.StartNew(() =>
+            return _startTask ?? (_startTask = Task.Factory.StartNew(
+                () =>
                 {
                     Task.WaitAll(LocalClipboard.Initialize(), OmniClipboard.Initialize());
-                    CanProcessData = true;
+                    OmniClipboard.AddDataReceiver(this);
+                    LocalClipboard.AddDataReceiver(this);
                     _startTask = null;
                 }));
         }
 
         public void Stop()
         {
-            CanProcessData = false;
             LocalClipboard.Dispose();
             OmniClipboard.Dispose();
         }
 
-        private void LocalClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
+        public void DataReceived(IClipboardData clipboardData)
         {
-            LastSentEventArgs = ProcessClipboardEvent(clipboardEventArgs, LastReceivedEventArgs, OmniClipboard);
-        }
-
-        private void OmniClipboardOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
-        {
-            LastReceivedEventArgs = ProcessClipboardEvent(clipboardEventArgs, LastSentEventArgs, LocalClipboard);
-        }
-
-        private ClipboardEventArgs ProcessClipboardEvent(ClipboardEventArgs clipboardEventArgs, ClipboardEventArgs oldEventArgs, IClipboard clipboardToSendTo)
-        {
-            ClipboardEventArgs sentEventArgs = null;
-            if (CanProcessData && !ClipboardEventArgs.Equals(clipboardEventArgs, oldEventArgs) && !clipboardEventArgs.Data.IsNullOrWhiteSpace())
+            var sender = clipboardData.GetSender();
+            if (sender == LocalClipboard)
             {
-                clipboardToSendTo.SendData(clipboardEventArgs.Data);
-                sentEventArgs = clipboardEventArgs;
+                LastSentEventArgs = ProcessClipboardEvent(clipboardData, LastReceivedEventArgs, OmniClipboard);
+            }
+            else
+            {
+                LastReceivedEventArgs = ProcessClipboardEvent(clipboardData, LastSentEventArgs, LocalClipboard);
+            }
+        }
+
+        private static string ProcessClipboardEvent(
+            IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
+        {
+            string sentData = null;
+            var data = clipboardData.GetData();
+            if (!data.Equals(oldData) && !data.IsNullOrWhiteSpace())
+            {
+                clipboardToSendTo.SendData(data);
+                sentData = data;
             }
 
-            return sentEventArgs;
+            return sentData;
         }
     }
 }

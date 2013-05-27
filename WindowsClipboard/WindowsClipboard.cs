@@ -1,17 +1,13 @@
 ﻿namespace WindowsClipboard
 {
-    using System;
     using System.Threading.Tasks;
     using Ninject;
-    using OmniCommon;
-
+    using OmniCommon.Services;
     using global::WindowsClipboard.Interfaces;
 
-    public class WindowsClipboard : IWindowsClipboard
+    public class WindowsClipboard : ClipboardBase, IWindowsClipboard
     {
         private IWindowsClipboardWrapper _windowsClipboardWrapper;
-
-        public event EventHandler<ClipboardEventArgs> DataReceived;
 
         [Inject]
         public IWindowsClipboardWrapper WindowsClipboardWrapper
@@ -28,7 +24,7 @@
             }
         }
 
-        public Task<bool> Initialize()
+        public override Task<bool> Initialize()
         {
             return Task<bool>.Factory.StartNew(() =>
                     {
@@ -37,12 +33,12 @@
                     });
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             WindowsClipboardWrapper.StopWatchingClipboard();
         }
 
-        public void SendData(string data)
+        public override void SendData(string data)
         {
             WindowsClipboardWrapper.SetData(data);
         }
@@ -62,7 +58,7 @@
 
         private void ClipboardAdapterOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
         {
-            DataReceived(this, clipboardEventArgs);
+            OnDataReceived(new ClipboardData(this, clipboardEventArgs.Data));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using OmniCommon;
 
 namespace WindowsClipboard.Interfaces
 {

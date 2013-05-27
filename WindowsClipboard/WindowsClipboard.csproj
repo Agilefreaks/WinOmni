@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardEventArgs.cs" />
     <Compile Include="WindowsClipboardWrapper.cs" />
     <Compile Include="Interfaces\IDelegateClipboardMessageHandling.cs" />
     <Compile Include="WindowsClipboard.cs" />

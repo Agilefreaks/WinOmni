@@ -6,7 +6,9 @@ namespace OmniCommon.Interfaces
 
     public interface IClipboard : IDisposable
     {
-        event EventHandler<ClipboardEventArgs> DataReceived;
+        void AddDataReceiver(ICanReceiveData dataReceiver);
+
+        void RemoveDataReceive(ICanReceiveData dataReceiver);
 
         Task<bool> Initialize();
 

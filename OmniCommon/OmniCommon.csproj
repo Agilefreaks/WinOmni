@@ -59,12 +59,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClipboardEventArgs.cs" />
     <Compile Include="CommonModule.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
+    <Compile Include="Services\ClipboardBase.cs" />
+    <Compile Include="Services\ClipboardData.cs" />
+    <Compile Include="Interfaces\ICanReceiveData.cs" />
     <Compile Include="Interfaces\IClipboard.cs" />
+    <Compile Include="Interfaces\IClipboardData.cs" />
     <Compile Include="Interfaces\ILocalClipboard.cs" />
     <Compile Include="Interfaces\IOmniClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
