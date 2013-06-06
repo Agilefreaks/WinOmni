@@ -1,17 +1,16 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Windows.Forms;
-using Ninject;
-using OmniCommon.Interfaces;
-using WindowsClipboard.Imports;
-using WindowsClipboard.Interfaces;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
+    using System;
+    using System.Deployment.Application;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using System.Threading.Tasks;
-
+    using System.Windows.Forms;
+    using Ninject;
+    using OmniCommon.Interfaces;
     using Omnipaste.Services;
+    using WindowsClipboard.Imports;
+    using WindowsClipboard.Interfaces;
 
     public partial class MainForm : Form, IDelegateClipboardMessageHandling
     {
@@ -130,11 +129,15 @@ namespace Omnipaste
 
         private void SetVersionInfo()
         {
-            var exeAssembly = Assembly.GetEntryAssembly();
-            var exeName = exeAssembly.GetName();
-            var exeVersion = exeName.Version;
-            var fullVersion = exeVersion.ToString(4);
-            NotifyIcon.Text = string.Format("{0} - {1}", MainModule.ApplicationName, fullVersion);
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+            
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
+                version = ad.CurrentVersion;
+            }
+
+            NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", MainModule.ApplicationName, version.Major, version.Minor, version.Revision, version.Build);
         }
     }
 }
