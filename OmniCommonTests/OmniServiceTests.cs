@@ -34,7 +34,7 @@ namespace OmniCommonTests
 
             _subject.DataReceived(CreateClipboardDataFrom(_mockOmniClipboard.Object));
 
-            _mockLocalClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+            _mockLocalClipboard.Verify(mock => mock.PutData("test-data"), Times.Once());
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace OmniCommonTests
 
             _subject.DataReceived(CreateClipboardDataFrom(_mockLocalClipboard.Object));
 
-            _mockOmniClipboard.Verify(mock => mock.SendData("test-data"), Times.Once());
+            _mockOmniClipboard.Verify(mock => mock.PutData("test-data"), Times.Once());
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace OmniCommonTests
             var startTask = _subject.Start();
             Task.WaitAll(startTask);
             Task echoTask = null;
-            _mockLocalClipboard.Setup(mock => mock.SendData("test-data")).Callback<string>(data =>
+            _mockLocalClipboard.Setup(mock => mock.PutData("test-data")).Callback<string>(data =>
                 {
                     echoTask = Task.Factory.StartNew(() =>
                             {
@@ -67,7 +67,7 @@ namespace OmniCommonTests
 
             echoTask.Should().NotBeNull();
             Task.WaitAll(echoTask);
-            _mockOmniClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
+            _mockOmniClipboard.Verify(mock => mock.PutData(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace OmniCommonTests
             var startTask = _subject.Start();
             Task.WaitAll(startTask);
             Task echoTask = null;
-            _mockOmniClipboard.Setup(mock => mock.SendData("test-data")).Callback<string>(data =>
+            _mockOmniClipboard.Setup(mock => mock.PutData("test-data")).Callback<string>(data =>
                 {
                     echoTask = Task.Factory.StartNew(() =>
                         {
@@ -89,7 +89,7 @@ namespace OmniCommonTests
 
             echoTask.Should().NotBeNull();
             Task.WaitAll(echoTask);
-            _mockLocalClipboard.Verify(mock => mock.SendData(It.IsAny<string>()), Times.Never());
+            _mockLocalClipboard.Verify(mock => mock.PutData(It.IsAny<string>()), Times.Never());
         }
 
         [Test]

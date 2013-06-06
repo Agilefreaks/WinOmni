@@ -12,6 +12,6 @@ namespace OmniCommon.Interfaces
 
         Task<bool> Initialize();
 
-        void SendData(string data);
+        void PutData(string data);
     }
 }

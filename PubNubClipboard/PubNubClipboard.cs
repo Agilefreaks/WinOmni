@@ -50,7 +50,7 @@
             _pubnub.Unsubscribe(Channel, o => { }, o => { }, o => { });
         }
 
-        public override void SendData(string data)
+        public override void PutData(string data)
         {
             _pubnub.Publish(Channel, data, o => { });
         }

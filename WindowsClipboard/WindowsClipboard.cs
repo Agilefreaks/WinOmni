@@ -38,7 +38,7 @@
             WindowsClipboardWrapper.StopWatchingClipboard();
         }
 
-        public override void SendData(string data)
+        public override void PutData(string data)
         {
             WindowsClipboardWrapper.SetData(data);
         }

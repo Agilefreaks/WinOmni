@@ -17,7 +17,7 @@
 
         public abstract Task<bool> Initialize();
 
-        public abstract void SendData(string data);
+        public abstract void PutData(string data);
 
         public void AddDataReceiver(ICanReceiveData dataReceiver)
         {

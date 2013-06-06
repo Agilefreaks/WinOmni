@@ -60,7 +60,7 @@
             var data = clipboardData.GetData();
             if (!data.Equals(oldData) && !data.IsNullOrWhiteSpace())
             {
-                clipboardToSendTo.SendData(data);
+                clipboardToSendTo.PutData(data);
                 sentData = data;
             }
 
