@@ -137,7 +137,7 @@
                 version = ad.CurrentVersion;
             }
 
-            NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", MainModule.ApplicationName, version.Major, version.Minor, version.Revision, version.Build);
+            NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", MainModule.ApplicationName, version.Major, version.Minor, version.Build, version.Revision);
         }
     }
 }
