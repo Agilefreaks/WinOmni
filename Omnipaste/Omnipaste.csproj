@@ -26,8 +26,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://s3.amazonaws.com/omnipaste/win/</InstallUrl>
-    <SupportUrl>http://www.omnipasteapp.com/about</SupportUrl>
-    <ErrorReportUrl>http://www.omnipasteapp.com/about</ErrorReportUrl>
+    <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
+    <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>Omnipaste</ProductName>
     <PublisherName>Omni</PublisherName>
@@ -35,7 +35,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>25</ApplicationRevision>
+    <ApplicationRevision>27</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

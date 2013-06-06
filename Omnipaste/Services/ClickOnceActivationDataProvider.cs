@@ -1,15 +1,13 @@
-﻿using System.Collections.Specialized;
-using System.Configuration;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using OmniCommon.ExtensionMethods;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using RestSharp;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    using OmniCommon.ExtensionMethods;
+    using RestSharp;
+
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {
         private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
