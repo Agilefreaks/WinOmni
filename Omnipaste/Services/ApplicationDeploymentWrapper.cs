@@ -1,9 +1,8 @@
-﻿using System;
-using System.Deployment.Application;
-using OmniCommon.Interfaces;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
+    using System;
+    using System.Deployment.Application;
+
     public class ApplicationDeploymentWrapper : IApplicationDeploymentInfoProvider
     {
         public Uri ActivationUri
@@ -18,7 +17,7 @@ namespace Omnipaste.Services
 
         public bool IsFirstNetworkRun
         {
-            get { return ApplicationDeployment.IsNetworkDeployed || ApplicationDeployment.CurrentDeployment.IsFirstRun; }
+            get { return ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun; }
         }
     }
 }
