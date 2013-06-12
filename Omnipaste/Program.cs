@@ -1,12 +1,12 @@
-﻿using System;
-using System.Windows.Forms;
-using Ninject;
-using OmniCommon;
-using PubNubClipboard;
-using WindowsClipboard;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
+    using System;
+    using System.Windows.Forms;
+    using Ninject;
+    using OmniCommon;
+    using PubNubClipboard;
+    using WindowsClipboard;
+
     public static class Program
     {
         /// <summary>
@@ -19,14 +19,17 @@ namespace Omnipaste
             Application.SetCompatibleTextRenderingDefault(false);
 
             bool createdNewMutex;
-            var mutex = new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex);
-            if (!createdNewMutex)
+            using (var mutex = new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex))
             {
-                MessageBox.Show("Another instance is already running.");
-                return;
+                if (!createdNewMutex)
+                {
+                    MessageBox.Show("Another instance is already running.");
+                }
+                else
+                {
+                    ConfigureAndRun();
+                }
             }
-
-            ConfigureAndRun();
         }
 
         private static void ConfigureAndRun()
