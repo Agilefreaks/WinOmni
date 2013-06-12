@@ -42,7 +42,7 @@
         public IntPtr GetHandle()
         {
             var handle = new IntPtr();
-            Action getHandleDelegate = () => handle = this.Handle;
+            Action getHandleDelegate = () => handle = Handle;
             if (InvokeRequired)
             {
                 Invoke(getHandleDelegate);
@@ -130,7 +130,7 @@
         private void SetVersionInfo()
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
-            
+
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
