@@ -7,6 +7,8 @@ using Omnipaste;
 
 namespace OmnipasteTests
 {
+    using Omnipaste.Services;
+
     [TestFixture]
     public class MainFormTests
     {
@@ -14,29 +16,48 @@ namespace OmnipasteTests
         {
             public void CallWndProc(Message message)
             {
-                base.WndProc(ref message);
+                WndProc(ref message);
+            }
+
+            public void CallPerformInitializations()
+            {
+                PerformInitializations();
             }
         }
 
-        MainFormWrapper _subject;
+        private MainFormWrapper _subject;
+
         private Mock<IOmniClipboard> _mockOmniclipboard;
+
+        private Mock<IConfigureDialog> _mockConfigureDialog;
 
         [SetUp]
         public void Setup()
         {
             _mockOmniclipboard = new Mock<IOmniClipboard> { DefaultValue = DefaultValue.Mock };
+            _mockConfigureDialog = new Mock<IConfigureDialog>();
             _subject = new MainFormWrapper
                 {
                     OmniClipboard = _mockOmniclipboard.Object,
+                    ApplicationDeploymentInfoProvider = new MockApplicationDeploymentInfoProvider(),
+                    ConfigureForm = _mockConfigureDialog.Object
                 };
         }
 
         [Test]
-        public void OnActivate_Always_ShouldSetTheNotifyIconVisible()
+        public void PerformInitialization_Always_ShouldSetTheNotifyIconVisible()
         {
-            _subject.Activate();
+            _subject.CallPerformInitializations();
 
             _subject.IsNotificationIconVisible.Should().BeTrue();
+        }
+
+        [Test]
+        public void OnActivate_Always_ShouldSetADefferingLoggerOnTheOmniClipboard()
+        {
+            _subject.CallPerformInitializations();
+
+            _mockOmniclipboard.VerifySet(x => x.Logger = It.IsAny<SimpleDefferingLogger>());
         }
 
         [Test]
