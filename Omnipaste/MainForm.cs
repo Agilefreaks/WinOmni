@@ -14,6 +14,8 @@
 
     public partial class MainForm : Form, IDelegateClipboardMessageHandling
     {
+        private const int PopupLifeSpan = 3000;
+
         public event MessageHandler HandleClipboardMessage;
 
         public bool IsNotificationIconVisible
@@ -32,7 +34,7 @@
         public IApplicationDeploymentInfoProvider ApplicationDeploymentInfoProvider { get; set; }
 
         [Inject]
-        public ConfigureForm ConfigureForm { get; set; }
+        public IConfigureDialog ConfigureForm { get; set; }
 
         public MainForm()
         {
@@ -72,11 +74,18 @@
         {
             base.OnLoad(e);
 
+            PerformInitializations();
+        }
+
+        protected void PerformInitializations()
+        {
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
             LoadInitialConfiguration();
             SetVersionInfo();
-            Task.Factory.StartNew(() =>
+            OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
+            Task.Factory.StartNew(
+                () =>
                 {
                     Task.WaitAll(OmniService.Start());
                     AddCurrentUserMenuEntry();
@@ -129,15 +138,35 @@
 
         private void SetVersionInfo()
         {
-            Version version = Assembly.GetExecutingAssembly().GetName().Version;
-
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
+                var ad = ApplicationDeployment.CurrentDeployment;
                 version = ad.CurrentVersion;
             }
 
             NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", MainModule.ApplicationName, version.Major, version.Minor, version.Build, version.Revision);
+        }
+
+        private void ShowLogMessage(string message)
+        {
+            if (InvokeRequired)
+            {
+                Action invokeDelegate = () => ShowBalloonPopup(message);
+                Invoke(invokeDelegate);
+            }
+            else
+            {
+                ShowBalloonPopup(message);
+            }
+        }
+
+        private void ShowBalloonPopup(string message)
+        {
+            NotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            NotifyIcon.BalloonTipText = message;
+            NotifyIcon.BalloonTipTitle = MainModule.ApplicationName;
+            NotifyIcon.ShowBalloonTip(PopupLifeSpan);
         }
     }
 }

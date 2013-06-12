@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Common.Logging;
 using Ninject;
-using OmniCommon;
 using OmniCommon.ExtensionMethods;
 using WindowsClipboard.Imports;
 using WindowsClipboard.Interfaces;
@@ -43,12 +42,12 @@ namespace WindowsClipboard
         private static string GetClipboardText()
         {
             string text = null;
-            var iData = GetClipboardData();
-            if (iData != null)
+            var dataObject = GetClipboardData();
+            if (dataObject != null)
             {
-                if (iData.GetDataPresent(DataFormats.Text))
+                if (dataObject.GetDataPresent(DataFormats.Text))
                 {
-                    text = (string)iData.GetData(DataFormats.Text);
+                    text = (string)dataObject.GetData(DataFormats.Text);
                 }
                 else
                 {
@@ -63,10 +62,10 @@ namespace WindowsClipboard
         {
             // Data on the clipboard uses the 
             // IDataObject interface
-            IDataObject iData;
+            IDataObject dataObject;
             try
             {
-                iData = Clipboard.GetDataObject();
+                dataObject = Clipboard.GetDataObject();
             }
             catch (ExternalException externalException)
             {
@@ -75,7 +74,7 @@ namespace WindowsClipboard
                 return null;
             }
 
-            return iData;
+            return dataObject;
         }
 
         private static void RunOnAnSTAThread(Action action)
@@ -113,14 +112,14 @@ namespace WindowsClipboard
                 // clipboard changes. This enables a clipboard viewer 
                 // window to display the new content of the clipboard. 
                 case Msgs.WM_DRAWCLIPBOARD:
-                    this.CallDataReceived(this.HandleDrawClipboard(message));
+                    CallDataReceived(HandleDrawClipboard(message));
                     break;
 
                 // The WM_CHANGECBCHAIN message is sent to the first window 
                 // in the clipboard viewer chain when a window is being 
                 // removed from the chain. 
                 case Msgs.WM_CHANGECBCHAIN:
-                    this.HandleClipboardChainChanged(message);
+                    HandleClipboardChainChanged(message);
                     break;
 
                 // Let the form process the messages that we are
