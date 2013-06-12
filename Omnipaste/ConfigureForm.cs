@@ -1,15 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Forms;
-using Ninject;
-using OmniCommon.ExtensionMethods;
-using OmniCommon.Interfaces;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+    using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Interfaces;
     using Omnipaste.Services;
 
-    public partial class ConfigureForm : Form
+    public partial class ConfigureForm : Form, IConfigureDialog
     {
         public const int MaxRetryCount = 10;
 
@@ -24,6 +23,11 @@ namespace Omnipaste
         public ConfigureForm()
         {
             InitializeComponent();
+        }
+
+        void IConfigureDialog.ShowDialog()
+        {
+            ShowDialog();
         }
 
         public void AssureClipboardIsInitialized()

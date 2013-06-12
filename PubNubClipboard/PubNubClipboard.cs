@@ -1,10 +1,13 @@
 ﻿namespace PubNubClipboard
 {
     using System;
+    using System.Collections;
     using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Common.Logging;
+    using Common.Logging.Simple;
     using Newtonsoft.Json;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
@@ -16,12 +19,26 @@
         private readonly IPubNubClientFactory _clientFactory;
         private IPubNubClient _pubnub;
         private Task<bool> _initializationTask;
+        private ILog _logger;
 
         public string Channel { get; private set; }
 
         public bool IsInitialized { get; private set; }
 
         public bool IsInitializing { get; private set; }
+
+        public ILog Logger
+        {
+            get
+            {
+                return _logger ?? (_logger = new NoOpLogger());
+            }
+
+            set
+            {
+                _logger = value;
+            }
+        }
 
         public PubNubClipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
         {
@@ -34,7 +51,7 @@
             var communicationSettings = _configurationService.CommunicationSettings;
             var task = string.IsNullOrEmpty(communicationSettings.Channel)
                            ? Task.Factory.StartNew(() => false)
-                           : (IsInitializing ? _initializationTask : InitializePubNubClientAsync());
+                           : IsInitializing ? _initializationTask : InitializePubNubClientAsync();
 
             return task;
         }
@@ -52,7 +69,7 @@
 
         public override void PutData(string data)
         {
-            _pubnub.Publish(Channel, data, o => { });
+            _pubnub.Publish(Channel, data, PutDataCallback);
         }
 
         private static string[] GetDataEntries(string receivedMessage)
@@ -82,12 +99,28 @@
             return IsInitialized;
         }
 
+        private void PutDataCallback(object obj)
+        {
+            var list = obj as IList;
+            if (list == null || list.Count <= 1) return;
+
+            var message = list[1].ToString();
+            if (message.ToLowerInvariant() != "sent")
+            {
+                LogCallbackMessage(message);
+            }
+        }
+
         private void HandleSubscribeConnectionStatusChanged(string result, AutoResetEvent autoResetEvent)
         {
             var dataEntries = GetDataEntries(result);
-            if (dataEntries != null && dataEntries.Any() && dataEntries[0] == "1")
+            if (dataEntries != null && dataEntries.Length > 1)
             {
-                IsInitialized = true;
+                LogCallbackMessage(dataEntries[1]);
+                if (dataEntries[0] == "1")
+                {
+                    IsInitialized = true;
+                }
             }
 
             IsInitializing = false;
@@ -101,6 +134,11 @@
             {
                 OnDataReceived(new ClipboardData(this, dataEntries[0]));
             }
+        }
+
+        private void LogCallbackMessage(string message)
+        {
+            Logger.Info(message);
         }
     }
 }
