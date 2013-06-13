@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste
 {
     using System;
+    using System.Deployment.Application;
     using System.Windows.Forms;
     using CustomizedClickOnce.Common;
     using Ninject;
@@ -51,6 +52,11 @@
 
         private static void SetupUninstaller()
         {
+            if (!ApplicationDeployment.IsNetworkDeployed || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
+            {
+                return;
+            }
+
             var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
             clickOnceHelper.UpdateUninstallParameters();
             clickOnceHelper.AddShortcutToStartup();
