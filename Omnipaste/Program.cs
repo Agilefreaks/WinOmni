@@ -2,8 +2,10 @@
 {
     using System;
     using System.Windows.Forms;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using OmniCommon;
+    using Omnipaste.Properties;
     using PubNubClipboard;
     using WindowsClipboard;
 
@@ -19,27 +21,39 @@
             Application.SetCompatibleTextRenderingDefault(false);
 
             bool createdNewMutex;
-            using (var mutex = new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex))
+            using (new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex))
             {
-                if (!createdNewMutex)
+                if (createdNewMutex)
                 {
-                    MessageBox.Show("Another instance is already running.");
+                    ConfigureAndRun();
                 }
                 else
                 {
-                    ConfigureAndRun();
+                    MessageBox.Show(Resources.InstanceAlreadyRunning);
                 }
             }
         }
 
         private static void ConfigureAndRun()
         {
+            SetupUninstaller();
             var mainModule = new MainModule();
             var kernel = new StandardKernel(
-                mainModule, new CommonModule(), new WindowsClipboardModule(), new PubNubClipboardModule());
+                mainModule,
+                new CommonModule(),
+                new WindowsClipboardModule(),
+                new PubNubClipboardModule());
+
             mainModule.PerfornStartupTasks();
             var form = kernel.Get<MainForm>();
             Application.Run(form);
+        }
+
+        private static void SetupUninstaller()
+        {
+            var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
+            clickOnceHelper.UpdateUninstallParameters();
+            clickOnceHelper.AddShortcutToStartup();
         }
     }
 }

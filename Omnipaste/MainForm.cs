@@ -107,8 +107,15 @@
                     Enabled = false,
                     Text = string.Format("Logged in as: \"{0}\"", OmniClipboard.Channel)
                 };
-            trayIconContextMenuStrip.Items.Insert(0, toolStripMenuItem);
-            trayIconContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
+            Action addItemsAction = () =>
+                {
+                    trayIconContextMenuStrip.Items.Insert(0, toolStripMenuItem);
+                    trayIconContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
+                };
+            if (InvokeRequired)
+            {
+                Invoke(addItemsAction);
+            }
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
@@ -145,7 +152,7 @@
                 version = ad.CurrentVersion;
             }
 
-            NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", MainModule.ApplicationName, version.Major, version.Minor, version.Build, version.Revision);
+            NotifyIcon.Text = string.Format("{0} - {1}.{2}.{3}.{4}", ApplicationInfoFactory.ApplicationName, version.Major, version.Minor, version.Build, version.Revision);
         }
 
         private void ShowLogMessage(string message)
@@ -165,7 +172,7 @@
         {
             NotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
             NotifyIcon.BalloonTipText = message;
-            NotifyIcon.BalloonTipTitle = MainModule.ApplicationName;
+            NotifyIcon.BalloonTipTitle = ApplicationInfoFactory.ApplicationName;
             NotifyIcon.ShowBalloonTip(PopupLifeSpan);
         }
     }

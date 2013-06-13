@@ -1,27 +1,29 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using OmniCommon.ExtensionMethods;
-using OmniCommon.Interfaces;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.Linq;
+    using System.Xml.XPath;
+    using OmniCommon.ExtensionMethods;
+
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {
         private const string FileName = "settings.cfg";
         private readonly byte[] _entropy = Encoding.UTF8.GetBytes("ExtraEntropyToBeMoreSafe");
 
+        private string _settingsFolder;
+        private string _settingFilePath;
+
         public string SettingsFolder
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), MainModule.ApplicationName);
+                return _settingsFolder ?? (_settingsFolder = GetSettingsFolder());
             }
         }
 
@@ -29,7 +31,7 @@ namespace Omnipaste.Services
         {
             get
             {
-                return Path.Combine(SettingsFolder, FileName);
+                return _settingFilePath ?? (_settingFilePath = Path.Combine(SettingsFolder, FileName));
             }
         }
 
@@ -73,6 +75,16 @@ namespace Omnipaste.Services
             }
 
             return saved;
+        }
+
+        private static string GetSettingsFolder()
+        {
+            return
+                Path.Combine(
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        ApplicationInfoFactory.PublisherName),
+                    ApplicationInfoFactory.ApplicationName);
         }
 
         private static XDocument InitializeNewSettingsDocument(string key, string value)
