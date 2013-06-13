@@ -1,15 +1,18 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using WindowsClipboard.Imports;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.InteropServices;
+    using WindowsClipboard.Imports;
+
     public class WindowHelper
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
         {
             int error;
             IntPtr result;
+
             // Win32 SetWindowLong doesn't clear error on success
             User32.SetLastError(0);
 

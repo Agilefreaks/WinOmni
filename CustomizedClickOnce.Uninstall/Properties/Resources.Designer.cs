@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Omnipaste.Properties {
+namespace CustomizedClickOnce.Uninstall.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Omnipaste.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Omnipaste.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CustomizedClickOnce.Uninstall.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,20 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Another instance is already running..
+        ///   Looks up a localized string similar to Uninstall.
         /// </summary>
-        internal static string InstanceAlreadyRunning {
+        internal static string Uninstall {
             get {
-                return ResourceManager.GetString("InstanceAlreadyRunning", resourceCulture);
+                return ResourceManager.GetString("Uninstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to remove OmniPaste from this computer?.
+        /// </summary>
+        internal static string UninstallQuestion {
+            get {
+                return ResourceManager.GetString("UninstallQuestion", resourceCulture);
             }
         }
     }
