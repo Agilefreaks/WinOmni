@@ -30,12 +30,12 @@
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>Omnipaste</ProductName>
-    <PublisherName>Omni</PublisherName>
+    <PublisherName>Omnipaste</PublisherName>
     <SuiteName>Omnipaste</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>38</ApplicationRevision>
+    <ApplicationRevision>47</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -196,7 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\busy.gif" />
-    <Content Include="Resources\Icon1.ico" />
     <Content Include="Resources\Icon2.ico" />
     <Content Include="uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -147,12 +147,7 @@
 
         public void AddShortcutToStartup()
         {
-            if (!ApplicationDeployment.IsNetworkDeployed)
-            {
-                return;
-            }
-
-            if (File.Exists(StartupShortcutPath))
+            if (!ApplicationDeployment.IsNetworkDeployed || File.Exists(StartupShortcutPath))
             {
                 return;
             }
@@ -224,7 +219,11 @@
         private static RegistryKey GetUninstallRegistryKeyByProductName(string productName)
         {
             var uninstallKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
-            if (uninstallKey == null) return null;
+            if (uninstallKey == null)
+            {
+                return null;
+            }
+
             var accessibleUninstallKeys = GetAccessibleUninstallKeys(uninstallKey);
             var uninstallKeyQuery = from uninstallKeys in accessibleUninstallKeys
                                     from valueKey in uninstallKeys.GetValueNames().Where(valueKey => valueKey.Equals(DisplayNameKey))
@@ -283,16 +282,16 @@
         private string GetShortcutPath()
         {
             var allProgramsPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs);
-            var shortcutPath = Path.Combine(allProgramsPath, PublisherName);
+            var shortcutPath = Path.Combine(Path.Combine(allProgramsPath, PublisherName), ProductName);
 
-            return Path.Combine(shortcutPath, ProductName) + ApprefExtension;
+            return Path.Combine(shortcutPath, ProductName + ApprefExtension);
         }
 
         private string GetStartupShortcutPath()
         {
             var startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
 
-            return Path.Combine(startupPath, ProductName) + ApprefExtension;
+            return Path.Combine(startupPath, ProductName + ApprefExtension);
         }
 
         private string GetUninstallFilePath()
