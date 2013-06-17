@@ -36,6 +36,8 @@
 
         public void Stop()
         {
+            LocalClipboard.RemoveDataReceive(this);
+            OmniClipboard.RemoveDataReceive(this);
             LocalClipboard.Dispose();
             OmniClipboard.Dispose();
         }
