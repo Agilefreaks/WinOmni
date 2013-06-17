@@ -2,6 +2,6 @@
 {
     public interface IActivationDataProvider
     {
-        ActivationData GetActivationData();
+        ActivationData GetActivationData(string token);
     }
 }

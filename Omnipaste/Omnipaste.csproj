@@ -86,6 +86,9 @@
     <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.5\tools\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -119,6 +122,7 @@
   <ItemGroup>
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="IConfigureDialog.cs" />
+    <Compile Include="ITokenInputForm.cs" />
     <Compile Include="SimpleDefferingLogger.cs" />
     <Compile Include="ConfigureForm.cs">
       <SubType>Form</SubType>
@@ -142,10 +146,16 @@
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\MockApplicationDeploymentInfoProvider.cs" />
     <Compile Include="Services\ApplicationDeploymentWrapper.cs" />
-    <Compile Include="Services\ClickOnceActivationDataProvider.cs" />
+    <Compile Include="Services\OnlineActivationDataProvider.cs" />
     <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
     <Compile Include="Services\DPAPIConfigurationProvider.cs" />
     <Compile Include="Services\MockActivationDataProvider.cs" />
+    <Compile Include="TokenInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TokenInputForm.Designer.cs">
+      <DependentUpon>TokenInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="WindowHelper.cs" />
     <EmbeddedResource Include="ConfigureForm.resx">
       <DependentUpon>ConfigureForm.cs</DependentUpon>
@@ -163,6 +173,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TokenInputForm.resx">
+      <DependentUpon>TokenInputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -187,6 +200,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Uninstall.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -195,11 +211,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icon2.ico" />
     <Content Include="Resources\busy.gif" />
     <Content Include="Resources\Icon2.ico" />
-    <Content Include="uninstall.exe">
+    <Resource Include="uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste
 {
     using System;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Windows.Forms;
     using Ninject;
@@ -12,11 +13,19 @@
     {
         public const int MaxRetryCount = 10;
 
+        public bool Succeeded { get; private set; }
+
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
         [Inject]
         public IActivationDataProvider ActivationDataProvider { get; set; }
+
+        [Inject]
+        public ITokenInputForm TokenInputForm { get; set; }
+
+        [Inject]
+        public IApplicationDeploymentInfoProvider ApplicationDeploymentInfoProvider { get; set; }
 
         private int _retryCount;
 
@@ -27,12 +36,20 @@
 
         void IConfigureDialog.ShowDialog()
         {
+            Succeeded = false;
             ShowDialog();
         }
 
         public void AssureClipboardIsInitialized()
         {
-            var activationData = ActivationDataProvider.GetActivationData();
+            var activationToken = GetActivationToken();
+
+            if (string.IsNullOrEmpty(activationToken))
+            {
+                return;
+            }
+
+            var activationData = ActivationDataProvider.GetActivationData(activationToken);
             if (activationData.Email.IsNullOrWhiteSpace())
             {
                 if (ShouldRetryActivation())
@@ -43,8 +60,9 @@
             }
             else
             {
+                Succeeded = true;
                 ConfigurationService.UpdateCommunicationChannel(activationData.Email);
-                BackgroundWorker.CancelAsync();
+                backgroundWorker.CancelAsync();
             }
         }
 
@@ -52,13 +70,13 @@
         {
             base.OnLoad(e);
             _retryCount = 0;
-            BackgroundWorker.RunWorkerAsync();
+            backgroundWorker.RunWorkerAsync();
         }
 
         private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
             AssureClipboardIsInitialized();
-            if (BackgroundWorker.CancellationPending)
+            if (backgroundWorker.CancellationPending)
             {
                 e.Cancel = true;
             }
@@ -68,17 +86,47 @@
 
         private bool ShouldRetryActivation()
         {
-            return _retryCount < MaxRetryCount && !BackgroundWorker.CancellationPending;
+            return _retryCount < MaxRetryCount && !backgroundWorker.CancellationPending;
         }
 
         private void CancelButtonClick(object sender, EventArgs e)
         {
-            if (BackgroundWorker.IsBusy)
+            if (backgroundWorker.IsBusy)
             {
-                BackgroundWorker.CancelAsync();
+                backgroundWorker.CancelAsync();
             }
 
             Close();
+        }
+
+        private string GetActivationToken()
+        {
+            return ApplicationDeploymentInfoProvider.HasValidActivationUri
+                       ? GetActivationTokenFromDeploymentParameters()
+                       : (InvokeRequired
+                              ? Invoke((Func<string>)GetActivationTokenFromUser) as string
+                              : GetActivationTokenFromUser());
+        }
+
+        private string GetActivationTokenFromUser()
+        {
+            Visible = false;
+            TokenInputForm.ShowDialog();
+            var token = TokenInputForm.Token;
+            Visible = true;
+
+            return token;
+        }
+
+        private string GetActivationTokenFromDeploymentParameters()
+        {
+            var deploymentParameters = new NameValueCollection();
+            if (ApplicationDeploymentInfoProvider.HasValidActivationUri)
+            {
+                deploymentParameters = ApplicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
+            }
+
+            return deploymentParameters["token"];
         }
     }
 }

@@ -40,6 +40,9 @@
 
         [Inject]
         public IClickOnceHelper ClickOnceHelper { get; set; }
+        
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
 
         public MainForm()
         {
@@ -86,19 +89,25 @@
         {
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            LoadInitialConfiguration();
-            SetVersionInfo();
+            if (!AssureConfigurationLoaded())
+            {
+                Close();
+            }
+            else
+            {
+                SetVersionInfo();
             SetAutoStartInfo();
-            OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
+                OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
             Task.Factory.StartNew(StartOmniService);
+            }
         }
 
-        protected void LoadInitialConfiguration()
+        protected bool AssureConfigurationLoaded()
         {
-            if (ApplicationDeploymentInfoProvider.IsFirstNetworkRun)
-            {
-                ConfigureForm.ShowDialog();
-            }
+            if (!string.IsNullOrEmpty(ConfigurationService.CommunicationSettings.Channel)) return true;
+            ConfigureForm.ShowDialog();
+
+            return ConfigureForm.Succeeded;
         }
 
         protected void AddCurrentUserMenuEntry()

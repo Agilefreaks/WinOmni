@@ -1,9 +1,8 @@
-﻿using System;
-using System.Configuration;
-using OmniCommon.Interfaces;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
+    using System;
+    using System.Configuration;
+
     public class ConfigurationManagerConfigurationProvider : IConfigurationProvider
     {
         public string GetValue(string key)

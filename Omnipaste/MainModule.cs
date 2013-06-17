@@ -15,7 +15,9 @@
         {
             Kernel.Bind<MainForm>().ToSelf().InSingletonScope();
             Kernel.Bind<ConfigureForm>().ToSelf().InSingletonScope();
+            Kernel.Bind<TokenInputForm>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigureDialog>().ToMethod(c => c.Kernel.Get<ConfigureForm>());
+            Kernel.Bind<ITokenInputForm>().ToMethod(c => c.Kernel.Get<TokenInputForm>());
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<MainForm>());
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();
@@ -26,7 +28,7 @@
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<MockApplicationDeploymentInfoProvider>();
 #else
-            Kernel.Bind<IActivationDataProvider>().To<ClickOnceActivationDataProvider>().InSingletonScope();
+            Kernel.Bind<IActivationDataProvider>().To<OnlineActivationDataProvider>().InSingletonScope();
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentWrapper>().InSingletonScope();
 #endif
         }

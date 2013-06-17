@@ -11,25 +11,25 @@
 
         public ConfigurationService(IConfigurationProvider configurationProvider)
         {
-            this._configurationProvider = configurationProvider;
+            _configurationProvider = configurationProvider;
         }
 
         public void Startup()
         {
-            this.LoadCommunicationSettings();
+            LoadCommunicationSettings();
         }
 
         public void UpdateCommunicationChannel(string channel)
         {
-            this._configurationProvider.SetValue("channel", channel);
-            this.LoadCommunicationSettings();
+            _configurationProvider.SetValue("channel", channel);
+            LoadCommunicationSettings();
         }
 
         public void LoadCommunicationSettings()
         {
-            this.CommunicationSettings = new CommunicationSettings
+            CommunicationSettings = new CommunicationSettings
                 {
-                    Channel = this._configurationProvider.GetValue("channel")
+                    Channel = _configurationProvider.GetValue("channel")
                 };
         }
     }

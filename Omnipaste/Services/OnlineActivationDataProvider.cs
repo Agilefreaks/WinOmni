@@ -1,27 +1,26 @@
 ﻿namespace Omnipaste.Services
 {
-    using System.Collections.Specialized;
     using System.Configuration;
     using System.Net;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
-    using OmniCommon.ExtensionMethods;
     using RestSharp;
 
-    public class ClickOnceActivationDataProvider : IActivationDataProvider
+    public class OnlineActivationDataProvider : IActivationDataProvider
     {
-        private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
+        private static string _tokenLink;
 
-        public ClickOnceActivationDataProvider(IApplicationDeploymentInfoProvider applicationDeploymentInfoProvider)
+        public static string TokenLink
         {
-            _applicationDeploymentInfoProvider = applicationDeploymentInfoProvider;
+            get
+            {
+                return _tokenLink ?? (_tokenLink = ConfigurationManager.AppSettings["baseUrl"] + "whatsmytoken");
+            }
         }
 
-        public ActivationData GetActivationData()
+        public ActivationData GetActivationData(string token)
         {
             ActivationData activationData = null;
-            var deploymentParameters = GetDeploymentParameters();
-            var token = deploymentParameters["token"];
             if (!string.IsNullOrEmpty(token))
             {
                 var request = CreateRequest(token);
@@ -34,7 +33,7 @@
 
         private static IRestResponse<ActivationData> PerformRequest(IRestRequest request)
         {
-            var restClient = new RestClient(ConfigurationManager.AppSettings["baseUrl"]);
+            var restClient = new RestClient(ConfigurationManager.AppSettings["apiUrl"]);
             var restResponse = restClient.Execute<ActivationData>(request);
 
             return restResponse;
@@ -52,17 +51,6 @@
         private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
-        }
-
-        private NameValueCollection GetDeploymentParameters()
-        {
-            var deploymentParameters = new NameValueCollection();
-            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
-            {
-                deploymentParameters = _applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
-            }
-
-            return deploymentParameters;
         }
     }
 }
