@@ -109,7 +109,7 @@ namespace OmnipasteTests
             _mockClickOnceHelper.Setup(x => x.StartupShortcutExists()).Returns(true);
             _subject.CallPerformInitializations();
 
-            _subject.AutoStartCheckbox.Checked.Should().BeTrue();
+            _subject.AutoStartButton.Checked.Should().BeTrue();
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace OmnipasteTests
             _mockClickOnceHelper.Setup(x => x.StartupShortcutExists()).Returns(false);
             _subject.CallPerformInitializations();
 
-            _subject.AutoStartCheckbox.Checked.Should().BeFalse();
+            _subject.AutoStartButton.Checked.Should().BeFalse();
         }
     }
 }

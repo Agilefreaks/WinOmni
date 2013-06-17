@@ -16,6 +16,8 @@
 
         void AddShortcutToStartup();
 
+        void RemoveShortcutFromStartup();
+
         void Uninstall();
 
         void UpdateUninstallParameters();

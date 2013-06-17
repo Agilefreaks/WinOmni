@@ -155,6 +155,14 @@
             File.Copy(ShortcutPath, StartupShortcutPath);
         }
 
+        public void RemoveShortcutFromStartup()
+        {
+            if (File.Exists(StartupShortcutPath))
+            {
+                File.Delete(StartupShortcutPath);
+            }
+        }
+
         public void Uninstall()
         {
             try
@@ -302,14 +310,6 @@
         private string GetUninstallFilePath()
         {
             return Path.Combine(AppDataFolderPath, UninstallStringFile);
-        }
-
-        private void RemoveShortcutFromStartup()
-        {
-            if (File.Exists(StartupShortcutPath))
-            {
-                File.Delete(StartupShortcutPath);
-            }
         }
 
         private void RespondToClickOnceRemovalDialog()

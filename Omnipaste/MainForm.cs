@@ -144,6 +144,18 @@
             }
         }
 
+        private void AutoStartButtonClick(object sender, EventArgs e)
+        {
+            if (AutoStartButton.Checked)
+            {
+                ClickOnceHelper.AddShortcutToStartup();
+            }
+            else
+            {
+                ClickOnceHelper.RemoveShortcutFromStartup();
+            }
+        }
+
         private void SetVersionInfo()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -196,7 +208,7 @@
 
         private void SetAutoStartInfo()
         {
-            AutoStartCheckbox.Checked = ClickOnceHelper.StartupShortcutExists();
+            AutoStartButton.Checked = ClickOnceHelper.StartupShortcutExists();
         }
     }
 }

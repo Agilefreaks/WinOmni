@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.AutoStartCheckbox = new System.Windows.Forms.ToolStripMenuItem();
+            this.AutoStartButton = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.DisableButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,18 +49,20 @@
             // trayIconContextMenuStrip
             // 
             this.trayIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AutoStartCheckbox,
+            this.AutoStartButton,
             this.settingsSeparator,
             this.DisableButton,
             this.ExitButton});
             this.trayIconContextMenuStrip.Name = "trayIconContextMenuStrip";
             this.trayIconContextMenuStrip.Size = new System.Drawing.Size(187, 76);
             // 
-            // AutoStartCheckbox
+            // AutoStartButton
             // 
-            this.AutoStartCheckbox.Name = "AutoStartCheckbox";
-            this.AutoStartCheckbox.Size = new System.Drawing.Size(186, 22);
-            this.AutoStartCheckbox.Text = "Start With Windows";
+            this.AutoStartButton.CheckOnClick = true;
+            this.AutoStartButton.Name = "AutoStartButton";
+            this.AutoStartButton.Size = new System.Drawing.Size(186, 22);
+            this.AutoStartButton.Text = "Start With Windows";
+            this.AutoStartButton.Click += new System.EventHandler(this.AutoStartButtonClick);
             // 
             // settingsSeparator
             // 
@@ -106,7 +108,7 @@
         private System.Windows.Forms.ToolStripMenuItem ExitButton;
         private System.Windows.Forms.ToolStripMenuItem DisableButton;
         private System.Windows.Forms.ToolStripSeparator settingsSeparator;
-        public System.Windows.Forms.ToolStripMenuItem AutoStartCheckbox;
+        public System.Windows.Forms.ToolStripMenuItem AutoStartButton;
 
 
     }
