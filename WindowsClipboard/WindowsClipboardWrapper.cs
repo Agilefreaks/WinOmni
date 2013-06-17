@@ -49,10 +49,6 @@ namespace WindowsClipboard
                 {
                     text = (string)dataObject.GetData(DataFormats.Text);
                 }
-                else
-                {
-                    text = "(cannot display this format)";
-                }
             }
 
             return text;
