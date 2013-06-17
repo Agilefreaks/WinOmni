@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Reflection;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using Ninject.Modules;
     using OmniCommon.Interfaces;
@@ -19,6 +20,8 @@
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigurationService>().ToMethod(c => Kernel.Get<ConfigurationService>());
+            Kernel.Bind<ApplicationInfo>().ToConstant(ApplicationInfoFactory.Create());
+
 #if DEBUG
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<MockApplicationDeploymentInfoProvider>();
