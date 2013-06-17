@@ -8,7 +8,7 @@
 
         IOmniClipboard OmniClipboard { get; }
 
-        Task Start();
+        Task<bool> Start();
 
         void Stop();
     }

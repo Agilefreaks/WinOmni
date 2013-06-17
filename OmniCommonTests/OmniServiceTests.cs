@@ -121,6 +121,38 @@ namespace OmniCommonTests
             startTask2.Should().NotBeSameAs(startTask);
         }
 
+        [Test]
+        public void Stop_Always_CallsLocalClipboardRemoveDataReceiver()
+        {
+            _subject.Stop();
+
+            _mockLocalClipboard.Verify(x => x.RemoveDataReceive(_subject), Times.Once());
+        }
+
+        [Test]
+        public void Stop_Always_CallsOmniClipboardRemoveDataReceiver()
+        {
+            _subject.Stop();
+
+            _mockOmniClipboard.Verify(x => x.RemoveDataReceive(_subject), Times.Once());
+        }
+
+        [Test]
+        public void Stop_Always_CallsLocalClipboardDispose()
+        {
+            _subject.Stop();
+
+            _mockLocalClipboard.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        public void Stop_Always_CallsOmniClipboardDispose()
+        {
+            _subject.Stop();
+
+            _mockOmniClipboard.Verify(x => x.Dispose(), Times.Once());
+        }
+
         private static IClipboardData CreateClipboardDataFrom(IClipboard clipboard)
         {
             return new ClipboardData(clipboard, "test-data");

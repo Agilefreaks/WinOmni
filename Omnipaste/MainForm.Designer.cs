@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AutoStartButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.DisableButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitButton = new System.Windows.Forms.ToolStripMenuItem();
             this.trayIconContextMenuStrip.SuspendLayout();
@@ -47,17 +49,31 @@
             // trayIconContextMenuStrip
             // 
             this.trayIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AutoStartButton,
+            this.settingsSeparator,
             this.DisableButton,
             this.ExitButton});
             this.trayIconContextMenuStrip.Name = "trayIconContextMenuStrip";
-            this.trayIconContextMenuStrip.Size = new System.Drawing.Size(269, 52);
+            this.trayIconContextMenuStrip.Size = new System.Drawing.Size(187, 76);
+            // 
+            // AutoStartButton
+            // 
+            this.AutoStartButton.CheckOnClick = true;
+            this.AutoStartButton.Name = "AutoStartButton";
+            this.AutoStartButton.Size = new System.Drawing.Size(186, 22);
+            this.AutoStartButton.Text = "Start With Windows";
+            this.AutoStartButton.Click += new System.EventHandler(this.AutoStartButtonClick);
+            // 
+            // settingsSeparator
+            // 
+            this.settingsSeparator.Name = "settingsSeparator";
+            this.settingsSeparator.Size = new System.Drawing.Size(183, 6);
             // 
             // DisableButton
             // 
             this.DisableButton.CheckOnClick = true;
             this.DisableButton.Name = "DisableButton";
-            this.DisableButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.DisableButton.Size = new System.Drawing.Size(268, 24);
+            this.DisableButton.Size = new System.Drawing.Size(186, 22);
             this.DisableButton.Text = "Stop Synchronization";
             this.DisableButton.ToolTipText = "Temporarily stop clipboard synchronization";
             this.DisableButton.Click += new System.EventHandler(this.DisableButtonClick);
@@ -65,19 +81,17 @@
             // ExitButton
             // 
             this.ExitButton.Name = "ExitButton";
-            this.ExitButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.ExitButton.Size = new System.Drawing.Size(268, 24);
+            this.ExitButton.Size = new System.Drawing.Size(186, 22);
             this.ExitButton.Text = "Exit";
             this.ExitButton.Click += new System.EventHandler(this.ExitButtonClick);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1, 1);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.ShowInTaskbar = false;
             this.Text = "ClipboardWatcher";
@@ -93,6 +107,8 @@
         private System.Windows.Forms.ContextMenuStrip trayIconContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem ExitButton;
         private System.Windows.Forms.ToolStripMenuItem DisableButton;
+        private System.Windows.Forms.ToolStripSeparator settingsSeparator;
+        public System.Windows.Forms.ToolStripMenuItem AutoStartButton;
 
 
     }

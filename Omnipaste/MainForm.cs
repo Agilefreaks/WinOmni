@@ -6,8 +6,10 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using OmniCommon.Interfaces;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
     using WindowsClipboard.Imports;
     using WindowsClipboard.Interfaces;
@@ -35,6 +37,9 @@
 
         [Inject]
         public IConfigureDialog ConfigureForm { get; set; }
+
+        [Inject]
+        public IClickOnceHelper ClickOnceHelper { get; set; }
 
         public MainForm()
         {
@@ -83,13 +88,9 @@
             HideWindowFromAltTab();
             LoadInitialConfiguration();
             SetVersionInfo();
+            SetAutoStartInfo();
             OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
-            Task.Factory.StartNew(
-                () =>
-                {
-                    Task.WaitAll(OmniService.Start());
-                    AddCurrentUserMenuEntry();
-                });
+            Task.Factory.StartNew(StartOmniService);
         }
 
         protected void LoadInitialConfiguration()
@@ -143,6 +144,18 @@
             }
         }
 
+        private void AutoStartButtonClick(object sender, EventArgs e)
+        {
+            if (AutoStartButton.Checked)
+            {
+                ClickOnceHelper.AddShortcutToStartup();
+            }
+            else
+            {
+                ClickOnceHelper.RemoveShortcutFromStartup();
+            }
+        }
+
         private void SetVersionInfo()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -174,6 +187,28 @@
             NotifyIcon.BalloonTipText = message;
             NotifyIcon.BalloonTipTitle = ApplicationInfoFactory.ApplicationName;
             NotifyIcon.ShowBalloonTip(PopupLifeSpan);
+        }
+
+        private void StartOmniService()
+        {
+            var startTask = OmniService.Start();
+            Task.WaitAll(startTask);
+            if (startTask.Result)
+            {
+                AddCurrentUserMenuEntry();
+                DisableButton.Checked = false;
+            }
+            else
+            {
+                OmniService.Stop();
+                DisableButton.Checked = true;
+                ShowLogMessage(Resources.CouldNotInitializeSynchronizationService);
+            }
+        }
+
+        private void SetAutoStartInfo()
+        {
+            AutoStartButton.Checked = ClickOnceHelper.StartupShortcutExists();
         }
     }
 }

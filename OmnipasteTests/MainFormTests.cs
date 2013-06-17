@@ -7,6 +7,9 @@ using Omnipaste;
 
 namespace OmnipasteTests
 {
+    using System;
+    using System.Threading.Tasks;
+    using CustomizedClickOnce.Common;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -31,16 +34,31 @@ namespace OmnipasteTests
 
         private Mock<IConfigureDialog> _mockConfigureDialog;
 
+        private Mock<IClickOnceHelper> _mockClickOnceHelper;
+
+        private Mock<IOmniService> _mockOmniService;
+
         [SetUp]
         public void Setup()
         {
             _mockOmniclipboard = new Mock<IOmniClipboard> { DefaultValue = DefaultValue.Mock };
             _mockConfigureDialog = new Mock<IConfigureDialog>();
+            _mockClickOnceHelper = new Mock<IClickOnceHelper>();
+            _mockOmniService = new Mock<IOmniService> { DefaultValue = DefaultValue.Mock };
+            Func<bool> startOmniServiceFunc = () => true;
+            _mockOmniService.Setup(x => x.Start()).Returns(() =>
+                {
+                    var task = new Task<bool>(startOmniServiceFunc);
+                    task.Start();
+                    return task;
+                });
             _subject = new MainFormWrapper
                 {
                     OmniClipboard = _mockOmniclipboard.Object,
                     ApplicationDeploymentInfoProvider = new MockApplicationDeploymentInfoProvider(),
-                    ConfigureForm = _mockConfigureDialog.Object
+                    ConfigureForm = _mockConfigureDialog.Object,
+                    ClickOnceHelper = _mockClickOnceHelper.Object,
+                    OmniService = _mockOmniService.Object
                 };
         }
 
@@ -75,6 +93,32 @@ namespace OmnipasteTests
             _subject.CallWndProc(message);
 
             callCount.Should().Be(1);
+        }
+
+        [Test]
+        public void PerformInitialization_Always_ShouldCallClickOnceHelperStartupShortcutExists()
+        {
+            _subject.CallPerformInitializations();
+
+            _mockClickOnceHelper.Verify(x => x.StartupShortcutExists(), Times.Once());
+        }
+
+        [Test]
+        public void PerformInitialization_StartupShortcutExists_ShouldSetAutoStartCheckboxChecked()
+        {
+            _mockClickOnceHelper.Setup(x => x.StartupShortcutExists()).Returns(true);
+            _subject.CallPerformInitializations();
+
+            _subject.AutoStartButton.Checked.Should().BeTrue();
+        }
+
+        [Test]
+        public void PerformInitialization_StartupShortcutDoesNotExist_ShouldSetAutoStartCheckboxNotChecked()
+        {
+            _mockClickOnceHelper.Setup(x => x.StartupShortcutExists()).Returns(false);
+            _subject.CallPerformInitializations();
+
+            _subject.AutoStartButton.Checked.Should().BeFalse();
         }
     }
 }

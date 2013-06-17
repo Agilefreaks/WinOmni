@@ -6,7 +6,7 @@
 
     public class OmniService : IOmniService
     {
-        private Task _startTask;
+        private Task<bool> _startTask;
 
         public ILocalClipboard LocalClipboard { get; private set; }
 
@@ -22,20 +22,31 @@
             OmniClipboard = omniClipboard;
         }
 
-        public Task Start()
+        public Task<bool> Start()
         {
-            return _startTask ?? (_startTask = Task.Factory.StartNew(
+            return _startTask ?? (_startTask = Task<bool>.Factory.StartNew(
                 () =>
                 {
-                    Task.WaitAll(LocalClipboard.Initialize(), OmniClipboard.Initialize());
-                    OmniClipboard.AddDataReceiver(this);
-                    LocalClipboard.AddDataReceiver(this);
+                    var initializeLocalClipboardTask = LocalClipboard.Initialize();
+                    var initializeOmniClipboardTask = OmniClipboard.Initialize();
+                    Task.WaitAll(initializeLocalClipboardTask, initializeOmniClipboardTask);
+                    var couldInitializeClipboards = initializeLocalClipboardTask.Result && initializeOmniClipboardTask.Result;
+                    if (couldInitializeClipboards)
+                    {
+                        OmniClipboard.AddDataReceiver(this);
+                        LocalClipboard.AddDataReceiver(this);
+                    }
+
                     _startTask = null;
+
+                    return couldInitializeClipboards;
                 }));
         }
 
         public void Stop()
         {
+            LocalClipboard.RemoveDataReceive(this);
+            OmniClipboard.RemoveDataReceive(this);
             LocalClipboard.Dispose();
             OmniClipboard.Dispose();
         }
