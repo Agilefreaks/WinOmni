@@ -15,6 +15,8 @@
 
     public class PubNubClipboard : ClipboardBase, IPubNubClipboard
     {
+        public const int PubnubMaximumMessageSize = 1794;
+
         private readonly IConfigurationService _configurationService;
         private readonly IPubNubClientFactory _clientFactory;
         private IPubNubClient _pubnub;
@@ -69,7 +71,14 @@
 
         public override void PutData(string data)
         {
-            _pubnub.Publish(Channel, data, PutDataCallback);
+            if (data.Length > PubnubMaximumMessageSize)
+            {
+                Logger.Info(new InvalidMessageException().Message);
+            }
+            else
+            {
+                _pubnub.Publish(Channel, data, PutDataCallback);
+            }
         }
 
         private static string[] GetDataEntries(string receivedMessage)

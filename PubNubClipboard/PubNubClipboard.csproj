@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvalidMessageException.cs" />
     <Compile Include="PubNubClipboardModule.cs" />
     <Compile Include="IPubNubClipboard.cs" />
     <Compile Include="IPubNubClientFactory.cs" />
