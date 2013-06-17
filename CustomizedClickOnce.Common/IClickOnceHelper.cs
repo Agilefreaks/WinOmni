@@ -20,6 +20,8 @@
 
         void UpdateUninstallParameters();
 
+        bool StartupShortcutExists();
+
         #endregion
     }
 }

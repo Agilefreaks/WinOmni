@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Properties;
@@ -36,6 +37,9 @@
 
         [Inject]
         public IConfigureDialog ConfigureForm { get; set; }
+
+        [Inject]
+        public IClickOnceHelper ClickOnceHelper { get; set; }
 
         public MainForm()
         {
@@ -84,6 +88,7 @@
             HideWindowFromAltTab();
             LoadInitialConfiguration();
             SetVersionInfo();
+            SetAutoStartInfo();
             OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
             Task.Factory.StartNew(StartOmniService);
         }
@@ -189,5 +194,9 @@
             }
         }
 
+        private void SetAutoStartInfo()
+        {
+            AutoStartCheckbox.Checked = ClickOnceHelper.StartupShortcutExists();
+        }
     }
 }

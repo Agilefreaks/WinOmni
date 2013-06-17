@@ -212,6 +212,11 @@
             SetUrlInfoAbout();
         }
 
+        public bool StartupShortcutExists()
+        {
+            return File.Exists(StartupShortcutPath);
+        }
+
         #endregion
 
         #region Methods
