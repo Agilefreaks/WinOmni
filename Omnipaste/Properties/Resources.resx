@@ -117,4 +117,7 @@
   <data name="InstanceAlreadyRunning" xml:space="preserve">
     <value>Another instance is already running.</value>
   </data>
+  <data name="CouldNotInitializeSynchronizationService" xml:space="preserve">
+    <value>Could not initialize synchronization service</value>
+  </data>
 </root>

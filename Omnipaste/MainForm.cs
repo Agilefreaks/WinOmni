@@ -8,6 +8,7 @@
     using System.Windows.Forms;
     using Ninject;
     using OmniCommon.Interfaces;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
     using WindowsClipboard.Imports;
     using WindowsClipboard.Interfaces;
@@ -84,12 +85,7 @@
             LoadInitialConfiguration();
             SetVersionInfo();
             OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
-            Task.Factory.StartNew(
-                () =>
-                {
-                    Task.WaitAll(OmniService.Start());
-                    AddCurrentUserMenuEntry();
-                });
+            Task.Factory.StartNew(StartOmniService);
         }
 
         protected void LoadInitialConfiguration()
@@ -175,5 +171,23 @@
             NotifyIcon.BalloonTipTitle = ApplicationInfoFactory.ApplicationName;
             NotifyIcon.ShowBalloonTip(PopupLifeSpan);
         }
+
+        private void StartOmniService()
+        {
+            var startTask = OmniService.Start();
+            Task.WaitAll(startTask);
+            if (startTask.Result)
+            {
+                AddCurrentUserMenuEntry();
+                DisableButton.Checked = false;
+            }
+            else
+            {
+                OmniService.Stop();
+                DisableButton.Checked = true;
+                ShowLogMessage(Resources.CouldNotInitializeSynchronizationService);
+            }
+        }
+
     }
 }

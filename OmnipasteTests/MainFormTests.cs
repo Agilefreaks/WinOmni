@@ -7,6 +7,8 @@ using Omnipaste;
 
 namespace OmnipasteTests
 {
+    using System;
+    using System.Threading.Tasks;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -31,16 +33,28 @@ namespace OmnipasteTests
 
         private Mock<IConfigureDialog> _mockConfigureDialog;
 
+
+        private Mock<IOmniService> _mockOmniService;
+
         [SetUp]
         public void Setup()
         {
             _mockOmniclipboard = new Mock<IOmniClipboard> { DefaultValue = DefaultValue.Mock };
             _mockConfigureDialog = new Mock<IConfigureDialog>();
+            _mockOmniService = new Mock<IOmniService> { DefaultValue = DefaultValue.Mock };
+            Func<bool> startOmniServiceFunc = () => true;
+            _mockOmniService.Setup(x => x.Start()).Returns(() =>
+                {
+                    var task = new Task<bool>(startOmniServiceFunc);
+                    task.Start();
+                    return task;
+                });
             _subject = new MainFormWrapper
                 {
                     OmniClipboard = _mockOmniclipboard.Object,
                     ApplicationDeploymentInfoProvider = new MockApplicationDeploymentInfoProvider(),
-                    ConfigureForm = _mockConfigureDialog.Object
+                    ConfigureForm = _mockConfigureDialog.Object,
+                    OmniService = _mockOmniService.Object
                 };
         }
 
