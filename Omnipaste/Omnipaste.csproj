@@ -215,11 +215,11 @@
     <Content Include="Icon2.ico" />
     <Content Include="Resources\busy.gif" />
     <Content Include="Resources\Icon2.ico" />
-    <Resource Include="uninstall.exe">
     <EmbeddedResource Include="Resources\Offline.ico" />
     <EmbeddedResource Include="Resources\Online.ico" />
     <EmbeddedResource Include="Resources\Receiving.ico" />
     <EmbeddedResource Include="Resources\Sending.ico" />
+    <Resource Include="uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
