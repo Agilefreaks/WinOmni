@@ -146,7 +146,7 @@
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\MockApplicationDeploymentInfoProvider.cs" />
     <Compile Include="Services\ApplicationDeploymentWrapper.cs" />
-    <Compile Include="Services\ClickOnceActivationDataProvider.cs" />
+    <Compile Include="Services\OnlineActivationDataProvider.cs" />
     <Compile Include="Services\ConfigurationManagerConfigurationProvider.cs" />
     <Compile Include="Services\DPAPIConfigurationProvider.cs" />
     <Compile Include="Services\MockActivationDataProvider.cs" />

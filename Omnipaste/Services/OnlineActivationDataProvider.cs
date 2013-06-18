@@ -6,8 +6,18 @@
     using System.Security.Cryptography.X509Certificates;
     using RestSharp;
 
-    public class ClickOnceActivationDataProvider : IActivationDataProvider
+    public class OnlineActivationDataProvider : IActivationDataProvider
     {
+        private static string _tokenLink;
+
+        public static string TokenLink
+        {
+            get
+            {
+                return _tokenLink ?? (_tokenLink = ConfigurationManager.AppSettings["baseUrl"] + "whatismytoken");
+            }
+        }
+
         public ActivationData GetActivationData(string token)
         {
             ActivationData activationData = null;
@@ -23,7 +33,7 @@
 
         private static IRestResponse<ActivationData> PerformRequest(IRestRequest request)
         {
-            var restClient = new RestClient(ConfigurationManager.AppSettings["baseUrl"]);
+            var restClient = new RestClient(ConfigurationManager.AppSettings["apiUrl"]);
             var restResponse = restClient.Execute<ActivationData>(request);
 
             return restResponse;

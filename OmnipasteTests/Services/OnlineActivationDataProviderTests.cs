@@ -4,14 +4,14 @@ using Omnipaste.Services;
 namespace OmnipasteTests.Services
 {
     [TestFixture]
-    public class ClickOnceActivationDataProviderTests
+    public class OnlineActivationDataProviderTests
     {
-        private ClickOnceActivationDataProvider _subject;
+        private OnlineActivationDataProvider _subject;
 
         [SetUp]
         public void Setup()
         {
-            _subject = new ClickOnceActivationDataProvider();
+            _subject = new OnlineActivationDataProvider();
         }
     }
 }
