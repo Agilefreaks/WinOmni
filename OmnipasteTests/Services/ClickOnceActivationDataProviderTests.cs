@@ -1,7 +1,6 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using OmniCommon.Interfaces;
 using Omnipaste.Services;
 
 namespace OmnipasteTests.Services
