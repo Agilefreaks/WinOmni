@@ -1,27 +1,16 @@
 ﻿namespace Omnipaste.Services
 {
-    using System.Collections.Specialized;
     using System.Configuration;
     using System.Net;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
-    using OmniCommon.ExtensionMethods;
     using RestSharp;
 
     public class ClickOnceActivationDataProvider : IActivationDataProvider
     {
-        private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
-
-        public ClickOnceActivationDataProvider(IApplicationDeploymentInfoProvider applicationDeploymentInfoProvider)
-        {
-            _applicationDeploymentInfoProvider = applicationDeploymentInfoProvider;
-        }
-
-        public ActivationData GetActivationData()
+        public ActivationData GetActivationData(string token)
         {
             ActivationData activationData = null;
-            var deploymentParameters = GetDeploymentParameters();
-            var token = deploymentParameters["token"];
             if (!string.IsNullOrEmpty(token))
             {
                 var request = CreateRequest(token);
@@ -52,17 +41,6 @@
         private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
-        }
-
-        private NameValueCollection GetDeploymentParameters()
-        {
-            var deploymentParameters = new NameValueCollection();
-            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
-            {
-                deploymentParameters = _applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
-            }
-
-            return deploymentParameters;
         }
     }
 }

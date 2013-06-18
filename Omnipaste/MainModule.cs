@@ -14,7 +14,9 @@
         {
             Kernel.Bind<MainForm>().ToSelf().InSingletonScope();
             Kernel.Bind<ConfigureForm>().ToSelf().InSingletonScope();
+            Kernel.Bind<TokenInputForm>().ToSelf().InSingletonScope();
             Kernel.Bind<IConfigureDialog>().ToMethod(c => c.Kernel.Get<ConfigureForm>());
+            Kernel.Bind<ITokenInputForm>().ToMethod(c => c.Kernel.Get<TokenInputForm>());
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<MainForm>());
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
             Kernel.Bind<ConfigurationService>().ToSelf().InSingletonScope();

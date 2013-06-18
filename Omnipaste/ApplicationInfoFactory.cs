@@ -18,6 +18,8 @@
 
         public const string PublisherName = "Omnipaste";
 
+        public const string TokenLink = "http://www.omnipasteapp.com/whatismytoken";
+
         protected ApplicationInfoFactory()
         {
         }
