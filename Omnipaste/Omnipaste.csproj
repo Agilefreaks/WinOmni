@@ -15,7 +15,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>..\deploy\</PublishUrl>
+    <PublishUrl>..\deploy\staging\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -25,13 +25,13 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://s3.amazonaws.com/omnipaste-production/win/</InstallUrl>
+    <InstallUrl>https://s3.amazonaws.com/omnipaste-staging/win/</InstallUrl>
     <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Omnipaste</ProductName>
+    <ProductName>Omnipaste-staging</ProductName>
     <PublisherName>Omnipaste</PublisherName>
-    <SuiteName>Omnipaste</SuiteName>
+    <SuiteName>Omnipaste-staging</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
@@ -94,11 +94,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.2-unstable-8\lib\net35\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.0.2-unstable-9\lib\net35\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.Extensions.Conventions">
-      <HintPath>..\packages\ninject.extensions.conventions.3.0.2-unstable-2\lib\net35\Ninject.Extensions.Conventions.dll</HintPath>
+    <Reference Include="Ninject.Extensions.Conventions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.0.2-unstable-3\lib\net35\Ninject.Extensions.Conventions.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,8 +110,9 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Threading.Tasks.NET35">
-      <HintPath>..\packages\System.Threading.Tasks.3.0.1\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Threading.Tasks.3.0.2-beta2\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

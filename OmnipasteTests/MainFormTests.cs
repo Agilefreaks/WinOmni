@@ -2,16 +2,16 @@
 {
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
     using Omnipaste;
-    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Services;
-    using Caliburn.Micro;
 
     [TestFixture]
     public class MainFormTests
@@ -136,17 +136,19 @@
         }
 
         [Test]
-        public void PerformInitialization_Always_ShouldCallClickOnceHelperStartupShortcutExists()
+        public void PerformInitialization_WhenConfigurationLoaded_ShouldCallClickOnceHelperStartupShortcutExists()
         {
+            _communicationSettings.Channel = "42";
             _subject.CallPerformInitializations();
 
             _mockClickOnceHelper.Verify(x => x.StartupShortcutExists(), Times.Once());
         }
 
         [Test]
-        public void PerformInitialization_StartupShortcutExists_ShouldSetAutoStartCheckboxChecked()
+        public void PerformInitialization_StartupShortcutExistsAndConfigurationLoaded_ShouldSetAutoStartCheckboxChecked()
         {
             _mockClickOnceHelper.Setup(x => x.StartupShortcutExists()).Returns(true);
+            _communicationSettings.Channel = "42";
             _subject.CallPerformInitializations();
 
             _subject.AutoStartButton.Checked.Should().BeTrue();

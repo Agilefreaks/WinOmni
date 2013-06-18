@@ -4,14 +4,11 @@
     using System.Deployment.Application;
     using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
-    using System.Globalization;
-    using System.IO;
     using System.Reflection;
-    using System.Resources;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using CustomizedClickOnce.Common;
     using Caliburn.Micro;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
