@@ -40,7 +40,7 @@
 
         [Inject]
         public IClickOnceHelper ClickOnceHelper { get; set; }
-        
+
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
@@ -96,15 +96,19 @@
             else
             {
                 SetVersionInfo();
-            SetAutoStartInfo();
+                SetAutoStartInfo();
                 OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
-            Task.Factory.StartNew(StartOmniService);
+                Task.Factory.StartNew(StartOmniService);
             }
         }
 
         protected bool AssureConfigurationLoaded()
         {
-            if (!string.IsNullOrEmpty(ConfigurationService.CommunicationSettings.Channel)) return true;
+            if (!string.IsNullOrEmpty(ConfigurationService.CommunicationSettings.Channel))
+            {
+                return true;
+            }
+
             ConfigureForm.ShowDialog();
 
             return ConfigureForm.Succeeded;

@@ -1,15 +1,14 @@
-﻿using System.Windows.Forms;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using OmniCommon.Interfaces;
-using Omnipaste;
-
-namespace OmnipasteTests
+﻿namespace OmnipasteTests
 {
-    using System;
     using System.Threading.Tasks;
+    using System.Windows.Forms;
     using CustomizedClickOnce.Common;
+    using FluentAssertions;
+    using Moq;
+    using NUnit.Framework;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
+    using Omnipaste;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -35,7 +34,7 @@ namespace OmnipasteTests
         private Mock<IConfigureDialog> _mockConfigureDialog;
 
         private Mock<IClickOnceHelper> _mockClickOnceHelper;
-        
+
         private Mock<IConfigurationService> _mockConfigurationService;
 
         private Mock<IOmniService> _mockOmniService;
@@ -49,7 +48,6 @@ namespace OmnipasteTests
             _mockConfigureDialog = new Mock<IConfigureDialog>();
             _mockClickOnceHelper = new Mock<IClickOnceHelper>();
             _mockOmniService = new Mock<IOmniService> { DefaultValue = DefaultValue.Mock };
-            Func<bool> startOmniServiceFunc = () => true;
             _mockConfigurationService = new Mock<IConfigurationService>();
             _communicationSettings = new CommunicationSettings();
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(_communicationSettings);
@@ -160,8 +158,8 @@ namespace OmnipasteTests
 
             _subject.AutoStartButton.Checked.Should().BeFalse();
         }
-        
-         private void SetupMockOmniService()
+
+        private void SetupMockOmniService()
         {
             _mockOmniService.Setup(x => x.Start()).Returns(
                 () =>
@@ -170,6 +168,6 @@ namespace OmnipasteTests
                     task.Start();
                     return task;
                 });
-}
+        }
     }
 }
