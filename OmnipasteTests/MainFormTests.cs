@@ -7,7 +7,9 @@ using Omnipaste;
 
 namespace OmnipasteTests
 {
+    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Services;
+    using Caliburn.Micro;
 
     [TestFixture]
     public class MainFormTests
