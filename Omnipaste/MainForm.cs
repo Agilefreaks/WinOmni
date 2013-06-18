@@ -3,22 +3,30 @@
     using System;
     using System.Deployment.Application;
     using System.Diagnostics.CodeAnalysis;
+    using System.Drawing;
+    using System.Globalization;
+    using System.IO;
     using System.Reflection;
+    using System.Resources;
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using CustomizedClickOnce.Common;
+    using Caliburn.Micro;
     using Ninject;
+    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using WindowsClipboard.Imports;
     using WindowsClipboard.Interfaces;
 
-    public partial class MainForm : Form, IDelegateClipboardMessageHandling
+    public partial class MainForm : Form, IMainForm
     {
         private const int PopupLifeSpan = 3000;
 
         public event MessageHandler HandleClipboardMessage;
+
+        private IEventAggregator _eventAggregator;
 
         public bool IsNotificationIconVisible
         {
@@ -44,6 +52,20 @@
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+
+            set
+            {
+                _eventAggregator = value;
+                _eventAggregator.Subscribe(this);
+            }
+        }
+
         public MainForm()
         {
             InitializeComponent();
@@ -60,6 +82,18 @@
             }
 
             return Handle;
+        }
+
+        void IHandle<OmniServiceStatusChanged>.Handle(OmniServiceStatusChanged message)
+        {
+            var resourceName = string.Format("Omnipaste.Resources.{0}.ico", message.Status);
+            using (var resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                if (resourceStream != null)
+                {
+                    NotifyIcon.Icon = new Icon(resourceStream);
+                }
+            }
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

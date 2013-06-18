@@ -7,7 +7,9 @@ using OmniCommon.Services;
 
 namespace OmniCommonTests
 {
+    using Caliburn.Micro;
     using FluentAssertions;
+    using OmniCommon.EventAggregatorMessages;
 
     [TestFixture]
     public class OmniServiceTests
@@ -16,6 +18,8 @@ namespace OmniCommonTests
         private Mock<ILocalClipboard> _mockLocalClipboard;
         private Mock<IOmniClipboard> _mockOmniClipboard;
 
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         [SetUp]
         public void Setup()
         {
@@ -23,7 +27,8 @@ namespace OmniCommonTests
             _mockOmniClipboard = new Mock<IOmniClipboard>();
             _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
-            _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object);
+            _mockEventAggregator = new Mock<IEventAggregator>();
+            _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object, _mockEventAggregator.Object);
         }
 
         [Test]
@@ -119,6 +124,14 @@ namespace OmniCommonTests
             var startTask2 = _subject.Start();
 
             startTask2.Should().NotBeSameAs(startTask);
+        }
+
+        [Test]
+        public void SettingTheStatus_Always_CallsEventAggregatorPublishWithACorrectMessage()
+        {
+            _subject.Status = OmniServiceStatusEnum.Offline;
+
+            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<OmniServiceStatusChanged>()), Times.Once());
         }
 
         [Test]

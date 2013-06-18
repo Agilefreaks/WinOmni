@@ -9,7 +9,9 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
     using Omnipaste;
+    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Services;
+    using Caliburn.Micro;
 
     [TestFixture]
     public class MainFormTests

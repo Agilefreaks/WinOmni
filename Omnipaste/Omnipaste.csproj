@@ -123,6 +123,7 @@
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="IConfigureDialog.cs" />
     <Compile Include="ITokenInputForm.cs" />
+    <Compile Include="IMainForm.cs" />
     <Compile Include="SimpleDefferingLogger.cs" />
     <Compile Include="ConfigureForm.cs">
       <SubType>Form</SubType>
@@ -215,6 +216,10 @@
     <Content Include="Resources\busy.gif" />
     <Content Include="Resources\Icon2.ico" />
     <Resource Include="uninstall.exe">
+    <EmbeddedResource Include="Resources\Offline.ico" />
+    <EmbeddedResource Include="Resources\Online.ico" />
+    <EmbeddedResource Include="Resources\Receiving.ico" />
+    <EmbeddedResource Include="Resources\Sending.ico" />
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
