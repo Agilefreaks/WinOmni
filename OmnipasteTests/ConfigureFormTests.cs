@@ -57,8 +57,9 @@
         }
 
         [Test]
-        public void AssureClipboardIsInitialized_Always_CallsUpdateCommunicationChannelWithTheResultOfGetActivationData()
+        public void AssureClipboardIsInitialized_CouldGetActivationData_CallsUpdateCommunicationChannelWithTheResultOfGetActivationData()
         {
+            _mockTokenInputForm.Setup(x => x.Token).Returns("test");
             _mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>())).Returns(new ActivationData { Email = "testC" });
 
             _subject.AssureClipboardIsInitialized();
@@ -67,13 +68,25 @@
         }
 
         [Test]
-        public void AssureClipboardIsInitialized_IfTheClipboardInitializationFailsAndMaxRetriesHasNotBeenReached_RetriesToGetTheActivationData()
+        public void AssureClipboardIsInitialized_IfTheClipboardInitializationFailsAndMaxRetriesHasNotBeenReachedAndCouldGetToken_RetriesToGetTheActivationData()
         {
+            _mockTokenInputForm.Setup(x => x.Token).Returns("test");
             _mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>())).Returns(new ActivationData());
 
             _subject.AssureClipboardIsInitialized();
 
             _mockActivationDataProvider.Verify(x => x.GetActivationData(It.IsAny<string>()), Times.Exactly(1 + ConfigureForm.MaxRetryCount));
+        }
+
+        [Test]
+        public void AssureClipboardIsInitialized_CannotGetToken_DoesNotCallGetActivationData()
+        {
+            _mockTokenInputForm.Setup(x => x.Token).Returns(string.Empty);
+            _mockApplicationDeploymentInfoProvider.Setup(x => x.HasValidActivationUri).Returns(false);
+
+            _subject.AssureClipboardIsInitialized();
+
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(It.IsAny<string>()), Times.Never());
         }
     }
 }

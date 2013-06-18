@@ -36,6 +36,9 @@
         [Inject]
         public IConfigureDialog ConfigureForm { get; set; }
 
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
@@ -81,23 +84,28 @@
         {
             IsNotificationIconVisible = true;
             HideWindowFromAltTab();
-            LoadInitialConfiguration();
-            SetVersionInfo();
-            OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
-            Task.Factory.StartNew(
-                () =>
-                {
-                    Task.WaitAll(OmniService.Start());
-                    AddCurrentUserMenuEntry();
-                });
+            if (!AssureConfigurationLoaded())
+            {
+                Close();
+            }
+            else
+            {
+                SetVersionInfo();
+                OmniClipboard.Logger = new SimpleDefferingLogger(ShowLogMessage);
+                Task.Factory.StartNew(() =>
+                    {
+                        Task.WaitAll(OmniService.Start());
+                        AddCurrentUserMenuEntry();
+                    });
+            }
         }
 
-        protected void LoadInitialConfiguration()
+        protected bool AssureConfigurationLoaded()
         {
-            if (ApplicationDeploymentInfoProvider.IsFirstNetworkRun)
-            {
-                ConfigureForm.ShowDialog();
-            }
+            if (!string.IsNullOrEmpty(ConfigurationService.CommunicationSettings.Channel)) return true;
+            ConfigureForm.ShowDialog();
+
+            return ConfigureForm.Succeeded;
         }
 
         protected void AddCurrentUserMenuEntry()

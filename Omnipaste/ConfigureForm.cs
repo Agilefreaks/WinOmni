@@ -13,6 +13,8 @@
     {
         public const int MaxRetryCount = 10;
 
+        public bool Succeeded { get; private set; }
+
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
@@ -34,6 +36,7 @@
 
         void IConfigureDialog.ShowDialog()
         {
+            Succeeded = false;
             ShowDialog();
         }
 
@@ -53,6 +56,7 @@
             }
             else
             {
+                Succeeded = true;
                 ConfigurationService.UpdateCommunicationChannel(activationData.Email);
                 backgroundWorker.CancelAsync();
             }
