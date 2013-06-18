@@ -37,27 +37,28 @@
 
         private static void ConfigureAndRun()
         {
-            SetupUninstaller();
             var mainModule = new MainModule();
             var kernel = new StandardKernel(
                 mainModule,
+                new CustomizedClickOnceCommonModule(),
                 new CommonModule(),
                 new WindowsClipboardModule(),
                 new PubNubClipboardModule());
+            
+            SetupUninstaller(kernel.Get<IClickOnceHelper>());
 
             mainModule.PerfornStartupTasks();
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }
 
-        private static void SetupUninstaller()
+        private static void SetupUninstaller(IClickOnceHelper clickOnceHelper)
         {
             if (!ApplicationDeployment.IsNetworkDeployed || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
                 return;
             }
 
-            var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
             clickOnceHelper.UpdateUninstallParameters();
             clickOnceHelper.AddShortcutToStartup();
         }

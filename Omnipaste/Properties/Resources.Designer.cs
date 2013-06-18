@@ -61,6 +61,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not initialize synchronization service.
+        /// </summary>
+        internal static string CouldNotInitializeSynchronizationService {
+            get {
+                return ResourceManager.GetString("CouldNotInitializeSynchronizationService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Another instance is already running..
         /// </summary>
         internal static string InstanceAlreadyRunning {

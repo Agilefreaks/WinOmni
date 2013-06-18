@@ -16,9 +16,13 @@
 
         void AddShortcutToStartup();
 
+        void RemoveShortcutFromStartup();
+
         void Uninstall();
 
         void UpdateUninstallParameters();
+
+        bool StartupShortcutExists();
 
         #endregion
     }

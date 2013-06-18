@@ -155,6 +155,14 @@
             File.Copy(ShortcutPath, StartupShortcutPath);
         }
 
+        public void RemoveShortcutFromStartup()
+        {
+            if (File.Exists(StartupShortcutPath))
+            {
+                File.Delete(StartupShortcutPath);
+            }
+        }
+
         public void Uninstall()
         {
             try
@@ -210,6 +218,11 @@
             SetNoRepair();
             SetHelpLink();
             SetUrlInfoAbout();
+        }
+
+        public bool StartupShortcutExists()
+        {
+            return File.Exists(StartupShortcutPath);
         }
 
         #endregion
@@ -297,14 +310,6 @@
         private string GetUninstallFilePath()
         {
             return Path.Combine(AppDataFolderPath, UninstallStringFile);
-        }
-
-        private void RemoveShortcutFromStartup()
-        {
-            if (File.Exists(StartupShortcutPath))
-            {
-                File.Delete(StartupShortcutPath);
-            }
         }
 
         private void RespondToClickOnceRemovalDialog()
