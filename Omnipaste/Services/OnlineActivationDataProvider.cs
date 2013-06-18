@@ -14,7 +14,7 @@
         {
             get
             {
-                return _tokenLink ?? (_tokenLink = ConfigurationManager.AppSettings["baseUrl"] + "whatismytoken");
+                return _tokenLink ?? (_tokenLink = ConfigurationManager.AppSettings["baseUrl"] + "whatsmytoken");
             }
         }
 

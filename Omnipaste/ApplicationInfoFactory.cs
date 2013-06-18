@@ -6,9 +6,7 @@
     public class ApplicationInfoFactory
     {
 #if DEBUG
-
         public const string ApplicationName = "Omnipaste-Debug";
-
 #elif STAGING
         public const string ApplicationName = "Omnipaste-Staging";
 #else
