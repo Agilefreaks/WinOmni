@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.Windows.Forms;
+    using Omnipaste.Services;
 
     public partial class TokenInputForm : Form, ITokenInputForm
     {
@@ -19,12 +20,18 @@
 
         private void TokenLinkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(ApplicationInfoFactory.TokenLink);
+            Process.Start(OnlineActivationDataProvider.TokenLink);
         }
 
         private void OkButtonClick(object sender, System.EventArgs e)
         {
             Token = tokenTextBox.Text;
+            Close();
+        }
+
+        private void CancelButtonClick(object sender, System.EventArgs e)
+        {
+            Token = null;
             Close();
         }
     }

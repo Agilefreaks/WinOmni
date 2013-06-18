@@ -55,6 +55,7 @@
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.CancelButtonClick);
             // 
             // tokenTextBox
             // 
@@ -90,7 +91,7 @@
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 134);
+            this.ClientSize = new System.Drawing.Size(420, 137);
             this.ControlBox = false;
             this.Controls.Add(this.tokenLink);
             this.Controls.Add(this.label1);

@@ -39,7 +39,10 @@
 
         public void AssureClipboardIsInitialized()
         {
-            var activationData = ActivationDataProvider.GetActivationData(GetActivationToken());
+            var activationToken = GetActivationToken();
+            if (string.IsNullOrEmpty(activationToken)) return;
+
+            var activationData = ActivationDataProvider.GetActivationData(activationToken);
             if (activationData.Email.IsNullOrWhiteSpace())
             {
                 if (ShouldRetryActivation())
