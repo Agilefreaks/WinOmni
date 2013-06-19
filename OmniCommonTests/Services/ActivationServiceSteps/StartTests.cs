@@ -1,0 +1,9 @@
+﻿namespace OmniCommonTests.Services.ActivationServiceSteps
+{
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class StartTests : VoidStepTests
+    {
+    }
+}

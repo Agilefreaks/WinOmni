@@ -1,15 +1,14 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Moq;
-using NUnit.Framework;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-
-namespace OmniCommonTests
+﻿namespace OmniCommonTests.Services
 {
+    using System.Threading;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using FluentAssertions;
+    using Moq;
+    using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
 
     [TestFixture]
     public class OmniServiceTests
