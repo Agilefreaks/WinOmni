@@ -1,15 +1,10 @@
 ﻿namespace CustomizedClickOnce.Uninstall
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Threading;
-    using System.Windows.Forms;
     using CustomizedClickOnce.Common;
-    using CustomizedClickOnce.Uninstall.Properties;
     using Omnipaste;
 
     public static class Program
@@ -63,21 +58,8 @@
 
         private static void StartUninstallProcess()
         {
-            var applicationInfo = ApplicationInfoFactory.Create();
-            var dialogCaption = Resources.Uninstall + applicationInfo.ProductName;
-            if (MessageBox.Show(Resources.UninstallQuestion, dialogCaption, MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                var clickOnceHelper = new ClickOnceHelper(applicationInfo);
-                clickOnceHelper.Uninstall();
-
-                // Delete all files from publisher folder and folder itself on uninstall
-                var dataFolders = new List<string>
-                                      {
-                                          clickOnceHelper.AppDataFolderPath,
-                                          clickOnceHelper.RoamingAppDataFolderPath
-                                      };
-                dataFolders.Where(Directory.Exists).ToList().ForEach(folder => Directory.Delete(folder, true));
-            }
+            var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
+            clickOnceHelper.Uninstall();
 
             ReleaseMutex();
         }

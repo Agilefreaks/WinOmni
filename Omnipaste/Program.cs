@@ -21,12 +21,14 @@
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            PerformFirstRunTasks();
+
             bool createdNewMutex;
             using (new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex))
             {
                 if (createdNewMutex)
                 {
-                    ConfigureAndRun();
+                    Run();
                 }
                 else
                 {
@@ -35,7 +37,7 @@
             }
         }
 
-        private static void ConfigureAndRun()
+        private static void Run()
         {
             var mainModule = new MainModule();
             var kernel = new StandardKernel(
@@ -49,7 +51,7 @@
             Application.Run(form);
         }
 
-        private static void SetupUninstaller(IClickOnceHelper clickOnceHelper)
+        private static void PerformFirstRunTasks()
         {
             if (!ApplicationDeployment.IsNetworkDeployed || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
