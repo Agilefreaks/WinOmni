@@ -204,9 +204,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Uninstall.exe.config">
+    <Content Include="Uninstall.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -222,9 +222,9 @@
     <EmbeddedResource Include="Resources\Online.ico" />
     <EmbeddedResource Include="Resources\Receiving.ico" />
     <EmbeddedResource Include="Resources\Sending.ico" />
-    <Resource Include="uninstall.exe">
+    <Content Include="uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">
