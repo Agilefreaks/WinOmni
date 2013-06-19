@@ -49,6 +49,7 @@
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
+        [Inject]
         public IEventAggregator EventAggregator
         {
             get
