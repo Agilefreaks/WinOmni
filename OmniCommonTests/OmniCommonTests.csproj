@@ -62,12 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ActivationServiceSteps\FailedTests.cs" />
-    <Compile Include="Services\ActivationServiceSteps\FinishedTests.cs" />
-    <Compile Include="Services\ActivationServiceSteps\StartTests.cs" />
-    <Compile Include="Services\ActivationServiceSteps\StepFactoryTests.cs" />
-    <Compile Include="Services\ActivationServiceSteps\TransitionIdTests.cs" />
-    <Compile Include="Services\ActivationServiceSteps\VoidStepTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FailedTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FinishedTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartTests.cs" />
+    <Compile Include="Services\ActivationServiceData\StepFactoryTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\TransitionIdTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
     <Compile Include="Services\OmniServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

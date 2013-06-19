@@ -1,4 +1,4 @@
-﻿namespace OmniCommonTests.Services.ActivationServiceSteps
+﻿namespace OmniCommonTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using FluentAssertions;
     using NUnit.Framework;
