@@ -67,6 +67,7 @@
     <Compile Include="Services\ActivationServiceSteps\StartTests.cs" />
     <Compile Include="Services\ActivationServiceSteps\StepFactoryTests.cs" />
     <Compile Include="Services\ActivationServiceSteps\TransitionIdTests.cs" />
+    <Compile Include="Services\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
     <Compile Include="Services\OmniServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

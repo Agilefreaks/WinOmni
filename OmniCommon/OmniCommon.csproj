@@ -81,12 +81,13 @@
     <Compile Include="Services\ActivationServiceSteps\IStepFactory.cs" />
     <Compile Include="Services\ActivationServiceSteps\SimpleStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceSteps\Failed.cs" />
-    <Compile Include="Services\TransitionKeys\GenericTransitionId.cs" />
+    <Compile Include="Services\ActivationServiceSteps\VoidStep.cs" />
+    <Compile Include="Services\TransitionId\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceSteps\Start.cs" />
     <Compile Include="Services\ActivationServiceSteps\StepFactory.cs" />
     <Compile Include="Services\ActivationServiceSteps\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceSteps\SingleStateEnum.cs" />
-    <Compile Include="Services\TransitionKeys\TransitionId.cs" />
+    <Compile Include="Services\TransitionId\TransitionId.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />

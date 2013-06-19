@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using OmniCommon.Services.TransitionKeys;
+    using OmniCommon.Services.TransitionId;
 
     public class TransitionCollection
     {

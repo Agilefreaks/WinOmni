@@ -1,7 +1,7 @@
 ﻿namespace OmniCommon.Services
 {
     using OmniCommon.Services.ActivationServiceSteps;
-    using OmniCommon.Services.TransitionKeys;
+    using OmniCommon.Services.TransitionId;
 
     public class ActivationService
     {
@@ -55,7 +55,7 @@
         public void MoveToNextStep()
         {
             var result = CurrentStep.Execute();
-            var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
+            var transitionKey = new TransitionId.TransitionId(CurrentStep.GetId(), result.State);
             var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
             CurrentStep = StepFactory.Create(nextStepType);
         }
