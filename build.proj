@@ -4,16 +4,21 @@
   	<PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
   	<Configuration>Debug</Configuration>
   	<PublishUrl>http://localhost/</PublishUrl>
+  	<InstallUrl>http://localhost/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(build_configuration)' == 'Staging' ">
   	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
   	<Configuration>Staging</Configuration>
+  	<PublishUrl>..\deploy</PublishUrl>
+  	<InstallUrl>https://s3.amazonaws.com/omnipaste-staging/win/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(build_configuration)' == 'Release' ">
   	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
   	<Configuration>Release</Configuration>
+  	<PublishUrl>..\deploy</PublishUrl>
+  	<InstallUrl>https://s3.amazonaws.com/omnipaste-production/win/</InstallUrl>
   </PropertyGroup>
 
   <Target Name="All">
@@ -25,6 +30,6 @@
 		<MSBuild 
 			Projects="Omnipaste\Omnipaste.csproj"
 			Targets="Publish" 
-			Properties="Configuration=$(Configuration);ApplicationRevision=$(revision);PublishUrl=$(PublishUrl);ProductName=Omnipaste-debug;SuiteName=Omnipaste-debug;PublishAssemblyName=$(PublishAssemblyName)" />
+			Properties="Configuration=$(Configuration);ApplicationRevision=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
 	</Target>
 </Project>
