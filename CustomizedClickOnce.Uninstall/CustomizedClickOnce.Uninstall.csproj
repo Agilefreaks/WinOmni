@@ -90,6 +90,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="..\Omnipaste\Settings\debug.config">
+      <Link>Settings\debug.config</Link>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <None Include="..\Omnipaste\Settings\release.config">
+      <Link>Settings\release.config</Link>
+    </None>
+    <None Include="..\Omnipaste\Settings\staging.config">
+      <Link>Settings\staging.config</Link>
+    </None>
     <None Include="app.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
@@ -140,10 +150,6 @@
     <Content Include="Icon2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo f | xcopy /f /y $(TargetPath) $(SolutionDir)Omnipaste\$(TargetFileName)
-echo f | xcopy /f /y $(TargetPath).config $(SolutionDir)Omnipaste\$(TargetFileName).config</PostBuildEvent>
-  </PropertyGroup>
   <PropertyGroup Label="SlowCheetah">
     <SlowCheetah_EnableImportFromNuGet Condition=" '$(SC_EnableImportFromNuGet)'=='' ">true</SlowCheetah_EnableImportFromNuGet>
     <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.5\tools\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
@@ -152,10 +158,9 @@ echo f | xcopy /f /y $(TargetPath).config $(SolutionDir)Omnipaste\$(TargetFileNa
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+       Other similar extension points exist, see Microsoft.Common.targets.       
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  
 </Project>
