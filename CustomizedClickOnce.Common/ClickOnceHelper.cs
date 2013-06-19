@@ -145,6 +145,22 @@
 
         #region Public Methods and Operators
 
+        public void UpdateUninstallParameters()
+        {
+            if (_uninstallRegistryKey == null)
+            {
+                return;
+            }
+
+            AssureAppDataFolderExists();
+            UpdateUninstallString();
+            UpdateDisplayIcon();
+            SetNoModify();
+            SetNoRepair();
+            SetHelpLink();
+            SetUrlInfoAbout();
+        }
+
         public void AddShortcutToStartup()
         {
             if (!ApplicationDeployment.IsNetworkDeployed || File.Exists(StartupShortcutPath))
@@ -163,40 +179,30 @@
             }
         }
 
+        public bool StartupShortcutExists()
+        {
+            return File.Exists(StartupShortcutPath);
+        }
+
         public void Uninstall()
         {
+            if (!File.Exists(UninstallFilePath)) return;
+
             try
             {
-                // kill process
-                foreach (var process in Process.GetProcessesByName(ProductName))
+                var uninstallProcess = RunOriginalUninstaller();
+                WaitForProcessToFinish(uninstallProcess);
+
+                if (ApplicationIsUninstalled())
                 {
-                    process.Kill();
-                    break;
+                    KillActiveProcesses();
+                    RemoveShortcutFromStartup();
+                    RemoveDataFolders();
                 }
-
-                if (!File.Exists(UninstallFilePath))
+                else
                 {
-                    return;
+                    UpdateUninstallParameters();
                 }
-
-                RemoveShortcutFromStartup();
-
-                var uninstallString = File.ReadAllText(UninstallFilePath);
-                var fileName = uninstallString.Substring(0, uninstallString.IndexOf(" ", StringComparison.Ordinal));
-                var args = uninstallString.Substring(uninstallString.IndexOf(" ", StringComparison.Ordinal) + 1);
-
-                var proc = new Process
-                               {
-                                   StartInfo =
-                                   {
-                                       Arguments = args,
-                                       FileName = fileName,
-                                       UseShellExecute = false
-                                   }
-                               };
-
-                proc.Start();
-                RespondToClickOnceRemovalDialog();
             }
             catch (Exception ex)
             {
@@ -204,30 +210,18 @@
             }
         }
 
-        public void UpdateUninstallParameters()
-        {
-            if (_uninstallRegistryKey == null)
-            {
-                return;
-            }
-
-            AssureAppDataFolderExists();
-            UpdateUninstallString();
-            UpdateDisplayIcon();
-            SetNoModify();
-            SetNoRepair();
-            SetHelpLink();
-            SetUrlInfoAbout();
-        }
-
-        public bool StartupShortcutExists()
-        {
-            return File.Exists(StartupShortcutPath);
-        }
-
         #endregion
 
         #region Methods
+
+        private static void WaitForProcessToFinish(Process uninstallProcess)
+        {
+            while (!uninstallProcess.HasExited)
+            {
+                Thread.Sleep(100);
+                uninstallProcess.Refresh();
+            }
+        }
 
         private static RegistryKey GetUninstallRegistryKeyByProductName(string productName)
         {
@@ -312,31 +306,6 @@
             return Path.Combine(AppDataFolderPath, UninstallStringFile);
         }
 
-        private void RespondToClickOnceRemovalDialog()
-        {
-            var myWindowHandle = IntPtr.Zero;
-            for (var i = 0; i < 250 && myWindowHandle == IntPtr.Zero; i++)
-            {
-                Thread.Sleep(150);
-                foreach (
-                    var proc in
-                        Process.GetProcessesByName("dfsvc")
-                               .Where(
-                                   proc =>
-                                   !string.IsNullOrEmpty(proc.MainWindowTitle)
-                                   && proc.MainWindowTitle.StartsWith(ProductName)))
-                {
-                    myWindowHandle = proc.MainWindowHandle;
-                    break;
-                }
-            }
-
-            if (myWindowHandle != IntPtr.Zero)
-            {
-                // ToDo: close the application instance
-            }
-        }
-
         private void SetHelpLink()
         {
             _uninstallRegistryKey.SetValue("HelpLink", _applicationInfo.HelpLink, RegistryValueKind.String);
@@ -373,6 +342,41 @@
 
             var str = string.Format("\"{0}\" uninstall", UninstallerPath);
             _uninstallRegistryKey.SetValue(UninstallString, str);
+        }
+
+        private void KillActiveProcesses()
+        {
+            foreach (var process in Process.GetProcessesByName(ProductName))
+            {
+                process.Kill();
+                break;
+            }
+        }
+
+        private void RemoveDataFolders()
+        {
+            var dataFolders = new List<string> { AppDataFolderPath, RoamingAppDataFolderPath };
+            dataFolders.Where(Directory.Exists).ToList().ForEach(folder => Directory.Delete(folder, true));
+        }
+
+        private bool ApplicationIsUninstalled()
+        {
+            return GetUninstallRegistryKeyByProductName(ProductName) == null;
+        }
+
+        private Process RunOriginalUninstaller()
+        {
+            var uninstallString = File.ReadAllText(UninstallFilePath);
+            var fileName = uninstallString.Substring(0, uninstallString.IndexOf(" ", StringComparison.Ordinal));
+            var args = uninstallString.Substring(uninstallString.IndexOf(" ", StringComparison.Ordinal) + 1);
+
+            var uninstallProcess = new Process
+            {
+                StartInfo = { Arguments = args, FileName = fileName, UseShellExecute = false }
+            };
+
+            uninstallProcess.Start();
+            return uninstallProcess;
         }
 
         #endregion

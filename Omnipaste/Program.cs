@@ -21,12 +21,14 @@
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            PerformFirstRunTasks();
+
             bool createdNewMutex;
             using (new System.Threading.Mutex(true, "Omnipaste", out createdNewMutex))
             {
                 if (createdNewMutex)
                 {
-                    ConfigureAndRun();
+                    Run();
                 }
                 else
                 {
@@ -35,30 +37,28 @@
             }
         }
 
-        private static void ConfigureAndRun()
+        private static void Run()
         {
             var mainModule = new MainModule();
             var kernel = new StandardKernel(
                 mainModule,
-                new CustomizedClickOnceCommonModule(),
                 new CommonModule(),
                 new WindowsClipboardModule(),
                 new PubNubClipboardModule());
-            
-            SetupUninstaller(kernel.Get<IClickOnceHelper>());
 
             mainModule.PerfornStartupTasks();
             var form = kernel.Get<MainForm>();
             Application.Run(form);
         }
 
-        private static void SetupUninstaller(IClickOnceHelper clickOnceHelper)
+        private static void PerformFirstRunTasks()
         {
             if (!ApplicationDeployment.IsNetworkDeployed || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
                 return;
             }
 
+            var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
             clickOnceHelper.UpdateUninstallParameters();
             clickOnceHelper.AddShortcutToStartup();
         }
