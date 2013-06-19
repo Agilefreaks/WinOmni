@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Omnipaste</RootNamespace>
     <AssemblyName>Omnipaste</AssemblyName>
+    <AssemblyName Condition=" '$(PublishAssemblyName)' != '' ">$(PublishAssemblyName)</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -28,9 +29,7 @@
     <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Omnipaste</ProductName>
     <PublisherName>Omnipaste</PublisherName>
-    <SuiteName>Omnipaste</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
@@ -272,8 +271,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>copy /y $(SolutionDir)CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)\Uninstall.exe
-copy /y $(SolutionDir)CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)\Uninstall.exe.config</PreBuildEvent>
+    <PreBuildEvent>copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
+copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
