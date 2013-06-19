@@ -15,7 +15,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>..\deploy\staging\</PublishUrl>
+    <PublishUrl>http://localhost/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -25,17 +25,16 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://s3.amazonaws.com/omnipaste-staging/win/</InstallUrl>
     <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Omnipaste-staging</ProductName>
+    <ProductName>Omnipaste-debug</ProductName>
     <PublisherName>Omnipaste</PublisherName>
-    <SuiteName>Omnipaste-staging</SuiteName>
+    <SuiteName>Omnipaste-debug</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>48</ApplicationRevision>
+    <ApplicationRevision>53</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -161,6 +160,9 @@
       <DependentUpon>TokenInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowHelper.cs" />
+    <Content Include="Uninstall.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="ConfigureForm.resx">
       <DependentUpon>ConfigureForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -204,6 +206,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Settings\debug.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\staging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\release.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Uninstall.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -222,9 +233,6 @@
     <EmbeddedResource Include="Resources\Online.ico" />
     <EmbeddedResource Include="Resources\Receiving.ico" />
     <EmbeddedResource Include="Resources\Sending.ico" />
-    <Content Include="uninstall.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">

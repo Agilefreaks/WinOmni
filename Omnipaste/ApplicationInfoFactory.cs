@@ -5,17 +5,19 @@
 
     public class ApplicationInfoFactory
     {
-#if DEBUG
-        public const string ApplicationName = "Omnipaste-Debug";
-#elif STAGING
-        public const string ApplicationName = "Omnipaste-Staging";
-#else
-        public const string ApplicationName = "Omnipaste";
-#endif
-
         public const string PublisherName = "Omnipaste";
 
         private static string _baseUrl;
+
+        private static string _applicatioName;
+
+        public static string ApplicationName
+        {
+            get
+            {
+                return _applicatioName ?? (_applicatioName = ConfigurationManager.AppSettings["appName"]);
+            }
+        }
 
         public static string BaseUrl
         {
