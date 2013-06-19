@@ -33,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.3.0.2-unstable-9\lib\net35\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Deployment" />
@@ -49,7 +45,6 @@
   <ItemGroup>
     <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ClickOnceHelper.cs" />
-    <Compile Include="CustomizedClickOnceCommonModule.cs" />
     <Compile Include="IClickOnceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

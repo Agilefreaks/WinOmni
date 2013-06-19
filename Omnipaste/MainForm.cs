@@ -25,10 +25,25 @@
 
         private IEventAggregator _eventAggregator;
 
+        private IClickOnceHelper _clickOnceHelper;
+
         public bool IsNotificationIconVisible
         {
             get { return NotifyIcon.Visible; }
             set { NotifyIcon.Visible = value; }
+        }
+
+        public IClickOnceHelper ClickOnceHelper
+        {
+            get
+            {
+                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
+            }
+
+            set
+            {
+                _clickOnceHelper = value;
+            }
         }
 
         [Inject]
@@ -42,9 +57,6 @@
 
         [Inject]
         public IConfigureDialog ConfigureForm { get; set; }
-
-        [Inject]
-        public IClickOnceHelper ClickOnceHelper { get; set; }
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }

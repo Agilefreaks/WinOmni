@@ -2,12 +2,10 @@
 {
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
     using Omnipaste;
