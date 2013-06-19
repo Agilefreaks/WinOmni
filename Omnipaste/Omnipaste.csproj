@@ -28,9 +28,9 @@
     <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Omnipaste-debug</ProductName>
+    <ProductName>Omnipaste</ProductName>
     <PublisherName>Omnipaste</PublisherName>
-    <SuiteName>Omnipaste-debug</SuiteName>
+    <SuiteName>Omnipaste</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
