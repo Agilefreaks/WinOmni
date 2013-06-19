@@ -2,7 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniCommon.Services.TransitionId;
+    using OmniCommon.Services.ActivationServiceData.Transitions;
 
     [TestFixture]
     public class TransitionIdTests

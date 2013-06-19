@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Services.ActivationServiceSteps
+﻿namespace OmniCommon.Services.ActivationServiceData.ActivationServiceSteps
 {
     public interface IActivationStep
     {

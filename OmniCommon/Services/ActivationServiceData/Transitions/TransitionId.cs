@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Services.TransitionId
+﻿namespace OmniCommon.Services.ActivationServiceData.Transitions
 {
     public class TransitionId
     {

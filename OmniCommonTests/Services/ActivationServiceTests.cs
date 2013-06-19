@@ -5,7 +5,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Services;
-    using OmniCommon.Services.ActivationServiceSteps;
+    using OmniCommon.Services.ActivationServiceData;
+    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class ActivationServiceTests

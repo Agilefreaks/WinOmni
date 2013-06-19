@@ -2,7 +2,8 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniCommon.Services.ActivationServiceSteps;
+    using OmniCommon.Services.ActivationServiceData;
+    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class StepFactoryTests

@@ -1,8 +1,7 @@
-﻿namespace OmniCommon.Services.ActivationServiceSteps
+﻿namespace OmniCommon.Services.ActivationServiceData.Transitions
 {
     using System;
     using System.Collections.Generic;
-    using OmniCommon.Services.TransitionId;
 
     public class TransitionCollection
     {

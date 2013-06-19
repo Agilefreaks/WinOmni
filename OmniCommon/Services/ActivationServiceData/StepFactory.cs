@@ -1,6 +1,7 @@
-﻿namespace OmniCommon.Services.ActivationServiceSteps
+﻿namespace OmniCommon.Services.ActivationServiceData
 {
     using System;
+    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     public class StepFactory : IStepFactory
     {
