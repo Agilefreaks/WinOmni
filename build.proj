@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
+  	<PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
+  	<Configuration>Debug</Configuration>
+  	<PublishUrl>http://localhost/</PublishUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Staging' ">
+  	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
+  	<Configuration>Staging</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Release' ">
+  	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
+  	<Configuration>Release</Configuration>
+  </PropertyGroup>
+
+  <Target Name="All">
+		<MSBuild 
+			Projects="Omnipaste.sln" 
+			Targets="Clean;Build"
+			Properties="Configuration=$(Configuration)" />
+
+		<MSBuild 
+			Projects="Omnipaste\Omnipaste.csproj"
+			Targets="Publish" 
+			Properties="Configuration=$(Configuration);ApplicationRevision=$(revision);PublishUrl=$(PublishUrl);ProductName=Omnipaste-debug;SuiteName=Omnipaste-debug;PublishAssemblyName=$(PublishAssemblyName)" />
+	</Target>
+</Project>
