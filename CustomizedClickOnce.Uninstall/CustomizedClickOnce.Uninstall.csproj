@@ -162,9 +162,5 @@
   <Target Name="BeforeBuild">
   </Target>
   -->
-  <Target Name="AfterBuild" AfterTargets="TransformAllFiles" >    
-    <Exec Command="copy /y $(TargetPath) $(SolutionDir)Omnipaste\$(TargetFileName)" />
-    <Exec Command="copy /y $(TargetPath).config $(SolutionDir)Omnipaste\$(TargetFileName).config" />    
-  </Target>
   
 </Project>
