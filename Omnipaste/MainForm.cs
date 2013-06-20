@@ -14,8 +14,8 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Properties;
     using Omnipaste.Services;
-    using WindowsClipboard.Imports;
     using WindowsClipboard.Interfaces;
+    using WindowsImports;
 
     public partial class MainForm : Form, IMainForm
     {

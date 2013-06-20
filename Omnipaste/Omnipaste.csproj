@@ -158,7 +158,6 @@
     <Compile Include="TokenInputForm.Designer.cs">
       <DependentUpon>TokenInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="WindowHelper.cs" />
     <Content Include="Uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -249,6 +248,10 @@
     <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
       <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
       <Name>WindowsClipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsImports\WindowsImports.csproj">
+      <Project>{a3325236-54ef-462d-9a88-dad57adc8d11}</Project>
+      <Name>WindowsImports</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

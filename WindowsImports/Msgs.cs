@@ -1,4 +1,4 @@
-namespace WindowsClipboard.Imports
+namespace WindowsImports
 {
     /// <summary>
     /// Windows Event Messages sent to the WindowProc
@@ -56,7 +56,7 @@ namespace WindowsClipboard.Imports
         WM_COMPAREITEM            = 0x0039,
         WM_GETOBJECT              = 0x003D,
         WM_COMPACTING             = 0x0041,
-        WM_COMMNOTIFY             = 0x0044 ,
+        WM_COMMNOTIFY             = 0x0044,
         WM_WINDOWPOSCHANGING      = 0x0046,
         WM_WINDOWPOSCHANGED       = 0x0047,
         WM_POWER                  = 0x0048,
@@ -210,9 +210,9 @@ namespace WindowsClipboard.Imports
         WM_USER                   = 0x0400,
 
         // For Windows XP Balloon messages from the System Notification Area
-        NIN_BALLOONSHOW			  = 0x0402,
-        NIN_BALLOONHIDE			  = 0x0403,
-        NIN_BALLOONTIMEOUT		  = 0x0404,
-        NIN_BALLOONUSERCLICK	  = 0x0405
+        NIN_BALLOONSHOW           = 0x0402,
+        NIN_BALLOONHIDE           = 0x0403,
+        NIN_BALLOONTIMEOUT        = 0x0404,
+        NIN_BALLOONUSERCLICK      = 0x0405
     }
 }

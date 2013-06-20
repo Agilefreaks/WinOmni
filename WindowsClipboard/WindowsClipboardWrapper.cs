@@ -1,15 +1,15 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
-using Common.Logging;
-using Ninject;
-using OmniCommon.ExtensionMethods;
-using WindowsClipboard.Imports;
-using WindowsClipboard.Interfaces;
-
-namespace WindowsClipboard
+﻿namespace WindowsClipboard
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Threading;
+    using System.Windows.Forms;
+    using Common.Logging;
+    using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using global::WindowsClipboard.Interfaces;
+    using WindowsImports;
+
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
         public event EventHandler<ClipboardEventArgs> DataReceived;
