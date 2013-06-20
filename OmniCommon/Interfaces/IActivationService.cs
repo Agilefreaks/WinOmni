@@ -9,8 +9,10 @@
 
         IStepFactory StepFactory { get; set; }
 
-        void Initialize();
+        void Run();
 
         void MoveToNextStep();
+
+        IActivationStep GetNextStep();
     }
 }

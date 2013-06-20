@@ -1,5 +1,6 @@
 ﻿namespace OmniCommon.Services
 {
+    using System.Collections.Generic;
     using OmniCommon.Interfaces;
     using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
@@ -7,15 +8,27 @@
 
     public class ActivationService : IActivationService
     {
+        private readonly List<object> _finalStepIdIds;
+        private readonly TransitionCollection _transitions;
+
         public IActivationStep CurrentStep { get; private set; }
 
         public IStepFactory StepFactory { get; set; }
 
-        private readonly TransitionCollection _transitions;
+        public IEnumerable<object> FinalStepIds
+        {
+            get
+            {
+                return _finalStepIdIds;
+            }
+        }
 
         public ActivationService()
         {
+            _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
+
             _transitions = new TransitionCollection();
+
             _transitions.RegisterTransition(
                 GenericTransitionId<Start>.Create(SingleStateEnum.Successful),
                 typeof(GetTokenFromActivationData));
@@ -60,22 +73,41 @@
                 typeof(Failed));
         }
 
-        public void Initialize()
+        public void Run()
         {
-            SetCurrentStep(StepFactory.Create(typeof(Start)));
+            while (CurrentStepIsIntermediateStep())
+            {
+                MoveToNextStep();
+            }
         }
 
         public void MoveToNextStep()
         {
-            var result = CurrentStep.Execute();
-            var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
-            var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
-            CurrentStep = StepFactory.Create(nextStepType);
+            SetCurrentStep(GetNextStep());
+        }
+
+        public IActivationStep GetNextStep()
+        {
+            return CurrentStep != null ? GetNextStepBasedOnExecuteResult() : new Start();
         }
 
         protected void SetCurrentStep(IActivationStep step)
         {
             CurrentStep = step;
+        }
+
+        private IActivationStep GetNextStepBasedOnExecuteResult()
+        {
+            var result = CurrentStep.Execute();
+            var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
+            var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
+
+            return StepFactory.Create(nextStepType);
+        }
+
+        private bool CurrentStepIsIntermediateStep()
+        {
+            return CurrentStep == null || !_finalStepIdIds.Contains(CurrentStep.GetId());
         }
     }
 }
