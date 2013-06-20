@@ -31,13 +31,13 @@
 
             _transitions.RegisterTransition(
                 GenericTransitionId<Start>.Create(SingleStateEnum.Successful),
-                typeof(GetTokenFromActivationData));
+                typeof(GetTokenFromDeploymentUri));
 
             _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromActivationData>.Create(SimpleStepStateEnum.Successful),
+                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
                 typeof(GetConfiguration));
             _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromActivationData>.Create(SimpleStepStateEnum.Failed),
+                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
                 typeof(LoadLocalConfiguration));
 
             _transitions.RegisterTransition(

@@ -1,10 +1,9 @@
 ﻿namespace OmniCommon.Services.ActivationServiceData.ActivationServiceSteps
 {
-    public class GetTokenFromActivationData : ActivationStepBase
+    public class GetTokenFromDeploymentUri : ActivationStepBase
     {
         public override IExecuteResult Execute()
         {
-            return null;
         }
     }
 }
