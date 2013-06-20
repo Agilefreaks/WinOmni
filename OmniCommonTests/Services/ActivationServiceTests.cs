@@ -70,9 +70,21 @@
         }
 
         [Test]
-        public void MoveToNextStep_CurrentStepIsGetTokenFromActivationDataAndItsStateIsFailed_ShouldCallStepFactoryCreateWithGetTokenFromUserAndSetTheCurrentStep()
+        public void MoveToNextStep_CurrentStepIsGetTokenFromActivationDataAndItsStateIsFailed_ShouldCallStepFactoryCreateWithLoadLocalConfigurationAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetTokenFromActivationData), SimpleStepStateEnum.Failed, typeof(GetTokenFromUser));
+            RunTransitionTest(typeof(GetTokenFromActivationData), SimpleStepStateEnum.Failed, typeof(LoadLocalConfiguration));
+        }
+
+        [Test]
+        public void MoveToNextStep_CurrentStepIsLoadLocalConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedAndSetTheCurrentStep()
+        {
+            RunTransitionTest(typeof(LoadLocalConfiguration), SimpleStepStateEnum.Successful, typeof(Finished));
+        }
+
+        [Test]
+        public void MoveToNextStep_CurrentStepIsLoadLocalConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithGetTokenFromUserAndSetTheCurrentStep()
+        {
+            RunTransitionTest(typeof(LoadLocalConfiguration), SimpleStepStateEnum.Failed, typeof(GetTokenFromUser));
         }
 
         [Test]

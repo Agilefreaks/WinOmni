@@ -79,6 +79,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SingleStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Start.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
+    <Compile Include="Interfaces\IActivationService.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />

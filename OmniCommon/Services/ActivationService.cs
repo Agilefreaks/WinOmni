@@ -1,10 +1,11 @@
 ﻿namespace OmniCommon.Services
 {
+    using OmniCommon.Interfaces;
     using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
     using OmniCommon.Services.ActivationServiceData.Transitions;
 
-    public class ActivationService
+    public class ActivationService : IActivationService
     {
         public IActivationStep CurrentStep { get; private set; }
 
@@ -24,6 +25,13 @@
                 typeof(GetConfiguration));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromActivationData>.Create(SimpleStepStateEnum.Failed),
+                typeof(LoadLocalConfiguration));
+
+            _transitions.RegisterTransition(
+                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Successful),
+                typeof(Finished));
+            _transitions.RegisterTransition(
+                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Failed),
                 typeof(GetTokenFromUser));
 
             _transitions.RegisterTransition(
