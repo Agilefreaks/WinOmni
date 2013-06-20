@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteWPF.ViewModels
 {
+    using System.Threading.Tasks;
     using Cinch;
     using OmniCommon.Interfaces;
 
@@ -21,7 +22,8 @@
         protected override void OnWindowActivated()
         {
             base.OnWindowActivated();
-            StartActivationProcess();
+
+            Task.Factory.StartNew(StartActivationProcess);
         }
     }
 }
