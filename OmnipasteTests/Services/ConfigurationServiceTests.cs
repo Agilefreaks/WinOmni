@@ -3,6 +3,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.Interfaces;
     using Omnipaste.Services;
 
     [TestFixture]

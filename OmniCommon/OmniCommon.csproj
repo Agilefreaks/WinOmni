@@ -69,6 +69,7 @@
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
+    <Compile Include="Interfaces\IConfigurationProvider.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />

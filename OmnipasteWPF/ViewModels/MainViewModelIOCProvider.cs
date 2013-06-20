@@ -5,6 +5,7 @@
     using OmniCommon.Services;
     using OmniCommon.Services.ActivationServiceData;
     using OmnipasteWPF.DataProviders;
+    using OmnipasteWPF.Services;
 
     public class MainViewModelIOCProvider : NinjectIOCProvider
     {
@@ -15,6 +16,8 @@
             Kernel.Bind<IStepFactory>().To<StepFactory>();
             Kernel.Bind<IDependencyResolver>().ToConstant(this);
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentWrapper>();
+            Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>();
+            Kernel.Bind<IConfigurationService>().To<ConfigurationService>();
         }
     }
 }

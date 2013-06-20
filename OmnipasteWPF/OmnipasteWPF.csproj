@@ -46,9 +46,11 @@
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,8 +69,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataProviders\ApplicationDeploymentWrapper.cs" />
+    <Compile Include="DataProviders\ApplicationInfoFactory.cs" />
     <Compile Include="NinjectIOCProvider.cs" />
     <Compile Include="NullLogger.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModelIOCProvider.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -109,6 +114,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">
+      <Project>{bc299433-48cc-4282-a7f4-3948e054b6ac}</Project>
+      <Name>CustomizedClickOnce.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
@@ -131,9 +140,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

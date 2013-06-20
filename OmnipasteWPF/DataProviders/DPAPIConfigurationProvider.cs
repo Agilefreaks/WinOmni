@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services
+﻿namespace OmnipasteWPF.DataProviders
 {
     using System;
     using System.Diagnostics;
