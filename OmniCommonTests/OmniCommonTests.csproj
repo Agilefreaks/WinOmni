@@ -65,6 +65,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FailedTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FinishedTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUriTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartTests.cs" />
     <Compile Include="Services\ActivationServiceData\StepFactoryTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\TransitionIdTests.cs" />
