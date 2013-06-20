@@ -144,7 +144,6 @@
     <Compile Include="Services\ActivationData.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\IActivationDataProvider.cs" />
-    <Compile Include="Services\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="Services\IConfigurationProvider.cs" />
     <Compile Include="Services\MockApplicationDeploymentInfoProvider.cs" />
     <Compile Include="Services\ApplicationDeploymentWrapper.cs" />

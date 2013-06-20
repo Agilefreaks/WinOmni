@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.Windows.Forms;
     using Ninject;
+    using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using Omnipaste.Services;

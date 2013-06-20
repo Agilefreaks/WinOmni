@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using System.Reflection;
-    using CustomizedClickOnce.Common;
     using Ninject;
     using Ninject.Modules;
+    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using Omnipaste.Services;
     using WindowsClipboard.Interfaces;

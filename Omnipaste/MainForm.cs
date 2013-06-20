@@ -10,6 +10,7 @@
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using Ninject;
+    using OmniCommon.DataProviders;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using Omnipaste.Properties;

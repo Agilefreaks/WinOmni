@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services
+﻿namespace OmniCommon.DataProviders
 {
     using System;
 

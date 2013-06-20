@@ -3,6 +3,7 @@
     using System;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using Omnipaste;
     using Omnipaste.Services;

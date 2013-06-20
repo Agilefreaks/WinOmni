@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
+    using OmniCommon.DataProviders;
 
     public class MockApplicationDeploymentInfoProvider : IApplicationDeploymentInfoProvider
     {

@@ -64,6 +64,7 @@
     <Compile Include="Caliburn.Micro\EventAggregator.cs" />
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="CommonModule.cs" />
+    <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />

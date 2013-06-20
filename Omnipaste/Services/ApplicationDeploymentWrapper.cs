@@ -2,6 +2,7 @@
 {
     using System;
     using System.Deployment.Application;
+    using OmniCommon.DataProviders;
 
     public class ApplicationDeploymentWrapper : IApplicationDeploymentInfoProvider
     {
