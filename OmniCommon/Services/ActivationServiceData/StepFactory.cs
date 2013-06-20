@@ -7,9 +7,16 @@
     {
         private static readonly Type ActivationStepType = typeof(IActivationStep);
 
+        private readonly IDependencyResolver _dependencyResolver;
+
+        public StepFactory(IDependencyResolver dependencyResolver)
+        {
+            _dependencyResolver = dependencyResolver;
+        }
+
         public IActivationStep Create(Type type)
         {
-            return ActivationStepType.IsAssignableFrom(type) ? Activator.CreateInstance(type) as IActivationStep : null;
+            return ActivationStepType.IsAssignableFrom(type) ? _dependencyResolver.Get(type) as IActivationStep : null;
         }
     }
 }

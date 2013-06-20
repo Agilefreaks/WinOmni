@@ -13,7 +13,7 @@
     {
         public MainWindow()
         {
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(new MainViewModelIOCProvider());
 
             InitializeComponent();
         }

@@ -14,6 +14,11 @@
     {
         private class ActivationServiceWrapper : ActivationService
         {
+            public ActivationServiceWrapper(IStepFactory stepFactory)
+                : base(stepFactory)
+            {
+            }
+
             public void CallSetCurrentStep(IActivationStep step)
             {
                 SetCurrentStep(step);
@@ -33,7 +38,7 @@
             _mockActivationStep = new Mock<IActivationStep>();
             _mockActivationStep.Setup(x => x.Execute()).Returns(new ExecuteResult());
             _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>())).Returns(_mockActivationStep.Object);
-            _subject = new ActivationServiceWrapper { StepFactory = _mockStepFactory.Object, };
+            _subject = new ActivationServiceWrapper(_mockStepFactory.Object);
         }
 
         [Test]

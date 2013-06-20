@@ -10,10 +10,9 @@
     {
         private readonly List<object> _finalStepIdIds;
         private readonly TransitionCollection _transitions;
+        private readonly IStepFactory _stepFactory;
 
         public IActivationStep CurrentStep { get; private set; }
-
-        public IStepFactory StepFactory { get; set; }
 
         public IEnumerable<object> FinalStepIds
         {
@@ -23,8 +22,10 @@
             }
         }
 
-        public ActivationService()
+        public ActivationService(IStepFactory stepFactory)
         {
+            _stepFactory = stepFactory;
+
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
             _transitions = new TransitionCollection();
@@ -102,7 +103,7 @@
             var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
             var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
 
-            return StepFactory.Create(nextStepType);
+            return _stepFactory.Create(nextStepType);
         }
 
         private bool CurrentStepIsIntermediateStep()

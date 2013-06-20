@@ -1,15 +1,27 @@
 ﻿namespace OmnipasteWPF.ViewModels
 {
     using Cinch;
-    using OmniCommon.Services;
+    using OmniCommon.Interfaces;
 
     public class MainViewModel : ViewModelBase
     {
-        public ActivationService ActivationService { get; set; }
+        public IActivationService ActivationService { get; set; }
 
-        public MainViewModel()
+        public MainViewModel(IIOCProvider iocProvider)
+            : base(iocProvider)
         {
-            ActivationService = new ActivationService();
+            ActivationService = iocProvider.GetTypeFromContainer<IActivationService>();
+        }
+
+        public void StartActivationProcess()
+        {
+            ActivationService.Run();
+        }
+
+        protected override void OnWindowActivated()
+        {
+            base.OnWindowActivated();
+            StartActivationProcess();
         }
     }
 }

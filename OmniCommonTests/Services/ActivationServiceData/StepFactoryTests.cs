@@ -1,6 +1,7 @@
 ﻿namespace OmniCommonTests.Services.ActivationServiceData
 {
     using FluentAssertions;
+    using Moq;
     using NUnit.Framework;
     using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
@@ -10,10 +11,13 @@
     {
         private StepFactory _subject;
 
+        private Mock<IDependencyResolver> _mockDependencyResolver;
+
         [SetUp]
         public void Setup()
         {
-            _subject = new StepFactory();
+            _mockDependencyResolver = new Mock<IDependencyResolver>();
+            _subject = new StepFactory(_mockDependencyResolver.Object);
         }
 
         [Test]
@@ -23,14 +27,19 @@
         }
 
         [Test]
-        public void Create_TypeIsImplementationOfIActivationStep_ReturnsInstanceOfType()
+        public void Create_TypeIsImplementationOfIActivationStep_ReturnsTheResultOfGetType()
         {
-            _subject.Create(typeof(Start)).Should().BeOfType<Start>();
+            var result = new Start();
+            _mockDependencyResolver.Setup(x => x.Get(typeof(Start))).Returns(result);
+
+            _subject.Create(typeof(Start)).Should().Be(result);
         }
 
         [Test]
         public void Create_TypeIsNotImplementationOfIActivationStep_ReturnsNull()
         {
+            _mockDependencyResolver.Setup(x => x.Get(typeof(string))).Returns("test");
+
             _subject.Create(typeof(string)).Should().BeNull();
         }
     }
