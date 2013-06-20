@@ -123,6 +123,12 @@
             RunTransitionTest(typeof(Finished), SingleStateEnum.Successful, typeof(Finished));
         }
 
+        [Test]
+        public void MoveToNextStep_CurrentStepIsFailedAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFailedFromUserAndSetTheCurrentStep()
+        {
+            RunTransitionTest(typeof(Failed), SingleStateEnum.Successful, typeof(Failed));
+        }
+
         private void RunTransitionTest(object currentStepId, object currentStepState, Type expectedStepType)
         {
             SetCurrentStep(currentStepId, currentStepState);

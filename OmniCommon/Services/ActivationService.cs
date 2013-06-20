@@ -54,6 +54,10 @@
             _transitions.RegisterTransition(
                 GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),
                 typeof(Finished));
+
+            _transitions.RegisterTransition(
+                GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
+                typeof(Failed));
         }
 
         public void Initialize()
