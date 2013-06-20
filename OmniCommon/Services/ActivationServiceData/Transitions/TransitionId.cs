@@ -27,7 +27,7 @@
 
         protected bool Equals(TransitionId other)
         {
-            return other != null && StateId == other.StateId && Equals(State, other.State);
+            return other != null && Equals(StateId, other.StateId) && Equals(State, other.State);
         }
     }
 }
