@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
-
+﻿
 namespace OmnipasteTests.Services
 {
     using FluentAssertions;
-
+    using NUnit.Framework;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -20,7 +19,7 @@ namespace OmnipasteTests.Services
         [Test]
         public void SettingsFolder_Should_ReturnCorrectPath()
         {
-            _subject.SettingsFolder.Should().EndWith("\\Omnipaste-Debug");
+            _subject.SettingsFolder.Should().EndWith("\\Omnipaste-debug");
         }
     }
 }
