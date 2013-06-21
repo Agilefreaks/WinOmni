@@ -102,9 +102,9 @@
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsTimedOut_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsCommunicationFailure_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.TimedOut, typeof(GetConfiguration));
+            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.CommunicationFailure, typeof(GetConfiguration));
         }
 
         [Test]

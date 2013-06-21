@@ -4,6 +4,6 @@
     {
         public string Email { get; set; }
 
-        public string Errors { get; set; }
+        public string CommunicationError { get; set; }
     }
 }

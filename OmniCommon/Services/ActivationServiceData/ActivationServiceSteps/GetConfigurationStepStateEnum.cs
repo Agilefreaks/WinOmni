@@ -3,7 +3,7 @@
     public enum GetConfigurationStepStateEnum
     {
         Successful,
-        TimedOut,
+        CommunicationFailure,
         Failed
     }
 }

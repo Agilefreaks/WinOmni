@@ -56,7 +56,7 @@
                 typeof(Failed));
 
             _transitions.RegisterTransition(
-                GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.TimedOut),
+                GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.CommunicationFailure),
                 typeof(GetConfiguration));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.Failed),
