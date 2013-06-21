@@ -104,8 +104,8 @@
         private IActivationStep GetNextStepBasedOnExecuteResult()
         {
             var result = CurrentStep.Execute();
-            var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
-            var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
+            var transitionId = new TransitionId(CurrentStep.GetId(), result.State);
+            var nextStepType = _transitions.GetTargetTypeForTransition(transitionId);
 
             return _stepFactory.Create(nextStepType, result.Data);
         }
