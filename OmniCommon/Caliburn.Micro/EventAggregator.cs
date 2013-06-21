@@ -21,8 +21,8 @@ namespace Caliburn.Micro {
         /// <summary>
         ///   Handles the message.
         /// </summary>
-        /// <param name = "message">The message.</param>
-        void Handle(TMessage message);
+        /// <param name = "tokenRequestResutMessage">The message.</param>
+        void Handle(TMessage tokenRequestResutMessage);
     }
 
     /// <summary>

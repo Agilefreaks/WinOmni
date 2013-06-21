@@ -65,7 +65,10 @@
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="CommonModule.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
+    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResutMessage.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
