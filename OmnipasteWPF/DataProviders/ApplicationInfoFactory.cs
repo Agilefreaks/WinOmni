@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteWPF.DataProviders
 {
+    using System;
     using System.Configuration;
     using CustomizedClickOnce.Common;
 
@@ -43,6 +44,14 @@
             }
         }
 
+        public static Uri GetTokenLink
+        {
+            get
+            {
+                return new Uri(BaseUrl + "whatismytoken");
+            }
+        }
+
         protected ApplicationInfoFactory()
         {
         }
@@ -54,7 +63,7 @@
                            AboutLink = AboutLink,
                            HelpLink = HelpLink,
                            ProductName = ApplicationName,
-                           PublisherName = PublisherName
+                           PublisherName = PublisherName,
                        };
         }
     }
