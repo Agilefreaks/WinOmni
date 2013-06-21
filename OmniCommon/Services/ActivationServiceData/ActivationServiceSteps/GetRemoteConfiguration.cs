@@ -10,15 +10,11 @@
 
         private readonly RetryInfo _payload;
 
-        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, string payload)
-            : this(activationDataProvider, new RetryInfo(payload))
-        {
-        }
-
-        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, RetryInfo payload)
+        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, object payload)
         {
             _activationDataProvider = activationDataProvider;
-            _payload = payload;
+            var retryInfo = payload as RetryInfo;
+            _payload = retryInfo ?? new RetryInfo(payload as string);
         }
 
         public override IExecuteResult Execute()

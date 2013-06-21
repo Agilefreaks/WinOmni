@@ -28,7 +28,7 @@
         [Test]
         public void Execute_PayloadIsNull_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, (string)null);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, null);
 
             subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
