@@ -34,14 +34,6 @@
         }
 
         [Test]
-        public void Execute_PayloadIsNotAString_ShouldReturnAResultWithStatusFailed()
-        {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, 1);
-
-            subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
-        }
-
-        [Test]
         public void Execute_PayloadIsAnEmptyString_ShouldReturnAResultWithStatusFailed()
         {
             var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, string.Empty);

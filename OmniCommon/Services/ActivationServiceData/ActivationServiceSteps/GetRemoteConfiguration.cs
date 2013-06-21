@@ -7,10 +7,10 @@
         private readonly IActivationDataProvider _activationDataProvider;
         private readonly string _token;
 
-        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, object payload)
+        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, string payload)
         {
             _activationDataProvider = activationDataProvider;
-            _token = payload as string;
+            _token = payload;
         }
 
         public override IExecuteResult Execute()
