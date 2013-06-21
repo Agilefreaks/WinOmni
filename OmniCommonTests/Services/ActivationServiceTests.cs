@@ -156,7 +156,7 @@
             mockActivationStep.Setup(x => x.Execute())
                               .Returns(new ExecuteResult { State = SimpleStepStateEnum.Successful });
             var callCount = 0;
-            Func<Type, IActivationStep> getStepFunc = type =>
+            Func<Type, object, IActivationStep> getStepFunc = (type, payload) =>
                 {
                     var idToReturn = callCount == 6 ? typeof(Finished) : typeof(Start);
                     mockActivationStep.Setup(x => x.GetId()).Returns(idToReturn);
@@ -164,7 +164,7 @@
 
                     return mockActivationStep.Object;
                 };
-            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>(), null)).Returns(getStepFunc);
+            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>(), It.IsAny<object>())).Returns(getStepFunc);
 
             _subject.Run();
 
