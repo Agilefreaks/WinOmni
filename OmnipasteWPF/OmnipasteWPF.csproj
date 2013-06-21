@@ -80,9 +80,15 @@
     <Compile Include="NullLogger.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
+    <Compile Include="ViewModels\GetTokenFromUserIOCProvider.cs" />
+    <Compile Include="ViewModels\GetTokenFromUserViewModel.cs" />
+    <Compile Include="ViewModels\IGetTokenFromUserViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModelIOCProvider.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\GetTokenFromUserView.xaml.cs">
+      <DependentUpon>GetTokenFromUserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -114,6 +120,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\GetTokenFromUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

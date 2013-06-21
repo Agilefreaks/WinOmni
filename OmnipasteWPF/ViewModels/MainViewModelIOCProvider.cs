@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteWPF.ViewModels
 {
+    using Caliburn.Micro;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
@@ -18,6 +19,7 @@
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentWrapper>();
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>();
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>();
+            Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
         }
     }
 }

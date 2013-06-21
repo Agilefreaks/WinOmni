@@ -69,7 +69,7 @@
       <Name>OmniCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\OmnipasteWPF\OmnipasteWPF.csproj">
-      <Project>{9aa31de8-347a-4dbb-9ed7-588c6d61dfd0}</Project>
+      <Project>{9AA31DE8-347A-4DBB-9ED7-588C6D61DFD0}</Project>
       <Name>OmnipasteWPF</Name>
     </ProjectReference>
   </ItemGroup>

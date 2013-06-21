@@ -14,7 +14,6 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
     using WindowsClipboard.Interfaces;
     using WindowsImports;
 

@@ -2,9 +2,7 @@
 {
     using Cinch;
     using Moq;
-    using NUnit.Framework;
 
-    [TestFixture]
     public class ViewModelTestsBase
     {
         protected Mock<IIOCProvider> MockIOCProvider { get; set; }
@@ -19,7 +17,6 @@
 
         protected Mock<ISaveFileService> MockSaveFileService { get; set; }
 
-        [SetUp]
         public virtual void Setup()
         {
             MockIOCProvider = new Mock<IIOCProvider>();

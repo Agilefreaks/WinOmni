@@ -5,6 +5,7 @@
     using System.Windows.Interop;
     using OmnipasteWPF.ViewModels;
     using WindowsImports;
+    using ViewModelBase = Cinch.ViewModelBase;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -13,6 +14,7 @@
     {
         public MainWindow()
         {
+            ViewModelBase.SetupVisualizer = x => x.Register("GetTokenFromUser", typeof(GetTokenFromUserView));
             DataContext = new MainViewModel(new MainViewModelIOCProvider());
 
             InitializeComponent();

@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Cinch="clr-namespace:Cinch;assembly=Cinch"
         Title="Omnipaste" Height="0" Width="0" Icon="/OmnipasteWPF;component/Resources/Icon2.ico" ShowInTaskbar="False" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
-        Loaded="OnLoaded" Cinch:LifetimeEvent.Activated="{Binding ActivatedCommand}">
+        Loaded="OnLoaded" Cinch:LifetimeEvent.Loaded="{Binding Path=LoadedCommand}">
     <Grid>
-        
+
     </Grid>
 </Window>
