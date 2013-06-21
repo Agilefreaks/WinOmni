@@ -36,7 +36,7 @@
 
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetConfiguration));
+                typeof(GetRemoteConfiguration));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
                 typeof(LoadLocalConfiguration));
@@ -50,19 +50,19 @@
 
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetConfiguration));
+                typeof(GetRemoteConfiguration));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Failed),
                 typeof(Failed));
 
             _transitions.RegisterTransition(
-                GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.CommunicationFailure),
-                typeof(GetConfiguration));
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.CommunicationFailure),
+                typeof(GetRemoteConfiguration));
             _transitions.RegisterTransition(
-                GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.Failed),
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.Failed),
                 typeof(GetTokenFromUser));
             _transitions.RegisterTransition(
-                GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.Successful),
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.Successful),
                 typeof(SaveConfiguration));
 
             _transitions.RegisterTransition(

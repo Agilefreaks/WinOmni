@@ -68,7 +68,7 @@
         [Test]
         public void GetNextStep_CurrentStepIsGetTokenFromDeploymentUriAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetTokenFromDeploymentUri), SimpleStepStateEnum.Successful, typeof(GetConfiguration));
+            RunTransitionTest(typeof(GetTokenFromDeploymentUri), SimpleStepStateEnum.Successful, typeof(GetRemoteConfiguration));
         }
 
         [Test]
@@ -90,9 +90,9 @@
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsGetTokenFromUserAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsGetTokenFromUserAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithGetRemoteConfigurationAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetTokenFromUser), SimpleStepStateEnum.Successful, typeof(GetConfiguration));
+            RunTransitionTest(typeof(GetTokenFromUser), SimpleStepStateEnum.Successful, typeof(GetRemoteConfiguration));
         }
 
         [Test]
@@ -102,27 +102,27 @@
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsCommunicationFailure_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsGetRemoteConfigurationAndItsStateIsCommunicationFailure_ShouldCallStepFactoryCreateWithGetConfigurationAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.CommunicationFailure, typeof(GetConfiguration));
+            RunTransitionTest(typeof(GetRemoteConfiguration), GetConfigurationStepStateEnum.CommunicationFailure, typeof(GetRemoteConfiguration));
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsFailed_ShouldCallStepFactoryCreateWithGetTokenFromUserAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsGetRemoteConfigurationAndItsStateIsFailed_ShouldCallStepFactoryCreateWithGetTokenFromUserAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.Failed, typeof(GetTokenFromUser));
+            RunTransitionTest(typeof(GetRemoteConfiguration), GetConfigurationStepStateEnum.Failed, typeof(GetTokenFromUser));
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedFromUserAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsGetRemoteConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedFromUserAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.Successful, typeof(SaveConfiguration));
+            RunTransitionTest(typeof(GetRemoteConfiguration), GetConfigurationStepStateEnum.Successful, typeof(SaveConfiguration));
         }
 
         [Test]
-        public void GetNextStep_CurrentStepIsSaveConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedFromUserAndSetTheCurrentStep()
+        public void GetNextStep_CurrentStepIsSaveConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(SaveConfiguration), SimpleStepStateEnum.Successful, typeof(Finished));
+            RunTransitionTest(typeof(SaveConfiguration), SingleStateEnum.Successful, typeof(Finished));
         }
 
         [Test]

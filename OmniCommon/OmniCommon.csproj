@@ -80,7 +80,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Failed.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetConfigurationStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUri.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUser.cs" />

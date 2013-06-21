@@ -7,9 +7,9 @@
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
-    public class GetConfigurationTests
+    public class GetRemoteConfigurationTests
     {
-        private GetConfiguration _subject;
+        private GetRemoteConfiguration _subject;
 
         private Mock<IActivationDataProvider> _mockActivationDataProvider;
 
@@ -20,7 +20,7 @@
         {
             _mockActivationDataProvider = new Mock<IActivationDataProvider>();
             _token = "testToken";
-            _subject = new GetConfiguration(_mockActivationDataProvider.Object, _token);
+            _subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _token);
             _mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>()))
                                        .Returns(new ActivationData());
         }
@@ -28,7 +28,7 @@
         [Test]
         public void Execute_PayloadIsNull_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetConfiguration(_mockActivationDataProvider.Object, null);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, null);
 
             subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
         }
@@ -36,7 +36,7 @@
         [Test]
         public void Execute_PayloadIsNotAString_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetConfiguration(_mockActivationDataProvider.Object, 1);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, 1);
 
             subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
         }
@@ -44,7 +44,7 @@
         [Test]
         public void Execute_PayloadIsAnEmptyString_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetConfiguration(_mockActivationDataProvider.Object, string.Empty);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, string.Empty);
 
             subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
         }

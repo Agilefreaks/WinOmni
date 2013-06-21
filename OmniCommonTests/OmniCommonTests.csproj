@@ -66,7 +66,7 @@
   <ItemGroup>
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FailedTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FinishedTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUriTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />

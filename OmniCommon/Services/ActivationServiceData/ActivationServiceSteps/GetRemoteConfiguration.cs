@@ -2,12 +2,12 @@
 {
     using OmniCommon.DataProviders;
 
-    public class GetConfiguration : ActivationStepBase
+    public class GetRemoteConfiguration : ActivationStepBase
     {
         private readonly IActivationDataProvider _activationDataProvider;
         private readonly string _token;
 
-        public GetConfiguration(IActivationDataProvider activationDataProvider, object payload)
+        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, object payload)
         {
             _activationDataProvider = activationDataProvider;
             _token = payload as string;
