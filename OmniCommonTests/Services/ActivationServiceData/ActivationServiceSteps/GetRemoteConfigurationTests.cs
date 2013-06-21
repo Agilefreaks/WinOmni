@@ -28,9 +28,9 @@
         [Test]
         public void Execute_PayloadIsNull_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, null);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, (string)null);
 
-            subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
+            subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
         [Test]
@@ -38,7 +38,7 @@
         {
             var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, string.Empty);
 
-            subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
+            subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
         [Test]
@@ -50,13 +50,67 @@
         }
 
         [Test]
+        public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndEmptyToken_ShouldReturnAResultWithStatusFailed()
+        {
+            var subject = new GetRemoteConfiguration(
+                _mockActivationDataProvider.Object,
+                new RetryInfo(string.Empty, GetRemoteConfiguration.MaxRetryCount - 1));
+
+            subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+        }
+
+        [Test]
+        public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNullToken_ShouldReturnAResultWithStatusFailed()
+        {
+            var subject = new GetRemoteConfiguration(
+                _mockActivationDataProvider.Object,
+                new RetryInfo(null, GetRemoteConfiguration.MaxRetryCount - 1));
+
+            subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+        }
+
+        [Test]
+        public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
+        {
+            var subject = new GetRemoteConfiguration(
+                _mockActivationDataProvider.Object,
+                new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount - 1));
+
+            subject.Execute();
+
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
+        }
+
+        [Test]
+        public void Execute_PayloadIsARetryInfoObjectWithFailCountEqualToMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
+        {
+            var subject = new GetRemoteConfiguration(
+                _mockActivationDataProvider.Object,
+                new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount));
+
+            subject.Execute();
+
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
+        }
+
+        [Test]
+        public void Execute_PayloadIsARetryInfoObjectWithFailCountGreaterThanMaxFailCountAndNonEmptyToken_ShouldReturnAResultWithStatusFailed()
+        {
+            var subject = new GetRemoteConfiguration(
+                _mockActivationDataProvider.Object,
+                new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount + 1));
+
+            subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+        }
+
+        [Test]
         public void Execute_GetConfigurationReturnsEmptyActivationData_ShouldReturnAResultWithStatusFailed()
         {
             _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(new ActivationData());
 
             _subject.Execute();
 
-            _subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Failed);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
         [Test]
@@ -67,7 +121,7 @@
 
             _subject.Execute();
 
-            _subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.Successful);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Successful);
         }
 
         [Test]
@@ -89,18 +143,66 @@
 
             _subject.Execute();
 
-            _subject.Execute().State.Should().Be(GetConfigurationStepStateEnum.CommunicationFailure);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.CommunicationFailure);
         }
 
         [Test]
-        public void Execute_GetConfigurationReturnsActivationDataObjectWithCommnuicationErrors_ShouldReturnAResultWithDataContainingTheCommunicationFailure()
+        public void Execute_GotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCount_ShouldReturnAResultWithTheCommunicationFailure()
         {
+            const string Token = "testToken";
+            var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, retryInfo);
             var activationData = new ActivationData { CommunicationError = "error" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
-            _subject.Execute();
+            var executeResult = subject.Execute();
 
-            _subject.Execute().Data.Should().Be("error");
+            executeResult.Data.Should().BeOfType<RetryInfo>();
+            ((RetryInfo)executeResult.Data).Error.Should().Be("error");
+        }
+
+        [Test]
+        public void Execute_GotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCount_ShouldReturnAResultWithAIncrementedFailCount()
+        {
+            const string Token = "testToken";
+            var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, retryInfo);
+            var activationData = new ActivationData { CommunicationError = "error" };
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+
+            var executeResult = subject.Execute();
+
+            executeResult.Data.Should().BeOfType<RetryInfo>();
+            ((RetryInfo)executeResult.Data).FailCount.Should().Be(GetRemoteConfiguration.MaxRetryCount);
+        }
+
+        [Test]
+        public void Execute_GotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCount_ShouldReturnAResultWithTheGivenToken()
+        {
+            const string Token = "testToken";
+            var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, retryInfo);
+            var activationData = new ActivationData { CommunicationError = "error" };
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+
+            var executeResult = subject.Execute();
+
+            executeResult.Data.Should().BeOfType<RetryInfo>();
+            ((RetryInfo)executeResult.Data).Token.Should().Be(Token);
+        }
+
+        [Test]
+        public void Execute_GotConfigurationWithCommnuicationErrorAndFailCountEqualToMaxFailCount_ShouldReturnAResultWithStatusFailed()
+        {
+            const string Token = "testToken";
+            var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount);
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, retryInfo);
+            var activationData = new ActivationData { CommunicationError = "error" };
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+
+            var executeResult = subject.Execute();
+
+            executeResult.State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
     }
 }

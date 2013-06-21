@@ -56,13 +56,13 @@
                 typeof(Failed));
 
             _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.CommunicationFailure),
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.CommunicationFailure),
                 typeof(GetRemoteConfiguration));
             _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.Failed),
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
                 typeof(GetTokenFromUser));
             _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetConfigurationStepStateEnum.Successful),
+                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Successful),
                 typeof(SaveConfiguration));
 
             _transitions.RegisterTransition(

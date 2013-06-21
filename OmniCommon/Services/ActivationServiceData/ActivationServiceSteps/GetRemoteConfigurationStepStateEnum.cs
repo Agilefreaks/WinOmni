@@ -1,6 +1,6 @@
 ﻿namespace OmniCommon.Services.ActivationServiceData.ActivationServiceSteps
 {
-    public enum GetConfigurationStepStateEnum
+    public enum GetRemoteConfigurationStepStateEnum
     {
         Successful,
         CommunicationFailure,
