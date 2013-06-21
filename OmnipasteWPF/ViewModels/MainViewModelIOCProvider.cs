@@ -21,7 +21,11 @@
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>();
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IApplicationWrapper>().To<ApplicationWrapper>().InSingletonScope();
+#if DEBUG
+            Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
+#else
             Kernel.Bind<IActivationDataProvider>().To<OnlineActivationDataProvider>().InSingletonScope();
+#endif
         }
     }
 }
