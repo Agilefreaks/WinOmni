@@ -30,7 +30,7 @@
         {
             var injectionParameters =
                 parameters.Select(p => new ConstructorArgument(p.Name, p.Value, false) as IParameter).ToArray();
-            
+
             return Kernel.Get(type, injectionParameters);
         }
 
