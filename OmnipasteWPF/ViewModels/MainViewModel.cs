@@ -13,6 +13,10 @@
     {
         private IEventAggregator _eventAggregator;
 
+        public ITrayIconViewModel TrayIconViewModel { get; set; }
+
+        public IGetTokenFromUserViewModel GetTokenFromUserViewModel { get; set; }
+
         public IActivationService ActivationService { get; set; }
 
         public IEventAggregator EventAggregator
@@ -31,8 +35,6 @@
 
         public IUIVisualizerService UiVisualizerService { get; set; }
 
-        public IGetTokenFromUserViewModel GetTokenFromUserViewModel { get; set; }
-
         public IApplicationWrapper ApplicationWrapper { get; set; }
 
         public MainViewModel(IIOCProvider iocProvider)
@@ -43,6 +45,7 @@
             ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
             UiVisualizerService = Resolve<IUIVisualizerService>();
             GetTokenFromUserViewModel = new GetTokenFromUserViewModel(new GetTokenFromUserIOCProvider());
+            TrayIconViewModel = new TrayIconViewModel(new TrayIconIOCProvider());
         }
 
         public void RunActivationProcess()
@@ -51,6 +54,10 @@
             if (ActivationService.CurrentStep == null || ActivationService.CurrentStep.GetId().Equals(typeof(Failed)))
             {
                 ApplicationWrapper.ShutDown();
+            }
+            else
+            {
+                TrayIconViewModel.TrayIconVisible = true;
             }
         }
 

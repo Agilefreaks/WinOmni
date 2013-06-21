@@ -25,6 +25,8 @@
 
         private Mock<IApplicationWrapper> _mockApplicationWrapper;
 
+        private Mock<ITrayIconViewModel> _mockTrayIconViewModel;
+
         [SetUp]
         public override void Setup()
         {
@@ -40,10 +42,12 @@
                            .Returns(_mockApplicationWrapper.Object);
             _mockGetTokenFromUserViewModel = new Mock<IGetTokenFromUserViewModel>();
             ViewModelBase.ServiceProvider.Add(typeof(IUIVisualizerService), MockUiVisualizerService.Object);
+            _mockTrayIconViewModel = new Mock<ITrayIconViewModel>();
             _subject = new MainViewModel(MockIOCProvider.Object)
                            {
                                GetTokenFromUserViewModel =
-                                   _mockGetTokenFromUserViewModel.Object
+                                   _mockGetTokenFromUserViewModel.Object,
+                               TrayIconViewModel = _mockTrayIconViewModel.Object
                            };
         }
 
@@ -159,6 +163,18 @@
             _subject.RunActivationProcess();
 
             _mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
+        }
+
+        [Test]
+        public void RunActivationProcess_ActivationServiceCurrentStepIsNotFailedOrNull_SetsTrayIconViewModelTrayIconVisibleTrue()
+        {
+            var mockActivationStep = new Mock<IActivationStep>();
+            mockActivationStep.Setup(x => x.GetId()).Returns(typeof(Finished));
+            _mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
+
+            _subject.RunActivationProcess();
+
+            _mockTrayIconViewModel.VerifySet(x => x.TrayIconVisible = true);
         }
     }
 }

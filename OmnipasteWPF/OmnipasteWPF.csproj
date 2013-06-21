@@ -106,8 +106,11 @@
     <Compile Include="ViewModels\GetTokenFromUserIOCProvider.cs" />
     <Compile Include="ViewModels\GetTokenFromUserViewModel.cs" />
     <Compile Include="ViewModels\IGetTokenFromUserViewModel.cs" />
+    <Compile Include="ViewModels\ITrayIconViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModelIOCProvider.cs" />
+    <Compile Include="ViewModels\TrayIconIOCProvider.cs" />
+    <Compile Include="ViewModels\TrayIconViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\GetTokenFromUserView.xaml.cs">
       <DependentUpon>GetTokenFromUserView.xaml</DependentUpon>
