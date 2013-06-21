@@ -63,6 +63,10 @@
                 typeof(GetTokenFromUser));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetConfiguration>.Create(GetConfigurationStepStateEnum.Successful),
+                typeof(SaveConfiguration));
+
+            _transitions.RegisterTransition(
+                GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
                 typeof(Finished));
 
             _transitions.RegisterTransition(

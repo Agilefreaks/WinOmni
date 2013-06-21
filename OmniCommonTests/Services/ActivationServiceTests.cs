@@ -116,7 +116,13 @@
         [Test]
         public void GetNextStep_CurrentStepIsGetConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedFromUserAndSetTheCurrentStep()
         {
-            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.Successful, typeof(Finished));
+            RunTransitionTest(typeof(GetConfiguration), GetConfigurationStepStateEnum.Successful, typeof(SaveConfiguration));
+        }
+
+        [Test]
+        public void GetNextStep_CurrentStepIsSaveConfigurationAndItsStateIsSuccessful_ShouldCallStepFactoryCreateWithFinishedFromUserAndSetTheCurrentStep()
+        {
+            RunTransitionTest(typeof(SaveConfiguration), SimpleStepStateEnum.Successful, typeof(Finished));
         }
 
         [Test]
