@@ -4,6 +4,6 @@
 
     public interface IDependencyResolver
     {
-        object Get(Type type);
+        object Get(Type type, params DependencyParameter[] dependencyParameters);
     }
 }

@@ -37,7 +37,7 @@
             _mockStepFactory = new Mock<IStepFactory>();
             _mockActivationStep = new Mock<IActivationStep>();
             _mockActivationStep.Setup(x => x.Execute()).Returns(new ExecuteResult());
-            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>())).Returns(_mockActivationStep.Object);
+            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>(), null)).Returns(_mockActivationStep.Object);
             _subject = new ActivationServiceWrapper(_mockStepFactory.Object);
         }
 
@@ -158,7 +158,7 @@
 
                     return mockActivationStep.Object;
                 };
-            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>())).Returns(getStepFunc);
+            _mockStepFactory.Setup(x => x.Create(It.IsAny<Type>(), null)).Returns(getStepFunc);
 
             _subject.Run();
 
@@ -170,11 +170,11 @@
         {
             SetCurrentStep(currentStepId, currentStepState);
             var resultStep = new Mock<IActivationStep>().Object;
-            _mockStepFactory.Setup(x => x.Create(expectedStepType)).Returns(resultStep);
+            _mockStepFactory.Setup(x => x.Create(expectedStepType, null)).Returns(resultStep);
 
             var activationStep = _subject.GetNextStep();
 
-            _mockStepFactory.Verify(x => x.Create(expectedStepType), Times.Once());
+            _mockStepFactory.Verify(x => x.Create(expectedStepType, null), Times.Once());
             activationStep.Should().Be(resultStep);
         }
 

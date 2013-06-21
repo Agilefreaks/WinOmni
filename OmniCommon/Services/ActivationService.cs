@@ -103,7 +103,7 @@
             var transitionKey = new TransitionId(CurrentStep.GetId(), result.State);
             var nextStepType = _transitions.GetTargetTypeForTransition(transitionKey);
 
-            return _stepFactory.Create(nextStepType);
+            return _stepFactory.Create(nextStepType, result.Data);
         }
 
         private bool CurrentStepIsIntermediateStep()

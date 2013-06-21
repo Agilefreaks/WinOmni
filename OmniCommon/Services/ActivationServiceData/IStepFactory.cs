@@ -5,6 +5,6 @@
 
     public interface IStepFactory
     {
-        IActivationStep Create(Type type);
+        IActivationStep Create(Type type, object payload = null);
     }
 }

@@ -1,8 +1,10 @@
 ﻿namespace OmnipasteWPF
 {
     using System;
+    using System.Linq;
     using Cinch;
     using Ninject;
+    using Ninject.Parameters;
     using OmniCommon.Services.ActivationServiceData;
 
     public abstract class NinjectIOCProvider : IIOCProvider, IDependencyResolver
@@ -24,9 +26,12 @@
             return Kernel.Get<T>();
         }
 
-        public object Get(Type type)
+        public object Get(Type type, params DependencyParameter[] parameters)
         {
-            return Kernel.Get(type);
+            var injectionParameters =
+                parameters.Select(p => new ConstructorArgument(p.Name, p.Value, false) as IParameter).ToArray();
+            
+            return Kernel.Get(type, injectionParameters);
         }
 
         private void RegisterDefaultServices()

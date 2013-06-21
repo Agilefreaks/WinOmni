@@ -14,9 +14,16 @@
             _dependencyResolver = dependencyResolver;
         }
 
-        public IActivationStep Create(Type type)
+        public IActivationStep Create(Type type, object payload = null)
         {
-            return ActivationStepType.IsAssignableFrom(type) ? _dependencyResolver.Get(type) as IActivationStep : null;
+            var dependencyParameter = payload == null
+                                          ? null
+                                          : new DependencyParameter { Name = "payload", Value = payload };
+            return ActivationStepType.IsAssignableFrom(type)
+                       ? payload != null
+                             ? _dependencyResolver.Get(type, dependencyParameter) as IActivationStep
+                             : _dependencyResolver.Get(type) as IActivationStep
+                       : null;
         }
     }
 }
