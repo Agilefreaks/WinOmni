@@ -8,11 +8,11 @@
     using ViewModelBase = Cinch.ViewModelBase;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainView
     {
-        public MainWindow()
+        public MainView()
         {
             ViewModelBase.SetupVisualizer = x => x.Register("GetTokenFromUser", typeof(GetTokenFromUserView));
             DataContext = new MainViewModel(new MainViewModelIOCProvider());
