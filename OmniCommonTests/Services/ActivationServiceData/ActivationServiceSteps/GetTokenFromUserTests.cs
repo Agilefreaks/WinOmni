@@ -17,11 +17,20 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
+        private TokenRequestResutMessage _tokenRequestResutMessage;
+
         [SetUp]
         public void Setup()
         {
             _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new GetTokenFromUser(_mockEventAggregator.Object);
+            _tokenRequestResutMessage = new TokenRequestResutMessage
+                                            {
+                                                Status = TokenRequestResultMessageStatusEnum.Successful,
+                                                Token = "test"
+                                            };
+            _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
+                                .Callback(() => _subject.Handle(_tokenRequestResutMessage));
         }
 
         [Test]
@@ -42,7 +51,7 @@
         public void Execute_Always_ShouldWaitToReceiveAHandleTokenRequestResult()
         {
             var waited = false;
-            _subject.HandleTokenRequestResultAction = message => { waited = true; };
+            _subject.OnTokenRequestResultAction = message => { waited = true; };
             _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
                                 .Callback(
                                     () => Task.Factory.StartNew(
@@ -58,10 +67,10 @@
         }
 
         [Test]
-        public void Ctor_Always_ShouldSetHandleTokenRequestResultActionToHandleTokenRequestResult()
+        public void Ctor_Always_ShouldSetOnTokenRequestResultActionToOnTokenRequestResult()
         {
-            _subject.HandleTokenRequestResultAction.Should()
-                    .Be((Action<TokenRequestResutMessage>)_subject.HandleTokenRequestResult);
+            _subject.OnTokenRequestResultAction.Should()
+                    .Be((Action<TokenRequestResutMessage>)_subject.OnTokenRequestResult);
         }
 
         [Test]

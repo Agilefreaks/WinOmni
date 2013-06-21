@@ -13,12 +13,12 @@
 
         private TokenRequestResutMessage _lastRequestResult;
 
-        public Action<TokenRequestResutMessage> HandleTokenRequestResultAction { get; set; }
+        public Action<TokenRequestResutMessage> OnTokenRequestResultAction { get; set; }
 
         public GetTokenFromUser(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            HandleTokenRequestResultAction = HandleTokenRequestResult;
+            OnTokenRequestResultAction = OnTokenRequestResult;
             _eventAggregator.Subscribe(this);
         }
 
@@ -44,13 +44,13 @@
 
         public void Handle(TokenRequestResutMessage tokenRequestResutMessage)
         {
-            HandleTokenRequestResultAction(tokenRequestResutMessage);
+            OnTokenRequestResultAction(tokenRequestResutMessage);
+            _lastRequestResult = tokenRequestResutMessage;
             _autoResetEvent.Set();
         }
 
-        public void HandleTokenRequestResult(TokenRequestResutMessage message)
+        public void OnTokenRequestResult(TokenRequestResutMessage message)
         {
-            _lastRequestResult = message;
         }
     }
 }
