@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Interfaces
+﻿namespace OmniCommon.DataProviders
 {
     public interface IConfigurationProvider
     {

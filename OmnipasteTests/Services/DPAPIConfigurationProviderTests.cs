@@ -1,5 +1,4 @@
-﻿
-namespace OmnipasteTests.Services
+﻿namespace OmnipasteTests.Services
 {
     using FluentAssertions;
     using NUnit.Framework;

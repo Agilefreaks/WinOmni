@@ -64,6 +64,7 @@
     <Compile Include="Caliburn.Micro\EventAggregator.cs" />
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="CommonModule.cs" />
+    <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
@@ -72,7 +73,8 @@
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
-    <Compile Include="Interfaces\IConfigurationProvider.cs" />
+    <Compile Include="DataProviders\IActivationDataProvider.cs" />
+    <Compile Include="DataProviders\IConfigurationProvider.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />

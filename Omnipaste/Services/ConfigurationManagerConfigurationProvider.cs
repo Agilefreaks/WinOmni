@@ -2,7 +2,7 @@
 {
     using System;
     using System.Configuration;
-    using OmniCommon.Interfaces;
+    using OmniCommon.DataProviders;
 
     public class ConfigurationManagerConfigurationProvider : IConfigurationProvider
     {

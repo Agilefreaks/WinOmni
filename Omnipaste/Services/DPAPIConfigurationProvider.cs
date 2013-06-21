@@ -10,8 +10,8 @@
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
-    using OmniCommon.Interfaces;
 
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {

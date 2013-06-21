@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteWPF.Services
 {
+    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
 
