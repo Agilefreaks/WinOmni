@@ -7,6 +7,8 @@
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
+    using OmnipasteWPF.DataProviders;
     using OmnipasteWPF.ViewModels;
     using ViewModelBase = Cinch.ViewModelBase;
 
@@ -21,16 +23,21 @@
 
         private Mock<IGetTokenFromUserViewModel> _mockGetTokenFromUserViewModel;
 
+        private Mock<IApplicationWrapper> _mockApplicationWrapper;
+
         [SetUp]
         public override void Setup()
         {
             base.Setup();
             _mockActivationService = new Mock<IActivationService>();
             _mockEventAggregator = new Mock<IEventAggregator>();
+            _mockApplicationWrapper = new Mock<IApplicationWrapper>();
             MockIOCProvider.Setup(x => x.GetTypeFromContainer<IActivationService>())
                             .Returns(_mockActivationService.Object);
             MockIOCProvider.Setup(x => x.GetTypeFromContainer<IEventAggregator>())
                             .Returns(_mockEventAggregator.Object);
+            MockIOCProvider.Setup(x => x.GetTypeFromContainer<IApplicationWrapper>())
+                           .Returns(_mockApplicationWrapper.Object);
             _mockGetTokenFromUserViewModel = new Mock<IGetTokenFromUserViewModel>();
             ViewModelBase.ServiceProvider.Add(typeof(IUIVisualizerService), MockUiVisualizerService.Object);
             _subject = new MainViewModel(MockIOCProvider.Object)
@@ -59,9 +66,9 @@
         }
 
         [Test]
-        public void StartActivationProcess_Always_CallsActivationServiceRun()
+        public void RunActivationProcess_Always_CallsActivationServiceRun()
         {
-            _subject.StartActivationProcess();
+            _subject.RunActivationProcess();
 
             _mockActivationService.Verify(x => x.Run());
         }
@@ -130,6 +137,28 @@
                 x.Publish(
                     It.Is<TokenRequestResutMessage>(r => r.Status == TokenRequestResultMessageStatusEnum.Canceled)),
                 Times.Once());
+        }
+
+        [Test]
+        public void RunActivationProcess_ActivationServiceCurrentStepIsFailed_CallsApplicationWrapperShutdown()
+        {
+            var mockActivationStep = new Mock<IActivationStep>();
+            mockActivationStep.Setup(x => x.GetId()).Returns(typeof(Failed));
+            _mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
+
+            _subject.RunActivationProcess();
+
+            _mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
+        }
+
+        [Test]
+        public void RunActivationProcess_ActivationServiceCurrentStepIsNull_CallsApplicationWrapperShutdown()
+        {
+            _mockActivationService.Setup(x => x.CurrentStep).Returns((IActivationStep)null);
+
+            _subject.RunActivationProcess();
+
+            _mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
         }
     }
 }

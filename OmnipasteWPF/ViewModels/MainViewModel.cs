@@ -8,6 +8,8 @@
     using Cinch;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
+    using OmnipasteWPF.DataProviders;
 
     public class MainViewModel : ViewModelBase, IHandle<GetTokenFromUserMessage>
     {
@@ -33,23 +35,30 @@
 
         public IGetTokenFromUserViewModel GetTokenFromUserViewModel { get; set; }
 
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
         public MainViewModel(IIOCProvider iocProvider)
             : base(iocProvider)
         {
             ActivationService = iocProvider.GetTypeFromContainer<IActivationService>();
             EventAggregator = iocProvider.GetTypeFromContainer<IEventAggregator>();
+            ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
             UiVisualizerService = Resolve<IUIVisualizerService>();
             GetTokenFromUserViewModel = new GetTokenFromUserViewModel(new GetTokenFromUserIOCProvider());
         }
 
-        public void StartActivationProcess()
+        public void RunActivationProcess()
         {
             ActivationService.Run();
+            if (ActivationService.CurrentStep == null || ActivationService.CurrentStep.GetId().Equals(typeof(Failed)))
+            {
+                ApplicationWrapper.ShutDown();
+            }
         }
 
         public void Handle(GetTokenFromUserMessage tokenRequestResutMessage)
         {
-            var dispatcher = GetDispatcher();
+            var dispatcher = ApplicationWrapper.Dispatcher;
             var showDialogResult = dispatcher != null
                                        ? dispatcher.InvokeIfRequired((Func<bool?>)ShowGetTokenFromUserDialog)
                                        : ShowGetTokenFromUserDialog();
@@ -71,12 +80,7 @@
         protected override void OnWindowLoaded()
         {
             base.OnWindowLoaded();
-            Task.Factory.StartNew(StartActivationProcess);
-        }
-
-        private static Dispatcher GetDispatcher()
-        {
-            return Application.Current != null ? Application.Current.Dispatcher : null;
+            Task.Factory.StartNew(RunActivationProcess);
         }
 
         private bool? ShowGetTokenFromUserDialog()

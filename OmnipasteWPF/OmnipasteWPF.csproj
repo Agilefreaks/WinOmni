@@ -76,6 +76,8 @@
     </Compile>
     <Compile Include="DataProviders\ApplicationDeploymentWrapper.cs" />
     <Compile Include="DataProviders\ApplicationInfoFactory.cs" />
+    <Compile Include="DataProviders\ApplicationWrapper.cs" />
+    <Compile Include="DataProviders\IApplicationWrapper.cs" />
     <Compile Include="NinjectIOCProvider.cs" />
     <Compile Include="NullLogger.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
