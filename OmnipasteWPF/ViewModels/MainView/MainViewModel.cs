@@ -15,9 +15,35 @@
     {
         private IEventAggregator _eventAggregator;
 
-        public ITrayIconViewModel TrayIconViewModel { get; set; }
+        private IGetTokenFromUserViewModel _getTokenFromUserViewModel;
 
-        public IGetTokenFromUserViewModel GetTokenFromUserViewModel { get; set; }
+        private ITrayIconViewModel _trayIconViewModel;
+
+        public ITrayIconViewModel TrayIconViewModel
+        {
+            get
+            {
+                return _trayIconViewModel ?? (_trayIconViewModel = new TrayIconViewModel());
+            }
+
+            set
+            {
+                this._trayIconViewModel = value;
+            }
+        }
+
+        public IGetTokenFromUserViewModel GetTokenFromUserViewModel
+        {
+            get
+            {
+                return _getTokenFromUserViewModel ?? (_getTokenFromUserViewModel = new GetTokenFromUserViewModel());
+            }
+
+            set
+            {
+                _getTokenFromUserViewModel = value;
+            }
+        }
 
         public IActivationService ActivationService { get; set; }
 
@@ -46,9 +72,6 @@
             this.EventAggregator = iocProvider.GetTypeFromContainer<IEventAggregator>();
             this.ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
             this.UiVisualizerService = this.Resolve<IUIVisualizerService>();
-            
-            this.TrayIconViewModel = new TrayIconViewModel();
-            this.GetTokenFromUserViewModel = new GetTokenFromUserViewModel();
         }
 
         public void RunActivationProcess()
