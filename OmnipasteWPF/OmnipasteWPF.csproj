@@ -61,6 +61,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.1\lib\net35-client\RestSharp.dll</HintPath>
     </Reference>
@@ -106,14 +107,14 @@
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="Services\OnlineActivationDataProvider.cs" />
-    <Compile Include="ViewModels\GetTokenFromUserIOCProvider.cs" />
-    <Compile Include="ViewModels\GetTokenFromUserViewModel.cs" />
-    <Compile Include="ViewModels\IGetTokenFromUserViewModel.cs" />
-    <Compile Include="ViewModels\ITrayIconViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModelIOCProvider.cs" />
-    <Compile Include="ViewModels\TrayIconIOCProvider.cs" />
-    <Compile Include="ViewModels\TrayIconViewModel.cs" />
+    <Compile Include="ViewModels\GetTokenFromUser\GetTokenFromUserIOCProvider.cs" />
+    <Compile Include="ViewModels\GetTokenFromUser\GetTokenFromUserViewModel.cs" />
+    <Compile Include="ViewModels\GetTokenFromUser\IGetTokenFromUserViewModel.cs" />
+    <Compile Include="ViewModels\TrayIcon\ITrayIconViewModel.cs" />
+    <Compile Include="ViewModels\MainView\MainViewModel.cs" />
+    <Compile Include="ViewModels\MainView\MainViewModelIOCProvider.cs" />
+    <Compile Include="ViewModels\TrayIcon\TrayIconIOCProvider.cs" />
+    <Compile Include="ViewModels\TrayIcon\TrayIconViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\GetTokenFromUserView.xaml.cs">
       <DependentUpon>GetTokenFromUserView.xaml</DependentUpon>

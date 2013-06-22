@@ -1,4 +1,4 @@
-﻿namespace OmnipasteWPF.ViewModels
+﻿namespace OmnipasteWPF.ViewModels.TrayIcon
 {
     public interface ITrayIconViewModel
     {

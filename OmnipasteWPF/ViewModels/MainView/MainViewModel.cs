@@ -1,4 +1,4 @@
-﻿namespace OmnipasteWPF.ViewModels
+﻿namespace OmnipasteWPF.ViewModels.MainView
 {
     using System;
     using System.Threading.Tasks;
@@ -8,6 +8,9 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
     using OmnipasteWPF.DataProviders;
+    using OmnipasteWPF.ViewModels.GetTokenFromUser;
+    using OmnipasteWPF.ViewModels.TrayIcon;
+    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
     public class MainViewModel : ViewModelBase, IHandle<GetTokenFromUserMessage>
     {
@@ -23,13 +26,13 @@
         {
             get
             {
-                return _eventAggregator;
+                return this._eventAggregator;
             }
 
             set
             {
-                _eventAggregator = value;
-                _eventAggregator.Subscribe(this);
+                this._eventAggregator = value;
+                this._eventAggregator.Subscribe(this);
             }
         }
 
@@ -40,57 +43,57 @@
         public MainViewModel(IIOCProvider iocProvider)
             : base(iocProvider)
         {
-            ActivationService = iocProvider.GetTypeFromContainer<IActivationService>();
-            EventAggregator = iocProvider.GetTypeFromContainer<IEventAggregator>();
-            ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
-            UiVisualizerService = Resolve<IUIVisualizerService>();
-            GetTokenFromUserViewModel = new GetTokenFromUserViewModel(new GetTokenFromUserIOCProvider());
-            TrayIconViewModel = new TrayIconViewModel(new TrayIconIOCProvider());
+            this.ActivationService = iocProvider.GetTypeFromContainer<IActivationService>();
+            this.EventAggregator = iocProvider.GetTypeFromContainer<IEventAggregator>();
+            this.ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
+            this.UiVisualizerService = this.Resolve<IUIVisualizerService>();
+            this.GetTokenFromUserViewModel = new GetTokenFromUserViewModel(new GetTokenFromUserIOCProvider());
+            this.TrayIconViewModel = new TrayIconViewModel(new TrayIconIOCProvider());
         }
 
         public void RunActivationProcess()
         {
-            ActivationService.Run();
-            if (ActivationService.CurrentStep == null || ActivationService.CurrentStep.GetId().Equals(typeof(Failed)))
+            this.ActivationService.Run();
+            if (this.ActivationService.CurrentStep == null || this.ActivationService.CurrentStep.GetId().Equals(typeof(Failed)))
             {
-                ApplicationWrapper.ShutDown();
+                this.ApplicationWrapper.ShutDown();
             }
             else
             {
-                TrayIconViewModel.TrayIconVisible = true;
+                this.TrayIconViewModel.TrayIconVisible = true;
             }
         }
 
         public void Handle(GetTokenFromUserMessage tokenRequestResutMessage)
         {
-            var dispatcher = ApplicationWrapper.Dispatcher;
+            var dispatcher = this.ApplicationWrapper.Dispatcher;
             var showDialogResult = dispatcher != null
-                                       ? dispatcher.InvokeIfRequired((Func<bool?>)ShowGetTokenFromUserDialog)
-                                       : ShowGetTokenFromUserDialog();
+                                       ? dispatcher.InvokeIfRequired((Func<bool?>)this.ShowGetTokenFromUserDialog)
+                                       : this.ShowGetTokenFromUserDialog();
 
             var message = new TokenRequestResutMessage();
             if (showDialogResult == true)
             {
                 message.Status = TokenRequestResultMessageStatusEnum.Successful;
-                message.Token = GetTokenFromUserViewModel.Token;
+                message.Token = this.GetTokenFromUserViewModel.Token;
             }
             else
             {
                 message.Status = TokenRequestResultMessageStatusEnum.Canceled;
             }
 
-            EventAggregator.Publish(message);
+            this.EventAggregator.Publish(message);
         }
 
         protected override void OnWindowLoaded()
         {
             base.OnWindowLoaded();
-            Task.Factory.StartNew(RunActivationProcess);
+            Task.Factory.StartNew(this.RunActivationProcess);
         }
 
         private bool? ShowGetTokenFromUserDialog()
         {
-            return UiVisualizerService.ShowDialog("GetTokenFromUser", GetTokenFromUserViewModel);
+            return this.UiVisualizerService.ShowDialog("GetTokenFromUser", this.GetTokenFromUserViewModel);
         }
     }
 }

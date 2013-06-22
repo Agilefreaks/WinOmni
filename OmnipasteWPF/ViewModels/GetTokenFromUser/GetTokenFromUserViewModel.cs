@@ -1,7 +1,8 @@
-﻿namespace OmnipasteWPF.ViewModels
+﻿namespace OmnipasteWPF.ViewModels.GetTokenFromUser
 {
     using System.ComponentModel;
     using Cinch;
+    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
     public class GetTokenFromUserViewModel : ViewModelBase, IGetTokenFromUserViewModel
     {
@@ -14,13 +15,13 @@
         {
             get
             {
-                return _token;
+                return this._token;
             }
 
             set
             {
-                _token = value;
-                NotifyPropertyChanged(TokenChangeArgs);
+                this._token = value;
+                this.NotifyPropertyChanged(TokenChangeArgs);
             }
         }
 

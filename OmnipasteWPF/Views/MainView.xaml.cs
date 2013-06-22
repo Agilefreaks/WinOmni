@@ -4,6 +4,7 @@
     using System.Windows;
     using System.Windows.Interop;
     using OmnipasteWPF.ViewModels;
+    using OmnipasteWPF.ViewModels.MainView;
     using WindowsImports;
     using ViewModelBase = Cinch.ViewModelBase;
 

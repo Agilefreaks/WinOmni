@@ -1,7 +1,8 @@
-﻿namespace OmnipasteWPF.ViewModels
+﻿namespace OmnipasteWPF.ViewModels.TrayIcon
 {
     using System.ComponentModel;
     using Cinch;
+    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
     public class TrayIconViewModel : ViewModelBase, ITrayIconViewModel
     {
@@ -14,13 +15,13 @@
         {
             get
             {
-                return _trayIconVisible;
+                return this._trayIconVisible;
             }
 
             set
             {
-                _trayIconVisible = value;
-                NotifyPropertyChanged(TrayIconVisibleChangeArgs);
+                this._trayIconVisible = value;
+                this.NotifyPropertyChanged(TrayIconVisibleChangeArgs);
             }
         }
 
