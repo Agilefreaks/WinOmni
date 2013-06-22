@@ -115,7 +115,7 @@
     <Compile Include="ViewModels\MainView\MainViewModelIOCProvider.cs" />
     <Compile Include="ViewModels\TrayIcon\TrayIconIOCProvider.cs" />
     <Compile Include="ViewModels\TrayIcon\TrayIconViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\GetTokenFromUserView.xaml.cs">
       <DependentUpon>GetTokenFromUserView.xaml</DependentUpon>
     </Compile>

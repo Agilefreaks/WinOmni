@@ -2,9 +2,9 @@
 {
     using Cinch;
 
-    public abstract class ViewModelBase : Cinch.ViewModelBase
+    public abstract class ViewModel : ViewModelBase
     {
-        protected ViewModelBase(IIOCProvider iocProvider)
+        protected ViewModel(IIOCProvider iocProvider)
             : base(iocProvider)
         {
         }

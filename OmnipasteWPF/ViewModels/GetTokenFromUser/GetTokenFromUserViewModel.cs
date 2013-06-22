@@ -2,9 +2,8 @@
 {
     using System.ComponentModel;
     using Cinch;
-    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
-    public class GetTokenFromUserViewModel : ViewModelBase, IGetTokenFromUserViewModel
+    public class GetTokenFromUserViewModel : ViewModel, IGetTokenFromUserViewModel
     {
         private static readonly PropertyChangedEventArgs TokenChangeArgs =
             ObservableHelper.CreateArgs<GetTokenFromUserViewModel>(x => x.Token);

@@ -10,9 +10,8 @@
     using OmnipasteWPF.DataProviders;
     using OmnipasteWPF.ViewModels.GetTokenFromUser;
     using OmnipasteWPF.ViewModels.TrayIcon;
-    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
-    public class MainViewModel : ViewModelBase, IHandle<GetTokenFromUserMessage>
+    public class MainViewModel : ViewModel, IHandle<GetTokenFromUserMessage>
     {
         private IEventAggregator _eventAggregator;
 

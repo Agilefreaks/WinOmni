@@ -9,11 +9,9 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
     using OmnipasteWPF.DataProviders;
-    using OmnipasteWPF.ViewModels;
     using OmnipasteWPF.ViewModels.GetTokenFromUser;
     using OmnipasteWPF.ViewModels.MainView;
     using OmnipasteWPF.ViewModels.TrayIcon;
-    using ViewModelBase = Cinch.ViewModelBase;
 
     [TestFixture]
     public class MainViewModelTests : ViewModelTestsBase

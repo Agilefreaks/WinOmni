@@ -2,9 +2,8 @@
 {
     using System.ComponentModel;
     using Cinch;
-    using ViewModelBase = OmnipasteWPF.ViewModels.ViewModelBase;
 
-    public class TrayIconViewModel : ViewModelBase, ITrayIconViewModel
+    public class TrayIconViewModel : ViewModel, ITrayIconViewModel
     {
         private static readonly PropertyChangedEventArgs TrayIconVisibleChangeArgs =
             ObservableHelper.CreateArgs<TrayIconViewModel>(x => x.TrayIconVisible);
