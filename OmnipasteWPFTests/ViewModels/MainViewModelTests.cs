@@ -1,4 +1,4 @@
-﻿namespace OmnipasteWPFTests
+﻿namespace OmnipasteWPFTests.ViewModels
 {
     using Caliburn.Micro;
     using Cinch;
@@ -14,7 +14,7 @@
     using OmnipasteWPF.ViewModels.TrayIcon;
 
     [TestFixture]
-    public class MainViewModelTests : ViewModelTestsBase
+    public class MainViewModelTests : ViewModelTests
     {
         private MainViewModel _subject;
 
@@ -32,23 +32,23 @@
         public override void Setup()
         {
             base.Setup();
-            _mockActivationService = new Mock<IActivationService>();
-            _mockEventAggregator = new Mock<IEventAggregator>();
-            _mockApplicationWrapper = new Mock<IApplicationWrapper>();
-            MockIOCProvider.Setup(x => x.GetTypeFromContainer<IActivationService>())
-                            .Returns(_mockActivationService.Object);
-            MockIOCProvider.Setup(x => x.GetTypeFromContainer<IEventAggregator>())
-                            .Returns(_mockEventAggregator.Object);
-            MockIOCProvider.Setup(x => x.GetTypeFromContainer<IApplicationWrapper>())
-                           .Returns(_mockApplicationWrapper.Object);
-            _mockGetTokenFromUserViewModel = new Mock<IGetTokenFromUserViewModel>();
-            ViewModelBase.ServiceProvider.Add(typeof(IUIVisualizerService), MockUiVisualizerService.Object);
-            _mockTrayIconViewModel = new Mock<ITrayIconViewModel>();
-            _subject = new MainViewModel(MockIOCProvider.Object)
+            this._mockActivationService = new Mock<IActivationService>();
+            this._mockEventAggregator = new Mock<IEventAggregator>();
+            this._mockApplicationWrapper = new Mock<IApplicationWrapper>();
+            this.MockIOCProvider.Setup(x => x.GetTypeFromContainer<IActivationService>())
+                            .Returns(this._mockActivationService.Object);
+            this.MockIOCProvider.Setup(x => x.GetTypeFromContainer<IEventAggregator>())
+                            .Returns(this._mockEventAggregator.Object);
+            this.MockIOCProvider.Setup(x => x.GetTypeFromContainer<IApplicationWrapper>())
+                           .Returns(this._mockApplicationWrapper.Object);
+            this._mockGetTokenFromUserViewModel = new Mock<IGetTokenFromUserViewModel>();
+            ViewModelBase.ServiceProvider.Add(typeof(IUIVisualizerService), this.MockUiVisualizerService.Object);
+            this._mockTrayIconViewModel = new Mock<ITrayIconViewModel>();
+            this._subject = new MainViewModel(this.MockIOCProvider.Object)
                            {
                                GetTokenFromUserViewModel =
-                                   _mockGetTokenFromUserViewModel.Object,
-                               TrayIconViewModel = _mockTrayIconViewModel.Object
+                                   this._mockGetTokenFromUserViewModel.Object,
+                               TrayIconViewModel = this._mockTrayIconViewModel.Object
                            };
         }
 
@@ -61,52 +61,52 @@
         [Test]
         public void Ctor_Always_ShouldSetActivationServiceToAnInstanceOfActivationService()
         {
-            _subject.ActivationService.Should().NotBeNull();
+            this._subject.ActivationService.Should().NotBeNull();
         }
 
         [Test]
         public void Ctor_Always_ShouldCallEventAggregatorSubscribeWithSelf()
         {
-            _mockEventAggregator.Verify(x => x.Subscribe(_subject), Times.Once());
+            this._mockEventAggregator.Verify(x => x.Subscribe(this._subject), Times.Once());
         }
 
         [Test]
         public void RunActivationProcess_Always_CallsActivationServiceRun()
         {
-            _subject.RunActivationProcess();
+            this._subject.RunActivationProcess();
 
-            _mockActivationService.Verify(x => x.Run());
+            this._mockActivationService.Verify(x => x.Run());
         }
 
         [Test]
         public void Handle_WithGetTokenFromUserMessageAlways_CallsUiVisualizerServiceShowDialogWithCorrectParameters()
         {
-            _subject.Handle(new GetTokenFromUserMessage());
+            this._subject.Handle(new GetTokenFromUserMessage());
 
-            MockUiVisualizerService.Verify(x => x.ShowDialog("GetTokenFromUser", _mockGetTokenFromUserViewModel.Object));
+            this.MockUiVisualizerService.Verify(x => x.ShowDialog("GetTokenFromUser", this._mockGetTokenFromUserViewModel.Object));
         }
 
         [Test]
         public void Handle_WithGetTokenFromUserMessageAndShowDialogIsSuccessfull_CallsEventAggregatorPublishGetTokenFromUserRequestResult()
         {
-            MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", _mockGetTokenFromUserViewModel.Object))
+            this.MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", this._mockGetTokenFromUserViewModel.Object))
                                    .Returns(true);
 
-            _subject.Handle(new GetTokenFromUserMessage());
+            this._subject.Handle(new GetTokenFromUserMessage());
 
-            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<TokenRequestResutMessage>()), Times.Once());
+            this._mockEventAggregator.Verify(x => x.Publish(It.IsAny<TokenRequestResutMessage>()), Times.Once());
         }
 
         [Test]
         public void Handle_WithGetTokenFromUserMessageAndShowDialogIsSuccessful_PublishesACorrectTokenRequestResultMessage()
         {
-            _mockGetTokenFromUserViewModel.Setup(x => x.Token).Returns("testToken");
-            MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", _mockGetTokenFromUserViewModel.Object))
+            this._mockGetTokenFromUserViewModel.Setup(x => x.Token).Returns("testToken");
+            this.MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", this._mockGetTokenFromUserViewModel.Object))
                                    .Returns(true);
 
-            _subject.Handle(new GetTokenFromUserMessage());
+            this._subject.Handle(new GetTokenFromUserMessage());
 
-            _mockEventAggregator.Verify(
+            this._mockEventAggregator.Verify(
                 x =>
                 x.Publish(
                     It.Is<TokenRequestResutMessage>(
@@ -117,12 +117,12 @@
         [Test]
         public void Handle_WithGetTokenFromUserMessageAndShowDialogIsCanceled_PublishesACorrectTokenRequestResultMessage()
         {
-            MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", _mockGetTokenFromUserViewModel.Object))
+            this.MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", this._mockGetTokenFromUserViewModel.Object))
                                    .Returns(false);
 
-            _subject.Handle(new GetTokenFromUserMessage());
+            this._subject.Handle(new GetTokenFromUserMessage());
 
-            _mockEventAggregator.Verify(
+            this._mockEventAggregator.Verify(
                 x =>
                 x.Publish(
                     It.Is<TokenRequestResutMessage>(r => r.Status == TokenRequestResultMessageStatusEnum.Canceled)),
@@ -132,12 +132,12 @@
         [Test]
         public void Handle_WithGetTokenFromUserMessageAndShowDialogIsUnsuccessful_PublishesACorrectTokenRequestResultMessage()
         {
-            MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", _mockGetTokenFromUserViewModel.Object))
+            this.MockUiVisualizerService.Setup(x => x.ShowDialog("GetTokenFromUser", this._mockGetTokenFromUserViewModel.Object))
                                    .Returns((bool?)null);
 
-            _subject.Handle(new GetTokenFromUserMessage());
+            this._subject.Handle(new GetTokenFromUserMessage());
 
-            _mockEventAggregator.Verify(
+            this._mockEventAggregator.Verify(
                 x =>
                 x.Publish(
                     It.Is<TokenRequestResutMessage>(r => r.Status == TokenRequestResultMessageStatusEnum.Canceled)),
@@ -149,33 +149,33 @@
         {
             var mockActivationStep = new Mock<IActivationStep>();
             mockActivationStep.Setup(x => x.GetId()).Returns(typeof(Failed));
-            _mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
+            this._mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
 
-            _subject.RunActivationProcess();
+            this._subject.RunActivationProcess();
 
-            _mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
+            this._mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
         }
 
         [Test]
         public void RunActivationProcess_ActivationServiceCurrentStepIsNull_CallsApplicationWrapperShutdown()
         {
-            _mockActivationService.Setup(x => x.CurrentStep).Returns((IActivationStep)null);
+            this._mockActivationService.Setup(x => x.CurrentStep).Returns((IActivationStep)null);
 
-            _subject.RunActivationProcess();
+            this._subject.RunActivationProcess();
 
-            _mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
+            this._mockApplicationWrapper.Verify(x => x.ShutDown(), Times.Once());
         }
 
         [Test]
-        public void RunActivationProcess_ActivationServiceCurrentStepIsNotFailedOrNull_SetsTrayIconViewModelTrayIconVisibleTrue()
+        public void RunActivationProcess_ActivationServiceCurrentStepIsNotFailedOrNull_CallsStartOnTrayViewModel()
         {
             var mockActivationStep = new Mock<IActivationStep>();
             mockActivationStep.Setup(x => x.GetId()).Returns(typeof(Finished));
-            _mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
+            this._mockActivationService.Setup(x => x.CurrentStep).Returns(mockActivationStep.Object);
 
-            _subject.RunActivationProcess();
+            this._subject.RunActivationProcess();
 
-            _mockTrayIconViewModel.VerifySet(x => x.TrayIconVisible = true);
+            this._mockTrayIconViewModel.Verify(x => x.Start(), Times.Once());
         }
     }
 }

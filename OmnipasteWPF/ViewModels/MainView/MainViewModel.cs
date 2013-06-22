@@ -83,7 +83,7 @@
             }
             else
             {
-                this.TrayIconViewModel.TrayIconVisible = true;
+                TrayIconViewModel.Start();
             }
         }
 

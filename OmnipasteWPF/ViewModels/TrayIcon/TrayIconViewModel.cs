@@ -34,5 +34,10 @@
             : this(new GetTokenFromUserIOCProvider())
         {
         }
+
+        public void Start()
+        {
+            TrayIconVisible = true;
+        }
     }
 }
