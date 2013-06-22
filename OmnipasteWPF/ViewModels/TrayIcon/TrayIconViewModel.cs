@@ -2,6 +2,7 @@
 {
     using System.ComponentModel;
     using Cinch;
+    using OmnipasteWPF.ViewModels.GetTokenFromUser;
 
     public class TrayIconViewModel : ViewModel, ITrayIconViewModel
     {
@@ -26,6 +27,11 @@
 
         public TrayIconViewModel(IIOCProvider iocProvider)
             : base(iocProvider)
+        {
+        }
+
+        public TrayIconViewModel()
+            : this(new GetTokenFromUserIOCProvider())
         {
         }
     }

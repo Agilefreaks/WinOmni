@@ -46,8 +46,9 @@
             this.EventAggregator = iocProvider.GetTypeFromContainer<IEventAggregator>();
             this.ApplicationWrapper = iocProvider.GetTypeFromContainer<IApplicationWrapper>();
             this.UiVisualizerService = this.Resolve<IUIVisualizerService>();
-            this.GetTokenFromUserViewModel = new GetTokenFromUserViewModel(new GetTokenFromUserIOCProvider());
-            this.TrayIconViewModel = new TrayIconViewModel(new TrayIconIOCProvider());
+            
+            this.TrayIconViewModel = new TrayIconViewModel();
+            this.GetTokenFromUserViewModel = new GetTokenFromUserViewModel();
         }
 
         public void RunActivationProcess()

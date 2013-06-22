@@ -28,5 +28,12 @@
             : base(iocProvider)
         {
         }
+
+        public GetTokenFromUserViewModel()
+            : this(new GetTokenFromUserIOCProvider())
+        {
+
+        }
+
     }
 }
