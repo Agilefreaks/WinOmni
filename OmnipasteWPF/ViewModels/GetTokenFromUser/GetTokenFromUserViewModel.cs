@@ -32,8 +32,6 @@
         public GetTokenFromUserViewModel()
             : this(new GetTokenFromUserIOCProvider())
         {
-
         }
-
     }
 }
