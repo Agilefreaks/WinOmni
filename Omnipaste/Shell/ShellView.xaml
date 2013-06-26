@@ -2,10 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
-        Height="300" Width="300">
-
-    <Grid>
+        Height="300" Width="300" WindowStyle="SingleBorderWindow" ResizeMode="NoResize">
+    <Grid Style="{StaticResource ShellGrid}">
         <ContentControl x:Name="ActiveItem"/>
     </Grid>
-    
 </Window>
