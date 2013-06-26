@@ -117,10 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstanceAlreadyRunning" xml:space="preserve">
-    <value>Another instance is already running.</value>
+  <data name="AplicationName" xml:space="preserve">
+    <value>Omnipaste</value>
   </data>
-  <data name="CouldNotInitializeSynchronizationService" xml:space="preserve">
-    <value>Could not initialize synchronization service</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ClickHere" xml:space="preserve">
+    <value>Click Here</value>
+  </data>
+  <data name="InputTokenMessage" xml:space="preserve">
+    <value>Please type in the activation token from the install page.  If you don't know how to get your token 
+click the following link:</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
 </root>

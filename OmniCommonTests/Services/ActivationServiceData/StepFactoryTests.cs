@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using Ninject.MockingKernel.Moq;
     using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -17,21 +18,17 @@
         }
 
         [Test]
-        public void Create_TypeIsNull_ReturnsNull()
+        public void Create_TypeIsImplementationOfIActivationStep_ReturnsTheResultOfGetType()
         {
-            _subject.Create(null).Should().BeNull();
-        }
+            using (var kernel = new MoqMockingKernel())
+            {
+                var start = new Start();
+                kernel.Bind<Start>().ToConstant(start);
 
-        [Test]
-        public void Create_TypeIsImplementationOfIActivationStep_ReturnsInstanceOfType()
-        {
-            _subject.Create(typeof(Start)).Should().BeOfType<Start>();
-        }
+                _subject.Kernel = kernel;
 
-        [Test]
-        public void Create_TypeIsNotImplementationOfIActivationStep_ReturnsNull()
-        {
-            _subject.Create(typeof(string)).Should().BeNull();
+                _subject.Create(typeof(Start)).Should().Be(start);
+            }
         }
     }
 }

@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,11 +43,24 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Libs\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net35\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.0.2-unstable-9\lib\net35\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.MockingKernel">
+      <HintPath>..\packages\Ninject.MockingKernel.3.0.2-unstable-3\lib\net35-full\Ninject.MockingKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.MockingKernel.Moq">
+      <HintPath>..\packages\Ninject.MockingKernel.Moq.3.0.2-unstable-3\lib\net35-full\Ninject.MockingKernel.Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -64,6 +79,11 @@
   <ItemGroup>
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FailedTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FinishedTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUriTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUserTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartTests.cs" />
     <Compile Include="Services\ActivationServiceData\StepFactoryTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\TransitionIdTests.cs" />

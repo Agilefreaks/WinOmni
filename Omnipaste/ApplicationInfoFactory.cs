@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste
 {
+    using System;
     using System.Configuration;
     using CustomizedClickOnce.Common;
 
@@ -45,6 +46,14 @@
 
         protected ApplicationInfoFactory()
         {
+        }
+
+        public static Uri GetTokenLink
+        {
+            get
+            {
+                return new Uri(BaseUrl + "whatsmytoken");
+            }
         }
 
         public static ApplicationInfo Create()

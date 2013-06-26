@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Omnipaste.Configuration.ConfigurationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:userControlls="clr-namespace:Omnipaste.Framework.UserControlls">
+
+    <Grid Style="{StaticResource ConfigurationGrid}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Style="{StaticResource ConfigurationText}">Starting</TextBlock>
+
+        <userControlls:CircularProgressBar Grid.Row="1" Style="{StaticResource ConfigurationProgress}" />
+    </Grid>
+</UserControl>

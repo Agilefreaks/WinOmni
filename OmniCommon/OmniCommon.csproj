@@ -42,12 +42,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Libs\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.3.0.2-unstable-9\lib\net35\Ninject.dll</HintPath>
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,33 +64,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caliburn.Micro\EventAggregator.cs" />
-    <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
-    <Compile Include="CommonModule.cs" />
+    <Compile Include="OmniCommonModule.cs" />
+    <Compile Include="DataProviders\ActivationData.cs" />
+    <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
+    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
+    <Compile Include="DataProviders\IActivationDataProvider.cs" />
+    <Compile Include="DataProviders\IConfigurationProvider.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Failed.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetConfiguration.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetConfigurationStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromActivationData.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUri.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RetryInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SingleStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Start.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
+    <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
     <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />
     <Compile Include="Services\ActivationServiceData\StepFactory.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
+    <Compile Include="Interfaces\IActivationService.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />

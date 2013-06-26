@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Omnipaste.UserToken.UserTokenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:dataProviders="clr-namespace:Omnipaste"
+             xmlns:behaviors="clr-namespace:Omnipaste.Framework.Behaviours">
+
+    <DockPanel>
+        <StackPanel Style="{StaticResource UserTokenStackPanel}" DockPanel.Dock="Top" x:Name="ParentStackPanel">
+            <TextBlock Grid.Row="0" Text="{x:Static properties:Resources.InputTokenMessage}" Style="{StaticResource UserTokenTextBlock}">
+                <TextBlock Text=" "/>
+                <Hyperlink ToolTip="{x:Static properties:Resources.ClickHere}" 
+                       NavigateUri="{x:Static dataProviders:ApplicationInfoFactory.GetTokenLink}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:AutoFollowLinkBehavior/>
+                    </i:Interaction.Behaviors>
+                <TextBlock Text="{x:Static properties:Resources.ClickHere}"/>
+                </Hyperlink>
+            </TextBlock>
+
+            <TextBox x:Name="Token" Style="{StaticResource UserTokenTextBox}" />
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Bottom" Style="{StaticResource UserTokenGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" x:Name="Ok" Style="{StaticResource OkButton}" />
+
+            <Button Grid.Column="2" x:Name="Cancel" Style="{StaticResource CancelButton}"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

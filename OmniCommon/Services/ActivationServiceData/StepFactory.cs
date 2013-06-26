@@ -1,15 +1,20 @@
 ﻿namespace OmniCommon.Services.ActivationServiceData
 {
     using System;
+    using Ninject;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     public class StepFactory : IStepFactory
     {
-        private static readonly Type ActivationStepType = typeof(IActivationStep);
+        [Inject]
+        public IKernel Kernel { get; set; }
 
-        public IActivationStep Create(Type type)
+        public IActivationStep Create(Type type, object payload = null)
         {
-            return ActivationStepType.IsAssignableFrom(type) ? Activator.CreateInstance(type) as IActivationStep : null;
+            var activationStep = (IActivationStep)Kernel.Get(type);
+            activationStep.Parameter = new DependencyParameter { Name = "payload", Value = payload };
+
+            return activationStep;
         }
     }
 }

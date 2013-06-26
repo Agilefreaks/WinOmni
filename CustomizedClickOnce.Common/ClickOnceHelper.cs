@@ -186,16 +186,19 @@
 
         public void Uninstall()
         {
-            if (!File.Exists(UninstallFilePath)) return;
+            if (!File.Exists(UninstallFilePath))
+            {
+                return;
+            }
 
             try
             {
+                KillActiveProcesses(); 
                 var uninstallProcess = RunOriginalUninstaller();
                 WaitForProcessToFinish(uninstallProcess);
 
                 if (ApplicationIsUninstalled())
                 {
-                    KillActiveProcesses();
                     RemoveShortcutFromStartup();
                     RemoveDataFolders();
                 }
