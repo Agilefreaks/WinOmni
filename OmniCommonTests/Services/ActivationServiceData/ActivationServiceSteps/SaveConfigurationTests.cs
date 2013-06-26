@@ -4,6 +4,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
+    using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -17,7 +18,7 @@
         public void Setup()
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _subject = new SaveConfiguration(_mockConfigurationService.Object, "testChannel");
+            _subject = new SaveConfiguration(_mockConfigurationService.Object) { Parameter = new DependencyParameter("channel", "testChannel") };
         }
 
         [Test]
