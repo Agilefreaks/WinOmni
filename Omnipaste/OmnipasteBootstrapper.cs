@@ -8,6 +8,8 @@
     using Ninject.Extensions.Conventions;
     using OmniCommon;
     using Omnipaste.Shell;
+    using PubNubClipboard;
+    using WindowsClipboard;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
     {
@@ -23,6 +25,8 @@
 
             _kernel.Load<OmniCommonModule>();
             _kernel.Load<OmnipasteModule>();
+            _kernel.Load<WindowsClipboardModule>();
+            _kernel.Load<PubNubClipboardModule>();
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
@@ -50,8 +54,7 @@
         {
             return new[]
                        {
-                           Assembly.GetExecutingAssembly(),
-                           typeof(OmnipasteModule).Assembly
+                           Assembly.GetExecutingAssembly()
                        };
         }
     }

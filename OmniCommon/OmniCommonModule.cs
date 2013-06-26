@@ -15,7 +15,7 @@ namespace OmniCommon
 
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
             Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
-            Kernel.Bind<IConfigurationService>().To<ConfigurationService>();
+            Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
         }
     }
 }

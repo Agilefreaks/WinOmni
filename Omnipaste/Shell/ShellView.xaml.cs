@@ -1,5 +1,4 @@
-﻿
-namespace Omnipaste.Shell
+﻿namespace Omnipaste.Shell
 {
     public partial class ShellView
     {

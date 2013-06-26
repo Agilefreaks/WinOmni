@@ -4,5 +4,6 @@
 
     public interface IContextMenuViewModel : IWorkspace
     {
+        void Start();
     }
 }
