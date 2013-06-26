@@ -30,6 +30,6 @@
 		<MSBuild 
 			Projects="Omnipaste\Omnipaste.csproj"
 			Targets="Publish" 
-			Properties="Configuration=$(Configuration);ApplicationRevision=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+			Properties="Configuration=$(Configuration);ApplicationRevision=$(PublishApplicationRevision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
 	</Target>
 </Project>
