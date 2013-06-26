@@ -6,6 +6,7 @@
     using Caliburn.Micro;
     using Ninject;
     using Ninject.Extensions.Conventions;
+    using OmniCommon;
     using Omnipaste.Shell;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
@@ -19,6 +20,9 @@
                                                   typeof(ShellViewModel)
                                               };
             _kernel = new StandardKernel();
+
+            _kernel.Load<OmniCommonModule>();
+            _kernel.Load<OmnipasteModule>();
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
@@ -47,7 +51,7 @@
             return new[]
                        {
                            Assembly.GetExecutingAssembly(),
-                           typeof(OmnipasteModule).Assembly,
+                           typeof(OmnipasteModule).Assembly
                        };
         }
     }

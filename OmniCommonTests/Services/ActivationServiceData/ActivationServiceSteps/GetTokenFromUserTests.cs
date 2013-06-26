@@ -1,8 +1,5 @@
 ﻿namespace OmniCommonTests.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Caliburn.Micro;
     using FluentAssertions;
     using Moq;
@@ -17,20 +14,18 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
-        private TokenRequestResutMessage _tokenRequestResutMessage;
+        private TokenRequestResultMessage _tokenRequestResultMessage;
 
         [SetUp]
         public void Setup()
         {
             _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new GetTokenFromUser(_mockEventAggregator.Object);
-            _tokenRequestResutMessage = new TokenRequestResutMessage
-                                            {
-                                                Status = TokenRequestResultMessageStatusEnum.Successful,
-                                                Token = "test"
-                                            };
+            this._tokenRequestResultMessage =
+                new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, "test");
+
             _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
-                                .Callback(() => _subject.Handle(_tokenRequestResutMessage));
+                                .Callback(() => _subject.Handle(this._tokenRequestResultMessage));
         }
 
         [Test]
@@ -48,39 +43,9 @@
         }
 
         [Test]
-        public void Execute_Always_ShouldWaitToReceiveAHandleTokenRequestResult()
-        {
-            var waited = false;
-            _subject.OnTokenRequestResultAction = message => { waited = true; };
-            _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
-                                .Callback(
-                                    () => Task.Factory.StartNew(
-                                        () =>
-                                        {
-                                            Thread.Sleep(500);
-                                            _subject.Handle(new TokenRequestResutMessage());
-                                        }));
-
-            _subject.Execute();
-
-            waited.Should().BeTrue();
-        }
-
-        [Test]
-        public void Ctor_Always_ShouldSetOnTokenRequestResultActionToOnTokenRequestResult()
-        {
-            _subject.OnTokenRequestResultAction.Should()
-                    .Be((Action<TokenRequestResutMessage>)_subject.OnTokenRequestResult);
-        }
-
-        [Test]
         public void Execute_AfterHandlingTheTokenRequestResultAndTheRequestWasSuccessful_ReturnsAResultWithStatusSuccessfulAndTheToken()
         {
-            var requestResult = new TokenRequestResutMessage
-                                    {
-                                        Status = TokenRequestResultMessageStatusEnum.Successful,
-                                        Token = "test"
-                                    };
+            var requestResult = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, "test");
             _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
                                 .Callback(() => _subject.Handle(requestResult));
 
@@ -93,10 +58,7 @@
         [Test]
         public void Execute_AfterHandlingTheTokenRequestResultAndTheRequestWasCanceled_ReturnsAResultWithStatusSuccessfulAndTheToken()
         {
-            var requestResult = new TokenRequestResutMessage
-                                    {
-                                        Status = TokenRequestResultMessageStatusEnum.Canceled
-                                    };
+            var requestResult = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled);
             _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
                                 .Callback(() => _subject.Handle(requestResult));
 

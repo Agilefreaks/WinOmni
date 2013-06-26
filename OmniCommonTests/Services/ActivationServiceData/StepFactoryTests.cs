@@ -1,8 +1,8 @@
 ﻿namespace OmniCommonTests.Services.ActivationServiceData
 {
     using FluentAssertions;
-    using Moq;
     using NUnit.Framework;
+    using Ninject.MockingKernel.Moq;
     using OmniCommon.Services.ActivationServiceData;
     using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -11,36 +11,24 @@
     {
         private StepFactory _subject;
 
-        private Mock<IDependencyResolver> _mockDependencyResolver;
-
         [SetUp]
         public void Setup()
         {
-            _mockDependencyResolver = new Mock<IDependencyResolver>();
-            _subject = new StepFactory(_mockDependencyResolver.Object);
-        }
-
-        [Test]
-        public void Create_TypeIsNull_ReturnsNull()
-        {
-            _subject.Create(null).Should().BeNull();
+            _subject = new StepFactory();
         }
 
         [Test]
         public void Create_TypeIsImplementationOfIActivationStep_ReturnsTheResultOfGetType()
         {
-            var result = new Start();
-            _mockDependencyResolver.Setup(x => x.Get(typeof(Start))).Returns(result);
+            using (var kernel = new MoqMockingKernel())
+            {
+                var start = new Start();
+                kernel.Bind<Start>().ToConstant(start);
 
-            _subject.Create(typeof(Start)).Should().Be(result);
-        }
+                _subject.Kernel = kernel;
 
-        [Test]
-        public void Create_TypeIsNotImplementationOfIActivationStep_ReturnsNull()
-        {
-            _mockDependencyResolver.Setup(x => x.Get(typeof(string))).Returns("test");
-
-            _subject.Create(typeof(string)).Should().BeNull();
+                _subject.Create(typeof(Start)).Should().Be(start);
+            }
         }
     }
 }

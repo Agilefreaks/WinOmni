@@ -8,13 +8,27 @@
 
         private readonly IActivationDataProvider _activationDataProvider;
 
-        private readonly RetryInfo _payload;
+        private RetryInfo _payload;
 
-        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, object payload)
+        private DependencyParameter _parameter;
+
+        public override DependencyParameter Parameter
+        {
+            get
+            {
+                return _parameter;
+            }
+
+            set
+            {
+                _parameter = value;
+                _payload = (value.Value as RetryInfo) ?? new RetryInfo((string)value.Value);
+            }
+        }
+
+        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider)
         {
             _activationDataProvider = activationDataProvider;
-            var retryInfo = payload as RetryInfo;
-            _payload = retryInfo ?? new RetryInfo(payload as string);
         }
 
         public override IExecuteResult Execute()

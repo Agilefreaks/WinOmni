@@ -64,13 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonModule.cs" />
+    <Compile Include="OmniCommonModule.cs" />
     <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
-    <Compile Include="EventAggregatorMessages\TokenRequestResutMessage.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
@@ -95,13 +95,13 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Start.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
     <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
-    <Compile Include="Services\ActivationServiceData\IDependencyResolver.cs" />
     <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />
     <Compile Include="Services\ActivationServiceData\StepFactory.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
     <Compile Include="Interfaces\IActivationService.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />

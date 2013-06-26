@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Shell
 {
-    public interface IShellViewModel
+    using Caliburn.Micro;
+
+    public interface IShellViewModel : IScreen
     {
     }
 }

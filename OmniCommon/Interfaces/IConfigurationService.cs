@@ -2,7 +2,7 @@
 
 namespace OmniCommon.Interfaces
 {
-    public interface IConfigurationService : IStartupTask
+    public interface IConfigurationService
     {
         CommunicationSettings CommunicationSettings { get; }
 

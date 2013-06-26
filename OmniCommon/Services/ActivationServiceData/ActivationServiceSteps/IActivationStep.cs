@@ -2,6 +2,8 @@
 {
     public interface IActivationStep
     {
+        DependencyParameter Parameter { get; set; }
+
         IExecuteResult Execute();
 
         object GetId();

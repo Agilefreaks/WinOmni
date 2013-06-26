@@ -5,20 +5,19 @@
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
 
-    public class GetTokenFromUser : ActivationStepBase, IHandle<TokenRequestResutMessage>
+    public class GetTokenFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {
         private readonly IEventAggregator _eventAggregator;
 
         private AutoResetEvent _autoResetEvent;
 
-        private TokenRequestResutMessage _lastRequestResult;
+        private TokenRequestResultMessage _lastRequestResult;
 
-        public Action<TokenRequestResutMessage> OnTokenRequestResultAction { get; set; }
+        public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
 
         public GetTokenFromUser(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            OnTokenRequestResultAction = OnTokenRequestResult;
             _eventAggregator.Subscribe(this);
         }
 
@@ -42,15 +41,10 @@
             return executeResult;
         }
 
-        public void Handle(TokenRequestResutMessage tokenRequestResutMessage)
+        public void Handle(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            OnTokenRequestResultAction(tokenRequestResutMessage);
-            _lastRequestResult = tokenRequestResutMessage;
+            _lastRequestResult = tokenRequestResultMessage;
             _autoResetEvent.Set();
-        }
-
-        public void OnTokenRequestResult(TokenRequestResutMessage message)
-        {
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿<Application x:Class="Omnipaste.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:omnipaste="clr-namespace:Omnipaste">
+             xmlns:omnipaste="clr-namespace:Omnipaste" 
+             xmlns:Converters="clr-namespace:Omnipaste.Framework.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <omnipaste:OmnipasteBootstrapper x:Key="bootstrapper" />
+                    <omnipaste:OmnipasteBootstrapper x:Key="Bootstrapper" />
+
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+                    <Converters:NullToCollapsedConverter x:Key="NullToCollapsed" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -8,15 +8,14 @@
 
         private readonly string _channel;
 
-        public SaveConfiguration(IConfigurationService configurationService, string payload)
+        public SaveConfiguration(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
-            _channel = payload;
         }
 
         public override IExecuteResult Execute()
         {
-            _configurationService.UpdateCommunicationChannel(_channel);
+            _configurationService.UpdateCommunicationChannel((string)this.Parameter.Value);
 
             return new ExecuteResult { State = SingleStateEnum.Successful };
         }
