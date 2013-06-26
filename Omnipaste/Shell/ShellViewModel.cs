@@ -4,6 +4,8 @@
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Configuration;
+    using Omnipaste.ContextMenu;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Properties;
     using Omnipaste.UserToken;
@@ -15,6 +17,9 @@
 
         [Inject]
         public IUserTokenViewModel UserTokenViewModel { get; set; }
+
+        [Inject]
+        public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
 
@@ -37,9 +42,14 @@
             ActiveItem = ConfigurationViewModel;
         }
 
-        protected override void OnViewLoaded(object view)
+        public void Handle(ConfigurationCompletedMessage message)
         {
-            base.OnViewLoaded(view);
+            ActiveItem = ContextMenuViewModel;
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
             ConfigurationViewModel.Start();

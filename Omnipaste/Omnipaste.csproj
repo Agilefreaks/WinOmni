@@ -104,11 +104,17 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationViewModel.cs" />
     <Compile Include="Configuration\IConfigurationViewModel.cs" />
+    <Compile Include="ContextMenu\ContextMenuView.xaml.cs">
+      <DependentUpon>ContextMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContextMenu\ContextMenuViewModel.cs" />
+    <Compile Include="ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="DataProviders\ActivationDataProvider.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="DataProviders\MockActivationDataProvider.cs" />
     <Compile Include="DataProviders\OnlineActivationDataProvider.cs" />
+    <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Framework\IApplicationWrapper.cs" />
@@ -122,6 +128,10 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContextMenu\ContextMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
