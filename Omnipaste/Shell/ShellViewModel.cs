@@ -12,14 +12,10 @@
     using Omnipaste.Framework;
     using Omnipaste.Properties;
     using Omnipaste.UserToken;
-    using WindowsClipboard.Interfaces;
-    using Action = System.Action;
 
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         private Window _view;
-
-        public event MessageHandler HandleClipboardMessage;
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
@@ -59,23 +55,20 @@
             if (_view != null)
             {
                 _view.Visibility = Visibility.Hidden;
-                _view.ShowInTaskbar = false;                
+                _view.ShowInTaskbar = false;
             }
         }
 
         public IntPtr GetHandle()
         {
             var handle = new IntPtr();
-            var windowInteropHelper = new WindowInteropHelper(_view);
-            Action getHandleDelegate = () => handle = windowInteropHelper.Handle;
-
-            if (!_view.Dispatcher.CheckAccess())
-            {
-                _view.Dispatcher.Invoke(getHandleDelegate);
-                return handle;
-            }
-
-            return windowInteropHelper.Handle;
+            Execute.OnUIThread(() =>
+                {
+                    var windowInteropHelper = new WindowInteropHelper(_view);
+                    handle = windowInteropHelper.Handle;
+                });
+            
+            return handle;
         }
 
         protected override void OnViewLoaded(object view)

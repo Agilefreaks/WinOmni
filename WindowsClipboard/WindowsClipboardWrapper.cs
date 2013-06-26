@@ -1,6 +1,7 @@
 ﻿namespace WindowsClipboard
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Windows.Forms;
@@ -17,6 +18,7 @@
 
         private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
 
         private IntPtr _clipboardViewerNext;
@@ -93,6 +95,7 @@
             @event.WaitOne();
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private string HandleDrawClipboard(int msg, IntPtr wParam, IntPtr lParam)
         {
             var data = GetClipboardText();
@@ -105,6 +108,7 @@
             return data;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private IntPtr HandleClipboardMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch ((Msgs)msg)
@@ -128,6 +132,7 @@
             return IntPtr.Zero;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code")]
         private void HandleClipboardChainChanged(int msg, IntPtr wParam, IntPtr lParam)
         {
             // When a clipboard viewer window receives the WM_CHANGECBCHAIN message, 

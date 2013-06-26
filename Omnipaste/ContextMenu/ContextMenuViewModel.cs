@@ -1,7 +1,10 @@
 ﻿namespace Omnipaste.ContextMenu
 {
+    using System.Deployment.Application;
+    using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Framework;
@@ -12,13 +15,13 @@
 
         private string _tooltipText;
 
+        private IClickOnceHelper _clickOnceHelper;
+
         private Visibility _visibility;
 
         private bool _autoStart;
 
         private string _channel;
-
-        private bool _isSyncing;
 
         public string IconSource
         {
@@ -92,6 +95,21 @@
             }
         }
 
+        public bool IsNotSyncing { get; set; }
+
+        public IClickOnceHelper ClickOnceHelper
+        {
+            get
+            {
+                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
+            }
+
+            set
+            {
+                _clickOnceHelper = value;
+            }
+        }
+
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
@@ -101,24 +119,48 @@
         public ContextMenuViewModel()
         {
             IconSource = "/Icon.ico";
-            TooltipText = "Omnipaste";
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                var ad = ApplicationDeployment.CurrentDeployment;
+                version = ad.CurrentVersion;
+            }
+
+            TooltipText = "Omnipaste " + version;
 
             ApplicationWrapper = new ApplicationWrapper();
         }
 
         public void ToggleAutoStart()
         {
+            if (AutoStart)
+            {
+                ClickOnceHelper.AddShortcutToStartup();
+            }
+            else
+            {
+                ClickOnceHelper.RemoveShortcutFromStartup();
+            }
         }
 
         public void ToggleSync()
         {
+            if (IsNotSyncing)
+            {
+                OmniService.Stop();
+            }
+            else
+            {
+                OmniService.Start();
+            }
         }
 
         public void Start()
         {
             Channel = ConfigurationService.CommunicationSettings.Channel;
 
-            AutoStart = true;
+            AutoStart = ClickOnceHelper.StartupShortcutExists();
 
             OmniService.Start();
         }

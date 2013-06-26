@@ -7,8 +7,6 @@ namespace WindowsClipboard.Interfaces
 
     public interface IDelegateClipboardMessageHandling
     {
-        event MessageHandler HandleClipboardMessage;
-
         IntPtr GetHandle();
     }
 }

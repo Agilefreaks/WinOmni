@@ -18,7 +18,7 @@
                     <Separator />
                     <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
                     <Separator />
-                    <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" />
+                    <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsNotSyncing}" />
                     <MenuItem Header="Exit" cal:Message.Attach="Exit" />
                 </ContextMenu>
             </taskbarNotification:TaskbarIcon.ContextMenu>
