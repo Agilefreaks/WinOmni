@@ -7,35 +7,26 @@
     {
         private readonly IEventAggregator _eventAggregator;
 
-        private TokenRequestResultMessage _tokenRequestResultMessage;
-
         public string Token { get; set; }
 
         public UserTokenViewModel(IEventAggregator eventAggregator)
         {
-            DisplayName = "Token";
-
             _eventAggregator = eventAggregator;
         }
 
         public void Ok()
         {
-            _tokenRequestResultMessage = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, Token);
-            TryClose();
+            Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, Token));
         }
 
-        protected override void OnActivate()
+        public void Cancel()
         {
-            base.OnActivate();
-
-            _tokenRequestResultMessage = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled);
+            this.Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled));
         }
 
-        protected override void OnDeactivate(bool close)
+        private void Publish(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            base.OnDeactivate(close);
-            
-            _eventAggregator.Publish(_tokenRequestResultMessage);
+            _eventAggregator.Publish(tokenRequestResultMessage);
         }
     }
 }

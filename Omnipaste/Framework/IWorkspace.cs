@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Framework
 {
-    public interface IWorkspace
+    using Caliburn.Micro;
+
+    public interface IWorkspace : IScreen
     {
     }
 }

@@ -1,11 +1,13 @@
 ﻿namespace Omnipaste.UserToken
 {
-    using Caliburn.Micro;
+    using Omnipaste.Framework;
 
-    public interface IUserTokenViewModel : IScreen
+    public interface IUserTokenViewModel : IWorkspace
     {
         string Token { get; set; }
 
         void Ok();
+
+        void Cancel();
     }
 }

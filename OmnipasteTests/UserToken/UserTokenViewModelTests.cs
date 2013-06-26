@@ -18,14 +18,12 @@
         {
             _eventAggregator = new Mock<IEventAggregator>();
             _subject = new UserTokenViewModel(_eventAggregator.Object);
-
-            _subject.Activate();
         }
 
         [Test]
         public void Cancel_Alwyas_CallsPublishWithCanceled()
         {
-            _subject.Deactivate(true);
+            _subject.Cancel();
 
             _eventAggregator.Verify(x => x.Publish(It.Is<TokenRequestResultMessage>(t => t.Status == TokenRequestResultMessageStatusEnum.Canceled)));
         }
@@ -36,7 +34,6 @@
             _subject.Token = "42";
 
             _subject.Ok();
-            _subject.Deactivate(true);
 
             _eventAggregator.Verify(x => x.Publish(It.Is<TokenRequestResultMessage>(t => t.Status == TokenRequestResultMessageStatusEnum.Successful && t.Token == "42")));
         }

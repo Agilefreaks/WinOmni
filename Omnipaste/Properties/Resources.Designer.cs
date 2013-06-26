@@ -59,5 +59,14 @@ namespace Omnipaste.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Omnipaste.
+        /// </summary>
+        internal static string AplicationName {
+            get {
+                return ResourceManager.GetString("AplicationName", resourceCulture);
+            }
+        }
     }
 }
