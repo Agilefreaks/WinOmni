@@ -18,7 +18,6 @@
                 PerformFirstRunTasks();
 
                 var application = new App();
-
                 application.InitializeComponent();
                 application.Run();
 

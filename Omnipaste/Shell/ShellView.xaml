@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
         Height="300" Width="300"
-        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Omnipaste;component/Icon.ico">
+        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico">
     <Grid Style="{StaticResource ShellGrid}">
         <ContentControl x:Name="ActiveItem"/>
     </Grid>
