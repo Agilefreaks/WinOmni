@@ -97,6 +97,18 @@
         }
 
         [Test]
+        public void DataReceived_WhenSenderIsLocalAndMessageWasPreviouslySent_DoesNotCallPutData()
+        {
+            var startTask = _subject.Start();
+            Task.WaitAll(startTask);
+
+            _subject.DataReceived(CreateClipboardDataFrom(_mockLocalClipboard.Object));
+            _subject.DataReceived(CreateClipboardDataFrom(_mockLocalClipboard.Object));
+
+            _mockOmniClipboard.Verify(m => m.PutData(It.IsAny<string>()), Times.Once());
+        }
+
+        [Test]
         public void Start_StartIsInProgress_ReturnsTheSameTask()
         {
             _mockLocalClipboard.Setup(x => x.Initialize()).Callback(() =>
