@@ -1,4 +1,5 @@
-﻿using Omnipaste.Framework;
+﻿using OmniCommon.Interfaces;
+using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
 
 namespace Omnipaste
@@ -37,23 +38,16 @@ namespace Omnipaste
 
             _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
+            _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
 
-            ConfigureConnectivityService();
-            InitRequiredSingletons();
+            _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
         }
 
-        protected void InitRequiredSingletons()
+        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
         {
-            _kernel.Get<IOmniServiceHandler>();
-        }
+            base.OnStartup(sender, e);
 
-        protected void ConfigureConnectivityService()
-        {
-            var connectivityObserver = new ConnectivityNotifyService();
-            Application.Exit += (sender, args) => connectivityObserver.Stop();
-            connectivityObserver.Start();
-
-            _kernel.Bind<IConnectivityNotifyService>().ToConstant(connectivityObserver);
+            RunStartupTasks();
         }
 
         protected override object GetInstance(Type serviceType, string key)
@@ -77,6 +71,25 @@ namespace Omnipaste
                        {
                            Assembly.GetExecutingAssembly()
                        };
+        }
+
+        protected void RunStartupTasks()
+        {
+            foreach (var task in _kernel.GetAll<IStartupTask>())
+            {
+                _kernel.Inject(task);
+
+                task.Startup();
+            }
+        }
+
+        protected IConnectivityNotifyService CreateConnectivityService()
+        {
+            var connectivityObserver = new ConnectivityNotifyService();
+            Application.Exit += (sender, args) => connectivityObserver.Stop();
+            connectivityObserver.Start();
+
+            return connectivityObserver;
         }
     }
 }
