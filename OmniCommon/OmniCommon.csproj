@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventAggregatorMessages\StartOmniServiceMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
     <Compile Include="OmniCommonModule.cs" />
     <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />

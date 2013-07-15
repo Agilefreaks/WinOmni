@@ -1,4 +1,8 @@
-﻿namespace Omnipaste
+﻿using OmniCommon.Interfaces;
+using Omnipaste.Framework;
+using Omnipaste.Services.Connectivity;
+
+namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
@@ -30,9 +34,20 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
+            _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
 
             _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
+            _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
+
+            _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
+        }
+
+        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
+        {
+            base.OnStartup(sender, e);
+
+            RunStartupTasks();
         }
 
         protected override object GetInstance(Type serviceType, string key)
@@ -56,6 +71,25 @@
                        {
                            Assembly.GetExecutingAssembly()
                        };
+        }
+
+        protected void RunStartupTasks()
+        {
+            foreach (var task in _kernel.GetAll<IStartupTask>())
+            {
+                _kernel.Inject(task);
+
+                task.Startup();
+            }
+        }
+
+        protected IConnectivityNotifyService CreateConnectivityService()
+        {
+            var connectivityObserver = new ConnectivityNotifyService();
+            Application.Exit += (sender, args) => connectivityObserver.Stop();
+            connectivityObserver.Start();
+
+            return connectivityObserver;
         }
     }
 }
