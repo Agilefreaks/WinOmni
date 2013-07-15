@@ -35,11 +35,10 @@ namespace Omnipaste
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
 
-            ConfigureConnectivityService();
-
             _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
 
+            ConfigureConnectivityService();
             InitRequiredSingletons();
         }
 
@@ -51,8 +50,8 @@ namespace Omnipaste
         protected void ConfigureConnectivityService()
         {
             var connectivityObserver = new ConnectivityNotifyService();
-            connectivityObserver.Start();
             Application.Exit += (sender, args) => connectivityObserver.Stop();
+            connectivityObserver.Start();
 
             _kernel.Bind<IConnectivityNotifyService>().ToConstant(connectivityObserver);
         }

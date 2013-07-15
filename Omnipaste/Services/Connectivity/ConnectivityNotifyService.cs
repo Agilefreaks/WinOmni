@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Omnipaste.Services.Connectivity
 {
@@ -11,7 +13,7 @@ namespace Omnipaste.Services.Connectivity
         private bool PreviouslyConnected { get; set; }
 
         public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
-
+        
         public void Start()
         {
             _timer = new Timer(Run, null, TimeSpan.FromTicks(0), TimeSpan.FromSeconds(5));
@@ -51,7 +53,9 @@ namespace Omnipaste.Services.Connectivity
             var handler = ConnectivityChanged;
             if (handler != null)
             {
-                handler(this, new ConnectivityChangedEventArgs(isConnected));
+                Action target = () => handler(this, new ConnectivityChangedEventArgs(isConnected));
+
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, target);
             }
         }
     }
