@@ -1,4 +1,7 @@
-﻿namespace Omnipaste
+﻿using Omnipaste.Framework;
+using Omnipaste.Services.Connectivity;
+
+namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
@@ -30,9 +33,28 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
+            _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
+
+            ConfigureConnectivityService();
 
             _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
+
+            InitRequiredSingletons();
+        }
+
+        protected void InitRequiredSingletons()
+        {
+            _kernel.Get<IOmniServiceHandler>();
+        }
+
+        protected void ConfigureConnectivityService()
+        {
+            var connectivityObserver = new ConnectivityNotifyService();
+            connectivityObserver.Start();
+            Application.Exit += (sender, args) => connectivityObserver.Stop();
+
+            _kernel.Bind<IConnectivityNotifyService>().ToConstant(connectivityObserver);
         }
 
         protected override object GetInstance(Type serviceType, string key)
