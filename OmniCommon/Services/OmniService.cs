@@ -94,7 +94,7 @@
             Status = previousStatus;
         }
 
-        private static string ProcessClipboardEvent(IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
+        private string ProcessClipboardEvent(IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
         {
             string sentData = null;
             var data = clipboardData.GetData();
@@ -102,6 +102,8 @@
             {
                 clipboardToSendTo.PutData(data);
                 sentData = data;
+
+                EventAggregator.Publish(clipboardData);
             }
 
             return sentData;

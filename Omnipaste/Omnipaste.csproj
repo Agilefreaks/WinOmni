@@ -173,6 +173,11 @@
     <Compile Include="Framework\UserControlls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="History\HistoryView.xaml.cs">
+      <DependentUpon>HistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryViewModel.cs" />
+    <Compile Include="History\IHistoryViewModel.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
@@ -192,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Framework\UserControlls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="History\HistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

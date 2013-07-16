@@ -1,4 +1,4 @@
-﻿using OmniCommon.EventAggregatorMessages;
+﻿using Omnipaste.History;
 
 namespace Omnipaste.ContextMenu
 {
@@ -24,6 +24,7 @@ namespace Omnipaste.ContextMenu
         private bool _autoStart;
 
         private string _channel;
+        private IHistoryViewModel _history;
 
         public string IconSource
         {
@@ -117,6 +118,21 @@ namespace Omnipaste.ContextMenu
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
+
+        [Inject]
+        public IHistoryViewModel History
+        {
+            get
+            {
+                return _history;
+            }
+
+            set
+            {
+                _history = value;
+                NotifyOfPropertyChange(() => History);
+            }
+        }
 
         public ContextMenuViewModel()
         {
