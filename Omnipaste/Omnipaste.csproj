@@ -99,9 +99,6 @@
     <AssemblyOriginatorKeyFile>Omnipaste_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BugFreak">
-      <HintPath>..\Libs\BugFreak.dll</HintPath>
-    </Reference>
     <Reference Include="BugFreak.Integration.WPF">
       <HintPath>..\Libs\BugFreak.Integration.WPF.dll</HintPath>
     </Reference>
