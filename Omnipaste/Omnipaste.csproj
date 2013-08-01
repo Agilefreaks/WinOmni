@@ -123,6 +123,7 @@
     <Reference Include="System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Threading.Tasks.3.0.2-beta2\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
+      <Aliases>TasksNET35</Aliases>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -163,9 +164,15 @@
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
+    <Compile Include="Framework\IOmniServiceHandler.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Framework\IApplicationWrapper.cs" />
+    <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
+    <Compile Include="Framework\OmniServiceHandler.cs" />
     <Compile Include="Framework\UserControlls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>

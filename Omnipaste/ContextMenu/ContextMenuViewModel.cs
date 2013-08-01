@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.ContextMenu
+﻿using OmniCommon.EventAggregatorMessages;
+
+namespace Omnipaste.ContextMenu
 {
     using System.Deployment.Application;
     using System.Reflection;
@@ -114,7 +116,7 @@
         public IConfigurationService ConfigurationService { get; set; }
 
         [Inject]
-        public IOmniService OmniService { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         public ContextMenuViewModel()
         {
@@ -148,11 +150,11 @@
         {
             if (IsNotSyncing)
             {
-                OmniService.Stop();
+                EventAggregator.Publish(new StopOmniServiceMessage());
             }
             else
             {
-                OmniService.Start();
+                EventAggregator.Publish(new StartOmniServiceMessage());
             }
         }
 
@@ -162,7 +164,7 @@
 
             AutoStart = ClickOnceHelper.StartupShortcutExists();
 
-            OmniService.Start();
+            EventAggregator.Publish(new StartOmniServiceMessage());
         }
 
         public void Exit()
