@@ -1,4 +1,4 @@
-SWClipboardWatcher
+Winomni
 ==================
 
-ClipboardWatcher
+Winomni
