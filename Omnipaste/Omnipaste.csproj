@@ -35,8 +35,8 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>54</ApplicationRevision>
-    <ApplicationVersion>1.0.0.54</ApplicationVersion>
+    <ApplicationRevision>55</ApplicationRevision>
+    <ApplicationVersion>1.0.0.55</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
