@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
+    using BugFreak.WPF;
     using CustomizedClickOnce.Common;
-    using BugFreak.Integration.WPF;
 
     public partial class App : ISingleInstanceApp
     {

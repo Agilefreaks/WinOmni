@@ -93,8 +93,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BugFreak.Integration.WPF">
-      <HintPath>..\Libs\BugFreak.Integration.WPF.dll</HintPath>
+    <Reference Include="BugFreak.WPF">
+      <HintPath>..\packages\BugFreak.WPF.1.0.0.2\lib\net35-Client\BugFreak.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Libs\Caliburn.Micro.dll</HintPath>
