@@ -32,9 +32,9 @@
             }
         }
 
-        protected string LastReceivedEventArgs { get; set; }
+        protected string LastReceivedData { get; set; }
 
-        protected string LastSentEventArgs { get; set; }
+        protected string LastSentData { get; set; }
 
         public OmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard, IEventAggregator eventAggregator)
         {
@@ -79,13 +79,16 @@
             var previousStatus = Status;
             if (sender == LocalClipboard)
             {
-                Status = OmniServiceStatusEnum.Sending;
-                LastSentEventArgs = ProcessClipboardEvent(clipboardData, LastReceivedEventArgs, OmniClipboard);
+                if (!HasPreviouslySent(clipboardData, LastSentData))
+                {
+                    Status = OmniServiceStatusEnum.Sending;
+                    LastSentData = ProcessClipboardEvent(clipboardData, LastReceivedData, OmniClipboard);
+                }
             }
             else
             {
                 Status = OmniServiceStatusEnum.Receiving;
-                LastReceivedEventArgs = ProcessClipboardEvent(clipboardData, LastSentEventArgs, LocalClipboard);
+                LastReceivedData = ProcessClipboardEvent(clipboardData, LastSentData, LocalClipboard);
             }
 
             Status = previousStatus;
@@ -102,6 +105,11 @@
             }
 
             return sentData;
+        }
+
+        private bool HasPreviouslySent(IClipboardData newData, string oldData)
+        {
+            return Equals(newData.GetData(), oldData);
         }
     }
 }
