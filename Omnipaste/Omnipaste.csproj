@@ -177,6 +177,7 @@
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="SingleInstance.cs" />
+    <Compile Include="StartUp\InitHandlersStartupTask.cs" />
     <Compile Include="UserToken\IUserTokenViewModel.cs" />
     <Compile Include="UserToken\UserTokenView.xaml.cs">
       <DependentUpon>UserTokenView.xaml</DependentUpon>
