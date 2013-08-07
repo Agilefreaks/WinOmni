@@ -1,10 +1,11 @@
-﻿namespace Omnipaste
+﻿using Bugfreak.WPF;
+
+namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
-    using BugFreak.WPF;
     using CustomizedClickOnce.Common;
 
     public partial class App : ISingleInstanceApp
@@ -23,7 +24,7 @@
                 application.Run();
 
                 // Init Reporting Service
-                AgileReporter.Hook();
+                BugFreak.Hook();
 
                 // Allow single instance code to perform cleanup operations
                 SingleInstance<App>.Cleanup();
