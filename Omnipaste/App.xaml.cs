@@ -1,12 +1,11 @@
-﻿using Bugfreak.WPF;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
     using CustomizedClickOnce.Common;
+    using BugFreak;
 
     public partial class App : ISingleInstanceApp
     {

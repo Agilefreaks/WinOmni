@@ -94,7 +94,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BugFreak.WPF">
-      <HintPath>..\packages\BugFreak.WPF.1.0.0.3\lib\net35-Client\BugFreak.WPF.dll</HintPath>
+      <HintPath>..\packages\BugFreak.WPF.1.0.0.4\lib\net35-Client\BugFreak.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Libs\Caliburn.Micro.dll</HintPath>
