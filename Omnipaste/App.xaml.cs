@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
-    using BugFreak.WPF;
     using CustomizedClickOnce.Common;
+    using BugFreak;
 
     public partial class App : ISingleInstanceApp
     {
@@ -19,11 +19,12 @@
                 PerformFirstRunTasks();
 
                 var application = new App();
-                application.InitializeComponent();
-                application.Run();
 
                 // Init Reporting Service
-                AgileReporter.Hook();
+                BugFreak.Hook();
+
+                application.InitializeComponent();
+                application.Run();
 
                 // Allow single instance code to perform cleanup operations
                 SingleInstance<App>.Cleanup();
