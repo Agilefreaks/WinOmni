@@ -58,7 +58,7 @@
 
         private void ClipboardAdapterOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
         {
-            OnDataReceived(new ClipboardData(this, clipboardEventArgs.Data));
+            NotifyReceivers(new ClipboardData(this, clipboardEventArgs.Data));
         }
     }
 }

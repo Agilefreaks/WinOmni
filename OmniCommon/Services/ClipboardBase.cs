@@ -35,7 +35,7 @@
             }
         }
 
-        protected virtual void OnDataReceived(IClipboardData clipboardData)
+        protected virtual void NotifyReceivers(IClipboardData clipboardData)
         {
             foreach (var dataReceiver in _dataReceivers)
             {

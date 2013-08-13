@@ -84,7 +84,7 @@ namespace PubNubClipboard
 
         void IGetClippingCompleteHandler.HandleClipping(string clip)
         {
-            OnDataReceived(new ClipboardData(this, clip));
+            NotifyReceivers(new ClipboardData(this, clip));
         }
 
         void IMessageHandler.MessageSent(string message)
