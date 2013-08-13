@@ -34,10 +34,11 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         {
             var client = new RestClient(_apiConfig.BaseUrl);
             
-            var restRequest = new RestRequest(_apiConfig.Resources.Clippings);
+            var restRequest = new RestRequest(_apiConfig.Resources.Clippings, Method.POST);
+            restRequest.RequestFormat = DataFormat.Json;
             restRequest.AddBody(new Clipping(_communicationSettings.Channel, data));
-            
-            client.ExecuteAsyncPost<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler), "POST");
+
+            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
         }
 
         public void GetLastClippingAsync(IGetClippingCompleteHandler handler)
@@ -45,8 +46,9 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
             var client = new RestClient(_apiConfig.BaseUrl);
             
             var restRequest = new RestRequest(string.Format("{0}/{1}/last", _apiConfig.Resources.Clippings, _communicationSettings.Channel), Method.GET);
-            
-            client.ExecuteAsyncGet<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler), "GET");
+            restRequest.RequestFormat = DataFormat.Json;
+
+            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
         }
 
         private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)
