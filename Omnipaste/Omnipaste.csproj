@@ -315,10 +315,6 @@
       <Project>{4efac41c-fca3-422e-8e10-05d8c52b8765}</Project>
       <Name>Omnipaste.OmniClipboard.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PubNubClipboard\PubNubClipboard.csproj">
-      <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
-      <Name>PubNubClipboard</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
       <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
       <Name>WindowsClipboard</Name>

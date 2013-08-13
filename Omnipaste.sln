@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsClipboardTests", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniCommon", "OmniCommon\OmniCommon.csproj", "{1E9C5284-DFDC-4AC1-B257-526CB1989876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubClipboard", "PubNubClipboard\PubNubClipboard.csproj", "{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubClipboardTests", "PubNubClipboardTests\PubNubClipboardTests.csproj", "{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniCommonTests", "OmniCommonTests\OmniCommonTests.csproj", "{92B3822C-13DF-4D2A-94FC-1C5D2C10933B}"
@@ -62,12 +60,6 @@ Global
 		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{1E9C5284-DFDC-4AC1-B257-526CB1989876}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{FAEFC247-8464-4F93-B679-BA7F4E5D8DE5}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42BDAD8-1322-4EBC-BCEE-D2AD560C757B}.Release|Any CPU.ActiveCfg = Release|Any CPU

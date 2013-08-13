@@ -1,7 +1,6 @@
 ﻿using Omnipaste.OmniClipboard.Core;
 using Omnipaste.OmniClipboard.Core.Api;
 using Omnipaste.OmniClipboard.Core.Messaging;
-using PubNubClipboard;
 
 namespace PubNubClipboardTests
 {
