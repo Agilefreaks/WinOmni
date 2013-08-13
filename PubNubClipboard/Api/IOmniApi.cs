@@ -2,6 +2,8 @@
 {
     public interface IOmniApi
     {
-        void SaveClippingAsync(string data, ISaveClippingCompleteHandler saveClippingCompleteHandler);
+        void SaveClippingAsync(string data, ISaveClippingCompleteHandler handler);
+
+        void GetLastClippingAsync(IGetClippingCompleteHandler handler);
     }
 }

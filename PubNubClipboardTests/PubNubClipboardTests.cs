@@ -104,6 +104,20 @@
         }
 
         [Test]
+        public void NewMessageReceived_Always_GetsClippingFromApi()
+        {
+            InitializeMockClient();
+            _mockClient.Setup(
+                m => m.Subscribe(It.IsAny<string>(), It.IsAny<Action<string>>(), It.IsAny<Action<string>>()))
+                       .Callback<string, Action<string>, Action<string>>(
+                           (message, dataCallback, statusCallback) => dataCallback("test"));
+
+            _subject.Initialize();
+
+            _mockOmniApi.Verify(m => m.GetLastClippingAsync(_subject));
+        }
+
+        [Test]
         public void PutData_Always_CallsApiSaveClippingAsync()
         {
             InitializeMockClient();

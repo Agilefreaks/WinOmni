@@ -5,7 +5,6 @@ namespace PubNubClipboard
     using System;
     using System.Collections;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Common.Logging;
@@ -15,7 +14,7 @@ namespace PubNubClipboard
     using OmniCommon.Services;
     using PubNubWrapper;
 
-    public class PubNubClipboard : ClipboardBase, IPubNubClipboard, ISaveClippingCompleteHandler
+    public class PubNubClipboard : ClipboardBase, IPubNubClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler
     {
         private readonly IConfigurationService _configurationService;
         private readonly IOmniApi _omniApi;
@@ -133,11 +132,7 @@ namespace PubNubClipboard
 
         private void HandleMessageReceived(string receivedMessage)
         {
-            var dataEntries = GetDataEntries(receivedMessage);
-            if (dataEntries != null && dataEntries.Any())
-            {
-                OnDataReceived(new ClipboardData(this, dataEntries[0]));
-            }
+            _omniApi.GetLastClippingAsync(this);
         }
 
         private void LogCallbackMessage(string message)
@@ -152,6 +147,11 @@ namespace PubNubClipboard
 
         public void SaveClippingFailed()
         {
+        }
+
+        public void HandleClipping(string clip)
+        {
+            OnDataReceived(new ClipboardData(this, clip));
         }
     }
 }

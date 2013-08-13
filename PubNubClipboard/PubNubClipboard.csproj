@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\IGetClippingCompleteHandler.cs" />
     <Compile Include="Api\ISaveClippingCompleteHandler.cs" />
     <Compile Include="InvalidMessageException.cs" />
     <Compile Include="Api\IOmniApi.cs" />

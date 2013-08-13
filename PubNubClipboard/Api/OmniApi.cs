@@ -30,23 +30,39 @@
             _saveClippingListeners.Remove(handler);
         }
 
-        public void SaveClippingAsync(string data, ISaveClippingCompleteHandler saveClippingCompleteHandler)
+        public void SaveClippingAsync(string data, ISaveClippingCompleteHandler handler)
         {
             var client = new RestClient(_apiConfig.BaseUrl);
             var restRequest = new RestRequest(_apiConfig.Resources.Clippings);
             restRequest.AddHeader("token", _communicationSettings.Channel);
-            client.ExecuteAsyncPost(restRequest, (response, handle) => HandleSaveClippingCompleted(response, saveClippingCompleteHandler), "POST");
+            client.ExecuteAsyncPost(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler), "POST");
         }
 
-        private static void HandleSaveClippingCompleted(IRestResponse response, ISaveClippingCompleteHandler saveClippingCompleteHandler)
+        public void GetLastClippingAsync(IGetClippingCompleteHandler handler)
+        {
+            var client = new RestClient(_apiConfig.BaseUrl);
+            var restRequest = new RestRequest(_apiConfig.Resources.Clippings);
+            restRequest.AddHeader("token", _communicationSettings.Channel);
+            client.ExecuteAsyncGet(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler), "GET");
+        }
+
+        private void HandleGetClippingCompleted(IRestResponse response, IGetClippingCompleteHandler handler)
+        {
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                handler.HandleClipping(response.Content);
+            }
+        }
+
+        private void HandleSaveClippingCompleted(IRestResponse response, ISaveClippingCompleteHandler handler)
         {
             if (response.StatusCode == HttpStatusCode.Created)
             {
-                saveClippingCompleteHandler.SaveClippingSucceeded();
+                handler.SaveClippingSucceeded();
             }
             else
             {
-                saveClippingCompleteHandler.SaveClippingFailed();
+                handler.SaveClippingFailed();
             }
         }
     }
