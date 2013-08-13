@@ -7,7 +7,7 @@ using Omnipaste.OmniClipboard.Infrastructure.Messaging;
 
 namespace Omnipaste.OmniClipboard.Infrastructure
 {
-    public class PubNubClipboardModule : NinjectModule
+    public class OmniClipboardModule : NinjectModule
     {
         public override void Load()
         {

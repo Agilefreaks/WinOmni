@@ -58,7 +58,7 @@
     <Compile Include="Messaging\PubNubClientFactory.cs" />
     <Compile Include="Messaging\PubNubMessagingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PubNubClipboardModule.cs" />
+    <Compile Include="OmniClipboardModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
