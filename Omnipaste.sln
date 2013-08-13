@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubClipboardTests", "Pub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniCommonTests", "OmniCommonTests\OmniCommonTests.csproj", "{92B3822C-13DF-4D2A-94FC-1C5D2C10933B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubNubWrapper", "PubNubWrapper\PubNubWrapper.csproj", "{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomizedClickOnce.Uninstall", "CustomizedClickOnce.Uninstall\CustomizedClickOnce.Uninstall.csproj", "{0CD11D9E-6B6A-4B9C-A13F-CBC20B618D60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomizedClickOnce.Common", "CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj", "{BC299433-48CC-4282-A7F4-3948E054B6AC}"
@@ -72,12 +70,6 @@ Global
 		{92B3822C-13DF-4D2A-94FC-1C5D2C10933B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92B3822C-13DF-4D2A-94FC-1C5D2C10933B}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{92B3822C-13DF-4D2A-94FC-1C5D2C10933B}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{8BBD2391-575A-4AC2-B615-F9BAC1FF5081}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{0CD11D9E-6B6A-4B9C-A13F-CBC20B618D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CD11D9E-6B6A-4B9C-A13F-CBC20B618D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD11D9E-6B6A-4B9C-A13F-CBC20B618D60}.Release|Any CPU.ActiveCfg = Release|Any CPU

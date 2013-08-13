@@ -4,7 +4,6 @@ using Moq;
 using NUnit.Framework;
 using Omnipaste.OmniClipboard.Core.Messaging;
 using Omnipaste.OmniClipboard.Infrastructure.Messaging;
-using PubNubWrapper;
 
 namespace PubNubClipboardTests.Messaging
 {

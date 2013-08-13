@@ -1,6 +1,4 @@
-﻿using PubNubWrapper;
-
-namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
+﻿namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
 {
     public interface IPubNubClientFactory
     {

@@ -1,8 +1,8 @@
-﻿namespace PubNubWrapper
-{
-    using System;
-    using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
+namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
+{
     public interface IPubNubClient : INotifyPropertyChanged
     {
         void Subscribe<T>(string channel, Action<T> userCallback, Action<T> connectCallback);

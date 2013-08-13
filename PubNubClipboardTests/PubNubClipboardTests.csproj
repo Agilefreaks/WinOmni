@@ -91,10 +91,6 @@
       <Project>{4efac41c-fca3-422e-8e10-05d8c52b8765}</Project>
       <Name>Omnipaste.OmniClipboard.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PubNubWrapper\PubNubWrapper.csproj">
-      <Project>{8bbd2391-575a-4ac2-b615-f9bac1ff5081}</Project>
-      <Name>PubNubWrapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionMethods\" />

@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
 using Omnipaste.OmniClipboard.Core.Messaging;
-using PubNubWrapper;
 
 namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
 {

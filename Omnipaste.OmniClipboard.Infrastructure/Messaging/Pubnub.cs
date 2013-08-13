@@ -22,6 +22,8 @@ using Microsoft.Win32;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Omnipaste.OmniClipboard.Infrastructure.Messaging;
+
 #if (SILVERLIGHT || WINDOWS_PHONE)
 using System.Windows.Threading;
 using System.IO.IsolatedStorage;
@@ -38,7 +40,7 @@ using System.Security.Cryptography.X509Certificates;
 #endif
 
 
-namespace PubNubWrapper
+namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
 {
     // INotifyPropertyChanged provides a standard event for objects to notify clients that one of its properties has changed
     public class Pubnub : IPubNubClient
