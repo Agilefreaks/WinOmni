@@ -76,6 +76,9 @@
     <Compile Include="InvalidMessageException.cs" />
     <Compile Include="Api\IOmniApi.cs" />
     <Compile Include="Api\OmniApi.cs" />
+    <Compile Include="Messaging\IMessageHandler.cs" />
+    <Compile Include="Messaging\IMessagingService.cs" />
+    <Compile Include="Messaging\PubNubMessagingService.cs" />
     <Compile Include="PubNubClipboardModule.cs" />
     <Compile Include="IPubNubClientFactory.cs" />
     <Compile Include="PubNubClientFactory.cs" />

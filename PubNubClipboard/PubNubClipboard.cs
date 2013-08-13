@@ -1,33 +1,23 @@
 ﻿using PubNubClipboard.Api;
+using PubNubClipboard.Messaging;
 
 namespace PubNubClipboard
 {
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Threading;
     using System.Threading.Tasks;
     using Common.Logging;
     using Common.Logging.Simple;
-    using Newtonsoft.Json;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
-    using PubNubWrapper;
 
-    public class PubNubClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler
+    public class PubNubClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
     {
         private readonly IConfigurationService _configurationService;
         private readonly IOmniApi _omniApi;
-        private readonly IPubNubClientFactory _clientFactory;
-        private IPubNubClient _pubnub;
+        private readonly IMessagingService _messagingService;
         private Task<bool> _initializationTask;
         private ILog _logger;
 
         public string Channel { get; private set; }
-
-        public bool IsInitialized { get; private set; }
-
-        public bool IsInitializing { get; private set; }
 
         public ILog Logger
         {
@@ -42,11 +32,11 @@ namespace PubNubClipboard
             }
         }
 
-        public PubNubClipboard(IConfigurationService configurationService, IOmniApi omniApi, IPubNubClientFactory clientFactory)
+        public PubNubClipboard(IConfigurationService configurationService, IOmniApi omniApi, IMessagingService messagingService)
         {
             _configurationService = configurationService;
             _omniApi = omniApi;
-            _clientFactory = clientFactory;
+            _messagingService = messagingService;
         }
 
         public override Task<bool> Initialize()
@@ -54,20 +44,17 @@ namespace PubNubClipboard
             var communicationSettings = _configurationService.CommunicationSettings;
             var task = string.IsNullOrEmpty(communicationSettings.Channel)
                            ? Task.Factory.StartNew(() => false)
-                           : IsInitializing ? _initializationTask : InitializePubNubClientAsync();
+                           : _initializationTask ?? (_initializationTask = Task<bool>.Factory.StartNew(DoInitialize));
 
             return task;
         }
 
-        public override void Dispose()
+        public bool DoInitialize()
         {
-            if (!IsInitialized)
-            {
-                return;
-            }
+            Channel = _configurationService.CommunicationSettings.Channel;
+            var connected = _messagingService.Connect(Channel, this);
 
-            _pubnub.EndPendingRequests();
-            _pubnub.Unsubscribe(Channel, o => { }, o => { }, o => { });
+            return connected;
         }
 
         public override void PutData(string data)
@@ -75,83 +62,38 @@ namespace PubNubClipboard
             _omniApi.SaveClippingAsync(data, this);
         }
 
-        private static string[] GetDataEntries(string receivedMessage)
+        public override void Dispose()
         {
-            var jsonSerializer = new JsonSerializer();
-            var dataEntries = jsonSerializer.Deserialize(new StringReader(receivedMessage), typeof(string[])) as string[];
-
-            return dataEntries;
+            _messagingService.Disconnect(Channel);
         }
 
-        private Task<bool> InitializePubNubClientAsync()
+        void ISaveClippingCompleteHandler.SaveClippingSucceeded()
         {
-            IsInitializing = true;
-            return _initializationTask = Task<bool>.Factory.StartNew(InitializePubNubClient);
+            _messagingService.SendAsync(Channel, "NewMessage", this);
         }
 
-        private bool InitializePubNubClient()
+        void ISaveClippingCompleteHandler.SaveClippingFailed(string reason)
         {
-            IsInitializing = true;
-            _pubnub = _clientFactory.Create();
-            Channel = _configurationService.CommunicationSettings.Channel;
-            var autoResetEvent = new AutoResetEvent(false);
-            Action<string> statusCallback = result => HandleSubscribeConnectionStatusChanged(result, autoResetEvent);
-            _pubnub.Subscribe(Channel, HandleMessageReceived, statusCallback);
-            autoResetEvent.WaitOne();
-
-            return IsInitialized;
+            Logger.Info(string.Format("Save failed because {0}", reason));
         }
 
-        private void PutDataCallback(object obj)
-        {
-            var list = obj as IList;
-            if (list == null || list.Count <= 1) return;
-
-            var message = list[1].ToString();
-            if (message.ToLowerInvariant() != "sent")
-            {
-                LogCallbackMessage(message);
-            }
-        }
-
-        private void HandleSubscribeConnectionStatusChanged(string result, AutoResetEvent autoResetEvent)
-        {
-            var dataEntries = GetDataEntries(result);
-            if (dataEntries != null && dataEntries.Length > 1)
-            {
-                LogCallbackMessage(dataEntries[1]);
-                if (dataEntries[0] == "1")
-                {
-                    IsInitialized = true;
-                }
-            }
-
-            IsInitializing = false;
-            autoResetEvent.Set();
-        }
-
-        private void HandleMessageReceived(string receivedMessage)
+        void IMessageHandler.MessageReceived(string message)
         {
             _omniApi.GetLastClippingAsync(this);
         }
 
-        private void LogCallbackMessage(string message)
-        {
-            Logger.Info(message);
-        }
-
-        public void SaveClippingSucceeded()
-        {
-            _pubnub.Publish(Channel, "NewMessage", PutDataCallback);
-        }
-
-        public void SaveClippingFailed()
-        {
-        }
-
-        public void HandleClipping(string clip)
+        void IGetClippingCompleteHandler.HandleClipping(string clip)
         {
             OnDataReceived(new ClipboardData(this, clip));
+        }
+
+        void IMessageHandler.MessageSent(string message)
+        {
+        }
+
+        void IMessageHandler.MessageSendFailed(string message, string reason)
+        {
+            Logger.Info(message);
         }
     }
 }

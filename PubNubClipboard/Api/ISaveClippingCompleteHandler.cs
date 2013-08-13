@@ -4,6 +4,6 @@
     {
         void SaveClippingSucceeded();
 
-        void SaveClippingFailed();
+        void SaveClippingFailed(string reason);
     }
 }

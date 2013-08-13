@@ -62,7 +62,7 @@
             }
             else
             {
-                handler.SaveClippingFailed();
+                handler.SaveClippingFailed(response.Content);
             }
         }
     }
