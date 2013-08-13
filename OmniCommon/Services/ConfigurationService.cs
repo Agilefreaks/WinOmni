@@ -6,26 +6,39 @@
     public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
+        private readonly IAppConfigurationProvider _appConfigurationProvider;
 
         public CommunicationSettings CommunicationSettings { get; private set; }
+        
+        public ApiConfig ApiConfig { get; set; }
 
-        public ConfigurationService(IConfigurationProvider configurationProvider)
+        public ConfigurationService(IConfigurationProvider configurationProvider, IAppConfigurationProvider appConfigurationProvider)
         {
-            this._configurationProvider = configurationProvider;
+            _configurationProvider = configurationProvider;
+            _appConfigurationProvider = appConfigurationProvider;
         }
 
         public void UpdateCommunicationChannel(string channel)
         {
-            this._configurationProvider.SetValue("channel", channel);
-            this.LoadCommunicationSettings();
+            _configurationProvider.SetValue("channel", channel);
+            Initialize();
         }
 
-        public void LoadCommunicationSettings()
+        public void Initialize()
         {
-            this.CommunicationSettings = new CommunicationSettings
-            {
-                Channel = this._configurationProvider.GetValue("channel")
-            };
+            CommunicationSettings = new CommunicationSettings
+                {
+                    Channel = _configurationProvider.GetValue("channel")
+                };
+
+            ApiConfig = new ApiConfig
+                {
+                    BaseUrl = _appConfigurationProvider.GetValue("apiUrl"),
+                    Resources = new Resources
+                        {
+                            Clippings = _appConfigurationProvider.GetValue("clippingResource")
+                        }
+                };
         }
 
     }

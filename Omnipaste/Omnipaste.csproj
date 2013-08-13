@@ -153,6 +153,7 @@
     <Compile Include="ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="DataProviders\ActivationDataProvider.cs" />
+    <Compile Include="DataProviders\AppConfigurationProvider.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="DataProviders\MockActivationDataProvider.cs" />
@@ -310,9 +311,9 @@
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PubNubClipboard\PubNubClipboard.csproj">
-      <Project>{faefc247-8464-4f93-b679-ba7f4e5d8de5}</Project>
-      <Name>PubNubClipboard</Name>
+    <ProjectReference Include="..\Omnipaste.OmniClipboard.Infrastructure\Omnipaste.OmniClipboard.Infrastructure.csproj">
+      <Project>{4efac41c-fca3-422e-8e10-05d8c52b8765}</Project>
+      <Name>Omnipaste.OmniClipboard.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
       <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>

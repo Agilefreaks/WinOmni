@@ -1,5 +1,6 @@
 ﻿using OmniCommon.Interfaces;
 using Omnipaste.Framework;
+using Omnipaste.OmniClipboard.Infrastructure;
 using Omnipaste.Services.Connectivity;
 
 namespace Omnipaste
@@ -12,7 +13,6 @@ namespace Omnipaste
     using Ninject.Extensions.Conventions;
     using OmniCommon;
     using Omnipaste.Shell;
-    using PubNubClipboard;
     using WindowsClipboard;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
@@ -30,7 +30,7 @@ namespace Omnipaste
             _kernel.Load<OmniCommonModule>();
             _kernel.Load<OmnipasteModule>();
             _kernel.Load<WindowsClipboardModule>();
-            _kernel.Load<PubNubClipboardModule>();
+            _kernel.Load<OmniClipboardModule>();
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();

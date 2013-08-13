@@ -13,7 +13,7 @@
 
         public override IExecuteResult Execute()
         {
-            _configurationService.LoadCommunicationSettings();
+            _configurationService.Initialize();
 
             return new ExecuteResult
                        {

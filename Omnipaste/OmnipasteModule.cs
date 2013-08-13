@@ -14,6 +14,7 @@
             // activation service dependency injection
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentInfoProvider>();
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>();
+            Kernel.Bind<IAppConfigurationProvider>().To<AppConfigurationProvider>();
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<IShellViewModel>());
 #if DEBUG
             this.Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
