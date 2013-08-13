@@ -1,11 +1,12 @@
-﻿namespace PubNubClipboard.Api
-{
-    using System.Collections.Generic;
-    using System.Net;
-    using OmniCommon.Interfaces;
-    using OmniCommon.Services;
-    using RestSharp;
+﻿using System.Collections.Generic;
+using System.Net;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
+using Omnipaste.OmniClipboard.Core.Api;
+using RestSharp;
 
+namespace Omnipaste.OmniClipboard.Infrastructure.Api
+{
     public class OmniApi : IOmniApi
     {
         private readonly IList<ISaveClippingCompleteHandler> _saveClippingListeners;

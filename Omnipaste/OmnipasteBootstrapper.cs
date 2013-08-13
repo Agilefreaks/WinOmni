@@ -1,5 +1,6 @@
 ﻿using OmniCommon.Interfaces;
 using Omnipaste.Framework;
+using Omnipaste.OmniClipboard.Infrastructure;
 using Omnipaste.Services.Connectivity;
 
 namespace Omnipaste

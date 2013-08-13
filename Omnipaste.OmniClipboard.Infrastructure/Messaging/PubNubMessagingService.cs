@@ -1,12 +1,13 @@
-﻿namespace PubNubClipboard.Messaging
-{
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Threading;
-    using Newtonsoft.Json;
-    using PubNubWrapper;
+﻿using System;
+using System.Collections;
+using System.IO;
+using System.Threading;
+using Newtonsoft.Json;
+using Omnipaste.OmniClipboard.Core.Messaging;
+using PubNubWrapper;
 
+namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
+{
     public class PubNubMessagingService : IMessagingService
     {
         private readonly IPubNubClientFactory _clientFactory;

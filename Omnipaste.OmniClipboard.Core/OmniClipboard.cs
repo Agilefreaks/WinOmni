@@ -1,14 +1,13 @@
-﻿using PubNubClipboard.Api;
-using PubNubClipboard.Messaging;
+﻿using System.Threading.Tasks;
+using Common.Logging;
+using Common.Logging.Simple;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
+using Omnipaste.OmniClipboard.Core.Api;
+using Omnipaste.OmniClipboard.Core.Messaging;
 
-namespace PubNubClipboard
+namespace Omnipaste.OmniClipboard.Core
 {
-    using System.Threading.Tasks;
-    using Common.Logging;
-    using Common.Logging.Simple;
-    using OmniCommon.Interfaces;
-    using OmniCommon.Services;
-
     public class OmniClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
     {
         private readonly IConfigurationService _configurationService;

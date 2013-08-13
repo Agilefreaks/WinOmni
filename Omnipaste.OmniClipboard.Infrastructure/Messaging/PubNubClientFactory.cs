@@ -1,7 +1,7 @@
-﻿namespace PubNubClipboard
-{
-    using PubNubWrapper;
+﻿using PubNubWrapper;
 
+namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
+{
     public class PubNubClientFactory : IPubNubClientFactory
     {        
         private const string PublishKey = "pub-c-f6c56076-b928-407d-8e27-462dbf25e722";

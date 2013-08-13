@@ -1,4 +1,4 @@
-﻿namespace PubNubClipboard.Api
+﻿namespace Omnipaste.OmniClipboard.Core.Api
 {
     public interface ISaveClippingCompleteHandler
     {

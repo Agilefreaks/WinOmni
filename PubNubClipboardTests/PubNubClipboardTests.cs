@@ -1,4 +1,7 @@
-﻿using PubNubClipboard;
+﻿using Omnipaste.OmniClipboard.Core;
+using Omnipaste.OmniClipboard.Core.Api;
+using Omnipaste.OmniClipboard.Core.Messaging;
+using PubNubClipboard;
 
 namespace PubNubClipboardTests
 {
@@ -10,8 +13,6 @@ namespace PubNubClipboardTests
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
-    using PubNubClipboard.Api;
-    using PubNubClipboard.Messaging;
 
     [TestFixture]
     public class PubNubClipboardTests

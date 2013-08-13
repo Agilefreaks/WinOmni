@@ -1,4 +1,4 @@
-﻿namespace PubNubClipboard.Messaging
+﻿namespace Omnipaste.OmniClipboard.Core.Messaging
 {
     public interface IMessagingService
     {
