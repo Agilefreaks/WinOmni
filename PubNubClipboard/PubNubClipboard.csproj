@@ -53,6 +53,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.0.2-unstable-9\lib\net35\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net35-client\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -68,7 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ISaveClippingCompleteHandler.cs" />
     <Compile Include="InvalidMessageException.cs" />
+    <Compile Include="Api\IOmniApi.cs" />
+    <Compile Include="Api\OmniApi.cs" />
     <Compile Include="PubNubClipboardModule.cs" />
     <Compile Include="IPubNubClipboard.cs" />
     <Compile Include="IPubNubClientFactory.cs" />

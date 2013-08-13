@@ -10,6 +10,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
     using PubNubClipboard;
+    using PubNubClipboard.Api;
     using PubNubWrapper;
     using PubNubClipboard = PubNubClipboard.PubNubClipboard;
 
@@ -25,6 +26,8 @@
 
         private Mock<ILog> _mockLogger;
 
+        private Mock<IOmniApi> _mockOmniApi;
+
         [SetUp]
         public void Setup()
         {
@@ -35,7 +38,8 @@
             _mockClient = new Mock<IPubNubClient>();
             _mockPubNubClientFactory.Setup(x => x.Create()).Returns(_mockClient.Object);
             _mockLogger = new Mock<ILog>();
-            _subject = new PubNubClipboard(_mockConfigurationService.Object, _mockPubNubClientFactory.Object)
+            _mockOmniApi = new Mock<IOmniApi>();
+            _subject = new PubNubClipboard(_mockConfigurationService.Object, _mockOmniApi.Object, _mockPubNubClientFactory.Object)
                            {
                                Logger = _mockLogger.Object
                            };
@@ -100,31 +104,23 @@
         }
 
         [Test]
-        public void PutData_MessageLengthGreaterThanMaximumMessageLength_ShouldLogAInvalidMessage()
-        {
-            _subject.PutData(new string('a', PubNubClipboard.PubnubMaximumMessageSize + 1));
-
-            _mockLogger.Verify(x => x.Info(InvalidMessageException.DefaultMessage));
-        }
-
-        [Test]
-        public void PutData_MessageLengthEqualToMaximumMessageLength_ShouldNotLogAInvalidMessage()
+        public void PutData_Always_CallsApiSaveClippingAsync()
         {
             InitializeMockClient();
 
-            _subject.PutData(new string('a', PubNubClipboard.PubnubMaximumMessageSize));
+            _subject.PutData("data");
 
-            _mockLogger.Verify(x => x.Info(InvalidMessageException.DefaultMessage), Times.Never());
+            _mockOmniApi.Verify(m => m.SaveClippingAsync("data", _subject));
         }
 
         [Test]
-        public void PutData_MessageLengthLessThanMaximumMessageLength_ShouldNotLogAInvalidMessage()
+        public void SaveClippingSucceeded_Always_CallsPubNubPublishWithNewMessage()
         {
             InitializeMockClient();
 
-            _subject.PutData(new string('a', PubNubClipboard.PubnubMaximumMessageSize - 1));
+            _subject.SaveClippingSucceeded();
 
-            _mockLogger.Verify(x => x.Info(InvalidMessageException.DefaultMessage), Times.Never());
+            _mockClient.Verify(m => m.Publish(It.IsAny<string>(), "NewMessage", It.IsAny<Action<object>>()));
         }
 
         private void InitializeMockClient()

@@ -27,7 +27,7 @@
         {
             _subject.Execute();
 
-            _mockConfigurationService.Verify(x => x.LoadCommunicationSettings());
+            _mockConfigurationService.Verify(x => x.Initialize());
         }
 
         [Test]
