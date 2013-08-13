@@ -14,7 +14,7 @@ namespace PubNubClipboard
     using OmniCommon.Services;
     using PubNubWrapper;
 
-    public class PubNubClipboard : ClipboardBase, IPubNubClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler
+    public class PubNubClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler
     {
         private readonly IConfigurationService _configurationService;
         private readonly IOmniApi _omniApi;

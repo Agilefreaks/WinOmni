@@ -77,7 +77,6 @@
     <Compile Include="Api\IOmniApi.cs" />
     <Compile Include="Api\OmniApi.cs" />
     <Compile Include="PubNubClipboardModule.cs" />
-    <Compile Include="IPubNubClipboard.cs" />
     <Compile Include="IPubNubClientFactory.cs" />
     <Compile Include="PubNubClientFactory.cs" />
     <Compile Include="PubNubClipboard.cs" />
