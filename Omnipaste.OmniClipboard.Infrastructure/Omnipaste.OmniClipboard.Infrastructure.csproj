@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Clipping.cs" />
     <Compile Include="Api\OmniApi.cs" />
     <Compile Include="Messaging\IPubNubClient.cs" />
     <Compile Include="Messaging\IPubNubClientFactory.cs" />
