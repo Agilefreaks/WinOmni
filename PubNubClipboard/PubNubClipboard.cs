@@ -1,9 +1,10 @@
-﻿namespace PubNubClipboard
+﻿using PubNubClipboard.Api;
+
+namespace PubNubClipboard
 {
     using System;
     using System.Collections;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Common.Logging;
@@ -13,11 +14,10 @@
     using OmniCommon.Services;
     using PubNubWrapper;
 
-    public class PubNubClipboard : ClipboardBase, IPubNubClipboard
+    public class PubNubClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler
     {
-        public const int PubnubMaximumMessageSize = 1794;
-
         private readonly IConfigurationService _configurationService;
+        private readonly IOmniApi _omniApi;
         private readonly IPubNubClientFactory _clientFactory;
         private IPubNubClient _pubnub;
         private Task<bool> _initializationTask;
@@ -42,9 +42,10 @@
             }
         }
 
-        public PubNubClipboard(IConfigurationService configurationService, IPubNubClientFactory clientFactory)
+        public PubNubClipboard(IConfigurationService configurationService, IOmniApi omniApi, IPubNubClientFactory clientFactory)
         {
             _configurationService = configurationService;
+            _omniApi = omniApi;
             _clientFactory = clientFactory;
         }
 
@@ -71,14 +72,7 @@
 
         public override void PutData(string data)
         {
-            if (data.Length > PubnubMaximumMessageSize)
-            {
-                Logger.Info(new InvalidMessageException().Message);
-            }
-            else
-            {
-                _pubnub.Publish(Channel, data, PutDataCallback);
-            }
+            _omniApi.SaveClippingAsync(data, this);
         }
 
         private static string[] GetDataEntries(string receivedMessage)
@@ -138,16 +132,26 @@
 
         private void HandleMessageReceived(string receivedMessage)
         {
-            var dataEntries = GetDataEntries(receivedMessage);
-            if (dataEntries != null && dataEntries.Any())
-            {
-                OnDataReceived(new ClipboardData(this, dataEntries[0]));
-            }
+            _omniApi.GetLastClippingAsync(this);
         }
 
         private void LogCallbackMessage(string message)
         {
             Logger.Info(message);
+        }
+
+        public void SaveClippingSucceeded()
+        {
+            _pubnub.Publish(Channel, "NewMessage", PutDataCallback);
+        }
+
+        public void SaveClippingFailed()
+        {
+        }
+
+        public void HandleClipping(string clip)
+        {
+            OnDataReceived(new ClipboardData(this, clip));
         }
     }
 }
