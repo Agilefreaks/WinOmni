@@ -10,7 +10,6 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
     public class OmniApi : IOmniApi
     {
         private readonly IList<ISaveClippingCompleteHandler> _saveClippingListeners;
-
         private readonly ApiConfig _apiConfig;
         private readonly CommunicationSettings _communicationSettings;
 
@@ -44,17 +43,10 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         public void GetLastClippingAsync(IGetClippingCompleteHandler handler)
         {
             var client = new RestClient(_apiConfig.BaseUrl);
-            var restRequest = new RestRequest(_apiConfig.Resources.Clippings);
-            restRequest.AddHeader("token", _communicationSettings.Channel);
-            client.ExecuteAsyncGet(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler), "GET");
-        }
-
-        private void HandleGetClippingCompleted(IRestResponse response, IGetClippingCompleteHandler handler)
-        {
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                handler.HandleClipping(response.Content);
-            }
+            
+            var restRequest = new RestRequest(string.Format("{0}/{1}/last", _apiConfig.Resources.Clippings, _communicationSettings.Channel), Method.GET);
+            
+            client.ExecuteAsyncGet<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler), "GET");
         }
 
         private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)
@@ -66,6 +58,14 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
             else
             {
                 handler.SaveClippingFailed(response.Content);
+            }
+        }
+
+        private void HandleGetClippingCompleted(IRestResponse<Clipping> response, IGetClippingCompleteHandler handler)
+        {
+            if (response.StatusCode == HttpStatusCode.OK && response.Data != null)
+            {
+                handler.HandleClipping(response.Data.Content);
             }
         }
     }
