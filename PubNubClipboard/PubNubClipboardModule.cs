@@ -9,7 +9,7 @@ namespace PubNubClipboard
     {
         public override void Load()
         {
-            Kernel.Bind<IOmniClipboard>().To<PubNubClipboard>().InSingletonScope();
+            Kernel.Bind<IOmniClipboard>().To<OmniClipboard>().InSingletonScope();
             Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>().InSingletonScope();
             Kernel.Bind<IOmniApi>().To<OmniApi>().InSingletonScope();
             Kernel.Bind<IMessagingService>().To<PubNubMessagingService>();

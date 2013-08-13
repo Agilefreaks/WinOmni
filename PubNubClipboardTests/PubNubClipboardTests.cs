@@ -1,4 +1,6 @@
-﻿namespace PubNubClipboardTests
+﻿using PubNubClipboard;
+
+namespace PubNubClipboardTests
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -10,14 +12,13 @@
     using OmniCommon.Services;
     using PubNubClipboard.Api;
     using PubNubClipboard.Messaging;
-    using PubNubClipboard = PubNubClipboard.PubNubClipboard;
 
     [TestFixture]
     public class PubNubClipboardTests
     {
         private Mock<IConfigurationService> _mockConfigurationService;
 
-        private PubNubClipboard _subject;
+        private OmniClipboard _subject;
 
         private Mock<ILog> _mockLogger;
 
@@ -34,7 +35,7 @@
             _mockLogger = new Mock<ILog>();
             _mockOmniApi = new Mock<IOmniApi>();
             _mockMessagingService = new Mock<IMessagingService>();
-            _subject = new PubNubClipboard(_mockConfigurationService.Object, _mockOmniApi.Object, _mockMessagingService.Object)
+            _subject = new OmniClipboard(_mockConfigurationService.Object, _mockOmniApi.Object, _mockMessagingService.Object)
                            {
                                Logger = _mockLogger.Object
                            };

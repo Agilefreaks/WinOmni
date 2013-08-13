@@ -9,7 +9,7 @@ namespace PubNubClipboard
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
 
-    public class PubNubClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
+    public class OmniClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
     {
         private readonly IConfigurationService _configurationService;
         private readonly IOmniApi _omniApi;
@@ -32,7 +32,7 @@ namespace PubNubClipboard
             }
         }
 
-        public PubNubClipboard(IConfigurationService configurationService, IOmniApi omniApi, IMessagingService messagingService)
+        public OmniClipboard(IConfigurationService configurationService, IOmniApi omniApi, IMessagingService messagingService)
         {
             _configurationService = configurationService;
             _omniApi = omniApi;
