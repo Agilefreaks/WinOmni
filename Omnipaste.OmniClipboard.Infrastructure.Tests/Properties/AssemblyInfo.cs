@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OmniclipboardTests")]
+[assembly: AssemblyTitle("Omnipaste.OmniClipboard.Infrastructure.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("OmniclipboardTests")]
+[assembly: AssemblyProduct("Omnipaste.OmniClipboard.Infrastructure.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("11083f13-8408-44cc-8388-20c326e2555a")]
+[assembly: Guid("958a1b63-b087-468d-9af8-de21e9e42300")]
 
 // Version information for an assembly consists of the following four values:
 //

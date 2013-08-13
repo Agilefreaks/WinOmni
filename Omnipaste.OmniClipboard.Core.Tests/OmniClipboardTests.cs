@@ -1,18 +1,16 @@
-﻿using Omnipaste.OmniClipboard.Core;
-using Omnipaste.OmniClipboard.Core.Api;
+﻿using Omnipaste.OmniClipboard.Core.Api;
 using Omnipaste.OmniClipboard.Core.Messaging;
+using System.Threading;
+using System.Threading.Tasks;
+using Common.Logging;
+using FluentAssertions;
+using Moq;
+using NUnit.Framework;
+using OmniCommon.Interfaces;
+using OmniCommon.Services;
 
-namespace PubNubClipboardTests
+namespace Omnipaste.OmniClipboard.Core.Tests
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Common.Logging;
-    using FluentAssertions;
-    using Moq;
-    using NUnit.Framework;
-    using OmniCommon.Interfaces;
-    using OmniCommon.Services;
-
     [TestFixture]
     public class PubNubClipboardTests
     {

@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Omnipaste.OmniClipboard.Core.Messaging;
 using Omnipaste.OmniClipboard.Infrastructure.Messaging;
 
-namespace PubNubClipboardTests.Messaging
+namespace Omnipaste.OmniClipboard.Infrastructure.Tests.Messaging
 {
     [TestFixture]
     public class PubNubMessagingServiceTests
