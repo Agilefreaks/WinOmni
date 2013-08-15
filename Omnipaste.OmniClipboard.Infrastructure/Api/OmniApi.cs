@@ -32,8 +32,9 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         {
             var client = new RestClient(_apiConfig.BaseUrl);
             
-            var restRequest = new RestRequest(string.Format("{0}/{1}/last", _apiConfig.Resources.Clippings, _communicationSettings.Channel), Method.GET);
+            var restRequest = new RestRequest(_apiConfig.Resources.Clippings, Method.GET);
             restRequest.RequestFormat = DataFormat.Json;
+            restRequest.AddHeader("Channel", _communicationSettings.Channel);
 
             client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
         }
