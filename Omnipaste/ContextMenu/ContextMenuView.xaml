@@ -9,7 +9,7 @@
     
     <UserControl.Resources>
         <CollectionViewSource x:Key="dynamicItems" Source="{Binding Path=History.Clippings}" />
-        <TextBlock x:Key="channel" Text="{Binding Path=Channel}"/>
+        <TextBlock x:Key="Channel" Text="{Binding Path=Channel}"/>
     </UserControl.Resources>
 
     <Grid>
@@ -23,11 +23,11 @@
                         <CompositeCollection>
                             <CollectionContainer Collection="{Binding Source={StaticResource dynamicItems}}" />
                             <Separator/>
-                            <MenuItem Header="{Binding Source={StaticResource channel}}" />
+                            <MenuItem Header="{Binding Source={StaticResource Channel}}" />
                             <Separator />
-                            <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=DataContext.AutoStart, ElementName=LayoutRoot}" />
+                            <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
                             <Separator />
-                            <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=DataContext.IsNotSyncing, ElementName=LayoutRoot}" />
+                            <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsNotSyncing}" />
                             <MenuItem Header="Exit" cal:Message.Attach="Exit" />
                         </CompositeCollection>
                     </ContextMenu.ItemsSource>
