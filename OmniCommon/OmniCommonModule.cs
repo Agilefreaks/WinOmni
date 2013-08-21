@@ -4,7 +4,6 @@ using OmniCommon.Services;
 
 namespace OmniCommon
 {
-    using OmniCommon.DataProviders;
     using OmniCommon.Services.ActivationServiceData;
 
     public class OmniCommonModule : NinjectModule
@@ -16,6 +15,7 @@ namespace OmniCommon
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
             Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
+            Kernel.Bind<IClippingRepository>().To<InMemoryClippingRepository>().InSingletonScope();
         }
     }
 }
