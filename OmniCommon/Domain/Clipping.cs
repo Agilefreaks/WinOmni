@@ -8,6 +8,10 @@
 
         public string Content { get; set; }
 
+        public Clipping()
+        {
+        }
+
         public Clipping(string content)
         {
             Content = content;

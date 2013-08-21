@@ -14,5 +14,9 @@
 
         [Inject]
         IContextMenuViewModel ContextMenuViewModel { get; set; }
+
+        void Hide();
+
+        void Show();
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:dataProviders="clr-namespace:Omnipaste"
+             Width="300" Height="300"
              xmlns:behaviors="clr-namespace:Omnipaste.Framework.Behaviours">
 
     <DockPanel>

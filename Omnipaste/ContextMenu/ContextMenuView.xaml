@@ -8,8 +8,9 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="dynamicItems" Source="{Binding Path=History.Clippings}" />
+        <CollectionViewSource x:Key="dynamicItems" Source="{Binding Path=History.RecentClippings}" />
         <TextBlock x:Key="Channel" Text="{Binding Path=Channel}"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -22,6 +23,7 @@
                     <ContextMenu.ItemsSource>
                         <CompositeCollection>
                             <CollectionContainer Collection="{Binding Source={StaticResource dynamicItems}}" />
+                            <MenuItem Header="More..." cal:Message.Attach="ShowClippings" Visibility="{Binding Path=History.HasClippings, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <Separator/>
                             <MenuItem Header="{Binding Source={StaticResource Channel}}" />
                             <Separator />

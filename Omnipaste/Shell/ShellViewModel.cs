@@ -52,11 +52,7 @@
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
 
-            if (_view != null)
-            {
-                _view.Visibility = Visibility.Hidden;
-                _view.ShowInTaskbar = false;
-            }
+            Hide();
         }
 
         public IntPtr GetHandle()
@@ -69,6 +65,24 @@
                 });
             
             return handle;
+        }
+
+        public void Hide()
+        {
+            if (_view != null)
+            {
+                _view.Visibility = Visibility.Hidden;
+                _view.ShowInTaskbar = false;
+            }
+        }
+
+        public void Show()
+        {
+            if (_view != null)
+            {
+                _view.Visibility = Visibility.Visible;
+                _view.ShowInTaskbar = true;
+            }
         }
 
         protected override void OnViewLoaded(object view)

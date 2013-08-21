@@ -1,4 +1,8 @@
-﻿namespace Omnipaste.History
+﻿using System.Collections.Specialized;
+using System.Linq;
+using OmniCommon.Domain;
+
+namespace Omnipaste.History
 {
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
@@ -6,9 +10,38 @@
 
     public class HistoryViewModel : Screen, IHistoryViewModel
     {
-        private ObservableCollection<string> _clippings;
+        public IClippingRepository ClippingRepository { get; set; }
+        private ObservableCollection<string> _recentClippings;
+        private Clipping _selectedClipping;
+        private ObservableCollection<Clipping> _clippings;
 
-        public ObservableCollection<string> Clippings
+        public ObservableCollection<string> RecentClippings
+        {
+            get
+            {
+                return _recentClippings;
+            }
+
+            set
+            {
+                if (_recentClippings != null)
+                {
+                    _recentClippings.CollectionChanged -= OnRecentClippingsChanged;
+                }
+
+                _recentClippings = value;
+
+                if (_recentClippings != null)
+                {
+                    _recentClippings.CollectionChanged += OnRecentClippingsChanged;
+                }
+
+                NotifyOfPropertyChange(() => Clippings);
+                NotifyOfPropertyChange(() => HasClippings);
+            }
+        }
+
+        public ObservableCollection<Clipping> Clippings
         {
             get
             {
@@ -19,23 +52,58 @@
             {
                 _clippings = value;
                 NotifyOfPropertyChange(() => Clippings);
+                NotifyOfPropertyChange(() => HasClippings);
             }
         }
 
-        public HistoryViewModel(IEventAggregator eventAggregator)
+        public bool HasClippings
         {
-            _clippings = new ObservableCollection<string>();
+            get { return RecentClippings != null && RecentClippings.Any(); }
+        }
+
+        public Clipping SelectedClipping
+        {
+            get
+            {
+                return _selectedClipping;
+            }
+
+            set
+            {
+                _selectedClipping = value;
+                NotifyOfPropertyChange(() => SelectedClipping);
+            }
+        }
+
+        public HistoryViewModel(IClippingRepository clippingRepository, IEventAggregator eventAggregator)
+        {
+            ClippingRepository = clippingRepository;
+            RecentClippings = new ObservableCollection<string>();
             eventAggregator.Subscribe(this);
         }
 
         public void Handle(IClipboardData message)
         {
-            while (_clippings.Count > 4)
+            while (_recentClippings.Count > 4)
             {
-                _clippings.RemoveAt(4);
+                _recentClippings.RemoveAt(4);
             }
 
-            Clippings.Insert(0, message.GetData());
+            RecentClippings.Insert(0, message.GetData());
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            Clippings = new ObservableCollection<Clipping>(ClippingRepository.GetAll());
+        }
+
+        public void OnRecentClippingsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Clippings = new ObservableCollection<Clipping>(ClippingRepository.GetAll());
+
+            NotifyOfPropertyChange(() => HasClippings);
         }
     }
 }

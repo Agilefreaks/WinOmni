@@ -7,6 +7,6 @@
 
     public interface IHistoryViewModel : IWorkspace, IHandle<IClipboardData>
     {
-        ObservableCollection<string> Clippings { get; }
+        ObservableCollection<string> RecentClippings { get; }
     }
 }
