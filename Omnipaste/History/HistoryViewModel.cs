@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.Micro;
-using OmniCommon.Interfaces;
-
-namespace Omnipaste.History
+﻿namespace Omnipaste.History
 {
+    using System.Collections.ObjectModel;
+    using Caliburn.Micro;
+    using OmniCommon.Interfaces;
+
     public class HistoryViewModel : Screen, IHistoryViewModel
     {
         private ObservableCollection<string> _clippings;

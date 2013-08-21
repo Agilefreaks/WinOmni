@@ -89,6 +89,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\TransitionIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
+    <Compile Include="Services\InMemoryClippingRepositoryTests.cs" />
     <Compile Include="Services\OmniServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

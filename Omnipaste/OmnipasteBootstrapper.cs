@@ -1,9 +1,4 @@
-﻿using OmniCommon.Interfaces;
-using Omnipaste.Framework;
-using Omnipaste.OmniClipboard.Infrastructure;
-using Omnipaste.Services.Connectivity;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +9,10 @@ namespace Omnipaste
     using OmniCommon;
     using Omnipaste.Shell;
     using WindowsClipboard;
+    using OmniCommon.Interfaces;
+    using Omnipaste.Framework;
+    using Omnipaste.OmniClipboard.Infrastructure;
+    using Omnipaste.Services.Connectivity;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
     {

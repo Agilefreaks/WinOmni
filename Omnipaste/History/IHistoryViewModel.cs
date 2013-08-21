@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.Micro;
-using OmniCommon.Interfaces;
-using Omnipaste.Framework;
-
-namespace Omnipaste.History
+﻿namespace Omnipaste.History
 {
+    using System.Collections.ObjectModel;
+    using Caliburn.Micro;
+    using OmniCommon.Interfaces;
+    using Omnipaste.Framework;
+
     public interface IHistoryViewModel : IWorkspace, IHandle<IClipboardData>
     {
         ObservableCollection<string> Clippings { get; }

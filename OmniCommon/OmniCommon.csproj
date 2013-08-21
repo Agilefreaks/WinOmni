@@ -67,6 +67,8 @@
     <Compile Include="DataProviders\IAppConfigurationProvider.cs" />
     <Compile Include="EventAggregatorMessages\StartOmniServiceMessage.cs" />
     <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
+    <Compile Include="Domain\Clipping.cs" />
+    <Compile Include="Interfaces\IClippingRepository.cs" />
     <Compile Include="OmniCommonModule.cs" />
     <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Interfaces\IActivationService.cs" />
     <Compile Include="Services\ApiConfig.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\InMemoryClippingRepository.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />

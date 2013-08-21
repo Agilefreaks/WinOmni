@@ -5,6 +5,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Domain;
 
     public class OmniService : IOmniService
     {
@@ -15,6 +16,8 @@
         public ILocalClipboard LocalClipboard { get; private set; }
 
         public IOmniClipboard OmniClipboard { get; private set; }
+
+        public IClippingRepository ClippingRepository { get; private set; }
 
         public IEventAggregator EventAggregator { get; private set; }
 
@@ -32,14 +35,13 @@
             }
         }
 
-        protected string LastReceivedData { get; set; }
+        protected string LastData { get; set; }
 
-        protected string LastSentData { get; set; }
-
-        public OmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard, IEventAggregator eventAggregator)
+        public OmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard, IClippingRepository clippingRepository, IEventAggregator eventAggregator)
         {
             LocalClipboard = localClipboard;
             OmniClipboard = omniClipboard;
+            ClippingRepository = clippingRepository;
             EventAggregator = eventAggregator;
         }
 
@@ -77,41 +79,34 @@
         {
             var sender = clipboardData.GetSender();
             var previousStatus = Status;
+
             if (sender == LocalClipboard)
             {
-                if (!HasPreviouslySent(clipboardData, LastSentData))
-                {
-                    Status = OmniServiceStatusEnum.Sending;
-                    LastSentData = ProcessClipboardEvent(clipboardData, LastReceivedData, OmniClipboard);
-                }
+                Status = OmniServiceStatusEnum.Sending;
+                ProcessClipboardEvent(clipboardData, LastData, OmniClipboard);
             }
             else
             {
                 Status = OmniServiceStatusEnum.Receiving;
-                LastReceivedData = ProcessClipboardEvent(clipboardData, LastSentData, LocalClipboard);
+                ProcessClipboardEvent(clipboardData, LastData, LocalClipboard);
             }
 
             Status = previousStatus;
         }
 
-        private string ProcessClipboardEvent(IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
+        private void ProcessClipboardEvent(IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
         {
-            string sentData = null;
             var data = clipboardData.GetData();
             if (!data.Equals(oldData) && !data.IsNullOrWhiteSpace())
             {
+                LastData = clipboardData.GetData();
+
                 clipboardToSendTo.PutData(data);
-                sentData = data;
 
                 EventAggregator.Publish(clipboardData);
+
+                ClippingRepository.Save(new Clipping(data));
             }
-
-            return sentData;
-        }
-
-        private bool HasPreviouslySent(IClipboardData newData, string oldData)
-        {
-            return Equals(newData.GetData(), oldData);
         }
     }
 }

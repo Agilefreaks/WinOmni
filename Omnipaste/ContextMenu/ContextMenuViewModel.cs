@@ -1,4 +1,5 @@
-﻿using Omnipaste.History;
+﻿using OmniCommon.EventAggregatorMessages;
+using Omnipaste.History;
 
 namespace Omnipaste.ContextMenu
 {
