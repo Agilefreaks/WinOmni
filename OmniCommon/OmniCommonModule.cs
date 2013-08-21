@@ -1,9 +1,8 @@
-﻿using Ninject.Modules;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-
-namespace OmniCommon
+﻿namespace OmniCommon
 {
+    using Ninject.Modules;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
     using OmniCommon.Services.ActivationServiceData;
 
     public class OmniCommonModule : NinjectModule
@@ -16,6 +15,7 @@ namespace OmniCommon
             Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
             Kernel.Bind<IClippingRepository>().To<InMemoryClippingRepository>().InSingletonScope();
+            Kernel.Bind<IDateTimeService>().To<DateTimeService>().InSingletonScope();
         }
     }
 }
