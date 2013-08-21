@@ -77,36 +77,39 @@
 
         public void DataReceived(IClipboardData clipboardData)
         {
-            var sender = clipboardData.GetSender();
+            var data = clipboardData.GetData();
+            if (!IsNewData(data))
+            {
+                return;
+            }
+
             var previousStatus = Status;
 
-            if (sender == LocalClipboard)
-            {
-                Status = OmniServiceStatusEnum.Sending;
-                ProcessClipboardEvent(clipboardData, LastData, OmniClipboard);
-            }
-            else
-            {
-                Status = OmniServiceStatusEnum.Receiving;
-                ProcessClipboardEvent(clipboardData, LastData, LocalClipboard);
-            }
+            var sender = clipboardData.GetSender();
+            Status = sender == LocalClipboard ? OmniServiceStatusEnum.Sending : OmniServiceStatusEnum.Receiving;
+
+            // asign before calling PutData to avoid cycling
+            LastData = data;
+
+            GetDestinationClipboard(clipboardData).PutData(data);
+
+            EventAggregator.Publish(clipboardData);
+
+            ClippingRepository.Save(new Clipping(data));
 
             Status = previousStatus;
         }
 
-        private void ProcessClipboardEvent(IClipboardData clipboardData, string oldData, IClipboard clipboardToSendTo)
+        private IClipboard GetDestinationClipboard(IClipboardData clipboardData)
         {
-            var data = clipboardData.GetData();
-            if (!data.Equals(oldData) && !data.IsNullOrWhiteSpace())
-            {
-                LastData = clipboardData.GetData();
+            return clipboardData.GetSender() == LocalClipboard
+                       ? (IClipboard) OmniClipboard
+                       : LocalClipboard;
+        }
 
-                clipboardToSendTo.PutData(data);
-
-                EventAggregator.Publish(clipboardData);
-
-                ClippingRepository.Save(new Clipping(data));
-            }
+        private bool IsNewData(string data)
+        {
+            return !data.Equals(LastData) && !data.IsNullOrWhiteSpace();
         }
     }
 }
