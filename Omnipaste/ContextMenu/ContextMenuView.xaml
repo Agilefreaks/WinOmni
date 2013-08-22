@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:taskbarNotification="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <UserControl.Resources>
+        <converters:CropStringConverter x:Key="CropStringConverter"/>
         <CollectionViewSource x:Key="dynamicItems" Source="{Binding Path=History.RecentClippings}" />
         <TextBlock x:Key="Channel" Text="{Binding Path=Channel}"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -33,6 +35,11 @@
                             <MenuItem Header="Exit" cal:Message.Attach="Exit" />
                         </CompositeCollection>
                     </ContextMenu.ItemsSource>
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource CropStringConverter}}"/>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
                 </ContextMenu>
             </taskbarNotification:TaskbarIcon.ContextMenu>
         </taskbarNotification:TaskbarIcon>

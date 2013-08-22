@@ -2,10 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Width="600" Height="600"
              mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="600">
 
+    <UserControl.Resources>
+        <converters:CropStringConverter x:Key="CropStringConverter"/>
+    </UserControl.Resources>
+    
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -25,14 +31,25 @@
         <ListBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=Clippings}" SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" Background="White">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Path=Content}"/>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <Binding Path="Content">
+                                <Binding.Converter>
+                                    <converters:CropStringConverter />
+                                </Binding.Converter>
+                                <Binding.ConverterParameter>
+                                    <sys:Int32>50</sys:Int32>
+                                </Binding.ConverterParameter>
+                            </Binding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Full Text"/>
-        
-        <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Path=SelectedClipping.Content}" IsEnabled="False" Background="LightGray" />
+
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=SelectedClipping.Content}" IsReadOnly="True" Background="LightGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
     </Grid>
     
 </UserControl>

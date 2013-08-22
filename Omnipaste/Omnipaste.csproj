@@ -161,6 +161,7 @@
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
+    <Compile Include="Framework\Converters\CropStringConverter.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />
     <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
     <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
