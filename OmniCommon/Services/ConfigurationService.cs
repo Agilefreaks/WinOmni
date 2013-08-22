@@ -6,16 +6,12 @@
     public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
-        private readonly IAppConfigurationProvider _appConfigurationProvider;
-
+        
         public CommunicationSettings CommunicationSettings { get; private set; }
         
-        public ApiConfig ApiConfig { get; set; }
-
-        public ConfigurationService(IConfigurationProvider configurationProvider, IAppConfigurationProvider appConfigurationProvider)
+        public ConfigurationService(IConfigurationProvider configurationProvider)
         {
             _configurationProvider = configurationProvider;
-            _appConfigurationProvider = appConfigurationProvider;
         }
 
         public void UpdateCommunicationChannel(string channel)
@@ -29,15 +25,6 @@
             CommunicationSettings = new CommunicationSettings
                 {
                     Channel = _configurationProvider.GetValue("channel")
-                };
-
-            ApiConfig = new ApiConfig
-                {
-                    BaseUrl = _appConfigurationProvider.GetValue("apiUrl"),
-                    Resources = new Resources
-                        {
-                            Clippings = _appConfigurationProvider.GetValue("clippingResource")
-                        }
                 };
         }
 
