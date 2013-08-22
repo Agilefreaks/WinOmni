@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
+using Omnipaste.History;
 
 namespace Omnipaste.Shell
 {
@@ -27,6 +29,9 @@ namespace Omnipaste.Shell
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
+
+        [Inject]
+        public IHistoryViewModel HistoryViewModel { get; set; }
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
 
@@ -106,6 +111,14 @@ namespace Omnipaste.Shell
         {
             eventArgs.Cancel = true;
             Hide();
+        }
+
+        public void OnKeyReleased(KeyEventArgs eventArgs)
+        {
+            if (eventArgs.Key == Key.Escape)
+            {
+                Hide();
+            }
         }
     }
 }

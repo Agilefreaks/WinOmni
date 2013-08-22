@@ -16,11 +16,6 @@
             : base(omniService, eventAggregator)
         {
         }
-
-        public void InvokeOnActivate()
-        {
-            base.OnActivate();
-        }
     }
 
     [TestFixture]
@@ -52,14 +47,29 @@
         }
 
         [Test]
+        public void Ctor_Always_SetsClippingsFromOmniService()
+        {
+            var clipping1 = new Clipping();
+            var clipping2 = new Clipping();
+            _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping> { clipping1, clipping2 });
+
+            var subject = new HistoryViewModel(_mockOmniService.Object, _mockEventAggregator.Object);
+
+            subject.Clippings.Should().Contain(clipping1);
+            subject.Clippings.Should().Contain(clipping2);
+        }
+
+        [Test]
         public void HandleWithClipboardData_WhenClippingsHasLessThan5Elements_AddsClippingsToList()
         {
             var mockClipboardData = new Mock<IClipboardData>();
             mockClipboardData.Setup(m => m.GetData()).Returns("test");
+            var clipping = new Clipping("test");
+            _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping> { clipping });
 
             _subject.Handle(mockClipboardData.Object);
 
-            _subject.RecentClippings.Should().Contain("test");
+            _subject.RecentClippings.Should().Contain(clipping);
         }
 
         [Test]
@@ -75,19 +85,6 @@
             _subject.Handle(new ClipboardData(null, "6"));
 
             _subject.RecentClippings.Should().NotContain(firstClipboardData);
-        }
-
-        [Test]
-        public void OnActivate_Always_SetsClippingsFromRepository()
-        {
-            var clipping1 = new Clipping();
-            var clipping2 = new Clipping();
-            _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping> { clipping1, clipping2 });
-
-            _subject.InvokeOnActivate();
-
-            _subject.Clippings.Should().Contain(clipping1);
-            _subject.Clippings.Should().Contain(clipping2);
         }
 
         [Test]

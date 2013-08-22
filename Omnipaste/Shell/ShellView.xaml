@@ -5,8 +5,9 @@
         Width="{Binding Path=Content.Width, ElementName=ActiveItem}"
         Height="{Binding Path=Content.Height, ElementName=ActiveItem}"
         WindowStartupLocation="CenterScreen"
-        cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]"
-        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico">
+        cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]; [Event KeyUp] = [Action OnKeyReleased($eventArgs)]"
+        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico"
+        >
     
     <Grid Style="{StaticResource ShellGrid}">
         <ContentControl x:Name="ActiveItem" />

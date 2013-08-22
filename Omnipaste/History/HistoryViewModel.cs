@@ -5,37 +5,18 @@
     using OmniCommon.Interfaces;
     using System.Linq;
     using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
 
     public class HistoryViewModel : Screen, IHistoryViewModel
     {
-        private ObservableCollection<string> _recentClippings;
         private Clipping _selectedClipping;
         private ObservableCollection<Clipping> _clippings;
 
-        public ObservableCollection<string> RecentClippings
+        public ObservableCollection<Clipping> RecentClippings
         {
             get
             {
-                return _recentClippings;
-            }
-
-            set
-            {
-                if (_recentClippings != null)
-                {
-                    _recentClippings.CollectionChanged -= OnRecentClippingsChanged;
-                }
-
-                _recentClippings = value;
-
-                if (_recentClippings != null)
-                {
-                    _recentClippings.CollectionChanged += OnRecentClippingsChanged;
-                }
-
-                NotifyOfPropertyChange(() => Clippings);
-                NotifyOfPropertyChange(() => HasClippings);
+                var last5Clippings = Clippings != null ? Clippings.Take(5) : Enumerable.Empty<Clipping>();
+                return new ObservableCollection<Clipping>(last5Clippings);
             }
         }
 
@@ -78,32 +59,16 @@
         public HistoryViewModel(IOmniService omniService, IEventAggregator eventAggregator)
         {
             OmniService = omniService;
-            RecentClippings = new ObservableCollection<string>();
+            Clippings = new ObservableCollection<Clipping>(OmniService.GetClippings());
             eventAggregator.Subscribe(this);
         }
 
         public void Handle(IClipboardData message)
         {
-            while (_recentClippings.Count > 4)
-            {
-                _recentClippings.RemoveAt(4);
-            }
-
-            RecentClippings.Insert(0, message.GetData());
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-
-            Clippings = new ObservableCollection<Clipping>(OmniService.GetClippings());
-        }
-
-        public void OnRecentClippingsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
             Clippings = new ObservableCollection<Clipping>(OmniService.GetClippings());
 
             NotifyOfPropertyChange(() => HasClippings);
+            NotifyOfPropertyChange(() => RecentClippings);
         }
 
         public void SetSelectedClipping()

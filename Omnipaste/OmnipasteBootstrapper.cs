@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Reflection;
     using Caliburn.Micro;
+    using Omnipaste.History;
     using Ninject;
     using Ninject.Extensions.Conventions;
     using OmniCommon;
@@ -22,7 +23,8 @@
         {
             var singletonViewModelTypes = new List<Type>
                                               {
-                                                  typeof(ShellViewModel)
+                                                  typeof(ShellViewModel),
+                                                  typeof(HistoryViewModel)
                                               };
             _kernel = new StandardKernel();
 

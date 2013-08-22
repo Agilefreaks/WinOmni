@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.History
+﻿using OmniCommon.Domain;
+
+namespace Omnipaste.History
 {
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
@@ -7,6 +9,6 @@
 
     public interface IHistoryViewModel : IWorkspace, IHandle<IClipboardData>
     {
-        ObservableCollection<string> RecentClippings { get; }
+        ObservableCollection<Clipping> RecentClippings { get; }
     }
 }

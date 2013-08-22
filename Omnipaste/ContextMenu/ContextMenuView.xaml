@@ -25,7 +25,7 @@
                     <ContextMenu.ItemsSource>
                         <CompositeCollection>
                             <CollectionContainer Collection="{Binding Source={StaticResource dynamicItems}}" />
-                            <MenuItem Header="More..." cal:Message.Attach="ShowClippings" Visibility="{Binding Path=History.HasClippings, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <MenuItem Header="More..." cal:Message.Attach="ShowClippings" Visibility="{Binding Path=History.HasClippings, Converter={StaticResource BoolToVisibilityConverter}}" />
                             <Separator/>
                             <MenuItem Header="{Binding Source={StaticResource Channel}}" />
                             <Separator />
@@ -37,7 +37,7 @@
                     </ContextMenu.ItemsSource>
                     <ContextMenu.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Converter={StaticResource CropStringConverter}}"/>
+                            <TextBlock Text="{Binding Path=Content, Converter={StaticResource CropStringConverter}}"/>
                         </DataTemplate>
                     </ContextMenu.ItemTemplate>
                 </ContextMenu>
