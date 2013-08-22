@@ -2,6 +2,8 @@
 {
     public class Clipping
     {
+        public const string ResourceKey = "clippings";
+
         public string Token { get; set; }
 
         public string Content { get; set; }

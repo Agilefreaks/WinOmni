@@ -1,38 +1,37 @@
-﻿using System.Net;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using Omnipaste.OmniClipboard.Core.Api;
-using RestSharp;
-
-namespace Omnipaste.OmniClipboard.Infrastructure.Api
+﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api
 {
+    using System.Net;
+    using OmniCommon.Interfaces;
+    using Omnipaste.OmniClipboard.Core.Api;
+    using RestSharp;
+
     public class OmniApi : IOmniApi
     {
-        private readonly ApiConfig _apiConfig;
-        private readonly CommunicationSettings _communicationSettings;
+        private const string ApiUrl = "http://localhost:3000/api/v1";
+
+        private readonly IConfigurationService _configurationService;
 
         public OmniApi(IConfigurationService configurationService)
         {
-            _apiConfig = configurationService.ApiConfig;
-            _communicationSettings = configurationService.CommunicationSettings;
+            _configurationService = configurationService;
         }
 
         public void SaveClippingAsync(string data, ISaveClippingCompleteHandler handler)
         {
-            var client = new RestClient(_apiConfig.BaseUrl);
-            
-            var restRequest = new RestRequest(_apiConfig.Resources.Clippings, Method.POST);
+            var client = new RestClient(ApiUrl);
+
+            var restRequest = new RestRequest(Clipping.ResourceKey, Method.POST);
             restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddBody(new Clipping(_communicationSettings.Channel, data));
+            restRequest.AddBody(new Clipping(_configurationService.CommunicationSettings.Channel, data));
 
             client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
         }
 
         public void GetLastClippingAsync(IGetClippingCompleteHandler handler)
         {
-            var client = new RestClient(_apiConfig.BaseUrl);
-            
-            var restRequest = new RestRequest(string.Format("{0}/{1}/last", _apiConfig.Resources.Clippings, _communicationSettings.Channel), Method.GET);
+            var client = new RestClient(ApiUrl);
+
+            var restRequest = new RestRequest(string.Format("{0}/{1}/last", Clipping.ResourceKey, _configurationService.CommunicationSettings.Channel), Method.GET);
             restRequest.RequestFormat = DataFormat.Json;
 
             client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
