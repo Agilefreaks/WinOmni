@@ -1,9 +1,7 @@
-﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api
+﻿namespace Omnipaste.OmniClipboard.Core.Api.Models
 {
     public class Clipping
     {
-        public const string ResourceKey = "clippings";
-
         public string Token { get; set; }
 
         public string Content { get; set; }

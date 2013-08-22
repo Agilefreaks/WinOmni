@@ -1,18 +1,19 @@
-﻿using Omnipaste.OmniClipboard.Core.Api;
-using Omnipaste.OmniClipboard.Core.Messaging;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Logging;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-
-namespace Omnipaste.OmniClipboard.Core.Tests
+﻿namespace Omnipaste.OmniClipboard.Core.Tests
 {
+    using Omnipaste.OmniClipboard.Core.Api;
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
+    using Omnipaste.OmniClipboard.Core.Messaging;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Common.Logging;
+    using FluentAssertions;
+    using Moq;
+    using NUnit.Framework;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
+
     [TestFixture]
-    public class PubNubClipboardTests
+    public class OmniClipboardTests
     {
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -24,6 +25,8 @@ namespace Omnipaste.OmniClipboard.Core.Tests
 
         private Mock<IMessagingService> _mockMessagingService;
 
+        private Mock<IClippings> _mockClippings;
+
         [SetUp]
         public void Setup()
         {
@@ -33,6 +36,10 @@ namespace Omnipaste.OmniClipboard.Core.Tests
             _mockLogger = new Mock<ILog>();
             _mockOmniApi = new Mock<IOmniApi>();
             _mockMessagingService = new Mock<IMessagingService>();
+            _mockClippings = new Mock<IClippings>();
+
+            _mockOmniApi.SetupGet(m => m.Clippings).Returns(_mockClippings.Object);
+
             _subject = new OmniClipboard(_mockConfigurationService.Object, _mockOmniApi.Object, _mockMessagingService.Object)
                            {
                                Logger = _mockLogger.Object
@@ -65,6 +72,20 @@ namespace Omnipaste.OmniClipboard.Core.Tests
         }
 
         [Test]
+        public void Initialize_Always_SetsOmniApiKey()
+        {
+            SetupCommnuicationSettings();
+            _mockMessagingService.Setup(
+                x => x.Connect(It.IsAny<string>(), It.IsAny<IMessageHandler>()))
+                      .Callback<string, IMessageHandler>((message, handler) => Thread.Sleep(500));
+
+            var initializeTask = _subject.Initialize();
+            
+            initializeTask.Wait();
+            _mockOmniApi.VerifySet(m => m.ApiKey = "test");
+        }
+
+        [Test]
         public void NewMessageReceived_Always_GetsClippingFromApi()
         {
             InitializeMockClient();
@@ -75,7 +96,7 @@ namespace Omnipaste.OmniClipboard.Core.Tests
 
             _subject.Initialize();
 
-            _mockOmniApi.Verify(m => m.GetLastClippingAsync(_subject));
+            _mockClippings.Verify(m => m.GetLastAsync(_subject));
         }
 
         [Test]
@@ -85,7 +106,7 @@ namespace Omnipaste.OmniClipboard.Core.Tests
 
             _subject.PutData("data");
 
-            _mockOmniApi.Verify(m => m.SaveClippingAsync("data", _subject));
+            _mockClippings.Verify(m => m.SaveAsync("data", _subject));
         }
 
         [Test]
@@ -109,7 +130,7 @@ namespace Omnipaste.OmniClipboard.Core.Tests
 
         private void SetupCommnuicationSettings()
         {
-            var settings = new CommunicationSettings { Channel = "asd" };
+            var settings = new CommunicationSettings { Channel = "test" };
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(settings);
         }
     }
