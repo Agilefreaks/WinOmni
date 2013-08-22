@@ -6,7 +6,9 @@
              xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             Width="600" Height="600"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             Width="600" Height="600" 
              mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="600">
 
     <Grid x:Name="LayoutRoot">
@@ -25,10 +27,15 @@
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Recent Clippings"/>
 
-        <ListBox Grid.Row="1" Grid.Column="1" 
-                 cal:Message.Attach="[Event MouseDoubleClick] = [Action SetSelectedClipping()]"
-                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
-                 ItemsSource="{Binding Path=Clippings}" SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" Background="White">
+        <ListBox x:Name="Clippings" Grid.Row="1" Grid.Column="1"
+                 cal:Message.Attach="[Event MouseDoubleClick] = [Action SetSelectedClipping]"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" Focusable="True"
+                 SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" ItemsSource="{Binding Path=Clippings}" Background="White">
+
+            <i:Interaction.Behaviors>
+                <behaviours:FirstItemSelectedBehavior />
+            </i:Interaction.Behaviors>
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
