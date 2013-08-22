@@ -1,16 +1,14 @@
-﻿using System.Collections.Specialized;
-using System.Linq;
-using OmniCommon.Domain;
-
-namespace Omnipaste.History
+﻿namespace Omnipaste.History
 {
-    using System.Collections.ObjectModel;
     using Caliburn.Micro;
+    using OmniCommon.Domain;
     using OmniCommon.Interfaces;
+    using System.Linq;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
 
     public class HistoryViewModel : Screen, IHistoryViewModel
     {
-        public IClippingRepository ClippingRepository { get; set; }
         private ObservableCollection<string> _recentClippings;
         private Clipping _selectedClipping;
         private ObservableCollection<Clipping> _clippings;
@@ -75,9 +73,11 @@ namespace Omnipaste.History
             }
         }
 
-        public HistoryViewModel(IClippingRepository clippingRepository, IEventAggregator eventAggregator)
+        public IOmniService OmniService { get; set; }
+
+        public HistoryViewModel(IOmniService omniService, IEventAggregator eventAggregator)
         {
-            ClippingRepository = clippingRepository;
+            OmniService = omniService;
             RecentClippings = new ObservableCollection<string>();
             eventAggregator.Subscribe(this);
         }
@@ -96,12 +96,12 @@ namespace Omnipaste.History
         {
             base.OnActivate();
 
-            Clippings = new ObservableCollection<Clipping>(ClippingRepository.GetAll());
+            Clippings = new ObservableCollection<Clipping>(OmniService.GetClippings());
         }
 
         public void OnRecentClippingsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Clippings = new ObservableCollection<Clipping>(ClippingRepository.GetAll());
+            Clippings = new ObservableCollection<Clipping>(OmniService.GetClippings());
 
             NotifyOfPropertyChange(() => HasClippings);
         }

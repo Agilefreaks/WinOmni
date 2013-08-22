@@ -1,4 +1,6 @@
-﻿namespace OmniCommonTests.Services
+﻿using System.Collections.Generic;
+
+namespace OmniCommonTests.Services
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -129,7 +131,7 @@
             _subject.DataReceived(clipboardData1);
 
             _subject.DataReceived(clipboardData2);
-            
+
             _mockClippingRepository.Verify(m => m.Save(It.IsAny<Clipping>()), Times.Once());
         }
 
@@ -200,6 +202,17 @@
             _subject.Stop();
 
             _mockOmniClipboard.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        public void GetClippings_Always_ReturnsItemsFromRepository()
+        {
+            var clipping = new Clipping("Clip");
+            _mockClippingRepository.Setup(m => m.GetAll()).Returns(new List<Clipping> { clipping });
+
+            var result = _subject.GetClippings();
+
+            result.Should().Contain(clipping);
         }
 
         private static IClipboardData CreateClipboardDataFrom(IClipboard clipboard)

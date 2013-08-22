@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using OmniCommon.Domain;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using Omnipaste.History;
-
-namespace OmnipasteTests.History
+﻿namespace OmnipasteTests.History
 {
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using FluentAssertions;
+    using Moq;
+    using NUnit.Framework;
+    using OmniCommon.Domain;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Services;
+    using Omnipaste.History;
+
     internal class HistoryViewModelWrapper : HistoryViewModel
     {
-        public HistoryViewModelWrapper(IClippingRepository clippingRepository, IEventAggregator eventAggregator)
-            : base(clippingRepository, eventAggregator)
+        public HistoryViewModelWrapper(IOmniService omniService, IEventAggregator eventAggregator)
+            : base(omniService, eventAggregator)
         {
         }
 
@@ -28,14 +28,15 @@ namespace OmnipasteTests.History
     {
         private HistoryViewModelWrapper _subject;
         private Mock<IEventAggregator> _mockEventAggregator;
-        private Mock<IClippingRepository> _mockClippingRepository;
+        private Mock<IOmniService> _mockOmniService;
 
         [SetUp]
         public void SetUp()
         {
             _mockEventAggregator = new Mock<IEventAggregator>();
-            _mockClippingRepository = new Mock<IClippingRepository>();
-            _subject = new HistoryViewModelWrapper(_mockClippingRepository.Object, _mockEventAggregator.Object);
+            _mockOmniService = new Mock<IOmniService>();
+            _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping>());
+            _subject = new HistoryViewModelWrapper(_mockOmniService.Object, _mockEventAggregator.Object);
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace OmnipasteTests.History
         {
             var clipping1 = new Clipping();
             var clipping2 = new Clipping();
-            _mockClippingRepository.Setup(m => m.GetAll()).Returns(new List<Clipping> { clipping1, clipping2 });
+            _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping> { clipping1, clipping2 });
 
             _subject.InvokeOnActivate();
 

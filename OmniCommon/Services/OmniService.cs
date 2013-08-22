@@ -1,4 +1,6 @@
-﻿namespace OmniCommon.Services
+﻿using System.Collections.Generic;
+
+namespace OmniCommon.Services
 {
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -43,6 +45,11 @@
             OmniClipboard = omniClipboard;
             ClippingRepository = clippingRepository;
             EventAggregator = eventAggregator;
+        }
+
+        public IList<Clipping> GetClippings()
+        {
+            return ClippingRepository.GetAll();
         }
 
         public Task<bool> Start()
