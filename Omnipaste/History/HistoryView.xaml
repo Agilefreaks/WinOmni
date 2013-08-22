@@ -9,6 +9,7 @@
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              Width="600" Height="600" 
+             cal:Message.Attach="[Event KeyUp] = [Action OnKeyReleased($eventArgs)]"
              mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="600">
 
     <Grid x:Name="LayoutRoot">
@@ -33,6 +34,7 @@
                  SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" ItemsSource="{Binding Path=Clippings}" Background="White">
 
             <i:Interaction.Behaviors>
+                <behaviours:FocusBehavior IsFocused="True" />
                 <behaviours:FirstItemSelectedBehavior />
             </i:Interaction.Behaviors>
             
