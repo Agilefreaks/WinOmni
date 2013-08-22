@@ -29,6 +29,8 @@
         private HistoryViewModelWrapper _subject;
         private Mock<IEventAggregator> _mockEventAggregator;
         private Mock<IOmniService> _mockOmniService;
+        private Mock<ILocalClipboard> _mockLocalClipboard;
+        private Mock<IOmniClipboard> _mockOmniClipboard;
 
         [SetUp]
         public void SetUp()
@@ -36,6 +38,10 @@
             _mockEventAggregator = new Mock<IEventAggregator>();
             _mockOmniService = new Mock<IOmniService>();
             _mockOmniService.Setup(m => m.GetClippings()).Returns(new List<Clipping>());
+            _mockLocalClipboard = new Mock<ILocalClipboard>();
+            _mockOmniClipboard = new Mock<IOmniClipboard>();
+            _mockOmniService.SetupGet(m => m.LocalClipboard).Returns(_mockLocalClipboard.Object);
+            _mockOmniService.SetupGet(m => m.OmniClipboard).Returns(_mockOmniClipboard.Object);
             _subject = new HistoryViewModelWrapper(_mockOmniService.Object, _mockEventAggregator.Object);
         }
 
@@ -82,6 +88,27 @@
 
             _subject.Clippings.Should().Contain(clipping1);
             _subject.Clippings.Should().Contain(clipping2);
+        }
+
+        [Test]
+        public void SetSelectedClipping_Always_SetsClippingToLocal()
+        {
+            var clipping = new Clipping("test");
+            _subject.SelectedClipping = clipping;
+
+            _subject.SetSelectedClipping();
+
+            _mockLocalClipboard.Verify(m => m.PutData(clipping.Content));
+        }
+
+        [Test]
+        public void SetSelectedClipping_WhenSelectedClippingIsNull_SetsClippingToLocal()
+        {
+            _subject.SelectedClipping = null;
+
+            _subject.SetSelectedClipping();
+
+            _mockLocalClipboard.Verify(m => m.PutData(It.IsAny<string>()), Times.Never());
         }
     }
 }

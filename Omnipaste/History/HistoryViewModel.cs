@@ -105,5 +105,13 @@
 
             NotifyOfPropertyChange(() => HasClippings);
         }
+
+        public void SetSelectedClipping()
+        {
+            if (SelectedClipping != null)
+            {
+                OmniService.LocalClipboard.PutData(SelectedClipping.Content);
+            }
+        }
     }
 }

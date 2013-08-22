@@ -5,13 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              Width="600" Height="600"
              mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="600">
 
-    <UserControl.Resources>
-        <converters:CropStringConverter x:Key="CropStringConverter"/>
-    </UserControl.Resources>
-    
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -28,7 +25,10 @@
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Recent Clippings"/>
 
-        <ListBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=Clippings}" SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" Background="White">
+        <ListBox Grid.Row="1" Grid.Column="1" 
+                 cal:Message.Attach="[Event MouseDoubleClick] = [Action SetSelectedClipping()]"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                 ItemsSource="{Binding Path=Clippings}" SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" Background="White">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>

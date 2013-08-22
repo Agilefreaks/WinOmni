@@ -100,9 +100,9 @@ namespace OmniCommon.Services
 
             GetDestinationClipboard(clipboardData).PutData(data);
 
-            EventAggregator.Publish(clipboardData);
-
             ClippingRepository.Save(new Clipping(data));
+
+            EventAggregator.Publish(clipboardData);
 
             Status = previousStatus;
         }
