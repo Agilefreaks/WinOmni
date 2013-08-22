@@ -1,4 +1,12 @@
-﻿namespace OmnipasteTests.History
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Threading;
+using Omnipaste.Shell;
+
+namespace OmnipasteTests.History
 {
     using System.Collections.Generic;
     using Caliburn.Micro;
@@ -26,6 +34,7 @@
         private Mock<IOmniService> _mockOmniService;
         private Mock<ILocalClipboard> _mockLocalClipboard;
         private Mock<IOmniClipboard> _mockOmniClipboard;
+        private Mock<IShellViewModel> _mockShellViewModel;
 
         [SetUp]
         public void SetUp()
@@ -37,7 +46,11 @@
             _mockOmniClipboard = new Mock<IOmniClipboard>();
             _mockOmniService.SetupGet(m => m.LocalClipboard).Returns(_mockLocalClipboard.Object);
             _mockOmniService.SetupGet(m => m.OmniClipboard).Returns(_mockOmniClipboard.Object);
-            _subject = new HistoryViewModelWrapper(_mockOmniService.Object, _mockEventAggregator.Object);
+            _mockShellViewModel = new Mock<IShellViewModel>();
+            _subject = new HistoryViewModelWrapper(_mockOmniService.Object, _mockEventAggregator.Object)
+                {
+                    Shell = _mockShellViewModel.Object
+                };
         }
 
         [Test]
@@ -106,6 +119,27 @@
             _subject.SetSelectedClipping();
 
             _mockLocalClipboard.Verify(m => m.PutData(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void SetSelectedClipping_WhenClippingSelected_CallsShellHide()
+        {
+            _subject.SelectedClipping = new Clipping("test");
+
+            _subject.SetSelectedClipping();
+
+            _mockShellViewModel.Verify(m => m.Hide());
+        }
+
+        [Test]
+        [STAThread]
+        public void OnKeyReleased_WhenKeyIsEnterAndSelectedClippingIsNotNull_CallsPutDataInLocalClipboard()
+        {
+            _subject.SelectedClipping = new Clipping("test");
+
+            _subject.OnKeyReleased(null, new KeyEventArgs(Keyboard.PrimaryDevice, new HwndSource(new HwndSourceParameters()), 0, Key.Enter));
+
+            _mockLocalClipboard.Verify(m => m.PutData("test"));
         }
     }
 }

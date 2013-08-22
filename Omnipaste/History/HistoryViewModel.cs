@@ -1,10 +1,13 @@
 ﻿namespace Omnipaste.History
 {
+    using Ninject;
     using Caliburn.Micro;
     using OmniCommon.Domain;
     using OmniCommon.Interfaces;
+    using Omnipaste.Shell;
     using System.Linq;
     using System.Collections.ObjectModel;
+    using System.Windows.Input;
 
     public class HistoryViewModel : Screen, IHistoryViewModel
     {
@@ -56,6 +59,9 @@
 
         public IOmniService OmniService { get; set; }
 
+        [Inject]
+        public IShellViewModel Shell { get; set; }
+
         public HistoryViewModel(IOmniService omniService, IEventAggregator eventAggregator)
         {
             OmniService = omniService;
@@ -76,6 +82,15 @@
             if (SelectedClipping != null)
             {
                 OmniService.LocalClipboard.PutData(SelectedClipping.Content);
+                Shell.Hide();
+            }
+        }
+
+        public void OnKeyReleased(object source, KeyEventArgs eventArgs)
+        {
+            if (eventArgs.Key == Key.Enter)
+            {
+                SetSelectedClipping();
             }
         }
     }
