@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Shell
+﻿using System.ComponentModel;
+
+namespace Omnipaste.Shell
 {
     using System;
     using System.Windows;
@@ -98,6 +100,12 @@
 
             ActiveItem = ConfigurationViewModel;
             ConfigurationViewModel.Start();
+        }
+
+        public void OnClosing(CancelEventArgs eventArgs)
+        {
+            eventArgs.Cancel = true;
+            Hide();
         }
     }
 }
