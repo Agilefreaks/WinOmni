@@ -156,5 +156,27 @@ namespace OmniCommonTests.Services
                 mockStream.Verify(m => m.Close(), Times.Exactly(2));
             }
         }
+
+        [Test]
+        public void GetAll_CalledTwice_ReadsStreamOnlyOnce()
+        {
+            var mockSerializer = new Mock<IXmlSerializer>();
+            var clippings = new List<Clipping>();
+            mockSerializer.Setup(m => m.Deserialize<List<Clipping>>(It.IsAny<Stream>()))
+                          .Returns(clippings);
+            _subject.Serializer = mockSerializer.Object;
+            var mockFileService = new Mock<IFileService>();
+            mockFileService.Setup(m => m.Exists(It.IsAny<string>())).Returns(true);
+            mockFileService.SetupGet(m => m.AppDataDir).Returns(Environment.CurrentDirectory);
+            var mockStream = new Mock<Stream>();
+            mockFileService.Setup(m => m.Open(It.IsAny<string>(), It.IsAny<FileMode>(), It.IsAny<FileAccess>()))
+                           .Returns(mockStream.Object);
+            _subject.FileService = mockFileService.Object;
+
+            _subject.GetForLast24Hours();
+            _subject.GetForLast24Hours();
+
+            mockFileService.Verify(m => m.Open(It.IsAny<string>(), It.IsAny<FileMode>(), It.IsAny<FileAccess>()), Times.Once());
+        }
     }
 }

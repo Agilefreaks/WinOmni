@@ -9,6 +9,8 @@
 
     public class XmlClippingRepository : IClippingRepository
     {
+        private List<Clipping> _allClippings; 
+
         public IFileService FileService { get; set; }
 
         public IXmlSerializer Serializer { get; set; }
@@ -53,7 +55,10 @@
 
         private IList<Clipping> GetAll()
         {
-            List<Clipping> clippings;
+            if (_allClippings != null)
+            {
+                return _allClippings;
+            }
 
             lock (Lock)
             {
@@ -70,7 +75,7 @@
                         stream = FileService.Open(FilePath, FileMode.Open, FileAccess.Read);
                     }
 
-                    clippings = Serializer.Deserialize<List<Clipping>>(stream);
+                    _allClippings = Serializer.Deserialize<List<Clipping>>(stream);
                 }
                 finally
                 {
@@ -82,7 +87,8 @@
 
             }
 
-            return clippings;
+
+            return _allClippings;
         }
 
         private void Save(IList<Clipping> clippings)
