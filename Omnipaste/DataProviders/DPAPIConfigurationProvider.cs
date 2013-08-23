@@ -1,4 +1,7 @@
-﻿namespace Omnipaste.DataProviders
+﻿using OmniCommon;
+using OmniCommon.Services;
+
+namespace Omnipaste.DataProviders
 {
     using System;
     using System.Diagnostics;
@@ -85,8 +88,8 @@
                 Path.Combine(
                     Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        ApplicationInfoFactory.PublisherName),
-                    ApplicationInfoFactory.ApplicationName);
+                        AppInfo.PublisherName),
+                    AppInfo.ApplicationName);
         }
 
         private static XDocument InitializeNewSettingsDocument(string key, string value)

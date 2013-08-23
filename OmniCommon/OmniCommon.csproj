@@ -53,6 +53,7 @@
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -105,6 +106,7 @@
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
     <Compile Include="Interfaces\IActivationService.cs" />
+    <Compile Include="AppInfo.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Interfaces\IDateTimeService.cs" />
     <Compile Include="Services\DateTimeService.cs" />

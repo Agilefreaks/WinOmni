@@ -1,10 +1,9 @@
-﻿namespace Omnipaste
+﻿namespace OmniCommon
 {
     using System;
     using System.Configuration;
-    using CustomizedClickOnce.Common;
 
-    public class ApplicationInfoFactory
+    public class AppInfo
     {
         public const string PublisherName = "Omnipaste";
 
@@ -44,7 +43,7 @@
             }
         }
 
-        protected ApplicationInfoFactory()
+        protected AppInfo()
         {
         }
 
@@ -54,17 +53,6 @@
             {
                 return new Uri(BaseUrl + "whatsmytoken");
             }
-        }
-
-        public static ApplicationInfo Create()
-        {
-            return new ApplicationInfo
-                       {
-                           AboutLink = AboutLink,
-                           HelpLink = HelpLink,
-                           ProductName = ApplicationName,
-                           PublisherName = PublisherName
-                       };
         }
     }
 }

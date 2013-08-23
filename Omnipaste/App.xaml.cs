@@ -1,4 +1,6 @@
-﻿namespace Omnipaste
+﻿using Omnipaste.Helpers;
+
+namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;

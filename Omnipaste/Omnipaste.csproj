@@ -141,7 +141,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="Configuration\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
     </Compile>
@@ -164,6 +163,7 @@
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
     <Compile Include="Framework\Converters\CropStringConverter.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />
+    <Compile Include="Helpers\ApplicationInfoFactory.cs" />
     <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
     <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
     <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
