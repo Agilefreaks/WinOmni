@@ -5,21 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:taskbarNotification="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <converters:CropStringConverter x:Key="CropStringConverter"/>
+        <CollectionViewSource x:Key="dynamicItems" Source="{Binding Path=History.RecentClippings}" />
+        <TextBlock x:Key="Channel" Text="{Binding Path=Channel}"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
     <Grid>
-        <taskbarNotification:TaskbarIcon
+        <taskbarNotification:TaskbarIcon  x:Name="LayoutRoot"
             Visibility="{Binding Path=Visibility}"
             ToolTipText="{Binding Path=TooltipText}"
             IconSource="{Binding Path=IconSource}">
             <taskbarNotification:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <TextBlock Text="{Binding Path=Channel}" />
-                    <Separator />
-                    <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
-                    <Separator />
-                    <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsNotSyncing}" />
-                    <MenuItem Header="Exit" cal:Message.Attach="Exit" />
+                    <ContextMenu.ItemsSource>
+                        <CompositeCollection>
+                            <CollectionContainer Collection="{Binding Source={StaticResource dynamicItems}}" />
+                            <MenuItem Header="More..." cal:Message.Attach="ShowClippings" Visibility="{Binding Path=History.HasClippings, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Separator/>
+                            <MenuItem Header="{Binding Source={StaticResource Channel}}" />
+                            <Separator />
+                            <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
+                            <Separator />
+                            <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsNotSyncing}" />
+                            <MenuItem Header="Exit" cal:Message.Attach="Exit" />
+                        </CompositeCollection>
+                    </ContextMenu.ItemsSource>
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Content, Converter={StaticResource CropStringConverter}}"/>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
                 </ContextMenu>
             </taskbarNotification:TaskbarIcon.ContextMenu>
         </taskbarNotification:TaskbarIcon>

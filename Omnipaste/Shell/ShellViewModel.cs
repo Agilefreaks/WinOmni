@@ -1,4 +1,8 @@
-﻿namespace Omnipaste.Shell
+﻿using System.ComponentModel;
+using System.Windows.Input;
+using Omnipaste.History;
+
+namespace Omnipaste.Shell
 {
     using System;
     using System.Windows;
@@ -26,6 +30,9 @@
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
+        [Inject]
+        public IHistoryViewModel HistoryViewModel { get; set; }
+
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
 
         public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator)
@@ -52,11 +59,7 @@
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
 
-            if (_view != null)
-            {
-                _view.Visibility = Visibility.Hidden;
-                _view.ShowInTaskbar = false;
-            }
+            Hide();
         }
 
         public IntPtr GetHandle()
@@ -69,6 +72,24 @@
                 });
             
             return handle;
+        }
+
+        public void Hide()
+        {
+            if (_view != null)
+            {
+                _view.Visibility = Visibility.Hidden;
+                _view.ShowInTaskbar = false;
+            }
+        }
+
+        public void Show()
+        {
+            if (_view != null)
+            {
+                _view.Visibility = Visibility.Visible;
+                _view.ShowInTaskbar = true;
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -84,6 +105,20 @@
 
             ActiveItem = ConfigurationViewModel;
             ConfigurationViewModel.Start();
+        }
+
+        public void OnClosing(CancelEventArgs eventArgs)
+        {
+            eventArgs.Cancel = true;
+            Hide();
+        }
+
+        public void OnKeyReleased(KeyEventArgs eventArgs)
+        {
+            if (eventArgs.Key == Key.Escape)
+            {
+                Hide();
+            }
         }
     }
 }

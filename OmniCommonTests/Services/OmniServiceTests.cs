@@ -1,4 +1,6 @@
-﻿namespace OmniCommonTests.Services
+﻿using System.Collections.Generic;
+
+namespace OmniCommonTests.Services
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -9,6 +11,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
+    using OmniCommon.Domain;
 
     [TestFixture]
     public class OmniServiceTests
@@ -16,6 +19,7 @@
         private OmniService _subject;
         private Mock<ILocalClipboard> _mockLocalClipboard;
         private Mock<IOmniClipboard> _mockOmniClipboard;
+        private Mock<IClippingRepository> _mockClippingRepository;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -27,7 +31,8 @@
             _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _mockEventAggregator = new Mock<IEventAggregator>();
-            _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object, _mockEventAggregator.Object);
+            _mockClippingRepository = new Mock<IClippingRepository>();
+            _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object, _mockClippingRepository.Object, _mockEventAggregator.Object);
         }
 
         [Test]
@@ -109,6 +114,28 @@
         }
 
         [Test]
+        public void DataReceived_WhenNewClippingIsDifferentFromOldClipping_SavesToRepository()
+        {
+            var clipboardData = new ClipboardData(_mockOmniClipboard, "test");
+
+            _subject.DataReceived(clipboardData);
+
+            _mockClippingRepository.Verify(m => m.Save(It.Is<Clipping>(c => c.Content == clipboardData.GetData())));
+        }
+
+        [Test]
+        public void DataReceived_WhenNewClippingIsSameAsOldClipping_DoesNotSaveToRepository()
+        {
+            var clipboardData1 = new ClipboardData(_mockOmniClipboard, "test 1");
+            var clipboardData2 = new ClipboardData(_mockOmniClipboard, "test 1");
+            _subject.DataReceived(clipboardData1);
+
+            _subject.DataReceived(clipboardData2);
+
+            _mockClippingRepository.Verify(m => m.Save(It.IsAny<Clipping>()), Times.Once());
+        }
+
+        [Test]
         public void Start_StartIsInProgress_ReturnsTheSameTask()
         {
             _mockLocalClipboard.Setup(x => x.Initialize()).Callback(() =>
@@ -175,6 +202,17 @@
             _subject.Stop();
 
             _mockOmniClipboard.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        public void GetClippings_Always_ReturnsItemsFromRepository()
+        {
+            var clipping = new Clipping("Clip");
+            _mockClippingRepository.Setup(m => m.GetForLast24Hours()).Returns(new List<Clipping> { clipping });
+
+            var result = _subject.GetClippings();
+
+            result.Should().Contain(clipping);
         }
 
         private static IClipboardData CreateClipboardDataFrom(IClipboard clipboard)

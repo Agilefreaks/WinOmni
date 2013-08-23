@@ -51,6 +51,7 @@ namespace Omnipaste.OmniClipboard.Core
         public bool DoInitialize()
         {
             Channel = _configurationService.CommunicationSettings.Channel;
+            _omniApi.ApiKey = Channel;
             var connected = _messagingService.Connect(Channel, this);
 
             return connected;
@@ -58,7 +59,7 @@ namespace Omnipaste.OmniClipboard.Core
 
         public override void PutData(string data)
         {
-            _omniApi.SaveClippingAsync(data, this);
+            _omniApi.Clippings.SaveAsync(data, this);
         }
 
         public override void Dispose()
@@ -78,7 +79,7 @@ namespace Omnipaste.OmniClipboard.Core
 
         void IMessageHandler.MessageReceived(string message)
         {
-            _omniApi.GetLastClippingAsync(this);
+            _omniApi.Clippings.GetLastAsync(this);
         }
 
         void IGetClippingCompleteHandler.HandleClipping(string clip)

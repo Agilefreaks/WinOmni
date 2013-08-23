@@ -1,7 +1,9 @@
-﻿using OmniCommon.EventAggregatorMessages;
-
-namespace Omnipaste.ContextMenu
+﻿namespace Omnipaste.ContextMenu
 {
+    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.Helpers;
+    using Omnipaste.History;
+    using Omnipaste.Shell;
     using System.Deployment.Application;
     using System.Reflection;
     using System.Windows;
@@ -24,6 +26,7 @@ namespace Omnipaste.ContextMenu
         private bool _autoStart;
 
         private string _channel;
+        private IHistoryViewModel _history;
 
         public string IconSource
         {
@@ -118,6 +121,24 @@ namespace Omnipaste.ContextMenu
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
+        [Inject]
+        public IHistoryViewModel History
+        {
+            get
+            {
+                return _history;
+            }
+
+            set
+            {
+                _history = value;
+                NotifyOfPropertyChange(() => History);
+            }
+        }
+
+        [Inject]
+        public IShellViewModel Shell { get; set; }
+
         public ContextMenuViewModel()
         {
             IconSource = "/Icon.ico";
@@ -165,6 +186,12 @@ namespace Omnipaste.ContextMenu
             AutoStart = ClickOnceHelper.StartupShortcutExists();
 
             EventAggregator.Publish(new StartOmniServiceMessage());
+        }
+
+        public void ShowClippings()
+        {
+            Shell.ActiveItem = History;
+            Shell.Show();
         }
 
         public void Exit()

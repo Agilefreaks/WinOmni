@@ -141,7 +141,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="Configuration\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
     </Compile>
@@ -153,7 +152,6 @@
     <Compile Include="ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="DataProviders\ActivationDataProvider.cs" />
-    <Compile Include="DataProviders\AppConfigurationProvider.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="DataProviders\MockActivationDataProvider.cs" />
@@ -161,7 +159,11 @@
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
+    <Compile Include="Framework\Behaviours\FirstItemSelectedBehavior.cs" />
+    <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
+    <Compile Include="Framework\Converters\CropStringConverter.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />
+    <Compile Include="Helpers\ApplicationInfoFactory.cs" />
     <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
     <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
     <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
@@ -173,6 +175,11 @@
     <Compile Include="Framework\UserControlls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="History\HistoryView.xaml.cs">
+      <DependentUpon>HistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryViewModel.cs" />
+    <Compile Include="History\IHistoryViewModel.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
@@ -192,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Framework\UserControlls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="History\HistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

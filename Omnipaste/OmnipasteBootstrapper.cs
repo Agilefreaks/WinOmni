@@ -1,19 +1,19 @@
-﻿using OmniCommon.Interfaces;
-using Omnipaste.Framework;
-using Omnipaste.OmniClipboard.Infrastructure;
-using Omnipaste.Services.Connectivity;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using Caliburn.Micro;
+    using Omnipaste.History;
     using Ninject;
     using Ninject.Extensions.Conventions;
     using OmniCommon;
     using Omnipaste.Shell;
     using WindowsClipboard;
+    using OmniCommon.Interfaces;
+    using Omnipaste.Framework;
+    using Omnipaste.OmniClipboard.Infrastructure;
+    using Omnipaste.Services.Connectivity;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
     {
@@ -23,7 +23,8 @@ namespace Omnipaste
         {
             var singletonViewModelTypes = new List<Type>
                                               {
-                                                  typeof(ShellViewModel)
+                                                  typeof(ShellViewModel),
+                                                  typeof(HistoryViewModel)
                                               };
             _kernel = new StandardKernel();
 

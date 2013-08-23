@@ -5,8 +5,8 @@
     using System.Reflection;
     using System.Threading;
     using CustomizedClickOnce.Common;
-    using Omnipaste;
-
+    using Omnipaste.Helpers;
+    
     public static class Program
     {
         #region Static Fields

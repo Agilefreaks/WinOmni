@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Omnipaste.History.HistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             Width="600" Height="600"
+             cal:Message.Attach="[Event KeyUp] = [Action OnKeyReleased($source, $eventArgs)]"
+             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="600">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="540"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Recent Clippings"/>
+
+        <ListBox x:Name="Clippings" Grid.Row="1" Grid.Column="1"
+                 cal:Message.Attach="[Event MouseDoubleClick] = [Action SetSelectedClipping]"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" Focusable="True"
+                 SelectedItem="{Binding Path=SelectedClipping, Mode=TwoWay}" ItemsSource="{Binding Path=Clippings}" Background="White">
+
+            <i:Interaction.Behaviors>
+                <behaviours:FocusBehavior IsFocused="True" />
+                <behaviours:FirstItemSelectedBehavior />
+            </i:Interaction.Behaviors>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <Binding Path="Content">
+                                <Binding.Converter>
+                                    <converters:CropStringConverter />
+                                </Binding.Converter>
+                                <Binding.ConverterParameter>
+                                    <sys:Int32>50</sys:Int32>
+                                </Binding.ConverterParameter>
+                            </Binding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Full Text"/>
+
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=SelectedClipping.Content}" IsReadOnly="True" Background="LightGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+    </Grid>
+    
+</UserControl>

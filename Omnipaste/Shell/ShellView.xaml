@@ -1,10 +1,16 @@
 ﻿<Window x:Class="Omnipaste.Shell.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        Width="{Binding Path=Content.Width, ElementName=ActiveItem}"
+        Height="{Binding Path=Content.Height, ElementName=ActiveItem}"
         WindowStartupLocation="CenterScreen"
-        Height="300" Width="300"
-        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico">
+        cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]; [Event KeyUp] = [Action OnKeyReleased($eventArgs)]"
+        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico"
+        >
+    
     <Grid Style="{StaticResource ShellGrid}">
-        <ContentControl x:Name="ActiveItem"/>
+        <ContentControl x:Name="ActiveItem" />
     </Grid>
+    
 </Window>

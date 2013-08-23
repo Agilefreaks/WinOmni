@@ -66,6 +66,7 @@
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,10 +90,14 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\TransitionIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
+    <Compile Include="Services\FileServiceTest.cs" />
     <Compile Include="Services\OmniServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\XmlClippingRepositoryTests.cs" />
+    <Compile Include="Services\XmlSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
