@@ -1,4 +1,6 @@
-﻿namespace OmniCommonTests.Services
+﻿using System.Collections.Generic;
+
+namespace OmniCommonTests.Services
 {
     using System;
     using Moq;
@@ -61,7 +63,7 @@
         }
 
         [Test]
-        public void GetAll_Always_ReturnsClippingsCreatedInTheLast24Hours()
+        public void GetForLast24Hours_Always_ReturnsClippingsCreatedInTheLast24Hours()
         {
             var clipping = new Clipping("asdf");
             _subject.Save(clipping);
@@ -73,7 +75,7 @@
         }
 
         [Test]
-        public void GetAll_Always_ReturnsClippingsInReverseOrderThatTheyWereAdded()
+        public void GetForLast24Hours_Always_ReturnsClippingsInReverseOrderThatTheyWereAdded()
         {
             var olderClipping = new Clipping("test1");
             var newerClipping = new Clipping("test2");
@@ -84,6 +86,75 @@
 
             clippings[0].Content.Should().Be(newerClipping.Content);
             clippings[1].Content.Should().Be(olderClipping.Content);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetForLast24Hours_WhenFileServiceRaisesException_Throws()
+        {
+            var mockFileService = new Mock<IFileService>();
+            mockFileService.Setup(m => m.Exists(It.IsAny<string>()))
+                           .Throws<ArgumentException>();
+            mockFileService.SetupGet(m => m.AppDataDir).Returns(Environment.CurrentDirectory);
+            _subject.FileService = mockFileService.Object;
+
+            _subject.GetForLast24Hours();
+        }
+
+        [Test]
+        public void GetForLast24Hours_WhenSerializerRaisesException_AlwaysCallsStreamDispose()
+        {
+            var mockFileService = new Mock<IFileService>();
+            mockFileService.Setup(m => m.Exists(It.IsAny<string>()))
+                           .Returns(true);
+            mockFileService.SetupGet(m => m.AppDataDir).Returns(Environment.CurrentDirectory);
+            var mockStream = new Mock<Stream>();
+            mockFileService.Setup(m => m.Open(It.IsAny<string>(), It.IsAny<FileMode>(), It.IsAny<FileAccess>()))
+                           .Returns(mockStream.Object);
+            var mockSerializer = new Mock<IXmlSerializer>();
+            mockSerializer.Setup(m => m.Serialize(mockStream.Object, It.IsAny<object>()))
+                          .Throws<Exception>();
+            _subject.FileService = mockFileService.Object;
+            _subject.Serializer = mockSerializer.Object;
+
+            try
+            {
+                _subject.GetForLast24Hours();
+                Assert.Fail("this should throw");
+            }
+            catch
+            {
+                mockStream.Verify(m => m.Close());
+            }
+        }
+
+        [Test]
+        public void Save_WhenSerializeFails_CallsStreamClose()
+        {
+            var mockSerializer = new Mock<IXmlSerializer>();
+            var clippings = new List<Clipping>();
+            mockSerializer.Setup(m => m.Deserialize<List<Clipping>>(It.IsAny<Stream>()))
+                          .Returns(clippings);
+            mockSerializer.Setup(m => m.Serialize(It.IsAny<Stream>(), clippings))
+                          .Throws<Exception>();
+            _subject.Serializer = mockSerializer.Object;
+            var mockFileService = new Mock<IFileService>();
+            mockFileService.Setup(m => m.Exists(It.IsAny<string>())).Returns(true);
+            mockFileService.SetupGet(m => m.AppDataDir).Returns(Environment.CurrentDirectory);
+            var mockStream = new Mock<Stream>();
+            mockFileService.Setup(m => m.Open(It.IsAny<string>(), It.IsAny<FileMode>(), It.IsAny<FileAccess>()))
+                           .Returns(mockStream.Object);
+            _subject.FileService = mockFileService.Object;
+
+            try
+            {
+                _subject.Save(new Clipping());
+                Assert.Fail("this should throw");
+            }
+            catch
+            {
+                mockStream.Verify(m => m.Close(), Times.Exactly(2));
+            }
         }
     }
 }

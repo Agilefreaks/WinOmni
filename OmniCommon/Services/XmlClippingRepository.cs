@@ -44,7 +44,7 @@
         public void Save(Clipping clip)
         {
             clip.DateCreated = DateTimeService.UtcNow;
-            
+
             var items = GetAll();
             items.Add(clip);
 
@@ -57,20 +57,29 @@
 
             lock (Lock)
             {
-                Stream stream;
-                if (!FileService.Exists(FilePath))
+                Stream stream = null;
+                try
                 {
-                    stream = FileService.Open(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                    Serializer.Serialize(stream, new List<Clipping>());
+                    if (!FileService.Exists(FilePath))
+                    {
+                        stream = FileService.Open(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                        Serializer.Serialize(stream, new List<Clipping>());
+                    }
+                    else
+                    {
+                        stream = FileService.Open(FilePath, FileMode.Open, FileAccess.Read);
+                    }
+
+                    clippings = Serializer.Deserialize<List<Clipping>>(stream);
                 }
-                else
+                finally
                 {
-                    stream = FileService.Open(FilePath, FileMode.Open, FileAccess.Read);
+                    if (stream != null)
+                    {
+                        stream.Dispose();
+                    }
                 }
 
-                clippings = Serializer.Deserialize<List<Clipping>>(stream);
-
-                stream.Dispose();
             }
 
             return clippings;
@@ -80,11 +89,20 @@
         {
             lock (Lock)
             {
-                var stream = FileService.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write);
+                Stream stream = null;
+                try
+                {
+                    stream = FileService.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write);
 
-                Serializer.Serialize(stream, clippings);
-
-                stream.Dispose();
+                    Serializer.Serialize(stream, clippings);
+                }
+                finally
+                {
+                    if (stream != null)
+                    {
+                        stream.Dispose();
+                    }
+                }
             }
         }
     }
