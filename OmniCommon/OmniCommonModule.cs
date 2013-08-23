@@ -14,8 +14,10 @@
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
             Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
-            Kernel.Bind<IClippingRepository>().To<InMemoryClippingRepository>().InSingletonScope();
             Kernel.Bind<IDateTimeService>().To<DateTimeService>().InSingletonScope();
+            Kernel.Bind<IClippingRepository>().To<XmlClippingRepository>().InSingletonScope();
+            Kernel.Bind<IFileService>().To<FileService>().InSingletonScope();
+            Kernel.Bind<IXmlSerializer>().To<SystemXmlSerializer>().InSingletonScope();
         }
     }
 }

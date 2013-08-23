@@ -49,7 +49,7 @@ namespace OmniCommon.Services
 
         public IList<Clipping> GetClippings()
         {
-            return ClippingRepository.GetAll();
+            return ClippingRepository.GetForLast24Hours();
         }
 
         public Task<bool> Start()

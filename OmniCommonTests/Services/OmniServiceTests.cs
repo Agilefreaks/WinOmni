@@ -208,7 +208,7 @@ namespace OmniCommonTests.Services
         public void GetClippings_Always_ReturnsItemsFromRepository()
         {
             var clipping = new Clipping("Clip");
-            _mockClippingRepository.Setup(m => m.GetAll()).Returns(new List<Clipping> { clipping });
+            _mockClippingRepository.Setup(m => m.GetForLast24Hours()).Returns(new List<Clipping> { clipping });
 
             var result = _subject.GetClippings();
 

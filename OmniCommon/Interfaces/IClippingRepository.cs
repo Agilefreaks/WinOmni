@@ -5,7 +5,7 @@
 
     public interface IClippingRepository
     {
-        IList<Clipping> GetAll();
+        IList<Clipping> GetForLast24Hours();
 
         void Save(Clipping clip);
     }

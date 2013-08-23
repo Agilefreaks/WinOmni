@@ -69,6 +69,7 @@
     <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
     <Compile Include="Domain\Clipping.cs" />
     <Compile Include="Interfaces\IClippingRepository.cs" />
+    <Compile Include="Interfaces\SystemXmlSerializer.cs" />
     <Compile Include="OmniCommonModule.cs" />
     <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
@@ -110,7 +111,9 @@
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Interfaces\IDateTimeService.cs" />
     <Compile Include="Services\DateTimeService.cs" />
-    <Compile Include="Services\InMemoryClippingRepository.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Interfaces\IFileService.cs" />
+    <Compile Include="Interfaces\IXmlSerializer.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IStartupTask.cs" />
     <Compile Include="Services\OmniService.cs" />
+    <Compile Include="Services\XmlClippingRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
