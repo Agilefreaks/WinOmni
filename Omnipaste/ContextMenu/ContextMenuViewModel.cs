@@ -1,9 +1,9 @@
-﻿using OmniCommon.EventAggregatorMessages;
-using Omnipaste.History;
-using Omnipaste.Shell;
-
-namespace Omnipaste.ContextMenu
+﻿namespace Omnipaste.ContextMenu
 {
+    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.Helpers;
+    using Omnipaste.History;
+    using Omnipaste.Shell;
     using System.Deployment.Application;
     using System.Reflection;
     using System.Windows;
