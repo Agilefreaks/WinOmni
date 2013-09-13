@@ -8,46 +8,52 @@
 
     public class Clippings : IClippings
     {
+        private string _apiUrl;
+
         public const string ResourceKey = "clippings";
-
-        public string BaseUrl { get; set; }
-
-        public string Version { get; set; }
 
         public string ApiKey { get; set; }
 
+        public IRestClient RestClient { get; set; }
+
         public string ApiUrl
         {
-            get { return string.Format("{0}/{1}", BaseUrl, Version); }
+            get
+            {
+                return _apiUrl;
+            }
+            set
+            {
+                _apiUrl = value;
+                RestClient.BaseUrl = value;
+            }
         }
 
-        public Clippings(string baseUrl, string version, string apiKey)
+        public Clippings(IRestClient restClient)
         {
-            BaseUrl = baseUrl;
-            Version = version;
-            ApiKey = apiKey;
+            RestClient = restClient;
         }
 
         public void SaveAsync(string data, ISaveClippingCompleteHandler handler)
         {
-            var client = new RestClient(ApiUrl);
-
-            var restRequest = new RestRequest(ResourceKey, Method.POST);
-            restRequest.RequestFormat = DataFormat.Json;
+            var restRequest = new RestRequest(ResourceKey, Method.POST)
+                                  {
+                                      RequestFormat = DataFormat.Json
+                                  };
             restRequest.AddBody(new Clipping(ApiKey, data));
 
-            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
+            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
         }
 
         public void GetLastAsync(IGetClippingCompleteHandler handler)
         {
-            var client = new RestClient(ApiUrl);
-
-            var restRequest = new RestRequest(ResourceKey, Method.GET);
-            restRequest.RequestFormat = DataFormat.Json;
+            var restRequest = new RestRequest(ResourceKey, Method.GET)
+                                  {
+                                      RequestFormat = DataFormat.Json
+                                  };
             restRequest.AddHeader("Channel", ApiKey);
 
-            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
+            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
         }
 
         private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)

@@ -1,5 +1,4 @@
 ﻿using Omnipaste.OmniClipboard.Core.Api.Resources;
-using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
 
 namespace Omnipaste.OmniClipboard.Infrastructure.Api
 {
@@ -8,20 +7,36 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
 
     public class OmniApi : IOmniApi
     {
+        private string _apiKey;
+
         public const string Version = "v1";
 
-        public string ApiUrl { get; private set; }
+        public string BaseUrl { get; set; }
 
-        public string ApiKey { get; set; }
-
-        public IClippings Clippings
+        public string ApiKey
         {
-            get { return new Clippings(ApiUrl, Version, ApiKey); }
+            get
+            {
+                return _apiKey;
+            }
+            set
+            {
+                _apiKey = value;
+                Clippings.ApiKey = _apiKey;
+            }
         }
 
-        public OmniApi()
+        public string ApiUrl
         {
-            ApiUrl = ConfigurationManager.AppSettings["apiUrl"];
+            get { return string.Format("{0}/{1}", BaseUrl, Version); }
+        }
+        public IClippings Clippings { get; set; }
+
+        public OmniApi(IClippings clippings)
+        {
+            BaseUrl = ConfigurationManager.AppSettings["apiUrl"];
+            clippings.ApiUrl = ApiUrl;
+            Clippings = clippings;
         }
     }
 }

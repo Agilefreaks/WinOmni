@@ -5,6 +5,7 @@
     public interface IOmniApi
     {
         IClippings Clippings { get; }
+
         string ApiKey { get; set; }
     }
 }

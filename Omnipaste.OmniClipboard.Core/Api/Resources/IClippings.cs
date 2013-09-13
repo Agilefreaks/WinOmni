@@ -5,5 +5,9 @@
         void SaveAsync(string data, ISaveClippingCompleteHandler handler);
 
         void GetLastAsync(IGetClippingCompleteHandler handler);
+
+        string ApiKey { get; set; }
+
+        string ApiUrl { get; set; }
     }
 }
