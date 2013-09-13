@@ -1,9 +1,11 @@
 ﻿namespace Omnipaste.OmniClipboard.Core.Api
 {
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
+
     public interface IOmniApi
     {
-        void SaveClippingAsync(string data, ISaveClippingCompleteHandler handler);
+        IClippings Clippings { get; }
 
-        void GetLastClippingAsync(IGetClippingCompleteHandler handler);
+        string ApiKey { get; set; }
     }
 }

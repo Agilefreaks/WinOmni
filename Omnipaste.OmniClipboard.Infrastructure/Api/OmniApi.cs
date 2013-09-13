@@ -1,61 +1,42 @@
-﻿using System.Net;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using Omnipaste.OmniClipboard.Core.Api;
-using RestSharp;
+﻿using Omnipaste.OmniClipboard.Core.Api.Resources;
 
 namespace Omnipaste.OmniClipboard.Infrastructure.Api
 {
+    using System.Configuration;
+    using Omnipaste.OmniClipboard.Core.Api;
+
     public class OmniApi : IOmniApi
     {
-        private readonly ApiConfig _apiConfig;
-        private readonly CommunicationSettings _communicationSettings;
+        private string _apiKey;
 
-        public OmniApi(IConfigurationService configurationService)
+        public const string Version = "v1";
+
+        public string BaseUrl { get; set; }
+
+        public string ApiKey
         {
-            _apiConfig = configurationService.ApiConfig;
-            _communicationSettings = configurationService.CommunicationSettings;
-        }
-
-        public void SaveClippingAsync(string data, ISaveClippingCompleteHandler handler)
-        {
-            var client = new RestClient(_apiConfig.BaseUrl);
-            
-            var restRequest = new RestRequest(_apiConfig.Resources.Clippings, Method.POST);
-            restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddBody(new Clipping(_communicationSettings.Channel, data));
-
-            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
-        }
-
-        public void GetLastClippingAsync(IGetClippingCompleteHandler handler)
-        {
-            var client = new RestClient(_apiConfig.BaseUrl);
-            
-            var restRequest = new RestRequest(string.Format("{0}/{1}/last", _apiConfig.Resources.Clippings, _communicationSettings.Channel), Method.GET);
-            restRequest.RequestFormat = DataFormat.Json;
-
-            client.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
-        }
-
-        private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)
-        {
-            if (response.StatusCode == HttpStatusCode.Created)
+            get
             {
-                handler.SaveClippingSucceeded();
+                return _apiKey;
             }
-            else
+            set
             {
-                handler.SaveClippingFailed(response.Content);
+                _apiKey = value;
+                Clippings.ApiKey = _apiKey;
             }
         }
 
-        private void HandleGetClippingCompleted(IRestResponse<Clipping> response, IGetClippingCompleteHandler handler)
+        public string ApiUrl
         {
-            if (response.StatusCode == HttpStatusCode.OK && response.Data != null)
-            {
-                handler.HandleClipping(response.Data.Content);
-            }
+            get { return string.Format("{0}/{1}", BaseUrl, Version); }
+        }
+        public IClippings Clippings { get; set; }
+
+        public OmniApi(IClippings clippings)
+        {
+            BaseUrl = ConfigurationManager.AppSettings["apiUrl"];
+            clippings.ApiUrl = ApiUrl;
+            Clippings = clippings;
         }
     }
 }

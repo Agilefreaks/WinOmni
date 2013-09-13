@@ -6,8 +6,6 @@ namespace OmniCommon.Interfaces
     {
         CommunicationSettings CommunicationSettings { get; }
 
-        ApiConfig ApiConfig { get; set; }
-
         void Initialize();
 
         void UpdateCommunicationChannel(string channel);
