@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.OmniClipboard.Core.Tests
 {
+    using System;
     using Omnipaste.OmniClipboard.Core.Api;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
     using Omnipaste.OmniClipboard.Core.Messaging;
@@ -86,13 +87,29 @@
         }
 
         [Test]
-        public void NewMessageReceived_Always_GetsClippingFromApi()
+        public void NewMessageReceived_WhenTheMessageWasMyOwn_WillNotGetTheLastClippingSinceIAlreadyHaveIt()
         {
-            InitializeMockClient();
+            string messageGuid = Guid.NewGuid().ToString();
+            _subject.MessageGuid = messageGuid;
             _mockMessagingService.Setup(
                 m => m.Connect(It.IsAny<string>(), It.IsAny<IMessageHandler>()))
                        .Callback<string, IMessageHandler>(
-                           (message, handler) => handler.MessageReceived("test"));
+                           (message, handler) => handler.MessageReceived(messageGuid));
+            InitializeMockClient();
+
+            _subject.Initialize();
+
+            _mockClippings.Verify(m => m.GetLastAsync(_subject), Times.Exactly(0));
+        }
+
+        [Test]
+        public void NewMessageReceived_Always_GetsClippingFromApi()
+        {
+            string messageGuid = Guid.NewGuid().ToString();
+            _subject.MessageGuid = messageGuid;
+            _mockMessagingService.Setup(x => x.Connect(It.IsAny<string>(), It.IsAny<IMessageHandler>()))
+                       .Callback<string, IMessageHandler>((p1, p2) => p2.MessageReceived(Guid.NewGuid().ToString()));
+            InitializeMockClient();
 
             _subject.Initialize();
 
@@ -119,11 +136,20 @@
             _mockMessagingService.Verify(m => m.SendAsync(It.IsAny<string>(), "NewMessage", It.IsAny<IMessageHandler>()));
         }
 
+        [Test]
+        public void SaveClippingSucceeded_Always_SetsAnotherGuid()
+        {
+            InitializeMockClient();
+            var previousGuid = _subject.MessageGuid = Guid.NewGuid().ToString();
+
+            ((ISaveClippingCompleteHandler)_subject).SaveClippingSucceeded();
+
+            Assert.AreNotEqual(previousGuid, _subject.MessageGuid);
+        }
+
         private void InitializeMockClient()
         {
             SetupCommnuicationSettings();
-            _mockMessagingService.Setup(x => x.Connect(It.IsAny<string>(), It.IsAny<IMessageHandler>()))
-                       .Callback<string, IMessageHandler>((p1, p2) => p2.MessageReceived("[1, \"test\", \"test\"]"));
             var initializeTask = _subject.Initialize();
             Task.WaitAll(initializeTask);
         }
