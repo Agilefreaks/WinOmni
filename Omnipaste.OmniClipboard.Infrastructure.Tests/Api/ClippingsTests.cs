@@ -109,8 +109,8 @@
                     It.Is<IRestRequest>(r => 
                         r.Method == Method.POST && 
                         r.Parameters.Any(p => 
-                            p.Type == ParameterType.RequestBody && 
-                            (string)p.Value == "{\"Token\":null,\"Content\":\"data\"}")),
+                            p.Type == ParameterType.RequestBody &&
+                            (string)p.Value == "{\r\n  \"token\": null,\r\n  \"content\": \"data\"\r\n}")),
                     It.IsAny<Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>()));
         }
 

@@ -1,10 +1,14 @@
 ﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
 {
+    using System;
+    using System.Collections.Specialized;
     using System.Net;
     using Omnipaste.OmniClipboard.Core.Api;
     using RestSharp;
     using Omnipaste.OmniClipboard.Core.Api.Models;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
+    using RestSharp.Serializers;
+    using JsonSerializer = Omnipaste.OmniClipboard.Infrastructure.Api.JsonSerializer;
 
     public class Clippings : IClippings
     {
@@ -36,10 +40,12 @@
 
         public void SaveAsync(string data, ISaveClippingCompleteHandler handler)
         {
-            var restRequest = new RestRequest(ResourceKey, Method.POST)
+           var restRequest = new RestRequest(ResourceKey, Method.POST)
                                   {
-                                      RequestFormat = DataFormat.Json
+                                      RequestFormat = DataFormat.Json,
+                                      JsonSerializer = new JsonSerializer()
                                   };
+            
             restRequest.AddBody(new Clipping(ApiKey, data));
 
             RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
