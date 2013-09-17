@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Common.Logging;
 using Common.Logging.Simple;
 using OmniCommon.Interfaces;
@@ -15,6 +16,8 @@ namespace Omnipaste.OmniClipboard.Core
         private readonly IMessagingService _messagingService;
         private Task<bool> _initializationTask;
         private ILog _logger;
+
+        public string MessageGuid { get; set; }
 
         public string Channel { get; private set; }
 
@@ -69,6 +72,7 @@ namespace Omnipaste.OmniClipboard.Core
 
         void ISaveClippingCompleteHandler.SaveClippingSucceeded()
         {
+            MessageGuid = Guid.NewGuid().ToString();
             _messagingService.SendAsync(Channel, "NewMessage", this);
         }
 
@@ -79,7 +83,10 @@ namespace Omnipaste.OmniClipboard.Core
 
         void IMessageHandler.MessageReceived(string message)
         {
-            _omniApi.Clippings.GetLastAsync(this);
+            if (string.Compare(message, MessageGuid, StringComparison.InvariantCulture) != 0)
+            {
+                _omniApi.Clippings.GetLastAsync(this);
+            }
         }
 
         void IGetClippingCompleteHandler.HandleClipping(string clip)

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Deployment.Application;
     using System.Windows;
     using CustomizedClickOnce.Common;
@@ -20,9 +21,6 @@
 
                 var application = new App();
 
-                // Init Reporting Service
-                BugFreak.Hook();
-
                 application.InitializeComponent();
                 application.Run();
 
@@ -38,6 +36,16 @@
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
             return true;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            BugFreak.Hook(
+                ConfigurationManager.AppSettings["BugFreakApiKey"],
+                ConfigurationManager.AppSettings["BugFreakToken"],
+                this);
         }
 
         private static void PerformFirstRunTasks()
