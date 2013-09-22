@@ -30,6 +30,7 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         {
             get { return string.Format("{0}/{1}", BaseUrl, Version); }
         }
+
         public IClippings Clippings { get; set; }
 
         public OmniApi(IClippings clippings)

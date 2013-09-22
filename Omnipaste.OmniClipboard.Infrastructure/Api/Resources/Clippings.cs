@@ -1,13 +1,10 @@
 ﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
 {
-    using System;
-    using System.Collections.Specialized;
     using System.Net;
     using Omnipaste.OmniClipboard.Core.Api;
     using RestSharp;
     using Omnipaste.OmniClipboard.Core.Api.Models;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
-    using RestSharp.Serializers;
     using JsonSerializer = Omnipaste.OmniClipboard.Infrastructure.Api.JsonSerializer;
 
     public class Clippings : IClippings

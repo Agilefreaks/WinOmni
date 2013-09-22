@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ClippingsTests.cs" />
+    <Compile Include="Api\UsersTests.cs" />
     <Compile Include="Messaging\PubNubMessagingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

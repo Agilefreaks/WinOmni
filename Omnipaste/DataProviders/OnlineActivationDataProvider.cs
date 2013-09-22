@@ -9,16 +9,6 @@
 
     public class OnlineActivationDataProvider: IActivationDataProvider
     {
-        private static string _tokenLink;
-
-        public static string TokenLink
-        {
-            get
-            {
-                return _tokenLink ?? (_tokenLink = ConfigurationManager.AppSettings["baseUrl"] + "whatsmytoken");
-            }
-        }
-
         public ActivationData GetActivationData(string token)
         {
             ActivationData activationData = null;

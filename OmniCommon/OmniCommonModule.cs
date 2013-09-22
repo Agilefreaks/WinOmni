@@ -4,7 +4,6 @@ using OmniCommon.Services;
 
 namespace OmniCommon
 {
-    using OmniCommon.DataProviders;
     using OmniCommon.Services.ActivationServiceData;
 
     public class OmniCommonModule : NinjectModule
