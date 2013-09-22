@@ -153,7 +153,6 @@
     </Compile>
     <Compile Include="ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="ContextMenu\IContextMenuViewModel.cs" />
-    <Compile Include="DataProviders\ActivationDataProvider.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="DataProviders\MockActivationDataProvider.cs" />
