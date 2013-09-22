@@ -5,9 +5,10 @@ namespace Omnipaste.Configuration
 {
     using Caliburn.Micro;
     using OmniCommon.Interfaces;
-    using OmniCommon.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
+    using Omnipaste.OmniClipboard.Infrastructure.Services;
+    using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData.ActivationServiceSteps;
 
     public class ConfigurationViewModel : Screen, IConfigurationViewModel
     {

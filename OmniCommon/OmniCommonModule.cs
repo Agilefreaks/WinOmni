@@ -4,7 +4,6 @@ using OmniCommon.Services;
 
 namespace OmniCommon
 {
-    using OmniCommon.Services.ActivationServiceData;
 
     public class OmniCommonModule : NinjectModule
     {
@@ -12,8 +11,6 @@ namespace OmniCommon
         {
             Kernel.Bind<IOmniService>().To<OmniService>().InSingletonScope();
 
-            Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
-            Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
         }
     }

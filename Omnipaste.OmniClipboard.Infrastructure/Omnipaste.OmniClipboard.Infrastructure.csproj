@@ -42,6 +42,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
     </Reference>
@@ -79,6 +83,31 @@
     <Compile Include="Messaging\PubNubMessagingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OmniClipboardModule.cs" />
+    <Compile Include="Services\ActivationService.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Failed.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUri.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUser.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RetryInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SingleStateEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Start.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
+    <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
+    <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />
+    <Compile Include="Services\ActivationServiceData\StepFactory.cs" />
+    <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
+    <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
+    <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
+    <Compile Include="Services\IActivationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
