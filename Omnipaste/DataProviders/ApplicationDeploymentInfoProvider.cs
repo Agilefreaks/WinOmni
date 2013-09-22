@@ -13,7 +13,7 @@
 
         public bool HasValidActivationUri
         {
-            get { return ApplicationDeployment.IsNetworkDeployed && this.ActivationUri != null; }
+            get { return ApplicationDeployment.IsNetworkDeployed && ActivationUri != null; }
         }
 
         public bool IsFirstNetworkRun

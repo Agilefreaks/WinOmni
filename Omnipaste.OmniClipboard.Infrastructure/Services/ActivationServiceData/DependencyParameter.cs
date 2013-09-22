@@ -8,8 +8,8 @@
 
         public DependencyParameter(string name, object value)
         {
-            this.Name = name;
-            this.Value = value;
+            Name = name;
+            Value = value;
         }
 
         public DependencyParameter() : this(string.Empty, null)

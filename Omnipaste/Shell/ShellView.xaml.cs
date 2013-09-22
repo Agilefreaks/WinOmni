@@ -4,7 +4,7 @@
     {
         public ShellView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

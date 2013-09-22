@@ -32,7 +32,7 @@ namespace Omnipaste.Configuration
 
         private void OnContinuationAction(Task result)
         {
-            if (this._activationService.CurrentStep == null || this._activationService.CurrentStep.GetId().Equals(typeof(Failed)))
+            if (_activationService.CurrentStep == null || _activationService.CurrentStep.GetId().Equals(typeof(Failed)))
             {
                 Execute.OnUIThread(() => ApplicationWrapper.ShutDown());
             }

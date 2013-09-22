@@ -8,17 +8,17 @@
 
         public LoadLocalConfiguration(IConfigurationService configurationService)
         {
-            this._configurationService = configurationService;
+            _configurationService = configurationService;
         }
 
         public override IExecuteResult Execute()
         {
-            this._configurationService.Initialize();
+            _configurationService.Initialize();
 
             return new ExecuteResult
                        {
                            State =
-                               string.IsNullOrEmpty(this._configurationService.CommunicationSettings.Channel)
+                               string.IsNullOrEmpty(_configurationService.CommunicationSettings.Channel)
                                    ? SimpleStepStateEnum.Failed
                                    : SimpleStepStateEnum.Successful
                        };

@@ -19,37 +19,37 @@
         [SetUp]
         public void Setup()
         {
-            this._mockEventAggregator = new Mock<IEventAggregator>();
-            this._subject = new GetTokenFromUser(this._mockEventAggregator.Object);
-            this._tokenRequestResultMessage =
+            _mockEventAggregator = new Mock<IEventAggregator>();
+            _subject = new GetTokenFromUser(_mockEventAggregator.Object);
+            _tokenRequestResultMessage =
                 new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, "test");
 
-            this._mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
-                                .Callback(() => this._subject.Handle(this._tokenRequestResultMessage));
+            _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
+                                .Callback(() => _subject.Handle(_tokenRequestResultMessage));
         }
 
         [Test]
         public void Ctor_Always_ShouldCallEventAggregatorSubscribeWithSelf()
         {
-            this._mockEventAggregator.Verify(x => x.Subscribe(this._subject));
+            _mockEventAggregator.Verify(x => x.Subscribe(_subject));
         }
 
         [Test]
         public void Execute_Always_ShouldCallEventAggregatorPublishWithTheGetTokenFromUserMessage()
         {
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._mockEventAggregator.Verify(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()));
+            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()));
         }
 
         [Test]
         public void Execute_AfterHandlingTheTokenRequestResultAndTheRequestWasSuccessful_ReturnsAResultWithStatusSuccessfulAndTheToken()
         {
             var requestResult = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, "test");
-            this._mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
-                                .Callback(() => this._subject.Handle(requestResult));
+            _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
+                                .Callback(() => _subject.Handle(requestResult));
 
-            var executeResult = this._subject.Execute();
+            var executeResult = _subject.Execute();
 
             executeResult.State.Should().Be(SimpleStepStateEnum.Successful);
             executeResult.Data.Should().Be("test");
@@ -59,10 +59,10 @@
         public void Execute_AfterHandlingTheTokenRequestResultAndTheRequestWasCanceled_ReturnsAResultWithStatusSuccessfulAndTheToken()
         {
             var requestResult = new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled);
-            this._mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
-                                .Callback(() => this._subject.Handle(requestResult));
+            _mockEventAggregator.Setup(x => x.Publish(It.IsAny<GetTokenFromUserMessage>()))
+                                .Callback(() => _subject.Handle(requestResult));
 
-            var executeResult = this._subject.Execute();
+            var executeResult = _subject.Execute();
 
             executeResult.State.Should().Be(SimpleStepStateEnum.Failed);
             executeResult.Data.Should().BeNull();

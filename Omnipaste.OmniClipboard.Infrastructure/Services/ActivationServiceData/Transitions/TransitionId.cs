@@ -8,26 +8,26 @@
 
         public TransitionId(object stateId, object state)
         {
-            this.StateId = stateId;
-            this.State = state;
+            StateId = stateId;
+            State = state;
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as TransitionId);
+            return Equals(obj as TransitionId);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((this.StateId != null ? this.StateId.GetHashCode() : 0) * 397) ^ (this.State != null ? this.State.GetHashCode() : 0);
+                return ((StateId != null ? StateId.GetHashCode() : 0) * 397) ^ (State != null ? State.GetHashCode() : 0);
             }
         }
 
         protected bool Equals(TransitionId other)
         {
-            return other != null && Equals(this.StateId, other.StateId) && Equals(this.State, other.State);
+            return other != null && Equals(StateId, other.StateId) && Equals(State, other.State);
         }
     }
 }

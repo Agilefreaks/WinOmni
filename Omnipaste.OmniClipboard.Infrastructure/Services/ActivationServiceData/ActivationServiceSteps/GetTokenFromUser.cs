@@ -17,21 +17,21 @@
 
         public GetTokenFromUser(IEventAggregator eventAggregator)
         {
-            this._eventAggregator = eventAggregator;
-            this._eventAggregator.Subscribe(this);
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
         }
 
         public override IExecuteResult Execute()
         {
-            this._autoResetEvent = new AutoResetEvent(false);
-            this._eventAggregator.Publish(new GetTokenFromUserMessage());
-            this._autoResetEvent.WaitOne();
+            _autoResetEvent = new AutoResetEvent(false);
+            _eventAggregator.Publish(new GetTokenFromUserMessage());
+            _autoResetEvent.WaitOne();
 
             var executeResult = new ExecuteResult();
-            if (this._lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
+            if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
             {
                 executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = this._lastRequestResult.Token;
+                executeResult.Data = _lastRequestResult.Token;
             }
             else
             {
@@ -43,8 +43,8 @@
 
         public void Handle(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            this._lastRequestResult = tokenRequestResultMessage;
-            this._autoResetEvent.Set();
+            _lastRequestResult = tokenRequestResultMessage;
+            _autoResetEvent.Set();
         }
     }
 }

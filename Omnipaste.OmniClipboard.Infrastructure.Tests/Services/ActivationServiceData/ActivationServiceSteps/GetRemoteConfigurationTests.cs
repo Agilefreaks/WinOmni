@@ -19,17 +19,17 @@
         [SetUp]
         public void Setup()
         {
-            this._mockActivationDataProvider = new Mock<IActivationDataProvider>();
-            this._token = "testToken";
-            this._subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, this._token) };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>()))
+            _mockActivationDataProvider = new Mock<IActivationDataProvider>();
+            _token = "testToken";
+            _subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, _token) };
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>()))
                                        .Returns(new ActivationData());
         }
 
         [Test]
         public void Execute_PayloadIsNull_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, null) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, null) };
 
             subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
@@ -37,7 +37,7 @@
         [Test]
         public void Execute_PayloadIsAnEmptyString_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, string.Empty) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, string.Empty) };
 
             subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
@@ -45,15 +45,15 @@
         [Test]
         public void Execute_PayloadIsNonEmptyString_ShouldCallActivationDataProviderGetActivationDataWithThePayload()
         {
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._mockActivationDataProvider.Verify(x => x.GetActivationData(this._token), Times.Once());
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndEmptyToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo(string.Empty, GetRemoteConfiguration.MaxRetryCount - 1))
                               };
@@ -64,7 +64,7 @@
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNullToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo(null, GetRemoteConfiguration.MaxRetryCount - 1))
                               };
@@ -75,33 +75,33 @@
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount - 1))
                               };
 
             subject.Execute();
 
-            this._mockActivationDataProvider.Verify(x => x.GetActivationData(this._token), Times.Once());
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountEqualToMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount))
                               };
 
             subject.Execute();
 
-            this._mockActivationDataProvider.Verify(x => x.GetActivationData(this._token), Times.Once());
+            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountGreaterThanMaxFailCountAndNonEmptyToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter =
                                       new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount + 1))
@@ -113,44 +113,44 @@
         [Test]
         public void Execute_GetConfigurationReturnsEmptyActivationData_ShouldReturnAResultWithStatusFailed()
         {
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(this._token)).Returns(new ActivationData());
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(new ActivationData());
 
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
         [Test]
         public void Execute_GetConfigurationReturnsValidActivationDataObject_ShouldReturnAResultWithStatusSuccessful()
         {
             var activationData = new ActivationData { Email = "test@email.com" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(this._token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
 
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Successful);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Successful);
         }
 
         [Test]
         public void Execute_GetConfigurationReturnsValidActivationDataObject_ShouldReturnAResultWithDataContainingTheEmail()
         {
             var activationData = new ActivationData { Email = "test@email.com" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(this._token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
 
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._subject.Execute().Data.Should().Be("test@email.com");
+            _subject.Execute().Data.Should().Be("test@email.com");
         }
 
         [Test]
         public void Execute_GetConfigurationReturnsActivationDataObjectWithCommnuicationErrors_ShouldReturnAResultWithStatusCommunicationFailure()
         {
             var activationData = new ActivationData { CommunicationError = "error" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(this._token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
 
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.CommunicationFailure);
+            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.CommunicationFailure);
         }
 
         [Test]
@@ -158,12 +158,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -176,12 +176,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -194,12 +194,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -212,9 +212,9 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount);
-            var subject = new GetRemoteConfiguration(this._mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, retryInfo) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, retryInfo) };
             var activationData = new ActivationData { CommunicationError = "error" };
-            this._mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
             var executeResult = subject.Execute();
 

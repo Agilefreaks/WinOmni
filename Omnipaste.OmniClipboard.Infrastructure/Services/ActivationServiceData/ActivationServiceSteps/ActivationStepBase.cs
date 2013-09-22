@@ -10,7 +10,7 @@
 
         public virtual object GetId()
         {
-            return this.GetType();
+            return GetType();
         }
     }
 }

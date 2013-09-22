@@ -14,7 +14,7 @@
         [SetUp]
         public void Setup()
         {
-            this._subject = new StepFactory();
+            _subject = new StepFactory();
         }
 
         [Test]
@@ -25,9 +25,9 @@
                 var start = new Start();
                 kernel.Bind<Start>().ToConstant(start);
 
-                this._subject.Kernel = kernel;
+                _subject.Kernel = kernel;
 
-                this._subject.Create(typeof(Start)).Should().Be(start);
+                _subject.Create(typeof(Start)).Should().Be(start);
             }
         }
     }

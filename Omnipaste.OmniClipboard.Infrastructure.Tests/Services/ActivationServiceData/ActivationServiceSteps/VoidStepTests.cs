@@ -12,13 +12,13 @@
         [SetUp]
         public void Setup()
         {
-            this._subject = new VoidStep();
+            _subject = new VoidStep();
         }
 
         [Test]
         public void Execute_Always_SetsStatusToSuccessful()
         {
-            this._subject.Execute().State.Should().Be(SingleStateEnum.Successful);
+            _subject.Execute().State.Should().Be(SingleStateEnum.Successful);
         }
     }
 }

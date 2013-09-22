@@ -31,7 +31,7 @@
             var handle = ClipboardMessageDelegator.GetHandle();
 
             _hWndSource = HwndSource.FromHwnd(handle);
-            _hWndSource.AddHook(this.HandleClipboardMessage); 
+            _hWndSource.AddHook(HandleClipboardMessage); 
 
             _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
         }
@@ -40,7 +40,7 @@
         {
             User32.ChangeClipboardChain(_hWndSource.Handle, _clipboardViewerNext);
             _clipboardViewerNext = IntPtr.Zero;
-            _hWndSource.RemoveHook(this.HandleClipboardMessage);
+            _hWndSource.RemoveHook(HandleClipboardMessage);
         }
 
         public void SetData(string data)

@@ -37,8 +37,8 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         /// </summary>
         public JsonSerializer()
         {
-            this.ContentType = "application/json";
-            this._serializer = new Newtonsoft.Json.JsonSerializer
+            ContentType = "application/json";
+            _serializer = new Newtonsoft.Json.JsonSerializer
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 NullValueHandling = NullValueHandling.Include,
@@ -52,8 +52,8 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         /// </summary>
         public JsonSerializer(Newtonsoft.Json.JsonSerializer serializer)
         {
-            this.ContentType = "application/json";
-            this._serializer = serializer;
+            ContentType = "application/json";
+            _serializer = serializer;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
                     jsonTextWriter.Formatting = Formatting.Indented;
                     jsonTextWriter.QuoteChar = '"';
 
-                    this._serializer.Serialize(jsonTextWriter, obj);
+                    _serializer.Serialize(jsonTextWriter, obj);
 
                     var result = stringWriter.ToString();
                     return result;

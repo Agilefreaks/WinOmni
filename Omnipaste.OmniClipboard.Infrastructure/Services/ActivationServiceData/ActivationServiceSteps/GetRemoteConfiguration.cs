@@ -17,31 +17,31 @@
         {
             get
             {
-                return this._parameter;
+                return _parameter;
             }
 
             set
             {
-                this._parameter = value;
-                this._payload = (value.Value as RetryInfo) ?? new RetryInfo((string)value.Value);
+                _parameter = value;
+                _payload = (value.Value as RetryInfo) ?? new RetryInfo((string)value.Value);
             }
         }
 
         public GetRemoteConfiguration(IActivationDataProvider activationDataProvider)
         {
-            this._activationDataProvider = activationDataProvider;
+            _activationDataProvider = activationDataProvider;
         }
 
         public override IExecuteResult Execute()
         {
             var executeResult = new ExecuteResult();
-            if (string.IsNullOrEmpty(this._payload.Token))
+            if (string.IsNullOrEmpty(_payload.Token))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
             }
             else
             {
-                this.SetResultPropertiesBasedOnActivationData(executeResult);
+                SetResultPropertiesBasedOnActivationData(executeResult);
             }
 
             return executeResult;
@@ -49,12 +49,12 @@
 
         private void SetResultPropertiesBasedOnActivationData(IExecuteResult executeResult)
         {
-            var activationData = this._activationDataProvider.GetActivationData(this._payload.Token);
+            var activationData = _activationDataProvider.GetActivationData(_payload.Token);
             if (!string.IsNullOrEmpty(activationData.CommunicationError))
             {
                 executeResult.Data = new RetryInfo(
-                    this._payload.Token, this._payload.FailCount + 1, activationData.CommunicationError);
-                executeResult.State = this._payload.FailCount < MaxRetryCount
+                    _payload.Token, _payload.FailCount + 1, activationData.CommunicationError);
+                executeResult.State = _payload.FailCount < MaxRetryCount
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
             }

@@ -17,22 +17,22 @@
         [SetUp]
         public void Setup()
         {
-            this._mockConfigurationService = new Mock<IConfigurationService>();
-            this._subject = new SaveConfiguration(this._mockConfigurationService.Object) { Parameter = new DependencyParameter("channel", "testChannel") };
+            _mockConfigurationService = new Mock<IConfigurationService>();
+            _subject = new SaveConfiguration(_mockConfigurationService.Object) { Parameter = new DependencyParameter("channel", "testChannel") };
         }
 
         [Test]
         public void Execute_Always_ReturnsAResultWithStatusSuccessful()
         {
-            this._subject.Execute().State.Should().Be(SingleStateEnum.Successful);
+            _subject.Execute().State.Should().Be(SingleStateEnum.Successful);
         }
 
         [Test]
         public void Execute_Always_CallsConfigurationServiceUpdateCommnuicationChannelWithThePayloadObject()
         {
-            this._subject.Execute();
+            _subject.Execute();
 
-            this._mockConfigurationService.Verify(x => x.UpdateCommunicationChannel("testChannel"));
+            _mockConfigurationService.Verify(x => x.UpdateCommunicationChannel("testChannel"));
         }
     }
 }

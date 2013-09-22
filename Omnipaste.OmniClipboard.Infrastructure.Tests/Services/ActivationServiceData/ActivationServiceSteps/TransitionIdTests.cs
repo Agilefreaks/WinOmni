@@ -16,33 +16,33 @@
         [SetUp]
         public void Setup()
         {
-            this._stateId = 1;
-            this._state = 2;
-            this._subject = new TransitionId(this._stateId, this._state);
+            _stateId = 1;
+            _state = 2;
+            _subject = new TransitionId(_stateId, _state);
         }
 
         [Test]
         public void Equals_SecondIdHasEqualSourceStepTypeAndState_ReturnsTrue()
         {
-            this._subject.Equals(new TransitionId(this._stateId, this._state)).Should().BeTrue();
+            _subject.Equals(new TransitionId(_stateId, _state)).Should().BeTrue();
         }
 
         [Test]
         public void Equals_SecondIdHasEqualSourceStepTypeButDifferentState_ReturnsFalse()
         {
-            this._subject.Equals(new TransitionId(this._stateId, 5)).Should().BeFalse();
+            _subject.Equals(new TransitionId(_stateId, 5)).Should().BeFalse();
         }
 
         [Test]
         public void Equals_SecondIdHasDifferentStepTypeButSameState_ReturnsFalse()
         {
-            this._subject.Equals(new TransitionId(3, this._state)).Should().BeFalse();
+            _subject.Equals(new TransitionId(3, _state)).Should().BeFalse();
         }
 
         [Test]
         public void Equals_SecondIdHasDifferentStepTypeAndState_ReturnsFalse()
         {
-            this._subject.Equals(new TransitionId(4, 5)).Should().BeFalse();
+            _subject.Equals(new TransitionId(4, 5)).Should().BeFalse();
         }
     }
 }

@@ -21,7 +21,7 @@
 
         public void Cancel()
         {
-            this.Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled));
+            Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled));
         }
 
         private void Publish(TokenRequestResultMessage tokenRequestResultMessage)
