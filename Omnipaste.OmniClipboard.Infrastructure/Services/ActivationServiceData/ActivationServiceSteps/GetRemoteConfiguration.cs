@@ -2,6 +2,7 @@
 {
     using OmniCommon.DataProviders;
     using Omnipaste.OmniClipboard.Core.Api;
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData;
 
     public class GetRemoteConfiguration : ActivationStepBase
@@ -26,11 +27,11 @@
             }
         }
 
-        public IOmniApi OmniApi  { get; set; }
+        public IUsers Users { get; set; }
 
-        public GetRemoteConfiguration(IOmniApi omniApi)
+        public GetRemoteConfiguration(IUsers users)
         {
-            OmniApi = omniApi;
+            Users = users;
         }
 
         public override IExecuteResult Execute()
@@ -42,7 +43,7 @@
             }
             else
             {
-                var activationData = OmniApi.Users.Activate(_payload.Token);
+                var activationData = Users.Activate(_payload.Token);
                 SetResultPropertiesBasedOnActivationData(executeResult, activationData);
             }
 

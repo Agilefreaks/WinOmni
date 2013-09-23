@@ -33,8 +33,6 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
 
         public IClippings Clippings { get; set; }
 
-        public IUsers Users { get; set; }
-
         public OmniApi(IClippings clippings)
         {
             BaseUrl = ConfigurationManager.AppSettings["apiUrl"];

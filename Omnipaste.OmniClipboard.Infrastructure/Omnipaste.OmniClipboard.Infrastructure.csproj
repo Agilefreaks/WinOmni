@@ -107,7 +107,9 @@
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
+    <Compile Include="Services\ConfigurationManager.cs" />
     <Compile Include="Services\IActivationService.cs" />
+    <Compile Include="Services\IConfigurationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

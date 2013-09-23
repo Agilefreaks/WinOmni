@@ -2,31 +2,28 @@
 {
     using OmniCommon.DataProviders;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
+    using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
 
     public class Users : IUsers
     {
-        private string _apiUrl;
-
         public readonly string ResourceKey = "users";
+
+        public const string Version = "v1";
 
         public IRestClient RestClient { get; set; }
 
+        protected string BaseUrl { get; set; }
+
         public string ApiUrl
         {
-            get
-            {
-                return _apiUrl;
-            }
-            set
-            {
-                _apiUrl = value;
-                RestClient.BaseUrl = value;
-            }
+            get { return string.Format("{0}/{1}", BaseUrl, Version); }
         }
 
-        public Users(IRestClient restClient)
+        public Users(IConfigurationManager configurationManager, IRestClient restClient)
         {
+            BaseUrl = configurationManager.AppSettings["apiUrl"];
+            restClient.BaseUrl = ApiUrl;
             RestClient = restClient;
         }
 

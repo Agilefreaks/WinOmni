@@ -4,7 +4,7 @@
 
     public interface IUsers
     {
-        string ApiUrl { get; set; }
+        string ApiUrl { get; }
 
         ActivationData Activate(string token);
     }

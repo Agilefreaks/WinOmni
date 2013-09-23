@@ -1,8 +1,6 @@
 ﻿using Ninject.Modules;
 using OmniCommon.Interfaces;
-using Omnipaste.OmniClipboard.Core.Api;
 using Omnipaste.OmniClipboard.Core.Messaging;
-using Omnipaste.OmniClipboard.Infrastructure.Api;
 using Omnipaste.OmniClipboard.Infrastructure.Messaging;
 using RestSharp;
 
@@ -19,13 +17,14 @@ namespace Omnipaste.OmniClipboard.Infrastructure
         {
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
             Kernel.Bind<IActivationService>().To<ActivationService>().InSingletonScope();
+            Kernel.Bind<IConfigurationManager>().To<ConfigurationManager>().InSingletonScope();
 
             Kernel.Bind<IOmniClipboard>().To<Core.OmniClipboard>().InSingletonScope();
             Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>().InSingletonScope();
-            Kernel.Bind<IOmniApi>().To<OmniApi>().InSingletonScope();
             Kernel.Bind<IMessagingService>().To<PubNubMessagingService>();
             Kernel.Bind<IRestClient>().To<RestClient>();
             Kernel.Bind<IClippings>().To<Clippings>();
+            Kernel.Bind<IUsers>().To<Users>();
         }
     }
 }
