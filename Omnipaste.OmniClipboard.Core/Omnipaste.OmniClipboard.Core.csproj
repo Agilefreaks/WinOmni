@@ -67,6 +67,7 @@
     <Compile Include="Api\ISaveClippingCompleteHandler.cs" />
     <Compile Include="Api\Models\Clipping.cs" />
     <Compile Include="Api\Resources\IClippings.cs" />
+    <Compile Include="Api\Resources\IUsers.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\IMessagingService.cs" />
     <Compile Include="OmniClipboard.cs" />

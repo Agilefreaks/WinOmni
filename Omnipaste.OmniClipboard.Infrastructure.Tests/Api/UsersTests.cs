@@ -4,6 +4,7 @@
     using System.Linq;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.DataProviders;
     using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
     using RestSharp;
 
@@ -20,6 +21,9 @@
             _mockRestClient = new Mock<IRestClient>();
             
             _users = new Users(_mockRestClient.Object);
+
+            _mockRestClient.Setup(rc => rc.Execute<ActivationData>(It.IsAny<IRestRequest>()))
+                           .Returns(new RestResponse<ActivationData>());
         }
 
         [Test]
@@ -47,7 +51,7 @@
         {
             _users.Activate(string.Empty);
 
-            _mockRestClient.Verify(rc => rc.ExecuteAsync(It.Is<IRestRequest>(rr => rr.Method == Method.GET), It.IsAny<Action<IRestResponse, RestRequestAsyncHandle>>()));
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Method == Method.GET)));
         }
 
         [Test]
@@ -55,7 +59,7 @@
         {
             _users.Activate(string.Empty);
 
-            _mockRestClient.Verify(rc => rc.ExecuteAsync(It.Is<IRestRequest>(rr => rr.Resource == _users.ResourceKey), It.IsAny<Action<IRestResponse, RestRequestAsyncHandle>>()));
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Resource == _users.ResourceKey)));
         }
 
         [Test]
@@ -63,9 +67,9 @@
         {
             _users.Activate("token");
 
-            _mockRestClient.Verify(rc => rc.ExecuteAsync(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
                             p.Type == ParameterType.HttpHeader &&
-                            (string)p.Value == "token")), It.IsAny<Action<IRestResponse, RestRequestAsyncHandle>>()));
+                            (string)p.Value == "token"))));
         }
 
         //[Test]

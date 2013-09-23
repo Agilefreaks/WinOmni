@@ -7,5 +7,7 @@
         IClippings Clippings { get; }
 
         string ApiKey { get; set; }
+
+        IUsers Users { get; set; }
     }
 }

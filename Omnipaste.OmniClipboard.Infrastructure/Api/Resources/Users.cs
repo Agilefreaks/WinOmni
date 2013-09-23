@@ -1,8 +1,10 @@
 ﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
 {
+    using OmniCommon.DataProviders;
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
     using RestSharp;
 
-    public class Users
+    public class Users : IUsers
     {
         private string _apiUrl;
 
@@ -28,12 +30,14 @@
             RestClient = restClient;
         }
 
-        public void Activate(string token)
+        public ActivationData Activate(string token)
         {
             var restRequest = new RestRequest(ResourceKey, Method.GET);
             restRequest.AddHeader("activation_token", token);
 
-            RestClient.ExecuteAsync(restRequest, (response, handle) => { });
+            var restResponse = RestClient.Execute<ActivationData>(restRequest);
+
+            return restResponse.Data;
         }
     }
 }

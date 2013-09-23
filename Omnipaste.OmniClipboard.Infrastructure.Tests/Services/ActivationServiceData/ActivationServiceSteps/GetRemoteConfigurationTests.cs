@@ -4,6 +4,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.DataProviders;
+    using Omnipaste.OmniClipboard.Core.Api;
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData;
     using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -16,20 +18,32 @@
 
         private string _token;
 
+        private Mock<IOmniApi> _mockOmniApi;
+
+        private Mock<IUsers> _mockUsersApiResource;
+
         [SetUp]
         public void Setup()
         {
             _mockActivationDataProvider = new Mock<IActivationDataProvider>();
+            _mockOmniApi = new Mock<IOmniApi>();
+            _mockUsersApiResource = new Mock<IUsers>();
+            _mockOmniApi.SetupGet(api => api.Users).Returns(_mockUsersApiResource.Object);
+            _mockUsersApiResource.Setup(u => u.Activate(It.IsAny<string>())).Returns(new ActivationData());
             _token = "testToken";
-            _subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, _token) };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(It.IsAny<string>()))
-                                       .Returns(new ActivationData());
+            _subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object) { Parameter = new DependencyParameter(string.Empty, _token) };
+        }
+
+        [Test]
+        public void Ctor_Always_SetsTheOmniApi()
+        {
+            Assert.AreEqual(_subject.OmniApi, _mockOmniApi.Object);
         }
 
         [Test]
         public void Execute_PayloadIsNull_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, null) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object) { Parameter = new DependencyParameter(string.Empty, null) };
 
             subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
@@ -37,7 +51,7 @@
         [Test]
         public void Execute_PayloadIsAnEmptyString_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, string.Empty) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object) { Parameter = new DependencyParameter(string.Empty, string.Empty) };
 
             subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
@@ -47,13 +61,13 @@
         {
             _subject.Execute();
 
-            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
+            _mockUsersApiResource.Verify(x => x.Activate(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndEmptyToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo(string.Empty, GetRemoteConfiguration.MaxRetryCount - 1))
                               };
@@ -64,7 +78,7 @@
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNullToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo(null, GetRemoteConfiguration.MaxRetryCount - 1))
                               };
@@ -75,33 +89,33 @@
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount - 1))
                               };
 
             subject.Execute();
 
-            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
+            _mockUsersApiResource.Verify(x => x.Activate(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountEqualToMaxFailCountAndNonEmptyToken_ShouldCallActivationDataProviderGetActivationDataWithTheToken()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount))
                               };
 
             subject.Execute();
 
-            _mockActivationDataProvider.Verify(x => x.GetActivationData(_token), Times.Once());
+            _mockUsersApiResource.Verify(x => x.Activate(_token), Times.Once());
         }
 
         [Test]
         public void Execute_PayloadIsARetryInfoObjectWithFailCountGreaterThanMaxFailCountAndNonEmptyToken_ShouldReturnAResultWithStatusFailed()
         {
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter =
                                       new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount + 1))
@@ -124,7 +138,7 @@
         public void Execute_GetConfigurationReturnsValidActivationDataObject_ShouldReturnAResultWithStatusSuccessful()
         {
             var activationData = new ActivationData { Email = "test@email.com" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
 
             _subject.Execute();
 
@@ -135,7 +149,7 @@
         public void Execute_GetConfigurationReturnsValidActivationDataObject_ShouldReturnAResultWithDataContainingTheEmail()
         {
             var activationData = new ActivationData { Email = "test@email.com" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
 
             _subject.Execute();
 
@@ -146,7 +160,7 @@
         public void Execute_GetConfigurationReturnsActivationDataObjectWithCommnuicationErrors_ShouldReturnAResultWithStatusCommunicationFailure()
         {
             var activationData = new ActivationData { CommunicationError = "error" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(_token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
 
             _subject.Execute();
 
@@ -158,12 +172,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.Is<string>(s => s == Token))).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -176,12 +190,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -194,12 +208,12 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount - 1);
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object)
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object)
                               {
                                   Parameter = new DependencyParameter(string.Empty, retryInfo)
                               };
             var activationData = new ActivationData { CommunicationError = "error" };
-            _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
+            _mockUsersApiResource.Setup(u => u.Activate(It.Is<string>(s => s == Token))).Returns(activationData);
 
             var executeResult = subject.Execute();
 
@@ -212,7 +226,7 @@
         {
             const string Token = "testToken";
             var retryInfo = new RetryInfo(Token, GetRemoteConfiguration.MaxRetryCount);
-            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object) { Parameter = new DependencyParameter(string.Empty, retryInfo) };
+            var subject = new GetRemoteConfiguration(_mockActivationDataProvider.Object, _mockOmniApi.Object) { Parameter = new DependencyParameter(string.Empty, retryInfo) };
             var activationData = new ActivationData { CommunicationError = "error" };
             _mockActivationDataProvider.Setup(x => x.GetActivationData(Token)).Returns(activationData);
 
