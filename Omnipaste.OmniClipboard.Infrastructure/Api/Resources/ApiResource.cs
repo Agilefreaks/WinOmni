@@ -9,15 +9,18 @@
 
         protected string BaseUrl { get; set; }
 
+        protected string Version { get; set; }
+
         public string ApiUrl
         {
-            get { return string.Format("{0}/{1}", this.BaseUrl, Users.Version); }
+            get { return string.Format("{0}/{1}", BaseUrl, Version); }
         }
 
         protected ApiResource(IConfigurationManager configurationManager, IRestClient restClient)
         {
-            this.BaseUrl = configurationManager.AppSettings["apiUrl"];
-            restClient.BaseUrl = this.ApiUrl;
+            BaseUrl = configurationManager.AppSettings["apiUrl"];
+            Version = "v1";
+            restClient.BaseUrl = ApiUrl;
             this.RestClient = restClient;
         }
     }

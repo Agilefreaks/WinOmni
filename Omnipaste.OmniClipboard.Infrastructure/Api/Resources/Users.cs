@@ -9,8 +9,6 @@
     {
         public readonly string ResourceKey = "users";
 
-        public const string Version = "v1";
-
         public Users(IConfigurationManager configuration, IRestClient restClient)
             : base(configuration, restClient)
         {

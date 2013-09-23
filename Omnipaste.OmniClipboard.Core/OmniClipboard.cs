@@ -9,10 +9,11 @@ using Omnipaste.OmniClipboard.Core.Messaging;
 
 namespace Omnipaste.OmniClipboard.Core
 {
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
+
     public class OmniClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
     {
         private readonly IConfigurationService _configurationService;
-        private readonly IOmniApi _omniApi;
         private readonly IMessagingService _messagingService;
         private Task<bool> _initializationTask;
         private ILog _logger;
@@ -20,6 +21,8 @@ namespace Omnipaste.OmniClipboard.Core
         public string MessageGuid { get; set; }
 
         public string Channel { get; private set; }
+
+        public IClippings Clippings { get; set; }
 
         public ILog Logger
         {
@@ -34,10 +37,10 @@ namespace Omnipaste.OmniClipboard.Core
             }
         }
 
-        public OmniClipboard(IConfigurationService configurationService, IOmniApi omniApi, IMessagingService messagingService)
+        public OmniClipboard(IConfigurationService configurationService, IClippings clippings, IMessagingService messagingService)
         {
             _configurationService = configurationService;
-            _omniApi = omniApi;
+            Clippings = clippings;
             _messagingService = messagingService;
         }
 
@@ -54,7 +57,7 @@ namespace Omnipaste.OmniClipboard.Core
         public bool DoInitialize()
         {
             Channel = _configurationService.CommunicationSettings.Channel;
-            _omniApi.ApiKey = Channel;
+            Clippings.ApiKey = Channel;
             var connected = _messagingService.Connect(Channel, this);
 
             return connected;
@@ -62,7 +65,7 @@ namespace Omnipaste.OmniClipboard.Core
 
         public override void PutData(string data)
         {
-            _omniApi.Clippings.SaveAsync(data, this);
+            Clippings.SaveAsync(data, this);
         }
 
         public override void Dispose()
@@ -85,7 +88,7 @@ namespace Omnipaste.OmniClipboard.Core
         {
             if (string.Compare(message, MessageGuid, StringComparison.InvariantCulture) != 0)
             {
-                _omniApi.Clippings.GetLastAsync(this);
+                Clippings.GetLastAsync(this);
             }
         }
 

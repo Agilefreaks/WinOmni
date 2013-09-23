@@ -7,7 +7,5 @@
         void GetLastAsync(IGetClippingCompleteHandler handler);
 
         string ApiKey { get; set; }
-
-        string ApiUrl { get; set; }
     }
 }

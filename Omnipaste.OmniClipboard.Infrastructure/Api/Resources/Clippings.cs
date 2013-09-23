@@ -2,37 +2,21 @@
 {
     using System.Net;
     using Omnipaste.OmniClipboard.Core.Api;
+    using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
     using Omnipaste.OmniClipboard.Core.Api.Models;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
     using JsonSerializer = Omnipaste.OmniClipboard.Infrastructure.Api.JsonSerializer;
 
-    public class Clippings : IClippings
+    public class Clippings : ApiResource, IClippings
     {
-        private string _apiUrl;
-
         public const string ResourceKey = "clippings";
 
         public string ApiKey { get; set; }
 
-        public IRestClient RestClient { get; set; }
-
-        public string ApiUrl
+        public Clippings(IConfigurationManager configurationManager, IRestClient restClient)
+            : base(configurationManager, restClient)
         {
-            get
-            {
-                return _apiUrl;
-            }
-            set
-            {
-                _apiUrl = value;
-                RestClient.BaseUrl = value;
-            }
-        }
-
-        public Clippings(IRestClient restClient)
-        {
-            RestClient = restClient;
         }
 
         public void SaveAsync(string data, ISaveClippingCompleteHandler handler)

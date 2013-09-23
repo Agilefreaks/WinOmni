@@ -22,8 +22,6 @@
 
         private Mock<ILog> _mockLogger;
 
-        private Mock<IOmniApi> _mockOmniApi;
-
         private Mock<IMessagingService> _mockMessagingService;
 
         private Mock<IClippings> _mockClippings;
@@ -35,13 +33,10 @@
             var communicationSettings = new CommunicationSettings();
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(communicationSettings);
             _mockLogger = new Mock<ILog>();
-            _mockOmniApi = new Mock<IOmniApi>();
             _mockMessagingService = new Mock<IMessagingService>();
             _mockClippings = new Mock<IClippings>();
 
-            _mockOmniApi.SetupGet(m => m.Clippings).Returns(_mockClippings.Object);
-
-            _subject = new OmniClipboard(_mockConfigurationService.Object, _mockOmniApi.Object, _mockMessagingService.Object)
+            _subject = new OmniClipboard(_mockConfigurationService.Object, _mockClippings.Object, _mockMessagingService.Object)
                            {
                                Logger = _mockLogger.Object
                            };
@@ -83,7 +78,7 @@
             var initializeTask = _subject.Initialize();
             
             initializeTask.Wait();
-            _mockOmniApi.VerifySet(m => m.ApiKey = "test");
+            _mockClippings.VerifySet(m => m.ApiKey = "test");
         }
 
         [Test]

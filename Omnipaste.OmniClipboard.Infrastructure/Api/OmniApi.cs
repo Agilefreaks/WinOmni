@@ -36,7 +36,7 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api
         public OmniApi(IClippings clippings)
         {
             BaseUrl = ConfigurationManager.AppSettings["apiUrl"];
-            clippings.ApiUrl = ApiUrl;
+            
             Clippings = clippings;
         }
     }

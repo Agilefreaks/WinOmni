@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.OmniClipboard.Infrastructure.Tests.Api
 {
     using System;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
     using Moq;
@@ -8,6 +9,7 @@
     using Omnipaste.OmniClipboard.Core.Api;
     using Omnipaste.OmniClipboard.Core.Api.Models;
     using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
+    using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
 
     [TestFixture]
@@ -17,19 +19,15 @@
 
         private Mock<IRestClient> _mockRestClient;
 
+        private Mock<IConfigurationManager> _mockConfigurationManager;
+
         [SetUp]
         public void SetUp()
         {
             _mockRestClient = new Mock<IRestClient>();
-            _subject = new Clippings(_mockRestClient.Object);
-        }
-
-        [Test]
-        public void ApiUrl_Set_WillSetTheBaseUrlOnRestClient()
-        {
-            _subject.ApiUrl = "http://test.com/v1";
-
-            _mockRestClient.VerifySet(c => c.BaseUrl = "http://test.com/v1");
+            _mockConfigurationManager = new Mock<IConfigurationManager>();
+            _mockConfigurationManager.SetupGet(cm => cm.AppSettings).Returns(new NameValueCollection { { "apiUrl", "http://localhost/api" } });
+            _subject = new Clippings(_mockConfigurationManager.Object, _mockRestClient.Object);
         }
 
         [Test]

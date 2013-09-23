@@ -39,7 +39,7 @@
         [Test]
         public void Ctor_Always_SetsTheCorrectUrlOnTheRestClient()
         {
-            _mockRestClient.VerifySet(rc => rc.BaseUrl = _users.ApiUrl);
+            _mockRestClient.VerifySet(rc => rc.BaseUrl = "http://localhost/api/v1");
         }
 
         [Test]
