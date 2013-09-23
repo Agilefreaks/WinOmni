@@ -72,15 +72,19 @@
                             (string)p.Value == "token"))));
         }
 
-        //[Test]
-        //public void Activate_IfSuccessful_WillReturnTheChannel()
-        //{
-        //    _mockRestClient.Setup(rc => rc.ExecuteAsync(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
-        //                    p.Type == ParameterType.HttpHeader &&
-        //                    (string)p.Value == "token")), It.IsAny<Action<IRestResponse, RestRequestAsyncHandle>>()))
-        //                    .Callback<IRestRequest, Action<IRestResponse, RestRequestAsyncHandle>>((request, callback) => {});
+        [Test]
+        public void Activate_IfSuccessful_WillReturnTheActivationData()
+        {
+            var activationData = new ActivationData();
+            var mockResponse = new Mock<IRestResponse<ActivationData>>();
+            mockResponse.SetupGet(r => r.Data).Returns(activationData);
+            _mockRestClient
+                .Setup(rc => rc.Execute<ActivationData>(It.IsAny<IRestRequest>()))
+                .Returns(mockResponse.Object);
 
-        //    _users.Activate("token");
-        //}
+            var returnedActivationData = _users.Activate("token");
+
+            Assert.AreSame(activationData, returnedActivationData);
+        }
     }
 }
