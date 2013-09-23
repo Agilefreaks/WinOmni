@@ -17,8 +17,6 @@
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<IShellViewModel>());
 #if DEBUG
             Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
-#else
-            Kernel.Bind<IActivationDataProvider>().To<OnlineActivationDataProvider>().InSingletonScope();
 #endif
         }
     }

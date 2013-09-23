@@ -8,8 +8,6 @@
     {
         public const int MaxRetryCount = 5;
 
-        private readonly IActivationDataProvider _activationDataProvider;
-
         private RetryInfo _payload;
 
         private DependencyParameter _parameter;
@@ -30,9 +28,8 @@
 
         public IOmniApi OmniApi  { get; set; }
 
-        public GetRemoteConfiguration(IActivationDataProvider activationDataProvider, IOmniApi omniApi)
+        public GetRemoteConfiguration(IOmniApi omniApi)
         {
-            _activationDataProvider = activationDataProvider;
             OmniApi = omniApi;
         }
 
