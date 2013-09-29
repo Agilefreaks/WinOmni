@@ -9,6 +9,8 @@
     {
         public readonly string ResourceKey = "users";
 
+        public readonly string ActivateMethodName = "activate";
+
         public Users(IConfigurationManager configuration, IRestClient restClient)
             : base(configuration, restClient)
         {
@@ -16,8 +18,8 @@
 
         public ActivationData Activate(string token)
         {
-            var restRequest = new RestRequest(ResourceKey, Method.GET);
-            restRequest.AddHeader("activation_token", token);
+            var restRequest = new RestRequest(string.Concat(ResourceKey, "/", ActivateMethodName), Method.GET);
+            restRequest.AddHeader("Token", token);
 
             var restResponse = this.RestClient.Execute<ActivationData>(restRequest);
 

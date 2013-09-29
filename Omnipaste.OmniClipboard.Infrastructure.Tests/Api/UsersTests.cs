@@ -61,7 +61,7 @@
         {
             _users.Activate(string.Empty);
 
-            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Resource == _users.ResourceKey)));
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Resource == "users/activate")));
         }
 
         [Test]
