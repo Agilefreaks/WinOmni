@@ -24,7 +24,7 @@ namespace Omnipaste.OmniClipboard.Infrastructure
             Kernel.Bind<IMessagingService>().To<PubNubMessagingService>();
             Kernel.Bind<IRestClient>().To<RestClient>();
             Kernel.Bind<IClippings>().To<Clippings>();
-            Kernel.Bind<IUsers>().To<Users>();
+            Kernel.Bind<IActivationTokens>().To<ActivationTokens>();
         }
     }
 }

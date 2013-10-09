@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData.ActivationServiceSteps
 {
     using OmniCommon.DataProviders;
-    using Omnipaste.OmniClipboard.Core.Api;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData;
 
@@ -27,9 +26,9 @@
             }
         }
 
-        public IUsers Users { get; set; }
+        public IActivationTokens Users { get; set; }
 
-        public GetRemoteConfiguration(IUsers users)
+        public GetRemoteConfiguration(IActivationTokens users)
         {
             Users = users;
         }
