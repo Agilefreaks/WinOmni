@@ -4,6 +4,8 @@ using RestSharp;
 
 namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
 {
+    using System;
+    using System.Linq;
     using Omnipaste.OmniClipboard.Core.Api.Resources;
 
     public class ActivationTokens : ApiResource, IActivationTokens
@@ -17,9 +19,12 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
 
         public ActivationData Activate(string token)
         {
-            var restRequest = new RestRequest(ResourceKey, Method.PUT);
-            restRequest.AddParameter("token", token, ParameterType.RequestBody);
-            restRequest.AddParameter("device", "windows", ParameterType.RequestBody);
+            var restRequest = new RestRequest(ResourceKey, Method.PUT)
+                                  {
+                                      RequestFormat = DataFormat.Json,
+                                      JsonSerializer = new JsonSerializer()
+                                  };
+            restRequest.AddBody(new { token, device = "windows" });
 
             var restResponse = this.RestClient.Execute<ActivationData>(restRequest);
 

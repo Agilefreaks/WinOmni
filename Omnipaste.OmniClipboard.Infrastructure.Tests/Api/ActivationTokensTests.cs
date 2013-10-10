@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.DataProviders;
+    using Omnipaste.OmniClipboard.Infrastructure.Api;
     using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
@@ -65,22 +66,14 @@
         }
 
         [Test]
-        public void Activate_Always_SetsTheTokenInTheBody()
+        public void Activate_Always_SetsTheCorrectBody()
         {
             _activationTokens.Activate("token");
 
             _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
-                            p.Type == ParameterType.RequestBody &&
-                            (string)p.Value == "token"))));
-        }
-
-        [Test]
-        public void Activate_Always_SetsTheDeviceTypeInTheBody()
-        {
-            _activationTokens.Activate("token");
-
-            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
-                p.Type == ParameterType.RequestBody && (string)p.Value == "windows"))));
+                p.Type == ParameterType.RequestBody 
+                && p.Name == "application/json" 
+                && (string)p.Value == "{\r\n  \"token\": \"token\",\r\n  \"device\": \"windows\"\r\n}"))));
         }
 
         [Test]
