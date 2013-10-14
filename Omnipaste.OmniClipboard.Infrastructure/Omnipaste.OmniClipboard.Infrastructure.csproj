@@ -73,9 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\JsonSerializer.cs" />
+    <Compile Include="Api\Resources\ActivationTokens.cs" />
     <Compile Include="Api\Resources\ApiResource.cs" />
     <Compile Include="Api\Resources\Clippings.cs" />
-    <Compile Include="Api\Resources\Users.cs" />
     <Compile Include="Messaging\IPubNubClient.cs" />
     <Compile Include="Messaging\IPubNubClientFactory.cs" />
     <Compile Include="Messaging\Pubnub.cs" />

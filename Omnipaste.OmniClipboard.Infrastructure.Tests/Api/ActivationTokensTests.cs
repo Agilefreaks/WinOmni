@@ -5,16 +5,17 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.DataProviders;
+    using Omnipaste.OmniClipboard.Infrastructure.Api;
     using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
 
     [TestFixture]
-    public class UsersTests
+    public class ActivationTokensTests
     {
         private Mock<IRestClient> _mockRestClient;
 
-        private Users _users;
+        private ActivationTokens _activationTokens;
 
         private Mock<IConfigurationManager> _mockConfigurationManager;
 
@@ -24,7 +25,7 @@
             _mockRestClient = new Mock<IRestClient>();
             _mockConfigurationManager = new Mock<IConfigurationManager>();
             _mockConfigurationManager.SetupGet(cm => cm.AppSettings).Returns(new NameValueCollection { { "apiUrl", "http://localhost/api" } });
-            _users = new Users(this._mockConfigurationManager.Object, _mockRestClient.Object);
+            _activationTokens = new ActivationTokens(_mockConfigurationManager.Object, _mockRestClient.Object);
 
             _mockRestClient.Setup(rc => rc.Execute<ActivationData>(It.IsAny<IRestRequest>()))
                            .Returns(new RestResponse<ActivationData>());
@@ -33,7 +34,7 @@
         [Test]
         public void Ctor_Always_HasARestClient()
         {
-            Assert.AreSame(_users.RestClient, _mockRestClient.Object);
+            Assert.AreSame(_activationTokens.RestClient, _mockRestClient.Object);
         }
 
         [Test]
@@ -45,33 +46,34 @@
         [Test]
         public void ResourceKey_Always_IsCorrect()
         {
-            Assert.AreEqual(_users.ResourceKey, "users");
+            Assert.AreEqual(_activationTokens.ResourceKey, "activation_tokens");
         }
 
         [Test]
-        public void Activate_Always_MakesaGETRequest()
+        public void Activate_Always_MakesaPUTRequest()
         {
-            _users.Activate(string.Empty);
+            _activationTokens.Activate(string.Empty);
 
-            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Method == Method.GET)));
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Method == Method.PUT)));
         }
 
         [Test]
         public void Activate_Always_MakesARequestToTheCorrectResource()
         {
-            _users.Activate(string.Empty);
+            _activationTokens.Activate(string.Empty);
 
-            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Resource == _users.ResourceKey)));
+            _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Resource == "activation_tokens")));
         }
 
         [Test]
-        public void Activate_Always_SetsTheTokenInTheBody()
+        public void Activate_Always_SetsTheCorrectBody()
         {
-            _users.Activate("token");
+            _activationTokens.Activate("token");
 
             _mockRestClient.Verify(rc => rc.Execute<ActivationData>(It.Is<IRestRequest>(rr => rr.Parameters.Any(p =>
-                            p.Type == ParameterType.HttpHeader &&
-                            (string)p.Value == "token"))));
+                p.Type == ParameterType.RequestBody 
+                && p.Name == "application/json" 
+                && (string)p.Value == "{\r\n  \"token\": \"token\",\r\n  \"device\": \"windows\"\r\n}"))));
         }
 
         [Test]
@@ -84,9 +86,10 @@
                 .Setup(rc => rc.Execute<ActivationData>(It.IsAny<IRestRequest>()))
                 .Returns(mockResponse.Object);
 
-            var returnedActivationData = _users.Activate("token");
+            var returnedActivationData = _activationTokens.Activate("token");
 
             Assert.AreSame(activationData, returnedActivationData);
         }
+
     }
 }
