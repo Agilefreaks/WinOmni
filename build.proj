@@ -11,7 +11,7 @@
   	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
   	<Configuration>Staging</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
-  	<InstallUrl>https://s3.amazonaws.com/omnipaste-staging/win/</InstallUrl>
+  	<InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(build_configuration)' == 'Release' ">
