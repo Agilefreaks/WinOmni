@@ -1,15 +1,13 @@
-﻿namespace Omnipaste.OmniClipboard.Infrastructure.Tests.Api
+﻿namespace OmniApiTests.Resources
 {
     using System;
-    using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
     using Moq;
     using NUnit.Framework;
+    using OmniApi.Models;
+    using OmniApi.Resources;
     using Omnipaste.OmniClipboard.Core.Api;
-    using Omnipaste.OmniClipboard.Core.Api.Models;
-    using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
-    using Omnipaste.OmniClipboard.Infrastructure.Services;
     using RestSharp;
 
     [TestFixture]
@@ -19,25 +17,21 @@
 
         private Mock<IRestClient> _mockRestClient;
 
-        private Mock<IConfigurationManager> _mockConfigurationManager;
-
         [SetUp]
         public void SetUp()
         {
             _mockRestClient = new Mock<IRestClient>();
-            _mockConfigurationManager = new Mock<IConfigurationManager>();
-            _mockConfigurationManager.SetupGet(cm => cm.AppSettings).Returns(new NameValueCollection { { "apiUrl", "http://localhost/api" } });
-            _subject = new Clippings(_mockConfigurationManager.Object, _mockRestClient.Object);
+            _subject = ApiResource.Build<Clippings>("http://test.omnipasteapp.com", this._mockRestClient.Object);
         }
 
         [Test]
-        public void GetLastAsync_Always_CallsRestClientGetForJsonData()
+        public void GetLastAsyncAlwaysCallsRestClientGetForJsonData()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
 
-            _subject.GetLastAsync(mockHandler.Object);
+            this._subject.GetLastAsync(mockHandler.Object);
 
-            _mockRestClient.Verify(
+            this._mockRestClient.Verify(
                 c =>
                 c.ExecuteAsync(
                     It.Is<IRestRequest>(r => r.RequestFormat == DataFormat.Json),
@@ -45,13 +39,13 @@
         }
 
         [Test]
-        public void GetLastAsync_Always_CallsForAClippingResource()
+        public void GetLastAsyncAlwaysCallsForAClippingResource()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
 
-            _subject.GetLastAsync(mockHandler.Object);
+            this._subject.GetLastAsync(mockHandler.Object);
 
-            _mockRestClient.Verify(
+            this._mockRestClient.Verify(
                 c =>
                 c.ExecuteAsync(
                     It.Is<IRestRequest>(r => r.Resource == "clippings"),
@@ -59,14 +53,14 @@
         }
 
         [Test]
-        public void GetLastAsync_Always_AddsTheApiKeyInTheHeader()
+        public void GetLastAsyncAlwaysAddsTheApiKeyInTheHeader()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
-            _subject.ApiKey = "secret_api_key";
+            this._subject.ApiKey = "secret_api_key";
 
-            _subject.GetLastAsync(mockHandler.Object);
+            this._subject.GetLastAsync(mockHandler.Object);
 
-            _mockRestClient.Verify(
+            this._mockRestClient.Verify(
                 c =>
                 c.ExecuteAsync(
                     It.Is<IRestRequest>(r => r.Parameters.Any(p => p.Name == "Channel" && p.Type == ParameterType.HttpHeader && p.Value == "secret_api_key")),
@@ -74,35 +68,36 @@
         }
 
         [Test]
-        public void GetLastAsync_OnSuccess_CallsHandlerToHandleTheResponse()
+        public void GetLastAsyncOnSuccessCallsHandlerToHandleTheResponse()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
-            _subject.ApiKey = "secret_api_key";
+            this._subject.ApiKey = "secret_api_key";
             var responseMock = new Mock<IRestResponse<Clipping>>();
             responseMock.SetupGet(r => r.StatusCode).Returns(HttpStatusCode.OK);
-            _mockRestClient.Setup(c => c.ExecuteAsync(
+            this._mockRestClient.Setup(c => c.ExecuteAsync(
                 It.IsAny<IRestRequest>(), 
                 It.IsAny<Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>()))
                 .Callback<IRestRequest, Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>((request, callback) =>
                     {
-                        responseMock.Setup(r => r.Data).Returns(new Clipping { Content="content", Token = "secret_api_key" });
-                        
+                        responseMock.Setup(r => r.Data)
+                            .Returns(new Clipping { Content = "content", Token = "secret_api_key" });
+
                         callback(responseMock.Object, null);
                     });
 
-            _subject.GetLastAsync(mockHandler.Object);
+            this._subject.GetLastAsync(mockHandler.Object);
 
             mockHandler.Verify(h => h.HandleClipping(It.Is<string>(s => s == responseMock.Object.Data.Content)));
         }
 
         [Test]
-        public void SaveAsync_Always_PostsToTheCorrectUrl()
+        public void SaveAsyncAlwaysPostsToTheCorrectUrl()
         {
             var mockHandler = new Mock<ISaveClippingCompleteHandler>();
             
-            _subject.SaveAsync("data", mockHandler.Object);
+            this._subject.SaveAsync("data", mockHandler.Object);
 
-            _mockRestClient.Verify(rc => 
+            this._mockRestClient.Verify(rc => 
                 rc.ExecuteAsync(
                     It.Is<IRestRequest>(r => 
                         r.Method == Method.POST && 
@@ -113,12 +108,12 @@
         }
 
         [Test]
-        public void SaveAsync_WhenPostIsCompleteAndSuccessful_WillCallTheHandlerSaveClippingSucceeded()
+        public void SaveAsyncWhenPostIsCompleteAndSuccessfulWillCallTheHandlerSaveClippingSucceeded()
         {
             var mockHandler = new Mock<ISaveClippingCompleteHandler>();
             var responseMock = new Mock<IRestResponse<Clipping>>();
             responseMock.SetupGet(r => r.StatusCode).Returns(HttpStatusCode.Created);
-            _mockRestClient.Setup(rc => rc.ExecuteAsync(
+            this._mockRestClient.Setup(rc => rc.ExecuteAsync(
                 It.IsAny<IRestRequest>(), 
                 It.IsAny<Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>()))
             .Callback<IRestRequest, Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>((request, callback) =>
@@ -128,18 +123,18 @@
                 callback(responseMock.Object, null);
             });
 
-            _subject.SaveAsync("data", mockHandler.Object);
+            this._subject.SaveAsync("data", mockHandler.Object);
 
             mockHandler.Verify(h => h.SaveClippingSucceeded());
         }
 
         [Test]
-        public void SaveAsync_WhenPostIsCompleteAndNotSuccessful_WillCallTheHandlerSaveClippingFailed()
+        public void SaveAsyncWhenPostIsCompleteAndNotSuccessfulWillCallTheHandlerSaveClippingFailed()
         {
             var mockHandler = new Mock<ISaveClippingCompleteHandler>();
             var responseMock = new Mock<IRestResponse<Clipping>>();
             responseMock.SetupGet(r => r.StatusCode).Returns(HttpStatusCode.BadRequest);
-            _mockRestClient.Setup(rc => rc.ExecuteAsync(
+            this._mockRestClient.Setup(rc => rc.ExecuteAsync(
                 It.IsAny<IRestRequest>(), 
                 It.IsAny<Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>()))
             .Callback<IRestRequest, Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>((request, callback) =>
@@ -149,7 +144,7 @@
                 callback(responseMock.Object, null);
             });
 
-            _subject.SaveAsync("data", mockHandler.Object);
+            this._subject.SaveAsync("data", mockHandler.Object);
 
             mockHandler.Verify(h => h.SaveClippingFailed(responseMock.Object.Content));
         }

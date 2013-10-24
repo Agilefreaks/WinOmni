@@ -76,7 +76,7 @@ namespace Omnipaste.OmniClipboard.Core
         void ISaveClippingCompleteHandler.SaveClippingSucceeded()
         {
             MessageGuid = Guid.NewGuid().ToString();
-            _messagingService.SendAsync(Channel, "NewMessage", this);
+            _messagingService.SendAsync(Channel, MessageGuid, this);
         }
 
         void ISaveClippingCompleteHandler.SaveClippingFailed(string reason)
@@ -86,7 +86,7 @@ namespace Omnipaste.OmniClipboard.Core
 
         void IMessageHandler.MessageReceived(string message)
         {
-            if (string.Compare(message, MessageGuid, StringComparison.InvariantCulture) != 0)
+            if (!message.Contains(MessageGuid))
             {
                 Clippings.GetLastAsync(this);
             }

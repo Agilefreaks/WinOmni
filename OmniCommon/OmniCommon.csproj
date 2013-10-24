@@ -67,7 +67,6 @@
     <Compile Include="EventAggregatorMessages\StartOmniServiceMessage.cs" />
     <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
     <Compile Include="OmniCommonModule.cs" />
-    <Compile Include="DataProviders\ActivationData.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
     <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
     <Compile Include="EventAggregatorMessages\OmniServiceStatusChanged.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="ExtensionMethods\ObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
-    <Compile Include="DataProviders\IActivationDataProvider.cs" />
     <Compile Include="DataProviders\IConfigurationProvider.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\OmniServiceStatusEnum.cs" />

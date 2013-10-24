@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3DD377CE-6599-4533-A2D2-4F6A69F14007}</ProjectGuid>
+    <ProjectGuid>{FE52A16D-0E4A-4794-AF54-4CA066608FF9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Omnipaste.OmniClipboard.Core</RootNamespace>
-    <AssemblyName>Omnipaste.OmniClipboard.Core</AssemblyName>
+    <RootNamespace>OmniApi</RootNamespace>
+    <AssemblyName>OmniApi</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -32,47 +32,34 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <OutputPath>bin\Staging\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.2\lib\net35\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RestSharp.104.3.3\lib\net35-client\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharpSigned.104.1\lib\net35-client\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Threading.Tasks.NET35">
-      <HintPath>..\packages\System.Threading.Tasks.3.0.2-beta2\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\IMessageHandler.cs" />
-    <Compile Include="Messaging\IMessagingService.cs" />
-    <Compile Include="OmniClipboard.cs" />
+    <Compile Include="OmniApi.cs" />
+    <Compile Include="Handlers\IGetClippingCompleteHandler.cs" />
+    <Compile Include="Handlers\ISaveClippingCompleteHandler.cs" />
+    <Compile Include="JsonSerializer.cs" />
+    <Compile Include="Models\ActivationData.cs" />
+    <Compile Include="Models\Clipping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
-      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
-      <Name>OmniCommon</Name>
-    </ProjectReference>
+    <Compile Include="Resources\ActivationTokens.cs" />
+    <Compile Include="Resources\ApiResource.cs" />
+    <Compile Include="Resources\Clippings.cs" />
+    <Compile Include="Resources\IActivationTokens.cs" />
+    <Compile Include="Resources\IClippings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

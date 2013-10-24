@@ -1,10 +1,10 @@
 ﻿extern alias TasksNET35;
+
 using Task = TasksNET35::System.Threading.Tasks.Task;
 
 namespace Omnipaste.Configuration
 {
     using Caliburn.Micro;
-    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.OmniClipboard.Infrastructure.Services;

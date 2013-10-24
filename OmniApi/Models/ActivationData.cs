@@ -1,6 +1,6 @@
-﻿namespace OmniCommon.DataProviders
+﻿namespace OmniApi.Models
 {
-    public class ActivationData
+    public class ActivationModel
     {
         public string Email { get; set; }
 

@@ -4,25 +4,23 @@
 #endif
 
 using System;
-using System.IO;
-using System.Text;
-using System.Net;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.ComponentModel;
-using System.Reflection;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Concurrent;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
-using Microsoft.Win32;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Omnipaste.OmniClipboard.Infrastructure.Messaging;
 
 #if (SILVERLIGHT || WINDOWS_PHONE)
 using System.Windows.Threading;

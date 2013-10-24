@@ -1,9 +1,6 @@
 ﻿namespace Omnipaste.OmniClipboard.Core.Tests
 {
     using System;
-    using Omnipaste.OmniClipboard.Core.Api;
-    using Omnipaste.OmniClipboard.Core.Api.Resources;
-    using Omnipaste.OmniClipboard.Core.Messaging;
     using System.Threading;
     using System.Threading.Tasks;
     using Common.Logging;
@@ -12,6 +9,9 @@
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
+    using Omnipaste.OmniClipboard.Core.Api;
+    using Omnipaste.OmniClipboard.Core.Api.Resources;
+    using Omnipaste.OmniClipboard.Core.Messaging;
 
     [TestFixture]
     public class OmniClipboardTests
@@ -43,7 +43,7 @@
         }
 
         [Test]
-        public void Initialize_IsEmpty_SetsIsInitializedFalse()
+        public void InitializeIsEmptySetsIsInitializedFalse()
         {
             _mockConfigurationService.Setup(x => x.CommunicationSettings).Returns(new CommunicationSettings { Channel = string.Empty });
 
@@ -54,7 +54,7 @@
         }
 
         [Test]
-        public void Initialize_InitializeIsRunningAlready_ReturnsTheSameTaskAsFirstTime()
+        public void InitializeInitializeIsRunningAlreadyReturnsTheSameTaskAsFirstTime()
         {
             SetupCommnuicationSettings();
             _mockMessagingService.Setup(
@@ -68,7 +68,7 @@
         }
 
         [Test]
-        public void Initialize_Always_SetsOmniApiKey()
+        public void InitializeAlwaysSetsOmniApiKey()
         {
             SetupCommnuicationSettings();
             _mockMessagingService.Setup(
@@ -82,7 +82,7 @@
         }
 
         [Test]
-        public void NewMessageReceived_WhenTheMessageWasMyOwn_WillNotGetTheLastClippingSinceIAlreadyHaveIt()
+        public void NewMessageReceivedWhenTheMessageWasMyOwnWillNotGetTheLastClippingSinceIAlreadyHaveIt()
         {
             string messageGuid = Guid.NewGuid().ToString();
             _subject.MessageGuid = messageGuid;
@@ -98,7 +98,7 @@
         }
 
         [Test]
-        public void NewMessageReceived_Always_GetsClippingFromApi()
+        public void NewMessageReceivedAlwaysGetsClippingFromApi()
         {
             string messageGuid = Guid.NewGuid().ToString();
             _subject.MessageGuid = messageGuid;
@@ -112,7 +112,7 @@
         }
 
         [Test]
-        public void PutData_Always_CallsApiSaveClippingAsync()
+        public void PutDataAlwaysCallsApiSaveClippingAsync()
         {
             InitializeMockClient();
 
@@ -122,7 +122,7 @@
         }
 
         [Test]
-        public void SaveClippingSucceeded_Always_CallsPubNubPublishWithNewMessage()
+        public void SaveClippingSucceededAlwaysCallsPubNubPublishWithNewMessage()
         {
             InitializeMockClient();
 
@@ -132,7 +132,7 @@
         }
 
         [Test]
-        public void SaveClippingSucceeded_Always_SetsAnotherGuid()
+        public void SaveClippingSucceededAlwaysSetsAnotherGuid()
         {
             InitializeMockClient();
             var previousGuid = _subject.MessageGuid = Guid.NewGuid().ToString();

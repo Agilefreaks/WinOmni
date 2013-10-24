@@ -10,23 +10,18 @@
 
         private RetryInfo _payload;
 
-        private DependencyParameter _parameter;
+        public override DependencyParameter Parameter { get; set; }
 
-        public override DependencyParameter Parameter
+        public IActivationTokens Users { get; set; }
+
+        private RetryInfo PayLoad
         {
             get
             {
-                return _parameter;
-            }
-
-            set
-            {
-                _parameter = value;
-                _payload = (value.Value as RetryInfo) ?? new RetryInfo((string)value.Value);
+                _payload = (Parameter.Value as RetryInfo) ?? new RetryInfo((string)Parameter.Value);
+                return _payload;
             }
         }
-
-        public IActivationTokens Users { get; set; }
 
         public GetRemoteConfiguration(IActivationTokens users)
         {
@@ -36,13 +31,13 @@
         public override IExecuteResult Execute()
         {
             var executeResult = new ExecuteResult();
-            if (string.IsNullOrEmpty(_payload.Token))
+            if (string.IsNullOrEmpty(PayLoad.Token))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
             }
             else
             {
-                var activationData = Users.Activate(_payload.Token);
+                var activationData = Users.Activate(PayLoad.Token);
                 SetResultPropertiesBasedOnActivationData(executeResult, activationData);
             }
 

@@ -15,9 +15,6 @@
             Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentInfoProvider>();
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>();
             Kernel.Bind<IDelegateClipboardMessageHandling>().ToMethod(c => c.Kernel.Get<IShellViewModel>());
-#if DEBUG
-            Kernel.Bind<IActivationDataProvider>().To<MockActivationDataProvider>().InSingletonScope();
-#endif
         }
     }
 }

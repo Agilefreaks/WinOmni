@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.OmniClipboard.Core.Api.Models
+﻿namespace OmniApi.Models
 {
     public class Clipping
     {

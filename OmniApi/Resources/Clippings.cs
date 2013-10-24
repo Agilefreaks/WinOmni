@@ -1,23 +1,16 @@
-﻿namespace Omnipaste.OmniClipboard.Infrastructure.Api.Resources
+﻿namespace OmniApi.Resources
 {
     using System.Net;
+    using global::OmniApi.Models;
     using Omnipaste.OmniClipboard.Core.Api;
-    using Omnipaste.OmniClipboard.Infrastructure.Services;
+    using Omnipaste.OmniClipboard.Infrastructure.Api;
     using RestSharp;
-    using Omnipaste.OmniClipboard.Core.Api.Models;
-    using Omnipaste.OmniClipboard.Core.Api.Resources;
-    using JsonSerializer = Omnipaste.OmniClipboard.Infrastructure.Api.JsonSerializer;
 
     public class Clippings : ApiResource, IClippings
     {
         public const string ResourceKey = "clippings";
 
         public string ApiKey { get; set; }
-
-        public Clippings(IConfigurationManager configurationManager, IRestClient restClient)
-            : base(configurationManager, restClient)
-        {
-        }
 
         public void SaveAsync(string data, ISaveClippingCompleteHandler handler)
         {
@@ -27,9 +20,9 @@
                                       JsonSerializer = new JsonSerializer()
                                   };
             
-            restRequest.AddBody(new Clipping(ApiKey, data));
+            restRequest.AddBody(new Clipping(this.ApiKey, data));
 
-            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
+            this.RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => this.HandleSaveClippingCompleted(response, handler));
         }
 
         public void GetLastAsync(IGetClippingCompleteHandler handler)
@@ -38,9 +31,9 @@
                                   {
                                       RequestFormat = DataFormat.Json
                                   };
-            restRequest.AddHeader("Channel", ApiKey);
+            restRequest.AddHeader("Channel", this.ApiKey);
 
-            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
+            this.RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => this.HandleGetClippingCompleted(response, handler));
         }
 
         private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)

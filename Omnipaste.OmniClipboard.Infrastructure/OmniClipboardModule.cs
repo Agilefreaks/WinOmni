@@ -6,8 +6,6 @@ using RestSharp;
 
 namespace Omnipaste.OmniClipboard.Infrastructure
 {
-    using Omnipaste.OmniClipboard.Core.Api.Resources;
-    using Omnipaste.OmniClipboard.Infrastructure.Api.Resources;
     using Omnipaste.OmniClipboard.Infrastructure.Services;
     using Omnipaste.OmniClipboard.Infrastructure.Services.ActivationServiceData;
 
@@ -22,9 +20,6 @@ namespace Omnipaste.OmniClipboard.Infrastructure
             Kernel.Bind<IOmniClipboard>().To<Core.OmniClipboard>().InSingletonScope();
             Kernel.Bind<IPubNubClientFactory>().To<PubNubClientFactory>().InSingletonScope();
             Kernel.Bind<IMessagingService>().To<PubNubMessagingService>();
-            Kernel.Bind<IRestClient>().To<RestClient>();
-            Kernel.Bind<IClippings>().To<Clippings>();
-            Kernel.Bind<IActivationTokens>().To<ActivationTokens>();
         }
     }
 }

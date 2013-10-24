@@ -55,7 +55,10 @@ namespace Omnipaste.OmniClipboard.Infrastructure.Messaging
         private void PublishCallback(object response, string sentMessage, IMessageHandler handler)
         {
             var list = response as IList;
-            if (list == null || list.Count <= 1) return;
+            if (list == null || list.Count <= 1)
+            {
+                return;
+            }
 
             var responseMessage = list[1].ToString();
             if (responseMessage.ToLowerInvariant() != "sent")
