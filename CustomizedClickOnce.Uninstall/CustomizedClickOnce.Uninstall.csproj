@@ -106,20 +106,20 @@
     <None Include="..\Omnipaste\Settings\staging.config">
       <Link>Settings\staging.config</Link>
     </None>
-    <None Include="app.config">
+    <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
-    <None Include="app.Debug.config">
-      <DependentUpon>app.config</DependentUpon>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="app.manifest" />
-    <None Include="app.Release.config">
-      <DependentUpon>app.config</DependentUpon>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
-    <None Include="app.Staging.config">
-      <DependentUpon>app.config</DependentUpon>
+    <None Include="App.Staging.config">
+      <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />

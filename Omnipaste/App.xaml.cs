@@ -5,8 +5,9 @@
     using System.Configuration;
     using System.Deployment.Application;
     using System.Windows;
-    using CustomizedClickOnce.Common;
     using BugFreak;
+    using CustomizedClickOnce.Common;
+    using OmniApi;
 
     public partial class App : ISingleInstanceApp
     {
@@ -46,6 +47,8 @@
                 ConfigurationManager.AppSettings["BugFreakApiKey"],
                 ConfigurationManager.AppSettings["BugFreakToken"],
                 this);
+
+            OmniApi.BaseUrl = ConfigurationManager.AppSettings["baseUrl"];
         }
 
         private static void PerformFirstRunTasks()
