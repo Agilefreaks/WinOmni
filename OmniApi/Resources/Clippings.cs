@@ -10,7 +10,7 @@
     {
         public const string ResourceKey = "clippings";
 
-        public string ApiKey { get; set; }
+        public string Channel { get; set; }
 
         public void SaveAsync(string data, ISaveClippingCompleteHandler handler)
         {
@@ -20,9 +20,9 @@
                                       JsonSerializer = new JsonSerializer()
                                   };
             
-            restRequest.AddBody(new Clipping(this.ApiKey, data));
+            restRequest.AddBody(new Clipping(Channel, data));
 
-            this.RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => this.HandleSaveClippingCompleted(response, handler));
+            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleSaveClippingCompleted(response, handler));
         }
 
         public void GetLastAsync(IGetClippingCompleteHandler handler)
@@ -31,9 +31,9 @@
                                   {
                                       RequestFormat = DataFormat.Json
                                   };
-            restRequest.AddHeader("Channel", this.ApiKey);
+            restRequest.AddHeader("Channel", Channel);
 
-            this.RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => this.HandleGetClippingCompleted(response, handler));
+            RestClient.ExecuteAsync<Clipping>(restRequest, (response, handle) => HandleGetClippingCompleted(response, handler));
         }
 
         private void HandleSaveClippingCompleted(IRestResponse<Clipping> response, ISaveClippingCompleteHandler handler)

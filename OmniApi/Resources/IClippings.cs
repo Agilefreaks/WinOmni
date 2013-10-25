@@ -4,6 +4,8 @@
 
     public interface IClippings
     {
+        string Channel { get; set; }
+
         void SaveAsync(string data, ISaveClippingCompleteHandler handler);
 
         void GetLastAsync(IGetClippingCompleteHandler handler);

@@ -56,7 +56,7 @@
         public void GetLastAsyncAlwaysAddsTheApiKeyInTheHeader()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
-            this._subject.ApiKey = "secret_api_key";
+            this._subject.Channel = "secret_api_key";
 
             this._subject.GetLastAsync(mockHandler.Object);
 
@@ -71,7 +71,7 @@
         public void GetLastAsyncOnSuccessCallsHandlerToHandleTheResponse()
         {
             var mockHandler = new Mock<IGetClippingCompleteHandler>();
-            this._subject.ApiKey = "secret_api_key";
+            this._subject.Channel = "secret_api_key";
             var responseMock = new Mock<IRestResponse<Clipping>>();
             responseMock.SetupGet(r => r.StatusCode).Returns(HttpStatusCode.OK);
             this._mockRestClient.Setup(c => c.ExecuteAsync(

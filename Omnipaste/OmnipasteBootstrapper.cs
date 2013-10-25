@@ -1,6 +1,5 @@
 ﻿using OmniCommon.Interfaces;
 using Omnipaste.Framework;
-using Omnipaste.OmniClipboard.Infrastructure;
 using Omnipaste.Services.Connectivity;
 
 namespace Omnipaste
@@ -11,6 +10,7 @@ namespace Omnipaste
     using Caliburn.Micro;
     using Ninject;
     using Ninject.Extensions.Conventions;
+    using global::OmniClipboard;
     using OmniCommon;
     using Omnipaste.Shell;
     using WindowsClipboard;
