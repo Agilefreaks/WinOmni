@@ -63,7 +63,7 @@
             this._mockRestClient.Verify(
                 c =>
                 c.ExecuteAsync(
-                    It.Is<IRestRequest>(r => r.Parameters.Any(p => p.Name == "Channel" && p.Type == ParameterType.HttpHeader && p.Value == "secret_api_key")),
+                    It.Is<IRestRequest>(r => r.Parameters.Any(p => p.Name == "Channel" && p.Type == ParameterType.HttpHeader && (string)p.Value == "secret_api_key")),
                     It.IsAny<Action<IRestResponse<Clipping>, RestRequestAsyncHandle>>()));
         }
 

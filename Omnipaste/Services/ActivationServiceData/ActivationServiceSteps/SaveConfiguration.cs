@@ -6,8 +6,6 @@
     {
         private readonly IConfigurationService _configurationService;
 
-        private readonly string _channel;
-
         public SaveConfiguration(IConfigurationService configurationService)
         {
             this._configurationService = configurationService;
