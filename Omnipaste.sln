@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7C47BD
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomizedClickOnce.Install", "CustomizedClickOnce.Install\CustomizedClickOnce.Install.csproj", "{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,12 @@ Global
 		{7F086D60-F812-4C4A-80D1-B0AA73C21F0E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F086D60-F812-4C4A-80D1-B0AA73C21F0E}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{7F086D60-F812-4C4A-80D1-B0AA73C21F0E}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
