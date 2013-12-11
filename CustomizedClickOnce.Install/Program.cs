@@ -12,7 +12,7 @@ namespace CustomizedClickOnce.Install
         private static Mutex _instanceMutex;
 
 #if STAGING
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
 #endif
 
 #if RELEASE
@@ -20,7 +20,7 @@ namespace CustomizedClickOnce.Install
 #endif
 
 #if DEBUG
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
 #endif
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace CustomizedClickOnce.Install
         private static string GetActivationTokenFromFileName(string fileName)
         {
             var result = string.Empty;
-            const string GuidPattern = @"([a-z0-9]*[-]){4}[a-z0-9]*";
+            const string GuidPattern = @"[a-fA-F0-9]{8}(?:-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}";
 
             var mc = Regex.Matches(fileName, GuidPattern);
             if (mc.Count != 0)
