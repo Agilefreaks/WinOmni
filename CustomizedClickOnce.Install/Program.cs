@@ -2,7 +2,6 @@
 
 namespace CustomizedClickOnce.Install
 {
-    using System.Configuration;
     using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -11,6 +10,20 @@ namespace CustomizedClickOnce.Install
     static class Program
     {
         private static Mutex _instanceMutex;
+
+#if STAGING
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
+#endif
+
+#if RELEASE
+        private static string applicationURL = "http://cdn.omnipasteapp.com/production/win/Omnipaste.application?token={0}";
+#endif
+
+#if DEBUG
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
+#endif
+        
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -34,11 +47,11 @@ namespace CustomizedClickOnce.Install
         private static void StartIEProcessWithActivationToken()
         {
             var activationToken = GetActivationTokenFromFileName(Process.GetCurrentProcess().MainModule.FileName);
-            var omnipasteCDN = ConfigurationManager.AppSettings["OmnipasteGenericCDN"];
-            if (!string.IsNullOrEmpty(omnipasteCDN) && !string.IsNullOrEmpty(activationToken))
+            if (!string.IsNullOrEmpty(activationToken))
             {
-                Process.Start("iexplore", string.Concat(omnipasteCDN, activationToken));
+                Process.Start("iexplore", string.Format(applicationURL, activationToken));
             }
+
         }
 
         private static string GetActivationTokenFromFileName(string fileName)

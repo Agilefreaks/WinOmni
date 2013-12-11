@@ -283,6 +283,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="omnipaste-setup.exe" />
     <Content Include="Uninstall.exe" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -294,6 +295,7 @@
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
@@ -303,6 +305,7 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
+    <Content Include="omnipaste-setup.exe.config" />
     <None Include="Omnipaste_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -364,10 +367,14 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>
-      copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
-      copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config
-    </PreBuildEvent>
+    <PreBuildEvent>copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
+
+ copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config
+
+ copy /y $(ProjectDir)..\CustomizedClickOnce.Install\$(OutDir)omnipaste-setup.exe $(ProjectDir)omnipaste-setup.exe
+
+ copy /y $(ProjectDir)..\CustomizedClickOnce.Install\$(OutDir)omnipaste-setup.exe.config $(ProjectDir)omnipaste-setup.exe.config
+</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Label="SlowCheetah">
     <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.10.1\tools\))</SlowCheetahToolsPath>
