@@ -22,8 +22,6 @@ namespace CustomizedClickOnce.Install
 #if DEBUG
         private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
 #endif
-        
-
 
         /// <summary>
         /// The main entry point for the application.

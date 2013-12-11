@@ -283,7 +283,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="omnipaste-setup.exe" />
     <Content Include="Uninstall.exe" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -305,7 +304,6 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
-    <Content Include="omnipaste-setup.exe.config" />
     <None Include="Omnipaste_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -369,12 +367,7 @@
   <PropertyGroup>
     <PreBuildEvent>copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
 
- copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config
-
- copy /y $(ProjectDir)..\CustomizedClickOnce.Install\$(OutDir)omnipaste-setup.exe $(ProjectDir)omnipaste-setup.exe
-
- copy /y $(ProjectDir)..\CustomizedClickOnce.Install\$(OutDir)omnipaste-setup.exe.config $(ProjectDir)omnipaste-setup.exe.config
-</PreBuildEvent>
+ copy /y $(ProjectDir)..\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Label="SlowCheetah">
     <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.10.1\tools\))</SlowCheetahToolsPath>
