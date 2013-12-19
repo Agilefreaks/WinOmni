@@ -1,6 +1,6 @@
 ﻿namespace OmniCommon.Interfaces
 {
-    public interface ICanReceiveData
+    public interface IDataReceiver
     {
         void DataReceived(IClipboardData clipboardData);
     }

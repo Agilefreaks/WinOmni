@@ -81,7 +81,7 @@
     <Compile Include="Services\OmniServiceStatusEnum.cs" />
     <Compile Include="Services\ClipboardBase.cs" />
     <Compile Include="Services\ClipboardData.cs" />
-    <Compile Include="Interfaces\ICanReceiveData.cs" />
+    <Compile Include="Interfaces\IDataReceiver.cs" />
     <Compile Include="Interfaces\IClipboard.cs" />
     <Compile Include="Interfaces\IClipboardData.cs" />
     <Compile Include="Interfaces\ILocalClipboard.cs" />

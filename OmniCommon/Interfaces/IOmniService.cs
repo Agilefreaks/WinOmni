@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    public interface IOmniService : ICanReceiveData
+    public interface IOmniService : IDataReceiver
     {
         ILocalClipboard LocalClipboard { get; }
 

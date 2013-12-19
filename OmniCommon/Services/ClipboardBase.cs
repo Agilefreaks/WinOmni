@@ -6,20 +6,20 @@
 
     public abstract class ClipboardBase : IClipboard
     {
-        private readonly List<ICanReceiveData> _dataReceivers;
+        private readonly List<IDataReceiver> _dataReceivers;
 
         protected ClipboardBase()
         {
-            _dataReceivers = new List<ICanReceiveData>();
+            _dataReceivers = new List<IDataReceiver>();
         }
 
         public abstract void Dispose();
 
-        public abstract Task<bool> Initialize();
+        public abstract Task<bool> Initialize();    
 
         public abstract void PutData(string data);
 
-        public void AddDataReceiver(ICanReceiveData dataReceiver)
+        public void AddDataReceiver(IDataReceiver dataReceiver)
         {
             if (!_dataReceivers.Contains(dataReceiver))
             {
@@ -27,7 +27,7 @@
             }
         }
 
-        public void RemoveDataReceive(ICanReceiveData dataReceiver)
+        public void RemoveDataReceive(IDataReceiver dataReceiver)
         {
             if (_dataReceivers.Contains(dataReceiver))
             {
