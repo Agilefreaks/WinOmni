@@ -173,6 +173,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterInOmniSync.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RetryInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />

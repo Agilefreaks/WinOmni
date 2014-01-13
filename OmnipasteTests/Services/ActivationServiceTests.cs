@@ -120,9 +120,21 @@
         }
 
         [Test]
-        public void GetNextStepCurrentStepIsSaveConfigurationAndItsStateIsSuccessfulShouldCallStepFactoryCreateWithAndSetTheCurrentStep()
+        public void GetNextStepCurrentStepIsSaveConfigurationAndItsStateIsSuccessfulShouldCallStepFactoryCreateWithRegisterInOmniSyncAndSetTheCurrentStep()
         {
-            this.RunTransitionTest(typeof(SaveConfiguration), SingleStateEnum.Successful, typeof(Finished));
+            this.RunTransitionTest(typeof(SaveConfiguration), SingleStateEnum.Successful, typeof(RegisterInOmniSync));
+        }
+
+        [Test]
+        public void GetNextStepCurrentStepIsRegisterInOmniSyncAndItsStateIsSuccessfulShouldCallStepFactoryCreateWithFinishedAndSetTheCurrentStep()
+        {
+            this.RunTransitionTest(typeof(RegisterInOmniSync), SimpleStepStateEnum.Successful, typeof(Finished));
+        }
+
+        [Test]
+        public void GetNextStepCurrentStepIsRegisterInOmniSyncAndItsStateIsFailedShouldCallStepFactoryCreateWithFailedAndSetTheCurrentStep()
+        {
+            this.RunTransitionTest(typeof(RegisterInOmniSync), SimpleStepStateEnum.Failed, typeof(Failed));
         }
 
         [Test]
