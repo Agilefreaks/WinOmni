@@ -15,7 +15,7 @@
         {
             this._configurationService.UpdateCommunicationChannel((string)this.Parameter.Value);
 
-            return new ExecuteResult { State = SingleStateEnum.Successful };
+            return new ExecuteResult { State = SingleStateEnum.Successful, Data = this.Parameter.Value };
         }
     }
 }
