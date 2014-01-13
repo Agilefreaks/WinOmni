@@ -1,13 +1,11 @@
-﻿extern alias TasksNET35;
-
-namespace Omnipaste.Configuration
+﻿namespace Omnipaste.Configuration
 {
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Task = TasksNET35::System.Threading.Tasks.Task;
 
     public class ConfigurationViewModel : Screen, IConfigurationViewModel
     {

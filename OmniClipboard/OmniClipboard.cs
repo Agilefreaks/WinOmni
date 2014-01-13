@@ -1,21 +1,19 @@
 ﻿namespace OmniClipboard
-{
-    extern alias TasksNET35;
-    
+{   
     using System;
+    using System.Threading.Tasks;
     using OmniApi;
     using OmniApi.Resources;
     using global::OmniClipboard.Messaging;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
     using Omnipaste.OmniClipboard.Core.Api;
-    using tasks = TasksNET35::System.Threading.Tasks;
 
     public class OmniClipboard : ClipboardBase, IOmniClipboard, ISaveClippingCompleteHandler, IGetClippingCompleteHandler, IMessageHandler
     {
         private readonly IConfigurationService _configurationService;
         private readonly IMessagingService _messagingService;
-        private tasks::Task<bool> _initializationTask;
+        private Task<bool> _initializationTask;
 
         public string MessageGuid { get; set; }
 
@@ -31,12 +29,12 @@
             Clippings = OmniApi.Clippings;
         }
 
-        public override tasks::Task<bool> Initialize()
+        public override Task<bool> Initialize()
         {
             var communicationSettings = _configurationService.CommunicationSettings;
             var task = string.IsNullOrEmpty(communicationSettings.Channel)
-                           ? tasks::Task.Factory.StartNew(() => false)
-                           : _initializationTask ?? (_initializationTask = tasks::Task<bool>.Factory.StartNew(DoInitialize));
+                           ? Task.Factory.StartNew(() => false)
+                           : _initializationTask ?? (_initializationTask = Task<bool>.Factory.StartNew(DoInitialize));
 
             return task;
         }

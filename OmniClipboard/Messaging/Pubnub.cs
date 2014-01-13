@@ -35,8 +35,6 @@ using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
 #else
 
-extern alias TasksNET35;
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,12 +50,9 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using ManualResetEventSlim = TasksNET35::System.Threading.ManualResetEventSlim;
 
 #endif
 
@@ -93,13 +88,13 @@ namespace OmniClipboard.Messaging
             }
         }
 
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, long> _multiChannelSubscribe = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, long>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, PubnubWebRequest> _channelRequest = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, PubnubWebRequest>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, bool> _channelInternetStatus = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, bool>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, int> _channelInternetRetry = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, int>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, Timer> _channelReconnectTimer = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, Timer>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer> _channelHeartbeatTimer = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer>();
-        TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, object> _channelCallbacks = new TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, object>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, long> _multiChannelSubscribe = new System.Collections.Concurrent.ConcurrentDictionary<string, long>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, PubnubWebRequest> _channelRequest = new System.Collections.Concurrent.ConcurrentDictionary<string, PubnubWebRequest>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, bool> _channelInternetStatus = new System.Collections.Concurrent.ConcurrentDictionary<string, bool>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, int> _channelInternetRetry = new System.Collections.Concurrent.ConcurrentDictionary<string, int>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, Timer> _channelReconnectTimer = new System.Collections.Concurrent.ConcurrentDictionary<string, Timer>();
+        System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer> _channelHeartbeatTimer = new System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, object> _channelCallbacks = new System.Collections.Concurrent.ConcurrentDictionary<string, object>();
 
         internal int SubscribeTimeout
         {
@@ -2589,7 +2584,7 @@ namespace OmniClipboard.Messaging
             }
             else
             {
-                TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer> timerCollection = _channelHeartbeatTimer;
+                System.Collections.Concurrent.ConcurrentDictionary<Uri, Timer> timerCollection = _channelHeartbeatTimer;
                 ICollection<Uri> keyCollection = timerCollection.Keys;
                 foreach (Uri key in keyCollection)
                 {
@@ -2634,7 +2629,7 @@ namespace OmniClipboard.Messaging
             }
             else
             {
-                TasksNET35::System.Collections.Concurrent.ConcurrentDictionary<string, Timer> reconnectCollection = _channelReconnectTimer;
+                System.Collections.Concurrent.ConcurrentDictionary<string, Timer> reconnectCollection = _channelReconnectTimer;
                 ICollection<string> keyCollection = reconnectCollection.Keys;
                 foreach (string key in keyCollection)
                 {
