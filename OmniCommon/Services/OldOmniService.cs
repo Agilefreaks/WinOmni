@@ -6,7 +6,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
-    public class OmniService : IOmniService
+    public class OldOmniService : IOmniService
     {
         private Task<bool> _startTask;
 
@@ -36,7 +36,7 @@
 
         protected string LastSentData { get; set; }
 
-        public OmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard, IEventAggregator eventAggregator)
+        public OldOmniService(ILocalClipboard localClipboard, IOmniClipboard omniClipboard, IEventAggregator eventAggregator)
         {
             LocalClipboard = localClipboard;
             OmniClipboard = omniClipboard;

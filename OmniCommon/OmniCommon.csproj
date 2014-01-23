@@ -91,7 +91,7 @@
     <Compile Include="Services\CommunicationSettings.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IStartupTask.cs" />
-    <Compile Include="Services\OmniService.cs" />
+    <Compile Include="Services\OldOmniService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

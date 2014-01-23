@@ -11,9 +11,9 @@
     using OmniCommon.Services;
 
     [TestFixture]
-    public class OmniServiceTests
+    public class OldOmniServiceTests
     {
-        private OmniService _subject;
+        private OldOmniService _subject;
         private Mock<ILocalClipboard> _mockLocalClipboard;
         private Mock<IOmniClipboard> _mockOmniClipboard;
 
@@ -27,7 +27,7 @@
             _mockLocalClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _mockOmniClipboard.Setup(x => x.Initialize()).Returns(() => Task.Factory.StartNew(() => true));
             _mockEventAggregator = new Mock<IEventAggregator>();
-            _subject = new OmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object, _mockEventAggregator.Object);
+            _subject = new OldOmniService(_mockLocalClipboard.Object, _mockOmniClipboard.Object, _mockEventAggregator.Object);
         }
 
         [Test]
