@@ -2,12 +2,14 @@
 using Moq;
 using NUnit.Framework;
 using OmniCommon.EventAggregatorMessages;
-using OmniCommon.Interfaces;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
 
 namespace OmnipasteTests.Framework
 {
+    using Omni;
+    using OmniCommon.Interfaces;
+
     [TestFixture]
     public class OmniServiceHandlerTests
     {
@@ -32,7 +34,7 @@ namespace OmnipasteTests.Framework
         {
             _subject.Handle(new StartOmniServiceMessage());
 
-            _mockOmniService.Verify(m => m.Start());
+            _mockOmniService.Verify(m => m.Start(null));
         }
 
         [Test]
@@ -61,7 +63,7 @@ namespace OmnipasteTests.Framework
 
             _mockConnectivityObserver.Raise(x => x.ConnectivityChanged += null, new ConnectivityChangedEventArgs(true));
 
-            _mockOmniService.Verify(m => m.Start(), Times.Exactly(2));
+            _mockOmniService.Verify(m => m.Start(null), Times.Exactly(2));
         }
     }
 }

@@ -6,6 +6,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using Omni;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;

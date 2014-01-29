@@ -13,7 +13,7 @@ namespace Omnipaste.Services.Connectivity
         private bool PreviouslyConnected { get; set; }
 
         public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
-        
+
         public void Start()
         {
             _timer = new Timer(Run, null, TimeSpan.FromTicks(0), TimeSpan.FromSeconds(5));
@@ -29,27 +29,20 @@ namespace Omnipaste.Services.Connectivity
         {
             lock (Lock)
             {
-                if (ConnectivityHelper.InternetConnected)
+                var connectivityHelper = new ConnectivityHelper();
+                var isConnected = connectivityHelper.InternetConnected;
+                
+                if (isConnected != PreviouslyConnected)
                 {
-                    if (!PreviouslyConnected)
-                    {
-                        OnConnectivityChanged(true);
-                        PreviouslyConnected = true;
-                    }
-                }
-                else
-                {
-                    if (PreviouslyConnected)
-                    {
-                        OnConnectivityChanged(false);
-                        PreviouslyConnected = false;
-                    }
+                    OnConnectivityChanged(isConnected);                    
                 }
             }
         }
 
         protected virtual void OnConnectivityChanged(bool isConnected)
         {
+            PreviouslyConnected = isConnected;
+            
             var handler = ConnectivityChanged;
             if (handler != null)
             {

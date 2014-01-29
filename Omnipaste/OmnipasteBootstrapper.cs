@@ -10,6 +10,8 @@ namespace Omnipaste
     using Caliburn.Micro;
     using Ninject;
     using Ninject.Extensions.Conventions;
+    using Omni;
+    using OmniSync;
     using global::OmniClipboard;
     using OmniCommon;
     using Omnipaste.Shell;
@@ -28,6 +30,8 @@ namespace Omnipaste
             _kernel = new StandardKernel();
 
             _kernel.Load<OmniCommonModule>();
+            _kernel.Load<OmniSyncModule>();
+            _kernel.Load<OmniModule>();
             _kernel.Load<OmnipasteModule>();
             _kernel.Load<WindowsClipboardModule>();
             _kernel.Load<OmniClipboardModule>();
@@ -35,6 +39,7 @@ namespace Omnipaste
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
+            _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
 
             _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
@@ -77,8 +82,6 @@ namespace Omnipaste
         {
             foreach (var task in _kernel.GetAll<IStartupTask>())
             {
-                _kernel.Inject(task);
-
                 task.Startup();
             }
         }

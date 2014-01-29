@@ -66,15 +66,7 @@
 
             this._transitions.RegisterTransition(
                 GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
-                typeof(RegisterInOmniSync));
-
-            this._transitions.RegisterTransition(
-                GenericTransitionId<RegisterInOmniSync>.Create(SimpleStepStateEnum.Successful),
                 typeof(Finished));
-
-            this._transitions.RegisterTransition(
-                GenericTransitionId<RegisterInOmniSync>.Create(SimpleStepStateEnum.Failed),
-                typeof(Failed));
 
             this._transitions.RegisterTransition(
                 GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),

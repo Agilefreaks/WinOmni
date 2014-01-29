@@ -15,13 +15,13 @@
         {
             _configurationService.Initialize();
 
-            return new ExecuteResult
-                       {
-                           State =
-                               string.IsNullOrEmpty(_configurationService.CommunicationSettings.Channel)
-                                   ? SimpleStepStateEnum.Failed
-                                   : SimpleStepStateEnum.Successful
-                       };
+            var executeResult = new ExecuteResult
+                                    {
+                                        Data = _configurationService.CommunicationSettings.Channel
+                                    };
+
+            executeResult.State = string.IsNullOrEmpty((string)executeResult.Data) ? SimpleStepStateEnum.Failed : SimpleStepStateEnum.Successful;
+            return executeResult;
         }
     }
 }

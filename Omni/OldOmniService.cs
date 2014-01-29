@@ -1,12 +1,11 @@
-﻿namespace OmniCommon.Services
+﻿namespace Omni
 {
     using System.Threading.Tasks;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
-    public class OldOmniService : IOmniService
+    public class OldOmniService : IOmniService, IDataReceiver
     {
         private Task<bool> _startTask;
 
@@ -43,7 +42,7 @@
             EventAggregator = eventAggregator;
         }
 
-        public Task<bool> Start()
+        public Task<bool> Start(string communicationChannel = null)
         {
             return _startTask ?? (_startTask = Task<bool>.Factory.StartNew(
                 () =>

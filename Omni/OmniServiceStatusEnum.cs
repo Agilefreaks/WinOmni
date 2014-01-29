@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.Services
+﻿namespace Omni
 {
     public enum OmniServiceStatusEnum
     {

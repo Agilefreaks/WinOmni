@@ -9,5 +9,9 @@ namespace OmniCommon.Interfaces
         void Initialize();
 
         void UpdateCommunicationChannel(string channel);
+
+        string GetCommunicationChannel();
+
+        string this[string key] { get; }
     }
 }

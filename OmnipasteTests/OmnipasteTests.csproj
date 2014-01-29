@@ -43,32 +43,25 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.1.0.0\lib\net40\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.2.1312.1622, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1312.1622\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.2-unstable-9051\lib\net40\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.MockingKernel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ninject.MockingKernel">
       <HintPath>..\packages\Ninject.MockingKernel.3.0.2-unstable-9007\lib\net40-full\Ninject.MockingKernel.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.MockingKernel.Moq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ninject.MockingKernel.Moq">
       <HintPath>..\packages\Ninject.MockingKernel.Moq.3.0.2-unstable-9007\lib\net40-full\Ninject.MockingKernel.Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -114,6 +107,10 @@
     <ProjectReference Include="..\Omnipaste\Omnipaste.csproj">
       <Project>{a5370d41-9479-46aa-b2fb-5cd4467379a1}</Project>
       <Name>Omnipaste</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Omni\Omni.csproj">
+      <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
+      <Name>Omni</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
       <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>

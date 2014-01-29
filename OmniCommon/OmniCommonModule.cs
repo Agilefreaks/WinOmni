@@ -9,8 +9,6 @@ namespace OmniCommon
     {
         public override void Load()
         {
-            Kernel.Bind<IOmniService>().To<OldOmniService>().InSingletonScope();
-
             Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
         }
     }

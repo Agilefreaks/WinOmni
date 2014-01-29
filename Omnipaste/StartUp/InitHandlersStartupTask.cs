@@ -11,7 +11,8 @@ namespace Omnipaste.StartUp
 
         public void Startup()
         {
-            Kernel.Get<IOmniServiceHandler>();
+            var omniServiceHandler = Kernel.Get<IOmniServiceHandler>();
+            omniServiceHandler.Init();
         }
     }
 }
