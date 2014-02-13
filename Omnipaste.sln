@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omni", "Omni\Omni.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniTests", "OmniTests\OmniTests.csproj", "{4ACB0361-8BDA-4A1F-A462-E77D834C178D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clipboard", "Clipboard\Clipboard.csproj", "{C7D3C627-311F-4395-BE3C-953F1F715C74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +167,12 @@ Global
 		{4ACB0361-8BDA-4A1F-A462-E77D834C178D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4ACB0361-8BDA-4A1F-A462-E77D834C178D}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{4ACB0361-8BDA-4A1F-A462-E77D834C178D}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D3C627-311F-4395-BE3C-953F1F715C74}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

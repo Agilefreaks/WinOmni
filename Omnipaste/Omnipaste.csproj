@@ -348,12 +348,17 @@
     </Content>
     <Content Include="Settings\release.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Settings\staging.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Clipboard\Clipboard.csproj">
+      <Project>{c7d3c627-311f-4395-be3c-953f1f715c74}</Project>
+      <Name>Clipboard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">
       <Project>{bc299433-48cc-4282-a7f4-3948e054b6ac}</Project>
       <Name>CustomizedClickOnce.Common</Name>

@@ -1,4 +1,5 @@
-﻿using OmniCommon.Interfaces;
+﻿using OmniApi;
+using OmniCommon.Interfaces;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
 
@@ -6,8 +7,10 @@ namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Reflection;
     using Caliburn.Micro;
+    using Clipboard;
     using Ninject;
     using Ninject.Extensions.Conventions;
     using Omni;
@@ -23,26 +26,35 @@ namespace Omnipaste
 
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type>
-                                              {
-                                                  typeof(ShellViewModel)
-                                              };
+            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel) };
             _kernel = new StandardKernel();
 
-            _kernel.Load<OmniCommonModule>();
-            _kernel.Load<OmniSyncModule>();
-            _kernel.Load<OmniModule>();
-            _kernel.Load<OmnipasteModule>();
-            _kernel.Load<WindowsClipboardModule>();
-            _kernel.Load<OmniClipboardModule>();
+            _kernel.Load(
+                new OmniCommonModule(),
+                new OmniApiModule(ConfigurationManager.AppSettings["baseUrl"]),
+                new OmniSyncModule(),
+                new OmniModule(),
+                new OmnipasteModule(),
+                new WindowsClipboardModule(),
+                new OmniClipboardModule(),
+                new ClipboardModule(ConfigurationManager.AppSettings["baseUrl"]));
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
 
-            _kernel.Bind(x => x.FromThisAssembly().Select(singletonViewModelTypes.Contains).BindDefaultInterface().Configure(c => c.InSingletonScope()));
-            _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t)).BindDefaultInterface());
+            _kernel.Bind(
+                x =>
+                x.FromThisAssembly()
+                 .Select(singletonViewModelTypes.Contains)
+                 .BindDefaultInterface()
+                 .Configure(c => c.InSingletonScope()));
+            _kernel.Bind(
+                x =>
+                x.FromThisAssembly()
+                 .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
+                 .BindDefaultInterface());
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
 
             _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
