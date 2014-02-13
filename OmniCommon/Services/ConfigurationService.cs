@@ -1,9 +1,9 @@
-﻿namespace OmniCommon.Services
-{
-    using System.Configuration;
-    using OmniCommon.DataProviders;
-    using OmniCommon.Interfaces;
+﻿using System.Configuration;
+using OmniCommon.DataProviders;
+using OmniCommon.Interfaces;
 
+namespace OmniCommon.Services
+{
     public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
