@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="EventAggregatorMessages\StartOmniServiceMessage.cs" />
     <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
+    <Compile Include="Interfaces\IOmniMessageHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />
     <Compile Include="OmniCommonModule.cs" />
     <Compile Include="DataProviders\IApplicationDeploymentInfoProvider.cs" />
