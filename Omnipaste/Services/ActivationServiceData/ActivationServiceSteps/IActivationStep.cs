@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿using System.Threading.Tasks;
+
+namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     public interface IActivationStep
     {

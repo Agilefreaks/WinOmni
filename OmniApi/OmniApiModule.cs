@@ -15,13 +15,15 @@
 
         public override void Load()
         {
-            Kernel.Bind<IDevicesAPI>().ToConstant(GetDevicesAPI());
+            Kernel.Bind<IDevicesAPI>().ToConstant(GetAPIEndpoint<IDevicesAPI>());
+            Kernel.Bind<IActivationTokenAPI>().ToConstant(GetAPIEndpoint<IActivationTokenAPI>());
         }
 
-        private IDevicesAPI GetDevicesAPI()
+        private T GetAPIEndpoint<T>()
+            where T : class
         {
             var restAdapter = new RestAdapter(_baseUrl);
-            return restAdapter.Create<IDevicesAPI>();
+            return restAdapter.Create<T>();
         }
     }
 }

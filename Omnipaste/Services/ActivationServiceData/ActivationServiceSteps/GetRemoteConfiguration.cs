@@ -1,18 +1,22 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿using System.Threading.Tasks;
+using OmniApi.Resources;
+using RestSharp;
+
+namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using OmniApi;
     using OmniApi.Models;
-    using OmniApi.Resources;
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
+        public IActivationTokenAPI ActivationTokenAPI { get; set; }
+
         public const int MaxRetryCount = 5;
 
         private RetryInfo _payload;
 
         public override DependencyParameter Parameter { get; set; }
 
-        public IActivationTokens ActivationTokens { get; set; }
+        public IActivationTokenAPI ActivationTokens { get; set; }
 
         private RetryInfo PayLoad
         {
@@ -23,9 +27,9 @@
             }
         }
 
-        public GetRemoteConfiguration()
+        public GetRemoteConfiguration(IActivationTokenAPI activationTokenAPI)
         {
-            ActivationTokens = OmniApi.ActivationTokens;
+            ActivationTokenAPI = activationTokenAPI;
         }
 
         public override IExecuteResult Execute()
@@ -37,8 +41,9 @@
             }
             else
             {
-                var activationModel = ActivationTokens.Activate(PayLoad.Token);
-                SetResultPropertiesBasedOnActivationData(executeResult, activationModel);
+                var activationModelTask = ActivationTokens.Activate(PayLoad.Token);
+                activationModelTask.Wait();
+                SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Result.Data);
             }
 
             return executeResult;
