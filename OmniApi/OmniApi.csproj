@@ -65,7 +65,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Device.cs" />
     <Compile Include="OmniApiModule.cs" />
     <Compile Include="Resources\IActivationTokens.cs" />
     <Compile Include="Resources\IClippings.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="Handlers\ISaveClippingCompleteHandler.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Models\ActivationData.cs" />
-    <Compile Include="Models\Clipping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ActivationTokens.cs" />
     <Compile Include="Resources\ApiResource.cs" />
@@ -83,6 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

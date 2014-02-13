@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
-using OmniApi.Models;
 using OmniCommon.Interfaces;
+using OmniCommon.Models;
 
 namespace WindowsClipboard.Interfaces
 {

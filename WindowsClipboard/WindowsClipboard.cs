@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using OmniApi.Models;
+using OmniCommon.Models;
 
 namespace WindowsClipboard
 {

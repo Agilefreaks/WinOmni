@@ -1,4 +1,4 @@
-﻿namespace OmniApi.Models
+﻿namespace OmniCommon.Models
 {
     public class Clipping
     {
