@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IOmniService.cs" />
-    <Compile Include="OldOmniService.cs" />
     <Compile Include="OmniModule.cs" />
     <Compile Include="OmniService.cs" />
     <Compile Include="OmniServiceStatusChanged.cs" />
