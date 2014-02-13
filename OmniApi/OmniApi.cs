@@ -55,10 +55,5 @@
         {
             RestClient = new RestClient();
         }
-
-        public static void RegisterDevice(string deviceId)
-        {
-            
-        }
     }
 }
