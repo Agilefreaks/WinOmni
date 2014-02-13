@@ -1,4 +1,7 @@
-﻿namespace WindowsClipboard
+﻿using Caliburn.Micro;
+using OmniApi.Models;
+
+namespace WindowsClipboard
 {
     using System.Threading.Tasks;
     using Ninject;
@@ -24,8 +27,13 @@
             }
         }
 
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
+
         public override Task<bool> Initialize()
         {
+            EventAggregator.Subscribe(this);
+
             return Task<bool>.Factory.StartNew(() =>
                     {
                         WindowsClipboardWrapper.StartWatchingClipboard();
@@ -36,8 +44,10 @@
         public override void Dispose()
         {
             WindowsClipboardWrapper.StopWatchingClipboard();
+            EventAggregator.Unsubscribe(this);
         }
 
+        //TODO: this should not be public or should not exist at all. This can be done in the Handle clipping method
         public override void PutData(string data)
         {
             WindowsClipboardWrapper.SetData(data);
@@ -59,6 +69,11 @@
         private void ClipboardAdapterOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
         {
             NotifyReceivers(new ClipboardData(this, clipboardEventArgs.Data));
+        }
+
+        public void Handle(Clipping clipping)
+        {
+            PutData(clipping.Content);
         }
     }
 }
