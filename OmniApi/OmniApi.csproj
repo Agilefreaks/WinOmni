@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OmniApiModule.cs" />
+    <Compile Include="Resources\IActivationTokenAPI.cs" />
     <Compile Include="OmniApi.cs" />
     <Compile Include="Handlers\IGetClippingCompleteHandler.cs" />
     <Compile Include="Handlers\ISaveClippingCompleteHandler.cs" />
