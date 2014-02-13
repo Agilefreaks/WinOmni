@@ -79,6 +79,18 @@
             return saved;
         }
 
+        public string this[string key]
+        {
+            get
+            {
+                return GetValue(key);
+            }
+            set
+            {
+                SetValue(key, value);
+            }
+        }
+
         private static string GetSettingsFolder()
         {
             return

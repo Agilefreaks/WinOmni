@@ -8,9 +8,12 @@
     {
         private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
 
-        public GetTokenFromDeploymentUri(IApplicationDeploymentInfoProvider provider)
+        private readonly IConfigurationProvider _configurationProvider;
+
+        public GetTokenFromDeploymentUri(IApplicationDeploymentInfoProvider provider, IConfigurationProvider configurationProvider)
         {
             this._applicationDeploymentInfoProvider = provider;
+            _configurationProvider = configurationProvider;
         }
 
         public override IExecuteResult Execute()
@@ -23,6 +26,7 @@
                 {
                     result.State = SimpleStepStateEnum.Successful;
                     result.Data = token;
+                    _configurationProvider["deviceIdentifier"] = token;
                 }
             }
 

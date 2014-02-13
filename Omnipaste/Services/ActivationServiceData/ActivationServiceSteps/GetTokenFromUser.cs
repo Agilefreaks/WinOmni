@@ -3,11 +3,14 @@
     using System;
     using System.Threading;
     using Caliburn.Micro;
+    using OmniCommon.DataProviders;
     using OmniCommon.EventAggregatorMessages;
 
     public class GetTokenFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {
         private readonly IEventAggregator _eventAggregator;
+
+        private readonly IConfigurationProvider _configurationProvider;
 
         private AutoResetEvent _autoResetEvent;
 
@@ -15,9 +18,10 @@
 
         public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
 
-        public GetTokenFromUser(IEventAggregator eventAggregator)
+        public GetTokenFromUser(IEventAggregator eventAggregator, IConfigurationProvider configurationProvider)
         {
             this._eventAggregator = eventAggregator;
+            _configurationProvider = configurationProvider;
             this._eventAggregator.Subscribe(this);
         }
 
@@ -31,7 +35,7 @@
             if (this._lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
             {
                 executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = this._lastRequestResult.Token;
+                executeResult.Data = _configurationProvider["deviceIdentifier"] = _lastRequestResult.Token;
             }
             else
             {
