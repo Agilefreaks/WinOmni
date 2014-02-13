@@ -66,17 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OmniApiModule.cs" />
-    <Compile Include="Resources\IActivationTokens.cs" />
-    <Compile Include="Resources\IClippings.cs" />
     <Compile Include="OmniApi.cs" />
     <Compile Include="Handlers\IGetClippingCompleteHandler.cs" />
     <Compile Include="Handlers\ISaveClippingCompleteHandler.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Models\ActivationData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\ActivationTokens.cs" />
     <Compile Include="Resources\ApiResource.cs" />
-    <Compile Include="Resources\Clippings.cs" />
     <Compile Include="Resources\IDevicesAPI.cs" />
   </ItemGroup>
   <ItemGroup>

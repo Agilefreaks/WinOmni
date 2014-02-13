@@ -1,6 +1,7 @@
-﻿namespace Clipboard
+﻿using OmniCommon.Models;
+
+namespace Clipboard
 {
-    using OmniApi.Models;
     using RestSharp;
     using Retrofit.Net.Attributes.Methods;
     using Retrofit.Net.Attributes.Parameters;
