@@ -2,11 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
+    using OmniCommon.Models;
 
-    public interface IOmniSyncService : IObservable<OmniMessage>
+    public interface INotificationService : IObservable<OmniMessage>
     {
-        RegistrationResult GetRegistrationId(string communicationChannel);
-
         Task<RegistrationResult> Start();
 
         void Stop();

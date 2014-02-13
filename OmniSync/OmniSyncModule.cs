@@ -9,7 +9,7 @@
         public override void Load()
         {
             Kernel.Bind<IWampChannelFactory<JToken>>().To<DefaultWampChannelFactory>().InSingletonScope();
-            Kernel.Bind<IOmniSyncService>().To<OmniSyncService>().InSingletonScope();
+            Kernel.Bind<INotificationService>().To<NotificationService>().InSingletonScope();
         }
     }
 }
