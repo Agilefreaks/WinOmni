@@ -202,7 +202,6 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SingleStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Start.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
     <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
     <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />

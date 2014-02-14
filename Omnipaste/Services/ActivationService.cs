@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Services
+﻿using System.Threading.Tasks;
+
+namespace Omnipaste.Services
 {
     using System.Collections.Generic;
     using Omnipaste.Services.ActivationServiceData;
@@ -28,10 +30,6 @@
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
             _transitions = new TransitionCollection();
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<Start>.Create(SingleStateEnum.Successful),
-                typeof(GetTokenFromDeploymentUri));
 
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
@@ -75,38 +73,26 @@
             _transitions.RegisterTransition(
                 GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
                 typeof(Failed));
+
+            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
         }
 
-        public void Run()
+        public async Task Run()
         {
             while (CurrentStepIsIntermediateStep())
             {
-                MoveToNextStep();
+                var activationStep = await CurrentStep.ExecuteAsync();
+
+                MoveToNextStep(activationStep);
             }
         }
 
-        public void MoveToNextStep()
+        private void MoveToNextStep(IExecuteResult previousResult)
         {
-            SetCurrentStep(GetNextStep());
-        }
-
-        public IActivationStep GetNextStep()
-        {
-            return CurrentStep != null ? GetNextStepBasedOnExecuteResult() : new Start();
-        }
-
-        protected void SetCurrentStep(IActivationStep step)
-        {
-            CurrentStep = step;
-        }
-
-        private IActivationStep GetNextStepBasedOnExecuteResult()
-        {
-            var result = CurrentStep.Execute();
-            var transitionId = new TransitionId(CurrentStep.GetId(), result.State);
+            var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
             var nextStepType = _transitions.GetTargetTypeForTransition(transitionId);
 
-            return _stepFactory.Create(nextStepType, result.Data);
+            CurrentStep = _stepFactory.Create(nextStepType, previousResult.Data);
         }
 
         private bool CurrentStepIsIntermediateStep()

@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Services
+﻿using System.Threading.Tasks;
+
+namespace Omnipaste.Services
 {
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -6,10 +8,6 @@
     {
         IActivationStep CurrentStep { get; }
 
-        void Run();
-
-        void MoveToNextStep();
-
-        IActivationStep GetNextStep();
+        Task Run();
     }
 }

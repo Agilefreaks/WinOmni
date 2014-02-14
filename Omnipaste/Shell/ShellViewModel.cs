@@ -1,4 +1,7 @@
-﻿namespace Omnipaste.Shell
+﻿using System.Threading.Tasks;
+using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+
+namespace Omnipaste.Shell
 {
     using System;
     using System.Windows;
@@ -83,7 +86,8 @@
             base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
-            ConfigurationViewModel.Start();
+            
+            Task.Factory.StartNew(() => ConfigurationViewModel.Start()).Wait();
         }
     }
 }

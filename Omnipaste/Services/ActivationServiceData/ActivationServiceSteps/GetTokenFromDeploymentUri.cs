@@ -12,16 +12,16 @@
 
         public GetTokenFromDeploymentUri(IApplicationDeploymentInfoProvider provider, IConfigurationProvider configurationProvider)
         {
-            this._applicationDeploymentInfoProvider = provider;
+            _applicationDeploymentInfoProvider = provider;
             _configurationProvider = configurationProvider;
         }
 
         public override IExecuteResult Execute()
         {
             var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
-            if (this._applicationDeploymentInfoProvider.HasValidActivationUri)
+            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
             {
-                var token = this.GetActivationTokenFromDeploymentParameters();
+                var token = GetActivationTokenFromDeploymentParameters();
                 if (!string.IsNullOrEmpty(token))
                 {
                     result.State = SimpleStepStateEnum.Successful;
@@ -36,9 +36,9 @@
         private string GetActivationTokenFromDeploymentParameters()
         {
             var deploymentParameters = new NameValueCollection();
-            if (this._applicationDeploymentInfoProvider.HasValidActivationUri)
+            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
             {
-                deploymentParameters = this._applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
+                deploymentParameters = _applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
             }
 
             return deploymentParameters["token"];

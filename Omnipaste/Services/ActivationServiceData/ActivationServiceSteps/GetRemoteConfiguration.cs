@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using OmniApi.Resources;
-using RestSharp;
 
 namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
@@ -16,8 +15,6 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         public override DependencyParameter Parameter { get; set; }
 
-        public IActivationTokenAPI ActivationTokens { get; set; }
-
         private RetryInfo PayLoad
         {
             get
@@ -31,19 +28,24 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         {
             ActivationTokenAPI = activationTokenAPI;
         }
-
+        
         public override IExecuteResult Execute()
         {
+            return new ExecuteResult();
+        }
+
+        public override async Task<IExecuteResult> ExecuteAsync()
+        {
             var executeResult = new ExecuteResult();
+
             if (string.IsNullOrEmpty(PayLoad.Token))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
             }
             else
             {
-                var activationModelTask = ActivationTokens.Activate(PayLoad.Token);
-                activationModelTask.Wait();
-                SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Result.Data);
+                var activationModelTask = await ActivationTokenAPI.Activate(PayLoad.Token);
+                SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 
             return executeResult;

@@ -7,6 +7,8 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         DependencyParameter Parameter { get; set; }
 
         IExecuteResult Execute();
+        
+        Task<IExecuteResult> ExecuteAsync();
 
         object GetId();
     }
