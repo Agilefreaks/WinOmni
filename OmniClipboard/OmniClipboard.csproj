@@ -58,17 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\IMessageHandler.cs" />
-    <Compile Include="Messaging\IMessagingService.cs" />
-    <Compile Include="Messaging\IPubNubClient.cs" />
-    <Compile Include="Messaging\IPubNubClientFactory.cs" />
-    <Compile Include="Messaging\PubNubClientFactory.cs" />
-    <Compile Include="Messaging\PubNubMessagingService.cs" />
-    <Compile Include="OmniClipboardModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Messaging\Pubnub.cs" />
-    <Compile Include="Pubnub.cs" />
-    <Compile Include="PubnubExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">

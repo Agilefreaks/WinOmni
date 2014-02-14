@@ -15,7 +15,6 @@ namespace Omnipaste
     using Ninject.Extensions.Conventions;
     using Omni;
     using OmniSync;
-    using global::OmniClipboard;
     using OmniCommon;
     using Omnipaste.Shell;
     using WindowsClipboard;
@@ -36,7 +35,6 @@ namespace Omnipaste
                 new OmniModule(),
                 new OmnipasteModule(),
                 new WindowsClipboardModule(),
-                new OmniClipboardModule(),
                 new ClipboardModule(ConfigurationManager.AppSettings["baseUrl"]));
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
