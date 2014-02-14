@@ -81,13 +81,13 @@ namespace Omnipaste.Shell
             _view = (Window)view;
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
             
-            Task.Factory.StartNew(() => ConfigurationViewModel.Start()).Wait();
+            await ConfigurationViewModel.Start();
         }
     }
 }
