@@ -9,6 +9,9 @@ namespace OmniApi.Resources
 
     public interface IDevicesAPI
     {
+        [Post("devices/")]
+        Task<IRestResponse<Device>> Register([Body] string id);
+
         [Put("devices/activate")]
         Task<IRestResponse<Device>> Activate([Header("Channel")] string channel, [Body] string id, [Body] string registrationId, [Body] string provider);
 

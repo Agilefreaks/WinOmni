@@ -80,15 +80,17 @@ namespace OmniSync
 
         public void Stop()
         {
-            if (Status == ServiceStatusEnum.Started)
+            if (Status != ServiceStatusEnum.Started)
             {
-                foreach (var messageHandler in MessageHandlers)
-                {
-                    messageHandler.Dispose();
-                }
-
-                _channel.Close();
+                return;
             }
+
+            foreach (var messageHandler in MessageHandlers)
+            {
+                messageHandler.Dispose();
+            }
+
+            _channel.Close();
         }
 
         public IDisposable Subscribe(IObserver<OmniMessage> observer)
