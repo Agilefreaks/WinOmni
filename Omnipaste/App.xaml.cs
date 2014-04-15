@@ -47,8 +47,6 @@
                 ConfigurationManager.AppSettings["BugFreakApiKey"],
                 ConfigurationManager.AppSettings["BugFreakToken"],
                 this);
-
-            OmniApi.BaseUrl = ConfigurationManager.AppSettings["baseUrl"];
         }
 
         private static void PerformFirstRunTasks()

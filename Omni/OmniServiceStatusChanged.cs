@@ -8,7 +8,7 @@
 
         public OmniServiceStatusChanged(OmniServiceStatusEnum status)
         {
-            this.Status = status;
+            Status = status;
         }
 
         public OmniServiceStatusEnum Status { get; set; }

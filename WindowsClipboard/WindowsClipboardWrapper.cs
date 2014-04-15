@@ -17,23 +17,24 @@
         public event EventHandler<ClipboardEventArgs> DataReceived;
 
         private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
-
+         
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
 
         private IntPtr _clipboardViewerNext;
 
         [Inject]
-        public IDelegateClipboardMessageHandling ClipboardMessageDelegator { get; set; }
+        public IntPtr WindowHandle { get; set; }
 
         public void StartWatchingClipboard()
         {
-            var handle = ClipboardMessageDelegator.GetHandle();
+            if (WindowHandle != IntPtr.Zero)
+            {
+                _hWndSource = HwndSource.FromHwnd(WindowHandle);
+                _hWndSource.AddHook(HandleClipboardMessage); 
 
-            _hWndSource = HwndSource.FromHwnd(handle);
-            _hWndSource.AddHook(HandleClipboardMessage); 
-
-            _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+                _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+            }
         }
 
         public void StopWatchingClipboard()

@@ -7,7 +7,6 @@ namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Reflection;
     using Caliburn.Micro;
     using Clipboard;
@@ -17,7 +16,6 @@ namespace Omnipaste
     using OmniSync;
     using OmniCommon;
     using Omnipaste.Shell;
-    using WindowsClipboard;
 
     public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
     {
@@ -30,27 +28,24 @@ namespace Omnipaste
 
             _kernel.Load(
                 new OmniCommonModule(),
-                new OmniApiModule(ConfigurationManager.AppSettings["baseUrl"]),
+                new OmniApiModule(),
                 new OmniSyncModule(),
                 new OmniModule(),
-                new OmnipasteModule(),
-                new WindowsClipboardModule(),
-                new ClipboardModule(ConfigurationManager.AppSettings["baseUrl"]));
+                new OmnipasteModule());
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
-            _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
 
             _kernel.Bind(
-                x =>
-                x.FromThisAssembly()
+                configure =>
+                configure.FromThisAssembly()
                  .Select(singletonViewModelTypes.Contains)
                  .BindDefaultInterface()
                  .Configure(c => c.InSingletonScope()));
             _kernel.Bind(
-                x =>
-                x.FromThisAssembly()
+                configure =>
+                configure.FromThisAssembly()
                  .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
                  .BindDefaultInterface());
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
@@ -63,6 +58,8 @@ namespace Omnipaste
             base.OnStartup(sender, e);
 
             RunStartupTasks();
+
+            _kernel.Load(new ClipboardModule());
         }
 
         protected override object GetInstance(Type serviceType, string key)

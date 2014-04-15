@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using OmniCommon.EventAggregatorMessages;
 using Omnipaste.Services.Connectivity;
 
@@ -26,10 +27,10 @@ namespace Omnipaste.Framework
             _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
         }
 
-        public void Handle(StartOmniServiceMessage message)
+        public async Task Handle(StartOmniServiceMessage message)
         {
-            _omniService.Start();
-            _isSyncing = true;
+            var result = await _omniService.Start();
+            _isSyncing = result;
         }
 
         public void Handle(StopOmniServiceMessage message)

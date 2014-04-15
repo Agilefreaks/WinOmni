@@ -1,14 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Net;
+using System.Reactive.Linq;
+using Caliburn.Micro;
+using Ninject;
+using OmniCommon.Interfaces;
+using OmniCommon.Models;
 
 namespace Clipboard.Handlers
 {
-    using System;
-    using System.Reactive.Linq;
-    using Ninject;
-    using OmniCommon.Interfaces;
-    using OmniCommon.Models;
-
-    class ClippingHandler : IOmniMessageHandler
+    public class IncomingClippingsHandler : IOmniMessageHandler
     {
         private readonly IEventAggregator _eventAggregator;
 
@@ -17,15 +17,28 @@ namespace Clipboard.Handlers
         [Inject]
         public IClippingsAPI ClippingsAPI { get; set; }
 
-        public ClippingHandler(IEventAggregator eventAggregator)
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+        }
+
+        public IncomingClippingsHandler(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
         }
 
         public void OnNext(OmniMessage value)
         {
-            var lastClipping = ClippingsAPI.LastClipping();
-            _eventAggregator.Publish(lastClipping.Data);
+            var clippingResponse = ClippingsAPI.LastClipping();
+
+            if (clippingResponse.StatusCode == HttpStatusCode.OK)
+            {
+                EventAggregator.Publish(clippingResponse.Data);
+            }
         }
 
         public void OnError(Exception error)

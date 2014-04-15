@@ -50,6 +50,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -115,9 +116,9 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.165\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.3.0.2-unstable-9051\lib\net40\Ninject.dll</HintPath>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Extensions.Conventions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -377,10 +378,6 @@
     <ProjectReference Include="..\Omni\Omni.csproj">
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
       <Name>Omni</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

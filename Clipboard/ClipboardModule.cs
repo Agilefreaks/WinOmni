@@ -1,23 +1,30 @@
-﻿namespace Clipboard
-{
-    using Clipboard.Handlers;
-    using Ninject.Modules;
-    using OmniCommon.Interfaces;
-    using Retrofit.Net;
+﻿using System.Configuration;
+using WindowsClipboard;
+using Ninject;
+using Clipboard.Handlers;
+using Ninject.Modules;
+using OmniCommon.Interfaces;
+using Retrofit.Net;
 
+namespace Clipboard
+{
     public class ClipboardModule : NinjectModule
     {
         private readonly string _baseUrl;
 
-        public ClipboardModule(string baseUrl)
+        public ClipboardModule()
         {
-            _baseUrl = baseUrl;
+            _baseUrl = ConfigurationManager.AppSettings["baseUrl"];
         }
 
         public override void Load()
         {
-            Kernel.Bind<IOmniMessageHandler>().To<ClippingHandler>();
+            Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>();
             Kernel.Bind<IClippingsAPI>().ToConstant(GetClippingsAPI());
+            Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
+            Kernel.Load(new WindowsClipboardModule());
+
+            var outgoingClippingHandler = Kernel.Get<IOutgoingClippingHandler>();
         }
 
         public IClippingsAPI GetClippingsAPI()

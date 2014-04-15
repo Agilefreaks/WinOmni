@@ -27,6 +27,9 @@ namespace Omnipaste.Shell
         public IUserTokenViewModel UserTokenViewModel { get; set; }
 
         [Inject]
+        public IKernel Kernel { get; set; }
+
+        [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
@@ -62,23 +65,13 @@ namespace Omnipaste.Shell
             }
         }
 
-        public IntPtr GetHandle()
-        {
-            var handle = new IntPtr();
-            Execute.OnUIThread(() =>
-                {
-                    var windowInteropHelper = new WindowInteropHelper(_view);
-                    handle = windowInteropHelper.Handle;
-                });
-            
-            return handle;
-        }
-
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
 
             _view = (Window)view;
+
+            Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
         }
 
         protected override async void OnActivate()
@@ -88,6 +81,18 @@ namespace Omnipaste.Shell
             ActiveItem = ConfigurationViewModel;
             
             await ConfigurationViewModel.Start();
+        }
+
+        private IntPtr GetHandle()
+        {
+            var handle = new IntPtr();
+            Execute.OnUIThread(() =>
+            {
+                var windowInteropHelper = new WindowInteropHelper(_view);
+                handle = windowInteropHelper.Handle;
+            });
+
+            return handle;
         }
     }
 }

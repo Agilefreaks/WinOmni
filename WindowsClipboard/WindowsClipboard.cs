@@ -1,79 +1,49 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Reactive.Linq;
+using WindowsClipboard.Interfaces;
+using Caliburn.Micro;
+using Ninject;
 using OmniCommon.Models;
+using OmniCommon.Services;
 
 namespace WindowsClipboard
 {
-    using System.Threading.Tasks;
-    using Ninject;
-    using OmniCommon.Services;
-    using global::WindowsClipboard.Interfaces;
-
-    public class WindowsClipboard : ClipboardBase, IWindowsClipboard
+    public class WindowsClipboard : IWindowsClipboard
     {
-        private IWindowsClipboardWrapper _windowsClipboardWrapper;
+        public IObservable<ClipboardData> Clippings { get; set; }
 
         [Inject]
-        public IWindowsClipboardWrapper WindowsClipboardWrapper
-        {
-            get
-            {
-                return _windowsClipboardWrapper;
-            }
-
-            set
-            {
-                HookClipboardAdapter(_windowsClipboardWrapper, value);
-                _windowsClipboardWrapper = value;
-            }
-        }
+        public IWindowsClipboardWrapper WindowsClipboardWrapper { get; set; }
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
-        public override Task<bool> Initialize()
+        public void Start()
         {
-            EventAggregator.Subscribe(this);
-
-            return Task<bool>.Factory.StartNew(() =>
-                    {
-                        WindowsClipboardWrapper.StartWatchingClipboard();
-                        return true;
-                    });
+            EventAggregator.Subscribe(this) ;
+            WindowsClipboardWrapper.StartWatchingClipboard();
+            
+            Clippings =
+                Observable.FromEventPattern<ClipboardEventArgs>(
+                    h => WindowsClipboardWrapper.DataReceived += h,
+                    h => WindowsClipboardWrapper.DataReceived -= h)
+                    .Select(i => new ClipboardData(i.Sender, i.EventArgs.Data));
         }
 
-        public override void Dispose()
+        public void Stop()
         {
             WindowsClipboardWrapper.StopWatchingClipboard();
             EventAggregator.Unsubscribe(this);
         }
 
-        //TODO: this should not be public or should not exist at all. This can be done in the Handle clipping method
-        public override void PutData(string data)
-        {
-            WindowsClipboardWrapper.SetData(data);
-        }
-
-        private void HookClipboardAdapter(IWindowsClipboardWrapper windowsClipboardWrapper, IWindowsClipboardWrapper value)
-        {
-            if (windowsClipboardWrapper != null)
-            {
-                windowsClipboardWrapper.DataReceived -= ClipboardAdapterOnDataReceived;
-            }
-
-            if (value != null)
-            {
-                value.DataReceived += ClipboardAdapterOnDataReceived;
-            }
-        }
-
-        private void ClipboardAdapterOnDataReceived(object sender, ClipboardEventArgs clipboardEventArgs)
-        {
-            NotifyReceivers(new ClipboardData(this, clipboardEventArgs.Data));
-        }
-
         public void Handle(Clipping clipping)
         {
             PutData(clipping.Content);
+        }
+
+        private void PutData(string data)
+        {
+            WindowsClipboardWrapper.SetData(data);
         }
     }
 }

@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,8 +37,9 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.2-unstable-9051\lib\net40\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Extensions.Conventions">
       <HintPath>..\packages\Ninject.Extensions.Conventions.3.0.2-unstable-9012\lib\net40\Ninject.Extensions.Conventions.dll</HintPath>
@@ -51,6 +53,14 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net40\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net40\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Linq">
       <HintPath>..\Omnipaste\bin\Release\System.Reactive.Linq.dll</HintPath>
     </Reference>
@@ -65,9 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardModule.cs" />
-    <Compile Include="Handlers\ClippingHandler.cs" />
+    <Compile Include="Handlers\IncomingClippingsHandler.cs" />
+    <Compile Include="Handlers\IOutgoingClippingHandler.cs" />
+    <Compile Include="Handlers\OutgoingClippingsHandler.cs" />
     <Compile Include="IClippingsAPI.cs" />
-    <Compile Include="IMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +92,10 @@
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
+      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
+      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

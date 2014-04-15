@@ -1,4 +1,6 @@
-﻿namespace OmniApi
+﻿using System.Configuration;
+
+namespace OmniApi
 {
     using Ninject.Modules;
     using Retrofit.Net;
@@ -8,9 +10,9 @@
     {
         private readonly string _baseUrl;
 
-        public OmniApiModule(string baseUrl)
+        public OmniApiModule()
         {
-            _baseUrl = baseUrl;
+            _baseUrl = ConfigurationManager.AppSettings["baseUrl"];
         }
 
         public override void Load()
