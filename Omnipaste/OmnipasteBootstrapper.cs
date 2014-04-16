@@ -1,4 +1,6 @@
-﻿using OmniApi;
+﻿using System.Linq;
+using Castle.Core.Internal;
+using OmniApi;
 using OmniCommon.Interfaces;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
@@ -57,9 +59,21 @@ namespace Omnipaste
         {
             base.OnStartup(sender, e);
 
-            RunStartupTasks();
-
             _kernel.Load(new ClipboardModule());
+
+            RunStartupTasks();            
+
+            var startables = _kernel.GetAll<IStartable>();
+
+            var count = startables.Count();
+        }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>();
+            allStartedServices.ForEach(s => s.Stop());
+
+            base.OnExit(sender, e);
         }
 
         protected override object GetInstance(Type serviceType, string key)

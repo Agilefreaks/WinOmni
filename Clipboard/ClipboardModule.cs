@@ -22,9 +22,8 @@ namespace Clipboard
             Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>();
             Kernel.Bind<IClippingsAPI>().ToConstant(GetClippingsAPI());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
+            Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();
             Kernel.Load(new WindowsClipboardModule());
-
-            var outgoingClippingHandler = Kernel.Get<IOutgoingClippingHandler>();
         }
 
         public IClippingsAPI GetClippingsAPI()
