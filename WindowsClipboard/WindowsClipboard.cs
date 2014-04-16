@@ -18,6 +18,11 @@ namespace WindowsClipboard
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
+        public IDisposable Subscribe(IObserver<ClipboardData> observer)
+        {
+            return Clippings.Subscribe(observer);
+        }
+
         public void Start()
         {
             EventAggregator.Subscribe(this) ;

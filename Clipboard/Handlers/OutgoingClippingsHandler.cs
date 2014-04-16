@@ -5,7 +5,7 @@ using OmniCommon.Services;
 
 namespace Clipboard.Handlers
 {
-    class OutgoingClippingsHandler : IOutgoingClippingHandler
+    public class OutgoingClippingsHandler : IOutgoingClippingHandler
     {
         private readonly IClippingsAPI _clippingsAPI;
 
@@ -21,7 +21,7 @@ namespace Clipboard.Handlers
 
         public void Start()
         {
-            _clippingsSubscription = WindowsClipboard.Clippings.Subscribe(this);
+            _clippingsSubscription = WindowsClipboard.Subscribe(this);
         }
 
         public void Stop()
@@ -31,7 +31,7 @@ namespace Clipboard.Handlers
 
         public void OnNext(ClipboardData value)
         {
-            _clippingsAPI.PostClipping(new Clipping("eMailAddress", value.GetData()));
+            //_clippingsAPI.PostClipping(new Clipping("eMailAddress", value.GetData()));
         }
 
         public void OnError(Exception error)
