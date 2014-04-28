@@ -63,6 +63,8 @@ namespace Omnipaste.Shell
                 _view.Visibility = Visibility.Hidden;
                 _view.ShowInTaskbar = false;
             }
+
+            //TODO: load the functionality (modules)
         }
 
         protected override void OnViewLoaded(object view)

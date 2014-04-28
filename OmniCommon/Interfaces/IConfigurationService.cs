@@ -12,6 +12,8 @@ namespace OmniCommon.Interfaces
 
         string GetCommunicationChannel();
 
+        string GetClientId();
+
         string this[string key] { get; }
     }
 }

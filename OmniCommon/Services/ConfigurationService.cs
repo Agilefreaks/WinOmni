@@ -34,6 +34,11 @@ namespace OmniCommon.Services
             return CommunicationSettings.Channel;
         }
 
+        public string GetClientId()
+        {
+            return ConfigurationManager.AppSettings["client_id"];
+        }
+
         public void Initialize()
         {
             CommunicationSettings = new CommunicationSettings

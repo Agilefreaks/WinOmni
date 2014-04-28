@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Omnipaste.EventAggregatorMessages;
 using Omnipaste.Framework;
@@ -24,8 +25,15 @@ namespace Omnipaste.Configuration
 
         public async Task Start()
         {
-            await _activationService.Run();
-            
+            try
+            {
+                await _activationService.Run();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
             OnContinuationAction();
         }
 

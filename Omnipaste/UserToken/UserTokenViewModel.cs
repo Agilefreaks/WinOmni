@@ -7,7 +7,7 @@
     {
         private readonly IEventAggregator _eventAggregator;
 
-        public string Token { get; set; }
+        public string ActivationCode { get; set; }
 
         public UserTokenViewModel(IEventAggregator eventAggregator)
         {
@@ -16,7 +16,7 @@
 
         public void Ok()
         {
-            Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, Token));
+            Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, ActivationCode));
         }
 
         public void Cancel()

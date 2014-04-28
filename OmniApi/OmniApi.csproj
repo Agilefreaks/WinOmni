@@ -76,8 +76,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Device.cs" />
     <Compile Include="OmniApiModule.cs" />
-    <Compile Include="Resources\IActivationTokenAPI.cs" />
+    <Compile Include="Resources\Authorization.cs" />
+    <Compile Include="Resources\IAuthorizationAPI.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Models\ActivationData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

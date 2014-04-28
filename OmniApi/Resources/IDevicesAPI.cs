@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OmniCommon.Models;
+using Device = OmniApi.Models.Device;
 
 namespace OmniApi.Resources
 {
@@ -9,12 +11,15 @@ namespace OmniApi.Resources
 
     public interface IDevicesAPI
     {
-        [Post("devices/")]
-        Task<IRestResponse<Device>> Register([Body] string id);
-
         [Put("devices/activate")]
-        Task<IRestResponse<Device>> Activate([Header("Channel")] string channel, [Body] string id, [Body] string registrationId, [Body] string provider);
+        Task<IRestResponse<Device>> Activate(
+            [Query("registration_id")] string registrationId, 
+            [Query("identifier")] string identifier,
+            [Query("provider")] string provider);
 
+        [Post("devices/")]
+        Task<IRestResponse<Device>> Register([Query("id")] string id);
+        
         [Put("devices/deactivate")]
         Task<IRestResponse<Device>> Deactivate([Body] string id);
     }

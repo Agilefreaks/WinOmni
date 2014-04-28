@@ -30,7 +30,7 @@
         public async Task<bool> Start(string communicationChannel = null)
         {
             var registrationResult = await NotificationService.Start();
-            var activationResult = await _devicesAPI.Activate(_channel, _deviceIdentifier, registrationResult.Data, "omni");
+            var activationResult = await _devicesAPI.Activate(registrationResult.Data, _deviceIdentifier, "omni");
 
             return false;
         }

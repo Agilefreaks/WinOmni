@@ -34,6 +34,7 @@ namespace Omnipaste.Services
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
                 typeof(GetRemoteConfiguration));
+            
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
                 typeof(LoadLocalConfiguration));

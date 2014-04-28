@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using OmniApi.Resources;
+using OmniCommon.Interfaces;
 
 namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
@@ -7,7 +8,9 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
-        public IActivationTokenAPI ActivationTokenAPI { get; set; }
+        private readonly IConfigurationService _configurationService;
+
+        public IAuthorizationAPI _authorizationAPI { get; set; }
 
         public const int MaxRetryCount = 5;
 
@@ -24,11 +27,12 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
         }
 
-        public GetRemoteConfiguration(IActivationTokenAPI activationTokenAPI)
+        public GetRemoteConfiguration(IAuthorizationAPI authorizationAPI, IConfigurationService configurationService)
         {
-            ActivationTokenAPI = activationTokenAPI;
+            _configurationService = configurationService;
+            _authorizationAPI = authorizationAPI;
         }
-        
+
         public override IExecuteResult Execute()
         {
             return new ExecuteResult();
@@ -44,7 +48,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
             else
             {
-                var activationModelTask = await ActivationTokenAPI.Activate(PayLoad.Token);
+                var activationModelTask = await _authorizationAPI.Activate(PayLoad.Token, _configurationService.GetClientId());
                 SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 
@@ -53,18 +57,18 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         private void SetResultPropertiesBasedOnActivationData(IExecuteResult executeResult, ActivationModel activationModel)
         {
-            if (!string.IsNullOrEmpty(activationModel.CommunicationError))
+            if (activationModel == null)
             {
                 executeResult.Data = new RetryInfo(
-                    _payload.Token, _payload.FailCount + 1, activationModel.CommunicationError);
+                    _payload.Token, _payload.FailCount + 1);
                 executeResult.State = _payload.FailCount < MaxRetryCount
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
             }
-            else if (!string.IsNullOrEmpty(activationModel.Email))
+            else if (!string.IsNullOrEmpty(activationModel.access_token))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = activationModel.Email;
+                executeResult.Data = activationModel.access_token;
             }
             else
             {

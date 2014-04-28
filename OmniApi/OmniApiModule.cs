@@ -18,7 +18,7 @@ namespace OmniApi
         public override void Load()
         {
             Kernel.Bind<IDevicesAPI>().ToConstant(GetAPIEndpoint<IDevicesAPI>());
-            Kernel.Bind<IActivationTokenAPI>().ToConstant(GetAPIEndpoint<IActivationTokenAPI>());
+            Kernel.Bind<IAuthorizationAPI>().ToConstant(GetAPIEndpoint<IAuthorizationAPI>());
         }
 
         private T GetAPIEndpoint<T>()

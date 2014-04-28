@@ -8,12 +8,12 @@
 
         public SaveConfiguration(IConfigurationService configurationService)
         {
-            this._configurationService = configurationService;
+            _configurationService = configurationService;
         }
 
         public override IExecuteResult Execute()
         {
-            this._configurationService.UpdateCommunicationChannel((string)this.Parameter.Value);
+            _configurationService.UpdateCommunicationChannel((string)Parameter.Value);
 
             return new ExecuteResult { State = SingleStateEnum.Successful, Data = this.Parameter.Value };
         }

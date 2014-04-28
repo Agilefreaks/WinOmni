@@ -20,22 +20,22 @@
 
         public GetTokenFromUser(IEventAggregator eventAggregator, IConfigurationProvider configurationProvider)
         {
-            this._eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
             _configurationProvider = configurationProvider;
-            this._eventAggregator.Subscribe(this);
+            _eventAggregator.Subscribe(this);
         }
 
         public override IExecuteResult Execute()
         {
-            this._autoResetEvent = new AutoResetEvent(false);
-            this._eventAggregator.Publish(new GetTokenFromUserMessage());
-            this._autoResetEvent.WaitOne();
+            _autoResetEvent = new AutoResetEvent(false);
+            _eventAggregator.Publish(new GetTokenFromUserMessage());
+            _autoResetEvent.WaitOne();
 
             var executeResult = new ExecuteResult();
-            if (this._lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
+            if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
             {
                 executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = _configurationProvider["deviceIdentifier"] = _lastRequestResult.Token;
+                executeResult.Data = _configurationProvider["deviceIdentifier"] = _lastRequestResult.ActivationCode;
             }
             else
             {
@@ -47,8 +47,8 @@
 
         public void Handle(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            this._lastRequestResult = tokenRequestResultMessage;
-            this._autoResetEvent.Set();
+            _lastRequestResult = tokenRequestResultMessage;
+            _autoResetEvent.Set();
         }
     }
 }
