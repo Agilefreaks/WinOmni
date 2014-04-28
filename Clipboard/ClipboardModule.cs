@@ -12,6 +12,8 @@ namespace Clipboard
     {
         private readonly string _baseUrl;
 
+        public IConfigurationService ConfigurationService { get; set; }
+
         public ClipboardModule()
         {
             _baseUrl = ConfigurationManager.AppSettings["baseUrl"];
@@ -19,6 +21,8 @@ namespace Clipboard
 
         public override void Load()
         {
+            ConfigurationService = Kernel.Get<IConfigurationService>();
+        
             Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>();
             Kernel.Bind<IClippingsAPI>().ToConstant(GetClippingsAPI());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
