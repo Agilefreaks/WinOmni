@@ -27,7 +27,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             {
                 result.Data = accessToken;
                 result.State = SimpleStepStateEnum.Successful;
-                Kernel.Bind<Authenticator>().ToConstant(new Authenticator { AccessToken = accessToken });
+                Kernel.Bind<Authenticator>().ToConstant(new Authenticator { AccessToken = accessToken, GrantType = "bearer"});
             }
             else
             {

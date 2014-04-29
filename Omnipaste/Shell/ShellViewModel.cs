@@ -57,15 +57,15 @@ namespace Omnipaste.Shell
 
         public void Handle(ConfigurationCompletedMessage message)
         {
+            HandleSuccessfulLogin();
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
-
+         
             if (_view != null)
             {
                 _view.Visibility = Visibility.Hidden;
                 _view.ShowInTaskbar = false;
             }
-            HandleSuccessfulLogin();
         }
 
         public void HandleSuccessfulLogin()

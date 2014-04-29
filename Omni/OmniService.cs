@@ -27,7 +27,7 @@
         public async Task<bool> Start(string communicationChannel = null)
         {
             var registrationResult = await NotificationService.Start();
-            //var activationResult = await _devicesAPI.Activate(registrationResult.Data, _deviceIdentifier, "omni");
+            var activationResult = await _devicesAPI.Activate(registrationResult.Data, _deviceIdentifier, "omni_sync");
 
             return false;
         }
