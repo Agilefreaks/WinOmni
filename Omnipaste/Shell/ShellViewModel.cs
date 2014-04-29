@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
-using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+﻿using Clipboard;
+using OmniApi;
+using OmniCommon.Interfaces;
+using System.Linq;
 
 namespace Omnipaste.Shell
 {
@@ -63,8 +65,26 @@ namespace Omnipaste.Shell
                 _view.Visibility = Visibility.Hidden;
                 _view.ShowInTaskbar = false;
             }
+            HandleSuccessfulLogin();
+        }
 
-            //TODO: load the functionality (modules)
+        public void HandleSuccessfulLogin()
+        {
+            Kernel.Load(new ClipboardModule(), new DevicesModule());
+
+            RunStartupTasks();
+
+            var startables = Kernel.GetAll<IStartable>();
+
+            var count = startables.Count();
+        }
+
+        protected void RunStartupTasks()
+        {
+            foreach (var task in Kernel.GetAll<IStartupTask>())
+            {
+                task.Startup();
+            }
         }
 
         protected override void OnViewLoaded(object view)

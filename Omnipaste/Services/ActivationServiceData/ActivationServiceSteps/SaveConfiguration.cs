@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿using Retrofit.Net;
+
+namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using OmniCommon.Interfaces;
 
@@ -13,9 +15,10 @@
 
         public override IExecuteResult Execute()
         {
-            _configurationService.UpdateCommunicationChannel((string)Parameter.Value);
+            var authenticator = (Authenticator)Parameter.Value;
+            _configurationService.Save(authenticator.AccessToken, authenticator.GrantType, authenticator.RefreshToken);
 
-            return new ExecuteResult { State = SingleStateEnum.Successful, Data = this.Parameter.Value };
+            return new ExecuteResult { State = SingleStateEnum.Successful, Data = authenticator.AccessToken };
         }
     }
 }

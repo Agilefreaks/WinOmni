@@ -187,6 +187,7 @@
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\LoginComplete.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />

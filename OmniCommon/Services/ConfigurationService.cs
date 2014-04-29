@@ -34,6 +34,18 @@ namespace OmniCommon.Services
             return CommunicationSettings.Channel;
         }
 
+        public void Save(string accessToken, string tokenType, string refreshToken)
+        {
+            _configurationProvider.SetValue("accessToken", accessToken);
+            _configurationProvider.SetValue("tokenType", tokenType);
+            _configurationProvider.SetValue("refreshToken", refreshToken);
+        }
+
+        public string GetAccessToken()
+        {
+            return _configurationProvider.GetValue("accessToken");
+        }
+
         public string GetClientId()
         {
             return ConfigurationManager.AppSettings["client_id"];

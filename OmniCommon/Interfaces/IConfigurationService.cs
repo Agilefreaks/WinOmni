@@ -12,6 +12,10 @@ namespace OmniCommon.Interfaces
 
         string GetCommunicationChannel();
 
+        void Save(string accessToken, string tokenType, string refreshToken);
+
+        string GetAccessToken();
+
         string GetClientId();
 
         string this[string key] { get; }

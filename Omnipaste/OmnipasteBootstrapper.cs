@@ -2,6 +2,7 @@
 using Castle.Core.Internal;
 using OmniApi;
 using OmniCommon.Interfaces;
+using Omnipaste.EventAggregatorMessages;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
 
@@ -19,7 +20,7 @@ namespace Omnipaste
     using OmniCommon;
     using Omnipaste.Shell;
 
-    public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
+    public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>, IHandle<LoginComplete>
     {
         private IKernel _kernel;
 
@@ -54,18 +55,10 @@ namespace Omnipaste
 
             _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
         }
-
-        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
+        
+        public void Handle(LoginComplete message)
         {
-            base.OnStartup(sender, e);
-
-            _kernel.Load(new ClipboardModule());
-
-            RunStartupTasks();            
-
-            var startables = _kernel.GetAll<IStartable>();
-
-            var count = startables.Count();
+            
         }
 
         protected override void OnExit(object sender, EventArgs e)

@@ -7,7 +7,6 @@
     using System.Windows;
     using BugFreak;
     using CustomizedClickOnce.Common;
-    using OmniApi;
 
     public partial class App : ISingleInstanceApp
     {
@@ -21,7 +20,7 @@
                 PerformFirstRunTasks();
 
                 var application = new App();
-
+                
                 application.InitializeComponent();
                 application.Run();
 

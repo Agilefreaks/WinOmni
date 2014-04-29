@@ -11,8 +11,6 @@
 
         private readonly IConfigurationProvider _configurationProvider;
 
-        private readonly string _channel;
-
         private readonly string _deviceIdentifier;
 
         public INotificationService NotificationService { get; set; }
@@ -23,14 +21,13 @@
             _devicesAPI = devicesAPI;
             _configurationProvider = configurationProvider;
 
-            _channel = _configurationProvider["channel"];
             _deviceIdentifier = _configurationProvider["deviceIdentifier"];
         }
 
         public async Task<bool> Start(string communicationChannel = null)
         {
             var registrationResult = await NotificationService.Start();
-            var activationResult = await _devicesAPI.Activate(registrationResult.Data, _deviceIdentifier, "omni");
+            //var activationResult = await _devicesAPI.Activate(registrationResult.Data, _deviceIdentifier, "omni");
 
             return false;
         }

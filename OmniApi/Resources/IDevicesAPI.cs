@@ -9,7 +9,7 @@ namespace OmniApi.Resources
     using Retrofit.Net.Attributes.Methods;
     using Retrofit.Net.Attributes.Parameters;
 
-    public interface IDevicesAPI
+    public interface IDevicesAPI : IProtectedAPIEndpoint
     {
         [Put("devices/activate")]
         Task<IRestResponse<Device>> Activate(
@@ -22,5 +22,9 @@ namespace OmniApi.Resources
         
         [Put("devices/deactivate")]
         Task<IRestResponse<Device>> Deactivate([Body] string id);
+    }
+
+    public interface IProtectedAPIEndpoint
+    {
     }
 }

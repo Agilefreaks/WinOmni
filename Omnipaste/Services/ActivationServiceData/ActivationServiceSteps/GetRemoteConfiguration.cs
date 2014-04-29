@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using Ninject;
 using OmniApi.Resources;
 using OmniCommon.Interfaces;
+using Retrofit.Net;
 
 namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
@@ -15,6 +19,9 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         public const int MaxRetryCount = 5;
 
         private RetryInfo _payload;
+
+        [Inject]
+        public IKernel Kernel { get; set; }
 
         public override DependencyParameter Parameter { get; set; }
 
@@ -67,8 +74,16 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
             else if (!string.IsNullOrEmpty(activationModel.access_token))
             {
+                var authenticator = new Authenticator
+                                              {
+                                                  AccessToken = activationModel.access_token,
+                                                  RefreshToken = activationModel.refresh_token,
+                                                  GrantType = activationModel.token_type
+                                              };
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = activationModel.access_token;
+                executeResult.Data = authenticator;
+                
+                Kernel.Bind<Authenticator>().ToConstant(authenticator);
             }
             else
             {

@@ -1,10 +1,16 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿using Ninject;
+using Retrofit.Net;
+
+namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using OmniCommon.Interfaces;
 
     public class LoadLocalConfiguration : ActivationStepBase
     {
         private readonly IConfigurationService _configurationService;
+        
+        [Inject]
+        public IKernel Kernel { get; set; }
 
         public LoadLocalConfiguration(IConfigurationService configurationService)
         {
@@ -14,14 +20,21 @@
         public override IExecuteResult Execute()
         {
             _configurationService.Initialize();
+            var result = new ExecuteResult();
 
-            var executeResult = new ExecuteResult
-                                    {
-                                        Data = _configurationService.CommunicationSettings.Channel
-                                    };
+            string accessToken = _configurationService.GetAccessToken();
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                result.Data = accessToken;
+                result.State = SimpleStepStateEnum.Successful;
+                Kernel.Bind<Authenticator>().ToConstant(new Authenticator { AccessToken = accessToken });
+            }
+            else
+            {
+                result.State = SimpleStepStateEnum.Failed;
+            }
 
-            executeResult.State = string.IsNullOrEmpty((string)executeResult.Data) ? SimpleStepStateEnum.Failed : SimpleStepStateEnum.Successful;
-            return executeResult;
+            return result;
         }
     }
 }

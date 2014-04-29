@@ -35,7 +35,7 @@
             if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
             {
                 executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = _configurationProvider["deviceIdentifier"] = _lastRequestResult.ActivationCode;
+                executeResult.Data = _lastRequestResult.ActivationCode;
             }
             else
             {
