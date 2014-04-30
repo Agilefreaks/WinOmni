@@ -5,9 +5,19 @@ namespace OmniCommon.Interfaces
     public interface IConfigurationService
     {
         CommunicationSettings CommunicationSettings { get; }
+        
+        void Save(string accessToken, string tokenType, string refreshToken);
 
-        void Initialize();
+        string GetAccessToken();
 
-        void UpdateCommunicationChannel(string channel);
+        string GetClientId();
+
+        string this[string key] { get; }
+
+        string GetRefreshToken();
+
+        string GetTokenType();
+
+        string GetDeviceIdentifier();
     }
 }

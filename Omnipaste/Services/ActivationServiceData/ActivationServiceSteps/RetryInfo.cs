@@ -10,9 +10,9 @@
 
         public RetryInfo(string token, int retryCount = 0, string error = "")
         {
-            this.Token = token;
-            this.FailCount = retryCount;
-            this.Error = error;
+            Token = token;
+            FailCount = retryCount;
+            Error = error;
         }
     }
 }

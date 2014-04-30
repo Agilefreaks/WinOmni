@@ -2,7 +2,16 @@
 
 namespace Omnipaste.Services.Connectivity
 {
-    public class ConnectivityHelper
+    public interface IConnectivityHelper
+    {
+        /// <summary>
+        /// Returns whether Internet is connected
+        /// </summary>
+        /// <returns>bool</returns>
+        bool InternetConnected { get; }
+    }
+
+    public class ConnectivityHelper : IConnectivityHelper
     {
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int connectionDescription, int reservedValue);
@@ -11,7 +20,7 @@ namespace Omnipaste.Services.Connectivity
         /// Returns whether Internet is connected
         /// </summary>
         /// <returns>bool</returns>
-        public static bool InternetConnected
+        public bool InternetConnected
         {
             get
             {

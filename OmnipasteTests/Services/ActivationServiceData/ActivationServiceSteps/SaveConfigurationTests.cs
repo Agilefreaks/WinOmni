@@ -34,5 +34,13 @@
 
             this._mockConfigurationService.Verify(x => x.UpdateCommunicationChannel("testChannel"));
         }
+
+        [Test]
+        public void Execute_Always_ReturnsTheChannelAsData()
+        {
+            IExecuteResult executeResult = this._subject.Execute();
+
+            Assert.AreEqual("testChannel", executeResult.Data);
+        }
     }
 }

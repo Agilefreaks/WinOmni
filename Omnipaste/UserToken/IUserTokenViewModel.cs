@@ -4,7 +4,7 @@
 
     public interface IUserTokenViewModel : IWorkspace
     {
-        string Token { get; set; }
+        string ActivationCode { get; set; }
 
         void Ok();
 

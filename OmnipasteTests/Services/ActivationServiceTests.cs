@@ -120,7 +120,7 @@
         }
 
         [Test]
-        public void GetNextStepCurrentStepIsSaveConfigurationAndItsStateIsSuccessfulShouldCallStepFactoryCreateWithAndSetTheCurrentStep()
+        public void GetNextStepCurrentStepIsSaveConfigurationAndItsStateIsSuccessfulShouldCallStepFactoryCreateWithFinishedAndSetTheCurrentStep()
         {
             this.RunTransitionTest(typeof(SaveConfiguration), SingleStateEnum.Successful, typeof(Finished));
         }

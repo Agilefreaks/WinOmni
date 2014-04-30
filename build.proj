@@ -22,14 +22,20 @@
   </PropertyGroup>
 
   <Target Name="All">
-		<MSBuild 
-			Projects="Omnipaste.sln" 
-			Targets="Clean;Build"
-			Properties="Configuration=$(Configuration)" />
+	<ItemGroup>
+		<MySourceFiles Include="$(MSBuildProjectDirectory)\CustomizedClickOnce.Install\bin\$(Configuration)\OmnipasteSetup.exe"/>
+	</ItemGroup>
+	
+	<MSBuild 
+		Projects="Omnipaste.sln" 
+		Targets="Clean;Build"
+		Properties="Configuration=$(Configuration)" />
 
-		<MSBuild 
-			Projects="Omnipaste\Omnipaste.csproj"
-			Targets="Publish" 
-			Properties="Configuration=$(Configuration);ApplicationRevision=$(PublishApplicationRevision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+	<MSBuild 
+		Projects="Omnipaste\Omnipaste.csproj"
+		Targets="Publish" 
+		Properties="Configuration=$(Configuration);ApplicationRevision=$(PublishApplicationRevision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+		
+		<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
 	</Target>
 </Project>

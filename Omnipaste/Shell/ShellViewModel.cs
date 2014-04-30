@@ -1,4 +1,9 @@
-﻿namespace Omnipaste.Shell
+﻿using Clipboard;
+using OmniApi;
+using OmniCommon.Interfaces;
+using System.Linq;
+
+namespace Omnipaste.Shell
 {
     using System;
     using System.Windows;
@@ -22,6 +27,9 @@
 
         [Inject]
         public IUserTokenViewModel UserTokenViewModel { get; set; }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
@@ -49,9 +57,10 @@
 
         public void Handle(ConfigurationCompletedMessage message)
         {
+            HandleSuccessfulLogin();
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
-
+         
             if (_view != null)
             {
                 _view.Visibility = Visibility.Hidden;
@@ -59,16 +68,23 @@
             }
         }
 
-        public IntPtr GetHandle()
+        public void HandleSuccessfulLogin()
         {
-            var handle = new IntPtr();
-            Execute.OnUIThread(() =>
-                {
-                    var windowInteropHelper = new WindowInteropHelper(_view);
-                    handle = windowInteropHelper.Handle;
-                });
-            
-            return handle;
+            Kernel.Load(new ClipboardModule(), new DevicesModule());
+
+            RunStartupTasks();
+
+            var startables = Kernel.GetAll<IStartable>();
+
+            var count = startables.Count();
+        }
+
+        protected void RunStartupTasks()
+        {
+            foreach (var task in Kernel.GetAll<IStartupTask>())
+            {
+                task.Startup();
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -76,14 +92,29 @@
             base.OnViewLoaded(view);
 
             _view = (Window)view;
+
+            Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
-            ConfigurationViewModel.Start();
+            
+            await ConfigurationViewModel.Start();
+        }
+
+        private IntPtr GetHandle()
+        {
+            var handle = new IntPtr();
+            Execute.OnUIThread(() =>
+            {
+                var windowInteropHelper = new WindowInteropHelper(_view);
+                handle = windowInteropHelper.Handle;
+            });
+
+            return handle;
         }
     }
 }

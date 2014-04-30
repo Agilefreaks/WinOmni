@@ -31,3 +31,4 @@ packages/*
 !.nuget/nuget.exe
 deploy/*
 Omnipaste/Uninstall.*
+Omnipaste/omnipaste-setup.*

@@ -18,7 +18,7 @@
                 </Hyperlink>
             </TextBlock>
 
-            <TextBox x:Name="Token" Style="{StaticResource UserTokenTextBox}" />
+            <TextBox x:Name="ActivationCode" Style="{StaticResource UserTokenTextBox}" />
         </StackPanel>
 
         <Grid DockPanel.Dock="Bottom" Style="{StaticResource UserTokenGrid}">

@@ -1,14 +1,13 @@
-﻿extern alias TasksNET35;
+﻿using System;
+using System.Threading.Tasks;
+using Caliburn.Micro;
+using Omnipaste.EventAggregatorMessages;
+using Omnipaste.Framework;
+using Omnipaste.Services;
+using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
 namespace Omnipaste.Configuration
 {
-    using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Task = TasksNET35::System.Threading.Tasks.Task;
-
     public class ConfigurationViewModel : Screen, IConfigurationViewModel
     {
         private readonly IActivationService _activationService;
@@ -24,12 +23,21 @@ namespace Omnipaste.Configuration
             _eventAggregator = eventAggregator;
         }
 
-        public void Start()
+        public async Task Start()
         {
-            Task.Factory.StartNew(() => _activationService.Run()).ContinueWith(OnContinuationAction);
+            try
+            {
+                await _activationService.Run();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            OnContinuationAction();
         }
 
-        private void OnContinuationAction(Task result)
+        private void OnContinuationAction()
         {
             if (_activationService.CurrentStep == null || _activationService.CurrentStep.GetId().Equals(typeof(Failed)))
             {

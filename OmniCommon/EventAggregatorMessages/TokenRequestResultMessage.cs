@@ -4,12 +4,12 @@
     {
         public TokenRequestResultMessageStatusEnum Status { get; set; }
 
-        public string Token { get; set; }
+        public string ActivationCode { get; set; }
 
-        public TokenRequestResultMessage(TokenRequestResultMessageStatusEnum status, string token = null)
+        public TokenRequestResultMessage(TokenRequestResultMessageStatusEnum status, string activationCode = null)
         {
             Status = status;
-            Token = token;
+            ActivationCode = activationCode;
         }
     }
 }

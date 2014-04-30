@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.Services
+﻿using System.Threading.Tasks;
+
+namespace Omnipaste.Services
 {
     using System.Collections.Generic;
     using Omnipaste.Services.ActivationServiceData;
@@ -17,101 +19,86 @@
         {
             get
             {
-                return this._finalStepIdIds;
+                return _finalStepIdIds;
             }
         }
 
         public ActivationService(IStepFactory stepFactory)
         {
-            this._stepFactory = stepFactory;
+            _stepFactory = stepFactory;
 
-            this._finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
+            _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
-            this._transitions = new TransitionCollection();
+            _transitions = new TransitionCollection();
 
-            this._transitions.RegisterTransition(
-                GenericTransitionId<Start>.Create(SingleStateEnum.Successful),
-                typeof(GetTokenFromDeploymentUri));
-
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
                 typeof(GetRemoteConfiguration));
-            this._transitions.RegisterTransition(
+            
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
                 typeof(LoadLocalConfiguration));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Successful),
                 typeof(Finished));
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Failed),
                 typeof(GetTokenFromUser));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Successful),
                 typeof(GetRemoteConfiguration));
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Failed),
                 typeof(Failed));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.CommunicationFailure),
                 typeof(GetRemoteConfiguration));
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
                 typeof(GetTokenFromUser));
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Successful),
                 typeof(SaveConfiguration));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
                 typeof(Finished));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),
                 typeof(Finished));
 
-            this._transitions.RegisterTransition(
+            _transitions.RegisterTransition(
                 GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
                 typeof(Failed));
+
+            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
         }
 
-        public void Run()
+        public async Task Run()
         {
-            while (this.CurrentStepIsIntermediateStep())
+            while (CurrentStepIsIntermediateStep())
             {
-                this.MoveToNextStep();
+                var activationStep = await CurrentStep.ExecuteAsync();
+
+                MoveToNextStep(activationStep);
             }
         }
 
-        public void MoveToNextStep()
+        private void MoveToNextStep(IExecuteResult previousResult)
         {
-            this.SetCurrentStep(this.GetNextStep());
-        }
+            var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
+            var nextStepType = _transitions.GetTargetTypeForTransition(transitionId);
 
-        public IActivationStep GetNextStep()
-        {
-            return this.CurrentStep != null ? this.GetNextStepBasedOnExecuteResult() : new Start();
-        }
-
-        protected void SetCurrentStep(IActivationStep step)
-        {
-            this.CurrentStep = step;
-        }
-
-        private IActivationStep GetNextStepBasedOnExecuteResult()
-        {
-            var result = this.CurrentStep.Execute();
-            var transitionId = new TransitionId(this.CurrentStep.GetId(), result.State);
-            var nextStepType = this._transitions.GetTargetTypeForTransition(transitionId);
-
-            return this._stepFactory.Create(nextStepType, result.Data);
+            CurrentStep = _stepFactory.Create(nextStepType, previousResult.Data);
         }
 
         private bool CurrentStepIsIntermediateStep()
         {
-            return this.CurrentStep == null || !this._finalStepIdIds.Contains(this.CurrentStep.GetId());
+            return CurrentStep == null || !_finalStepIdIds.Contains(CurrentStep.GetId());
         }
     }
 }
