@@ -23,27 +23,27 @@ namespace OmniCommon.Services
             _configurationProvider = configurationProvider;
         }
 
-        public void UpdateCommunicationChannel(string channel)
-        {
-            _configurationProvider.SetValue("channel", channel);
-            Initialize();
-        }
-
-        public string GetCommunicationChannel()
-        {
-            return CommunicationSettings.Channel;
-        }
-
         public void Save(string accessToken, string tokenType, string refreshToken)
         {
             _configurationProvider.SetValue("accessToken", accessToken);
             _configurationProvider.SetValue("tokenType", tokenType);
             _configurationProvider.SetValue("refreshToken", refreshToken);
+            Initialize();
         }
 
         public string GetAccessToken()
         {
             return _configurationProvider.GetValue("accessToken");
+        }
+
+        public string GetRefreshToken()
+        {
+            return _configurationProvider.GetValue("refreshToken");
+        }
+
+        public string GetTokenType()
+        {
+            return _configurationProvider.GetValue("tokenType");
         }
 
         public string GetClientId()

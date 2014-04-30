@@ -34,10 +34,11 @@ namespace Clipboard.Handlers
         public void OnNext(OmniMessage value)
         {
             var clippingResponse = ClippingsAPI.LastClipping();
+            clippingResponse.Wait();
 
-            if (clippingResponse.StatusCode == HttpStatusCode.OK)
+            if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
             {
-                EventAggregator.Publish(clippingResponse.Data);
+                EventAggregator.Publish(clippingResponse.Result.Data);
             }
         }
 

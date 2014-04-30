@@ -23,11 +23,21 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             var result = new ExecuteResult();
 
             string accessToken = _configurationService.GetAccessToken();
+            string refreshToken = _configurationService.GetRefreshToken();
+            string tokenType = _configurationService.GetTokenType();
+            string clientId = _configurationService.GetClientId();
             if (!string.IsNullOrEmpty(accessToken))
             {
                 result.Data = accessToken;
                 result.State = SimpleStepStateEnum.Successful;
-                Kernel.Bind<Authenticator>().ToConstant(new Authenticator { AccessToken = accessToken, GrantType = "bearer"});
+                Kernel.Bind<Authenticator>().ToConstant(new Authenticator
+                                                        {
+                                                            AccessToken = accessToken, 
+                                                            RefreshToken = refreshToken, 
+                                                            GrantType = tokenType, 
+                                                            ClientId = clientId,
+                                                            AuthenticationEndpoint = "oauth2/token"
+                                                        });
             }
             else
             {

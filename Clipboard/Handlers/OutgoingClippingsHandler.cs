@@ -1,5 +1,6 @@
 using System;
 using WindowsClipboard.Interfaces;
+using OmniCommon.DataProviders;
 using OmniCommon.Models;
 using OmniCommon.Services;
 
@@ -9,13 +10,16 @@ namespace Clipboard.Handlers
     {
         private readonly IClippingsAPI _clippingsAPI;
 
+        private readonly IConfigurationProvider _configurationProvider;
+
         private IDisposable _clippingsSubscription;
 
         public IWindowsClipboard WindowsClipboard { get; set; }
 
-        public OutgoingClippingsHandler(IWindowsClipboard windowsClipboard, IClippingsAPI clippingsAPI)
+        public OutgoingClippingsHandler(IWindowsClipboard windowsClipboard, IClippingsAPI clippingsAPI, IConfigurationProvider configurationProvider)
         {
             _clippingsAPI = clippingsAPI;
+            _configurationProvider = configurationProvider;
             WindowsClipboard = windowsClipboard;
         }
 
@@ -31,7 +35,7 @@ namespace Clipboard.Handlers
 
         public void OnNext(ClipboardData value)
         {
-            //_clippingsAPI.PostClipping(new Clipping("eMailAddress", value.GetData()));
+            _clippingsAPI.PostClipping(_configurationProvider["deviceIdentifier"], value.GetData());
         }
 
         public void OnError(Exception error)

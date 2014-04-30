@@ -4,6 +4,7 @@ using Ninject;
 using Clipboard.Handlers;
 using Ninject.Modules;
 using OmniCommon.Interfaces;
+using OmniCommon.Models;
 using Retrofit.Net;
 
 namespace Clipboard
@@ -24,16 +25,18 @@ namespace Clipboard
             ConfigurationService = Kernel.Get<IConfigurationService>();
         
             Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>();
-            Kernel.Bind<IClippingsAPI>().ToConstant(GetClippingsAPI());
+            Kernel.Bind<IClippingsAPI>().ToMethod(c => GetClippingsAPI());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
             Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();
             Kernel.Load(new WindowsClipboardModule());
         }
 
-        public IClippingsAPI GetClippingsAPI()
+        private IClippingsAPI GetClippingsAPI()
         {
-            var adapter = new RestAdapter(_baseUrl);
-            return adapter.Create<IClippingsAPI>();
+            var authenticator = Kernel.Get<Authenticator>();
+            var restAdapter = new RestAdapter(_baseUrl, authenticator);
+
+            return restAdapter.Create<IClippingsAPI, Clipping>();
         }
     }
 }

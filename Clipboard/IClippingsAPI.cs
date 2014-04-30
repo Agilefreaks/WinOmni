@@ -1,17 +1,17 @@
-﻿using OmniCommon.Models;
+﻿using System.Threading.Tasks;
+using OmniCommon.Models;
+using RestSharp;
+using Retrofit.Net.Attributes.Methods;
+using Retrofit.Net.Attributes.Parameters;
 
 namespace Clipboard
 {
-    using RestSharp;
-    using Retrofit.Net.Attributes.Methods;
-    using Retrofit.Net.Attributes.Parameters;
-
     public interface IClippingsAPI
     {
         [Get("clippings/last")]
-        RestResponse<Clipping> LastClipping();
+        Task<IRestResponse<Clipping>> LastClipping();
 
-        [Post("clippings")]
-        RestResponse<Clipping> PostClipping([Body] Clipping clipping);
+        [Post("clippings/")]
+        Task<IRestResponse<Clipping>> PostClipping([Query("identifier")] string deviceIdentifier, [Query("content")]string clippingContent);
     }
 }

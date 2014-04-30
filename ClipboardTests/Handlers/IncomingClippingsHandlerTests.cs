@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Clipboard;
 using Clipboard.Handlers;
@@ -49,7 +50,7 @@ namespace ClipboardTests.Handlers
         [Test]
         public void OnNext_Always_GetsTheLastClipping()
         {
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new RestResponse<Clipping>());
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => new RestResponse<Clipping>()));
 
             _subject.OnNext(new OmniMessage());
 
@@ -61,7 +62,7 @@ namespace ClipboardTests.Handlers
         {
             var clipping = new Clipping("email", "content");
             var lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping };
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(lastClippingResponse);
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => lastClippingResponse));
 
             _subject.OnNext(new OmniMessage());
 
@@ -72,7 +73,7 @@ namespace ClipboardTests.Handlers
         public void OnNext_WhenLastClippingIsNotSuccessful_DoesNotPublishTheClippingOnTheEventAggregator()
         {
             var lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.Forbidden, Data = new Clipping()};
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(lastClippingResponse);
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => lastClippingResponse));
 
             _subject.OnNext(new OmniMessage());
 
@@ -83,7 +84,7 @@ namespace ClipboardTests.Handlers
         public void SubscribeTo_Always_IsSubscribedToClippingsMessages()
         {
             var subject = new Subject<OmniMessage>();
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new RestResponse<Clipping>());
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => new RestResponse<Clipping>()));
 
             _subject.SubscribeTo(subject);
             subject.OnNext(new OmniMessage {Type = OmniMessageTypeEnum.Clipping });
