@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using System.Linq;
+using System.Net.NetworkInformation;
 using OmniCommon.DataProviders;
 using OmniCommon.Interfaces;
 
@@ -28,7 +30,6 @@ namespace OmniCommon.Services
             _configurationProvider.SetValue("accessToken", accessToken);
             _configurationProvider.SetValue("tokenType", tokenType);
             _configurationProvider.SetValue("refreshToken", refreshToken);
-            Initialize();
         }
 
         public string GetAccessToken()
@@ -51,12 +52,12 @@ namespace OmniCommon.Services
             return ConfigurationManager.AppSettings["client_id"];
         }
 
-        public void Initialize()
+        public string GetDeviceIdentifier()
         {
-            CommunicationSettings = new CommunicationSettings
-                {
-                    Channel = _configurationProvider.GetValue("channel")
-                };
+            return NetworkInterface.GetAllNetworkInterfaces()
+                .Where(nic => nic.OperationalStatus == OperationalStatus.Up)
+                .Select(nic => nic.GetPhysicalAddress().ToString())
+                .First();
         }
     }
 }

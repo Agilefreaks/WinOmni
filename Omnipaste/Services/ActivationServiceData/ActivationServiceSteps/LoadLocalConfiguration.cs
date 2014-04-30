@@ -19,7 +19,6 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         public override IExecuteResult Execute()
         {
-            _configurationService.Initialize();
             var result = new ExecuteResult();
 
             string accessToken = _configurationService.GetAccessToken();

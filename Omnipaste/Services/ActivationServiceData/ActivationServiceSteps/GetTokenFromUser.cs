@@ -18,10 +18,9 @@
 
         public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
 
-        public GetTokenFromUser(IEventAggregator eventAggregator, IConfigurationProvider configurationProvider)
+        public GetTokenFromUser(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _configurationProvider = configurationProvider;
             _eventAggregator.Subscribe(this);
         }
 
@@ -35,7 +34,7 @@
             if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
             {
                 executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = _configurationProvider["deviceIdentifier"] = _lastRequestResult.ActivationCode;
+                executeResult.Data = _lastRequestResult.ActivationCode;
             }
             else
             {

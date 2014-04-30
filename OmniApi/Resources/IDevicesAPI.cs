@@ -18,7 +18,7 @@ namespace OmniApi.Resources
             [Query("provider")] string provider);
 
         [Post("devices/")]
-        Task<IRestResponse<Device>> Register([Query("id")] string id);
+        Task<IRestResponse<Device>> Register([Query("identifier")] string id, [Query("name")] string name);
         
         [Put("devices/deactivate")]
         Task<IRestResponse<Device>> Deactivate([Body] string id);

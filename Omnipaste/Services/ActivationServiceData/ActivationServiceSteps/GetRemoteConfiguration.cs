@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Principal;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ninject;
 using OmniApi.Resources;
 using OmniCommon.Interfaces;
