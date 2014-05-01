@@ -30,8 +30,10 @@ namespace ClipboardTests.Handlers
         {
             _mockingKernel = new MoqMockingKernel();
             _mockingKernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
+            
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockClippingsAPI = _mockingKernel.GetMock<IClippingsAPI>();
+
             _subject = _mockingKernel.Get<IncomingClippingsHandler>();
         }
 
@@ -50,19 +52,27 @@ namespace ClipboardTests.Handlers
         [Test]
         public void OnNext_Always_GetsTheLastClipping()
         {
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => new RestResponse<Clipping>()));
+            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping>
+                                       {
+                                           StatusCode = HttpStatusCode.OK,
+                                           Data = new Clipping()
+                                       };
+            var taskResponse = Task.Factory.StartNew(() => lastClippingResponse);
+            _mockClippingsAPI
+                .Setup(c => c.LastClipping())
+                .Returns(() => taskResponse);
 
             _subject.OnNext(new OmniMessage());
 
             _mockClippingsAPI.Verify(c => c.LastClipping(), Times.Once());
-        }   
+        }
 
         [Test]
         public void OnNext_WhenLastClippingIsSuccessful_PublishesItToTheEventAggregator()
         {
             var clipping = new Clipping("email", "content");
-            var lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping };
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => lastClippingResponse));
+            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping };
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 
             _subject.OnNext(new OmniMessage());
 
@@ -72,8 +82,8 @@ namespace ClipboardTests.Handlers
         [Test]
         public void OnNext_WhenLastClippingIsNotSuccessful_DoesNotPublishTheClippingOnTheEventAggregator()
         {
-            var lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.Forbidden, Data = new Clipping()};
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => lastClippingResponse));
+            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.Forbidden, Data = new Clipping()};
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 
             _subject.OnNext(new OmniMessage());
 
@@ -84,7 +94,8 @@ namespace ClipboardTests.Handlers
         public void SubscribeTo_Always_IsSubscribedToClippingsMessages()
         {
             var subject = new Subject<OmniMessage>();
-            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(new Task<IRestResponse<Clipping>>(() => new RestResponse<Clipping>()));
+            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping>();
+            _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 
             _subject.SubscribeTo(subject);
             subject.OnNext(new OmniMessage {Type = OmniMessageTypeEnum.Clipping });
