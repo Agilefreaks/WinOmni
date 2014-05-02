@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clipboard", "Clipboard\Clip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardTests", "ClipboardTests\ClipboardTests.csproj", "{6EDE29D2-7189-45FE-B665-474457383C0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmnipasteTests", "OmnipasteTests\OmnipasteTests.csproj", "{EAF5BF18-557E-4910-AB61-325220A95AB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,12 @@ Global
 		{6EDE29D2-7189-45FE-B665-474457383C0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EDE29D2-7189-45FE-B665-474457383C0D}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{6EDE29D2-7189-45FE-B665-474457383C0D}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{EAF5BF18-557E-4910-AB61-325220A95AB3}.Staging|Any CPU.Build.0 = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,5 +151,6 @@ Global
 		{EA7CF533-7F33-4104-B7DB-18F9B6774D06} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{4DDA5EBD-9E52-41CE-82F2-FDF4F87FA41B} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{6EDE29D2-7189-45FE-B665-474457383C0D} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{EAF5BF18-557E-4910-AB61-325220A95AB3} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal
