@@ -34,7 +34,7 @@
 	<MSBuild 
 		Projects="Omnipaste\Omnipaste.csproj"
 		Targets="Publish" 
-		Properties="Configuration=$(Configuration);ApplicationRevision=$(PublishApplicationRevision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
 		
 		<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
 	</Target>
