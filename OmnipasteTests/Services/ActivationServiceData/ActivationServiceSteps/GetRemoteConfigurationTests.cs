@@ -40,7 +40,7 @@ namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
         [Test]
         public void CtorAlwaysSetsTheOmniApi()
         {
-            Assert.AreEqual(_subject._authorizationAPI, _mockAuthorizationAPI.Object);
+            Assert.AreEqual(_subject.AuthorizationAPI, _mockAuthorizationAPI.Object);
         }
 
         //[Test]

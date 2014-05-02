@@ -12,7 +12,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
     {
         private readonly IConfigurationService _configurationService;
 
-        public IAuthorizationAPI _authorizationAPI { get; set; }
+        public IAuthorizationAPI AuthorizationAPI { get; set; }
 
         public const int MaxRetryCount = 5;
 
@@ -35,7 +35,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         public GetRemoteConfiguration(IAuthorizationAPI authorizationAPI, IConfigurationService configurationService)
         {
             _configurationService = configurationService;
-            _authorizationAPI = authorizationAPI;
+            AuthorizationAPI = authorizationAPI;
         }
 
         public override IExecuteResult Execute()
@@ -53,7 +53,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
             else
             {
-                var activationModelTask = await _authorizationAPI.Activate(PayLoad.Token, _configurationService.GetClientId());
+                var activationModelTask = await AuthorizationAPI.Activate(PayLoad.Token, _configurationService.GetClientId());
                 SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 

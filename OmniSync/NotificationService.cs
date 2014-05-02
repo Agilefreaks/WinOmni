@@ -5,7 +5,6 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Ninject;
-using OmniCommon.DataProviders;
 using OmniCommon.Interfaces;
 using OmniCommon.Models;
 using WampSharp;

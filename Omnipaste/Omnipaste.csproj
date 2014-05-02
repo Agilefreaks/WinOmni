@@ -367,6 +367,10 @@
       <Project>{bc299433-48cc-4282-a7f4-3948e054b6ac}</Project>
       <Name>CustomizedClickOnce.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Notifications\Notifications.csproj">
+      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
+      <Name>Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
       <Name>OmniApi</Name>

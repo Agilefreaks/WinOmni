@@ -1,4 +1,5 @@
 ﻿using Clipboard;
+using Notifications;
 using OmniApi;
 using OmniCommon.Interfaces;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace Omnipaste.Shell
 
         public void HandleSuccessfulLogin()
         {
-            Kernel.Load(new ClipboardModule(), new DevicesModule());
+            Kernel.Load(new ClipboardModule(), new DevicesModule(), new NotificationsModule());
 
             RunStartupTasks();
 
