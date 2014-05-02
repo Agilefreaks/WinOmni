@@ -12,7 +12,7 @@ namespace CustomizedClickOnce.Install
         private static Mutex _instanceMutex;
 
 #if STAGING
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
 #endif
 
 #if RELEASE
