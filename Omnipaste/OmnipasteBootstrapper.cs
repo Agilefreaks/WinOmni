@@ -2,7 +2,6 @@
 using Castle.Core.Internal;
 using OmniApi;
 using OmniCommon.Interfaces;
-using Omnipaste.EventAggregatorMessages;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
 
@@ -12,7 +11,6 @@ namespace Omnipaste
     using System.Collections.Generic;
     using System.Reflection;
     using Caliburn.Micro;
-    using Clipboard;
     using Ninject;
     using Ninject.Extensions.Conventions;
     using Omni;
@@ -20,7 +18,7 @@ namespace Omnipaste
     using OmniCommon;
     using Omnipaste.Shell;
 
-    public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>, IHandle<LoginComplete>
+    public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
     {
         private IKernel _kernel;
 
@@ -54,11 +52,6 @@ namespace Omnipaste
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
 
             _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
-        }
-        
-        public void Handle(LoginComplete message)
-        {
-            
         }
 
         protected override void OnExit(object sender, EventArgs e)

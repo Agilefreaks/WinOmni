@@ -2,7 +2,7 @@
 {
     public class OmniMessage
     {
-        public OmniMessageTypeEnum Type { get; set; }
+        public string Provider { get; set; }
     }
 
     public enum OmniMessageTypeEnum

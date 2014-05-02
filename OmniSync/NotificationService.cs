@@ -13,12 +13,11 @@ using WampSharp.Auxiliary.Client;
 
 namespace OmniSync
 {
-
     public class NotificationService : INotificationService
     {
         #region Fields
 
-        private readonly IConfigurationProvider _configurationProvider;
+        private readonly IConfigurationService _configurationService;
 
         private readonly IWampChannelFactory<JToken> _wampChannelFactory;
 
@@ -37,9 +36,9 @@ namespace OmniSync
 
         #endregion
 
-        public NotificationService(IConfigurationProvider configurationProvider, IWampChannelFactory<JToken> wampChannelFactory)
+        public NotificationService(IConfigurationService configurationService, IWampChannelFactory<JToken> wampChannelFactory)
         {
-            _configurationProvider = configurationProvider;
+            _configurationService = configurationService;
             _wampChannelFactory = wampChannelFactory;
         }
 
@@ -64,8 +63,7 @@ namespace OmniSync
 
         private void OpenWebsocket()
         {
-            //TODO: channel (which are the email address) should be encoded to be valid on URL
-            _subject = _channel.GetSubject<OmniMessage>(_configurationProvider["channel"]);
+            _subject = _channel.GetSubject<OmniMessage>(string.Empty);
         }
 
         private async Task<RegistrationResult> ConnectToServer()

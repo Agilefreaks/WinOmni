@@ -1,7 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using WindowsClipboard.Interfaces;
 using OmniCommon.Interfaces;
+using OmniCommon.Models;
 using OmniCommon.Services;
+using RestSharp;
 
 namespace Clipboard.Handlers
 {
@@ -26,7 +29,7 @@ namespace Clipboard.Handlers
         {
             _clippingsSubscription = WindowsClipboard.Subscribe(this);
         }
-
+        
         public void Stop()
         {
             _clippingsSubscription.Dispose();
@@ -34,7 +37,8 @@ namespace Clipboard.Handlers
 
         public void OnNext(ClipboardData value)
         {
-            _clippingsAPI.PostClipping(_configurationService.GetDeviceIdentifier(), value.GetData());
+            var postClippingTask = _clippingsAPI.PostClipping(_configurationService.GetDeviceIdentifier(), value.GetData());
+            postClippingTask.Wait();
         }
 
         public void OnError(Exception error)

@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 
 namespace CustomizedClickOnce.Install
 {
     using System.Diagnostics;
     using System.Reflection;
-    using System.Text.RegularExpressions;
     using System.Threading;
 
     static class Program
@@ -12,7 +12,7 @@ namespace CustomizedClickOnce.Install
         private static Mutex _instanceMutex;
 
 #if STAGING
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
+        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste.application?token={0}";
 #endif
 
 #if RELEASE
@@ -49,21 +49,13 @@ namespace CustomizedClickOnce.Install
             {
                 Process.Start("iexplore", string.Format(applicationURL, activationToken));
             }
-
         }
 
         private static string GetActivationTokenFromFileName(string fileName)
         {
-            var result = string.Empty;
-            const string GuidPattern = @"[a-fA-F0-9]{8}(?:-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}";
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
 
-            var mc = Regex.Matches(fileName, GuidPattern);
-            if (mc.Count != 0)
-            {
-                result = mc[0].Value;
-            }
-
-            return result;
+            return fileNameWithoutExtension.Substring(15, 6);
         }
     }
 }

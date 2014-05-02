@@ -98,7 +98,7 @@ namespace ClipboardTests.Handlers
             _mockClippingsAPI.Setup(c => c.LastClipping()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 
             _subject.SubscribeTo(subject);
-            subject.OnNext(new OmniMessage {Type = OmniMessageTypeEnum.Clipping });
+            subject.OnNext(new OmniMessage {Provider = "clipboard" });
 
             _mockClippingsAPI.Verify(c => c.LastClipping(), Times.Once());
         }
@@ -109,7 +109,7 @@ namespace ClipboardTests.Handlers
             var subject = new Subject<OmniMessage>();
 
             _subject.SubscribeTo(subject);
-            subject.OnNext(new OmniMessage { Type = OmniMessageTypeEnum.PhoneNumber });
+            subject.OnNext(new OmniMessage { Provider = "phone_number" });
 
             _mockClippingsAPI.Verify(c => c.LastClipping(), Times.Never());
         }
