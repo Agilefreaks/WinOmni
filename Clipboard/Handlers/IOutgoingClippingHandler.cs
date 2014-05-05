@@ -1,4 +1,5 @@
 using System;
+using WindowsClipboard;
 using Ninject;
 using OmniCommon.Services;
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Clipboard;
 using Clipboard.Handlers;
+using Clipboard.Models;
 using Moq;
 using Ninject;
 using Ninject.MockingKernel.Moq;
@@ -55,7 +56,7 @@ namespace ClipboardTests.Handlers
             IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping>
                                        {
                                            StatusCode = HttpStatusCode.OK,
-                                           Data = new Clipping()
+                                           Data = new Clipping(string.Empty)
                                        };
             var taskResponse = Task.Factory.StartNew(() => lastClippingResponse);
             _mockClippingsAPI
@@ -70,7 +71,7 @@ namespace ClipboardTests.Handlers
         [Test]
         public void OnNext_WhenLastClippingIsSuccessful_PublishesItToTheEventAggregator()
         {
-            var clipping = new Clipping("email", "content");
+            var clipping = new Clipping("content");
             IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping };
             _mockClippingsAPI.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 

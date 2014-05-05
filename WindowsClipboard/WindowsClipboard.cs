@@ -3,8 +3,6 @@ using System.Reactive.Linq;
 using WindowsClipboard.Interfaces;
 using Caliburn.Micro;
 using Ninject;
-using OmniCommon.Models;
-using OmniCommon.Services;
 
 namespace WindowsClipboard
 {
@@ -41,9 +39,9 @@ namespace WindowsClipboard
             EventAggregator.Unsubscribe(this);
         }
 
-        public void Handle(Clipping clipping)
+        public void Handle(ClipboardData clipping)
         {
-            PutData(clipping.Content);
+            PutData(clipping.GetData());
         }
 
         private void PutData(string data)

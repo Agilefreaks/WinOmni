@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Reactive.Linq;
+using WindowsClipboard;
 using Caliburn.Micro;
 using Ninject;
 using OmniCommon.Interfaces;
 using OmniCommon.Models;
+using OmniCommon.Services;
 
 namespace Clipboard.Handlers
 {
@@ -38,7 +40,7 @@ namespace Clipboard.Handlers
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
             {
-                EventAggregator.Publish(clippingResponse.Result.Data);
+                EventAggregator.Publish(new ClipboardData(null, clippingResponse.Result.Data.Content));
             }
         }
 

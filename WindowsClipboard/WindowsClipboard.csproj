@@ -78,6 +78,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardData.cs" />
     <Compile Include="ClipboardEventArgs.cs" />
     <Compile Include="WindowsClipboardWrapper.cs" />
     <Compile Include="WindowsClipboard.cs" />
@@ -90,10 +91,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
-      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
-      <Name>OmniCommon</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WindowsImports\WindowsImports.csproj">
       <Project>{a3325236-54ef-462d-9a88-dad57adc8d11}</Project>
       <Name>WindowsImports</Name>

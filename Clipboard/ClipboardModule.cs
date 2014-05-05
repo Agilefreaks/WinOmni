@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using WindowsClipboard;
+using Clipboard.Models;
 using Ninject;
 using Clipboard.Handlers;
 using Ninject.Modules;

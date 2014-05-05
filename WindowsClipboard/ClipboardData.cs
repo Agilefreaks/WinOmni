@@ -1,8 +1,6 @@
-﻿namespace OmniCommon.Services
+﻿namespace WindowsClipboard
 {
-    using OmniCommon.Interfaces;
-
-    public class ClipboardData : IClipboardData
+    public class ClipboardData
     {
         private readonly object _sender;
         private readonly string _data;

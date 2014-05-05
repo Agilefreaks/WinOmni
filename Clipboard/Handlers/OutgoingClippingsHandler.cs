@@ -1,10 +1,7 @@
 using System;
-using System.Threading.Tasks;
+using WindowsClipboard;
 using WindowsClipboard.Interfaces;
 using OmniCommon.Interfaces;
-using OmniCommon.Models;
-using OmniCommon.Services;
-using RestSharp;
 
 namespace Clipboard.Handlers
 {

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Clipboard.Models;
 using OmniCommon.Models;
 using RestSharp;
 using Retrofit.Net.Attributes.Methods;

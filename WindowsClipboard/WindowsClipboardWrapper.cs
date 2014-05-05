@@ -8,16 +8,13 @@
     using System.Windows.Interop;
     using Common.Logging;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
     using global::WindowsClipboard.Interfaces;
     using WindowsImports;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
         public event EventHandler<ClipboardEventArgs> DataReceived;
-
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
-         
+        
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
 
@@ -76,7 +73,6 @@
             catch (ExternalException externalException)
             {
                 // Copying a field definition in Access 2002 causes this sometimes?
-                Logger.Error(externalException);
                 return null;
             }
 
@@ -161,7 +157,7 @@
 
         private void CallDataReceived(string data)
         {
-            if (DataReceived != null && !data.IsNullOrWhiteSpace())
+            if (DataReceived != null && !string.IsNullOrWhiteSpace(data))
             {
                 DataReceived(this, new ClipboardEventArgs(data));
             }

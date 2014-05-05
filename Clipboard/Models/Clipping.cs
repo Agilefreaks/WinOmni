@@ -1,18 +1,16 @@
-﻿namespace OmniCommon.Models
+﻿namespace Clipboard.Models
 {
     public class Clipping
     {
-        public string Token { get; set; }
-
         public string Content { get; set; }
 
         public Clipping()
+            : this(string.Empty)
         {
         }
 
-        public Clipping(string token, string content)
+        public Clipping(string content)
         {
-            Token = token;
             Content = content;
         }
     }
