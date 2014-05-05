@@ -33,7 +33,7 @@ namespace Clipboard.Handlers
 
         public void OnNext(OmniMessage value)
         {
-            var clippingResponse = ClippingsAPI.LastClipping();
+            var clippingResponse = ClippingsAPI.Last();
             clippingResponse.Wait();
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)

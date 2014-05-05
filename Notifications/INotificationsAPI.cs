@@ -7,6 +7,6 @@ namespace Notifications
     public interface INotificationsAPI
     {
         [Get("notifications")]
-        Task<IRestResponse<Notification>> GetAll();
+        Task<IRestResponse<Notification>> Last();
     }
 }

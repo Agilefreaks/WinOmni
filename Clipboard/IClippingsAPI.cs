@@ -9,7 +9,7 @@ namespace Clipboard
     public interface IClippingsAPI
     {
         [Get("clippings/last")]
-        Task<IRestResponse<Clipping>> LastClipping();
+        Task<IRestResponse<Clipping>> Last();
 
         [Post("clippings/")]
         Task<IRestResponse<Clipping>> PostClipping([Query("identifier")] string deviceIdentifier, [Query("content")]string clippingContent);

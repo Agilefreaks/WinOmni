@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using OmniCommon.Interfaces;
 using OmniCommon.Models;
-using RestSharp;
 
 namespace Notifications
 {
@@ -18,7 +16,7 @@ namespace Notifications
 
         public void OnNext(OmniMessage value)
         {
-            var getAllNotificationsTask = NotificationsAPI.GetAll();
+            var getAllNotificationsTask = NotificationsAPI.Last();
             getAllNotificationsTask.Wait();
         }
 
