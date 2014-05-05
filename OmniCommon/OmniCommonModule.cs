@@ -5,7 +5,6 @@ using OmniCommon.Services;
 
 namespace OmniCommon
 {
-
     public class OmniCommonModule : NinjectModule
     {
         public override void Load()

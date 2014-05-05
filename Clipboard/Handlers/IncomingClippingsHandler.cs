@@ -52,7 +52,7 @@ namespace Clipboard.Handlers
 
         public void SubscribeTo(IObservable<OmniMessage> observable)
         {
-            _subscription = observable.Where(m => m.Provider == "clipboard").Subscribe(this);
+            _subscription = observable.Where(m => m.Provider == OmniMessageTypeEnum.Clipboard).Subscribe(this);
         }
 
         public void Dispose()

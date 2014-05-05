@@ -37,7 +37,7 @@ namespace Notifications
 
         public void SubscribeTo(IObservable<OmniMessage> observable)
         {
-            observable.Where(i => i.Provider == "notification").Subscribe(this);
+            observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
         }
     }
 }

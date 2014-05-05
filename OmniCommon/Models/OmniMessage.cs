@@ -2,12 +2,13 @@
 {
     public class OmniMessage
     {
-        public string Provider { get; set; }
+        public OmniMessageTypeEnum Provider { get; set; }
     }
 
     public enum OmniMessageTypeEnum
     {
-        Clipping,
-        PhoneNumber
+        Clipboard,
+        PhoneNumber,
+        Notification
     }
 }
