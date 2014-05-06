@@ -6,7 +6,6 @@
     using System.Threading;
     using System.Windows.Forms;
     using System.Windows.Interop;
-    using Common.Logging;
     using Ninject;
     using global::WindowsClipboard.Interfaces;
     using WindowsImports;

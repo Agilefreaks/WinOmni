@@ -2,11 +2,11 @@
 using RestSharp;
 using Retrofit.Net.Attributes.Methods;
 
-namespace Notifications
+namespace Notifications.API
 {
     public interface INotificationsAPI
     {
         [Get("notifications")]
-        Task<IRestResponse<Notification>> Last();
+        Task<IRestResponse<Models.Notification>> Last();
     }
 }

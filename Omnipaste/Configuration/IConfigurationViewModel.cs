@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
+using OmniCommon.Framework;
 
 namespace Omnipaste.Configuration
 {
-    using Omnipaste.Framework;
-
     public interface IConfigurationViewModel : IWorkspace
     {
         Task Start();

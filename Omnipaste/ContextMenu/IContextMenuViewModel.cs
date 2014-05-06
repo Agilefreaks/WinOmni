@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.ContextMenu
+﻿using OmniCommon.Framework;
+
+namespace Omnipaste.ContextMenu
 {
     using Omnipaste.Framework;
 

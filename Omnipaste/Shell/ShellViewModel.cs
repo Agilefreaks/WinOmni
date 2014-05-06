@@ -1,6 +1,8 @@
 ﻿using Clipboard;
 using Notifications;
+using Notifications.NotificationList;
 using OmniApi;
+using OmniCommon.Framework;
 using OmniCommon.Interfaces;
 using System.Linq;
 
@@ -15,7 +17,6 @@ namespace Omnipaste.Shell
     using Omnipaste.Configuration;
     using Omnipaste.ContextMenu;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Properties;
     using Omnipaste.UserToken;
 
@@ -61,6 +62,10 @@ namespace Omnipaste.Shell
             HandleSuccessfulLogin();
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
+ 
+            
+            var wm = new WindowManager();
+            wm.ShowWindow(Kernel.Get<INotificationListViewModel>());
          
             if (_view != null)
             {

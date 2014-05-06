@@ -53,9 +53,16 @@ namespace CustomizedClickOnce.Install
 
         private static string GetActivationTokenFromFileName(string fileName)
         {
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+            var result = string.Empty;
 
-            return fileNameWithoutExtension.Substring(15, 6);
+            try
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                result = fileNameWithoutExtension.Substring(14, 6);
+            }
+            catch (ArgumentOutOfRangeException){ }
+
+            return result;
         }
     }
 }

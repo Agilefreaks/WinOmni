@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Castle.Core.Internal;
+using Notifications.NotificationList;
 using OmniApi;
 using OmniCommon.Interfaces;
 using Omnipaste.Framework;
@@ -81,7 +82,7 @@ namespace Omnipaste
         {
             return new[]
                        {
-                           Assembly.GetExecutingAssembly()
+                           Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(INotificationListViewModel))
                        };
         }
 
