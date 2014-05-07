@@ -27,13 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniApi", "OmniApi\OmniApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniApiTests", "OmniApiTests\OmniApiTests.csproj", "{4DDA5EBD-9E52-41CE-82F2-FDF4F87FA41B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7C47BDBE-C6D8-46FB-8171-555835463653}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomizedClickOnce.Install", "CustomizedClickOnce.Install\CustomizedClickOnce.Install.csproj", "{0F0AB57A-E5E0-46CB-AE5D-3CE5FA559BFC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniSync", "OmniSync\OmniSync.csproj", "{0063E0A0-3B61-4358-9534-3C6A9AA90CB0}"
@@ -47,6 +40,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmnipasteTests", "OmnipasteTests\OmnipasteTests.csproj", "{EAF5BF18-557E-4910-AB61-325220A95AB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Notifications\Notifications.csproj", "{54D0AFE4-0CD1-414D-AD1F-B9424250673A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A1FAA546-90F9-4D3C-A044-1B2070F70B88}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

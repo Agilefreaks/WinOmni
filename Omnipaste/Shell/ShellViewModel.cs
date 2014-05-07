@@ -1,4 +1,5 @@
-﻿using Clipboard;
+﻿using System.Collections.Generic;
+using Clipboard;
 using Notifications;
 using Notifications.NotificationList;
 using OmniApi;
@@ -14,11 +15,11 @@ namespace Omnipaste.Shell
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
-    using Omnipaste.Configuration;
-    using Omnipaste.ContextMenu;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Properties;
-    using Omnipaste.UserToken;
+    using Configuration;
+    using ContextMenu;
+    using EventAggregatorMessages;
+    using Properties;
+    using UserToken;
 
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -65,7 +66,15 @@ namespace Omnipaste.Shell
  
             
             var wm = new WindowManager();
-            wm.ShowWindow(Kernel.Get<INotificationListViewModel>());
+            wm.ShowWindow(
+                Kernel.Get<INotificationListViewModel>(), 
+                null, 
+                new Dictionary<string, object>
+                {
+                    {"Height", SystemParameters.WorkArea.Height},
+                    {"Width", SystemParameters.WorkArea.Width}
+
+                });
          
             if (_view != null)
             {

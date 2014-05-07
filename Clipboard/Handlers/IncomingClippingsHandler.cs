@@ -6,7 +6,6 @@ using Caliburn.Micro;
 using Ninject;
 using OmniCommon.Interfaces;
 using OmniCommon.Models;
-using OmniCommon.Services;
 
 namespace Clipboard.Handlers
 {
