@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using Notifications.Notification;
 
 namespace Notifications.NotificationList
 {

@@ -6,6 +6,8 @@
 
     public interface INotificationService : IObservable<OmniMessage>
     {
+        ServiceStatusEnum Status { get; }
+
         Task<RegistrationResult> Start();
 
         void Stop();

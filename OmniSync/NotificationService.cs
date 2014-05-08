@@ -15,9 +15,6 @@ namespace OmniSync
     public class NotificationService : INotificationService
     {
         #region Fields
-
-        private readonly IConfigurationService _configurationService;
-
         private readonly IWampChannelFactory<JToken> _wampChannelFactory;
 
         private IWampChannel<JToken> _channel;
@@ -28,16 +25,15 @@ namespace OmniSync
 
         #region Properties
 
-        public ServiceStatusEnum Status { get; set; }
+        public ServiceStatusEnum Status { get; private set; }
 
         [Inject]
         public IEnumerable<IOmniMessageHandler> MessageHandlers { get; set; }
 
         #endregion
 
-        public NotificationService(IConfigurationService configurationService, IWampChannelFactory<JToken> wampChannelFactory)
+        public NotificationService(IWampChannelFactory<JToken> wampChannelFactory)
         {
-            _configurationService = configurationService;
             _wampChannelFactory = wampChannelFactory;
         }
 
@@ -69,6 +65,7 @@ namespace OmniSync
         {
             _channel = _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
             await _channel.OpenAsync();
+            
             var wampClientConnectionMonitor = (WampClientConnectionMonitor<JToken>)_channel.GetMonitor();
             var registrationResult = new RegistrationResult { Data = wampClientConnectionMonitor.SessionId };
 
