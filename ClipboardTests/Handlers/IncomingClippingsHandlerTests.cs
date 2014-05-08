@@ -110,7 +110,7 @@ namespace ClipboardTests.Handlers
             var subject = new Subject<OmniMessage>();
 
             _subject.SubscribeTo(subject);
-            subject.OnNext(new OmniMessage { Provider = OmniMessageTypeEnum.PhoneNumber });
+            subject.OnNext(new OmniMessage { Provider = OmniMessageTypeEnum.Phone });
 
             _mockClippingsAPI.Verify(c => c.Last(), Times.Never());
         }

@@ -159,6 +159,8 @@ Global
 		{C4EEBE13-1252-460C-9C37-586A52012BD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4EEBE13-1252-460C-9C37-586A52012BD7}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{C4EEBE13-1252-460C-9C37-586A52012BD7}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{54D0AFE4-0CD1-414D-AD1F-B9424250673A}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{54D0AFE4-0CD1-414D-AD1F-B9424250673A}.Staging|Any CPU.Build.0 = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

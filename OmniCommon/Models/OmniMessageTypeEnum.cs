@@ -3,7 +3,7 @@
     public enum OmniMessageTypeEnum
     {
         Clipboard,
-        PhoneNumber,
+        Phone,
         Notification
     }
 }
