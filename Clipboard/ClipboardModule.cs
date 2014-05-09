@@ -5,7 +5,6 @@ using Ninject;
 using Clipboard.Handlers;
 using Ninject.Modules;
 using OmniCommon.Interfaces;
-using OmniCommon.Models;
 using Retrofit.Net;
 
 namespace Clipboard

@@ -106,6 +106,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>

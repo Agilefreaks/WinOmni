@@ -9,6 +9,7 @@
         public override void Load()
         {
             Kernel.Bind<IWampChannelFactory<JToken>>().To<DefaultWampChannelFactory>().InSingletonScope();
+            Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactory>().InSingletonScope();
             Kernel.Bind<INotificationService>().To<NotificationService>().InSingletonScope();
         }
     }

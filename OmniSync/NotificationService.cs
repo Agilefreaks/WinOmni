@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Ninject;
 using OmniCommon.Interfaces;
 using OmniCommon.Models;
-using WampSharp;
-using WampSharp.Auxiliary.Client;
 
 namespace OmniSync
 {
     public class NotificationService : INotificationService
     {
         #region Fields
-        private readonly IWampChannelFactory<JToken> _wampChannelFactory;
+        private readonly IWebsocketConnectionFactory _websocketConnectionFactory;
 
-        private IWampChannel<JToken> _channel;
+        private IWebsocketConnection _websocketConnection;
 
         private ISubject<OmniMessage> _subject;
 
@@ -32,44 +29,26 @@ namespace OmniSync
 
         #endregion
 
-        public NotificationService(IWampChannelFactory<JToken> wampChannelFactory)
+        public NotificationService(IWebsocketConnectionFactory websocketConnectionFactory)
         {
-            _wampChannelFactory = wampChannelFactory;
+            _websocketConnectionFactory = websocketConnectionFactory;
         }
 
         public async Task<RegistrationResult> Start()
         {
             if (Status != ServiceStatusEnum.Stopped)
             {
-                return new RegistrationResult { Error = new Exception("Notification service is already started.") };
+                return new RegistrationResult { Data = _websocketConnection.RegistrationId };
             }
 
-            var registrationResult = await ConnectToServer();
-            OpenWebsocket();
+            _websocketConnection = await _websocketConnectionFactory.Create(ConfigurationManager.AppSettings["OmniSyncUrl"]);
+            _subject = _websocketConnection.Connect();
+
+            SubscribeMessageHandlers();
+            
             Status = ServiceStatusEnum.Started;
 
-            foreach (var messageHandler in MessageHandlers)
-            {
-                messageHandler.SubscribeTo(this);
-            }
-
-            return registrationResult;
-        }
-
-        private void OpenWebsocket()
-        {
-            _subject = _channel.GetSubject<OmniMessage>(string.Empty);
-        }
-
-        private async Task<RegistrationResult> ConnectToServer()
-        {
-            _channel = _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
-            await _channel.OpenAsync();
-            
-            var wampClientConnectionMonitor = (WampClientConnectionMonitor<JToken>)_channel.GetMonitor();
-            var registrationResult = new RegistrationResult { Data = wampClientConnectionMonitor.SessionId };
-
-            return registrationResult;
+            return new RegistrationResult { Data = _websocketConnection.RegistrationId };
         }
 
         public void Stop()
@@ -79,23 +58,27 @@ namespace OmniSync
                 return;
             }
 
+            UnsubscribeMessageHandlers();
+
+            _websocketConnection.Disconnect();
+
+            Status = ServiceStatusEnum.Stopped;
+        }
+
+        private void SubscribeMessageHandlers()
+        {
+            foreach (var messageHandler in MessageHandlers)
+            {
+                messageHandler.SubscribeTo(_subject);
+            }
+        }
+
+        private void UnsubscribeMessageHandlers()
+        {
             foreach (var messageHandler in MessageHandlers)
             {
                 messageHandler.Dispose();
             }
-
-            _channel.Close();
-        }
-
-        public IDisposable Subscribe(IObserver<OmniMessage> observer)
-        {
-            if (Status != ServiceStatusEnum.Started)
-            {
-                //TODO: throw meaningful exception
-                throw new Exception();
-            }
-
-            return _subject.Subscribe(observer);
         }
     }
 }
