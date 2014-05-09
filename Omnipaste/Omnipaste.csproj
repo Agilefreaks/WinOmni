@@ -77,7 +77,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>FF154C2BBBF861A929AB1ECD2E0DE357B57F1839</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>EE7CFBC86606D544D69EA631E0E50B22BC13C3CB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Omnipaste_TemporaryKey.pfx</ManifestKeyFile>
@@ -319,6 +319,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="AgileFreaks-codeSigningCertificate.p12" />
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
