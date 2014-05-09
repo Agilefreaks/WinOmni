@@ -80,13 +80,23 @@
     <ManifestCertificateThumbprint>EE7CFBC86606D544D69EA631E0E50B22BC13C3CB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Omnipaste_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>AgileFreaks-codeSigningCertificate.p12</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AgileFreaks_Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BugFreak">
@@ -320,6 +330,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="AgileFreaks-codeSigningCertificate.p12" />
+    <None Include="AgileFreaks_Key.snk" />
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
