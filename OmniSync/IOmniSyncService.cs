@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    public interface INotificationService
+    public interface IOmniSyncService
     {
         ServiceStatusEnum Status { get; }
 

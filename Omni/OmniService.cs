@@ -14,18 +14,18 @@ namespace Omni
 
         private readonly string _deviceIdentifier;
 
-        public INotificationService NotificationService { get; set; }
+        public IOmniSyncService OmniSyncService { get; set; }
         
-        public OmniService(INotificationService notificationService, IDevicesAPI devicesAPI, IConfigurationService configurationService)
+        public OmniService(IOmniSyncService omniSyncService, IDevicesAPI devicesAPI, IConfigurationService configurationService)
         {
-            NotificationService = notificationService;
+            OmniSyncService = omniSyncService;
             _devicesAPI = devicesAPI;
             _configurationService = configurationService;
         }
 
         public async Task<bool> Start(string communicationChannel = null)
         {
-            var registrationResult = await NotificationService.Start();
+            var registrationResult = await OmniSyncService.Start();
             await _devicesAPI.Register(_configurationService.GetDeviceIdentifier(), System.Environment.MachineName);
             var activationResult = await _devicesAPI.Activate(registrationResult.Data, _configurationService.GetDeviceIdentifier(), "omni_sync");
 
@@ -34,7 +34,7 @@ namespace Omni
 
         public void Stop()
         {
-            NotificationService.Stop();
+            OmniSyncService.Stop();
         }
     }
 }

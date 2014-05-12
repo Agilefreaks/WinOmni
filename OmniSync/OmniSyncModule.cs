@@ -10,7 +10,7 @@
         {
             Kernel.Bind<IWampChannelFactory<JToken>>().To<DefaultWampChannelFactory>().InSingletonScope();
             Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactory>().InSingletonScope();
-            Kernel.Bind<INotificationService>().To<NotificationService>().InSingletonScope();
+            Kernel.Bind<IOmniSyncService>().To<OmniSyncService>().InSingletonScope();
         }
     }
 }

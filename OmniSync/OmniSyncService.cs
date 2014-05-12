@@ -9,7 +9,7 @@ using OmniCommon.Models;
 
 namespace OmniSync
 {
-    public class NotificationService : INotificationService
+    public class OmniSyncService : IOmniSyncService
     {
         #region Fields
         private readonly IWebsocketConnectionFactory _websocketConnectionFactory;
@@ -29,7 +29,7 @@ namespace OmniSync
 
         #endregion
 
-        public NotificationService(IWebsocketConnectionFactory websocketConnectionFactory)
+        public OmniSyncService(IWebsocketConnectionFactory websocketConnectionFactory)
         {
             _websocketConnectionFactory = websocketConnectionFactory;
         }

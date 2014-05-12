@@ -11,9 +11,9 @@ using OmniSync;
 namespace OmniSyncTests
 {
     [TestFixture]
-    public class NotificationServiceTests
+    public class OmniSyncServiceTests
     {
-        private INotificationService _subject;
+        private IOmniSyncService _subject;
 
         private MoqMockingKernel _kernel;
 
@@ -31,7 +31,7 @@ namespace OmniSyncTests
             _replaySubject = new ReplaySubject<OmniMessage>();
 
             _kernel = new MoqMockingKernel();
-            _kernel.Bind<INotificationService>().To<NotificationService>();
+            _kernel.Bind<IOmniSyncService>().To<OmniSyncService>();
 
             _mockWebsocketConnection = _kernel.GetMock<IWebsocketConnection>();
             _mockOmniMessageHandler = _kernel.GetMock<IOmniMessageHandler>();
@@ -41,7 +41,7 @@ namespace OmniSyncTests
                 .Returns(Task.Factory.StartNew(() => _mockWebsocketConnection.Object));
             _mockWebsocketConnection.Setup(c => c.Connect()).Returns(_replaySubject);
 
-            _subject = _kernel.Get<INotificationService>();
+            _subject = _kernel.Get<IOmniSyncService>();
         }
 
         [Test]
