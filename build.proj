@@ -20,22 +20,17 @@
   	<PublishUrl>..\deploy</PublishUrl>
   	<InstallUrl>http://cdn.omnipasteapp.com/production/win/</InstallUrl>
   </PropertyGroup>
+	<ItemGroup>
+		<MySourceFiles Include="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\OmnipasteSetup.exe"/>
+	</ItemGroup>
 
   <Target Name="All">
-	<ItemGroup>
-		<MySourceFiles Include="$(MSBuildProjectDirectory)\CustomizedClickOnce.Install\bin\$(Configuration)\OmnipasteSetup.exe"/>
-	</ItemGroup>
+	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
 	
-	<MSBuild 
-		Projects="Omnipaste.sln" 
-		Targets="Clean;Build"
-		Properties="Configuration=$(Configuration)" />
-
 	<MSBuild 
 		Projects="Omnipaste\Omnipaste.csproj"
 		Targets="Publish" 
 		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
-		
-		<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
-	</Target>
+	<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
+  </Target>
 </Project>

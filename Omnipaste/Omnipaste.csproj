@@ -27,7 +27,7 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
+    <MapFileExtensions>false</MapFileExtensions>
     <InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
     <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
     <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
@@ -37,7 +37,7 @@
     <TrustUrlParameters>true</TrustUrlParameters>
     <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.1.8</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -86,7 +86,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -96,7 +96,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AgileFreaks_Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>AgileFreaks-codeSigningCertificatePrivateKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestTimestampUrl>http://timestamp.comodoca.com/authenticode</ManifestTimestampUrl>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BugFreak">
@@ -330,6 +333,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="AgileFreaks-codeSigningCertificate.p12" />
+    <None Include="AgileFreaks-codeSigningCertificatePrivateKey.pfx" />
     <None Include="AgileFreaks_Key.snk" />
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
@@ -419,6 +423,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
@@ -434,15 +439,45 @@
   </PropertyGroup>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
+    <PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
+    <Configuration>Debug</Configuration>
+    <PublishUrl>http://localhost/</PublishUrl>
+    <InstallUrl>http://localhost/</InstallUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Staging' ">
+    <PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
+    <Configuration>Staging</Configuration>
+    <PublishUrl>..\deploy</PublishUrl>
+    <InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
+  </PropertyGroup>
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
+  <Target Name="SignOutput">
+    <PropertyGroup>
+      <WindowsSdkDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\@CurrentInstallFolder)</WindowsSdkDir>
+      <WindowsSdkDir>$(WindowsSdkDir)</WindowsSdkDir>
+      <SignToolPath>$(WindowsSdkDir)bin\signtool.exe</SignToolPath>
+      <Hash>ee 7c fb c8 66 06 d5 44 d6 9e a6 31 e0 e5 0b 22 bc 13 c3 cb</Hash>
+      <TsUrl>http://timestamp.comodoca.com/authenticode</TsUrl>
+    </PropertyGroup>
+    <ItemGroup>
+      <SignableFiles Include="$(ProjectDir)$(IntermediateOutputPath)$(PublishAssemblyName).exe" />
+      <SignableFiles Include="$(ProjectDir)$(OutputPath)OmnipasteSetup.exe" />
+    </ItemGroup>
+    <ResolveKeySource CertificateThumbprint="$(Hash)">
+      <Output TaskParameter="ResolvedThumbprint" PropertyName="LocatedThumbprint" />
+    </ResolveKeySource>
+    <Exec ContinueOnError="true" Command="signtool sign /f &quot;C:\Users\Nistor\Desktop\Omnipaste Ceritificates\AgileFreaks-codeSigningCertificate.p12&quot; /p ArtLine123 /t $(ManifestTimestampUrl) %(SignableFiles.Identity)" />
+  </Target>
+  <Target Name="BeforePublish">
+    <CallTarget Targets="SignOutput" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
   </Target>
   -->
 </Project>
