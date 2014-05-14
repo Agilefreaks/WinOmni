@@ -1,18 +1,27 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿using System.Threading.Tasks;
+using Ninject;
+using OmniApi.Resources;
+using OmniCommon.Interfaces;
+using Retrofit.Net;
+
+namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using OmniApi;
     using OmniApi.Models;
-    using OmniApi.Resources;
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
+        private readonly IConfigurationService _configurationService;
+
+        public IAuthorizationAPI AuthorizationAPI { get; set; }
+
         public const int MaxRetryCount = 5;
 
         private RetryInfo _payload;
 
-        public override DependencyParameter Parameter { get; set; }
+        [Inject]
+        public IKernel Kernel { get; set; }
 
-        public IActivationTokens ActivationTokens { get; set; }
+        public override DependencyParameter Parameter { get; set; }
 
         private RetryInfo PayLoad
         {
@@ -23,22 +32,29 @@
             }
         }
 
-        public GetRemoteConfiguration()
+        public GetRemoteConfiguration(IAuthorizationAPI authorizationAPI, IConfigurationService configurationService)
         {
-            ActivationTokens = OmniApi.ActivationTokens;
+            _configurationService = configurationService;
+            AuthorizationAPI = authorizationAPI;
         }
 
         public override IExecuteResult Execute()
         {
+            return new ExecuteResult();
+        }
+
+        public override async Task<IExecuteResult> ExecuteAsync()
+        {
             var executeResult = new ExecuteResult();
+
             if (string.IsNullOrEmpty(PayLoad.Token))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
             }
             else
             {
-                var activationModel = ActivationTokens.Activate(PayLoad.Token);
-                SetResultPropertiesBasedOnActivationData(executeResult, activationModel);
+                var activationModelTask = await AuthorizationAPI.Activate(PayLoad.Token, _configurationService.GetClientId());
+                SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 
             return executeResult;
@@ -46,18 +62,26 @@
 
         private void SetResultPropertiesBasedOnActivationData(IExecuteResult executeResult, ActivationModel activationModel)
         {
-            if (!string.IsNullOrEmpty(activationModel.CommunicationError))
+            if (activationModel == null)
             {
                 executeResult.Data = new RetryInfo(
-                    _payload.Token, _payload.FailCount + 1, activationModel.CommunicationError);
+                    _payload.Token, _payload.FailCount + 1);
                 executeResult.State = _payload.FailCount < MaxRetryCount
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
             }
-            else if (!string.IsNullOrEmpty(activationModel.Email))
+            else if (!string.IsNullOrEmpty(activationModel.access_token))
             {
+                var authenticator = new Authenticator
+                                              {
+                                                  AccessToken = activationModel.access_token,
+                                                  RefreshToken = activationModel.refresh_token,
+                                                  GrantType = activationModel.token_type
+                                              };
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = activationModel.Email;
+                executeResult.Data = authenticator;
+                
+                Kernel.Bind<Authenticator>().ToConstant(authenticator);
             }
             else
             {

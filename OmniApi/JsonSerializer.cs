@@ -17,13 +17,13 @@
 // Original JsonSerializer contributed by Daniel Crenna (@dimebrain)
 #endregion
 
-namespace Omnipaste.OmniClipboard.Infrastructure.Api
-{
-    using System.IO;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
-    using RestSharp.Serializers;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RestSharp.Serializers;
 
+namespace OmniApi
+{
     /// <summary>
     /// Default JSON serializer for request bodies
     /// Doesn't currently use the SerializeAs attribute, defers to Newtonsoft's attributes

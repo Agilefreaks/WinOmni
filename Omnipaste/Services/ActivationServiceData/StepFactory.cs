@@ -11,7 +11,7 @@
 
         public IActivationStep Create(Type type, object payload = null)
         {
-            var activationStep = (IActivationStep)this.Kernel.Get(type);
+            var activationStep = (IActivationStep)Kernel.Get(type);
             activationStep.Parameter = new DependencyParameter { Name = "payload", Value = payload };
 
             return activationStep;

@@ -6,34 +6,31 @@
     using System.Threading;
     using System.Windows.Forms;
     using System.Windows.Interop;
-    using Common.Logging;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
     using global::WindowsClipboard.Interfaces;
     using WindowsImports;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
         public event EventHandler<ClipboardEventArgs> DataReceived;
-
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
-
+        
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
 
         private IntPtr _clipboardViewerNext;
 
         [Inject]
-        public IDelegateClipboardMessageHandling ClipboardMessageDelegator { get; set; }
+        public IntPtr WindowHandle { get; set; }
 
         public void StartWatchingClipboard()
         {
-            var handle = ClipboardMessageDelegator.GetHandle();
+            if (WindowHandle != IntPtr.Zero)
+            {
+                _hWndSource = HwndSource.FromHwnd(WindowHandle);
+                _hWndSource.AddHook(HandleClipboardMessage); 
 
-            _hWndSource = HwndSource.FromHwnd(handle);
-            _hWndSource.AddHook(HandleClipboardMessage); 
-
-            _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+                _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+            }
         }
 
         public void StopWatchingClipboard()
@@ -75,7 +72,6 @@
             catch (ExternalException externalException)
             {
                 // Copying a field definition in Access 2002 causes this sometimes?
-                Logger.Error(externalException);
                 return null;
             }
 
@@ -103,7 +99,7 @@
             // Each window that receives the WM_DRAWCLIPBOARD message 
             // must call the SendMessage function to pass the message 
             // on to the next window in the clipboard viewer chain.
-            User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
+            //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
 
             return data;
         }
@@ -160,7 +156,7 @@
 
         private void CallDataReceived(string data)
         {
-            if (DataReceived != null && !data.IsNullOrWhiteSpace())
+            if (DataReceived != null && !string.IsNullOrWhiteSpace(data))
             {
                 DataReceived(this, new ClipboardEventArgs(data));
             }

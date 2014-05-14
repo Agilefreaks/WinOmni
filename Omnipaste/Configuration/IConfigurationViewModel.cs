@@ -1,9 +1,10 @@
-﻿namespace Omnipaste.Configuration
-{
-    using Omnipaste.Framework;
+﻿using System.Threading.Tasks;
+using OmniCommon.Framework;
 
+namespace Omnipaste.Configuration
+{
     public interface IConfigurationViewModel : IWorkspace
     {
-        void Start();
+        Task Start();
     }
 }

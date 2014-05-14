@@ -160,7 +160,7 @@ namespace Omnipaste.ContextMenu
 
         public void Start()
         {
-            Channel = ConfigurationService.CommunicationSettings.Channel;
+            Channel = ConfigurationService.GetAccessToken();
 
             AutoStart = ClickOnceHelper.StartupShortcutExists();
 

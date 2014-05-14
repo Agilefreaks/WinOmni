@@ -1,10 +1,10 @@
-﻿namespace Omnipaste.UserToken
-{
-    using Omnipaste.Framework;
+﻿using OmniCommon.Framework;
 
+namespace Omnipaste.UserToken
+{
     public interface IUserTokenViewModel : IWorkspace
     {
-        string Token { get; set; }
+        string ActivationCode { get; set; }
 
         void Ok();
 

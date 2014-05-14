@@ -7,7 +7,6 @@
     using System.Windows;
     using BugFreak;
     using CustomizedClickOnce.Common;
-    using OmniApi;
 
     public partial class App : ISingleInstanceApp
     {
@@ -21,7 +20,7 @@
                 PerformFirstRunTasks();
 
                 var application = new App();
-
+                
                 application.InitializeComponent();
                 application.Run();
 
@@ -47,8 +46,6 @@
                 ConfigurationManager.AppSettings["BugFreakApiKey"],
                 ConfigurationManager.AppSettings["BugFreakToken"],
                 this);
-
-            OmniApi.BaseUrl = ConfigurationManager.AppSettings["baseUrl"];
         }
 
         private static void PerformFirstRunTasks()

@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns:omnipaste="clr-namespace:Omnipaste" 
-             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters" 
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-             x:Class="Omnipaste.App" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Application 
+    xmlns:omnipaste="clr-namespace:Omnipaste" 
+    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    x:Class="Omnipaste.App" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <omnipaste:OmnipasteBootstrapper x:Key="Bootstrapper" />
+                    <omnipaste:OmnipasteBootstrapper x:Key="Bootstrapper" xmlns:p8="http://schemas.microsoft.com/winfx/2006/xaml" />
 
-                    <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-                    <converters:NullToCollapsedConverter x:Key="NullToCollapsed" />
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibility" xmlns:p8="http://schemas.microsoft.com/winfx/2006/xaml" />
+                    <converters:NullToCollapsedConverter x:Key="NullToCollapsed" xmlns:p8="http://schemas.microsoft.com/winfx/2006/xaml" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="Themes\WhistlerBlue.xaml" />
                 <ResourceDictionary Source="Resources\Styles.xaml" />

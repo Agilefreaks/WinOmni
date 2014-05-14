@@ -1,4 +1,13 @@
-﻿namespace Omnipaste.Shell
+﻿using System.Collections.Generic;
+using Clipboard;
+using Notifications;
+using Notifications.NotificationList;
+using OmniApi;
+using OmniCommon.Framework;
+using OmniCommon.Interfaces;
+using System.Linq;
+
+namespace Omnipaste.Shell
 {
     using System;
     using System.Windows;
@@ -6,12 +15,11 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
-    using Omnipaste.Configuration;
-    using Omnipaste.ContextMenu;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
-    using Omnipaste.Properties;
-    using Omnipaste.UserToken;
+    using Configuration;
+    using ContextMenu;
+    using EventAggregatorMessages;
+    using Properties;
+    using UserToken;
 
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -22,6 +30,9 @@
 
         [Inject]
         public IUserTokenViewModel UserTokenViewModel { get; set; }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
@@ -49,9 +60,22 @@
 
         public void Handle(ConfigurationCompletedMessage message)
         {
+            HandleSuccessfulLogin();
             ActiveItem = ContextMenuViewModel;
             ContextMenuViewModel.Start();
+ 
+            
+            var wm = new WindowManager();
+            wm.ShowWindow(
+                Kernel.Get<INotificationListViewModel>(), 
+                null, 
+                new Dictionary<string, object>
+                {
+                    {"Height", SystemParameters.WorkArea.Height},
+                    {"Width", SystemParameters.WorkArea.Width}
 
+                });
+         
             if (_view != null)
             {
                 _view.Visibility = Visibility.Hidden;
@@ -59,16 +83,23 @@
             }
         }
 
-        public IntPtr GetHandle()
+        public void HandleSuccessfulLogin()
         {
-            var handle = new IntPtr();
-            Execute.OnUIThread(() =>
-                {
-                    var windowInteropHelper = new WindowInteropHelper(_view);
-                    handle = windowInteropHelper.Handle;
-                });
-            
-            return handle;
+            Kernel.Load(new ClipboardModule(), new DevicesModule(), new NotificationsModule());
+
+            RunStartupTasks();
+
+            var startables = Kernel.GetAll<IStartable>();
+
+            var count = startables.Count();
+        }
+
+        protected void RunStartupTasks()
+        {
+            foreach (var task in Kernel.GetAll<IStartupTask>())
+            {
+                task.Startup();
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -76,14 +107,29 @@
             base.OnViewLoaded(view);
 
             _view = (Window)view;
+
+            Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
-            ConfigurationViewModel.Start();
+            
+            await ConfigurationViewModel.Start();
+        }
+
+        private IntPtr GetHandle()
+        {
+            var handle = new IntPtr();
+            Execute.OnUIThread(() =>
+            {
+                var windowInteropHelper = new WindowInteropHelper(_view);
+                handle = windowInteropHelper.Handle;
+            });
+
+            return handle;
         }
     }
 }
