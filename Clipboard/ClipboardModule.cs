@@ -24,7 +24,7 @@ namespace Clipboard
         {
             ConfigurationService = Kernel.Get<IConfigurationService>();
         
-            Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>();
+            Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>().InSingletonScope();
             Kernel.Bind<IClippingsAPI>().ToMethod(c => GetClippingsAPI());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
             Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();

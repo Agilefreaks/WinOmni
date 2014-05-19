@@ -195,11 +195,6 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationViewModel.cs" />
     <Compile Include="Configuration\IConfigurationViewModel.cs" />
-    <Compile Include="ContextMenu\ContextMenuView.xaml.cs">
-      <DependentUpon>ContextMenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ContextMenu\ContextMenuViewModel.cs" />
-    <Compile Include="ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
@@ -254,10 +249,6 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ContextMenu\ContextMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
