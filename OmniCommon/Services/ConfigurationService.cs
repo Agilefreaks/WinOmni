@@ -59,5 +59,10 @@ namespace OmniCommon.Services
                 .Select(nic => nic.GetPhysicalAddress().ToString())
                 .First();
         }
+
+        public string GetMachineName()
+        {
+            return System.Environment.MachineName;
+        }
     }
 }

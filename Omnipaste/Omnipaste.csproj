@@ -242,6 +242,8 @@
     </Compile>
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
+    <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="SingleInstance.cs" />

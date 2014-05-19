@@ -39,15 +39,16 @@ namespace Omnipaste.Framework
             _isSyncing = false;
         }
 
-        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private async void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             if (_isSyncing && e.IsConnected)
             {
-                _omniService.Start();
+                _isSyncing = await _omniService.Start();
             }
             else if (_isSyncing && !e.IsConnected)
             {
-                _omniService.Stop();
+                 _omniService.Stop();
+                _isSyncing = false;
             }
         }
     }
