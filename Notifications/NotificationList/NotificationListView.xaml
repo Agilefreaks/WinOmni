@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:models="clr-namespace:Notifications.Models"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              ShowActivated="False" WindowStartupLocation="CenterScreen"
@@ -11,61 +12,13 @@
              Background="Transparent" Topmost="True" 
         Top="40" HorizontalContentAlignment="Right">
     <Window.Resources>
-        <Storyboard x:Key="CollapseStoryboard">
-            <DoubleAnimation From="100" To="0" Storyboard.TargetProperty="Height" Duration="0:0:1"/>
-        </Storyboard>
         <DataTemplate x:Key="MessageTemplate" DataType="models:Notification">
-            <Grid x:Name="NotificationWindow" HorizontalAlignment="Right">
-                <Border Name="border" Background="#FF305FBE" 
-                  BorderThickness="0" Margin="10">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
-                    </Border.Effect>
-                    <Grid Height="100" Width="280" Margin="6">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Path=Title}" 
-                                   TextOptions.TextRenderingMode="ClearType" 
-                                   TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Arial" FontSize="14" FontWeight="Bold" 
-                                   VerticalAlignment="Center"  Margin="2,4,4,2" 
-                                   TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
-                        <TextBlock Grid.Row="1" Text="{Binding Path=Message}" 
-                                   TextOptions.TextRenderingMode="ClearType" 
-                                   TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Arial" VerticalAlignment="Center" 
-                                   Margin="2,2,4,4" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                    </Grid>
-                </Border>
-            </Grid>
-            <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="Window.Loaded" SourceName="NotificationWindow">
-                    <BeginStoryboard x:Name="FadeInStoryBoard">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" 
-                              From="0.01" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.5"/>
-                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" 
-                              From="1" To="0" Storyboard.TargetProperty="Opacity" 
-                              Duration="0:0:0.5" BeginTime="0:0:6"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <Trigger SourceName="NotificationWindow" Property="Opacity" Value="0">
-                    <Setter TargetName="NotificationWindow" Property="Visibility" Value="Hidden"></Setter>
-                    <Trigger.EnterActions>
-                        <BeginStoryboard Storyboard="{StaticResource CollapseStoryboard}"/>
-                    </Trigger.EnterActions>
-                </Trigger>
-
-            </DataTemplate.Triggers>
+            <ContentControl cal:View.Model="{Binding .}"></ContentControl>
         </DataTemplate>
     </Window.Resources>
     <Grid>
         <ItemsControl x:Name="Notifications" 
                       ItemTemplate="{StaticResource MessageTemplate}" 
-                      DataContext="{Binding Path=Notifications}" 
-                      ItemsSource="{Binding .}"/>
+                      ItemsSource="{Binding Path=Notifications}"/>
     </Grid>
 </Window>

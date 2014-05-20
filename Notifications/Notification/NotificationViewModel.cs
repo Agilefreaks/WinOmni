@@ -4,6 +4,6 @@ namespace Notifications.Notification
 {
     public class NotificationViewModel : Screen, INotificationViewModel
     {
-        public Models.Notification Item { get; set; }
+        public Models.Notification Model { get; set; }
     }
 }
