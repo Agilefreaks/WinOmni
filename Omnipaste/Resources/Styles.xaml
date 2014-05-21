@@ -3,7 +3,7 @@
                     xmlns:userControlls="clr-namespace:Omnipaste.Framework.UserControlls"
                     xmlns:properties="clr-namespace:Omnipaste.Properties">
 
-    <SolidColorBrush x:Key="ConfigurationBackground" Color="#BD3B61" />
+    <SolidColorBrush x:Key="ConfigurationBackground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}"></SolidColorBrush>
     
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" x:Key="DefaultButton">

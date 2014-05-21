@@ -26,11 +26,13 @@ namespace Omni
         public async Task<bool> Start(string communicationChannel = null)
         {
             var registrationResult = await OmniSyncService.Start();
+            
             var deviceIdentifier = _configurationService.GetDeviceIdentifier();
             var machineName = _configurationService.GetMachineName();
-            const string notificationProvider = "omni_sync";
-
+            
             await _devicesAPI.Register(deviceIdentifier, machineName);
+
+            const string notificationProvider = "omni_sync";
             var activationResult = await _devicesAPI.Activate(registrationResult.Data, deviceIdentifier, notificationProvider);
 
             return activationResult.Data != null;

@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
 
-    public class UserTokenViewModel : Screen, IUserTokenViewModel
+    public class UserTokenViewModel : FlyoutViewModelBase, IUserTokenViewModel
     {
         private readonly IEventAggregator _eventAggregator;
 
@@ -12,6 +12,7 @@
         public UserTokenViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            IsModal = true;
         }
 
         public void Ok()

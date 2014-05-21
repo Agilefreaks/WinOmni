@@ -1,8 +1,6 @@
-﻿using OmniCommon.Framework;
-
-namespace Omnipaste.UserToken
+﻿namespace Omnipaste.UserToken
 {
-    public interface IUserTokenViewModel : IWorkspace
+    public interface IUserTokenViewModel : IFlyoutViewModel
     {
         string ActivationCode { get; set; }
 

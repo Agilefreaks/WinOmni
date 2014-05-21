@@ -27,6 +27,25 @@ namespace Omnipaste.Shell
     {
         private Window _view;
 
+        private IObservableCollection<IFlyoutViewModel> _flyouts;
+
+        public IObservableCollection<IFlyoutViewModel> Flyouts
+        {
+            get
+            {
+                return _flyouts;
+            }
+            set
+            {
+                if (_flyouts != value)
+                {
+                    _flyouts = value;
+
+                    NotifyOfPropertyChange(() => Flyouts);
+                }
+            }
+        }
+
         [Inject]
         public IWindowManager WindowManager { get; set; }
 
@@ -50,8 +69,10 @@ namespace Omnipaste.Shell
 
         public Visibility Visibility { get; set; }
 
-        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator)
+        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IList<IFlyoutViewModel> flyoutViewModels)
         {
+            Flyouts = new BindableCollection<IFlyoutViewModel>(flyoutViewModels);
+
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
             
@@ -73,7 +94,7 @@ namespace Omnipaste.Shell
 
         public void Handle(GetTokenFromUserMessage message)
         {
-            ActiveItem = UserTokenViewModel;
+            Flyouts[0].IsOpen = true;
         }
 
         public void Handle(TokenRequestResultMessage message)
