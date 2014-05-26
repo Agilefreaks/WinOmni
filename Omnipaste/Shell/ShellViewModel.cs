@@ -9,6 +9,7 @@ using OmniCommon.Framework;
 using OmniCommon.Interfaces;
 using System.Linq;
 using Omnipaste.Framework;
+using Omnipaste.UserToken;
 
 namespace Omnipaste.Shell
 {
@@ -21,7 +22,6 @@ namespace Omnipaste.Shell
     using Configuration;
     using EventAggregatorMessages;
     using Properties;
-    using UserToken;
 
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -50,9 +50,6 @@ namespace Omnipaste.Shell
         public IWindowManager WindowManager { get; set; }
 
         [Inject]
-        public IUserTokenViewModel UserTokenViewModel { get; set; }
-
-        [Inject]
         public IKernel Kernel { get; set; }
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
@@ -69,7 +66,7 @@ namespace Omnipaste.Shell
 
         public Visibility Visibility { get; set; }
 
-        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IList<IFlyoutViewModel> flyoutViewModels)
+        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IEnumerable<IFlyoutViewModel> flyoutViewModels)
         {
             Flyouts = new BindableCollection<IFlyoutViewModel>(flyoutViewModels);
 
@@ -127,9 +124,15 @@ namespace Omnipaste.Shell
          
             if (_view != null)
             {
-                _view.Visibility = Visibility.Hidden;
+                _view.Visibility = Visibility.Collapsed;
                 _view.ShowInTaskbar = false;
             }
+        }
+
+        public void Show()
+        {
+            _view.Visibility = Visibility.Visible;
+            _view.ShowInTaskbar = true;
         }
 
         public void HandleSuccessfulLogin()

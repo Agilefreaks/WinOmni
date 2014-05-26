@@ -29,8 +29,7 @@ namespace Omnipaste.Framework
 
         public async Task Handle(StartOmniServiceMessage message)
         {
-            var result = await _omniService.Start();
-            _isSyncing = result;
+            _isSyncing = await _omniService.Start();
         }
 
         public void Handle(StopOmniServiceMessage message)

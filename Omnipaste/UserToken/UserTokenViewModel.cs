@@ -1,9 +1,12 @@
-﻿namespace Omnipaste.UserToken
+﻿using MahApps.Metro.Controls;
+using Omnipaste.Framework;
+
+namespace Omnipaste.UserToken
 {
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
 
-    public class UserTokenViewModel : FlyoutViewModelBase, IUserTokenViewModel
+    public class UserTokenViewModel : FlyoutBaseViewModel, IUserTokenViewModel
     {
         private readonly IEventAggregator _eventAggregator;
 
@@ -13,6 +16,7 @@
         {
             _eventAggregator = eventAggregator;
             IsModal = true;
+            Position = Position.Right;
         }
 
         public void Ok()

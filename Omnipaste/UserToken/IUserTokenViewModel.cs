@@ -1,4 +1,6 @@
-﻿namespace Omnipaste.UserToken
+﻿using Omnipaste.Framework;
+
+namespace Omnipaste.UserToken
 {
     public interface IUserTokenViewModel : IFlyoutViewModel
     {

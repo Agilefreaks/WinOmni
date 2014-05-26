@@ -16,8 +16,6 @@ namespace Notifications.NotificationList
             _eventAggregator.Subscribe(this);
 
             Notifications = new ObservableCollection<INotificationViewModel>();
-            Handle(new Models.Notification { phone_number = "0747074372" });
-            Handle(new Models.Notification { phone_number = "0747074372" });
         }
 
         public void Handle(Models.Notification message)

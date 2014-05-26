@@ -6,22 +6,6 @@
     <SolidColorBrush x:Key="ConfigurationBackground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}"></SolidColorBrush>
     
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" x:Key="DefaultButton">
-        <Setter Property="Margin" Value="0,0,2,2" />
-        <Setter Property="FontSize" Value="18" />
-        <Setter Property="MinWidth" Value="64" />
-    </Style>
-
-    <Style TargetType="{x:Type Button}" x:Key="OkButton" BasedOn="{StaticResource DefaultButton}">
-        <Setter Property="Content" Value="{x:Static properties:Resources.Ok}"/>
-        <Setter Property="IsDefault" Value="True" />
-    </Style>
-
-    <Style TargetType="{x:Type Button}" x:Key="CancelButton" BasedOn="{StaticResource DefaultButton}">
-        <Setter Property="Content" Value="{x:Static properties:Resources.Cancel}"/>
-        <Setter Property="IsCancel" Value="True" />
-    </Style>
-
     <!-- Shell -->
     <Style TargetType="{x:Type Grid}" x:Key="ShellGrid">
         <Setter Property="Background" Value="{StaticResource ConfigurationBackground}"></Setter>
@@ -53,14 +37,15 @@
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
-    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="UserTokenTextBox">
-        <Setter Property="FontSize" Value="18" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="MinWidth" Value="270"></Setter>
-        <Setter Property="Margin" Value="0,4,0,0"></Setter>
-    </Style>
-
     <Style TargetType="{x:Type Grid}" x:Key="UserTokenGrid">
         <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+
+    <Style x:Key="DescriptionHeaderStyle"
+                   TargetType="Label">
+        <Setter Property="FontSize"
+                            Value="22" />
+        <Setter Property="HorizontalAlignment"
+                            Value="Center" />
     </Style>
 </ResourceDictionary>

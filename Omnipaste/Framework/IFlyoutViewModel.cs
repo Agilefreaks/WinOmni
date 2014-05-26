@@ -1,8 +1,9 @@
-﻿using MahApps.Metro.Controls;
+﻿using Caliburn.Micro;
+using MahApps.Metro.Controls;
 
-namespace Omnipaste.UserToken
+namespace Omnipaste.Framework
 {
-    public interface IFlyoutViewModel
+    public interface IFlyoutViewModel : IScreen
     {
         string Header { get; set; }
 

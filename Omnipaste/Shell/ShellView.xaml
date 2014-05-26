@@ -6,14 +6,130 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <ControlTemplate x:Key="FlyoutTemplate" TargetType="{x:Type controls:Flyout}">
+                <Grid x:Name="root"
+                  Margin="{TemplateBinding Margin}"
+                  Background="{TemplateBinding Background}">
+                    <Grid.RenderTransform>
+                        <TranslateTransform />
+                    </Grid.RenderTransform>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="Default" />
+                            <VisualState x:Name="Hide">
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                               Storyboard.TargetName="root">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.400"
+                                                          Value="0"
+                                                          x:Name="hideFrame">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                               Storyboard.TargetName="root">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.500"
+                                                          Value="0"
+                                                          x:Name="hideFrameY">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimation From="1"
+                                                 To="0"
+                                                 BeginTime="00:00:00"
+                                                 Duration="00:00:00.400"
+                                                 Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                 Storyboard.TargetName="root" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Show">
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                               Storyboard.TargetName="root">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.400"
+                                                          Value="0"
+                                                          x:Name="showFrame">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                               Storyboard.TargetName="root">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.600"
+                                                          Value="0"
+                                                          x:Name="showFrameY">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimation From="0"
+                                                 To="1"
+                                                 BeginTime="00:00:00"
+                                                 Duration="00:00:00.400"
+                                                 Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                 Storyboard.TargetName="root" />
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <DockPanel>
+                        <ContentPresenter x:Name="PART_Header"
+                                      DockPanel.Dock="Top"
+                                      ContentSource="Header"
+                                      ContentTemplate="{TemplateBinding HeaderTemplate}" />
+
+                        <ContentControl x:Name="PART_Content" cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
+                    </DockPanel>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource Self}}"
+                             Value="Top">
+                        <Setter TargetName="PART_Header"
+                            Property="DockPanel.Dock"
+                            Value="Left" />
+                        <Setter TargetName="PART_Content"
+                            Property="DockPanel.Dock"
+                            Value="Right" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource Self}}"
+                             Value="Bottom">
+                        <Setter TargetName="PART_Header"
+                            Property="DockPanel.Dock"
+                            Value="Left" />
+                        <Setter TargetName="PART_Content"
+                            Property="DockPanel.Dock"
+                            Value="Right" />
+                    </DataTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl x:Name="Flyouts">
+        <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">
             <controls:FlyoutsControl.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type controls:Flyout}}" TargetType="{x:Type controls:Flyout}">
                     <Setter Property="Header" Value="{Binding Header}" />
                     <Setter Property="IsOpen" Value="{Binding IsOpen}" />
                     <Setter Property="Position" Value="{Binding Position}" />
                     <Setter Property="IsModal" Value="{Binding IsModal}" />
+                    <Setter Property="Template" Value="{StaticResource FlyoutTemplate}" />
+                    <Setter Property="Width" Value="300" />
                 </Style>
             </controls:FlyoutsControl.ItemContainerStyle>
             
@@ -29,7 +145,8 @@
         <tb:TaskbarIcon
             Visibility="{Binding Path=Visibility}"
             ToolTipText="{Binding Path=TooltipText}"
-            IconSource="{Binding Path=IconSource}">
+            IconSource="{Binding Path=IconSource}"
+            cal:Message.Attach="[Event TrayMouseDoubleClick] = [Action Show]">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
