@@ -19,5 +19,7 @@ namespace OmniCommon.Interfaces
         string GetTokenType();
 
         string GetDeviceIdentifier();
+
+        string GetMachineName();
     }
 }

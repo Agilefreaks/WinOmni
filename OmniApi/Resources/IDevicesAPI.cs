@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using OmniCommon.Models;
+﻿using System.Threading.Tasks;
 using Device = OmniApi.Models.Device;
 
 namespace OmniApi.Resources
@@ -9,7 +7,7 @@ namespace OmniApi.Resources
     using Retrofit.Net.Attributes.Methods;
     using Retrofit.Net.Attributes.Parameters;
 
-    public interface IDevicesAPI : IProtectedAPIEndpoint
+    public interface IDevicesAPI
     {
         [Put("devices/activate")]
         Task<IRestResponse<Device>> Activate(
@@ -22,9 +20,5 @@ namespace OmniApi.Resources
         
         [Put("devices/deactivate")]
         Task<IRestResponse<Device>> Deactivate([Body] string id);
-    }
-
-    public interface IProtectedAPIEndpoint
-    {
     }
 }

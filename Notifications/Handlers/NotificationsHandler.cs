@@ -12,6 +12,8 @@ namespace Notifications.Handlers
     {
         private readonly IEventAggregator _eventAggregator;
 
+        private IDisposable _subscription;
+
         public INotificationsAPI NotificationsAPI { get; set; }
 
         public NotificationsHandler(INotificationsAPI notificationsAPI, IEventAggregator eventAggregator)
@@ -43,12 +45,12 @@ namespace Notifications.Handlers
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _subscription.Dispose();
         }
 
         public void SubscribeTo(IObservable<OmniMessage> observable)
         {
-            observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
+            _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
         }
     }
 }

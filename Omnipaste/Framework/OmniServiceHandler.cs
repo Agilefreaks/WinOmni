@@ -29,8 +29,7 @@ namespace Omnipaste.Framework
 
         public async Task Handle(StartOmniServiceMessage message)
         {
-            var result = await _omniService.Start();
-            _isSyncing = result;
+            _isSyncing = await _omniService.Start();
         }
 
         public void Handle(StopOmniServiceMessage message)
@@ -39,15 +38,16 @@ namespace Omnipaste.Framework
             _isSyncing = false;
         }
 
-        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private async void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             if (_isSyncing && e.IsConnected)
             {
-                _omniService.Start();
+                _isSyncing = await _omniService.Start();
             }
             else if (_isSyncing && !e.IsConnected)
             {
-                _omniService.Stop();
+                 _omniService.Stop();
+                _isSyncing = false;
             }
         }
     }

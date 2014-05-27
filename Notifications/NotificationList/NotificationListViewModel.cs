@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Notifications.Notification;
 
 namespace Notifications.NotificationList
 {
@@ -7,21 +8,21 @@ namespace Notifications.NotificationList
     {
         private readonly IEventAggregator _eventAggregator;
 
-        public ObservableCollection<Models.Notification> Notifications { get; set; }
+        public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
         public NotificationListViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
 
-            Notifications = new ObservableCollection<Models.Notification>();
+            Notifications = new ObservableCollection<INotificationViewModel>();
         }
 
         public void Handle(Models.Notification message)
         {
             message.Title = string.Concat("Incoming call from ", message.phone_number);
             
-            Notifications.Add(message);
+            Notifications.Add(new NotificationViewModel { Model = message });
         }
     }
 }

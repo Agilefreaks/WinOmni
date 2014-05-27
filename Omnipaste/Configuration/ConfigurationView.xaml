@@ -10,7 +10,5 @@
         </Grid.RowDefinitions>
         
         <TextBlock Grid.Row="0" Style="{StaticResource ConfigurationText}">Starting</TextBlock>
-
-        <userControlls:CircularProgressBar Grid.Row="1" Style="{StaticResource ConfigurationProgress}" />
     </Grid>
 </UserControl>
