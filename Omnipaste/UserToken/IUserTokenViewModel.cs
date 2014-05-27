@@ -6,8 +6,8 @@ namespace Omnipaste.UserToken
     {
         string ActivationCode { get; set; }
 
-        void Ok();
+        string Message { get; set; }
 
-        void Cancel();
+        void Register();
     }
 }

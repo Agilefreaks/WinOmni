@@ -26,25 +26,7 @@ namespace Omnipaste.Shell
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         private Window _view;
-
-        private IObservableCollection<IFlyoutViewModel> _flyouts;
-
-        public IObservableCollection<IFlyoutViewModel> Flyouts
-        {
-            get
-            {
-                return _flyouts;
-            }
-            set
-            {
-                if (_flyouts != value)
-                {
-                    _flyouts = value;
-
-                    NotifyOfPropertyChange(() => Flyouts);
-                }
-            }
-        }
+        public IUserTokenViewModel UserToken { get; set; }
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
@@ -66,9 +48,9 @@ namespace Omnipaste.Shell
 
         public Visibility Visibility { get; set; }
 
-        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IEnumerable<IFlyoutViewModel> flyoutViewModels)
+        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IUserTokenViewModel userToken)
         {
-            Flyouts = new BindableCollection<IFlyoutViewModel>(flyoutViewModels);
+            UserToken = userToken;
 
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
@@ -91,12 +73,8 @@ namespace Omnipaste.Shell
 
         public void Handle(GetTokenFromUserMessage message)
         {
-            Flyouts[0].IsOpen = true;
-        }
-
-        public void Handle(TokenRequestResultMessage message)
-        {
-            ActiveItem = ConfigurationViewModel;
+            UserToken.Message = message.Message;
+            ShowSettings();
         }
 
         public void Exit()
@@ -133,6 +111,11 @@ namespace Omnipaste.Shell
         {
             _view.Visibility = Visibility.Visible;
             _view.ShowInTaskbar = true;
+        }
+
+        public void ShowSettings()
+        {
+            UserToken.Activate();
         }
 
         public void HandleSuccessfulLogin()

@@ -4,7 +4,7 @@
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.EventAggregatorMessages;
 
-    public interface IShellViewModel : IScreen, IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>, IHandle<ConfigurationCompletedMessage>
+    public interface IShellViewModel : IScreen, IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<ConfigurationCompletedMessage>
     {
     }
 }

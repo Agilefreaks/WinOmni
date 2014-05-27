@@ -10,6 +10,7 @@ namespace Omnipaste.Framework
         bool IsOpen { get; set; }
 
         bool IsModal { get; set; }
+        bool IsPinned { get; set; }
 
         Position Position { get; set; }
     }

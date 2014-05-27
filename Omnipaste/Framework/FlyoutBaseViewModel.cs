@@ -1,6 +1,5 @@
 using Caliburn.Micro;
 using MahApps.Metro.Controls;
-using Omnipaste.UserToken;
 
 namespace Omnipaste.Framework
 {
@@ -8,12 +7,10 @@ namespace Omnipaste.Framework
     {
         #region private fields
         private string _header;
-
         private bool _isOpen;
-
         private Position _position;
-
         private bool _isModal;
+        private bool _isPinned;
         #endregion
 
         public string Header
@@ -60,6 +57,22 @@ namespace Omnipaste.Framework
                 {
                     _isModal = value;
                     NotifyOfPropertyChange(() => IsModal);
+                }
+            }
+        }
+
+        public bool IsPinned
+        {
+            get
+            {
+                return _isPinned;
+            }
+            set
+            {
+                if (_isPinned != value)
+                {
+                    _isPinned = value;
+                    NotifyOfPropertyChange(() => IsPinned);
                 }
             }
         }

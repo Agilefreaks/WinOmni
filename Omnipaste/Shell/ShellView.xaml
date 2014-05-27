@@ -10,6 +10,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="../Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <ControlTemplate x:Key="FlyoutTemplate" TargetType="{x:Type controls:Flyout}">
@@ -121,20 +122,29 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">
-            <controls:FlyoutsControl.ItemContainerStyle>
-                <Style BasedOn="{StaticResource {x:Type controls:Flyout}}" TargetType="{x:Type controls:Flyout}">
-                    <Setter Property="Header" Value="{Binding Header}" />
-                    <Setter Property="IsOpen" Value="{Binding IsOpen}" />
-                    <Setter Property="Position" Value="{Binding Position}" />
-                    <Setter Property="IsModal" Value="{Binding IsModal}" />
-                    <Setter Property="Template" Value="{StaticResource FlyoutTemplate}" />
-                    <Setter Property="Width" Value="300" />
-                </Style>
-            </controls:FlyoutsControl.ItemContainerStyle>
-            
+        <controls:FlyoutsControl>
+            <controls:Flyout DataContext="{Binding Path=UserToken}" Header="{Binding Header}"
+                             IsOpen="{Binding IsOpen, Mode=TwoWay}" Position="{Binding Position}"
+                             IsModal="True" IsPinned="True" Template="{StaticResource FlyoutTemplate}"
+                             Width="300">
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button cal:Message.Attach="[Event Click]=[Action ShowSettings]"
+                    ToolTip="Open settings">
+                <Rectangle Width="22"
+                           Height="22"
+                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform"
+                                     Visual="{StaticResource appbar_cogs}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     <Grid Style="{StaticResource ShellGrid}">
         <Grid.RowDefinitions>
             <!--Menu-->

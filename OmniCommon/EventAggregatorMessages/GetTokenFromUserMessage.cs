@@ -2,5 +2,6 @@
 {
     public class GetTokenFromUserMessage
     {
+        public string Message { get; set; }
     }
 }

@@ -86,6 +86,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             else
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
+                executeResult.Data = activationModel.error_description;
             }
         }
     }
