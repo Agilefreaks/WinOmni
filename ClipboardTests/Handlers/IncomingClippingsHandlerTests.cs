@@ -2,6 +2,7 @@
 using System.Net;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using WindowsClipboard;
 using Caliburn.Micro;
 using Clipboard;
 using Clipboard.Handlers;
@@ -77,7 +78,7 @@ namespace ClipboardTests.Handlers
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<Clipping>(c => c == clipping)));
+            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content")));
         }
 
         [Test]

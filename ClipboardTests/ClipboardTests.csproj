@@ -113,6 +113,10 @@
       <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WindowsClipboard\WindowsClipboard.csproj">
+      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
+      <Name>WindowsClipboard</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
