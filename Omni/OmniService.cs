@@ -12,8 +12,6 @@ namespace Omni
 
         private readonly IConfigurationService _configurationService;
 
-        private readonly string _deviceIdentifier;
-
         public IOmniSyncService OmniSyncService { get; set; }
         
         public OmniService(IOmniSyncService omniSyncService, IDevicesAPI devicesAPI, IConfigurationService configurationService)

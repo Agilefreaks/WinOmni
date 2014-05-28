@@ -3,14 +3,11 @@
     using System;
     using System.Threading;
     using Caliburn.Micro;
-    using OmniCommon.DataProviders;
     using OmniCommon.EventAggregatorMessages;
 
     public class GetTokenFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {
         private readonly IEventAggregator _eventAggregator;
-
-        private readonly IConfigurationProvider _configurationProvider;
 
         private AutoResetEvent _autoResetEvent;
 

@@ -26,6 +26,7 @@ namespace Omnipaste.Shell
     public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         private Window _view;
+
         public IUserTokenViewModel UserToken { get; set; }
 
         [Inject]

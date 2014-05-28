@@ -166,11 +166,11 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        
+
         <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
             <TabItem Header="Clippings"/>
         </controls:MetroAnimatedSingleRowTabControl>
-        
+
         <ContentControl x:Name="ActiveItem" Grid.Row="1"/>
     </Grid>
 </controls:MetroWindow>

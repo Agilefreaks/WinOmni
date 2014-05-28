@@ -69,7 +69,7 @@
             {
                 dataObject = Clipboard.GetDataObject();
             }
-            catch (ExternalException externalException)
+            catch (ExternalException)
             {
                 // Copying a field definition in Access 2002 causes this sometimes?
                 return null;
