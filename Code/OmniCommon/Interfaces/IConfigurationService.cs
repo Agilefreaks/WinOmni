@@ -1,11 +1,7 @@
-﻿using OmniCommon.Services;
-
-namespace OmniCommon.Interfaces
+﻿namespace OmniCommon.Interfaces
 {
     public interface IConfigurationService
     {
-        CommunicationSettings CommunicationSettings { get; }
-        
         void Save(string accessToken, string tokenType, string refreshToken);
 
         string GetAccessToken();

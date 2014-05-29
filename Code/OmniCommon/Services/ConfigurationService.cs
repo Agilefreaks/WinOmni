@@ -9,8 +9,6 @@ namespace OmniCommon.Services
     public class ConfigurationService : IConfigurationService
     {
         private readonly IConfigurationProvider _configurationProvider;
-        
-        public CommunicationSettings CommunicationSettings { get; private set; }
 
         public string this[string key]
         {
@@ -49,7 +47,7 @@ namespace OmniCommon.Services
 
         public string GetClientId()
         {
-            return ConfigurationManager.AppSettings["client_id"];
+            return ConfigurationManager.AppSettings["ClientId"];
         }
 
         public string GetDeviceIdentifier()
