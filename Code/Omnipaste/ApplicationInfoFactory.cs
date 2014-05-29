@@ -16,7 +16,7 @@
         {
             get
             {
-                return _applicatioName ?? (_applicatioName = ConfigurationManager.AppSettings["appName"]);
+                return _applicatioName ?? (_applicatioName = ConfigurationManager.AppSettings["AppName"]);
             }
         }
 
