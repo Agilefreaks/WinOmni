@@ -8,9 +8,9 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         public abstract IExecuteResult Execute();
 
-        public virtual Task<IExecuteResult> ExecuteAsync()
+        public virtual async Task<IExecuteResult> ExecuteAsync()
         {
-            return Task.Factory.StartNew(() => Execute());
+            return await Task.Factory.StartNew(() => Execute());
         }
 
         public virtual object GetId()

@@ -3,7 +3,7 @@ using OmniCommon.EventAggregatorMessages;
 
 namespace Omnipaste.Framework
 {
-    public interface IOmniServiceHandler : IHandleWithTask<StartOmniServiceMessage>, IHandle<StopOmniServiceMessage>
+    public interface IOmniServiceHandler : IHandle<StartOmniServiceMessage>, IHandle<StopOmniServiceMessage>
     {
         void Init();
     }

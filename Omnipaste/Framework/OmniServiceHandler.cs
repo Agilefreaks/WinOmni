@@ -27,7 +27,7 @@ namespace Omnipaste.Framework
             _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
         }
 
-        public async Task Handle(StartOmniServiceMessage message)
+        public async void Handle(StartOmniServiceMessage message)
         {
             _isSyncing = await _omniService.Start();
         }
