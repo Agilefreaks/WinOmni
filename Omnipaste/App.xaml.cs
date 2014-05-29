@@ -1,11 +1,11 @@
-﻿namespace Omnipaste
+﻿using System.Configuration;
+
+namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Deployment.Application;
     using System.Windows;
-    using BugFreak;
     using CustomizedClickOnce.Common;
 
     public partial class App : ISingleInstanceApp
@@ -20,8 +20,8 @@
                 PerformFirstRunTasks();
 
                 var application = new App();
-                
                 application.InitializeComponent();
+                
                 application.Run();
 
                 // Allow single instance code to perform cleanup operations
@@ -42,7 +42,7 @@
         {
             base.OnStartup(e);
 
-            BugFreak.Hook(
+            BugFreak.BugFreak.Hook(
                 ConfigurationManager.AppSettings["BugFreakApiKey"],
                 ConfigurationManager.AppSettings["BugFreakToken"],
                 this);

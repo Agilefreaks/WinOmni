@@ -25,14 +25,7 @@ namespace Omnipaste.Configuration
 
         public async Task Start()
         {
-            try
-            {
-                await _activationService.Run();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            await _activationService.Run();
 
             OnContinuationAction();
         }
