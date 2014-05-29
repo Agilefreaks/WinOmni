@@ -24,7 +24,7 @@
         {
             get
             {
-                return _baseUrl ?? (_baseUrl = ConfigurationManager.AppSettings["baseUrl"]);
+                return _baseUrl ?? (_baseUrl = ConfigurationManager.AppSettings["BaseUrl"]);
             }
         }
 

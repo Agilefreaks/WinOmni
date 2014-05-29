@@ -9,26 +9,26 @@ namespace OmniApi
 {
     public class DevicesModule : NinjectModule
     {
-        private string _baseUrl;
+        private readonly string _baseUrl;
 
         public DevicesModule()
         {
-            _baseUrl = ConfigurationManager.AppSettings["baseUrl"];
+            _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
         }
 
         public override void Load()
         {
-            Kernel.Bind<IDevicesAPI>().ToMethod(c => GetAPIEndpoint<IDevicesAPI, Device>());
+            Kernel.Bind<IDevicesAPI>().ToMethod(c => this.GetApiEndpoint<IDevicesAPI, Device>());
         }
 
-        private T GetAPIEndpoint<T, R>()
+        private T GetApiEndpoint<T, TR>()
             where T : class
-            where R : class
+            where TR : class
         {
             var authenticator = Kernel.Get<Authenticator>();
             var restAdapter = new RestAdapter(_baseUrl, authenticator);
             
-            return restAdapter.Create<T, R>();
+            return restAdapter.Create<T, TR>();
         }
     }
 }

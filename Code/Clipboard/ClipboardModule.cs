@@ -17,7 +17,7 @@ namespace Clipboard
 
         public ClipboardModule()
         {
-            _baseUrl = ConfigurationManager.AppSettings["baseUrl"];
+            _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
         }
 
         public override void Load()
@@ -25,13 +25,13 @@ namespace Clipboard
             ConfigurationService = Kernel.Get<IConfigurationService>();
         
             Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>().InSingletonScope();
-            Kernel.Bind<IClippingsAPI>().ToMethod(c => GetClippingsAPI());
+            Kernel.Bind<IClippingsAPI>().ToMethod(c => this.GetClippingsApi());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
             Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();
             Kernel.Load(new WindowsClipboardModule());
         }
 
-        private IClippingsAPI GetClippingsAPI()
+        private IClippingsAPI GetClippingsApi()
         {
             var authenticator = Kernel.Get<Authenticator>();
             var restAdapter = new RestAdapter(_baseUrl, authenticator);
