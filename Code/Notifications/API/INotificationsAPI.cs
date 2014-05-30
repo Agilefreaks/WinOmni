@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using RestSharp;
-using Retrofit.Net.Attributes.Methods;
-
-namespace Notifications.API
+﻿namespace Notifications.API
 {
-    public interface INotificationsAPI
+    using System.Threading.Tasks;
+    using RestSharp;
+    using Retrofit.Net.Attributes.Methods;
+
+    public interface INotificationsApi
     {
         [Get("notifications")]
         Task<IRestResponse<Models.Notification>> Last();

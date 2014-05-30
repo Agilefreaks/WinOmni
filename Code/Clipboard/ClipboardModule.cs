@@ -9,6 +9,8 @@ using Retrofit.Net;
 
 namespace Clipboard
 {
+    using Clipboard.API;
+
     public class ClipboardModule : NinjectModule
     {
         private readonly string _baseUrl;
@@ -25,18 +27,18 @@ namespace Clipboard
             ConfigurationService = Kernel.Get<IConfigurationService>();
         
             Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>().InSingletonScope();
-            Kernel.Bind<IClippingsAPI>().ToMethod(c => this.GetClippingsApi());
+            Kernel.Bind<IClippingsApi>().ToMethod(c => this.GetClippingsApi());
             Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
             Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();
             Kernel.Load(new WindowsClipboardModule());
         }
 
-        private IClippingsAPI GetClippingsApi()
+        private IClippingsApi GetClippingsApi()
         {
             var authenticator = Kernel.Get<Authenticator>();
             var restAdapter = new RestAdapter(_baseUrl, authenticator);
 
-            return restAdapter.Create<IClippingsAPI, Clipping>();
+            return restAdapter.Create<IClippingsApi, Clipping>();
         }
     }
 }

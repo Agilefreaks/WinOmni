@@ -5,6 +5,7 @@
     using System.Reactive.Linq;
     using WindowsClipboard;
     using Caliburn.Micro;
+    using Clipboard.API;
     using Ninject;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -16,7 +17,7 @@
         private IDisposable _subscription;
 
         [Inject]
-        public IClippingsAPI ClippingsApi { get; set; }
+        public IClippingsApi ClippingsApi { get; set; }
 
         public IEventAggregator EventAggregator
         {

@@ -14,9 +14,9 @@
 
         private IDisposable _subscription;
 
-        public INotificationsAPI NotificationsApi { get; set; }
+        public INotificationsApi NotificationsApi { get; set; }
 
-        public NotificationsHandler(INotificationsAPI notificationsApi, IEventAggregator eventAggregator)
+        public NotificationsHandler(INotificationsApi notificationsApi, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             this.NotificationsApi = notificationsApi;
@@ -29,7 +29,7 @@
 
             if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
             {
-                _eventAggregator.PublishOnUIThread(getAllNotificationsTask.Result.Data);
+                _eventAggregator.PublishOnCurrentThread(getAllNotificationsTask.Result.Data);
             }
         }
 

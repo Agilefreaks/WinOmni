@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using Clipboard.Models;
-using OmniCommon.Models;
-using RestSharp;
-using Retrofit.Net.Attributes.Methods;
-using Retrofit.Net.Attributes.Parameters;
-
-namespace Clipboard
+﻿namespace Clipboard.API
 {
-    public interface IClippingsAPI
+    using System.Threading.Tasks;
+    using Clipboard.Models;
+    using RestSharp;
+    using Retrofit.Net.Attributes.Methods;
+    using Retrofit.Net.Attributes.Parameters;
+
+    public interface IClippingsApi
     {
         [Get("clippings/last")]
         Task<IRestResponse<Clipping>> Last();

@@ -18,8 +18,8 @@
         public void Handle(Models.Notification message)
         {
             message.Title = string.Concat("Incoming call from ", message.phone_number);
-            
-            Notifications.Add(new NotificationViewModel { Model = message });
+
+            Execute.OnUIThread(() => Notifications.Add(new NotificationViewModel { Model = message }));
         }
     }
 }

@@ -5,9 +5,11 @@ using OmniCommon.Interfaces;
 
 namespace Clipboard.Handlers
 {
+    using Clipboard.API;
+
     public class OutgoingClippingsHandler : IOutgoingClippingHandler
     {
-        private readonly IClippingsAPI _clippingsAPI;
+        private readonly IClippingsApi _clippingsAPI;
 
         private readonly IConfigurationService _configurationService;
 
@@ -15,7 +17,7 @@ namespace Clipboard.Handlers
 
         public IWindowsClipboard WindowsClipboard { get; set; }
 
-        public OutgoingClippingsHandler(IWindowsClipboard windowsClipboard, IClippingsAPI clippingsAPI, IConfigurationService configurationService)
+        public OutgoingClippingsHandler(IWindowsClipboard windowsClipboard, IClippingsApi clippingsAPI, IConfigurationService configurationService)
         {
             _clippingsAPI = clippingsAPI;
             _configurationService = configurationService;

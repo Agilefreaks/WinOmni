@@ -1,21 +1,22 @@
-﻿using System;
-using System.Net;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using WindowsClipboard;
-using Caliburn.Micro;
-using Clipboard;
-using Clipboard.Handlers;
-using Clipboard.Models;
-using Moq;
-using Ninject;
-using Ninject.MockingKernel.Moq;
-using NUnit.Framework;
-using OmniCommon.Models;
-using RestSharp;
-
-namespace ClipboardTests.Handlers
+﻿namespace ClipboardTests.Handlers
 {
+    using System;
+    using System.Net;
+    using System.Reactive.Subjects;
+    using System.Threading.Tasks;
+    using WindowsClipboard;
+    using Caliburn.Micro;
+    using Clipboard;
+    using Clipboard.API;
+    using Clipboard.Handlers;
+    using Clipboard.Models;
+    using Moq;
+    using Ninject;
+    using Ninject.MockingKernel.Moq;
+    using NUnit.Framework;
+    using OmniCommon.Models;
+    using RestSharp;
+
     [TestFixture]
     public class IncomingClippingsHandlerTests
     {
@@ -25,7 +26,7 @@ namespace ClipboardTests.Handlers
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
-        private Mock<IClippingsAPI> _mockClippingsApi;
+        private Mock<IClippingsApi> _mockClippingsApi;
 
         [SetUp]
         public void SetUp()
@@ -34,7 +35,7 @@ namespace ClipboardTests.Handlers
             _mockingKernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
             
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
-            this._mockClippingsApi = _mockingKernel.GetMock<IClippingsAPI>();
+            this._mockClippingsApi = _mockingKernel.GetMock<IClippingsApi>();
 
             _subject = _mockingKernel.Get<IncomingClippingsHandler>();
         }
@@ -78,7 +79,7 @@ namespace ClipboardTests.Handlers
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.PublishOnCurrentThread(It.Is<ClipboardData>(c => c.GetData() == "content")));
+            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content"), It.IsAny<Action<System.Action>>()));
         }
 
         [Test]
