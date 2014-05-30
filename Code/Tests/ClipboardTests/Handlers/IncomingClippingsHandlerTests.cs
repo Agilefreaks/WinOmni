@@ -42,7 +42,7 @@ namespace ClipboardTests.Handlers
         [Test]
         public void HasClippingsApi()
         {
-            Assert.IsNotNull(_subject.ClippingsAPI);
+            Assert.IsNotNull(_subject.ClippingsApi);
         }
 
         [Test]
