@@ -277,9 +277,6 @@
     <Compile Include="Framework\IApplicationWrapper.cs" />
     <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="Framework\OmniServiceHandler.cs" />
-    <Compile Include="Framework\UserControlls\CircularProgressBar.xaml.cs">
-      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Services\INotificationService.cs" />
@@ -296,10 +293,6 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Framework\UserControlls\CircularProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,34 +320,6 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Themes\BureauBlack.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\BureauBlue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ExpressionDark.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ExpressionLight.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ShinyBlue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ShinyRed.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\WhistlerBlue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserToken\UserTokenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

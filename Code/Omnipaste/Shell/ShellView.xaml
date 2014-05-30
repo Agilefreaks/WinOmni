@@ -5,7 +5,9 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/Icon.ico">
+        WindowStyle="SingleBorderWindow" 
+        ResizeMode="NoResize" 
+        Icon="/Icon.ico">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -145,13 +147,14 @@
             </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    <Grid Style="{StaticResource ShellGrid}">
+    <Grid>
         <Grid.RowDefinitions>
             <!--Menu-->
             <RowDefinition Height="Auto"/>
             <!--Content-->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
         <tb:TaskbarIcon
             Visibility="{Binding Path=Visibility}"
             ToolTipText="{Binding Path=TooltipText}"

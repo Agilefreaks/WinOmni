@@ -1,8 +1,8 @@
-using Caliburn.Micro;
-using MahApps.Metro.Controls;
-
 namespace Omnipaste.Framework
 {
+    using Caliburn.Micro;
+    using MahApps.Metro.Controls;
+
     public abstract class FlyoutBaseViewModel : Screen, IFlyoutViewModel
     {
         #region private fields

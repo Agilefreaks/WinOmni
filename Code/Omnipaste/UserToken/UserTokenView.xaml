@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours">
     <Grid>
@@ -24,7 +23,7 @@
                                    Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibility}}"
                                    Minimum="0" Maximum="100"
                                    Foreground="{DynamicResource AccentColorBrush}" />
-        <Label Grid.Row="1" Grid.ColumnSpan="3" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
+        <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
             To connect, you need an authorization code. You can get one by logging in to the 
             <Hyperlink NavigateUri="https://omnipasteapp.com" >

@@ -1,11 +1,10 @@
-﻿using System.Configuration;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
     using System;
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
+    using System.Configuration;
     using CustomizedClickOnce.Common;
 
     public partial class App : ISingleInstanceApp
