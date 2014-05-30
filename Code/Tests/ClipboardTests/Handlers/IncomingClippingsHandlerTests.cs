@@ -90,7 +90,7 @@
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.PublishOnCurrentThread(It.IsAny<Clipping>()), Times.Never());
+            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content"), It.IsAny<Action<System.Action>>()), Times.Never());
         }
 
         [Test]
