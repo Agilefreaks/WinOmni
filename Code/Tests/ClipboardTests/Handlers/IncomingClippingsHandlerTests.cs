@@ -6,10 +6,10 @@
     using System.Threading.Tasks;
     using WindowsClipboard;
     using Caliburn.Micro;
-    using Clipboard;
     using Clipboard.API;
     using Clipboard.Handlers;
     using Clipboard.Models;
+    using FluentAssertions;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
@@ -24,18 +24,35 @@
 
         private MoqMockingKernel _mockingKernel;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
+        private IEventAggregator _eventAggregator;
 
         private Mock<IClippingsApi> _mockClippingsApi;
+
+        private class TestSubscriber : IHandle<ClipboardData>
+        {
+            public bool Called { get; private set; }
+
+            public TestSubscriber()
+            {
+                Called = false;
+            }
+
+            public void Handle(ClipboardData message)
+            {
+                Called = true;
+            }
+        }
 
         [SetUp]
         public void SetUp()
         {
             _mockingKernel = new MoqMockingKernel();
             _mockingKernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
-            
-            _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
-            this._mockClippingsApi = _mockingKernel.GetMock<IClippingsApi>();
+
+            _eventAggregator = new EventAggregator();
+            _mockingKernel.Bind<IEventAggregator>().ToConstant(_eventAggregator);
+
+            _mockClippingsApi = _mockingKernel.GetMock<IClippingsApi>();
 
             _subject = _mockingKernel.Get<IncomingClippingsHandler>();
         }
@@ -49,7 +66,7 @@
         [Test]
         public void IsSubscribedToTheEventAggregator()
         {
-            Assert.AreSame(_subject.EventAggregator, _mockEventAggregator.Object);
+            Assert.AreSame(_subject.EventAggregator, _eventAggregator);
         }
 
         [Test]
@@ -61,13 +78,13 @@
                                            Data = new Clipping(string.Empty)
                                        };
             var taskResponse = Task.Factory.StartNew(() => lastClippingResponse);
-            this._mockClippingsApi
+            _mockClippingsApi
                 .Setup(c => c.Last())
                 .Returns(() => taskResponse);
 
             _subject.OnNext(new OmniMessage());
 
-            this._mockClippingsApi.Verify(c => c.Last(), Times.Once());
+            _mockClippingsApi.Verify(c => c.Last(), Times.Once());
         }
 
         [Test]
@@ -75,22 +92,26 @@
         {
             var clipping = new Clipping("content");
             IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping };
-            this._mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
+            _mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
+            TestSubscriber testSubscriber = new TestSubscriber();
+            _eventAggregator.Subscribe(testSubscriber);
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content"), It.IsAny<Action<System.Action>>()));
+            testSubscriber.Called.Should().BeTrue("the handler was not called");
         }
 
         [Test]
         public void OnNext_WhenLastClippingIsNotSuccessful_DoesNotPublishTheClippingOnTheEventAggregator()
         {
-            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.Forbidden, Data = new Clipping()};
-            this._mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
+            IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping> { StatusCode = HttpStatusCode.Forbidden, Data = new Clipping() };
+            _mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
+            TestSubscriber testSubscriber = new TestSubscriber();
 
+            _eventAggregator.Subscribe(testSubscriber);
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content"), It.IsAny<Action<System.Action>>()), Times.Never());
+            testSubscriber.Called.Should().BeFalse();
         }
 
         [Test]
@@ -98,12 +119,12 @@
         {
             var subject = new Subject<OmniMessage>();
             IRestResponse<Clipping> lastClippingResponse = new RestResponse<Clipping>();
-            this._mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
+            _mockClippingsApi.Setup(c => c.Last()).Returns(Task.Factory.StartNew(() => lastClippingResponse));
 
             _subject.SubscribeTo(subject);
-            subject.OnNext(new OmniMessage {Provider = OmniMessageTypeEnum.Clipboard });
+            subject.OnNext(new OmniMessage { Provider = OmniMessageTypeEnum.Clipboard });
 
-            this._mockClippingsApi.Verify(c => c.Last(), Times.Once());
+            _mockClippingsApi.Verify(c => c.Last(), Times.Once());
         }
 
         [Test]
@@ -114,7 +135,7 @@
             _subject.SubscribeTo(subject);
             subject.OnNext(new OmniMessage { Provider = OmniMessageTypeEnum.Phone });
 
-            this._mockClippingsApi.Verify(c => c.Last(), Times.Never());
+            _mockClippingsApi.Verify(c => c.Last(), Times.Never());
         }
     }
 }

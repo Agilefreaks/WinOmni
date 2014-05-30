@@ -32,10 +32,10 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
         }
 
-        public GetRemoteConfiguration(IAuthorizationAPI authorizationAPI, IConfigurationService configurationService)
+        public GetRemoteConfiguration(IAuthorizationAPI authorizationApi, IConfigurationService configurationService)
         {
             _configurationService = configurationService;
-            AuthorizationAPI = authorizationAPI;
+            AuthorizationAPI = authorizationApi;
         }
 
         public override IExecuteResult Execute()

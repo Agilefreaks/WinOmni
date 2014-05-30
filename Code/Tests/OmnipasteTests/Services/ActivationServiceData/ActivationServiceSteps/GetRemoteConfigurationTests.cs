@@ -1,15 +1,14 @@
-﻿using System.Threading.Tasks;
-using OmniApi.Resources;
-using OmniCommon.Interfaces;
-using RestSharp;
-
-namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using System.Threading.Tasks;
+    using OmniApi.Resources;
+    using OmniCommon.Interfaces;
+    using RestSharp;
 
     [TestFixture]
     public class GetRemoteConfigurationTests

@@ -30,12 +30,11 @@
         public IncomingClippingsHandler(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
         }
 
         public void OnNext(OmniMessage value)
         {
-            var clippingResponse = this.ClippingsApi.Last();
+            var clippingResponse = ClippingsApi.Last();
             clippingResponse.Wait();
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
