@@ -49,6 +49,9 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\..\packages\Caliburn.Micro.2.0.0\lib\net40\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\packages\Castle.Core.3.3.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
     </Reference>
