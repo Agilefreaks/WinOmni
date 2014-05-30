@@ -10,11 +10,6 @@
         Icon="/Icon.ico">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="../Resources/Icons.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
             <ControlTemplate x:Key="FlyoutTemplate" TargetType="{x:Type controls:Flyout}">
                 <Grid x:Name="root"
                   Margin="{TemplateBinding Margin}"

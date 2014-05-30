@@ -373,7 +373,6 @@
     <Content Include="Uninstall.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Icons\Icon.ico" />
     <Resource Include="Icon.ico" />
     <Content Include="Settings\debug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
