@@ -1,14 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Reactive.Linq;
-using WindowsClipboard;
-using Caliburn.Micro;
-using Ninject;
-using OmniCommon.Interfaces;
-using OmniCommon.Models;
-
-namespace Clipboard.Handlers
+﻿namespace Clipboard.Handlers
 {
+    using System;
+    using System.Net;
+    using System.Reactive.Linq;
+    using WindowsClipboard;
+    using Caliburn.Micro;
+    using Ninject;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Models;
+
     public class IncomingClippingsHandler : IOmniMessageHandler
     {
         private readonly IEventAggregator _eventAggregator;
@@ -16,7 +16,7 @@ namespace Clipboard.Handlers
         private IDisposable _subscription;
 
         [Inject]
-        public IClippingsAPI ClippingsAPI { get; set; }
+        public IClippingsAPI ClippingsApi { get; set; }
 
         public IEventAggregator EventAggregator
         {
@@ -34,7 +34,7 @@ namespace Clipboard.Handlers
 
         public void OnNext(OmniMessage value)
         {
-            var clippingResponse = ClippingsAPI.Last();
+            var clippingResponse = this.ClippingsApi.Last();
             clippingResponse.Wait();
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
