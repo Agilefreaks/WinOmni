@@ -1,35 +1,35 @@
-﻿using System;
-using System.Net;
-using System.Reactive.Linq;
-using Caliburn.Micro;
-using Notifications.API;
-using OmniCommon.Interfaces;
-using OmniCommon.Models;
-
-namespace Notifications.Handlers
+﻿namespace Notifications.Handlers
 {
+    using System;
+    using System.Net;
+    using System.Reactive.Linq;
+    using Caliburn.Micro;
+    using Notifications.API;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Models;
+
     public class NotificationsHandler : IOmniMessageHandler
     {
         private readonly IEventAggregator _eventAggregator;
 
         private IDisposable _subscription;
 
-        public INotificationsAPI NotificationsAPI { get; set; }
+        public INotificationsAPI NotificationsApi { get; set; }
 
-        public NotificationsHandler(INotificationsAPI notificationsAPI, IEventAggregator eventAggregator)
+        public NotificationsHandler(INotificationsAPI notificationsApi, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            NotificationsAPI = notificationsAPI;
+            this.NotificationsApi = notificationsApi;
         }
 
         public void OnNext(OmniMessage value)
         {
-            var getAllNotificationsTask = NotificationsAPI.Last();
+            var getAllNotificationsTask = this.NotificationsApi.Last();
             getAllNotificationsTask.Wait();
 
             if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
             {
-                _eventAggregator.PublishOnCurrentThread(getAllNotificationsTask.Result.Data);
+                _eventAggregator.PublishOnUIThread(getAllNotificationsTask.Result.Data);
             }
         }
 
