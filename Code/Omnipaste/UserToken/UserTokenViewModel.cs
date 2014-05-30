@@ -64,7 +64,7 @@ namespace Omnipaste.UserToken
 
         private void Publish(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            _eventAggregator.Publish(tokenRequestResultMessage);
+            _eventAggregator.PublishOnBackgroundThread(tokenRequestResultMessage);
         }
 
         protected override void OnActivate()

@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using System.Windows.Controls;
+using System.Windows;
 using Castle.Core.Internal;
 using Notifications.NotificationList;
 using OmniApi;
 using OmniCommon.Interfaces;
 using Omnipaste.Framework;
 using Omnipaste.Services.Connectivity;
-using Omnipaste.UserToken;
 
 namespace Omnipaste
 {
@@ -21,9 +20,16 @@ namespace Omnipaste
     using OmniCommon;
     using Omnipaste.Shell;
 
-    public class OmnipasteBootstrapper : Bootstrapper<IShellViewModel>
+    public class OmnipasteBootstrapper : BootstrapperBase
     {
         private IKernel _kernel;
+
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            base.OnStartup(sender, e);
+            
+            DisplayRootViewFor<IShellViewModel>();
+        }
 
         protected override void Configure()
         {

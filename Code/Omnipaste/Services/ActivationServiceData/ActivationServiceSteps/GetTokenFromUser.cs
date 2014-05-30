@@ -24,7 +24,7 @@
         public override IExecuteResult Execute()
         {
             _autoResetEvent = new AutoResetEvent(false);
-            _eventAggregator.Publish(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
+            _eventAggregator.PublishOnBackgroundThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
             _autoResetEvent.WaitOne();
 
             var executeResult = new ExecuteResult();

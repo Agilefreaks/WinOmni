@@ -78,7 +78,7 @@ namespace ClipboardTests.Handlers
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<ClipboardData>(c => c.GetData() == "content")));
+            _mockEventAggregator.Verify(ea => ea.PublishOnBackgroundThread(It.Is<ClipboardData>(c => c.GetData() == "content")));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace ClipboardTests.Handlers
 
             _subject.OnNext(new OmniMessage());
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.IsAny<Clipping>()), Times.Never());
+            _mockEventAggregator.Verify(ea => ea.PublishOnBackgroundThread(It.IsAny<Clipping>()), Times.Never());
         }
 
         [Test]

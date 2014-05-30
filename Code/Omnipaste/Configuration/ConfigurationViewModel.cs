@@ -38,7 +38,7 @@ namespace Omnipaste.Configuration
             }
             else
             {
-                _eventAggregator.Publish(new ConfigurationCompletedMessage());
+                _eventAggregator.PublishOnBackgroundThread(new ConfigurationCompletedMessage());
             }
         }
     }
