@@ -24,12 +24,18 @@ namespace Omnipaste
     {
         private IKernel _kernel;
 
+        public OmnipasteBootstrapper()
+        {
+            Initialize();
+        }
+
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
-            
-            DisplayRootViewFor<IShellViewModel>();
+
+            DisplayRootViewFor<ShellViewModel>();
         }
+
 
         protected override void Configure()
         {

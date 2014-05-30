@@ -39,7 +39,7 @@ namespace Clipboard.Handlers
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
             {
-                EventAggregator.PublishOnBackgroundThread(new ClipboardData(null, clippingResponse.Result.Data.Content));
+                EventAggregator.PublishOnCurrentThread(new ClipboardData(null, clippingResponse.Result.Data.Content));
             }
         }
 

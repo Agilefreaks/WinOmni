@@ -29,7 +29,7 @@ namespace Notifications.Handlers
 
             if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
             {
-                _eventAggregator.PublishOnBackgroundThread(getAllNotificationsTask.Result.Data);
+                _eventAggregator.PublishOnCurrentThread(getAllNotificationsTask.Result.Data);
             }
         }
 

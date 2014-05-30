@@ -88,7 +88,7 @@ namespace Omnipaste.Shell
         {
             HandleSuccessfulLogin();
 
-            EventAggregator.PublishOnBackgroundThread(new StartOmniServiceMessage());
+            EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
             
             var wm = new WindowManager();
             wm.ShowWindow(
@@ -134,11 +134,11 @@ namespace Omnipaste.Shell
         {
             if (IsNotSyncing)
             {
-                EventAggregator.PublishOnBackgroundThread(new StopOmniServiceMessage());
+                EventAggregator.PublishOnCurrentThread(new StopOmniServiceMessage());
             }
             else
             {
-                EventAggregator.PublishOnBackgroundThread(new StartOmniServiceMessage());
+                EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
             }
         }
 
