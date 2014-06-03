@@ -221,11 +221,15 @@
     <Compile Include="Configuration\IConfigurationViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
+    <Compile Include="Dialog\DialogViewModel.cs" />
+    <Compile Include="Dialog\IDialogViewModel.cs" />
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="EventAggregatorMessages\LoginComplete.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
+    <Compile Include="Framework\IDialogService.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />
+    <Compile Include="Framework\DialogService.cs" />
     <Compile Include="Layout\ILayoutViewModel.cs" />
     <Compile Include="Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -281,6 +285,10 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\DialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

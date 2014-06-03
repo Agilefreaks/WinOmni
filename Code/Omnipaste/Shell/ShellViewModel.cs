@@ -21,6 +21,18 @@
     using EventAggregatorMessages;
     using Omnipaste.NotificationList;
     using Properties;
+    using System.Collections.Generic;
+    using System.Deployment.Application;
+    using System.Reflection;
+    using Clipboard;
+    using Notifications;
+    using Notifications.NotificationList;
+    using OmniApi;
+    using OmniCommon.Framework;
+    using OmniCommon.Interfaces;
+    using System.Linq;
+    using Omnipaste.Framework;
+    using Omnipaste.UserToken;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -48,6 +60,9 @@
 
         public Visibility Visibility { get; set; }
 
+        [Inject]
+        public IDialogService DialogService { get; set; }
+
         public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IUserTokenViewModel userToken)
         {
             UserToken = userToken;
@@ -74,7 +89,7 @@
         public void Handle(GetTokenFromUserMessage message)
         {
             UserToken.Message = message.Message;
-            ShowSettings();
+            Execute.OnUIThread(async () => await DialogService.ShowDialog(UserToken));
         }
 
         public void Exit()
@@ -111,11 +126,6 @@
         {
             _view.Visibility = Visibility.Visible;
             _view.ShowInTaskbar = true;
-        }
-
-        public void ShowSettings()
-        {
-            UserToken.Activate();
         }
 
         public void HandleSuccessfulLogin()

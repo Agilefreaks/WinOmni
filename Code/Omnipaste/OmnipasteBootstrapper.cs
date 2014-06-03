@@ -5,6 +5,7 @@
     using Castle.Core.Internal;
     using OmniApi;
     using OmniCommon.Interfaces;
+using Omnipaste.Dialog;
     using Omnipaste.Framework;
     using Omnipaste.Services.Connectivity;
     using System;
@@ -35,10 +36,9 @@
             DisplayRootViewFor<ShellViewModel>();
         }
 
-
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel) };
+            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel) };
             _kernel = new StandardKernel();
 
             _kernel.Load(
@@ -58,6 +58,14 @@
                  .Select(singletonViewModelTypes.Contains)
                  .BindDefaultInterface()
                  .Configure(c => c.InSingletonScope()));
+            
+            _kernel.Bind(
+                configure =>
+                configure.FromThisAssembly()
+                 .Select(t => t.Name.EndsWith("Service"))
+                 .BindDefaultInterface()
+                 .Configure(c => c.InSingletonScope()));
+
             _kernel.Bind(
                 configure =>
                 configure.FromThisAssembly()

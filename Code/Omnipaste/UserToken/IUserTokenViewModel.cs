@@ -1,8 +1,8 @@
-﻿using Omnipaste.Framework;
+﻿using Caliburn.Micro;
 
 namespace Omnipaste.UserToken
 {
-    public interface IUserTokenViewModel : IFlyoutViewModel
+    public interface IUserTokenViewModel : IScreen
     {
         string ActivationCode { get; set; }
 

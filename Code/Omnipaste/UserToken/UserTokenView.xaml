@@ -39,6 +39,7 @@
                  controls:TextboxHelper.IsWaitingForData="True"/>
             
         <Button Grid.Row="4"  Grid.Column="1" x:Name="Register" Content="Register" Margin="10"/>
+        <Button Grid.Row="4"  Grid.Column="2" x:Name="TryClose" Content="Close" Margin="10"/>
 
         <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10" Text="{Binding Path=Message}"/>
     </Grid>
