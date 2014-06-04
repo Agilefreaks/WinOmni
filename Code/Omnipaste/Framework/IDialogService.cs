@@ -6,5 +6,7 @@ namespace Omnipaste.Framework
     public interface IDialogService
     {
         Task ShowDialog(IScreen viewModel);
+
+        Task CloseDialog();
     }
 }

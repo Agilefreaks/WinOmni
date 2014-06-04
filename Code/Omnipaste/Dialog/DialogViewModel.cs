@@ -1,8 +1,10 @@
-﻿using System;
-using Caliburn.Micro;
-
-namespace Omnipaste.Dialog
+﻿namespace Omnipaste.Dialog
 {
+    using System;
+    using Caliburn.Micro;
+    using Ninject;
+    using Omnipaste.Framework;
+
     public class DialogClosedEventArgs : EventArgs
     {
         public object ClosedItem { get; set; }
@@ -13,6 +15,9 @@ namespace Omnipaste.Dialog
         public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed = delegate { };
 
         public event EventHandler<DialogClosedEventArgs> Closed;
+
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
         private bool _isOpen;
 
@@ -46,10 +51,21 @@ namespace Omnipaste.Dialog
                 child.Parent = this;
 
             if (ActiveItem != null)
+            {
                 ActiveItem.Activate();
+                ActiveItem.Deactivated += ActiveItemDeactivated;
+            }
 
             NotifyOfPropertyChange(() => ActiveItem);
             ActivationProcessed(this, new ActivationProcessedEventArgs { Item = ActiveItem, Success = true });
+        }
+
+        void ActiveItemDeactivated(object sender, DeactivationEventArgs e)
+        {
+            ((Screen)ActiveItem).Deactivated -= ActiveItemDeactivated;
+            Execute.OnUIThread(async () => { await DialogService.CloseDialog(); });
+            
+            IsOpen = false;
         }
 
         public void DeactivateItem(object item, bool close)
