@@ -87,12 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardData.cs" />
-    <Compile Include="ClipboardEventArgs.cs" />
-    <Compile Include="WindowsClipboardWrapper.cs" />
-    <Compile Include="WindowsClipboard.cs" />
     <Compile Include="WindowsClipboardModule.cs" />
-    <Compile Include="Interfaces\IWindowsClipboardWrapper.cs" />
-    <Compile Include="Interfaces\IWindowsClipboard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +100,9 @@
       <Name>WindowsImports</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

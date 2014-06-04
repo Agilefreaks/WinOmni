@@ -1,19 +1,18 @@
-﻿namespace WindowsClipboard
+﻿namespace Clipboard.Handlers.WindowsClipboard
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Threading;
-    using System.Windows.Forms;
+    using System.Windows;
     using System.Windows.Interop;
-    using Ninject;
-    using global::WindowsClipboard.Interfaces;
     using WindowsImports;
+    using Ninject;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
         public event EventHandler<ClipboardEventArgs> DataReceived;
-        
+
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
 
@@ -27,9 +26,13 @@
             if (WindowHandle != IntPtr.Zero)
             {
                 _hWndSource = HwndSource.FromHwnd(WindowHandle);
-                _hWndSource.AddHook(HandleClipboardMessage); 
 
-                _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+                if (_hWndSource != null)
+                {
+                    _hWndSource.AddHook(HandleClipboardMessage);
+
+                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+                }
             }
         }
 
@@ -42,7 +45,7 @@
 
         public void SetData(string data)
         {
-            RunOnAnSTAThread(() => Clipboard.SetData(DataFormats.Text, data));
+            RunOnAnStaThread(() => Clipboard.SetData(DataFormats.Text, data));
         }
 
         private static string GetClipboardText()
@@ -78,7 +81,7 @@
             return dataObject;
         }
 
-        private static void RunOnAnSTAThread(Action action)
+        private static void RunOnAnStaThread(Action action)
         {
             var @event = new AutoResetEvent(false);
             var thread = new Thread(() =>

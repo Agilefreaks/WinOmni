@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace WindowsClipboard.Interfaces
+﻿namespace Clipboard.Handlers.WindowsClipboard
 {
+    using System;
+
     public interface IWindowsClipboardWrapper
     {
         event EventHandler<ClipboardEventArgs> DataReceived;

@@ -96,7 +96,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\IncomingClippingsHandlerTests.cs" />
+    <Compile Include="Handlers\ClipboardHandlerTests.cs" />
+    <Compile Include="Handlers\OmniClipboardHandlerTests.cs" />
+    <Compile Include="Handlers\LocalClipboardHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,10 +116,6 @@
     <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">
       <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>
       <Name>OmniCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WindowsClipboard\WindowsClipboard.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>WindowsClipboard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,15 +1,14 @@
-﻿using System.Configuration;
-using WindowsClipboard;
-using Clipboard.Models;
-using Ninject;
-using Clipboard.Handlers;
-using Ninject.Modules;
-using OmniCommon.Interfaces;
-using Retrofit.Net;
-
-namespace Clipboard
+﻿namespace Clipboard
 {
     using Clipboard.API;
+    using System.Configuration;
+    using Clipboard.Handlers.WindowsClipboard;
+    using Clipboard.Models;
+    using Ninject;
+    using Clipboard.Handlers;
+    using Ninject.Modules;
+    using OmniCommon.Interfaces;
+    using Retrofit.Net;
 
     public class ClipboardModule : NinjectModule
     {
@@ -25,12 +24,14 @@ namespace Clipboard
         public override void Load()
         {
             ConfigurationService = Kernel.Get<IConfigurationService>();
-        
-            Kernel.Bind<IOmniMessageHandler>().To<IncomingClippingsHandler>().InSingletonScope();
-            Kernel.Bind<IClippingsApi>().ToMethod(c => this.GetClippingsApi());
-            Kernel.Bind<IOutgoingClippingHandler>().To<OutgoingClippingsHandler>();
-            Kernel.Bind<IStartable>().To<OutgoingClippingsHandler>();
-            Kernel.Load(new WindowsClipboardModule());
+
+            Kernel.Bind<IWindowsClipboardWrapper>().To<WindowsClipboardWrapper>();
+            Kernel.Bind<ILocalClipboardHandler>().To<LocalClipboardsHandler>();
+            Kernel.Bind<IOmniMessageHandler, IOmniClipboardHandler>().To<OmniClipboardHandler>().InSingletonScope();
+            
+            Kernel.Bind<IStartable, IClipboadHandler>().To<ClipboardHandler>();
+
+            Kernel.Bind<IClippingsApi>().ToMethod(c => GetClippingsApi());
         }
 
         private IClippingsApi GetClippingsApi()

@@ -96,10 +96,6 @@
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WindowsClipboard\WindowsClipboard.csproj">
-      <Project>{b9433285-2390-4575-a612-395e0cb289e2}</Project>
-      <Name>WindowsClipboard</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

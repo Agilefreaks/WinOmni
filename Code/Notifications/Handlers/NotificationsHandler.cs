@@ -4,7 +4,6 @@
     using System.Net;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Caliburn.Micro;
     using Notifications.API;
     using Notifications.Models;
     using OmniCommon.Interfaces;
@@ -14,8 +13,6 @@
     {
         #region Fields
 
-        private readonly IEventAggregator _eventAggregator;
-
         private readonly Subject<Notification> _subject;
 
         private IDisposable _subscription;
@@ -24,9 +21,8 @@
 
         #region Constructors and Destructors
 
-        public NotificationsHandler(INotificationsApi notificationsApi, IEventAggregator eventAggregator)
+        public NotificationsHandler(INotificationsApi notificationsApi)
         {
-            _eventAggregator = eventAggregator;
             _subject = new Subject<Notification>();
             NotificationsApi = notificationsApi;
         }
@@ -67,16 +63,16 @@
             }
         }
 
+        public IDisposable Subscribe(IObserver<Notification> observer)
+        {
+            return _subject.Subscribe(observer);
+        }
+
         public void SubscribeTo(IObservable<OmniMessage> observable)
         {
             _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
         }
 
         #endregion
-
-        public IDisposable Subscribe(IObserver<Notification> observer)
-        {
-            return _subject.Subscribe(observer);
-        }
     }
 }

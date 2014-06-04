@@ -1,4 +1,4 @@
-﻿namespace WindowsClipboard
+﻿namespace Clipboard.Handlers.WindowsClipboard
 {
     using System;
 
