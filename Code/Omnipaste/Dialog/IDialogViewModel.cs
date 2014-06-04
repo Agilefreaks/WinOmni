@@ -1,10 +1,9 @@
 ﻿using Caliburn.Micro;
-using OmniCommon.Framework;
 
 namespace Omnipaste.Dialog
 {
-    public interface IDialogViewModel : IWorkspace
+    public interface IDialogViewModel : IConductor
     {
-        IScreen Content { get; set; }
+        bool IsOpen { get; set; }
     }
 }

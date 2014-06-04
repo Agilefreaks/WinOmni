@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
-using OmniCommon.EventAggregatorMessages;
-using Omnipaste.Services.Connectivity;
-
-namespace Omnipaste.Framework
+﻿namespace Omnipaste.Framework
 {
+    using Caliburn.Micro;
     using Omni;
+    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.Services.Connectivity;
 
     public class OmniServiceHandler : IOmniServiceHandler
     {

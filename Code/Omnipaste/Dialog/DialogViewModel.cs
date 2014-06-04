@@ -1,6 +1,5 @@
 ﻿using System;
 using Caliburn.Micro;
-using WebSocket4Net.Command;
 
 namespace Omnipaste.Dialog
 {
@@ -15,23 +14,31 @@ namespace Omnipaste.Dialog
 
         public event EventHandler<DialogClosedEventArgs> Closed;
 
-        private IScreen _content;
+        private bool _isOpen;
 
-        public IScreen Content
+        public bool IsOpen
         {
             get
             {
-                return _content;
+                return _isOpen;
             }
             set
             {
-                _content = value;
-                ActivateItem(_content);
+                if (_isOpen != value)
+                {
+                    _isOpen = value;
+                    NotifyOfPropertyChange(() => IsOpen);
+                }
             }
         }
 
         public void ActivateItem(object item)
         {
+            if (ActiveItem == item)
+            {
+                return;
+            }
+
             ActiveItem = item as IScreen;
 
             var child = ActiveItem as IChild;

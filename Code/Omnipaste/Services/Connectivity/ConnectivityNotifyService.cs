@@ -34,7 +34,7 @@ namespace Omnipaste.Services.Connectivity
                 
                 if (isConnected != PreviouslyConnected)
                 {
-                    OnConnectivityChanged(isConnected);                    
+                    OnConnectivityChanged(isConnected);
                 }
             }
         }

@@ -1,12 +1,11 @@
 ﻿using System;
+using Ninject;
 
 namespace Omnipaste.Services.Connectivity
 {
-    public interface IConnectivityNotifyService
+    public interface IConnectivityNotifyService : IStartable
     {
         event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
-        
-        void Start();
 
         void Stop();
     }

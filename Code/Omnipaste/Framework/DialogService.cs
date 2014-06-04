@@ -13,31 +13,42 @@
     {
         private BaseMetroDialog _dialog;
 
-        private DialogViewModel _dialogViewModel;
+        private IDialogViewModel _dialogViewModel;
+
+        private object _view;
 
         public async Task ShowDialog(IScreen viewModel)
         {
-            _dialogViewModel = IoC.Get<DialogViewModel>();
-            _dialogViewModel.Content = viewModel;
+            if (_dialogViewModel == null)
+            {
+                _dialogViewModel = IoC.Get<IDialogViewModel>();
+            }
 
-            viewModel.Deactivated += ViewModelDeactivated;
+            if (_dialog == null)
+            {
+                _view = ViewLocator.GetViewForViewModel(_dialogViewModel);
+                _dialog = _view as BaseMetroDialog;
+            }
 
-            var view = ViewLocator.GetViewForViewModel(_dialogViewModel);
-            _dialog = view as BaseMetroDialog;
-                    
             if (_dialog == null)
             {
                 throw new InvalidOperationException(
                     String.Format(
                         "The view {0} belonging to view model {1} does not inherit from {2}",
-                        view.GetType(),
+                        _view.GetType(),
                         viewModel.GetType(),
                         typeof(BaseMetroDialog)));
             }
 
             var shellView = Application.Current.Windows.OfType<MetroWindow>().First();
-                    
-            await shellView.ShowMetroDialogAsync(_dialog);
+            viewModel.Deactivated += ViewModelDeactivated;
+            _dialogViewModel.ActivateItem(viewModel);
+
+            if (!_dialogViewModel.IsOpen)
+            {
+                await shellView.ShowMetroDialogAsync(_dialog);
+                _dialogViewModel.IsOpen = true;
+            }
         }
 
         private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
@@ -47,7 +58,11 @@
             _dialogViewModel.DeactivateItem(screen, true);
             var firstMetroWindow = Application.Current.Windows.OfType<MetroWindow>().First();
 
-            Execute.OnUIThread(async () => await firstMetroWindow.HideMetroDialogAsync(_dialog));
+            Execute.OnUIThread(async () =>
+            {
+                await firstMetroWindow.HideMetroDialogAsync(_dialog);
+                _dialogViewModel.IsOpen = false;
+            });
         }
     }
 }

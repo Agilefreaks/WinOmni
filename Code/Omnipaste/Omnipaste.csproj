@@ -230,6 +230,7 @@
     <Compile Include="Framework\IDialogService.cs" />
     <Compile Include="Framework\IOmniServiceHandler.cs" />
     <Compile Include="Framework\DialogService.cs" />
+    <Compile Include="Framework\ViewLocator.cs" />
     <Compile Include="Layout\ILayoutViewModel.cs" />
     <Compile Include="Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>

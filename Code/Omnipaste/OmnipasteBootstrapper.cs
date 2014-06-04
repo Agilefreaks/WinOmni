@@ -58,6 +58,12 @@ using Omnipaste.Dialog;
                  .Select(singletonViewModelTypes.Contains)
                  .BindDefaultInterface()
                  .Configure(c => c.InSingletonScope()));
+
+            _kernel.Bind(
+                configure =>
+                configure.FromThisAssembly()
+                 .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
+                 .BindDefaultInterface());
             
             _kernel.Bind(
                 configure =>
@@ -65,15 +71,8 @@ using Omnipaste.Dialog;
                  .Select(t => t.Name.EndsWith("Service"))
                  .BindDefaultInterface()
                  .Configure(c => c.InSingletonScope()));
-
-            _kernel.Bind(
-                configure =>
-                configure.FromThisAssembly()
-                 .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
-                 .BindDefaultInterface());
+            
             _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
-
-            _kernel.Bind<IConnectivityNotifyService>().ToConstant(CreateConnectivityService());
         }
 
         protected override void OnExit(object sender, EventArgs e)
@@ -113,15 +112,6 @@ using Omnipaste.Dialog;
             {
                 task.Startup();
             }
-        }
-
-        protected IConnectivityNotifyService CreateConnectivityService()
-        {
-            var connectivityObserver = new ConnectivityNotifyService();
-            Application.Exit += (sender, args) => connectivityObserver.Stop();
-            connectivityObserver.Start();
-
-            return connectivityObserver;
         }
     }
 }
