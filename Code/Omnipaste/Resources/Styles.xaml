@@ -6,14 +6,15 @@
     <Color x:Key="TextForegroundColor">White</Color>
     
     <!-- Brushes -->
-    <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}"></SolidColorBrush>
+    <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}" />
+    <SolidColorBrush x:Key="TextForegroundBrush" Color="{StaticResource TextForegroundColor}" />
     
     <!-- TextBlock -->
     <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontFamily" Value="Arial" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="Foreground" Value="{StaticResource TextForegroundColor}" />
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>

@@ -5,35 +5,80 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="NotificationWindow" HorizontalAlignment="Right">
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeInStoryBoard" TargetName="Container">
+            <DoubleAnimation From="0.01" To="1" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5"/>
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5" BeginTime="0:0:6"/>
+        </Storyboard>
+        <Storyboard x:Key="FadeOutStoryBoard" TargetName="Container">
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5" />
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid x:Name="Container" HorizontalAlignment="Right">
         <Border Name="Border" Background="{StaticResource NotificationBackgroundBrush}" BorderThickness="0" Margin="10">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
             </Border.Effect>
-            <Grid Height="100" Width="280" Margin="6">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock x:Name="Title"
-                           Margin="2,4,4,2"
-                           Style="{StaticResource TitleTextBlock}" />
-                <TextBlock x:Name="Message" Grid.Row="1" Margin="2,2,4,4" 
+            <DockPanel Height="100" Width="280" LastChildFill="True">
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="Hang Call" />
+                    <Button Grid.Column="1" Content="Send Text" />
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <DockPanel LastChildFill="True">
+                        <Button ToolTip="Dismiss" DockPanel.Dock="Right" Background="Transparent">
+                            <Rectangle Width="12" Height="12"
+                                       Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_close}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard Storyboard="{StaticResource FadeOutStoryBoard}" />
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <TextBlock x:Name="Title"
+                                   Margin="2,4,4,2"
+                                   Style="{StaticResource TitleTextBlock}" />
+                    </DockPanel>
+                    <TextBlock x:Name="Message" Grid.Row="1" Margin="2,2,4,4" 
                            Style="{StaticResource TextBlock}" />
-            </Grid>
+                </Grid>
+            </DockPanel>
         </Border>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
         <Grid.Triggers>
-            <EventTrigger RoutedEvent="Window.Loaded" SourceName="NotificationWindow">
-                <BeginStoryboard x:Name="FadeInStoryBoard">
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetName="NotificationWindow" 
-                              From="0.01" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.5"/>
-                        <DoubleAnimation Storyboard.TargetName="NotificationWindow" 
-                              From="1" To="0" Storyboard.TargetProperty="Opacity" 
-                              Duration="0:0:0.5" BeginTime="0:0:6"/>
-                    </Storyboard>
-                </BeginStoryboard>
+            <EventTrigger RoutedEvent="Window.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource FadeInStoryBoard}"/>
             </EventTrigger>
         </Grid.Triggers>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <Trigger Property="Opacity" Value="0">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
     </Grid>
 </UserControl>
