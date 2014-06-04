@@ -17,7 +17,7 @@ namespace Omni
         public OmniService(IOmniSyncService omniSyncService, IDevicesAPI devicesApi, IConfigurationService configurationService)
         {
             OmniSyncService = omniSyncService;
-            this._devicesApi = devicesApi;
+            _devicesApi = devicesApi;
             _configurationService = configurationService;
         }
 
@@ -28,10 +28,10 @@ namespace Omni
             var deviceIdentifier = _configurationService.GetDeviceIdentifier();
             var machineName = _configurationService.GetMachineName();
             
-            await this._devicesApi.Register(deviceIdentifier, machineName);
+            await _devicesApi.Register(deviceIdentifier, machineName);
 
             const string NotificationProvider = "omni_sync";
-            var activationResult = await this._devicesApi.Activate(registrationResult.Data, deviceIdentifier, NotificationProvider);
+            var activationResult = await _devicesApi.Activate(registrationResult.Data, deviceIdentifier, NotificationProvider);
 
             return activationResult.Data != null;
         }

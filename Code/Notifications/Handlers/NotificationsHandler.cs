@@ -3,39 +3,47 @@
     using System;
     using System.Net;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using Caliburn.Micro;
     using Notifications.API;
+    using Notifications.Models;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public class NotificationsHandler : IOmniMessageHandler
+    public class NotificationsHandler : INotificationsHandler, IOmniMessageHandler
     {
+        #region Fields
+
         private readonly IEventAggregator _eventAggregator;
+
+        private readonly Subject<Notification> _subject;
 
         private IDisposable _subscription;
 
-        public INotificationsApi NotificationsApi { get; set; }
+        #endregion
+
+        #region Constructors and Destructors
 
         public NotificationsHandler(INotificationsApi notificationsApi, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            this.NotificationsApi = notificationsApi;
+            _subject = new Subject<Notification>();
+            NotificationsApi = notificationsApi;
         }
 
-        public void OnNext(OmniMessage value)
-        {
-            var getAllNotificationsTask = this.NotificationsApi.Last();
-            getAllNotificationsTask.Wait();
+        #endregion
 
-            if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
-            {
-                _eventAggregator.PublishOnCurrentThread(getAllNotificationsTask.Result.Data);
-            }
-        }
+        #region Public Properties
 
-        public void OnError(Exception error)
+        public INotificationsApi NotificationsApi { private get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            _subscription.Dispose();
         }
 
         public void OnCompleted()
@@ -43,14 +51,32 @@
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public void OnError(Exception error)
         {
-            _subscription.Dispose();
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(OmniMessage value)
+        {
+            var getAllNotificationsTask = NotificationsApi.Last();
+            getAllNotificationsTask.Wait();
+
+            if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
+            {
+                _subject.OnNext(getAllNotificationsTask.Result.Data);
+            }
         }
 
         public void SubscribeTo(IObservable<OmniMessage> observable)
         {
             _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
+        }
+
+        #endregion
+
+        public IDisposable Subscribe(IObserver<Notification> observer)
+        {
+            return _subject.Subscribe(observer);
         }
     }
 }

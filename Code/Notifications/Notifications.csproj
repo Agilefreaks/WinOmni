@@ -105,17 +105,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\INotificationsAPI.cs" />
+    <Compile Include="Handlers\INotificationsHandler.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Handlers\NotificationsHandler.cs" />
     <Compile Include="NotificationsModule.cs" />
-    <Compile Include="Notification\INotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationView.xaml.cs">
-      <DependentUpon>NotificationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Notification\NotificationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NotificationList\INotificationListViewModel.cs" />
-    <Compile Include="NotificationList\NotificationListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
@@ -126,16 +120,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="NotificationList\NotificationListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Notification\NotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

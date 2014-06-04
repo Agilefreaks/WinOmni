@@ -246,6 +246,10 @@
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layout\LayoutViewModel.cs" />
+    <Compile Include="NotificationList\INotificationListViewModel.cs" />
+    <Compile Include="NotificationList\NotificationListViewModel.cs" />
+    <Compile Include="Notification\INotificationViewModel.cs" />
+    <Compile Include="Notification\NotificationViewModel.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
@@ -298,6 +302,14 @@
     <Page Include="Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NotificationList\NotificationListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Notification\NotificationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,14 +1,12 @@
-﻿using System.Linq;
-using System.Windows;
-using Castle.Core.Internal;
-using Notifications.NotificationList;
-using OmniApi;
-using OmniCommon.Interfaces;
-using Omnipaste.Framework;
-using Omnipaste.Services.Connectivity;
-
-namespace Omnipaste
+﻿namespace Omnipaste
 {
+    using System.Linq;
+    using System.Windows;
+    using Castle.Core.Internal;
+    using OmniApi;
+    using OmniCommon.Interfaces;
+    using Omnipaste.Framework;
+    using Omnipaste.Services.Connectivity;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -16,6 +14,7 @@ namespace Omnipaste
     using Ninject;
     using Ninject.Extensions.Conventions;
     using Omni;
+    using Omnipaste.NotificationList;
     using OmniSync;
     using OmniCommon;
     using Omnipaste.Shell;
@@ -96,7 +95,7 @@ namespace Omnipaste
         {
             return new[]
                        {
-                           Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(INotificationListViewModel))
+                           Assembly.GetExecutingAssembly()
                        };
         }
 

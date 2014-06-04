@@ -1,7 +1,7 @@
-﻿using Caliburn.Micro;
-
-namespace Notifications.Notification
+﻿namespace Omnipaste.Notification
 {
+    using Caliburn.Micro;
+
     public interface INotificationViewModel : IScreen
     {
     }

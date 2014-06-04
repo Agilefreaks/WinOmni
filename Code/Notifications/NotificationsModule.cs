@@ -3,7 +3,6 @@ using Ninject;
 using Ninject.Modules;
 using Notifications.API;
 using Notifications.Handlers;
-using Notifications.NotificationList;
 using OmniCommon.Interfaces;
 using Retrofit.Net;
 
@@ -20,10 +19,9 @@ namespace Notifications
 
         public override void Load()
         {
-            Kernel.Bind<IOmniMessageHandler>().To<NotificationsHandler>().InSingletonScope();
-            Kernel.Bind<INotificationsApi>().ToMethod(c => this.GetApiEndpoint<INotificationsApi, Models.Notification>());
+            Kernel.Bind<IOmniMessageHandler, INotificationsHandler>().To<NotificationsHandler>().InSingletonScope();
 
-            Kernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
+            Kernel.Bind<INotificationsApi>().ToMethod(c => GetApiEndpoint<INotificationsApi, Models.Notification>());
         }
 
         private T GetApiEndpoint<T, TR>()

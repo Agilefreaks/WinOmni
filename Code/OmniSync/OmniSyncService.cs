@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using Ninject;
-using OmniCommon.Interfaces;
-using OmniCommon.Models;
-
-namespace OmniSync
+﻿namespace OmniSync
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Reactive.Subjects;
+    using System.Threading.Tasks;
+    using Ninject;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Models;
+
     public class OmniSyncService : IOmniSyncService
     {
         #region Fields

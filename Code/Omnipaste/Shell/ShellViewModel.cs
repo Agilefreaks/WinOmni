@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Deployment.Application;
-using System.Reflection;
-using Clipboard;
-using Notifications;
-using Notifications.NotificationList;
-using OmniApi;
-using OmniCommon.Framework;
-using OmniCommon.Interfaces;
-using System.Linq;
-using Omnipaste.Framework;
-using Omnipaste.UserToken;
-
-namespace Omnipaste.Shell
+﻿namespace Omnipaste.Shell
 {
+    using System.Collections.Generic;
+    using System.Deployment.Application;
+    using System.Reflection;
+    using Clipboard;
+    using Notifications;
+    using OmniApi;
+    using OmniCommon.Framework;
+    using OmniCommon.Interfaces;
+    using System.Linq;
+    using Omnipaste.Framework;
+    using Omnipaste.UserToken;
     using System;
     using System.Windows;
     using System.Windows.Interop;
@@ -21,9 +19,10 @@ namespace Omnipaste.Shell
     using OmniCommon.EventAggregatorMessages;
     using Configuration;
     using EventAggregatorMessages;
+    using Omnipaste.NotificationList;
     using Properties;
 
-    public class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
+    public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         private Window _view;
 
@@ -55,9 +54,9 @@ namespace Omnipaste.Shell
 
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
-            
+
             ConfigurationViewModel = configurationViewModel;
-            
+
             DisplayName = Resources.AplicationName;
             ApplicationWrapper = new ApplicationWrapper();
 
@@ -89,18 +88,18 @@ namespace Omnipaste.Shell
             HandleSuccessfulLogin();
 
             EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
-            
+
             var wm = new WindowManager();
             wm.ShowWindow(
-                Kernel.Get<INotificationListViewModel>(), 
-                null, 
+                Kernel.Get<INotificationListViewModel>(),
+                null,
                 new Dictionary<string, object>
                 {
                     {"Height", SystemParameters.WorkArea.Height},
                     {"Width", SystemParameters.WorkArea.Width}
 
                 });
-         
+
             if (_view != null)
             {
                 _view.Visibility = Visibility.Collapsed;
@@ -142,7 +141,7 @@ namespace Omnipaste.Shell
             }
         }
 
-        protected void RunStartupTasks()
+        private void RunStartupTasks()
         {
             foreach (var task in Kernel.GetAll<IStartupTask>())
             {
@@ -164,7 +163,7 @@ namespace Omnipaste.Shell
             base.OnActivate();
 
             ActiveItem = ConfigurationViewModel;
-            
+
             await ConfigurationViewModel.Start();
         }
 
