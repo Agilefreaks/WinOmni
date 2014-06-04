@@ -8,6 +8,6 @@ namespace Omnipaste.UserToken
 
         string Message { get; set; }
 
-        void Register();
+        void Authenticate();
     }
 }

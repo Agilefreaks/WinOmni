@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours">
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:cal="http://www.caliburnproject.org">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -38,8 +39,8 @@
                  controls:TextboxHelper.Watermark="Authorization code"
                  controls:TextboxHelper.IsWaitingForData="True"/>
             
-        <Button Grid.Row="4"  Grid.Column="1" x:Name="Register" Content="Register" Margin="10"/>
-        <Button Grid.Row="4"  Grid.Column="2" x:Name="TryClose" Content="Close" Margin="10"/>
+        <Button Grid.Row="4"  Grid.Column="1" x:Name="Authenticate" Content="Authenticate" Margin="10"/>
+        <Button Grid.Row="4"  Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" Margin="10"/>
 
         <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10" Text="{Binding Path=Message}"/>
     </Grid>

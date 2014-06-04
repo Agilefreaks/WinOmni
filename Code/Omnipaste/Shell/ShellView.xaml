@@ -120,8 +120,7 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button cal:Message.Attach="[Event Click]=[Action ShowSettings]"
-                    ToolTip="Open settings">
+            <Button ToolTip="Open settings">
                 <Rectangle Width="22"
                            Height="22"
                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">

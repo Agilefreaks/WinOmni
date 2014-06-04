@@ -1,12 +1,9 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
-
-namespace Omnipaste.Framework
+﻿namespace Omnipaste.Framework
 {
     public interface IDialogService
     {
-        Task ShowDialog(IScreen viewModel);
+        void Start();
 
-        Task CloseDialog();
+        void Stop();
     }
 }

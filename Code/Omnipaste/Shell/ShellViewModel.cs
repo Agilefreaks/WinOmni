@@ -20,6 +20,7 @@
     using Configuration;
     using EventAggregatorMessages;
     using Omnipaste.NotificationList;
+    using Omnipaste.Dialog;
     using Properties;
     using System.Collections.Generic;
     using System.Deployment.Application;
@@ -61,10 +62,11 @@
         public Visibility Visibility { get; set; }
 
         [Inject]
-        public IDialogService DialogService { get; set; }
+        public IDialogViewModel DialogViewModel { get; set; }
 
-        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IUserTokenViewModel userToken)
+        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IUserTokenViewModel userToken, IDialogService service)
         {
+            service.Start();
             UserToken = userToken;
 
             EventAggregator = eventAggregator;
@@ -89,7 +91,7 @@
         public void Handle(GetTokenFromUserMessage message)
         {
             UserToken.Message = message.Message;
-            Execute.OnUIThread(async () => await DialogService.ShowDialog(UserToken));
+            DialogViewModel.ActivateItem(UserToken);
         }
 
         public void Exit()
@@ -114,12 +116,6 @@
                     {"Width", SystemParameters.WorkArea.Width}
 
                 });
-
-            if (_view != null)
-            {
-                _view.Visibility = Visibility.Collapsed;
-                _view.ShowInTaskbar = false;
-            }
         }
 
         public void Show()

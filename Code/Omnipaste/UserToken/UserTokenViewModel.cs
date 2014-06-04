@@ -2,13 +2,49 @@
 {
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.Framework;
 
     public class UserTokenViewModel : Screen, IUserTokenViewModel
     {
+        #region Fields
+
         private readonly IEventAggregator _eventAggregator;
 
+        private bool _isBusy;
+
         private string _message;
-        
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public UserTokenViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            ApplicationWrapper = new ApplicationWrapper();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public string ActivationCode { get; set; }
+
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                _isBusy = value;
+                NotifyOfPropertyChange(() => IsBusy);
+            }
+        }
+
         public string Message
         {
             get
@@ -25,21 +61,39 @@
             }
         }
 
-        public string ActivationCode { get; set; }
+        #endregion
 
-        public UserTokenViewModel(IEventAggregator eventAggregator)
+        #region Public Methods and Operators
+
+        protected override void OnActivate()
         {
-            _eventAggregator = eventAggregator;
+            base.OnActivate();
+
+            IsBusy = false;
         }
 
-        public void Register()
+        public void Authenticate()
         {
+            IsBusy = true;
+            TryClose();
+
             Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, ActivationCode));
         }
+
+        public void Exit()
+        {
+            ApplicationWrapper.ShutDown();
+        }
+
+        #endregion
+
+        #region Methods
 
         private void Publish(TokenRequestResultMessage tokenRequestResultMessage)
         {
             _eventAggregator.PublishOnCurrentThread(tokenRequestResultMessage);
         }
+
+        #endregion
     }
 }

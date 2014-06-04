@@ -3,11 +3,13 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Threading;
     using Caliburn.Micro;
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
     using Ninject;
     using Omnipaste.Dialog;
+    using Action = System.Action;
 
     public class DialogService : IDialogService
     {
@@ -23,29 +25,51 @@
                 return Application.Current.Windows.OfType<MetroWindow>().First();
             }
         }
-
-        private object _view;
-
-        public async Task ShowDialog(IScreen viewModel)
+        
+        public void Start()
         {
-            if (_dialog == null)
+            DialogViewModel.ActivationProcessed += OnDialogViewModelActivationProcessed;
+            DialogViewModel.Closed += OnDialogViewModelClosed;
+        }
+
+        public void Stop()
+        {
+            DialogViewModel.ActivationProcessed -= OnDialogViewModelActivationProcessed;
+            DialogViewModel.Closed -= OnDialogViewModelClosed;
+        }
+
+        private async void OnDialogViewModelActivationProcessed(object sender, ActivationProcessedEventArgs e)
+        {
+            var dialogViewModel = (IDialogViewModel)sender;
+
+            if (dialogViewModel.IsOpen)
             {
-                _view = ViewLocator.GetViewForViewModel(DialogViewModel);
-                _dialog = _view as BaseMetroDialog;
+                
+                Dispatcher.CurrentDispatcher.Invoke(new Action(
+                    () =>
+                    {
+                        MainWindow.HideMetroDialogAsync(_dialog).Wait();
+                        dialogViewModel.IsOpen = false;
+                    }));
             }
 
-            DialogViewModel.ActivateItem(viewModel);
-
-            if (!DialogViewModel.IsOpen)
+            if (!dialogViewModel.IsOpen)
             {
-                await MainWindow.ShowMetroDialogAsync(_dialog);
-                DialogViewModel.IsOpen = true;
+                Execute.OnUIThread(async () =>
+                    {
+                        _dialog = _dialog ?? ViewLocator.GetViewForViewModel(dialogViewModel) as BaseMetroDialog;
+                        await MainWindow.ShowMetroDialogAsync(_dialog);
+                        DialogViewModel.IsOpen = true;
+                    });
             }
         }
 
-        public async Task CloseDialog()
+        private async void OnDialogViewModelClosed(object sender, DialogClosedEventArgs args)
         {
+            var dialogViewModel = (IDialogViewModel)sender;
+
             await MainWindow.HideMetroDialogAsync(_dialog);
+            dialogViewModel.IsOpen = false;
         }
     }
 }
