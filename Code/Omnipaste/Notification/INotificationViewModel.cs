@@ -4,5 +4,6 @@
 
     public interface INotificationViewModel : IScreen
     {
+        Notifications.Models.Notification Model { get; }
     }
 }

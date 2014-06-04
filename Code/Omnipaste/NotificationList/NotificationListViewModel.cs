@@ -9,19 +9,35 @@
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
     {
-        public ObservableCollection<INotificationViewModel> Notifications { get; set; }
+        #region Fields
+
+        private readonly INotificationsHandler _notificationsHandler;
+
+        private IDisposable _subscription;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public NotificationListViewModel(INotificationsHandler notificationsHandler)
         {
+            _notificationsHandler = notificationsHandler;
             Notifications = new ObservableCollection<INotificationViewModel>();
-            notificationsHandler.Subscribe(this);
         }
 
-        public void OnNext(Notification notification)
-        {
-            notification.Title = string.Concat("Incoming call from ", notification.phone_number);
+        #endregion
 
-            Execute.OnUIThread(() => Notifications.Add(new NotificationViewModel { Model = notification }));
+        #region Public Properties
+
+        public ObservableCollection<INotificationViewModel> Notifications { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
         }
 
         public void OnError(Exception error)
@@ -29,9 +45,31 @@
             throw new NotImplementedException();
         }
 
-        public void OnCompleted()
+        public void OnNext(Notification notification)
         {
-            throw new NotImplementedException();
+            notification.Title = string.Concat("Incoming call from ", notification.phone_number);
+
+            Execute.OnUIThread(() => Notifications.Add(new NotificationViewModel(notification)));
         }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            _subscription = _notificationsHandler.Subscribe(this);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            _subscription.Dispose();
+        }
+
+        #endregion
     }
 }
