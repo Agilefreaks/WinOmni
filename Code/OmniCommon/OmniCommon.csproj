@@ -101,7 +101,6 @@
     <Compile Include="DataProviders\IConfigurationProvider.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CommunicationSettings.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IStartupTask.cs" />
   </ItemGroup>
