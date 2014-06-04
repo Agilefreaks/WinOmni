@@ -1,11 +1,10 @@
-﻿using System.Configuration;
-using Ninject;
-using Ninject.Modules;
-using Retrofit.Net;
-using global::OmniApi.Resources;
-
-namespace OmniApi
+﻿namespace OmniApi
 {
+    using System.Configuration;
+    using Ninject.Modules;
+    using Retrofit.Net;
+    using global::OmniApi.Resources;
+
     public class OmniApiModule : NinjectModule
     {
         private readonly string _baseUrl;
@@ -17,14 +16,12 @@ namespace OmniApi
 
         public override void Load()
         {
-            Kernel.Bind<IAuthorizationAPI>().ToConstant(this.GetApiEndpoint<IAuthorizationAPI>());
+            Kernel.Bind<IAuthorizationAPI>().ToConstant(GetApiEndpoint<IAuthorizationAPI>());
         }
 
         private T GetApiEndpoint<T>()
             where T : class
         {
-            Kernel.Get<Authenticator>();
-            
             var restAdapter = new RestAdapter(_baseUrl);
             return restAdapter.Create<T>();
         }

@@ -1,4 +1,4 @@
-﻿namespace Notifications.API
+﻿ namespace Notifications.API
 {
     using System.Threading.Tasks;
     using RestSharp;
