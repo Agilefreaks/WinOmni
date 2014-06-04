@@ -6,27 +6,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="NotificationWindow" HorizontalAlignment="Right">
-        <Border Name="Border" Background="#FF305FBE" 
-                  BorderThickness="0" Margin="10">
+        <Border Name="Border" Background="{StaticResource NotificationBackgroundBrush}" BorderThickness="0" Margin="10">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
             </Border.Effect>
             <Grid Height="100" Width="280" Margin="6">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Path=Model.Title}" 
-                                   TextOptions.TextRenderingMode="ClearType" 
-                                   TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Arial" FontSize="14" FontWeight="Bold" 
-                                   VerticalAlignment="Center"  Margin="2,4,4,2" 
-                                   TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Row="1" Text="{Binding Path=Model.Message}" 
-                                   TextOptions.TextRenderingMode="ClearType" 
-                                   TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Arial" VerticalAlignment="Center" 
-                                   Margin="2,2,4,4" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="Title"
+                           Margin="2,4,4,2"
+                           Style="{StaticResource TitleTextBlock}" />
+                <TextBlock x:Name="Message" Grid.Row="1" Margin="2,2,4,4" 
+                           Style="{StaticResource TextBlock}" />
             </Grid>
         </Border>
         <Grid.Triggers>

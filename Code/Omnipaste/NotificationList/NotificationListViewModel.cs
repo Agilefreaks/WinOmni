@@ -47,8 +47,6 @@
 
         public void OnNext(Notification notification)
         {
-            notification.Title = string.Concat("Incoming call from ", notification.phone_number);
-
             Execute.OnUIThread(() => Notifications.Add(new NotificationViewModel(notification)));
         }
 

@@ -1,9 +1,19 @@
 ﻿namespace Omnipaste.Notification
 {
+    using System;
     using Caliburn.Micro;
+    using Notifications.Models;
 
     public interface INotificationViewModel : IScreen
     {
-        Notifications.Models.Notification Model { get; }
+        #region Public Properties
+
+        String Message { get; }
+
+        Notification Model { get; }
+
+        String Title { get; }
+
+        #endregion
     }
 }
