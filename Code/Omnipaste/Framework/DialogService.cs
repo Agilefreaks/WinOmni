@@ -38,7 +38,7 @@
             DialogViewModel.Closed -= OnDialogViewModelClosed;
         }
 
-        private async void OnDialogViewModelActivationProcessed(object sender, ActivationProcessedEventArgs e)
+        private void OnDialogViewModelActivationProcessed(object sender, ActivationProcessedEventArgs e)
         {
             var dialogViewModel = (IDialogViewModel)sender;
 

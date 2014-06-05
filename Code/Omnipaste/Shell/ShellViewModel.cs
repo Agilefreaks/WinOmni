@@ -10,6 +10,7 @@
     using OmniCommon.Interfaces;
     using System.Linq;
     using Omnipaste.Framework;
+    using Omnipaste.Loading;
     using Omnipaste.UserToken;
     using System;
     using System.Windows;
@@ -22,18 +23,6 @@
     using Omnipaste.NotificationList;
     using Omnipaste.Dialog;
     using Properties;
-    using System.Collections.Generic;
-    using System.Deployment.Application;
-    using System.Reflection;
-    using Clipboard;
-    using Notifications;
-    using Notifications.NotificationList;
-    using OmniApi;
-    using OmniCommon.Framework;
-    using OmniCommon.Interfaces;
-    using System.Linq;
-    using Omnipaste.Framework;
-    using Omnipaste.UserToken;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -43,6 +32,9 @@
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
+
+        [Inject]
+        public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -91,7 +83,7 @@
         public void Handle(GetTokenFromUserMessage message)
         {
             UserToken.Message = message.Message;
-            DialogViewModel.ActivateItem(UserToken);
+            //DialogViewModel.ActivateItem(UserToken);
         }
 
         public void Exit()
@@ -114,7 +106,6 @@
                 {
                     {"Height", SystemParameters.WorkArea.Height},
                     {"Width", SystemParameters.WorkArea.Width}
-
                 });
         }
 
@@ -162,14 +153,16 @@
             _view = (Window)view;
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
-        }
 
+            DialogViewModel.ActivateItem(LoadingViewModel);
+            
+        }
+        
         protected override async void OnActivate()
         {
             base.OnActivate();
-
+            
             ActiveItem = ConfigurationViewModel;
-
             await ConfigurationViewModel.Start();
         }
 

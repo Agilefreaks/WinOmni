@@ -236,6 +236,9 @@
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layout\LayoutViewModel.cs" />
+    <Compile Include="Loading\ILoadingViewModel.cs" />
+    <Compile Include="Loading\LoadingViewModel.cs" />
+    <Compile Include="Loading\LoadingViewModelStateEnum.cs" />
     <Compile Include="NotificationList\INotificationListViewModel.cs" />
     <Compile Include="NotificationList\NotificationListViewModel.cs" />
     <Compile Include="Notification\INotificationViewModel.cs" />
@@ -294,6 +297,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Layout\LayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading\LoadingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
