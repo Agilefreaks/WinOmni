@@ -2,6 +2,7 @@
 {
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
 
     public class LoadingViewModel : Screen, ILoadingViewModel
     {
@@ -23,6 +24,11 @@
         public void Handle(GetTokenFromUserMessage message)
         {
             State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
+        }
+
+        public void Handle(ConfigurationCompletedMessage message)
+        {
+            TryClose();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
@@ -42,17 +43,12 @@
             Assert.AreEqual(_subject.AuthorizationAPI, _mockAuthorizationAPI.Object);
         }
 
-        //[Test]
-        //public void ExecutePayloadIsNullShouldReturnAResultWithStatusFailed()
-        //{
-        //    var subject = new GetRemoteConfiguration
-        //                      {
-        //                          ActivationTokens = _mockAuthorizationAPI.Object,
-        //                          Parameter = new DependencyParameter(string.Empty, null)
-        //                      };
-
-        //    subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
+        [Test]
+        public async void ExecutePayloadIsNullShouldReturnAResultWithStatusFailed()
+        {
+            IExecuteResult executeAsync = await _subject.ExecuteAsync();
+            executeAsync.State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+        }
 
         //[Test]
         //public void ExecutePayloadIsAnEmptyStringShouldReturnAResultWithStatusFailed()

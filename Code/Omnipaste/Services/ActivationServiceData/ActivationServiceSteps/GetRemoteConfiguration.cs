@@ -40,7 +40,10 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         public override IExecuteResult Execute()
         {
-            return new ExecuteResult();
+            Task<IExecuteResult> executeAsync = ExecuteAsync();
+            executeAsync.Wait();
+
+            return executeAsync.Result;
         }
 
         public override async Task<IExecuteResult> ExecuteAsync()
