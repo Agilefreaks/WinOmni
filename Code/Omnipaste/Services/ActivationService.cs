@@ -3,6 +3,8 @@
 namespace Omnipaste.Services
 {
     using System.Collections.Generic;
+    using Caliburn.Micro;
+    using Ninject;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -22,6 +24,9 @@ namespace Omnipaste.Services
                 return _finalStepIdIds;
             }
         }
+
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
 
         public ActivationService(IStepFactory stepFactory)
         {

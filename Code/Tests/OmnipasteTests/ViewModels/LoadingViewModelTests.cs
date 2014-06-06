@@ -1,6 +1,8 @@
 ﻿namespace OmnipasteTests.ViewModels
 {
+    using Caliburn.Micro;
     using FluentAssertions;
+    using Moq;
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.EventAggregatorMessages;
@@ -11,10 +13,13 @@
     {
         private ILoadingViewModel _subject;
 
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         [SetUp]
         public void SetUp()
         {
-            _subject = new LoadingViewModel();
+            _mockEventAggregator = new Mock<IEventAggregator>();
+            _subject = new LoadingViewModel(_mockEventAggregator.Object);
         }
 
         [Test]

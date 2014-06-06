@@ -5,7 +5,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:cal="http://www.caliburnproject.org">
-    <Grid>
+    <Grid FocusManager.FocusedElement="{Binding ElementName=ActivationCode}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,10 +20,6 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <controls:MetroProgressBar Grid.Row="0" IsIndeterminate="True"
-                                   Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibility}}"
-                                   Minimum="0" Maximum="100"
-                                   Foreground="{DynamicResource AccentColorBrush}" />
         <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
             To connect, you need an authorization code. You can get one by logging in to the 
@@ -39,8 +35,8 @@
                  controls:TextboxHelper.Watermark="Authorization code"
                  controls:TextboxHelper.IsWaitingForData="True"/>
             
-        <Button Grid.Row="4"  Grid.Column="1" x:Name="Authenticate" Content="Authenticate" Margin="10"/>
-        <Button Grid.Row="4"  Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" Margin="10"/>
+        <Button Grid.Row="4"  Grid.Column="1" x:Name="Authenticate" Content="Authenticate" Margin="10" IsDefault="True"/>
+        <Button Grid.Row="4"  Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" Margin="10" IsCancel="True"/>
 
         <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10" Text="{Binding Path=Message}"/>
     </Grid>

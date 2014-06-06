@@ -74,9 +74,6 @@
 
         public void Authenticate()
         {
-            IsBusy = true;
-            TryClose();
-
             Publish(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful, ActivationCode));
         }
 

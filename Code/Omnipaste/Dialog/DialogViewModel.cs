@@ -113,7 +113,6 @@
         private void CloseActiveItemCore()
         {
             var oldItem = ActiveItem;
-            ActivateItem(null);
             OnClosed(oldItem);
         }
 

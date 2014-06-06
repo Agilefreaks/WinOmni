@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Reflection;
+    using System.Threading;
     using Clipboard;
     using Notifications;
     using OmniApi;
@@ -155,15 +156,18 @@
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
 
             DialogViewModel.ActivateItem(LoadingViewModel);
-            
+
+            Thread.Sleep(200);
+
+            ActiveItem = ConfigurationViewModel;
+            ConfigurationViewModel.Start().ContinueWith((t) => {});
         }
         
         protected override async void OnActivate()
         {
             base.OnActivate();
             
-            ActiveItem = ConfigurationViewModel;
-            await ConfigurationViewModel.Start();
+            
         }
 
         private IntPtr GetHandle()
