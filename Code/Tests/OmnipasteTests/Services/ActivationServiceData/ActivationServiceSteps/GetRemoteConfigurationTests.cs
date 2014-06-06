@@ -1,6 +1,5 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
@@ -41,13 +40,6 @@
         public void CtorAlwaysSetsTheOmniApi()
         {
             Assert.AreEqual(_subject.AuthorizationAPI, _mockAuthorizationAPI.Object);
-        }
-
-        [Test]
-        public async void ExecutePayloadIsNullShouldReturnAResultWithStatusFailed()
-        {
-            IExecuteResult executeAsync = await _subject.ExecuteAsync();
-            executeAsync.State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
         //[Test]
