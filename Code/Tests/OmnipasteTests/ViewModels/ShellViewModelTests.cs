@@ -41,12 +41,5 @@
                            DialogViewModel = _mockDialogViewModel.Object
                        };
         }
-
-        [Test]
-        public void OnActivate_Always_ShowsTheLoadingViewModel()
-        {
-            
-            _mockDialogViewModel.Verify(dvm => dvm.ActivateItem(It.IsAny<ILoadingViewModel>()));
-        }
     }
 }   
