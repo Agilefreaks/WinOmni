@@ -57,7 +57,16 @@
                 {
                     _message = value;
                     NotifyOfPropertyChange(() => Message);
+                    NotifyOfPropertyChange(() => HasMessage);
                 }
+            }
+        }
+
+        public bool HasMessage
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Message);
             }
         }
 

@@ -37,17 +37,18 @@
             EventAggregator.Subscribe(this);
         }
 
-        public void Handle(GetTokenFromUserMessage message)
+        public void Handle(GetTokenFromUserMessage publishedEvent)
         {
+            UserTokenViewModel.Message = publishedEvent.Message;
             State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
         }
 
-        public void Handle(ConfigurationCompletedMessage message)
+        public void Handle(ConfigurationCompletedMessage publishedEvent)
         {
             TryClose();
         }
 
-        public void Handle(TokenRequestResultMessage message)
+        public void Handle(TokenRequestResultMessage publishedEvent)
         {
             State = LoadingViewModelStateEnum.Loading;
         }

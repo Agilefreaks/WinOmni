@@ -1,10 +1,11 @@
 ﻿namespace OmnipasteTests.ViewModels
 {
+    using System.Threading;
     using Caliburn.Micro;
     using FluentAssertions;
-    using Moq;
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;
 
@@ -13,13 +14,15 @@
     {
         private ILoadingViewModel _subject;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
+        private IEventAggregator _eventAggregator;
 
         [SetUp]
         public void SetUp()
         {
-            _mockEventAggregator = new Mock<IEventAggregator>();
-            _subject = new LoadingViewModel(_mockEventAggregator.Object);
+            _eventAggregator = new EventAggregator();
+            _subject = new LoadingViewModel(_eventAggregator);
+            var parent = new DialogViewModel();
+            parent.ActivateItem(_subject);
         }
 
         [Test]
@@ -31,7 +34,7 @@
         [Test]
         public void Handle_GetTokenFromUser_SetsStateToAwaitingUserTokenInput()
         {
-            _subject.Handle(new GetTokenFromUserMessage());
+            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage());
 
             _subject.State.Should().Be(LoadingViewModelStateEnum.AwaitingUserTokenInput);
         }
@@ -45,17 +48,6 @@
             _subject.State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
 
             changedProperty.Should().Be("State");
-        }
-
-        [Test]
-        public void Handle_WithConfigurationCompleteMessage_ClosesTheDialog()
-        {
-            var wasClosed = false;
-            _subject.AttemptingDeactivation += (sender, args) => wasClosed = args.WasClosed;
-
-            _subject.Handle(new ConfigurationCompletedMessage());
-
-            wasClosed.Should().Be(false);
         }
     }
 }
