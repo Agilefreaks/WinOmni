@@ -281,7 +281,6 @@
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="SingleInstance.cs" />
-    <Compile Include="StartUp\InitHandlersStartupTask.cs" />
     <Compile Include="Framework\FlyoutBaseViewModel.cs" />
     <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="UserToken\IUserTokenViewModel.cs" />
