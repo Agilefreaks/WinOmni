@@ -50,11 +50,11 @@
         {
             if (_activationService.Success)
             {
-                Execute.OnUIThread(() => ApplicationWrapper.ShutDown());
+                _eventAggregator.PublishOnCurrentThread(new ConfigurationCompletedMessage());
             }
             else
             {
-                _eventAggregator.PublishOnCurrentThread(new ConfigurationCompletedMessage());
+                Execute.OnUIThread(() => ApplicationWrapper.ShutDown());
             }
         }
 
