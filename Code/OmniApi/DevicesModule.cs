@@ -18,7 +18,7 @@ namespace OmniApi
 
         public override void Load()
         {
-            Kernel.Bind<IDevicesAPI>().ToMethod(c => this.GetApiEndpoint<IDevicesAPI, Device>());
+            Kernel.Bind<IDevicesApi>().ToMethod(c => this.GetApiEndpoint<IDevicesApi, Device>());
         }
 
         private T GetApiEndpoint<T, TR>()

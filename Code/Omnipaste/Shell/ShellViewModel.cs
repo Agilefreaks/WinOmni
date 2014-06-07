@@ -1,63 +1,44 @@
 ﻿namespace Omnipaste.Shell
 {
+    using System;
     using System.Collections.Generic;
     using System.Deployment.Application;
+    using System.Linq;
     using System.Reflection;
     using System.Threading;
-    using Clipboard;
-    using Notifications;
-    using OmniApi;
-    using OmniCommon.Framework;
-    using OmniCommon.Interfaces;
-    using System.Linq;
-    using Omnipaste.Framework;
-    using Omnipaste.Loading;
-    using Omnipaste.UserToken;
-    using System;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
+    using Clipboard;
     using Ninject;
+    using Notifications;
+    using OmniApi;
     using OmniCommon.EventAggregatorMessages;
-    using Configuration;
-    using EventAggregatorMessages;
-    using Omnipaste.NotificationList;
+    using OmniCommon.Framework;
+    using Omnipaste.Configuration;
     using Omnipaste.Dialog;
-    using Properties;
+    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework;
+    using Omnipaste.Loading;
+    using Omnipaste.NotificationList;
+    using Omnipaste.Properties;
+    using Omnipaste.UserToken;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
+        #region Fields
+
         private Window _view;
 
-        public IUserTokenViewModel UserToken { get; set; }
+        #endregion
 
-        [Inject]
-        public IWindowManager WindowManager { get; set; }
+        #region Constructors and Destructors
 
-        [Inject]
-        public ILoadingViewModel LoadingViewModel { get; set; }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
-
-        public IConfigurationViewModel ConfigurationViewModel { get; set; }
-
-        public IEventAggregator EventAggregator { get; set; }
-
-        public IApplicationWrapper ApplicationWrapper { get; set; }
-
-        public string TooltipText { get; set; }
-
-        public string IconSource { get; set; }
-
-        public bool IsNotSyncing { get; set; }
-
-        public Visibility Visibility { get; set; }
-
-        [Inject]
-        public IDialogViewModel DialogViewModel { get; set; }
-
-        public ShellViewModel(IConfigurationViewModel configurationViewModel, IEventAggregator eventAggregator, IUserTokenViewModel userToken, IDialogService service)
+        public ShellViewModel(
+            IConfigurationViewModel configurationViewModel,
+            IEventAggregator eventAggregator,
+            IUserTokenViewModel userToken,
+            IDialogService service)
         {
             service.Start();
             UserToken = userToken;
@@ -81,16 +62,52 @@
             IconSource = "/Icon.ico";
         }
 
-        public void Handle(GetTokenFromUserMessage message)
-        {
-            UserToken.Message = message.Message;
-            //DialogViewModel.ActivateItem(UserToken);
-        }
+        #endregion
+
+        #region Public Properties
+
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
+        public IConfigurationViewModel ConfigurationViewModel { get; set; }
+
+        [Inject]
+        public IDialogViewModel DialogViewModel { get; set; }
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        public string IconSource { get; set; }
+
+        public bool IsNotSyncing { get; set; }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
+        [Inject]
+        public ILoadingViewModel LoadingViewModel { get; set; }
+
+        public string TooltipText { get; set; }
+
+        public IUserTokenViewModel UserToken { get; set; }
+
+        public Visibility Visibility { get; set; }
+
+        [Inject]
+        public IWindowManager WindowManager { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public void Exit()
         {
             Visibility = Visibility.Collapsed;
             ApplicationWrapper.ShutDown();
+        }
+
+        public void Handle(GetTokenFromUserMessage message)
+        {
+            UserToken.Message = message.Message;
+            //DialogViewModel.ActivateItem(UserToken);
         }
 
         public void Handle(ConfigurationCompletedMessage message)
@@ -104,27 +121,26 @@
                 Kernel.Get<INotificationListViewModel>(),
                 null,
                 new Dictionary<string, object>
-                {
-                    {"Height", SystemParameters.WorkArea.Height},
-                    {"Width", SystemParameters.WorkArea.Width}
-                });
+                    {
+                        { "Height", SystemParameters.WorkArea.Height },
+                        { "Width", SystemParameters.WorkArea.Width }
+                    });
+        }
+
+        public void HandleSuccessfulLogin()
+        {
+            Kernel.Load(new ClipboardModule(), new DevicesModule(), new NotificationsModule());
+            Kernel.Get<IOmniServiceHandler>().Init();
+
+            var startables = Kernel.GetAll<IStartable>();
+
+            var count = startables.Count();
         }
 
         public void Show()
         {
             _view.Visibility = Visibility.Visible;
             _view.ShowInTaskbar = true;
-        }
-
-        public void HandleSuccessfulLogin()
-        {
-            Kernel.Load(new ClipboardModule(), new DevicesModule(), new NotificationsModule());
-
-            RunStartupTasks();
-
-            var startables = Kernel.GetAll<IStartable>();
-
-            var count = startables.Count();
         }
 
         public void ToggleSync()
@@ -139,13 +155,9 @@
             }
         }
 
-        private void RunStartupTasks()
-        {
-            foreach (var task in Kernel.GetAll<IStartupTask>())
-            {
-                task.Startup();
-            }
-        }
+        #endregion
+
+        #region Methods
 
         protected override void OnViewLoaded(object view)
         {
@@ -160,26 +172,22 @@
             Thread.Sleep(200);
 
             ActiveItem = ConfigurationViewModel;
-            ConfigurationViewModel.Start().ContinueWith((t) => {});
-        }
-        
-        protected override async void OnActivate()
-        {
-            base.OnActivate();
-            
-            
+            ConfigurationViewModel.Start().ContinueWith(t => { });
         }
 
         private IntPtr GetHandle()
         {
             var handle = new IntPtr();
-            Execute.OnUIThread(() =>
-            {
-                var windowInteropHelper = new WindowInteropHelper(_view);
-                handle = windowInteropHelper.Handle;
-            });
+            Execute.OnUIThread(
+                () =>
+                    {
+                        var windowInteropHelper = new WindowInteropHelper(_view);
+                        handle = windowInteropHelper.Handle;
+                    });
 
             return handle;
         }
+
+        #endregion
     }
 }

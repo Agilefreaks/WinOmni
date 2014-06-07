@@ -7,7 +7,7 @@ namespace OmniApi.Resources
     using Retrofit.Net.Attributes.Methods;
     using Retrofit.Net.Attributes.Parameters;
 
-    public interface IDevicesAPI
+    public interface IDevicesApi
     {
         [Put("devices/activate")]
         Task<IRestResponse<Device>> Activate(

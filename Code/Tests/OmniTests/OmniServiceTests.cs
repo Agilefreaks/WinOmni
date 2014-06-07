@@ -25,7 +25,7 @@ namespace OmniTests
 
         private Mock<IOmniSyncService> _omniSyncServiceMock;
 
-        private Mock<IDevicesAPI> _devicesApiMock;
+        private Mock<IDevicesApi> _devicesApiMock;
 
         private Mock<IConfigurationService> _configurationServiceMock;
 
@@ -33,7 +33,7 @@ namespace OmniTests
         public void SetUp()
         {
             _omniSyncServiceMock = new Mock<IOmniSyncService>();
-            _devicesApiMock = new Mock<IDevicesAPI>();
+            _devicesApiMock = new Mock<IDevicesApi>();
             _configurationServiceMock = new Mock<IConfigurationService>();
             
             _configurationServiceMock
