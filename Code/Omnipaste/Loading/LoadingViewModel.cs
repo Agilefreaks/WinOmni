@@ -8,12 +8,25 @@
 
     public class LoadingViewModel : Screen, ILoadingViewModel
     {
-        public IEventAggregator EventAggregator { get; set; }
+        #region Fields
 
         private LoadingViewModelStateEnum _state = LoadingViewModelStateEnum.Loading;
 
-        [Inject]
-        public IUserTokenViewModel UserTokenViewModel { get; set; }
+        #endregion
+
+        #region Constructors and Destructors
+
+        public LoadingViewModel(IEventAggregator eventAggregator)
+        {
+            EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public IEventAggregator EventAggregator { get; set; }
 
         public LoadingViewModelStateEnum State
         {
@@ -31,11 +44,12 @@
             }
         }
 
-        public LoadingViewModel(IEventAggregator eventAggregator)
-        {
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
-        }
+        [Inject]
+        public IUserTokenViewModel UserTokenViewModel { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public void Handle(GetTokenFromUserMessage publishedEvent)
         {
@@ -52,5 +66,7 @@
         {
             State = LoadingViewModelStateEnum.Loading;
         }
+
+        #endregion
     }
 }

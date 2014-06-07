@@ -7,7 +7,11 @@
 
     public class DialogClosedEventArgs : EventArgs
     {
+        #region Public Properties
+
         public object ClosedItem { get; set; }
+
+        #endregion
     }
 
     public class DialogViewModel : Conductor<IScreen>, IDialogViewModel
@@ -70,15 +74,6 @@
             }
         }
 
-        private void SetParentOnActiveItem()
-        {
-            var child = ActiveItem as IChild;
-            if (child != null)
-            {
-                child.Parent = this;
-            }
-        }
-
         public void DeactivateItem(object item, bool close)
         {
             var guard = item as IGuardClose;
@@ -86,12 +81,12 @@
             {
                 guard.CanClose(
                     result =>
-                    {
-                        if (result)
                         {
-                            CloseActiveItemCore();
-                        }
-                    });
+                            if (result)
+                            {
+                                CloseActiveItemCore();
+                            }
+                        });
             }
             else
             {
@@ -120,10 +115,16 @@
         {
             if (Closed != null)
             {
-                Closed(this, new DialogClosedEventArgs
-                {
-                    ClosedItem = closedItem
-                });
+                Closed(this, new DialogClosedEventArgs { ClosedItem = closedItem });
+            }
+        }
+
+        private void SetParentOnActiveItem()
+        {
+            var child = ActiveItem as IChild;
+            if (child != null)
+            {
+                child.Parent = this;
             }
         }
 

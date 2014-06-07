@@ -6,12 +6,17 @@
 
     public static class FocusBehavior
     {
-        public static readonly DependencyProperty FocusFirstProperty =
-            DependencyProperty.RegisterAttached(
-                "FocusFirst",
-                typeof(bool),
-                typeof(Control),
-                new PropertyMetadata(false, OnFocusFirstPropertyChanged));
+        #region Static Fields
+
+        public static readonly DependencyProperty FocusFirstProperty = DependencyProperty.RegisterAttached(
+            "FocusFirst",
+            typeof(bool),
+            typeof(Control),
+            new PropertyMetadata(false, OnFocusFirstPropertyChanged));
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public static bool GetFocusFirst(Control control)
         {
@@ -23,8 +28,11 @@
             control.SetValue(FocusFirstProperty, value);
         }
 
-        static void OnFocusFirstPropertyChanged(
-            DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        #endregion
+
+        #region Methods
+
+        private static void OnFocusFirstPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var control = obj as Control;
             if (control == null || !(args.NewValue is bool))
@@ -34,9 +42,10 @@
 
             if ((bool)args.NewValue)
             {
-                control.Loaded += (sender, e) =>
-                    control.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                control.Loaded += (sender, e) => control.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             }
         }
+
+        #endregion
     }
 }

@@ -1,13 +1,20 @@
-﻿using Caliburn.Micro;
-
-namespace Omnipaste.Dialog
+﻿namespace Omnipaste.Dialog
 {
     using System;
+    using Caliburn.Micro;
 
     public interface IDialogViewModel : IConductor
     {
-        bool IsOpen { get; set; }
+        #region Public Events
 
         event EventHandler<DialogClosedEventArgs> Closed;
+
+        #endregion
+
+        #region Public Properties
+
+        bool IsOpen { get; set; }
+
+        #endregion
     }
 }

@@ -7,6 +7,8 @@
 
     public class AutoFollowLinkBehavior : Behavior<Hyperlink>
     {
+        #region Methods
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -23,5 +25,7 @@
         {
             Process.Start(new ProcessStartInfo(requestNavigateEventArgs.Uri.AbsoluteUri));
         }
+
+        #endregion
     }
 }
