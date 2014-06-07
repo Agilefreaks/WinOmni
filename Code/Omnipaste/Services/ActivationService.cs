@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Ninject;
     using Omnipaste.Services.ActivationServiceData;
@@ -11,22 +10,17 @@ namespace Omnipaste.Services
 
     public class ActivationService : IActivationService
     {
+        #region Fields
+
         private readonly List<object> _finalStepIdIds;
-        private readonly TransitionCollection _transitions;
+
         private readonly IStepFactory _stepFactory;
 
-        public IActivationStep CurrentStep { get; private set; }
+        private readonly TransitionCollection _transitions;
 
-        public IEnumerable<object> FinalStepIds
-        {
-            get
-            {
-                return _finalStepIdIds;
-            }
-        }
+        #endregion
 
-        [Inject]
-        public IEventAggregator EventAggregator { get; set; }
+        #region Constructors and Destructors
 
         public ActivationService(IStepFactory stepFactory)
         {
@@ -39,7 +33,7 @@ namespace Omnipaste.Services
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
                 typeof(GetRemoteConfiguration));
-            
+
             _transitions.RegisterTransition(
                 GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
                 typeof(LoadLocalConfiguration));
@@ -59,7 +53,8 @@ namespace Omnipaste.Services
                 typeof(Failed));
 
             _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.CommunicationFailure),
+                GenericTransitionId<GetRemoteConfiguration>.Create(
+                    GetRemoteConfigurationStepStateEnum.CommunicationFailure),
                 typeof(GetRemoteConfiguration));
             _transitions.RegisterTransition(
                 GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
@@ -83,6 +78,35 @@ namespace Omnipaste.Services
             CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public IActivationStep CurrentStep { get; private set; }
+
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
+
+        public IEnumerable<object> FinalStepIds
+        {
+            get
+            {
+                return _finalStepIdIds;
+            }
+        }
+
+        public bool Success
+        {
+            get
+            {
+                return CurrentStep != null && CurrentStep.GetId().GetType() != typeof(Failed);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public async Task Run()
         {
             while (CurrentStepIsIntermediateStep())
@@ -93,6 +117,15 @@ namespace Omnipaste.Services
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        private bool CurrentStepIsIntermediateStep()
+        {
+            return CurrentStep == null || !_finalStepIdIds.Contains(CurrentStep.GetId());
+        }
+
         private void MoveToNextStep(IExecuteResult previousResult)
         {
             var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
@@ -101,9 +134,6 @@ namespace Omnipaste.Services
             CurrentStep = _stepFactory.Create(nextStepType, previousResult.Data);
         }
 
-        private bool CurrentStepIsIntermediateStep()
-        {
-            return CurrentStep == null || !_finalStepIdIds.Contains(CurrentStep.GetId());
-        }
+        #endregion
     }
 }

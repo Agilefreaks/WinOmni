@@ -9,6 +9,8 @@
 
         IActivationStep CurrentStep { get; }
 
+        bool Success { get; }
+
         #endregion
 
         #region Public Methods and Operators

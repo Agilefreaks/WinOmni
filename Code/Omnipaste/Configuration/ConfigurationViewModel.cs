@@ -1,19 +1,22 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
-using Omnipaste.EventAggregatorMessages;
-using Omnipaste.Framework;
-using Omnipaste.Services;
-using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-
-namespace Omnipaste.Configuration
+﻿namespace Omnipaste.Configuration
 {
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework;
+    using Omnipaste.Services;
+
     public class ConfigurationViewModel : Screen, IConfigurationViewModel
     {
+        #region Fields
+
         private readonly IActivationService _activationService;
 
         private readonly IEventAggregator _eventAggregator;
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
+        #endregion
+
+        #region Constructors and Destructors
 
         public ConfigurationViewModel(IActivationService activationService, IEventAggregator eventAggregator)
         {
@@ -22,6 +25,16 @@ namespace Omnipaste.Configuration
             _eventAggregator = eventAggregator;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public async Task Start()
         {
             await _activationService.Run();
@@ -29,9 +42,13 @@ namespace Omnipaste.Configuration
             OnContinuationAction();
         }
 
+        #endregion
+
+        #region Methods
+
         private void OnContinuationAction()
         {
-            if (_activationService.CurrentStep == null || _activationService.CurrentStep.GetId().Equals(typeof(Failed)))
+            if (_activationService.Success)
             {
                 Execute.OnUIThread(() => ApplicationWrapper.ShutDown());
             }
@@ -40,5 +57,7 @@ namespace Omnipaste.Configuration
                 _eventAggregator.PublishOnCurrentThread(new ConfigurationCompletedMessage());
             }
         }
+
+        #endregion
     }
 }
