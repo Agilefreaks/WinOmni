@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Shell
 {
+    using System.ComponentModel;
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;

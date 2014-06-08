@@ -5,7 +5,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow" 
+        WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         Icon="/Icon.ico">
     <controls:MetroWindow.Resources>
@@ -132,7 +132,7 @@
             </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    <Grid>
+    <Grid x:Name="Content">
         <Grid.RowDefinitions>
             <!--Menu-->
             <RowDefinition Height="Auto"/>

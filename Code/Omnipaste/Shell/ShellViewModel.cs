@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Deployment.Application;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -98,6 +98,12 @@
 
         #region Public Methods and Operators
 
+        public void Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            _view.Hide();
+        }
+
         public void Exit()
         {
             Visibility = Visibility.Collapsed;
@@ -139,8 +145,7 @@
 
         public void Show()
         {
-            _view.Visibility = Visibility.Visible;
-            _view.ShowInTaskbar = true;
+            _view.Show();
         }
 
         public void ToggleSync()
@@ -164,12 +169,11 @@
             base.OnViewLoaded(view);
 
             _view = (Window)view;
+            _view.Closing += Closing;
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
 
             DialogViewModel.ActivateItem(LoadingViewModel);
-
-            Thread.Sleep(200);
 
             ActiveItem = ConfigurationViewModel;
             ConfigurationViewModel.Start().ContinueWith(t => { });
