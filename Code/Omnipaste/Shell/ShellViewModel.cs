@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Deployment.Application;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
@@ -22,6 +20,7 @@
     using Omnipaste.Loading;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
+    using Omnipaste.Shell.ContextMenu;
     using Omnipaste.UserToken;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
@@ -41,15 +40,13 @@
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
             IUserTokenViewModel userToken)
+            IContextMenuViewModel contextMenuViewModel)
         {
             UserToken = userToken;
 
             ConfigurationViewModel = configurationViewModel;
 
             DisplayName = Resources.AplicationName;
-            ApplicationWrapper = new ApplicationWrapper();
-
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
             try
             {
                 if (ApplicationDeployment.IsNetworkDeployed)
@@ -62,17 +59,17 @@
             {
             }
 
-            TooltipText = "Omnipaste " + version;
-            IconSource = "/Icon.ico";
+            ContextMenu = contextMenuViewModel;
+            ContextMenu.ShellViewModel = this;
         }
 
         #endregion
 
         #region Public Properties
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
-
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
+
+        public IContextMenuViewModel ContextMenu { get; set; }
 
         [Inject]
         public IDialogService DialogService { get; set; }
@@ -95,21 +92,13 @@
 
         public IEventAggregator EventAggregator { get; set; }
 
-        public string IconSource { get; set; }
-
-        public bool IsNotSyncing { get; set; }
-
         [Inject]
         public IKernel Kernel { get; set; }
 
         [Inject]
         public ILoadingViewModel LoadingViewModel { get; set; }
         
-        public string TooltipText { get; set; }
-
         public IUserTokenViewModel UserToken { get; set; }
-
-        public Visibility Visibility { get; set; }
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
@@ -126,27 +115,9 @@
 
         
 
-        public void Exit()
-        {
-            Visibility = Visibility.Collapsed;
-            ApplicationWrapper.ShutDown();
-        }
-
         public void Show()
         {
             _view.Show();
-        }
-
-        public void ToggleSync()
-        {
-            if (IsNotSyncing)
-            {
-                EventAggregator.PublishOnCurrentThread(new StopOmniServiceMessage());
-            }
-            else
-            {
-                EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
-            }
         }
 
         #endregion
