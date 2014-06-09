@@ -11,7 +11,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Content="Loading ..." Style="{DynamicResource DescriptionHeaderStyle}" />
+        <Label Content="Loading ..." Style="{StaticResource DescriptionHeaderStyle}" />
         <controls:MetroProgressBar Grid.Row="1" IsIndeterminate="True"
                                 Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
