@@ -2,17 +2,6 @@
 {
     using System;
     using Caliburn.Micro;
-    using Ninject;
-    using Omnipaste.Framework;
-
-    public class DialogClosedEventArgs : EventArgs
-    {
-        #region Public Properties
-
-        public object ClosedItem { get; set; }
-
-        #endregion
-    }
 
     public class DialogViewModel : Conductor<IScreen>, IDialogViewModel
     {
@@ -24,16 +13,11 @@
 
         #region Public Events
 
-        public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed = delegate { };
-
-        public event EventHandler<DialogClosedEventArgs> Closed;
+        public event EventHandler<EventArgs> Closed;
 
         #endregion
 
         #region Public Properties
-
-        [Inject]
-        public IDialogService DialogService { get; set; }
 
         public bool IsOpen
         {
@@ -70,27 +54,6 @@
             {
                 ActiveItem.Deactivated += ActiveItemDeactivated;
                 ActiveItem.Activate();
-                ActivationProcessed(this, new ActivationProcessedEventArgs { Item = ActiveItem, Success = true });
-            }
-        }
-
-        public void DeactivateItem(object item, bool close)
-        {
-            var guard = item as IGuardClose;
-            if (guard != null)
-            {
-                guard.CanClose(
-                    result =>
-                        {
-                            if (result)
-                            {
-                                CloseActiveItemCore();
-                            }
-                        });
-            }
-            else
-            {
-                CloseActiveItemCore();
             }
         }
 
@@ -98,24 +61,13 @@
 
         #region Methods
 
-        private async void ActiveItemDeactivated(object sender, DeactivationEventArgs e)
+        private void ActiveItemDeactivated(object sender, DeactivationEventArgs e)
         {
             ((Screen)ActiveItem).Deactivated -= ActiveItemDeactivated;
 
-            DeactivateItem(ActiveItem, true);
-        }
-
-        private void CloseActiveItemCore()
-        {
-            var oldItem = ActiveItem;
-            OnClosed(oldItem);
-        }
-
-        private void OnClosed(object closedItem)
-        {
             if (Closed != null)
             {
-                Closed(this, new DialogClosedEventArgs { ClosedItem = closedItem });
+                Closed(this, new EventArgs());
             }
         }
 

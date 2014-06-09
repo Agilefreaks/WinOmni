@@ -7,7 +7,7 @@
     {
         #region Public Events
 
-        event EventHandler<DialogClosedEventArgs> Closed;
+        event EventHandler<EventArgs> Closed;
 
         #endregion
 

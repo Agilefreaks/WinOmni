@@ -37,10 +37,8 @@
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
             IEventAggregator eventAggregator,
-            IUserTokenViewModel userToken,
-            IDialogService service)
+            IUserTokenViewModel userToken)
         {
-            service.Start();
             UserToken = userToken;
 
             EventAggregator = eventAggregator;
@@ -72,6 +70,9 @@
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
+
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
         public IEventAggregator EventAggregator { get; set; }
 

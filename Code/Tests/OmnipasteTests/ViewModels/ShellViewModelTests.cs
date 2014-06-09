@@ -5,7 +5,6 @@
     using NUnit.Framework;
     using Omnipaste.Configuration;
     using Omnipaste.Dialog;
-    using Omnipaste.Framework;
     using Omnipaste.Loading;
     using Omnipaste.Shell;
     using Omnipaste.UserToken;
@@ -34,8 +33,7 @@
             _subject = new ShellViewModel(
                 _configurationViewModel.Object,
                 _mockEventAggregator.Object,
-                _mockUserTokenViewModel.Object,
-                new Mock<IDialogService>().Object)
+                _mockUserTokenViewModel.Object)
                        {
                            LoadingViewModel = new Mock<ILoadingViewModel>().Object,
                            DialogViewModel = _mockDialogViewModel.Object

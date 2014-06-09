@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Framework
 {
+    using Omnipaste.Dialog;
+
     public interface IDialogService
     {
-        void Start();
-
-        void Stop();
+        IDialogViewModel DialogViewModel { get; set; }
     }
 }
