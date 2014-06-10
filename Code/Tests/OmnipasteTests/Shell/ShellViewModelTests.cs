@@ -44,7 +44,7 @@
 
             _subject = new ShellViewModel(
                 _configurationViewModel.Object,
-                _mockUserTokenViewModel.Object)
+                _mockUserTokenViewModel.Object,
                 _mockContextViewModel.Object)
                        {
                            LoadingViewModel = new Mock<ILoadingViewModel>().Object,

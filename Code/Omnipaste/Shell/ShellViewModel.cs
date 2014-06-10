@@ -39,7 +39,7 @@
 
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
-            IUserTokenViewModel userToken)
+            IUserTokenViewModel userToken,
             IContextMenuViewModel contextMenuViewModel)
         {
             UserToken = userToken;
