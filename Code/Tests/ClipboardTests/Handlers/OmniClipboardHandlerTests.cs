@@ -82,7 +82,7 @@
         [Test]
         public void PostClipping_Always_PostsToApi()
         {
-            _mockConfigurationService.Setup(cs => cs.GetDeviceIdentifier()).Returns("Radio");
+            _mockConfigurationService.Setup(cs => cs.DeviceIdentifier).Returns("Radio");
 
             _omniClipboardHandler.PostClipping(new Clipping("some content"));
 

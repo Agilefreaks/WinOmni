@@ -37,11 +37,11 @@ namespace OmniTests
             _configurationServiceMock = new Mock<IConfigurationService>();
             
             _configurationServiceMock
-                .Setup(cs => cs.GetMachineName())
+                .Setup(cs => cs.MachineName)
                 .Returns(DeviceName);
 
             _configurationServiceMock
-                .Setup(cs => cs.GetDeviceIdentifier())
+                .Setup(cs => cs.DeviceIdentifier)
                 .Returns(DeviceIdentifier);
             
             _omniSyncServiceMock

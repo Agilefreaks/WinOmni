@@ -21,10 +21,10 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         {
             var result = new ExecuteResult();
 
-            string accessToken = _configurationService.GetAccessToken();
-            string refreshToken = _configurationService.GetRefreshToken();
-            string tokenType = _configurationService.GetTokenType();
-            string clientId = _configurationService.GetClientId();
+            string accessToken = _configurationService.AccessToken;
+            string refreshToken = _configurationService.RefreshToken;
+            string tokenType = _configurationService.TokenType;
+            string clientId = _configurationService.ClientId;
             if (!string.IsNullOrEmpty(accessToken))
             {
                 result.Data = accessToken;

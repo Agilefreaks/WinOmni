@@ -17,19 +17,29 @@
     [TestFixture]
     public class ShellViewModelTests
     {
-        private Mock<IDialogViewModel> _mockDialogViewModel;
+        #region Fields
 
         private Mock<IConfigurationViewModel> _configurationViewModel;
+
+        private Mock<IContextMenuViewModel> _mockContextViewModel;
+
+        private Mock<IDialogViewModel> _mockDialogViewModel;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
         private Mock<IUserTokenViewModel> _mockUserTokenViewModel;
 
-        private Mock<IContextMenuViewModel> _mockContextViewModel;
-
         private IShellViewModel _subject;
 
         private IOmniSyncService _omniSyncService;
+
+        #region Public Methods and Operators
+
+        [Test]
+        public void Constructo_Always_SetsShell()
+        {
+            _mockContextViewModel.VerifySet(m => m.ShellViewModel = _subject);
+        }
 
         [SetUp]
         public void SetUp()
@@ -46,17 +56,13 @@
                 _configurationViewModel.Object,
                 _mockUserTokenViewModel.Object,
                 _mockContextViewModel.Object)
-                       {
-                           LoadingViewModel = new Mock<ILoadingViewModel>().Object,
-                           DialogViewModel = _mockDialogViewModel.Object
-                       };
+                           {
+                               LoadingViewModel = new Mock<ILoadingViewModel>().Object,
+                               DialogViewModel = _mockDialogViewModel.Object
+                           };
         }
 
-        [Test]
-        public void Constructo_Always_SetsShell()
-        {
-            _mockContextViewModel.VerifySet(m => m.ShellViewModel = _subject);
-        }
+        #endregion
 
     }
-}   
+}

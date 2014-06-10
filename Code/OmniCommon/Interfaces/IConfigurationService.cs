@@ -2,20 +2,32 @@
 {
     public interface IConfigurationService
     {
-        void Save(string accessToken, string tokenType, string refreshToken);
+        #region Public Properties
 
-        string GetAccessToken();
+        string AccessToken { get; }
 
-        string GetClientId();
+        string RefreshToken { get; }
+
+        string TokenType { get; }
+
+        string ClientId { get; }
+
+        string DeviceIdentifier { get; }
+
+        string MachineName { get; }
+
+        #endregion
+
+        #region Public Indexers
 
         string this[string key] { get; }
 
-        string GetRefreshToken();
+        #endregion
 
-        string GetTokenType();
+        #region Public Methods and Operators
 
-        string GetDeviceIdentifier();
+        void Save(string accessToken, string tokenType, string refreshToken);
 
-        string GetMachineName();
+        #endregion
     }
 }

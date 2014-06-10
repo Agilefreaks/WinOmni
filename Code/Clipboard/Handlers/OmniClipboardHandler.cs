@@ -66,7 +66,7 @@
 
         public void PostClipping(Clipping clipping)
         {
-            var postClipping = ClippingsApi.PostClipping(ConfigurationService.GetDeviceIdentifier(), clipping.Content);
+            var postClipping = ClippingsApi.PostClipping(ConfigurationService.DeviceIdentifier, clipping.Content);
             postClipping.Wait();
         }
 

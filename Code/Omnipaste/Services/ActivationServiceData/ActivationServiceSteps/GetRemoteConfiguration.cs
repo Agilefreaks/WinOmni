@@ -56,7 +56,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
             else
             {
-                var activationModelTask = await AuthorizationAPI.Activate(PayLoad.Token, _configurationService.GetClientId());
+                var activationModelTask = await AuthorizationAPI.Activate(PayLoad.Token, _configurationService.ClientId);
                 SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 
