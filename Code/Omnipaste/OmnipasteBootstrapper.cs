@@ -7,8 +7,10 @@
     using System.Windows;
     using Caliburn.Micro;
     using Castle.Core.Internal;
+    using Clipboard;
     using Ninject;
     using Ninject.Extensions.Conventions;
+    using Notifications;
     using Omni;
     using OmniApi;
     using OmniCommon;

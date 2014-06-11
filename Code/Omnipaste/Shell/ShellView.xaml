@@ -130,6 +130,8 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
+            <ContentControl cal:View.Model="{Binding ConnectionViewModel}" />
+            
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid x:Name="Content">

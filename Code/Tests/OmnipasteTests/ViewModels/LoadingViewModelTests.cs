@@ -1,14 +1,11 @@
 ﻿namespace OmnipasteTests.ViewModels
 {
-    using System.Threading;
     using Caliburn.Micro;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Loading;
     using Omnipaste.UserToken;
 

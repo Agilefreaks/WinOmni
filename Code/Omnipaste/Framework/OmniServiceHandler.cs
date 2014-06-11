@@ -1,5 +1,7 @@
 ﻿namespace Omnipaste.Framework
 {
+    using System;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Omni;
     using OmniCommon.EventAggregatorMessages;
@@ -35,9 +37,9 @@
 
         #region Public Methods and Operators
 
-        public async void Handle(StartOmniServiceMessage message)
+        public void Handle(StartOmniServiceMessage message)
         {
-            _isSyncing = await _omniService.Start();
+            _omniService.Start().ContinueWith(r => _isSyncing = r.Result);
         }
 
         public void Handle(StopOmniServiceMessage message)

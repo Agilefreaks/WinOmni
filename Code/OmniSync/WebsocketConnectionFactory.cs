@@ -1,30 +1,40 @@
-﻿using System.Configuration;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using WampSharp;
-using WampSharp.Auxiliary.Client;
-
-namespace OmniSync
+﻿namespace OmniSync
 {
+    using System.Configuration;
+    using System.Threading.Tasks;
+    using Newtonsoft.Json.Linq;
+    using WampSharp;
+    using WampSharp.Auxiliary.Client;
+
     public class WebsocketConnectionFactory : IWebsocketConnectionFactory
     {
+        #region Fields
+
         private readonly IWampChannelFactory<JToken> _wampChannelFactory;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public WebsocketConnectionFactory(IWampChannelFactory<JToken> wampChannelFactory)
         {
             _wampChannelFactory = wampChannelFactory;
         }
 
-        public async Task<IWebsocketConnection> Create(string websocketServerUri)
+        #endregion
+
+        #region Public Methods and Operators
+
+        public IWebsocketConnection Create(string websocketServerUri)
         {
-            IWampChannel<JToken> channel = _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
-
-            await channel.OpenAsync();
-
-            var wampClientConnectionMonitor = (WampClientConnectionMonitor<JToken>)channel.GetMonitor();
-            var websocketConnection = new WebsocketConnection(channel) { RegistrationId = wampClientConnectionMonitor.SessionId};
-
+            IWampChannel<JToken> channel =
+                _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
+            
+            var websocketConnection = new WebsocketConnection(channel);
+            
             return websocketConnection;
         }
+
+        #endregion
     }
 }

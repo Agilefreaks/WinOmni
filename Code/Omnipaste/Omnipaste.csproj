@@ -192,9 +192,9 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WampSharp">
-      <HintPath>..\packages\WampSharp.0.43-alpha\lib\net45\WampSharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WampSharp.0.65-alpha\lib\net45\WampSharp.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.Default">
       <HintPath>..\packages\WampSharp.Default.0.43-alpha\lib\net45\WampSharp.Default.dll</HintPath>
@@ -219,6 +219,8 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationViewModel.cs" />
     <Compile Include="Configuration\IConfigurationViewModel.cs" />
+    <Compile Include="Connection\ConnectionViewModel.cs" />
+    <Compile Include="Connection\IConnectionViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
@@ -289,6 +291,10 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Connection\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -19,7 +19,7 @@ namespace OmniSyncTests
 
         private Mock<IWebsocketConnectionFactory> _mockWebsocketConnectionFactory;
 
-        private ReplaySubject<OmniMessage> _replaySubject;
+        private ISubject<OmniMessage> _replaySubject;
 
         private Mock<IWebsocketConnection> _mockWebsocketConnection;
 
@@ -38,8 +38,8 @@ namespace OmniSyncTests
             _mockWebsocketConnectionFactory = _kernel.GetMock<IWebsocketConnectionFactory>();
 
             _mockWebsocketConnectionFactory.Setup(f => f.Create(It.IsAny<string>()))
-                .Returns(Task.Factory.StartNew(() => _mockWebsocketConnection.Object));
-            _mockWebsocketConnection.Setup(c => c.Connect()).Returns(_replaySubject);
+                .Returns(_mockWebsocketConnection.Object);
+            _mockWebsocketConnection.Setup(c => c.Connect()).Returns(Task.Factory.StartNew(() => _replaySubject));
 
             _subject = _kernel.Get<IOmniSyncService>();
         }

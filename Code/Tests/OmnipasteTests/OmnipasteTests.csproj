@@ -125,6 +125,10 @@
       <Project>{a5370d41-9479-46aa-b2fb-5cd4467379a1}</Project>
       <Name>Omnipaste</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OmniSync\OmniSync.csproj">
+      <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
+      <Name>OmniSync</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
