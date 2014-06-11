@@ -50,10 +50,16 @@
             ApplicationWrapper = new ApplicationWrapper();
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ApplicationDeployment.IsNetworkDeployed)
+            try
             {
-                var ad = ApplicationDeployment.CurrentDeployment;
-                version = ad.CurrentVersion;
+                if (ApplicationDeployment.IsNetworkDeployed)
+                {
+                    var ad = ApplicationDeployment.CurrentDeployment;
+                    version = ad.CurrentVersion;
+                }
+            }
+            catch (InvalidDeploymentException)
+            {
             }
 
             TooltipText = "Omnipaste " + version;
@@ -109,12 +115,6 @@
         {
             Visibility = Visibility.Collapsed;
             ApplicationWrapper.ShutDown();
-        }
-
-        public void Handle(GetTokenFromUserMessage message)
-        {
-            UserToken.Message = message.Message;
-            //DialogViewModel.ActivateItem(UserToken);
         }
 
         public void Handle(ConfigurationCompletedMessage message)
