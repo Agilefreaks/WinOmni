@@ -40,7 +40,6 @@
 
         public void HandleSuccessfulLogin()
         {
-            Kernel.Load(new ClipboardModule(), new NotificationsModule());
             Kernel.Get<IOmniServiceHandler>().Init();
 
             var startables = Kernel.GetAll<IStartable>();

@@ -7,8 +7,10 @@
     using System.Windows;
     using Caliburn.Micro;
     using Castle.Core.Internal;
+    using Clipboard;
     using Ninject;
     using Ninject.Extensions.Conventions;
+    using Notifications;
     using Omni;
     using OmniApi;
     using OmniCommon;
@@ -53,7 +55,9 @@
                 new OmniApiModule(),
                 new OmniSyncModule(),
                 new OmniModule(),
-                new OmnipasteModule());
+                new OmnipasteModule(), 
+                new ClipboardModule(), 
+                new NotificationsModule());
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
