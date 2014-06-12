@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace OmniSync
+﻿namespace OmniSync
 {
     public interface IWebsocketConnectionFactory
     {
-        Task<IWebsocketConnection> Create(string websocketServerUri);
+        IWebsocketConnection Create(string websocketServerUri);
     }
 }

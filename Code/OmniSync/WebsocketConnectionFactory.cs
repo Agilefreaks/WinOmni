@@ -25,18 +25,12 @@
 
         #region Public Methods and Operators
 
-        public async Task<IWebsocketConnection> Create(string websocketServerUri)
+        public IWebsocketConnection Create(string websocketServerUri)
         {
             IWampChannel<JToken> channel =
                 _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
-            await channel.OpenAsync();
-
-            var wampClientConnectionMonitor = (WampClientConnectionMonitor<JToken>)channel.GetMonitor();
-            var websocketConnection = new WebsocketConnection(channel)
-                                      {
-                                          RegistrationId =
-                                              wampClientConnectionMonitor.SessionId
-                                      };
+            
+            var websocketConnection = new WebsocketConnection(channel);
             
             return websocketConnection;
         }
