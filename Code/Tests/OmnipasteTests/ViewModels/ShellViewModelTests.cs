@@ -42,9 +42,7 @@
 
             _subject = new ShellViewModel(
                 _configurationViewModel.Object,
-                _mockEventAggregator.Object,
-                _mockUserTokenViewModel.Object,
-                _omniSyncService)
+                _mockUserTokenViewModel.Object)
                        {
                            LoadingViewModel = new Mock<ILoadingViewModel>().Object,
                            DialogViewModel = _mockDialogViewModel.Object

@@ -219,6 +219,8 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationViewModel.cs" />
     <Compile Include="Configuration\IConfigurationViewModel.cs" />
+    <Compile Include="Connection\ConnectionViewModel.cs" />
+    <Compile Include="Connection\IConnectionViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
@@ -289,6 +291,10 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="Configuration\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Connection\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

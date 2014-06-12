@@ -75,7 +75,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DevicesModule.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="OmniApiModule.cs" />
     <Compile Include="Resources\Authorization.cs" />
