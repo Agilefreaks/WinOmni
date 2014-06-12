@@ -19,6 +19,8 @@
 
         private WampClientConnectionMonitor<JToken> _monitor;
 
+        private IObservable<WebsocketConnectionStatusEnum> _connectionObservable;
+
         #endregion
 
         #region Constructors and Destructors
@@ -49,16 +51,16 @@
             }
             set
             {
-                if (_monitor != null)
-                {
-                    
-                }
                 _monitor = value;
-                
-                if (_monitor != null)
-                {
-                    ConnectionObservable =
-                        Observable.FromEventPattern(
+            }
+        }
+
+        public IObservable<WebsocketConnectionStatusEnum> ConnectionObservable
+        {
+            get
+            {
+                return
+                    _connectionObservable ?? Observable.FromEventPattern(
                             x => _monitor.ConnectionLost += x,
                             x => _monitor.ConnectionLost -= x)
                             .Select(x => WebsocketConnectionStatusEnum.Disconnected)
@@ -67,11 +69,8 @@
                                     x => _monitor.ConnectionEstablished += x,
                                     x => _monitor.ConnectionEstablished -= x)
                                     .Select(x => WebsocketConnectionStatusEnum.Connected));
-                }
             }
         }
-
-        public IObservable<WebsocketConnectionStatusEnum> ConnectionObservable { get; private set; }
 
         private IWampChannel<JToken> Channel
         {
@@ -94,9 +93,9 @@
 
         public async Task<ISubject<OmniMessage>> Connect()
         {
-            await _channel.OpenAsync();
+            await Channel.OpenAsync();
 
-            _subject = _channel.GetSubject<OmniMessage>(RegistrationId);
+            _subject = Channel.GetSubject<OmniMessage>(RegistrationId);
 
             return _subject;
         }

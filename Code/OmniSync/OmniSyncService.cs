@@ -64,7 +64,11 @@
                 if (_status != value)
                 {
                     _status = value;
-                    ConnectivityChanged(this, new ServiceStatusEventArgs(_status));
+                    
+                    if (ConnectivityChanged != null)
+                    {
+                        ConnectivityChanged(this, new ServiceStatusEventArgs(_status));
+                    }
                 }
             }
         }

@@ -1,13 +1,10 @@
 ﻿namespace Omnipaste.Connection
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using Caliburn.Micro;
-    using Clipboard;
     using Ninject;
-    using Notifications;
     using Omni;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.EventAggregatorMessages;
@@ -23,6 +20,9 @@
         [Inject]
         public IKernel Kernel { get; set; }
 
+        [Inject]
+        public IOmniServiceHandler OmniServiceHandler { get; set; }
+        
         public ConnectionViewModel(IEventAggregator eventAggregator, IOmniService omniService)
         {
             OmniService = omniService;
@@ -40,8 +40,7 @@
 
         public void HandleSuccessfulLogin()
         {
-            Kernel.Get<IOmniServiceHandler>().Init();
-
+            OmniServiceHandler.Init();
             var startables = Kernel.GetAll<IStartable>();
             var count = startables.Count();
 
