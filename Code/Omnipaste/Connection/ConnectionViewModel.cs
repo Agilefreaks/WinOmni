@@ -1,15 +1,19 @@
 ﻿namespace Omnipaste.Connection
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using Caliburn.Micro;
+    using Clipboard;
     using Ninject;
+    using Notifications;
     using Omni;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.NotificationList;
+    using OmniSync;
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
@@ -20,44 +24,14 @@
         [Inject]
         public IKernel Kernel { get; set; }
 
-        [Inject]
-        public IOmniServiceHandler OmniServiceHandler { get; set; }
-        
-        public ConnectionViewModel(IEventAggregator eventAggregator, IOmniService omniService)
+        public ConnectionViewModel(IOmniService omniService)
         {
             OmniService = omniService;
-            
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
         }
 
-        public async Task Handle(ConfigurationCompletedMessage message)
+        public async Task Connect()
         {
-            HandleSuccessfulLogin();
-
             await OmniService.Start();
-        }
-
-        public void HandleSuccessfulLogin()
-        {
-            OmniServiceHandler.Init();
-            var startables = Kernel.GetAll<IStartable>();
-            var count = startables.Count();
-
-            var wm = new WindowManager();
-            wm.ShowWindow(
-                Kernel.Get<INotificationListViewModel>(),
-                null,
-                new Dictionary<string, object>
-                {
-                    { "Height", SystemParameters.WorkArea.Height },
-                    { "Width", SystemParameters.WorkArea.Width }
-                });
-        }
-
-        public void Connect()
-        {
-            EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
         }
     }
 }

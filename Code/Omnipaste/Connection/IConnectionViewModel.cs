@@ -1,9 +1,10 @@
 ﻿namespace Omnipaste.Connection
 {
+    using System.Threading.Tasks;
     using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
 
-    public interface IConnectionViewModel : IScreen, IHandleWithTask<ConfigurationCompletedMessage>
+    public interface IConnectionViewModel : IScreen
     {
+        Task Connect();
     }
 }

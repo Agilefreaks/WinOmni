@@ -55,9 +55,7 @@
                 new OmniApiModule(),
                 new OmniSyncModule(),
                 new OmniModule(),
-                new OmnipasteModule(), 
-                new ClipboardModule(), 
-                new NotificationsModule());
+                new OmnipasteModule());
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();

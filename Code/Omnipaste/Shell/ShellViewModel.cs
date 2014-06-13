@@ -4,12 +4,15 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Deployment.Application;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
+    using Clipboard;
     using Ninject;
+    using Notifications;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using Omnipaste.Configuration;
@@ -28,6 +31,8 @@
         private Window _view;
 
         private IConnectionViewModel _connectionViewModel;
+
+        private IConnectionViewModel _connectionViewModel1;
 
         #endregion
 
@@ -75,8 +80,18 @@
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
-        [Inject]
-        public IConnectionViewModel ConnectionViewModel { get; set; }
+        public IConnectionViewModel ConnectionViewModel
+        {
+            get
+            {
+                return _connectionViewModel1;
+            }
+            set
+            {
+                _connectionViewModel1 = value;
+                NotifyOfPropertyChange(() => ConnectionViewModel);
+            }
+        }
 
         public IEventAggregator EventAggregator { get; set; }
 
@@ -167,6 +182,27 @@
             DialogViewModel.ActivateItem(LoadingViewModel);
 
             await ConfigurationViewModel.Start();
+            HandleSuccessfulLogin();
+
+            ConnectionViewModel = Kernel.Get<IConnectionViewModel>();
+            await ConnectionViewModel.Connect();
+
+            var wm = new WindowManager();
+            wm.ShowWindow(
+                Kernel.Get<INotificationListViewModel>(),
+                null,
+                new Dictionary<string, object>
+                        {
+                            { "Height", SystemParameters.WorkArea.Height },
+                            { "Width", SystemParameters.WorkArea.Width }
+                        });
+        }
+
+        private void HandleSuccessfulLogin()
+        {
+            Kernel.Load(new ClipboardModule(), new NotificationsModule());
+            var startables = Kernel.GetAll<IStartable>();
+            var count = startables.Count();
         }
 
         #endregion
