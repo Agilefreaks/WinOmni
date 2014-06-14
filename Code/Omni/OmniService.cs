@@ -1,9 +1,12 @@
 ﻿namespace Omni
 {
+    using System;
     using System.Threading.Tasks;
+    using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using OmniSync;
+    using RestSharp;
 
     public class OmniService : IOmniService
     {
@@ -12,6 +15,10 @@
         private readonly IConfigurationService _configurationService;
 
         private readonly IDevicesApi _devicesApi;
+
+        private IOmniSyncService _omniSyncService;
+
+        private IDisposable _omniSyncStatusObserver;
 
         #endregion
 
@@ -31,15 +38,26 @@
 
         #region Public Properties
 
-        public IOmniSyncService OmniSyncService { get; set; }
-
-        public ServiceStatusEnum Status
+        public IOmniSyncService OmniSyncService
         {
             get
             {
-                return OmniSyncService.Status;
+                return _omniSyncService;
+            }
+            set
+            {
+                if (_omniSyncStatusObserver != null)
+                {
+                    _omniSyncStatusObserver.Dispose();
+                }
+
+                _omniSyncService = value;
+
+                _omniSyncStatusObserver = _omniSyncService.Subscribe(x => Status = x);
             }
         }
+
+        public ServiceStatusEnum Status { get; set; }
 
         #endregion
 
@@ -47,16 +65,11 @@
 
         public async Task<bool> Start(string communicationChannel = null)
         {
-            var registrationResult = await OmniSyncService.Start();
+            var omniSyncRegistrationResult = await OmniSyncService.Start();
 
-            var deviceIdentifier = _configurationService.GetDeviceIdentifier();
-            var machineName = _configurationService.GetMachineName();
+            var deviceIdentifier = await RegisterDevice();
 
-            await _devicesApi.Register(deviceIdentifier, machineName);
-
-            const string NotificationProvider = "omni_sync";
-            var activationResult =
-                await _devicesApi.Activate(registrationResult.Data, deviceIdentifier, NotificationProvider);
+            var activationResult = await ActivateDevice(omniSyncRegistrationResult, deviceIdentifier);
 
             return activationResult.Data != null;
         }
@@ -64,6 +77,29 @@
         public void Stop()
         {
             OmniSyncService.Stop();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task<IRestResponse<Device>> ActivateDevice(
+            RegistrationResult omniSyncRegistrationResult,
+            string deviceIdentifier)
+        {
+            const string NotificationProvider = "omni_sync";
+            var activationResult =
+                await _devicesApi.Activate(omniSyncRegistrationResult.Data, deviceIdentifier, NotificationProvider);
+            return activationResult;
+        }
+
+        private async Task<string> RegisterDevice()
+        {
+            var deviceIdentifier = _configurationService.GetDeviceIdentifier();
+            var machineName = _configurationService.GetMachineName();
+
+            await _devicesApi.Register(deviceIdentifier, machineName);
+            return deviceIdentifier;
         }
 
         #endregion
