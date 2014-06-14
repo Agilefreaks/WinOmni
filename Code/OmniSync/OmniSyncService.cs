@@ -10,7 +10,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public class OmniSyncService : IOmniSyncService, IObserver<WebsocketConnectionStatusEnum>
+    public class OmniSyncService : IOmniSyncService
     {
         #region Fields
 
@@ -94,7 +94,13 @@
 
                 if (_websocketConnection != null)
                 {
-                    _websocketConnectionObserver = _websocketConnection.Subscribe(this);
+                    _websocketConnectionObserver = _websocketConnection.Subscribe(x =>
+                    {
+                        if (x == WebsocketConnectionStatusEnum.Disconnected)
+                        {
+                            Stop();
+                        }
+                    });
                 }
             }
         }
@@ -102,24 +108,6 @@
         #endregion
 
         #region Public Methods and Operators
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnError(Exception error)
-        {
-            throw error;
-        }
-
-        public void OnNext(WebsocketConnectionStatusEnum value)
-        {
-            if (value == WebsocketConnectionStatusEnum.Disconnected)
-            {
-                Stop();
-            }
-        }
 
         public async Task<RegistrationResult> Start()
         {
@@ -146,7 +134,7 @@
                 return;
             }
 
-            UnsubscribeMessageHandlers();
+            //UnsubscribeMessageHandlers();
 
             WebsocketConnection.Disconnect();
 

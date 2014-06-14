@@ -1,18 +1,9 @@
 ﻿namespace Omnipaste.Connection
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows;
     using Caliburn.Micro;
-    using Clipboard;
     using Ninject;
-    using Notifications;
     using Omni;
-    using OmniCommon.EventAggregatorMessages;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
-    using Omnipaste.NotificationList;
     using OmniSync;
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
@@ -21,6 +12,30 @@
 
         public IOmniService OmniService { get; set; }
 
+        public bool CanConnect
+        {
+            get
+            {
+                return !IsConnected;
+            }
+        }
+
+        public bool CanDisconnect
+        {
+            get
+            {
+                return IsConnected;
+            }
+        }
+
+        public bool IsConnected
+        {
+            get
+            {
+                return OmniService.Status == ServiceStatusEnum.Started;
+            }
+        }
+        
         [Inject]
         public IKernel Kernel { get; set; }
 
@@ -32,6 +47,17 @@
         public async Task Connect()
         {
             await OmniService.Start();
+            
+            NotifyOfPropertyChange(() => CanConnect);
+            NotifyOfPropertyChange(() => CanDisconnect);
+        }
+
+        public void Disconnect()
+        {
+            OmniService.Stop();
+
+            NotifyOfPropertyChange(() => CanConnect);
+            NotifyOfPropertyChange(() => CanDisconnect);
         }
     }
 }

@@ -33,6 +33,14 @@
 
         public IOmniSyncService OmniSyncService { get; set; }
 
+        public ServiceStatusEnum Status
+        {
+            get
+            {
+                return OmniSyncService.Status;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
