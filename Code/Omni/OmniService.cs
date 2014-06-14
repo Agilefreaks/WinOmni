@@ -79,6 +79,11 @@
             OmniSyncService.Stop();
         }
 
+        public IDisposable Subscribe(IObserver<ServiceStatusEnum> observer)
+        {
+            return OmniSyncService.Subscribe(observer);
+        }
+
         #endregion
 
         #region Methods

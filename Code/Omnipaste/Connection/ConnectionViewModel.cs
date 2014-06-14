@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Connection
 {
+    using System;
     using System.Threading.Tasks;
     using Caliburn.Micro;
     using Ninject;
@@ -8,9 +9,35 @@
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
+        private IOmniService _omniService;
+
+        private IDisposable _omniServiceStatusObserver;
+
         public IEventAggregator EventAggregator { get; set; }
 
-        public IOmniService OmniService { get; set; }
+        public IOmniService OmniService
+        {
+            get
+            {
+                return _omniService;
+            }
+            set
+            {
+                if (_omniServiceStatusObserver != null)
+                {
+                    _omniServiceStatusObserver.Dispose();
+                }
+
+                _omniService = value;
+
+                _omniServiceStatusObserver = _omniService.Subscribe(
+                    x =>
+                    {
+                        NotifyOfPropertyChange(() => CanConnect);
+                        NotifyOfPropertyChange(() => CanDisconnect);
+                    });
+            }
+        }
 
         public bool CanConnect
         {
@@ -47,17 +74,11 @@
         public async Task Connect()
         {
             await OmniService.Start();
-            
-            NotifyOfPropertyChange(() => CanConnect);
-            NotifyOfPropertyChange(() => CanDisconnect);
         }
 
         public void Disconnect()
         {
             OmniService.Stop();
-
-            NotifyOfPropertyChange(() => CanConnect);
-            NotifyOfPropertyChange(() => CanDisconnect);
         }
     }
 }

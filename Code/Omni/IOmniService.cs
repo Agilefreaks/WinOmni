@@ -1,9 +1,10 @@
 ﻿namespace Omni
 {
+    using System;
     using System.Threading.Tasks;
     using OmniSync;
 
-    public interface IOmniService
+    public interface IOmniService : IObservable<ServiceStatusEnum>
     {
         Task<bool> Start(string communicationChannel = null);
 
