@@ -2,7 +2,9 @@
 {
     using System;
     using System.Threading.Tasks;
+    using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
+    using Castle.Core;
     using Ninject;
     using Omni;
     using OmniSync;
@@ -13,7 +15,22 @@
 
         private IDisposable _omniServiceStatusObserver;
 
+        private bool _enabled = true;
+
         public IEventAggregator EventAggregator { get; set; }
+
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                _enabled = value;
+                NotifyOfPropertyChange(() => Enabled);
+            }
+        }
 
         public IOmniService OmniService
         {
@@ -73,12 +90,20 @@
 
         public async Task Connect()
         {
+            Enabled = false;
+
             await OmniService.Start();
+
+            Enabled = true;
         }
 
         public void Disconnect()
         {
+            Enabled = false;
+
             OmniService.Stop();
+
+            Enabled = true;
         }
     }
 }
