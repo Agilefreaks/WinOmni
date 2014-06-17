@@ -130,6 +130,10 @@
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Omni\Omni.csproj">
+      <Project>{B3F798A0-A219-49EA-8A25-183A91662E82}</Project>
+      <Name>Omni</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

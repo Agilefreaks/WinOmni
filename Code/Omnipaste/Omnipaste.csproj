@@ -231,7 +231,6 @@
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
     <Compile Include="Framework\IDialogService.cs" />
-    <Compile Include="Framework\IOmniServiceHandler.cs" />
     <Compile Include="Framework\DialogService.cs" />
     <Compile Include="Framework\ViewLocator.cs" />
     <Compile Include="Layout\ILayoutViewModel.cs" />
@@ -275,7 +274,6 @@
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Framework\IApplicationWrapper.cs" />
     <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
-    <Compile Include="Framework\OmniServiceHandler.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Services\INotificationService.cs" />

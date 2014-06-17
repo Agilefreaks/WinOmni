@@ -58,7 +58,6 @@
                 new OmnipasteModule());
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
-            _kernel.Bind<IOmniServiceHandler>().To<OmniServiceHandler>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
 
             _kernel.Bind(

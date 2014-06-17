@@ -115,10 +115,10 @@
         {
             await OpenWebsocketConnection();
 
-            var deviceIdentifier = await RegisterDevice();
-
             if (WebsocketConnection.RegistrationId != null)
             {
+                var deviceIdentifier = await RegisterDevice();
+
                 var activationResult = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
 
                 if (activationResult.Data != null)

@@ -6,6 +6,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omni;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
     using Omnipaste.Shell.ContextMenu;
@@ -16,7 +17,7 @@
     {
         #region Fields
 
-        private Mock<IEventAggregator> _mockEventAggregator;
+        private Mock<IOmniService> _mockOmniService;
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -33,8 +34,8 @@
         {
             _mockingKernel = new MoqMockingKernel();
 
-            _mockEventAggregator = new Mock<IEventAggregator>();
-            _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
+            _mockOmniService = new Mock<IOmniService>();
+            _mockingKernel.Bind<IOmniService>().ToConstant(_mockOmniService.Object);
 
             _mockConfigurationService = new Mock<IConfigurationService>();
             _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
@@ -51,8 +52,8 @@
 
             _subject.ToggleSync();
 
-            _mockEventAggregator.Verify(
-                m => m.Publish(It.IsAny<StartOmniServiceMessage>(), It.IsAny<Action<Action>>()),
+            _mockOmniService.Verify(
+                m => m.Start(null),
                 Times.Once);
         }
 
@@ -63,8 +64,8 @@
 
             _subject.ToggleSync();
 
-            _mockEventAggregator.Verify(
-                m => m.Publish(It.IsAny<StopOmniServiceMessage>(), It.IsAny<Action<Action>>()),
+            _mockOmniService.Verify(
+                m => m.Stop(true),
                 Times.Once);
         }
 

@@ -4,7 +4,7 @@
     using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
+    using Omni;
     using OmniCommon.Interfaces;
     using Omnipaste.Framework;
 
@@ -12,23 +12,15 @@
     {
         #region Constructors and Destructors
 
-        public ContextMenuViewModel(IEventAggregator eventAggregator, IConfigurationService configurationService)
+        public ContextMenuViewModel(IConfigurationService configurationService, IOmniService omniService)
         {
-            EventAggregator = eventAggregator;
-            eventAggregator.Subscribe(this);
+            OmniService = omniService;
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            try
+            if (ApplicationDeployment.IsNetworkDeployed)
             {
-                if (ApplicationDeployment.IsNetworkDeployed)
-                {
-                    var ad = ApplicationDeployment.CurrentDeployment;
-                    version = ad.CurrentVersion;
-                }
-            }
-            catch (InvalidDeploymentException)
-            {
-                // TODO: log error in BugFreak
+                var ad = ApplicationDeployment.CurrentDeployment;
+                version = ad.CurrentVersion;
             }
 
             TooltipText = "Omnipaste " + version;
@@ -54,9 +46,9 @@
 
         public Visibility Visibility { get; set; }
 
-        public IEventAggregator EventAggregator { get; set; }
-
         public IShellViewModel ShellViewModel { get; set; }
+
+        public IOmniService OmniService { get; set; }
 
         #endregion
 
@@ -81,11 +73,11 @@
         {
             if (IsSyncing)
             {
-                EventAggregator.PublishOnCurrentThread(new StartOmniServiceMessage());
+                OmniService.Start();
             }
             else
             {
-                EventAggregator.PublishOnCurrentThread(new StopOmniServiceMessage());
+                OmniService.Stop();
             }
         }
 
