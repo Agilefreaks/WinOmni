@@ -29,6 +29,8 @@
 
         private string _settingsFolder;
 
+        private string _settingsfileName;
+
         #endregion
 
         #region Public Properties
@@ -37,7 +39,20 @@
         {
             get
             {
-                return _settingFilePath ?? (_settingFilePath = Path.Combine(SettingsFolder, FileName));
+                return _settingFilePath ?? (_settingFilePath = Path.Combine(SettingsFolder, SettingsFileName));
+            }
+        }
+
+        public string SettingsFileName
+        {
+            get
+            {
+                return _settingsfileName ?? (_settingsfileName = FileName);
+            }
+
+            set
+            {
+                _settingsfileName = value;
             }
         }
 
@@ -46,6 +61,11 @@
             get
             {
                 return _settingsFolder ?? (_settingsFolder = GetSettingsFolder());
+            }
+
+            set
+            {
+                _settingsFolder = value;
             }
         }
 
@@ -73,30 +93,34 @@
             Justification = "Reviewed. Suppression is OK here.")]
         public string GetValue(string key)
         {
-            string value = null;
-            try
-            {
-                if (File.Exists(FullSettingsFilePath))
-                {
-                    var xDocument = LoadData();
-                    var element = GetElementForKey(xDocument, key);
-                    value = element.Descendants("Value").First().Value;
-                }
-            }
-            catch (Exception exception)
-            {
-                value = null;
-                this.Log(exception);
-            }
+            var xDocument = LoadData();
+            var element = GetElementForKey(xDocument, key);
 
-            return value;
+            return element.Descendants("Value").First().Value;
         }
 
         public T GetValue<T>(string key, T defaultValue)
         {
             var value = GetValue(key);
+            T result;
 
-            return value != null ? (T)(object)value : defaultValue;
+            if (String.IsNullOrEmpty(value))
+            {
+                result = defaultValue;
+            }
+            else
+            {
+                try
+                {
+                    result = (T)Convert.ChangeType(value, typeof(T));
+                }
+                catch (FormatException)
+                {
+                    result = defaultValue;
+                }                
+            }
+
+            return result;
         }
 
         public bool SetValue(string key, string value)
@@ -125,7 +149,12 @@
 
         private static XElement GetElementForKey(XNode document, string key)
         {
-            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
+            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key)) ?? NewSettingElement(key);
+        }
+
+        private static XElement NewSettingElement(string key)
+        {
+            return new XElement(key, new XElement("Value", null));
         }
 
         private static string GetSettingsFolder()
@@ -140,10 +169,22 @@
 
         private static XDocument InitializeNewSettingsDocument(string key, string value)
         {
+            var document = InitializeNewSettingsDocument();
+            var root = document.Root;
+
+            if (root != null)
+            {
+                root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
+            }
+
+            return document;
+        }
+
+        private static XDocument InitializeNewSettingsDocument()
+        {
             var document = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             var root = new XElement("Settings");
             document.Add(root);
-            root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
 
             return document;
         }
@@ -169,12 +210,20 @@
             Justification = "Reviewed. Suppression is OK here.")]
         private XDocument LoadData()
         {
-            var readAllBytes = File.ReadAllBytes(FullSettingsFilePath);
-            var data = ProtectedData.Unprotect(readAllBytes, _entropy, DataProtectionScope.CurrentUser);
             XDocument xDocument;
-            using (var memoryStream = new MemoryStream(data))
+
+            if (File.Exists(FullSettingsFilePath))
             {
-                xDocument = XDocument.Load(XmlReader.Create(memoryStream));
+                var readAllBytes = File.ReadAllBytes(FullSettingsFilePath);
+                var data = ProtectedData.Unprotect(readAllBytes, _entropy, DataProtectionScope.CurrentUser);
+                using (var memoryStream = new MemoryStream(data))
+                {
+                    xDocument = XDocument.Load(XmlReader.Create(memoryStream));
+                }
+            }
+            else
+            {
+                xDocument = InitializeNewSettingsDocument();
             }
 
             return xDocument;
