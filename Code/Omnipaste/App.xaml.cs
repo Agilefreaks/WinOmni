@@ -49,7 +49,7 @@
 
         private static void PerformFirstRunTasks()
         {
-            if (!ApplicationDeployment.IsNetworkDeployed || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
+            if (!ApplicationDeploymentHelper.IsClickOnceApplication || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
                 return;
             }

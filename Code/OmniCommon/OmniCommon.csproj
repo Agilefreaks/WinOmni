@@ -92,8 +92,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventAggregatorMessages\StartOmniServiceMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopOmniServiceMessage.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
     <Compile Include="Interfaces\IOmniMessageHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />

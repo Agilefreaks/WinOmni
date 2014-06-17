@@ -17,7 +17,7 @@
             OmniService = omniService;
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ApplicationDeployment.IsNetworkDeployed)
+            if (ApplicationDeploymentHelper.IsClickOnceApplication)
             {
                 var ad = ApplicationDeployment.CurrentDeployment;
                 version = ad.CurrentVersion;

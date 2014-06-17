@@ -13,12 +13,12 @@
 
         public bool HasValidActivationUri
         {
-            get { return ApplicationDeployment.IsNetworkDeployed && ActivationUri != null; }
+            get { return ApplicationDeploymentHelper.IsClickOnceApplication && ActivationUri != null; }
         }
 
         public bool IsFirstNetworkRun
         {
-            get { return ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun; }
+            get { return ApplicationDeploymentHelper.IsClickOnceApplication && ApplicationDeployment.CurrentDeployment.IsFirstRun; }
         }
     }
 }

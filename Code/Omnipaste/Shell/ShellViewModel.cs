@@ -75,8 +75,6 @@
             }
         }
 
-        public IEventAggregator EventAggregator { get; set; }
-
         [Inject]
         public IKernel Kernel { get; set; }
 
