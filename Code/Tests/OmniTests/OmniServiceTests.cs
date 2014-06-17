@@ -4,6 +4,7 @@
     using System.Reactive.Subjects;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
@@ -38,17 +39,19 @@
 
         private Mock<IWebsocketConnection> _mockWebsocketConnection;
 
+        private TestScheduler _scheduler;
+
         [SetUp]
         public void SetUp()
         {
             var kernel = new MoqMockingKernel();
             kernel.Bind<IOmniService>().To<OmniService>();
-            
+
             _mockOmniMessageHandler = kernel.GetMock<IOmniMessageHandler>();
 
             _devicesApiMock = kernel.GetMock<IDevicesApi>();
             _configurationServiceMock = kernel.GetMock<IConfigurationService>();
-            
+
             _configurationServiceMock
                 .Setup(cs => cs.MachineName)
                 .Returns(DeviceName);
@@ -59,6 +62,14 @@
 
             _mockWebsocketConnection = kernel.GetMock<IWebsocketConnection>();
             _mockWebsocketConnection.SetupGet(wc => wc.RegistrationId).Returns(_registrationId);
+
+            _scheduler = new TestScheduler();
+            
+            ITestableObservable<WebsocketConnectionStatusEnum> testableObservable = _scheduler.CreateColdObservable(new[] { ReactiveTest.OnNext(100, WebsocketConnectionStatusEnum.Disconnected) });
+            _mockWebsocketConnection
+                .Setup(c => c.Subscribe(It.IsAny<IObserver<WebsocketConnectionStatusEnum>>()))
+                .Callback<IObserver<WebsocketConnectionStatusEnum>>(p => testableObservable.Subscribe(p));
+            _mockWebsocketConnection.SetupGet(c => c.ConnectionObservable).Returns(testableObservable);
 
             _websocketConnectionFactory = kernel.GetMock<IWebsocketConnectionFactory>();
             _websocketConnectionFactory
@@ -76,7 +87,7 @@
             _devicesApiMock
                 .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            
+
             await _subject.Start();
 
             _devicesApiMock.Verify(api => api.Register(DeviceIdentifier, DeviceName), Times.Once());
@@ -137,6 +148,22 @@
             await _subject.Start();
 
             Assert.That(_subject.Status, Is.EqualTo(ServiceStatusEnum.Started));
+        }
+
+        [Test]
+        public void WhenConnectionIsLostItWillTryToReconnect()
+        {
+            
+            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            _devicesApiMock
+                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            _subject.Start();
+
+            _scheduler.Start();
+
+            _subject.Status.Should().Be(ServiceStatusEnum.Reconnecting);
         }
     }
 }

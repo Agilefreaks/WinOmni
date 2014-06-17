@@ -2,22 +2,57 @@
 {
     using System;
     using System.Threading.Tasks;
-    using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
-    using Castle.Core;
     using Ninject;
     using Omni;
     using OmniSync;
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
+        #region Fields
+
+        private bool _enabled = true;
+
         private IOmniService _omniService;
 
         private IDisposable _omniServiceStatusObserver;
 
-        private bool _enabled = true;
+        #endregion
 
-        public IEventAggregator EventAggregator { get; set; }
+        #region Constructors and Destructors
+
+        public ConnectionViewModel(IOmniService omniService)
+        {
+            OmniService = omniService;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public bool CanConnect
+        {
+            get
+            {
+                return !Connected;
+            }
+        }
+
+        public bool CanDisconnect
+        {
+            get
+            {
+                return Connected;
+            }
+        }
+
+        public bool Connected
+        {
+            get
+            {
+                return OmniService.Status == ServiceStatusEnum.Started;
+            }
+        }
 
         public bool Enabled
         {
@@ -31,7 +66,7 @@
                 NotifyOfPropertyChange(() => Enabled);
             }
         }
-
+        
         public IOmniService OmniService
         {
             get
@@ -56,37 +91,9 @@
             }
         }
 
-        public bool CanConnect
-        {
-            get
-            {
-                return !IsConnected;
-            }
-        }
+        #endregion
 
-        public bool CanDisconnect
-        {
-            get
-            {
-                return IsConnected;
-            }
-        }
-
-        public bool IsConnected
-        {
-            get
-            {
-                return OmniService.Status == ServiceStatusEnum.Started;
-            }
-        }
-        
-        [Inject]
-        public IKernel Kernel { get; set; }
-
-        public ConnectionViewModel(IOmniService omniService)
-        {
-            OmniService = omniService;
-        }
+        #region Public Methods and Operators
 
         public async Task Connect()
         {
@@ -105,5 +112,7 @@
 
             Enabled = true;
         }
+
+        #endregion
     }
 }
