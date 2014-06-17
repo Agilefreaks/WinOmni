@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
+    using System.Timers;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using OmniSync;
     using RestSharp;
-    
+
     public class OmniService : IOmniService
     {
         #region Fields
@@ -19,23 +20,30 @@
 
         private readonly IDevicesApi _devicesApi;
 
+        private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
+
+        private readonly IObservable<ServiceStatusEnum> _statusChanged;
+
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
         private IWebsocketConnection _websocketConnection;
 
         private IDisposable _websocketConnectionObserver;
 
-        private readonly IObservable<ServiceStatusEnum> _statusChanged;
-
         #endregion
 
         #region Constructors and Destructors
 
-        public OmniService(IDevicesApi devicesApi, IConfigurationService configurationService, IWebsocketConnectionFactory websocketConnectionFactory)
+        public OmniService(
+            IDevicesApi devicesApi,
+            IConfigurationService configurationService,
+            IWebsocketConnectionFactory websocketConnectionFactory)
         {
             WebsocketConnectionFactory = websocketConnectionFactory;
             _devicesApi = devicesApi;
             _configurationService = configurationService;
+
+            _retryConnectionTimer.Elapsed += Reconnect;
 
             _statusChanged =
                 Observable.FromEventPattern<ServiceStatusEventArgs>(
@@ -102,7 +110,7 @@
                     _websocketConnectionObserver =
                         _websocketConnection.Where<WebsocketConnectionStatusEnum>(
                             x => x == WebsocketConnectionStatusEnum.Disconnected)
-                            .Subscribe<WebsocketConnectionStatusEnum>(x => Stop(false));
+                            .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost());
                 }
             }
         }
@@ -113,6 +121,11 @@
 
         public async Task Start(string communicationChannel = null)
         {
+            if (Status == ServiceStatusEnum.Started)
+            {
+                return;
+            }
+
             await OpenWebsocketConnection();
 
             if (WebsocketConnection.RegistrationId != null)
@@ -128,13 +141,6 @@
             }
         }
 
-        private async Task OpenWebsocketConnection()
-        {
-            WebsocketConnection = WebsocketConnectionFactory.Create();
-            await WebsocketConnection.Connect();
-            SubscribeMessageHandlers();
-        }
-
         public void Stop(bool unsubscribeHandlers = true)
         {
             if (Status != ServiceStatusEnum.Started)
@@ -142,13 +148,13 @@
                 return;
             }
 
+            Status = ServiceStatusEnum.Stopped;
+
             if (unsubscribeHandlers)
             {
                 UnsubscribeMessageHandlers();
                 WebsocketConnection.Disconnect();
             }
-            
-            Status = ServiceStatusEnum.Stopped;
         }
 
         public IDisposable Subscribe(IObserver<ServiceStatusEnum> observer)
@@ -160,11 +166,32 @@
 
         #region Methods
 
-        private async Task<IRestResponse<Device>> ActivateDevice(string registrationId, string deviceIdentifier)
+        private async Task OpenWebsocketConnection()
         {
-            const string NotificationProvider = "omni_sync";
-            var activationResult = await _devicesApi.Activate(registrationId, deviceIdentifier, NotificationProvider);
-            return activationResult;
+            WebsocketConnection = WebsocketConnectionFactory.Create();
+            await WebsocketConnection.Connect();
+            SubscribeMessageHandlers();
+        }
+
+        private void OnWebsocketConnectionLost()
+        {
+            if (Status == ServiceStatusEnum.Started)
+            {
+                Status = ServiceStatusEnum.Reconnecting;
+                _retryConnectionTimer.Start();
+            }
+
+            Stop(false);
+        }
+
+        private async void Reconnect(object sender, ElapsedEventArgs e)
+        {
+            await Start();
+
+            if (Status == ServiceStatusEnum.Started)
+            {
+                _retryConnectionTimer.Stop();
+            }
         }
 
         private async Task<string> RegisterDevice()
@@ -174,6 +201,13 @@
 
             await _devicesApi.Register(deviceIdentifier, machineName);
             return deviceIdentifier;
+        }
+
+        private async Task<IRestResponse<Device>> ActivateDevice(string registrationId, string deviceIdentifier)
+        {
+            const string NotificationProvider = "omni_sync";
+            var activationResult = await _devicesApi.Activate(registrationId, deviceIdentifier, NotificationProvider);
+            return activationResult;
         }
 
         private void SubscribeMessageHandlers()

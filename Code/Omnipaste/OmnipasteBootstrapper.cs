@@ -7,17 +7,14 @@
     using System.Windows;
     using Caliburn.Micro;
     using Castle.Core.Internal;
-    using Clipboard;
     using Ninject;
     using Ninject.Extensions.Conventions;
-    using Notifications;
     using Omni;
     using OmniApi;
     using OmniCommon;
+    using OmniCommon.Framework.Connectivity;
     using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
-    using Omnipaste.Framework;
-    using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using OmniSync;
 
