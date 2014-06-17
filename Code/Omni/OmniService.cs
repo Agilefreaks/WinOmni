@@ -1,13 +1,16 @@
 ﻿namespace Omni
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reactive.Linq;
     using System.Threading.Tasks;
+    using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using OmniSync;
     using RestSharp;
-
+    
     public class OmniService : IOmniService
     {
         #region Fields
@@ -16,85 +19,151 @@
 
         private readonly IDevicesApi _devicesApi;
 
-        private IOmniSyncService _omniSyncService;
+        private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
-        private IDisposable _omniSyncStatusObserver;
+        private IWebsocketConnection _websocketConnection;
+
+        private IDisposable _websocketConnectionObserver;
+
+        private readonly IObservable<ServiceStatusEnum> _statusChanged;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public OmniService(
-            IOmniSyncService omniSyncService,
-            IDevicesApi devicesApi,
-            IConfigurationService configurationService)
+        public OmniService(IDevicesApi devicesApi, IConfigurationService configurationService, IWebsocketConnectionFactory websocketConnectionFactory)
         {
-            OmniSyncService = omniSyncService;
+            WebsocketConnectionFactory = websocketConnectionFactory;
             _devicesApi = devicesApi;
             _configurationService = configurationService;
+
+            _statusChanged =
+                Observable.FromEventPattern<ServiceStatusEventArgs>(
+                    x => ConnectivityChanged += x,
+                    x => ConnectivityChanged -= x).Select(x => x.EventArgs.Status);
         }
+
+        #endregion
+
+        #region Public Events
+
+        public event EventHandler<ServiceStatusEventArgs> ConnectivityChanged;
 
         #endregion
 
         #region Public Properties
 
-        public IOmniSyncService OmniSyncService
+        [Inject]
+        public IEnumerable<IOmniMessageHandler> MessageHandlers { get; set; }
+
+        public ServiceStatusEnum Status
         {
             get
             {
-                return _omniSyncService;
+                return _status;
             }
-            set
+            private set
             {
-                if (_omniSyncStatusObserver != null)
+                if (_status != value)
                 {
-                    _omniSyncStatusObserver.Dispose();
+                    _status = value;
+
+                    if (ConnectivityChanged != null)
+                    {
+                        ConnectivityChanged(this, new ServiceStatusEventArgs(_status));
+                    }
                 }
-
-                _omniSyncService = value;
-
-                _omniSyncStatusObserver = _omniSyncService.Subscribe(x => Status = x);
             }
         }
 
-        public ServiceStatusEnum Status { get; set; }
+        public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
+
+        #endregion
+
+        #region Properties
+
+        private IWebsocketConnection WebsocketConnection
+        {
+            get
+            {
+                return _websocketConnection;
+            }
+            set
+            {
+                if (_websocketConnectionObserver != null)
+                {
+                    _websocketConnectionObserver.Dispose();
+                }
+
+                _websocketConnection = value;
+
+                if (_websocketConnection != null)
+                {
+                    _websocketConnectionObserver =
+                        _websocketConnection.Where<WebsocketConnectionStatusEnum>(
+                            x => x == WebsocketConnectionStatusEnum.Disconnected)
+                            .Subscribe<WebsocketConnectionStatusEnum>(x => Stop(false));
+                }
+            }
+        }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public async Task<bool> Start(string communicationChannel = null)
+        public async Task Start(string communicationChannel = null)
         {
-            var omniSyncRegistrationResult = await OmniSyncService.Start();
+            await OpenWebsocketConnection();
 
             var deviceIdentifier = await RegisterDevice();
 
-            var activationResult = await ActivateDevice(omniSyncRegistrationResult, deviceIdentifier);
+            if (WebsocketConnection.RegistrationId != null)
+            {
+                var activationResult = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
 
-            return activationResult.Data != null;
+                if (activationResult.Data != null)
+                {
+                    Status = ServiceStatusEnum.Started;
+                }
+            }
         }
 
-        public void Stop()
+        private async Task OpenWebsocketConnection()
         {
-            OmniSyncService.Stop();
+            WebsocketConnection = WebsocketConnectionFactory.Create();
+            await WebsocketConnection.Connect();
+            SubscribeMessageHandlers();
+        }
+
+        public void Stop(bool unsubscribeHandlers = true)
+        {
+            if (Status != ServiceStatusEnum.Started)
+            {
+                return;
+            }
+
+            if (unsubscribeHandlers)
+            {
+                UnsubscribeMessageHandlers();
+                WebsocketConnection.Disconnect();
+            }
+            
+            Status = ServiceStatusEnum.Stopped;
         }
 
         public IDisposable Subscribe(IObserver<ServiceStatusEnum> observer)
         {
-            return OmniSyncService.Subscribe(observer);
+            return _statusChanged.Subscribe(observer);
         }
 
         #endregion
 
         #region Methods
 
-        private async Task<IRestResponse<Device>> ActivateDevice(
-            RegistrationResult omniSyncRegistrationResult,
-            string deviceIdentifier)
+        private async Task<IRestResponse<Device>> ActivateDevice(string registrationId, string deviceIdentifier)
         {
             const string NotificationProvider = "omni_sync";
-            var activationResult =
-                await _devicesApi.Activate(omniSyncRegistrationResult.Data, deviceIdentifier, NotificationProvider);
+            var activationResult = await _devicesApi.Activate(registrationId, deviceIdentifier, NotificationProvider);
             return activationResult;
         }
 
@@ -105,6 +174,22 @@
 
             await _devicesApi.Register(deviceIdentifier, machineName);
             return deviceIdentifier;
+        }
+
+        private void SubscribeMessageHandlers()
+        {
+            foreach (var messageHandler in MessageHandlers)
+            {
+                messageHandler.SubscribeTo(WebsocketConnection);
+            }
+        }
+
+        private void UnsubscribeMessageHandlers()
+        {
+            foreach (var messageHandler in MessageHandlers)
+            {
+                messageHandler.Dispose();
+            }
         }
 
         #endregion

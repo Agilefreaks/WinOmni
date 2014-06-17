@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using OmniCommon.Models;
 
-    public interface IWebsocketConnection : IObservable<WebsocketConnectionStatusEnum>
+    public interface IWebsocketConnection : IObservable<WebsocketConnectionStatusEnum>, IObservable<OmniMessage>
     {
         #region Public Properties
 

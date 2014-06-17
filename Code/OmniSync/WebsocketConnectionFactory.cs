@@ -25,7 +25,7 @@
 
         #region Public Methods and Operators
 
-        public IWebsocketConnection Create(string websocketServerUri)
+        public IWebsocketConnection Create()
         {
             IWampChannel<JToken> channel =
                 _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);

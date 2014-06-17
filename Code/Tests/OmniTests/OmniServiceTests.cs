@@ -1,17 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
-using Moq;
-using OmniApi.Models;
-using OmniApi.Resources;
-using OmniCommon.Interfaces;
-using OmniCommon.Services;
-using RestSharp;
-
-namespace OmniTests
+﻿namespace OmniTests
 {
+    using System;
+    using System.Reactive.Subjects;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using Moq;
+    using Ninject;
+    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
+    using OmniApi.Models;
+    using OmniApi.Resources;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniSync;
+    using RestSharp;
 
     [TestFixture]
     public class OmniServiceTests
@@ -21,20 +24,30 @@ namespace OmniTests
         private const string DeviceName = "Laptop";
         private const string DeviceIdentifier = "42";
 
-        private OmniService _subject;
+        private IOmniService _subject;
 
-        private Mock<IOmniSyncService> _omniSyncServiceMock;
+        private ISubject<OmniMessage> _replaySubject;
+
+        private Mock<IWebsocketConnectionFactory> _websocketConnectionFactory;
 
         private Mock<IDevicesApi> _devicesApiMock;
 
         private Mock<IConfigurationService> _configurationServiceMock;
 
+        private Mock<IOmniMessageHandler> _mockOmniMessageHandler;
+
+        private Mock<IWebsocketConnection> _mockWebsocketConnection;
+
         [SetUp]
         public void SetUp()
         {
-            _omniSyncServiceMock = new Mock<IOmniSyncService>();
-            _devicesApiMock = new Mock<IDevicesApi>();
-            _configurationServiceMock = new Mock<IConfigurationService>();
+            var kernel = new MoqMockingKernel();
+            kernel.Bind<IOmniService>().To<OmniService>();
+            
+            _mockOmniMessageHandler = kernel.GetMock<IOmniMessageHandler>();
+
+            _devicesApiMock = kernel.GetMock<IDevicesApi>();
+            _configurationServiceMock = kernel.GetMock<IConfigurationService>();
             
             _configurationServiceMock
                 .Setup(cs => cs.MachineName)
@@ -43,12 +56,16 @@ namespace OmniTests
             _configurationServiceMock
                 .Setup(cs => cs.DeviceIdentifier)
                 .Returns(DeviceIdentifier);
-            
-            _omniSyncServiceMock
-                .Setup(os => os.Start())
-                .Returns(Task<RegistrationResult>.Factory.StartNew(() => new RegistrationResult { Data = _registrationId }));
-            
-            _subject = new OmniService(_omniSyncServiceMock.Object, _devicesApiMock.Object, _configurationServiceMock.Object);
+
+            _mockWebsocketConnection = kernel.GetMock<IWebsocketConnection>();
+            _mockWebsocketConnection.SetupGet(wc => wc.RegistrationId).Returns(_registrationId);
+
+            _websocketConnectionFactory = kernel.GetMock<IWebsocketConnectionFactory>();
+            _websocketConnectionFactory
+                .Setup(f => f.Create())
+                .Returns(_mockWebsocketConnection.Object);
+
+            _subject = kernel.Get<IOmniService>();
         }
 
         [Test]
@@ -58,7 +75,7 @@ namespace OmniTests
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
             _devicesApiMock
                 .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() })); ;
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
             
             await _subject.Start();
 
@@ -67,7 +84,7 @@ namespace OmniTests
         }
 
         [Test]
-        public async void Start_WhenActivationIsSuccessful_ReturnsTrue()
+        public async void Start_WhenActivationIsSuccessful_HasStatusStarted()
         {
             _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
@@ -75,13 +92,13 @@ namespace OmniTests
                 .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() })); ;
 
-            var result = await _subject.Start();
+            await _subject.Start();
 
-            Assert.IsTrue(result);
+            _subject.Status.Should().Be(ServiceStatusEnum.Started);
         }
 
         [Test]
-        public async void Start_WhenActivationIsNotSuccessful_ReturnsFalse()
+        public async void Start_WhenActivationIsNotSuccessful_HasStatusStopped()
         {
             _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
@@ -89,9 +106,37 @@ namespace OmniTests
                 .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
                 .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device>())); ;
 
-            var result = await _subject.Start();
+            await _subject.Start();
 
-            Assert.IsFalse(result);
+            _subject.Status.Should().Be(ServiceStatusEnum.Stopped);
+        }
+
+        [Test]
+        public async void Start_SubscribesMessageHandlers()
+        {
+            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            _devicesApiMock
+                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+
+            await _subject.Start();
+
+            _mockOmniMessageHandler.Verify(omh => omh.SubscribeTo(_mockWebsocketConnection.Object), Times.Once());
+        }
+
+        [Test]
+        public async Task Start_SetsTheStatusToStarted()
+        {
+            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            _devicesApiMock
+                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+
+            await _subject.Start();
+
+            Assert.That(_subject.Status, Is.EqualTo(ServiceStatusEnum.Started));
         }
     }
 }

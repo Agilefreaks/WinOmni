@@ -6,10 +6,24 @@
 
     public interface IOmniService : IObservable<ServiceStatusEnum>
     {
-        Task<bool> Start(string communicationChannel = null);
+        #region Public Events
 
-        void Stop();
+        event EventHandler<ServiceStatusEventArgs> ConnectivityChanged;
+
+        #endregion
+
+        #region Public Properties
 
         ServiceStatusEnum Status { get; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        Task Start(string communicationChannel = null);
+
+        void Stop(bool unsubscribeHandlers = true);
+
+        #endregion
     }
 }

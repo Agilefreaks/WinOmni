@@ -102,6 +102,7 @@
 
         public void Disconnect()
         {
+            Channel.Close();
         }
 
         #endregion
@@ -109,6 +110,11 @@
         public IDisposable Subscribe(IObserver<WebsocketConnectionStatusEnum> observer)
         {
             return ConnectionObservable.Subscribe(observer);
+        }
+
+        public IDisposable Subscribe(IObserver<OmniMessage> observer)
+        {
+            return _subject.Subscribe(observer);
         }
     }
 }
