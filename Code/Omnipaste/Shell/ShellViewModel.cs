@@ -11,7 +11,6 @@
     using Clipboard;
     using Ninject;
     using Notifications;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using Omnipaste.Configuration;
     using Omnipaste.Connection;
@@ -31,8 +30,6 @@
 
         private IConnectionViewModel _connectionViewModel;
 
-        private IConnectionViewModel _connectionViewModel1;
-
         #endregion
 
         #region Constructors and Destructors
@@ -40,27 +37,15 @@
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
             IUserTokenViewModel userToken,
-            IContextMenuViewModel contextMenuViewModel)
+            IContextMenuViewModel contextMenuViewModelViewModel)
         {
             UserToken = userToken;
 
             ConfigurationViewModel = configurationViewModel;
+            ContextMenuViewModel = contextMenuViewModelViewModel;
+            ContextMenuViewModel.ShellViewModel = this;
 
             DisplayName = Resources.AplicationName;
-            try
-            {
-                if (ApplicationDeployment.IsNetworkDeployed)
-                {
-                    var ad = ApplicationDeployment.CurrentDeployment;
-                    version = ad.CurrentVersion;
-                }
-            }
-            catch (InvalidDeploymentException)
-            {
-            }
-
-            ContextMenu = contextMenuViewModel;
-            ContextMenu.ShellViewModel = this;
         }
 
         #endregion
@@ -69,7 +54,7 @@
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
 
-        public IContextMenuViewModel ContextMenu { get; set; }
+        public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         [Inject]
         public IDialogService DialogService { get; set; }
@@ -81,11 +66,11 @@
         {
             get
             {
-                return _connectionViewModel1;
+                return _connectionViewModel;
             }
             set
             {
-                _connectionViewModel1 = value;
+                _connectionViewModel = value;
                 NotifyOfPropertyChange(() => ConnectionViewModel);
             }
         }

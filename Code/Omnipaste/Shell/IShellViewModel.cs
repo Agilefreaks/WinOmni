@@ -11,7 +11,7 @@
 
         IDialogViewModel DialogViewModel { get; set; }
 
-        IContextMenuViewModel ContextMenu { get; set; }
+        IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         void Show();
     }

@@ -18,10 +18,17 @@
             eventAggregator.Subscribe(this);
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ApplicationDeployment.IsNetworkDeployed)
+            try
             {
-                var ad = ApplicationDeployment.CurrentDeployment;
-                version = ad.CurrentVersion;
+                if (ApplicationDeployment.IsNetworkDeployed)
+                {
+                    var ad = ApplicationDeployment.CurrentDeployment;
+                    version = ad.CurrentVersion;
+                }
+            }
+            catch (InvalidDeploymentException)
+            {
+                // TODO: log error in BugFreak
             }
 
             TooltipText = "Omnipaste " + version;

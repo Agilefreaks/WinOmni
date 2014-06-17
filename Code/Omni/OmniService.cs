@@ -100,8 +100,8 @@
 
         private async Task<string> RegisterDevice()
         {
-            var deviceIdentifier = _configurationService.GetDeviceIdentifier();
-            var machineName = _configurationService.GetMachineName();
+            var deviceIdentifier = _configurationService.DeviceIdentifier;
+            var machineName = _configurationService.MachineName;
 
             await _devicesApi.Register(deviceIdentifier, machineName);
             return deviceIdentifier;
