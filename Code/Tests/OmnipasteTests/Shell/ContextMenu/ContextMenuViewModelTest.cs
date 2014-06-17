@@ -7,6 +7,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Interfaces;
     using Omnipaste.Shell.ContextMenu;
     using Action = System.Action;
 
@@ -16,6 +17,8 @@
         #region Fields
 
         private Mock<IEventAggregator> _mockEventAggregator;
+
+        private Mock<IConfigurationService> _mockConfigurationService;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -32,6 +35,9 @@
 
             _mockEventAggregator = new Mock<IEventAggregator>();
             _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
+
+            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 

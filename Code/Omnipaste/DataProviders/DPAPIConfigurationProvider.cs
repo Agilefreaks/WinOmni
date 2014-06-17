@@ -15,19 +15,23 @@
 
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {
+        #region Constants
+
         private const string FileName = "settings.cfg";
+
+        #endregion
+
+        #region Fields
+
         private readonly byte[] _entropy = Encoding.UTF8.GetBytes("ExtraEntropyToBeMoreSafe");
 
-        private string _settingsFolder;
         private string _settingFilePath;
 
-        public string SettingsFolder
-        {
-            get
-            {
-                return _settingsFolder ?? (_settingsFolder = GetSettingsFolder());
-            }
-        }
+        private string _settingsFolder;
+
+        #endregion
+
+        #region Public Properties
 
         public string FullSettingsFilePath
         {
@@ -37,7 +41,36 @@
             }
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
+        public string SettingsFolder
+        {
+            get
+            {
+                return _settingsFolder ?? (_settingsFolder = GetSettingsFolder());
+            }
+        }
+
+        #endregion
+
+        #region Public Indexers
+
+        public string this[string key]
+        {
+            get
+            {
+                return GetValue(key);
+            }
+            set
+            {
+                SetValue(key, value);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
         public string GetValue(string key)
         {
             string value = null;
@@ -59,14 +92,21 @@
             return value;
         }
 
+        public T GetValue<T>(string key, T defaultValue)
+        {
+            var value = GetValue(key);
+
+            return value != null ? (T)(object)value : defaultValue;
+        }
+
         public bool SetValue(string key, string value)
         {
             bool saved;
             try
             {
                 var document = File.Exists(FullSettingsFilePath)
-                                         ? UpdateExistingDocument(key, value)
-                                         : InitializeNewSettingsDocument(key, value);
+                                   ? UpdateExistingDocument(key, value)
+                                   : InitializeNewSettingsDocument(key, value);
                 SaveToFile(GetProtectedData(document));
                 saved = true;
             }
@@ -79,16 +119,13 @@
             return saved;
         }
 
-        public string this[string key]
+        #endregion
+
+        #region Methods
+
+        private static XElement GetElementForKey(XNode document, string key)
         {
-            get
-            {
-                return GetValue(key);
-            }
-            set
-            {
-                SetValue(key, value);
-            }
+            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
         }
 
         private static string GetSettingsFolder()
@@ -111,11 +148,6 @@
             return document;
         }
 
-        private static XElement GetElementForKey(XNode document, string key)
-        {
-            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
-        }
-
         private byte[] GetProtectedData(XDocument document)
         {
             byte[] protectedData;
@@ -133,20 +165,8 @@
             return protectedData;
         }
 
-        private void SaveToFile(byte[] protectedData)
-        {
-            if (!Directory.Exists(SettingsFolder))
-            {
-                Directory.CreateDirectory(SettingsFolder);
-            }
-
-            using (var file = File.Open(FullSettingsFilePath, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                file.Write(protectedData, 0, protectedData.Count());
-            }
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
         private XDocument LoadData()
         {
             var readAllBytes = File.ReadAllBytes(FullSettingsFilePath);
@@ -160,7 +180,21 @@
             return xDocument;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
+        private void SaveToFile(byte[] protectedData)
+        {
+            if (!Directory.Exists(SettingsFolder))
+            {
+                Directory.CreateDirectory(SettingsFolder);
+            }
+
+            using (var file = File.Open(FullSettingsFilePath, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                file.Write(protectedData, 0, protectedData.Count());
+            }
+        }
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
         private XDocument UpdateExistingDocument(string key, string value)
         {
             var xDocument = LoadData();
@@ -177,5 +211,7 @@
 
             return xDocument;
         }
+
+        #endregion
     }
 }

@@ -74,7 +74,15 @@
         {
             get
             {
-                return Environment.MachineName;                
+                return Environment.MachineName;
+            }
+        }
+
+        public bool AutoStart
+        {
+            get
+            {
+                return _configurationProvider.GetValue("autoStart", true);
             }
         }
 

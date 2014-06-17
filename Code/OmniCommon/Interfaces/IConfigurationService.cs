@@ -6,15 +6,17 @@
 
         string AccessToken { get; }
 
-        string RefreshToken { get; }
-
-        string TokenType { get; }
+        bool AutoStart { get; }
 
         string ClientId { get; }
 
         string DeviceIdentifier { get; }
 
         string MachineName { get; }
+
+        string RefreshToken { get; }
+
+        string TokenType { get; }
 
         #endregion
 

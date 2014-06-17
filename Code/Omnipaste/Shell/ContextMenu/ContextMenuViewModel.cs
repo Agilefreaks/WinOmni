@@ -5,13 +5,14 @@
     using System.Windows;
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
         #region Constructors and Destructors
 
-        public ContextMenuViewModel(IEventAggregator eventAggregator)
+        public ContextMenuViewModel(IEventAggregator eventAggregator, IConfigurationService configurationService)
         {
             EventAggregator = eventAggregator;
             eventAggregator.Subscribe(this);
@@ -25,6 +26,7 @@
 
             TooltipText = "Omnipaste " + version;
             IconSource = "/Icon.ico";
+            AutoStart = configurationService.AutoStart;
 
             ApplicationWrapper = new ApplicationWrapper();
         }
