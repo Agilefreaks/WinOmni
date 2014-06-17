@@ -60,7 +60,7 @@
             get
             {
                 return
-                    _connectionObservable ?? Observable.FromEventPattern(
+                    _connectionObservable = _connectionObservable ?? Observable.FromEventPattern(
                             x => _monitor.ConnectionLost += x,
                             x => _monitor.ConnectionLost -= x)
                             .Select(x => WebsocketConnectionStatusEnum.Disconnected)
@@ -77,13 +77,6 @@
             get
             {
                 return _channel;
-            }
-
-            set
-            {
-                if (_channel != null)
-                {
-                }
             }
         }
 
