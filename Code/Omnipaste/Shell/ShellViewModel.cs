@@ -96,8 +96,6 @@
             _view.Hide();
         }
 
-        
-
         public void Show()
         {
             _view.Show();

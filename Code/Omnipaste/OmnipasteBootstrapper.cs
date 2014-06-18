@@ -12,7 +12,6 @@
     using Omni;
     using OmniApi;
     using OmniCommon;
-    using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
@@ -76,8 +75,6 @@
                     .Select(t => t.Name.EndsWith("Service"))
                     .BindDefaultInterface()
                     .Configure(c => c.InSingletonScope()));
-
-            _kernel.Bind(x => x.FromThisAssembly().Select(t => t.Name.EndsWith("StartupTask")).BindAllInterfaces());
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)
@@ -104,15 +101,6 @@
 
             DisplayRootViewFor<ShellViewModel>();
         }
-
-        protected void RunStartupTasks()
-        {
-            foreach (var task in _kernel.GetAll<IStartupTask>())
-            {
-                task.Startup();
-            }
-        }
-
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
             return new[] { Assembly.GetExecutingAssembly() };
