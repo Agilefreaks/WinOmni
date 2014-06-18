@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Caliburn.Micro;
+    using Ninject;
     using Omni;
     using OmniSync;
 
@@ -107,7 +108,7 @@
         public async Task Connect()
         {
             Enabled = false;
-
+            
             await OmniService.Start();
 
             Enabled = true;

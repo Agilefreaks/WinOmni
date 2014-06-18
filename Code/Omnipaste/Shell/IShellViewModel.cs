@@ -2,10 +2,11 @@
 {
     using Caliburn.Micro;
     using Omnipaste.Dialog;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
 
-    public interface IShellViewModel : IConductor, IScreen, IViewAware
+    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>
     {
         ILoadingViewModel LoadingViewModel { get; set; }
 

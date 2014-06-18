@@ -228,6 +228,7 @@
     <Compile Include="Dialog\IDialogViewModel.cs" />
     <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
     <Compile Include="EventAggregatorMessages\LoginComplete.cs" />
+    <Compile Include="EventAggregatorMessages\ShowShellMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />

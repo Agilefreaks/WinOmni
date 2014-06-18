@@ -15,6 +15,7 @@
     using Omnipaste.Configuration;
     using Omnipaste.Connection;
     using Omnipaste.Dialog;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Loading;
     using Omnipaste.NotificationList;
@@ -37,13 +38,15 @@
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
             IUserTokenViewModel userToken,
-            IContextMenuViewModel contextMenuViewModelViewModel)
+            IContextMenuViewModel contextMenuViewModelViewModel,
+            IEventAggregator eventAggregator)
         {
             UserToken = userToken;
 
             ConfigurationViewModel = configurationViewModel;
             ContextMenuViewModel = contextMenuViewModelViewModel;
-            ContextMenuViewModel.ShellViewModel = this;
+
+            eventAggregator.Subscribe(this);
 
             DisplayName = Resources.AplicationName;
         }
@@ -99,6 +102,11 @@
         public void Show()
         {
             _view.Show();
+        }
+
+        public void Handle(ShowShellMessage message)
+        {
+            Show();
         }
 
         #endregion

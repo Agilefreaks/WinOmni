@@ -1,16 +1,14 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
-    using System;
     using Caliburn.Micro;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
-    using Action = System.Action;
 
     [TestFixture]
     public class ContextMenuViewModelTest
@@ -20,6 +18,8 @@
         private Mock<IOmniService> _mockOmniService;
 
         private Mock<IConfigurationService> _mockConfigurationService;
+
+        private Mock<IEventAggregator> _mockEventAggregator;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -34,11 +34,9 @@
         {
             _mockingKernel = new MoqMockingKernel();
 
-            _mockOmniService = new Mock<IOmniService>();
-            _mockingKernel.Bind<IOmniService>().ToConstant(_mockOmniService.Object);
-
-            _mockConfigurationService = new Mock<IConfigurationService>();
-            _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
+            _mockOmniService = _mockingKernel.GetMock<IOmniService>();
+            _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
+            _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
@@ -67,6 +65,24 @@
             _mockOmniService.Verify(
                 m => m.Stop(true),
                 Times.Once);
+        }
+
+        [Test]
+        public void Show_Always_PublishesShowShellEvent()
+        {
+            _subject.Show();
+
+            _mockEventAggregator.Verify(m => m.Publish(It.IsAny<ShowShellMessage>(), Execute.OnUIThread));
+        }
+
+        [Test]
+        public void ToggleAutoStart_Always_SetConfiguration()
+        {
+            _mockConfigurationService.SetupGet(m => m.AutoStart).Returns(true);
+
+            _subject.ToggleAutoStart();
+
+            _mockConfigurationService.VerifySet(m => m.AutoStart = false);
         }
 
         #endregion

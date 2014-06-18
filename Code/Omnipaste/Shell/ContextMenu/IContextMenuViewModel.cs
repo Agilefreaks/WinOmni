@@ -8,13 +8,15 @@
 
         bool IsSyncing { get; set; }
 
-        IShellViewModel ShellViewModel { get; set; }
-
         #endregion
 
         #region Public Methods and Operators
 
+        void Show();
+
         void ToggleSync();
+
+        void ToggleAutoStart();
 
         #endregion
     }

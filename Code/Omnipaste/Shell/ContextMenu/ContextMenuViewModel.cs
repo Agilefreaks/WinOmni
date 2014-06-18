@@ -3,9 +3,12 @@
     using System.Deployment.Application;
     using System.Reflection;
     using System.Windows;
+    using System.Windows.Navigation;
     using Caliburn.Micro;
+    using Ninject;
     using Omni;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
@@ -14,6 +17,7 @@
 
         public ContextMenuViewModel(IConfigurationService configurationService, IOmniService omniService)
         {
+            ConfigurationService = configurationService;
             OmniService = omniService;
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -46,9 +50,12 @@
 
         public Visibility Visibility { get; set; }
 
-        public IShellViewModel ShellViewModel { get; set; }
+        public IConfigurationService ConfigurationService { get; set; }
 
         public IOmniService OmniService { get; set; }
+
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
 
         #endregion
 
@@ -61,12 +68,12 @@
 
         public void Show()
         {
-            ShellViewModel.Show();
+            EventAggregator.PublishOnUIThread(new ShowShellMessage());
         }
 
         public void ToggleAutoStart()
         {
-
+            ConfigurationService.AutoStart = !ConfigurationService.AutoStart;
         }
 
         public void ToggleSync()

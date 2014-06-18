@@ -52,12 +52,6 @@
                            };
         }
 
-        [Test]
-        public void Constructor_Always_SetsShell()
-        {
-            _mockContextViewModel.VerifySet(m => m.ShellViewModel = _subject);
-        }
-
         #endregion
     }
 }

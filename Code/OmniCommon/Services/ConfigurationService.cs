@@ -4,6 +4,7 @@
     using System.Configuration;
     using System.Linq;
     using System.Net.NetworkInformation;
+    using System.Runtime.InteropServices;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
 
@@ -83,6 +84,11 @@
             get
             {
                 return _configurationProvider.GetValue("autoStart", true);
+            }
+
+            set
+            {
+                _configurationProvider.SetValue("autoStart", value.ToString());
             }
         }
 

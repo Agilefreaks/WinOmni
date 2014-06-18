@@ -6,7 +6,7 @@
 
         string AccessToken { get; }
 
-        bool AutoStart { get; }
+        bool AutoStart { get; set; }
 
         string ClientId { get; }
 
