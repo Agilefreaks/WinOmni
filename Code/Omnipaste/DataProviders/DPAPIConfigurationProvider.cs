@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading;
+    using System.Windows.Input;
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
@@ -18,6 +20,10 @@
         #region Constants
 
         private const string FileName = "settings.cfg";
+
+        private const string ValueElement = "Value";
+
+        private const string NameElement = "Name";
 
         #endregion
 
@@ -152,9 +158,9 @@
             return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key)) ?? NewSettingElement(key);
         }
 
-        private static XElement NewSettingElement(string key)
+        private static XElement NewSettingElement(string key, string value = null)
         {
-            return new XElement(key, new XElement("Value", null));
+            return new XElement("Entry", new XElement(NameElement, key), new XElement(ValueElement, value));
         }
 
         private static string GetSettingsFolder()
@@ -174,7 +180,7 @@
 
             if (root != null)
             {
-                root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
+                root.Add(NewSettingElement(key, value));
             }
 
             return document;
@@ -248,14 +254,11 @@
         {
             var xDocument = LoadData();
             var element = GetElementForKey(xDocument, key);
-            if (element != null)
+            element.Descendants(ValueElement).First().Value = value;
+
+            if (element.Parent == null && xDocument.Root != null)
             {
-                element.Descendants("Value").First().Value = value;
-            }
-            else
-            {
-                Debug.Assert(xDocument.Root != null, "xDocument.Root != null");
-                xDocument.Root.Add(new XElement("Entry", new XElement("Name", key), new XElement("Value", value)));
+                xDocument.Root.Add(element);
             }
 
             return xDocument;

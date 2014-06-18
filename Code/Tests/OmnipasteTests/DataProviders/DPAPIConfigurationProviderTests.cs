@@ -56,6 +56,28 @@
             _subject.GetValue("someString", "default value").Should().Be("default value");
         }
 
+        [Test]
+        public void SetValue_WillSetValues()
+        {
+            _subject.SetValue("token", "token value");
+            _subject.SetValue("type", "type value");
+
+            _subject.GetValue("token").Should().Be("token value");
+            _subject.GetValue("type").Should().Be("type value");
+        }
+
+        [Test]
+        public void SetValue_WillUpdateValues()
+        {
+            _subject.SetValue("token", "token value");
+
+            _subject.GetValue("token").Should().Be("token value");
+
+            _subject.SetValue("token", "token value update");
+
+            _subject.GetValue("token").Should().Be("token value update");
+        }
+
         #endregion
     }
 }
