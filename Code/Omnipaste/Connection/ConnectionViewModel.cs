@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using Caliburn.Micro;
-    using Ninject;
     using Omni;
     using OmniSync;
 
@@ -76,9 +75,6 @@
                 return OmniService.Status == ServiceStatusEnum.Started;
             }
         }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
 
         public IOmniService OmniService
         {
