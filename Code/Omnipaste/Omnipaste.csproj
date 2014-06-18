@@ -215,19 +215,12 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
-    <Compile Include="Configuration\ConfigurationView.xaml.cs">
-      <DependentUpon>ConfigurationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Configuration\ConfigurationViewModel.cs" />
-    <Compile Include="Configuration\IConfigurationViewModel.cs" />
-    <Compile Include="Connection\ConnectionViewModel.cs" />
-    <Compile Include="Connection\IConnectionViewModel.cs" />
+    <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
+    <Compile Include="Shell\Connection\IConnectionViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
     <Compile Include="Dialog\IDialogViewModel.cs" />
-    <Compile Include="EventAggregatorMessages\ConfigurationCompletedMessage.cs" />
-    <Compile Include="EventAggregatorMessages\LoginComplete.cs" />
     <Compile Include="EventAggregatorMessages\ShowShellMessage.cs" />
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
@@ -292,11 +285,7 @@
       <DependentUpon>UserTokenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
-    <Page Include="Configuration\ConfigurationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\ConnectionView.xaml">
+    <Page Include="Shell\Connection\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

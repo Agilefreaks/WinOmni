@@ -3,7 +3,6 @@
     using System.Deployment.Application;
     using System.Reflection;
     using System.Windows;
-    using System.Windows.Navigation;
     using Caliburn.Micro;
     using Ninject;
     using Omni;
@@ -42,7 +41,7 @@
 
         public string IconSource { get; set; }
 
-        public bool IsSyncing { get; set; }
+        public bool IsStopped { get; set; }
 
         public string TooltipText { get; set; }
 
@@ -78,13 +77,13 @@
 
         public async void ToggleSync()
         {
-            if (IsSyncing)
+            if (IsStopped)
             {
-                await OmniService.Start();
+                OmniService.Stop();
             }
             else
             {
-                OmniService.Stop();
+                await OmniService.Start();
             }
         }
 

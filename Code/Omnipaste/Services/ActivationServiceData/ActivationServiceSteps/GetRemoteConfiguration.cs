@@ -1,27 +1,50 @@
-﻿using System.Threading.Tasks;
-using Ninject;
-using OmniApi.Resources;
-using OmniCommon.Interfaces;
-using Retrofit.Net;
-
-namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System.Threading.Tasks;
+    using Ninject;
     using OmniApi.Models;
+    using OmniApi.Resources;
+    using OmniCommon.Interfaces;
+    using Retrofit.Net;
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
-        private readonly IConfigurationService _configurationService;
-
-        public IAuthorizationAPI AuthorizationAPI { get; set; }
+        #region Constants
 
         public const int MaxRetryCount = 5;
 
+        #endregion
+
+        #region Fields
+
+        private readonly IConfigurationService _configurationService;
+
         private RetryInfo _payload;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public GetRemoteConfiguration(IAuthorizationAPI authorizationApi, IConfigurationService configurationService)
+        {
+            _configurationService = configurationService;
+            AuthorizationApi = authorizationApi;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public IAuthorizationAPI AuthorizationApi { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
 
         public override DependencyParameter Parameter { get; set; }
+
+        #endregion
+
+        #region Properties
 
         private RetryInfo PayLoad
         {
@@ -32,11 +55,9 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
         }
 
-        public GetRemoteConfiguration(IAuthorizationAPI authorizationApi, IConfigurationService configurationService)
-        {
-            _configurationService = configurationService;
-            AuthorizationAPI = authorizationApi;
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         public override IExecuteResult Execute()
         {
@@ -56,19 +77,24 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             }
             else
             {
-                var activationModelTask = await AuthorizationAPI.Activate(PayLoad.Token, _configurationService.ClientId);
+                var activationModelTask = await AuthorizationApi.Activate(PayLoad.Token, _configurationService.ClientId);
                 SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
             }
 
             return executeResult;
         }
 
-        private void SetResultPropertiesBasedOnActivationData(IExecuteResult executeResult, ActivationModel activationModel)
+        #endregion
+
+        #region Methods
+
+        private void SetResultPropertiesBasedOnActivationData(
+            IExecuteResult executeResult,
+            ActivationModel activationModel)
         {
             if (activationModel == null)
             {
-                executeResult.Data = new RetryInfo(
-                    _payload.Token, _payload.FailCount + 1);
+                executeResult.Data = new RetryInfo(_payload.Token, _payload.FailCount + 1);
                 executeResult.State = _payload.FailCount < MaxRetryCount
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
@@ -76,14 +102,14 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
             else if (!string.IsNullOrEmpty(activationModel.access_token))
             {
                 var authenticator = new Authenticator
-                                              {
-                                                  AccessToken = activationModel.access_token,
-                                                  RefreshToken = activationModel.refresh_token,
-                                                  GrantType = activationModel.token_type
-                                              };
+                                        {
+                                            AccessToken = activationModel.access_token,
+                                            RefreshToken = activationModel.refresh_token,
+                                            GrantType = activationModel.token_type
+                                        };
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
                 executeResult.Data = authenticator;
-                
+
                 Kernel.Bind<Authenticator>().ToConstant(authenticator);
             }
             else
@@ -92,5 +118,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
                 executeResult.Data = activationModel.error_description;
             }
         }
+
+        #endregion
     }
 }

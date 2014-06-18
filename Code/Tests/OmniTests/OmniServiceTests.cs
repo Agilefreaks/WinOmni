@@ -1,7 +1,6 @@
 ﻿namespace OmniTests
 {
     using System;
-    using System.Reactive.Subjects;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -23,11 +22,10 @@
         private readonly string _registrationId = Guid.NewGuid().ToString();
 
         private const string DeviceName = "Laptop";
+
         private const string DeviceIdentifier = "42";
 
         private IOmniService _subject;
-
-        private ISubject<OmniMessage> _replaySubject;
 
         private Mock<IWebsocketConnectionFactory> _websocketConnectionFactory;
 
@@ -35,22 +33,27 @@
 
         private Mock<IConfigurationService> _configurationServiceMock;
 
-        private Mock<IOmniMessageHandler> _mockOmniMessageHandler;
-
         private Mock<IWebsocketConnection> _mockWebsocketConnection;
 
+        private Mock<IHandler> _someHandler;
+
         private TestScheduler _scheduler;
+
+        private MoqMockingKernel _kernel;
 
         [SetUp]
         public void SetUp()
         {
-            var kernel = new MoqMockingKernel();
-            kernel.Bind<IOmniService>().To<OmniService>();
+            _kernel = new MoqMockingKernel();
+            _kernel.Bind<IOmniService>().To<OmniService>();
 
-            _mockOmniMessageHandler = kernel.GetMock<IOmniMessageHandler>();
+            _kernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
-            _devicesApiMock = kernel.GetMock<IDevicesApi>();
-            _configurationServiceMock = kernel.GetMock<IConfigurationService>();
+            _devicesApiMock = _kernel.GetMock<IDevicesApi>();
+            _configurationServiceMock = _kernel.GetMock<IConfigurationService>();
+            _someHandler = _kernel.GetMock<IHandler>();
+
+            _kernel.Bind<IHandler>().ToConstant(_someHandler.Object);
 
             _configurationServiceMock
                 .Setup(cs => cs.MachineName)
@@ -60,33 +63,29 @@
                 .Setup(cs => cs.DeviceIdentifier)
                 .Returns(DeviceIdentifier);
 
-            _mockWebsocketConnection = kernel.GetMock<IWebsocketConnection>();
+            _mockWebsocketConnection = _kernel.GetMock<IWebsocketConnection>();
             _mockWebsocketConnection.SetupGet(wc => wc.RegistrationId).Returns(_registrationId);
 
             _scheduler = new TestScheduler();
-            
+
             ITestableObservable<WebsocketConnectionStatusEnum> testableObservable = _scheduler.CreateColdObservable(new[] { ReactiveTest.OnNext(100, WebsocketConnectionStatusEnum.Disconnected) });
             _mockWebsocketConnection
                 .Setup(c => c.Subscribe(It.IsAny<IObserver<WebsocketConnectionStatusEnum>>()))
                 .Callback<IObserver<WebsocketConnectionStatusEnum>>(p => testableObservable.Subscribe(p));
             _mockWebsocketConnection.SetupGet(c => c.ConnectionObservable).Returns(testableObservable);
 
-            _websocketConnectionFactory = kernel.GetMock<IWebsocketConnectionFactory>();
+            _websocketConnectionFactory = _kernel.GetMock<IWebsocketConnectionFactory>();
             _websocketConnectionFactory
                 .Setup(f => f.Create())
                 .Returns(_mockWebsocketConnection.Object);
 
-            _subject = kernel.Get<IOmniService>();
+            _subject = _kernel.Get<IOmniService>();
         }
 
         [Test]
-        public async void Start_RegistersTheDeviceOnTheAPI()
+        public async void Start_RegistersTheDeviceOnTheApi()
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            SetupForSuccess();
 
             await _subject.Start();
 
@@ -97,11 +96,7 @@
         [Test]
         public async void Start_WhenActivationIsSuccessful_HasStatusStarted()
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() })); ;
+            SetupForSuccess();
 
             await _subject.Start();
 
@@ -111,11 +106,7 @@
         [Test]
         public async void Start_WhenActivationIsNotSuccessful_HasStatusStopped()
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device>())); ;
+            SetupForFailure();
 
             await _subject.Start();
 
@@ -123,27 +114,19 @@
         }
 
         [Test]
-        public async void Start_SubscribesMessageHandlers()
+        public async void Start_StartsHandlers()
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            SetupForSuccess();
 
             await _subject.Start();
 
-            _mockOmniMessageHandler.Verify(omh => omh.SubscribeTo(_mockWebsocketConnection.Object), Times.Once());
+            _someHandler.Verify(m => m.Start(It.IsAny<IObservable<OmniMessage>>()));
         }
 
         [Test]
         public async Task Start_SetsTheStatusToStarted()
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            SetupForSuccess();
 
             await _subject.Start();
 
@@ -151,19 +134,33 @@
         }
 
         [Test]
-        public void WhenConnectionIsLostItWillTryToReconnect()
+        public async void WhenConnectionIsLostItWillTryToReconnect()
         {
-            
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-               .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _subject.Start();
+            SetupForSuccess();
 
+            await _subject.Start();
             _scheduler.Start();
 
             _subject.Status.Should().Be(ServiceStatusEnum.Reconnecting);
+        }
+
+        private void SetupForFailure()
+        {
+            SetupForStart(false);
+        }
+
+        private void SetupForSuccess()
+        {
+            SetupForStart();
+        }
+
+        private void SetupForStart(bool success = true)
+        {
+            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
+            _devicesApiMock
+                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
+                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = success ? new Device() : null }));
         }
     }
 }

@@ -6,7 +6,7 @@
     {
         public override void Load()
         {
-            Kernel.Bind<IOmniService>().To<OmniService>();
+            Kernel.Bind<IOmniService>().To<OmniService>().InSingletonScope();
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿namespace Omni
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using System.Timers;
+    using Clipboard;
     using Ninject;
+    using Notifications;
     using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
@@ -18,11 +20,11 @@
 
         private readonly IConfigurationService _configurationService;
 
-        private readonly IDevicesApi _devicesApi;
-
         private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
 
         private readonly IObservable<ServiceStatusEnum> _statusChanged;
+
+        private IDevicesApi _devicesApi;
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
@@ -35,12 +37,10 @@
         #region Constructors and Destructors
 
         public OmniService(
-            IDevicesApi devicesApi,
             IConfigurationService configurationService,
             IWebsocketConnectionFactory websocketConnectionFactory)
         {
             WebsocketConnectionFactory = websocketConnectionFactory;
-            _devicesApi = devicesApi;
             _configurationService = configurationService;
 
             _retryConnectionTimer.Elapsed += Reconnect;
@@ -62,7 +62,7 @@
         #region Public Properties
 
         [Inject]
-        public IEnumerable<IOmniMessageHandler> MessageHandlers { get; set; }
+        public IKernel Kernel { get; set; }
 
         public ServiceStatusEnum Status
         {
@@ -130,6 +130,8 @@
 
             if (WebsocketConnection.RegistrationId != null)
             {
+                _devicesApi = Kernel.Get<IDevicesApi>();
+
                 var deviceIdentifier = await RegisterDevice();
 
                 var activationResult = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
@@ -137,6 +139,8 @@
                 if (activationResult.Data != null)
                 {
                     Status = ServiceStatusEnum.Started;
+
+                    StartHandlers();
                 }
             }
         }
@@ -148,13 +152,15 @@
                 return;
             }
 
-            Status = ServiceStatusEnum.Stopped;
+            Status = ServiceStatusEnum.Stopping;
 
             if (unsubscribeHandlers)
             {
-                UnsubscribeMessageHandlers();
+                StopHandlders();
                 WebsocketConnection.Disconnect();
             }
+
+            Status = ServiceStatusEnum.Stopped;
         }
 
         public IDisposable Subscribe(IObserver<ServiceStatusEnum> observer)
@@ -170,7 +176,6 @@
         {
             WebsocketConnection = WebsocketConnectionFactory.Create();
             await WebsocketConnection.Connect();
-            SubscribeMessageHandlers();
         }
 
         private void OnWebsocketConnectionLost()
@@ -210,20 +215,30 @@
             return activationResult;
         }
 
-        private void SubscribeMessageHandlers()
+        private void StartHandlers()
         {
-            foreach (var messageHandler in MessageHandlers)
+            if (Kernel.GetModules().All(m => m.GetType() != typeof(ClipboardModule)))
             {
-                messageHandler.SubscribeTo(WebsocketConnection);
+                Kernel.Load(new ClipboardModule());
+            }
+
+            if (Kernel.GetModules().All(m => m.GetType() != typeof(NotificationsModule)))
+            {
+                Kernel.Load(new NotificationsModule());
+            }
+
+            foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
+            {
+                handler.Start(WebsocketConnection);
             }
         }
 
-        private void UnsubscribeMessageHandlers()
+        private void StopHandlders()
         {
-            foreach (var messageHandler in MessageHandlers)
+            foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
-                messageHandler.Dispose();
-            }
+                handler.Stop();
+            }            
         }
 
         #endregion

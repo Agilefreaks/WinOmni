@@ -6,10 +6,9 @@
     using System.Reactive.Subjects;
     using Notifications.API;
     using Notifications.Models;
-    using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public class NotificationsHandler : INotificationsHandler, IOmniMessageHandler
+    public class NotificationsHandler : INotificationsHandler
     {
         #region Fields
 
@@ -37,11 +36,6 @@
 
         #region Public Methods and Operators
 
-        public void Dispose()
-        {
-            _subscription.Dispose();
-        }
-
         public void OnCompleted()
         {
             throw new NotImplementedException();
@@ -63,12 +57,26 @@
             }
         }
 
+        public void Start(IObservable<OmniMessage> omniMessageObservable)
+        {
+            SubscribeTo(omniMessageObservable);
+        }
+
+        public void Stop()
+        {
+            _subscription.Dispose();
+        }
+
         public IDisposable Subscribe(IObserver<Notification> observer)
         {
             return _subject.Subscribe(observer);
         }
 
-        public void SubscribeTo(IObservable<OmniMessage> observable)
+        #endregion
+
+        #region Methods
+
+        private void SubscribeTo(IObservable<OmniMessage> observable)
         {
             _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
         }

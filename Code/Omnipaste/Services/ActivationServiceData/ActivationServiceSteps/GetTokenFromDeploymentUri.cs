@@ -6,15 +6,27 @@
 
     public class GetTokenFromDeploymentUri : ActivationStepBase
     {
+        #region Fields
+
         private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
 
         private readonly IConfigurationProvider _configurationProvider;
 
-        public GetTokenFromDeploymentUri(IApplicationDeploymentInfoProvider provider, IConfigurationProvider configurationProvider)
+        #endregion
+
+        #region Constructors and Destructors
+
+        public GetTokenFromDeploymentUri(
+            IApplicationDeploymentInfoProvider provider,
+            IConfigurationProvider configurationProvider)
         {
             _applicationDeploymentInfoProvider = provider;
             _configurationProvider = configurationProvider;
         }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override IExecuteResult Execute()
         {
@@ -33,6 +45,10 @@
             return result;
         }
 
+        #endregion
+
+        #region Methods
+
         private string GetActivationTokenFromDeploymentParameters()
         {
             var deploymentParameters = new NameValueCollection();
@@ -43,5 +59,7 @@
 
             return deploymentParameters["token"];
         }
+
+        #endregion
     }
 }

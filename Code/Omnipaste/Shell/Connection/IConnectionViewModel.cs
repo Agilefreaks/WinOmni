@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Connection
+﻿namespace Omnipaste.Shell.Connection
 {
     using System.Threading.Tasks;
     using Caliburn.Micro;

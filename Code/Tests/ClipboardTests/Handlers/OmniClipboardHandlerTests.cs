@@ -19,8 +19,6 @@
     {
         private IOmniClipboardHandler _omniClipboardHandler;
 
-        private IOmniMessageHandler _omniMessageHandler;
-
         private MoqMockingKernel _mockingKernel;
 
         private Mock<IClippingsApi> _mockClippingsApi;
@@ -33,17 +31,12 @@
             _mockingKernel = new MoqMockingKernel();
             _mockingKernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
-            _mockClippingsApi = new Mock<IClippingsApi>();
-            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockClippingsApi = _mockingKernel.GetMock<IClippingsApi>();
+            _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
 
-            _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
-            _mockingKernel.Bind<IClippingsApi>().ToConstant(_mockClippingsApi.Object);
-            _mockingKernel.Bind<IOmniClipboardHandler, IOmniMessageHandler>()
-                .To<OmniClipboardHandler>()
-                .InSingletonScope();
+            _mockingKernel.Bind<IOmniClipboardHandler>().To<OmniClipboardHandler>();
 
             _omniClipboardHandler = _mockingKernel.Get<IOmniClipboardHandler>();
-            _omniMessageHandler = _mockingKernel.Get<IOmniMessageHandler>();
         }
 
         [Test]
@@ -57,7 +50,7 @@
                 .Setup(c => c.Last())
                 .ReturnsAsync(new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping });
 
-            _omniMessageHandler.SubscribeTo(observable);
+            _omniClipboardHandler.SubscribeTo(observable);
             _omniClipboardHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
@@ -71,7 +64,6 @@
             var observer = new Mock<IObserver<Clipping>>();
             var observable = new Subject<OmniMessage>();
 
-            _omniMessageHandler.SubscribeTo(observable);
             _omniClipboardHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));

@@ -3,7 +3,11 @@
     public enum ServiceStatusEnum
     {
         Stopped,
+
         Reconnecting,
-        Started
+
+        Started,
+
+        Stopping
     }
 }

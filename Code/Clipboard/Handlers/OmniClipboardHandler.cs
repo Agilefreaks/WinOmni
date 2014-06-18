@@ -9,7 +9,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public class OmniClipboardHandler : IOmniClipboardHandler, IOmniMessageHandler
+    public class OmniClipboardHandler : IOmniClipboardHandler
     {
         #region Fields
 
@@ -32,9 +32,9 @@
 
         #region Public Properties
 
-        public IConfigurationService ConfigurationService { get; set; }
-
         public IClippingsApi ClippingsApi { get; private set; }
+
+        public IConfigurationService ConfigurationService { get; set; }
 
         #endregion
 
@@ -42,7 +42,10 @@
 
         public void Dispose()
         {
-            _subscription.Dispose();
+            if (_subscription != null)
+            {
+                _subscription.Dispose();
+            }
         }
 
         public void OnCompleted()

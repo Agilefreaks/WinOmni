@@ -3,7 +3,6 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.UserToken;
 
     public class LoadingViewModel : Screen, ILoadingViewModel
@@ -55,11 +54,6 @@
         {
             UserTokenViewModel.Message = publishedEvent.Message;
             State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
-        }
-
-        public void Handle(ConfigurationCompletedMessage publishedEvent)
-        {
-            TryClose();
         }
 
         public void Handle(TokenRequestResultMessage publishedEvent)

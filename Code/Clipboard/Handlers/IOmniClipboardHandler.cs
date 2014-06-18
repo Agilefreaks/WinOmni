@@ -1,6 +1,10 @@
 ﻿namespace Clipboard.Handlers
 {
-    public interface IOmniClipboardHandler : IClipboard
+    using System;
+    using OmniCommon.Models;
+
+    public interface IOmniClipboardHandler : IClipboard, IObserver<OmniMessage>
     {
+        void SubscribeTo(IObservable<OmniMessage> observable);
     }
 }

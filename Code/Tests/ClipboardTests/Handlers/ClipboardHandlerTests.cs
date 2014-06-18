@@ -1,12 +1,14 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
+    using System.Reactive.Linq;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
     using NUnit.Framework;
+    using OmniCommon.Models;
 
     [TestFixture]
     public class ClipboardHandlerTests
@@ -37,7 +39,7 @@
         [Test]
         public void Start_Always_SubscribesToLocalAndOmni()
         {
-            _subject.Start();
+            _subject.Start(Observable.Empty<OmniMessage>());
 
             _mockLocalClipboardHandler.Verify(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>()));
             _mockOmniClipboardHandler.Verify(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>()));
@@ -49,11 +51,21 @@
             _mockLocalClipboardHandler.Setup(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>())).Returns(new Mock<IDisposable>().Object);
             _mockOmniClipboardHandler.Setup(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>())).Returns(new Mock<IDisposable>().Object);
 
-            _subject.Start();
+            _subject.Start(Observable.Empty<OmniMessage>());
             _subject.Stop();
 
             _mockLocalClipboardHandler.Verify(ch => ch.Dispose());
             _mockOmniClipboardHandler.Verify(ch => ch.Dispose());
+        }
+
+        [Test]
+        public void Start_Always_SubscribesOmniClipboardToOmniMessageObservable()
+        {
+            var omniMessageObservable = Observable.Empty<OmniMessage>();
+
+            _subject.Start(omniMessageObservable);
+
+            _mockOmniClipboardHandler.Verify(m => m.SubscribeTo(omniMessageObservable), Times.Once);
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿namespace OmniSync
 {
     using System.Configuration;
-    using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
     using WampSharp;
-    using WampSharp.Auxiliary.Client;
 
     public class WebsocketConnectionFactory : IWebsocketConnectionFactory
     {

@@ -46,24 +46,24 @@
         [Test]
         public void ToggleSync_WhenIsSyncingIsTrue_PublishesStartOmniServiceMessage()
         {
-            _subject.IsSyncing = true;
+            _subject.IsStopped = true;
 
             _subject.ToggleSync();
 
             _mockOmniService.Verify(
-                m => m.Start(null),
+                m => m.Stop(true),
                 Times.Once);
         }
 
         [Test]
         public void ToggleSync_WhenIsSyncingIsFalse_PublishesStopOmniServiceMessage()
         {
-            _subject.IsSyncing = false;
+            _subject.IsStopped = false;
 
             _subject.ToggleSync();
 
             _mockOmniService.Verify(
-                m => m.Stop(true),
+                m => m.Start(null),
                 Times.Once);
         }
 

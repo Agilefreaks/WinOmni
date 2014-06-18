@@ -6,7 +6,7 @@
     {
         #region Public Properties
 
-        bool IsSyncing { get; set; }
+        bool IsStopped { get; set; }
 
         #endregion
 

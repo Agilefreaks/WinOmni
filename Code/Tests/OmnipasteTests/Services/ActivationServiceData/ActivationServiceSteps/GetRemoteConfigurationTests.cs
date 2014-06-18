@@ -39,7 +39,7 @@
         [Test]
         public void CtorAlwaysSetsTheOmniApi()
         {
-            Assert.AreEqual(_subject.AuthorizationAPI, _mockAuthorizationAPI.Object);
+            Assert.AreEqual(_subject.AuthorizationApi, _mockAuthorizationAPI.Object);
         }
 
         //[Test]

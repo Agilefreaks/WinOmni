@@ -2,10 +2,9 @@
 {
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.UserToken;
 
-    public interface ILoadingViewModel : IScreen, IHandle<GetTokenFromUserMessage>, IHandle<ConfigurationCompletedMessage>, IHandle<TokenRequestResultMessage>
+    public interface ILoadingViewModel : IScreen, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>
     {
         LoadingViewModelStateEnum State { get; set; }
 

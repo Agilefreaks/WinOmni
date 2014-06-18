@@ -1,42 +1,57 @@
-﻿using Ninject;
-using Retrofit.Net;
-
-namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using Ninject;
     using OmniCommon.Interfaces;
+    using Retrofit.Net;
 
     public class LoadLocalConfiguration : ActivationStepBase
     {
+        #region Fields
+
         private readonly IConfigurationService _configurationService;
-        
-        [Inject]
-        public IKernel Kernel { get; set; }
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public LoadLocalConfiguration(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public override IExecuteResult Execute()
         {
             var result = new ExecuteResult();
 
-            string accessToken = _configurationService.AccessToken;
-            string refreshToken = _configurationService.RefreshToken;
-            string tokenType = _configurationService.TokenType;
-            string clientId = _configurationService.ClientId;
+            var accessToken = _configurationService.AccessToken;
+            var refreshToken = _configurationService.RefreshToken;
+            var tokenType = _configurationService.TokenType;
+            var clientId = _configurationService.ClientId;
             if (!string.IsNullOrEmpty(accessToken))
             {
                 result.Data = accessToken;
                 result.State = SimpleStepStateEnum.Successful;
-                Kernel.Bind<Authenticator>().ToConstant(new Authenticator
-                                                        {
-                                                            AccessToken = accessToken, 
-                                                            RefreshToken = refreshToken, 
-                                                            GrantType = tokenType, 
-                                                            ClientId = clientId,
-                                                            AuthenticationEndpoint = "oauth2/token"
-                                                        });
+                Kernel.Bind<Authenticator>()
+                    .ToConstant(
+                        new Authenticator
+                            {
+                                AccessToken = accessToken,
+                                RefreshToken = refreshToken,
+                                GrantType = tokenType,
+                                ClientId = clientId,
+                                AuthenticationEndpoint = "oauth2/token"
+                            });
             }
             else
             {
@@ -45,5 +60,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
             return result;
         }
+
+        #endregion
     }
 }

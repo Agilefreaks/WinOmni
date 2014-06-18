@@ -1,8 +1,8 @@
 ﻿namespace Clipboard.Handlers
 {
-    using Ninject;
+    using OmniCommon.Interfaces;
 
-    public interface IClipboadHandler : IStartable
+    public interface IClipboadHandler : IHandler
     {
     }
 }

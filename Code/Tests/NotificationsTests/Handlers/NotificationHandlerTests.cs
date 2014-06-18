@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Moq;
     using Ninject;
@@ -10,7 +11,6 @@
     using Notifications.Handlers;
     using Notifications.Models;
     using NUnit.Framework;
-    using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using RestSharp;
 
@@ -25,8 +25,6 @@
 
         private INotificationsHandler _notificationsHandler;
 
-        private IOmniMessageHandler _omniMessageHandler;
-
         #endregion
 
         #region Public Methods and Operators
@@ -38,13 +36,9 @@
 
             _mockNotificationApi = _mockingKernel.GetMock<INotificationsApi>();
             _mockingKernel.Bind<INotificationsApi>().ToConstant(_mockNotificationApi.Object);
-
-            _mockingKernel.Bind<INotificationsHandler, IOmniMessageHandler>()
-                .To<NotificationsHandler>()
-                .InSingletonScope();
+            _mockingKernel.Bind<INotificationsHandler>().To<NotificationsHandler>().InSingletonScope();
 
             _notificationsHandler = _mockingKernel.Get<INotificationsHandler>();
-            _omniMessageHandler = _mockingKernel.Get<IOmniMessageHandler>();
         }
 
         [Test]
@@ -57,7 +51,7 @@
             _mockNotificationApi.Setup(na => na.Last())
                 .ReturnsAsync(new RestResponse<Notification> { Data = notification, StatusCode = HttpStatusCode.OK });
 
-            _omniMessageHandler.SubscribeTo(observable);
+            _notificationsHandler.Start(observable);
             _notificationsHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
@@ -71,7 +65,6 @@
             var observer = new Mock<IObserver<Notification>>();
             var observable = new Subject<OmniMessage>();
 
-            _omniMessageHandler.SubscribeTo(observable);
             _notificationsHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));

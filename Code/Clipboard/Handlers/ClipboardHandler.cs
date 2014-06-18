@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using System.Reactive.Linq;
     using Clipboard.Models;
     using OmniCommon.Models;
 
@@ -41,25 +40,13 @@
         {
             OmniClipboardHandler.SubscribeTo(omniMessageObservable);
 
-            var lastClipping = new Clipping();
-
             _omniClipboardSubscription = OmniClipboardHandler.Subscribe(
                 // OnNext
-                clipping =>
-                    {
-                        LocalClipboardHandler.PostClipping(clipping);
-                        lastClipping = clipping;
-                    });
+                clipping => LocalClipboardHandler.PostClipping(clipping));
 
             _localClipboardSubscriber = LocalClipboardHandler.Subscribe(
                 // OnNext
-                clipping =>
-                    {
-                        if (clipping.Content != lastClipping.Content)
-                        {
-                            OmniClipboardHandler.PostClipping(clipping);
-                        }
-                    });
+                clipping => OmniClipboardHandler.PostClipping(clipping));
         }
 
         public void Stop()

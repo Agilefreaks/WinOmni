@@ -19,7 +19,7 @@ namespace Notifications
 
         public override void Load()
         {
-            Kernel.Bind<IOmniMessageHandler, INotificationsHandler>().To<NotificationsHandler>().InSingletonScope();
+            Kernel.Bind<IHandler, INotificationsHandler>().To<NotificationsHandler>().InSingletonScope();
 
             Kernel.Bind<INotificationsApi>().ToMethod(c => GetApiEndpoint<INotificationsApi, Models.Notification>());
         }
