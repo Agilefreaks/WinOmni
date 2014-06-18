@@ -67,6 +67,19 @@
             }
         }
         
+        public IEventAggregator EventAggregator { get; set; }
+
+        public bool IsConnected
+        {
+            get
+            {
+                return OmniService.Status == ServiceStatusEnum.Started;
+            }
+        }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
         public IOmniService OmniService
         {
             get
@@ -84,10 +97,10 @@
 
                 _omniServiceStatusObserver = _omniService.Subscribe(
                     x =>
-                    {
-                        NotifyOfPropertyChange(() => CanConnect);
-                        NotifyOfPropertyChange(() => CanDisconnect);
-                    });
+                        {
+                            NotifyOfPropertyChange(() => CanConnect);
+                            NotifyOfPropertyChange(() => CanDisconnect);
+                        });
             }
         }
 
