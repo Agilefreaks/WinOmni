@@ -12,9 +12,9 @@
     using Omni;
     using OmniApi;
     using OmniCommon;
-    using OmniCommon.Framework.Connectivity;
     using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
+    using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using OmniSync;
 
