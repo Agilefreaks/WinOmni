@@ -76,11 +76,11 @@
             ConfigurationService.AutoStart = !ConfigurationService.AutoStart;
         }
 
-        public void ToggleSync()
+        public async void ToggleSync()
         {
             if (IsSyncing)
             {
-                OmniService.Start();
+                await OmniService.Start();
             }
             else
             {
