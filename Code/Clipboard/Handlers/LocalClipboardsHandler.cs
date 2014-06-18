@@ -11,6 +11,8 @@ namespace Clipboard.Handlers
 
         private readonly Subject<Clipping> _subject;
 
+        private bool skipNext = false;
+
         #endregion
 
         #region Constructors and Destructors
@@ -39,6 +41,7 @@ namespace Clipboard.Handlers
 
         public void PostClipping(Clipping clipping)
         {
+            skipNext = true;
             WindowsClipboardWrapper.SetData(clipping.Content);
         }
 
@@ -56,6 +59,12 @@ namespace Clipboard.Handlers
 
         private void WindowsClipboardWrapperDataReceived(object sender, ClipboardEventArgs args)
         {
+            if (skipNext)
+            {
+                skipNext = false;
+                return;
+            }
+
             _subject.OnNext(new Clipping(args.Data));
         }
 

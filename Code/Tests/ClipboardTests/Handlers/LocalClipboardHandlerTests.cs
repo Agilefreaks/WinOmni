@@ -1,5 +1,6 @@
 ﻿namespace ClipboardTests.Handlers
 {
+    using System;
     using Clipboard.API;
     using Clipboard.Handlers;
     using Clipboard.Handlers.WindowsClipboard;
@@ -39,7 +40,7 @@
         [Test]
         public void Subscribe_Always_StartsWatchingTheClipboardWrapper()
         {
-            _subject.Subscribe(new Mock<System.IObserver<Clipping>>().Object);
+            _subject.Subscribe(new Mock<IObserver<Clipping>>().Object);
 
             _mockWindowsClipboardWrapper.Verify(wc => wc.StartWatchingClipboard(), Times.Once);
         }
@@ -50,6 +51,20 @@
             _subject.PostClipping(new Clipping("some stuff"));
 
             _mockWindowsClipboardWrapper.Verify(wc => wc.SetData("some stuff"), Times.Once);
+        }
+
+        [Test]
+        public void PostClipping_DoesNotCallOnNext()
+        {
+            var observer = new Mock<IObserver<Clipping>>();
+            _subject.Subscribe(observer.Object);
+
+            _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
+                .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs()));
+
+            _subject.PostClipping(new Clipping());
+
+            observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
         }
     }
 }
