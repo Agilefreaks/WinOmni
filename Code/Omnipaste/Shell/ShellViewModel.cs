@@ -38,13 +38,11 @@
         public ShellViewModel(
             IConfigurationViewModel configurationViewModel,
             IUserTokenViewModel userToken,
-            IContextMenuViewModel contextMenuViewModelViewModel,
             IEventAggregator eventAggregator)
         {
             UserToken = userToken;
 
             ConfigurationViewModel = configurationViewModel;
-            ContextMenuViewModel = contextMenuViewModelViewModel;
 
             eventAggregator.Subscribe(this);
 
@@ -57,6 +55,7 @@
 
         public IConfigurationViewModel ConfigurationViewModel { get; set; }
 
+        [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         [Inject]
