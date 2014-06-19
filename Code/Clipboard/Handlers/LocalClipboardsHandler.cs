@@ -11,7 +11,7 @@ namespace Clipboard.Handlers
 
         private readonly Subject<Clipping> _subject;
 
-        private bool skipNext = false;
+        private string _lastClippingContent = string.Empty;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace Clipboard.Handlers
 
         public void PostClipping(Clipping clipping)
         {
-            skipNext = true;
+            _lastClippingContent = clipping.Content;
             WindowsClipboardWrapper.SetData(clipping.Content);
         }
 
@@ -59,9 +59,8 @@ namespace Clipboard.Handlers
 
         private void WindowsClipboardWrapperDataReceived(object sender, ClipboardEventArgs args)
         {
-            if (skipNext)
+            if (_lastClippingContent.Equals(args.Data))
             {
-                skipNext = false;
                 return;
             }
 

@@ -60,9 +60,9 @@
             _subject.Subscribe(observer.Object);
 
             _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
-                .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs()));
+                .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs() { Data = "42" }));
 
-            _subject.PostClipping(new Clipping());
+            _subject.PostClipping(new Clipping() { Content = "42" });
 
             observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
         }
