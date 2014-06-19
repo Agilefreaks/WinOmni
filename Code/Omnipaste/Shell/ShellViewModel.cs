@@ -3,14 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
-    using Clipboard;
     using Ninject;
-    using Notifications;
     using Omni;
     using OmniCommon.Framework;
     using Omnipaste.Dialog;
@@ -22,6 +19,7 @@
     using Omnipaste.Services;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Shell.SettingsHeader;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -48,6 +46,9 @@
 
         [Inject]
         public IActivationService ActivationService { get; set; }
+
+        [Inject]
+        public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
 
         [Inject]
         public IConnectionViewModel ConnectionViewModel

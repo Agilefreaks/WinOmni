@@ -119,16 +119,7 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button ToolTip="Open settings">
-                <Rectangle Width="22"
-                           Height="22"
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Uniform"
-                                     Visual="{StaticResource appbar_cogs}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </Button>
+            <ContentControl cal:View.Model="{Binding SettingsHeaderViewModel}" />
             <ContentControl cal:View.Model="{Binding ConnectionViewModel}" />
             
         </controls:WindowCommands>
