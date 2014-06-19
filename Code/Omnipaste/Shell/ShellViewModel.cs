@@ -3,14 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
-    using Clipboard;
     using Ninject;
-    using Notifications;
     using Omni;
     using OmniCommon.Framework;
     using Omnipaste.Dialog;
@@ -22,12 +19,11 @@
     using Omnipaste.Services;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Shell.SettingsHeader;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         #region Fields
-
-        private IConnectionViewModel _connectionViewModel;
 
         private Window _view;
 
@@ -35,9 +31,10 @@
 
         #region Constructors and Destructors
 
-        public ShellViewModel(IEventAggregator eventAggregator)
+        public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
             eventAggregator.Subscribe(this);
+            sessionManager.SessionDestroyed += async (sender, args) => await Configure();
 
             DisplayName = Resources.AplicationName;
         }
@@ -50,18 +47,13 @@
         public IActivationService ActivationService { get; set; }
 
         [Inject]
-        public IConnectionViewModel ConnectionViewModel
-        {
-            get
-            {
-                return _connectionViewModel;
-            }
-            set
-            {
-                _connectionViewModel = value;
-                NotifyOfPropertyChange(() => ConnectionViewModel);
-            }
-        }
+        public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
+
+        [Inject]
+        public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
+
+        [Inject]
+        public IConnectionViewModel ConnectionViewModel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
@@ -129,8 +121,7 @@
 
             DialogViewModel.DeactivateItem(LoadingViewModel, true);
 
-            var wm = new WindowManager();
-            wm.ShowWindow(
+            WindowManager.ShowWindow(
                 Kernel.Get<INotificationListViewModel>(),
                 null,
                 new Dictionary<string, object>

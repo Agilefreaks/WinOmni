@@ -28,7 +28,9 @@
 
         #region Public Methods and Operators
 
-        void Save(string accessToken, string tokenType, string refreshToken);
+        void ResetAuthSettings();
+
+        void SaveAuthSettings(string accessToken, string tokenType, string refreshToken);
 
         #endregion
     }

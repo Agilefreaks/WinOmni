@@ -5,7 +5,7 @@
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.UserToken;
 
-    public class LoadingViewModel : Screen, ILoadingViewModel
+    public class LoadingViewModel : Conductor<IScreen>.Collection.OneActive, ILoadingViewModel
     {
         #region Fields
 
@@ -53,11 +53,14 @@
         public void Handle(GetTokenFromUserMessage publishedEvent)
         {
             UserTokenViewModel.Message = publishedEvent.Message;
+            ActiveItem = UserTokenViewModel;
+
             State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
         }
 
         public void Handle(TokenRequestResultMessage publishedEvent)
         {
+            UserTokenViewModel.Deactivate(true);
             State = LoadingViewModelStateEnum.Loading;
         }
 

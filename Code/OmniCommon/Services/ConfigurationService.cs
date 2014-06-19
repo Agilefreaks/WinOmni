@@ -4,7 +4,6 @@
     using System.Configuration;
     using System.Linq;
     using System.Net.NetworkInformation;
-    using System.Runtime.InteropServices;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
 
@@ -108,11 +107,16 @@
 
         #region Public Methods and Operators
 
-        public void Save(string accessToken, string tokenType, string refreshToken)
+        public void SaveAuthSettings(string accessToken, string tokenType, string refreshToken)
         {
             _configurationProvider.SetValue("accessToken", accessToken);
             _configurationProvider.SetValue("tokenType", tokenType);
             _configurationProvider.SetValue("refreshToken", refreshToken);
+        }
+
+        public void ResetAuthSettings()
+        {
+            SaveAuthSettings(string.Empty, string.Empty, string.Empty);
         }
 
         #endregion

@@ -217,6 +217,8 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
+    <Compile Include="Services\ISessionManager.cs" />
+    <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
     <Compile Include="Shell\Connection\IConnectionViewModel.cs" />
     <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
@@ -278,6 +280,10 @@
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="Shell\ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
+    <Compile Include="Shell\SettingsHeader\ISettingsHeaderViewModel.cs" />
+    <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModel.cs" />
+    <Compile Include="Shell\Settings\ISettingsViewModel.cs" />
+    <Compile Include="Shell\Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Framework\FlyoutBaseViewModel.cs" />
@@ -328,6 +334,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\ContextMenu\ContextMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\SettingsHeader\SettingsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
