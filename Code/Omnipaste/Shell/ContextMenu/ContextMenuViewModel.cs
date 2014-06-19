@@ -4,19 +4,20 @@
     using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
+    using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
-    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
+        private IClickOnceHelper _clickOnceHelper;
+
         #region Constructors and Destructors
 
-        public ContextMenuViewModel(IConfigurationService configurationService, IOmniService omniService)
+        public ContextMenuViewModel(IOmniService omniService)
         {
-            ConfigurationService = configurationService;
             OmniService = omniService;
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -28,7 +29,7 @@
 
             TooltipText = "Omnipaste " + version;
             IconSource = "/Icon.ico";
-            AutoStart = configurationService.AutoStart;
+            AutoStart = ClickOnceHelper.StartupShortcutExists();
 
             ApplicationWrapper = new ApplicationWrapper();
         }
@@ -39,6 +40,18 @@
 
         public bool AutoStart { get; set; }
 
+        public IClickOnceHelper ClickOnceHelper
+        {
+            get
+            {
+                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
+            }
+            set
+            {
+                _clickOnceHelper = value;
+            }
+        }
+
         public string IconSource { get; set; }
 
         public bool IsStopped { get; set; }
@@ -48,8 +61,6 @@
         public IApplicationWrapper ApplicationWrapper { get; set; }
 
         public Visibility Visibility { get; set; }
-
-        public IConfigurationService ConfigurationService { get; set; }
 
         public IOmniService OmniService { get; set; }
 
@@ -72,7 +83,14 @@
 
         public void ToggleAutoStart()
         {
-            ConfigurationService.AutoStart = !ConfigurationService.AutoStart;
+            if (AutoStart)
+            {
+                ClickOnceHelper.AddShortcutToStartup();
+            }
+            else
+            {
+                ClickOnceHelper.RemoveShortcutFromStartup();
+            }
         }
 
         public async void ToggleSync()

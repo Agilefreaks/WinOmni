@@ -1,10 +1,15 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
     using Caliburn.Micro;
+    using CustomizedClickOnce.Common;
 
     public interface IContextMenuViewModel : IScreen
     {
         #region Public Properties
+
+        bool AutoStart { get; set; }
+
+        IClickOnceHelper ClickOnceHelper { get; set; }
 
         bool IsStopped { get; set; }
 
@@ -14,9 +19,9 @@
 
         void Show();
 
-        void ToggleSync();
-
         void ToggleAutoStart();
+
+        void ToggleSync();
 
         #endregion
     }
