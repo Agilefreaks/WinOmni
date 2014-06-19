@@ -118,6 +118,11 @@
             </ControlTemplate>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <ContentControl cal:View.Model="{Binding SettingsHeaderViewModel}" />
