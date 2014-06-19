@@ -4,10 +4,13 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Threading;
-    using System.Windows;
     using System.Windows.Interop;
     using WindowsImports;
     using Ninject;
+    using Clipboard = System.Windows.Forms.Clipboard;
+    using DataFormats = System.Windows.Forms.DataFormats;
+    using DataObject = System.Windows.Forms.DataObject;
+    using IDataObject = System.Windows.Forms.IDataObject;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
@@ -45,12 +48,14 @@
 
         public void SetData(string data)
         {
-            RunOnAnStaThread(() => Clipboard.SetData(DataFormats.Text, data));
+            IDataObject dataObject = new DataObject(DataFormats.Text, data);
+            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 3, 10));
         }
 
         private static string GetClipboardText()
         {
             string text = null;
+            
             var dataObject = GetClipboardData();
             if (dataObject != null)
             {
