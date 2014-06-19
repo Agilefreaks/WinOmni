@@ -4,8 +4,9 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
+        BorderThickness="1"
+        NonActiveBorderBrush="{StaticResource BlackBrush}"
         Icon="/Icon.ico">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
