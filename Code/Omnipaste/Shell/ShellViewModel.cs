@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
@@ -26,11 +25,7 @@
     {
         #region Fields
 
-        private IConnectionViewModel _connectionViewModel;
-
         private Window _view;
-
-        private IEnumerable<IFlyoutViewModel> _flyouts;
 
         #endregion
 
@@ -54,32 +49,10 @@
         public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
 
         [Inject]
-        public IEnumerable<IFlyoutViewModel> Flyouts
-        {
-            get
-            {
-                return _flyouts;
-            }
-            set
-            {
-                _flyouts = value;
-                NotifyOfPropertyChange(() => Flyouts);
-            }
-        }
+        public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
 
         [Inject]
-        public IConnectionViewModel ConnectionViewModel
-        {
-            get
-            {
-                return _connectionViewModel;
-            }
-            set
-            {
-                _connectionViewModel = value;
-                NotifyOfPropertyChange(() => ConnectionViewModel);
-            }
-        }
+        public IConnectionViewModel ConnectionViewModel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
@@ -144,8 +117,7 @@
 
             DialogViewModel.DeactivateItem(LoadingViewModel, true);
 
-            var wm = new WindowManager();
-            wm.ShowWindow(
+            WindowManager.ShowWindow(
                 Kernel.Get<INotificationListViewModel>(),
                 null,
                 new Dictionary<string, object>
