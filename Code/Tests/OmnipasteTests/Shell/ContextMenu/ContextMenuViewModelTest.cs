@@ -1,12 +1,13 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
     using Caliburn.Micro;
+    using CustomizedClickOnce.Common;
+    using FluentAssertions;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
-    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
 
@@ -17,9 +18,9 @@
 
         private Mock<IOmniService> _mockOmniService;
 
-        private Mock<IConfigurationService> _mockConfigurationService;
-
         private Mock<IEventAggregator> _mockEventAggregator;
+
+        private Mock<IClickOnceHelper> _mockClickOnceHelper;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -35,12 +36,19 @@
             _mockingKernel = new MoqMockingKernel();
 
             _mockOmniService = _mockingKernel.GetMock<IOmniService>();
-            _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
+            _mockClickOnceHelper = _mockingKernel.GetMock<IClickOnceHelper>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
             _subject = _mockingKernel.Get<IContextMenuViewModel>();
+            _subject.ClickOnceHelper = _mockClickOnceHelper.Object;
+        }
+
+        [Test]
+        public void Constructor_WhenStartupShortcutExists_SetsAutoStartToTrue()
+        {
+            _subject.AutoStart.Should().BeFalse();
         }
 
         [Test]
@@ -76,13 +84,23 @@
         }
 
         [Test]
-        public void ToggleAutoStart_Always_SetConfiguration()
+        public void ToggleAutoStart_WhenAutoStartIsFalse_CallsRemoveShortcutFromStartup()
         {
-            _mockConfigurationService.SetupGet(m => m.AutoStart).Returns(true);
+            _subject.AutoStart = false;
 
             _subject.ToggleAutoStart();
 
-            _mockConfigurationService.VerifySet(m => m.AutoStart = false);
+            _mockClickOnceHelper.Verify(m => m.RemoveShortcutFromStartup(), Times.Once);
+        }
+
+        [Test]
+        public void ToggleAutoStart_WhenAutoStartIsTrue_CallsAddShortcutToStartup()
+        {
+            _subject.AutoStart = true;
+
+            _subject.ToggleAutoStart();
+
+            _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
         }
 
         #endregion

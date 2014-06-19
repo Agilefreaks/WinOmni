@@ -111,6 +111,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomizedClickOnce\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">
+      <Project>{BC299433-48CC-4282-A7F4-3948E054B6AC}</Project>
+      <Name>CustomizedClickOnce.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Notifications\Notifications.csproj">
       <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
       <Name>Notifications</Name>
