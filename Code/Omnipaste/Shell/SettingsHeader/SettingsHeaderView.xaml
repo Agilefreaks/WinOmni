@@ -8,12 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Button ToolTip="Open settings" cal:Message.Attach="[Event Click]=[Action ToggleSettingsFlyout]">
-            <Rectangle Width="22"
-                           Height="22"
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+            <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                 <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Uniform"
-                                     Visual="{StaticResource appbar_cogs}" />
+                    <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_cogs}" />
                 </Rectangle.OpacityMask>
             </Rectangle>
         </Button>

@@ -74,8 +74,6 @@
             _transitions.RegisterTransition(
                 GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
                 typeof(Failed));
-
-            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
         }
 
         #endregion
@@ -109,6 +107,7 @@
 
         public async Task Run()
         {
+            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
             while (CurrentStepIsIntermediateStep())
             {
                 var activationStep = await CurrentStep.ExecuteAsync();

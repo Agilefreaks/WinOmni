@@ -1,14 +1,11 @@
 ﻿namespace Omnipaste.DataProviders
 {
     using System;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Threading;
-    using System.Windows.Input;
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;

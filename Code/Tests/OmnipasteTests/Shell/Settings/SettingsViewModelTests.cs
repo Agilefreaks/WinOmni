@@ -2,7 +2,9 @@
 {
     using FluentAssertions;
     using MahApps.Metro.Controls;
+    using Moq;
     using NUnit.Framework;
+    using Omnipaste.Services;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]
@@ -10,10 +12,15 @@
     {
         private ISettingsViewModel _subject;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void SetUp()
         {
-            _subject = new SettingsViewModel();
+            _mockSessionManager = new Mock<ISessionManager>();
+
+            _subject = new SettingsViewModel { SessionManager = _mockSessionManager.Object };
+
         }
 
         [Test]
@@ -26,6 +33,14 @@
         public void NewInstance_ShouldBePlacedOnTheRight()
         {
             _subject.Position.Should().Be(Position.Right);
+        }
+
+        [Test]
+        public void LogOut_CallsSessionManagerLogOut()
+        {
+            _subject.LogOut();
+
+            _mockSessionManager.Verify(mss => mss.LogOut(), Times.Once());
         }
     }
 }

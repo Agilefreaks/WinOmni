@@ -14,6 +14,7 @@
     using OmniCommon;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
+    using Omnipaste.Services;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Settings;
@@ -57,6 +58,7 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
+            _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
             
 
             _kernel.Bind(
