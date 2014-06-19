@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button ToolTip="Open settings" cal:Message.Attach="[Event=Click] [Action=ToggleSettingsFlyout]">
+        <Button ToolTip="Open settings" cal:Message.Attach="[Event Click]=[Action ToggleSettingsFlyout]">
             <Rectangle Width="22"
                            Height="22"
                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">

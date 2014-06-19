@@ -13,8 +13,10 @@
     using OmniApi;
     using OmniCommon;
     using Omnipaste.Dialog;
+    using Omnipaste.Framework;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
+    using Omnipaste.Shell.Settings;
     using OmniSync;
 
     public class OmnipasteBootstrapper : BootstrapperBase
@@ -43,7 +45,7 @@
 
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel) };
+            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel) };
             _kernel = new StandardKernel();
 
             _kernel.Load(
@@ -55,6 +57,7 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
+            
 
             _kernel.Bind(
                 configure =>
@@ -62,6 +65,8 @@
                     .Select(singletonViewModelTypes.Contains)
                     .BindDefaultInterface()
                     .Configure(c => c.InSingletonScope()));
+
+            _kernel.Bind<IFlyoutViewModel>().ToConstant(_kernel.Get<ISettingsViewModel>());
 
             _kernel.Bind(
                 configure =>

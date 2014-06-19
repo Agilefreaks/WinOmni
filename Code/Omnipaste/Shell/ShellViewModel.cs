@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
@@ -29,6 +30,8 @@
 
         private Window _view;
 
+        private IEnumerable<IFlyoutViewModel> _flyouts;
+
         #endregion
 
         #region Constructors and Destructors
@@ -49,6 +52,20 @@
 
         [Inject]
         public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
+
+        [Inject]
+        public IEnumerable<IFlyoutViewModel> Flyouts
+        {
+            get
+            {
+                return _flyouts;
+            }
+            set
+            {
+                _flyouts = value;
+                NotifyOfPropertyChange(() => Flyouts);
+            }
+        }
 
         [Inject]
         public IConnectionViewModel ConnectionViewModel
