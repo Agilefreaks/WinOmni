@@ -227,6 +227,8 @@
     <Compile Include="Framework\ApplicationWrapper.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
+    <Compile Include="Framework\IDialogService.cs" />
+    <Compile Include="Framework\DialogService.cs" />
     <Compile Include="Framework\ViewLocator.cs" />
     <Compile Include="Layout\ILayoutViewModel.cs" />
     <Compile Include="Layout\LayoutView.xaml.cs">
