@@ -36,8 +36,8 @@
     <PublisherName>Omnipaste</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.1.0.3</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.0.0.0</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -84,7 +84,8 @@
     <ManifestCertificateThumbprint>EE7CFBC86606D544D69EA631E0E50B22BC13C3CB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>AgileFreaks-codeSigningCertificate.p12</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -181,6 +182,7 @@
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MahApps.Metro.0.13.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -357,11 +359,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Uninstall.exe" />
+    <Content Include="Uninstall.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="AgileFreaks-codeSigningCertificate.p12" />
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
@@ -455,8 +460,8 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
     <PreBuildEvent>copy /y $(ProjectDir)..\CustomizedClickOnce\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
-
- copy /y $(ProjectDir)..\CustomizedClickOnce\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config</PreBuildEvent>
+ copy /y $(ProjectDir)..\CustomizedClickOnce\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config
+</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
     <PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
@@ -476,26 +481,6 @@
     <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
-  <Target Name="SignOutput">
-    <PropertyGroup>
-      <WindowsSdkDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\@CurrentInstallFolder)</WindowsSdkDir>
-      <WindowsSdkDir>$(WindowsSdkDir)</WindowsSdkDir>
-      <SignToolPath>$(WindowsSdkDir)bin\signtool.exe</SignToolPath>
-      <Hash>ee 7c fb c8 66 06 d5 44 d6 9e a6 31 e0 e5 0b 22 bc 13 c3 cb</Hash>
-      <TsUrl>http://timestamp.comodoca.com/authenticode</TsUrl>
-    </PropertyGroup>
-    <ItemGroup>
-      <SignableFiles Include="$(ProjectDir)$(IntermediateOutputPath)$(PublishAssemblyName).exe" />
-      <SignableFiles Include="$(ProjectDir)$(OutputPath)OmnipasteSetup.exe" />
-    </ItemGroup>
-    <ResolveKeySource CertificateThumbprint="$(Hash)">
-      <Output TaskParameter="ResolvedThumbprint" PropertyName="LocatedThumbprint" />
-    </ResolveKeySource>
-    <Exec ContinueOnError="true" Command="signtool sign /f &quot;C:\Users\Nistor\Desktop\Omnipaste Ceritificates\AgileFreaks-codeSigningCertificate.p12&quot; /p ArtLine123 /t $(ManifestTimestampUrl) %(SignableFiles.Identity)" />
-  </Target>
-  <Target Name="BeforePublish">
-    <CallTarget Targets="SignOutput" />
-  </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

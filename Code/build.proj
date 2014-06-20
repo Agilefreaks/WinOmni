@@ -7,30 +7,44 @@
   	<InstallUrl>http://localhost/</InstallUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(build_configuration)' == 'Staging' ">
+  <PropertyGroup Condition=" '$(build_configuration)' == 'staging' ">
   	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
-  	<Configuration>Staging</Configuration>
+  	<Configuration>staging</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
   	<InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(build_configuration)' == 'Release' ">
+  <PropertyGroup Condition=" '$(build_configuration)' == 'release' ">
   	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
-  	<Configuration>Release</Configuration>
+  	<Configuration>release</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
   	<InstallUrl>http://cdn.omnipasteapp.com/production/win/</InstallUrl>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Revision>$(revision)</Revision>
+  </PropertyGroup>    
+
 	<ItemGroup>
-		<MySourceFiles Include="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\OmnipasteSetup.exe"/>
+		<MySourceFiles Include="$(MSBuildProjectDirectory)\CustomizedClickOnce\CustomizedClickOnce.Install\bin\$(Configuration)\OmnipasteSetup.exe"/>
 	</ItemGroup>
 
   <Target Name="All">
-	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
+  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
 	
-	<MSBuild 
-		Projects="Omnipaste\Omnipaste.csproj"
-		Targets="Publish" 
-		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
-	<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
+  	<MSBuild 
+  		Projects="Omnipaste\Omnipaste.csproj"
+  		Targets="Publish" 
+  		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+
+  	<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
+
+    <PropertyGroup>
+      <RevisionUnderscores>$(Revision.Replace(".", "_"))</RevisionUnderscores>
+    </PropertyGroup>
+
+    <Exec Command='mage.exe -update "Omnipaste\bin\Staging\app.publish\Application Files\Omnipaste-$(build_configuration)_$(RevisionUnderscores)\Omnipaste-staging.exe.manifest" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode' />
+
+    <Exec Command='mage.exe -update "Omnipaste\bin\Staging\app.publish\Omnipaste-staging.application" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode -appmanifest "Omnipaste\bin\Staging\app.publish\Application Files\Omnipaste-$(build_configuration)_$(RevisionUnderscores)\Omnipaste-staging.exe.manifest"' />
   </Target>
 </Project>
