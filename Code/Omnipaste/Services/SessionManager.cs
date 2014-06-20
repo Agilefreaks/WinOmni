@@ -28,7 +28,8 @@
         public void LogOut()
         {
             OmniService.Stop();
-            ConfigurationService.Save(string.Empty, string.Empty, string.Empty);
+            ConfigurationService.ResetAuthSettings();
+
             if (SessionDestroyed != null)
             {
                 SessionDestroyed(this, new EventArgs());

@@ -16,7 +16,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
         public override IExecuteResult Execute()
         {
             var authenticator = (Authenticator)Parameter.Value;
-            _configurationService.Save(authenticator.AccessToken, authenticator.GrantType, authenticator.RefreshToken);
+            _configurationService.SaveAuthSettings(authenticator.AccessToken, authenticator.GrantType, authenticator.RefreshToken);
 
             return new ExecuteResult { State = SingleStateEnum.Successful, Data = authenticator.AccessToken };
         }

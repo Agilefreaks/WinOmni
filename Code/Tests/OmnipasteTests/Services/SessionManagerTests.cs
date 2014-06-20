@@ -41,7 +41,7 @@
         {
             _subject.LogOut();
 
-            _mockConfigurationService.Verify(cs => cs.Save(string.Empty, string.Empty, string.Empty), Times.Once);
+            _mockConfigurationService.Verify(cs => cs.SaveAuthSettings(string.Empty, string.Empty, string.Empty), Times.Once);
         }
 
         [Test]
