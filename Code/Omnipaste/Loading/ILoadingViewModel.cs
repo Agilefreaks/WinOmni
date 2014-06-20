@@ -4,7 +4,7 @@
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.UserToken;
 
-    public interface ILoadingViewModel : IScreen, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>
+    public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>
     {
         LoadingViewModelStateEnum State { get; set; }
 

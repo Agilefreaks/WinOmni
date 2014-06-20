@@ -79,6 +79,7 @@
             base.OnActivate();
 
             IsBusy = false;
+            ActivationCode = string.Empty;
         }
 
         public void Authenticate()

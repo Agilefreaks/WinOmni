@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ContentControl cal:View.Model="{Binding UserTokenViewModel}"></ContentControl>
+        <ContentControl cal:View.Model="{Binding ActiveItem}"></ContentControl>
     </Grid>
 </UserControl>

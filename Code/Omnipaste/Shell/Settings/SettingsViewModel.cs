@@ -28,6 +28,17 @@
         public void LogOut()
         {
             SessionManager.LogOut();
+
+            Close();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Close()
+        {
+            IsOpen = false;
         }
 
         #endregion

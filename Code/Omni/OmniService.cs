@@ -238,7 +238,7 @@
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
                 handler.Stop();
-            }            
+            }
         }
 
         #endregion

@@ -24,8 +24,6 @@
 
         #endregion
 
-        #region Public Methods and Operators
-
         [SetUp]
         public void SetUp()
         {
@@ -39,7 +37,5 @@
 
             _subject = kernel.Get<IShellViewModel>();
         }
-
-        #endregion
     }
 }

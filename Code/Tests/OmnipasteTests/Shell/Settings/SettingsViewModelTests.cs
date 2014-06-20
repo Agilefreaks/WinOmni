@@ -42,5 +42,15 @@
 
             _mockSessionManager.Verify(mss => mss.LogOut(), Times.Once());
         }
+
+        [Test]
+        public void LogOut_ClosesTheFlyout()
+        {
+            _subject.IsOpen = true;
+
+            _subject.LogOut();
+
+            _subject.IsOpen.Should().BeFalse();
+        }
     }
 }

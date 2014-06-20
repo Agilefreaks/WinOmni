@@ -64,6 +64,7 @@
         private void ActiveItemDeactivated(object sender, DeactivationEventArgs e)
         {
             ((Screen)ActiveItem).Deactivated -= ActiveItemDeactivated;
+            ActiveItem = null;
 
             if (Closed != null)
             {

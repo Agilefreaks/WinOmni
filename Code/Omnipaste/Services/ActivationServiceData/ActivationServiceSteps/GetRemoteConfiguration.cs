@@ -109,7 +109,7 @@
                                         };
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
                 executeResult.Data = authenticator;
-
+                Kernel.Unbind<Authenticator>();
                 Kernel.Bind<Authenticator>().ToConstant(authenticator);
             }
             else

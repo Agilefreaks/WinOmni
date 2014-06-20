@@ -109,6 +109,7 @@
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTest.cs" />
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
+    <Compile Include="UserToken\UserTokenViewModelTests.cs" />
     <Compile Include="ViewModels\LoadingViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
   </ItemGroup>

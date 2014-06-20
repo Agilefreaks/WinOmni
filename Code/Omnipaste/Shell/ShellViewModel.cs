@@ -31,9 +31,10 @@
 
         #region Constructors and Destructors
 
-        public ShellViewModel(IEventAggregator eventAggregator)
+        public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
             eventAggregator.Subscribe(this);
+            sessionManager.SessionDestroyed += async (sender, args) => await Configure();
 
             DisplayName = Resources.AplicationName;
         }
