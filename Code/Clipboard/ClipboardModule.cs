@@ -28,7 +28,7 @@
             Kernel.Bind<IWindowsClipboardWrapper>().To<WindowsClipboardWrapper>().InSingletonScope();
             Kernel.Bind<ILocalClipboardHandler>().To<LocalClipboardsHandler>().InSingletonScope();
             Kernel.Bind<IOmniClipboardHandler>().To<OmniClipboardHandler>().InSingletonScope();
-            Kernel.Bind<IHandler, IClipboadHandler>().To<ClipboardHandler>().InSingletonScope();
+            Kernel.Bind<IHandler, IClipboardHandler>().To<ClipboardHandler>().InSingletonScope();
 
             Kernel.Bind<IClippingsApi>().ToMethod(c => GetClippingsApi());
         }
