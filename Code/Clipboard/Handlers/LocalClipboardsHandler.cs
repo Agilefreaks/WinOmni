@@ -14,6 +14,8 @@ namespace Clipboard.Handlers
 
         private string _lastClippingContent = string.Empty;
 
+        private bool _subscribedToWindowsClipboard;
+
         #endregion
 
         #region Constructors and Destructors
@@ -37,7 +39,12 @@ namespace Clipboard.Handlers
         public void Dispose()
         {
             WindowsClipboardWrapper.StopWatchingClipboard();
-            WindowsClipboardWrapper.DataReceived -= WindowsClipboardWrapperDataReceived;
+            
+            if (_subscribedToWindowsClipboard)
+            {
+                WindowsClipboardWrapper.DataReceived -= WindowsClipboardWrapperDataReceived;
+                _subscribedToWindowsClipboard = false;
+            }
         }
 
         public void PostClipping(Clipping clipping)
@@ -48,8 +55,13 @@ namespace Clipboard.Handlers
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
         {
-            WindowsClipboardWrapper.DataReceived += WindowsClipboardWrapperDataReceived;
             WindowsClipboardWrapper.StartWatchingClipboard();
+            
+            if (!_subscribedToWindowsClipboard)
+            {
+                WindowsClipboardWrapper.DataReceived += WindowsClipboardWrapperDataReceived;
+                _subscribedToWindowsClipboard = true;
+            }
 
             return _subject.Subscribe(observer);
         }
