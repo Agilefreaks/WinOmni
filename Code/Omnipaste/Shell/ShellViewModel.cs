@@ -7,9 +7,11 @@
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
+    using Clipboard.Models;
     using Ninject;
     using Omni;
     using OmniCommon.Framework;
+    using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
@@ -26,6 +28,8 @@
         #region Fields
 
         private Window _view;
+
+        private IMasterClippingListViewModel _clippingListViewModel;
 
         #endregion
 
@@ -69,6 +73,19 @@
 
         [Inject]
         public ILoadingViewModel LoadingViewModel { get; set; }
+
+        public IMasterClippingListViewModel ClippingListViewModel
+        {
+            get
+            {
+                return _clippingListViewModel;
+            }
+            set
+            {
+                _clippingListViewModel = value;
+                NotifyOfPropertyChange(() => ClippingListViewModel);
+            }
+        }
 
         [Inject]
         public IOmniService OmniService { get; set; }
@@ -121,6 +138,7 @@
 
             DialogViewModel.DeactivateItem(LoadingViewModel, true);
 
+            ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
             WindowManager.ShowWindow(
                 Kernel.Get<INotificationListViewModel>(),
                 null,

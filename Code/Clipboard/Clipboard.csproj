@@ -89,7 +89,7 @@
   <ItemGroup>
     <Compile Include="ClipboardModule.cs" />
     <Compile Include="Handlers\ClipboardHandler.cs" />
-    <Compile Include="Handlers\IClipboadHandler.cs" />
+    <Compile Include="Handlers\IClipboardHandler.cs" />
     <Compile Include="Handlers\IClipboard.cs" />
     <Compile Include="Handlers\IOmniClipboardHandler.cs" />
     <Compile Include="Handlers\OmniClipboardHandler.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="Handlers\WindowsClipboard\IWindowsClipboardWrapper.cs" />
     <Compile Include="Handlers\WindowsClipboard\WindowsClipboardWrapper.cs" />
     <Compile Include="Models\Clipping.cs" />
+    <Compile Include="Enums\ClippingSourceEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

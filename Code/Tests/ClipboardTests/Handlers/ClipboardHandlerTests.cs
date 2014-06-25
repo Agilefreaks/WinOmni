@@ -19,7 +19,7 @@
 
         private Mock<IOmniClipboardHandler> _mockOmniClipboardHandler;
 
-        private IClipboadHandler _subject;
+        private IClipboardHandler _subject;
 
         [SetUp]
         public void Setup()
@@ -31,9 +31,9 @@
 
             _mockingKernel.Bind<ILocalClipboardHandler>().ToConstant(_mockLocalClipboardHandler.Object);
             _mockingKernel.Bind<IOmniClipboardHandler>().ToConstant(_mockOmniClipboardHandler.Object);
-            _mockingKernel.Bind<IClipboadHandler>().To<ClipboardHandler>();
+            _mockingKernel.Bind<IClipboardHandler>().To<ClipboardHandler>();
 
-            _subject = _mockingKernel.Get<IClipboadHandler>();
+            _subject = _mockingKernel.Get<IClipboardHandler>();
         }
 
         [Test]

@@ -1,16 +1,19 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
+    using System.Reactive.Linq;
     using Clipboard.Models;
     using OmniCommon.Models;
 
-    public class ClipboardHandler : IClipboadHandler
+    public class ClipboardHandler : IClipboardHandler
     {
         #region Fields
 
         private IDisposable _localClipboardSubscriber;
 
         private IDisposable _omniClipboardSubscription;
+
+        private readonly IObservable<Clipping> _clippingsObservable; 
 
         #endregion
 
@@ -22,6 +25,8 @@
         {
             OmniClipboardHandler = omniClipboardHandler;
             LocalClipboardHandler = localClipboardHandler;
+
+            _clippingsObservable = OmniClipboardHandler.Merge(LocalClipboardHandler);
         }
 
         #endregion
@@ -56,6 +61,11 @@
 
             _localClipboardSubscriber.Dispose();
             LocalClipboardHandler.Dispose();
+        }
+
+        public IDisposable Subscribe(IObserver<Clipping> observer)
+        {
+            return _clippingsObservable.Subscribe(observer);
         }
 
         #endregion

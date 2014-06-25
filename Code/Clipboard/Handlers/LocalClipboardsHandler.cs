@@ -2,6 +2,7 @@ namespace Clipboard.Handlers
 {
     using System;
     using System.Reactive.Subjects;
+    using Clipboard.Enums;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
 
@@ -12,6 +13,8 @@ namespace Clipboard.Handlers
         private readonly Subject<Clipping> _subject;
 
         private string _lastClippingContent = string.Empty;
+
+        private bool _subscribedToWindowsClipboard;
 
         #endregion
 
@@ -36,7 +39,12 @@ namespace Clipboard.Handlers
         public void Dispose()
         {
             WindowsClipboardWrapper.StopWatchingClipboard();
-            WindowsClipboardWrapper.DataReceived -= WindowsClipboardWrapperDataReceived;
+            
+            if (_subscribedToWindowsClipboard)
+            {
+                WindowsClipboardWrapper.DataReceived -= WindowsClipboardWrapperDataReceived;
+                _subscribedToWindowsClipboard = false;
+            }
         }
 
         public void PostClipping(Clipping clipping)
@@ -47,8 +55,13 @@ namespace Clipboard.Handlers
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
         {
-            WindowsClipboardWrapper.DataReceived += WindowsClipboardWrapperDataReceived;
             WindowsClipboardWrapper.StartWatchingClipboard();
+            
+            if (!_subscribedToWindowsClipboard)
+            {
+                WindowsClipboardWrapper.DataReceived += WindowsClipboardWrapperDataReceived;
+                _subscribedToWindowsClipboard = true;
+            }
 
             return _subject.Subscribe(observer);
         }
@@ -64,7 +77,8 @@ namespace Clipboard.Handlers
                 return;
             }
 
-            _subject.OnNext(new Clipping(args.Data));
+
+            _subject.OnNext(new Clipping(args.Data) { Source = ClippingSourceEnum.Local} );
         }
 
         #endregion

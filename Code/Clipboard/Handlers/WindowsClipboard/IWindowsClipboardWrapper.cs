@@ -6,6 +6,8 @@
     {
         event EventHandler<ClipboardEventArgs> DataReceived;
 
+        bool IsWatchingClippings { get; }
+
         void SetData(string data);
 
         void StartWatchingClipboard();

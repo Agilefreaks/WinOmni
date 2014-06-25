@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
+    using System.Windows.Controls;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
@@ -14,11 +16,13 @@
     using OmniCommon;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
+    using Omnipaste.Framework.Attributes;
     using Omnipaste.Services;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Settings;
     using OmniSync;
+    using ViewLocator = Caliburn.Micro.ViewLocator;
 
     public class OmnipasteBootstrapper : BootstrapperBase
     {
@@ -48,6 +52,8 @@
         {
             var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel) };
             _kernel = new StandardKernel();
+
+            SetupViewLocator();
 
             _kernel.Load(
                 new OmniCommonModule(),
@@ -111,6 +117,47 @@
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
             return new[] { Assembly.GetExecutingAssembly() };
+        }
+
+        public static void SetupViewLocator()
+        {
+            ViewLocator.LocateForModelType = (modelType, displayLocation, context) =>
+            {
+                IEnumerable<UseViewAttribute> useViewAttributes =
+                    modelType.GetCustomAttributes(typeof(UseViewAttribute), true)
+                        .Cast<UseViewAttribute>();
+
+                string viewTypeName;
+
+                if (useViewAttributes.Count() == 1)
+                {
+                    var attribute = useViewAttributes.First();
+                    viewTypeName = attribute.IsFullyQualifiedName
+                                       ? attribute.ViewName
+                                       : string.Concat(
+                                           modelType.Namespace.Replace("Model",
+                                                                       string.Empty), ".",
+                                           attribute.ViewName);
+                }
+                else
+                {
+                    viewTypeName = modelType.FullName.Replace("Model", string.Empty);
+                    if (context != null)
+                    {
+                        viewTypeName = viewTypeName.Remove(viewTypeName.Length - 4, 4);
+                        viewTypeName = viewTypeName + "." + context;
+                    }
+                }
+
+                var viewType = (from assembly in AssemblySource.Instance
+                                from type in assembly.GetExportedTypes()
+                                where type.FullName == viewTypeName
+                                select type).FirstOrDefault();
+
+                return viewType == null
+                           ? new TextBlock { Text = string.Format("{0} not found.", viewTypeName) }
+                           : ViewLocator.GetOrCreateViewType(viewType);
+            };
         }
 
         #endregion

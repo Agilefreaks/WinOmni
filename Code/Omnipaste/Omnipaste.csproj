@@ -91,7 +91,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -217,6 +217,19 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
+    <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
+    <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
+    <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
+    <Compile Include="ClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
+    <Compile Include="ClippingList\AllClippingList\IAllClippingListViewModel.cs" />
+    <Compile Include="ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="ClippingList\IMasterClippingListViewModel.cs" />
+    <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
+    <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
+    <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
+    <Compile Include="Clipping\ClippingViewModel.cs" />
+    <Compile Include="Clipping\IClippingViewModel.cs" />
+    <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -293,6 +306,18 @@
       <DependentUpon>UserTokenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
+    <Page Include="ClippingList\ClippingListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ClippingList\MasterClippingListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Clipping\ClippingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shell\Connection\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

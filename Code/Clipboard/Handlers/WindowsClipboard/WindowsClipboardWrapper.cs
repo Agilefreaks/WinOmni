@@ -4,47 +4,39 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Threading;
+    using System.Windows.Forms;
     using System.Windows.Interop;
     using WindowsImports;
     using Ninject;
-    using Clipboard = System.Windows.Forms.Clipboard;
-    using DataFormats = System.Windows.Forms.DataFormats;
-    using DataObject = System.Windows.Forms.DataObject;
-    using IDataObject = System.Windows.Forms.IDataObject;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
-        public event EventHandler<ClipboardEventArgs> DataReceived;
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
-        private HwndSource _hWndSource;
+        #region Fields
 
         private IntPtr _clipboardViewerNext;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
+        private HwndSource _hWndSource;
+
+        #endregion
+
+        #region Public Events
+
+        public event EventHandler<ClipboardEventArgs> DataReceived;
+
+        #endregion
+
+        #region Public Properties
+
+        public bool IsWatchingClippings { get; set; }
 
         [Inject]
         public IntPtr WindowHandle { get; set; }
 
-        public void StartWatchingClipboard()
-        {
-            if (WindowHandle != IntPtr.Zero)
-            {
-                _hWndSource = HwndSource.FromHwnd(WindowHandle);
+        #endregion
 
-                if (_hWndSource != null)
-                {
-                    _hWndSource.AddHook(HandleClipboardMessage);
-
-                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
-                }
-            }
-        }
-
-        public void StopWatchingClipboard()
-        {
-            User32.ChangeClipboardChain(_hWndSource.Handle, _clipboardViewerNext);
-            _clipboardViewerNext = IntPtr.Zero;
-            _hWndSource.RemoveHook(HandleClipboardMessage);
-        }
+        #region Public Methods and Operators
 
         public void SetData(string data)
         {
@@ -52,21 +44,37 @@
             RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 3, 10));
         }
 
-        private static string GetClipboardText()
+        public void StartWatchingClipboard()
         {
-            string text = null;
-            
-            var dataObject = GetClipboardData();
-            if (dataObject != null)
+            if (WindowHandle != IntPtr.Zero && !IsWatchingClippings)
             {
-                if (dataObject.GetDataPresent(DataFormats.Text))
+                _hWndSource = HwndSource.FromHwnd(WindowHandle);
+
+                if (_hWndSource != null)
                 {
-                    text = (string)dataObject.GetData(DataFormats.Text);
+                    _hWndSource.AddHook(HandleClipboardMessage);
+                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+
+                    IsWatchingClippings = true;
                 }
             }
-
-            return text;
         }
+
+        public void StopWatchingClipboard()
+        {
+            if (IsWatchingClippings)
+            {
+                User32.ChangeClipboardChain(_hWndSource.Handle, _clipboardViewerNext);
+                _clipboardViewerNext = IntPtr.Zero;
+                _hWndSource.RemoveHook(HandleClipboardMessage);
+
+                IsWatchingClippings = false;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         private static IDataObject GetClipboardData()
         {
@@ -86,57 +94,48 @@
             return dataObject;
         }
 
+        private static string GetClipboardText()
+        {
+            string text = null;
+
+            var dataObject = GetClipboardData();
+            if (dataObject != null)
+            {
+                if (dataObject.GetDataPresent(DataFormats.Text))
+                {
+                    text = (string)dataObject.GetData(DataFormats.Text);
+                }
+            }
+
+            return text;
+        }
+
         private static void RunOnAnStaThread(Action action)
         {
             var @event = new AutoResetEvent(false);
-            var thread = new Thread(() =>
-            {
-                action();
-                @event.Set();
-            });
+            var thread = new Thread(
+                () =>
+                {
+                    action();
+                    @event.Set();
+                });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             @event.WaitOne();
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
-        private string HandleDrawClipboard(int msg, IntPtr wParam, IntPtr lParam)
+        private void CallDataReceived(string data)
         {
-            var data = GetClipboardText();
-
-            // Each window that receives the WM_DRAWCLIPBOARD message 
-            // must call the SendMessage function to pass the message 
-            // on to the next window in the clipboard viewer chain.
-            //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
-
-            return data;
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
-        private IntPtr HandleClipboardMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            switch ((Msgs)msg)
+            if (DataReceived != null && !string.IsNullOrWhiteSpace(data))
             {
-                // The WM_DRAWCLIPBOARD message is sent to the first window 
-                // in the clipboard viewer chain when the content of the 
-                // clipboard changes. This enables a clipboard viewer 
-                // window to display the new content of the clipboard. 
-                case Msgs.WM_DRAWCLIPBOARD:
-                    CallDataReceived(HandleDrawClipboard(msg, wParam, lParam));
-                    break;
-
-                // The WM_CHANGECBCHAIN message is sent to the first window 
-                // in the clipboard viewer chain when a window is being 
-                // removed from the chain. 
-                case Msgs.WM_CHANGECBCHAIN:
-                    HandleClipboardChainChanged(msg, wParam, lParam);
-                    break;
+                DataReceived(this, new ClipboardEventArgs(data));
             }
-
-            return IntPtr.Zero;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification =
+                "Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code"
+            )]
         private void HandleClipboardChainChanged(int msg, IntPtr wParam, IntPtr lParam)
         {
             // When a clipboard viewer window receives the WM_CHANGECBCHAIN message, 
@@ -162,12 +161,45 @@
             }
         }
 
-        private void CallDataReceived(string data)
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
+        private IntPtr HandleClipboardMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (DataReceived != null && !string.IsNullOrWhiteSpace(data))
+            switch ((Msgs)msg)
             {
-                DataReceived(this, new ClipboardEventArgs(data));
+                    // The WM_DRAWCLIPBOARD message is sent to the first window 
+                    // in the clipboard viewer chain when the content of the 
+                    // clipboard changes. This enables a clipboard viewer 
+                    // window to display the new content of the clipboard. 
+                case Msgs.WM_DRAWCLIPBOARD:
+                    CallDataReceived(HandleDrawClipboard(msg, wParam, lParam));
+                    break;
+
+                    // The WM_CHANGECBCHAIN message is sent to the first window 
+                    // in the clipboard viewer chain when a window is being 
+                    // removed from the chain. 
+                case Msgs.WM_CHANGECBCHAIN:
+                    HandleClipboardChainChanged(msg, wParam, lParam);
+                    break;
             }
+
+            return IntPtr.Zero;
         }
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
+        private string HandleDrawClipboard(int msg, IntPtr wParam, IntPtr lParam)
+        {
+            var data = GetClipboardText();
+
+            // Each window that receives the WM_DRAWCLIPBOARD message 
+            // must call the SendMessage function to pass the message 
+            // on to the next window in the clipboard viewer chain.
+            //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
+
+            return data;
+        }
+
+        #endregion
     }
 }
