@@ -5,15 +5,13 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
         BorderThickness="1"
+        BorderBrush="{StaticResource AccentColorBrush}"
         NonActiveBorderBrush="{StaticResource BlackBrush}"
         Icon="/Icon.ico">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            
             <ControlTemplate x:Key="FlyoutTemplate" TargetType="{x:Type controls:Flyout}">
                 <Grid x:Name="root"
                   Margin="{TemplateBinding Margin}"
@@ -152,11 +150,12 @@
         </Grid.RowDefinitions>
 
         <ContentControl x:Name="ContextMenuViewModel" />
-        
-        <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
-            <TabItem Header="Clippings"/>
-        </controls:MetroAnimatedSingleRowTabControl>
 
-        <ContentControl x:Name="ActiveItem" Grid.Row="1"/>
+        <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
+            <TabItem Header="Clippings">
+                <ContentControl cal:View.Model="{Binding Path=ClippingListViewModel}" />
+            </TabItem>
+            <TabItem Header="Notifications"></TabItem>
+        </controls:MetroAnimatedSingleRowTabControl>
     </Grid>
 </controls:MetroWindow>
