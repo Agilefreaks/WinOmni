@@ -5,6 +5,7 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Clipboard.API;
+    using Clipboard.Enums;
     using Clipboard.Models;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -63,7 +64,10 @@
 
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
             {
-                _subject.OnNext(clippingResponse.Result.Data);
+                var clipping = clippingResponse.Result.Data;
+                clipping.Source = ClippingSourceEnum.Web;
+
+                _subject.OnNext(clipping);
             }
         }
 

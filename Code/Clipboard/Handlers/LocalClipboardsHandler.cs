@@ -2,6 +2,7 @@ namespace Clipboard.Handlers
 {
     using System;
     using System.Reactive.Subjects;
+    using Clipboard.Enums;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
 
@@ -64,7 +65,8 @@ namespace Clipboard.Handlers
                 return;
             }
 
-            _subject.OnNext(new Clipping(args.Data));
+
+            _subject.OnNext(new Clipping(args.Data) { Source = ClippingSourceEnum.Local} );
         }
 
         #endregion
