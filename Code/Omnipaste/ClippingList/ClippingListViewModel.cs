@@ -1,41 +1,68 @@
 namespace Omnipaste.ClippingList
 {
     using System;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
+    using Clipboard.Enums;
     using Clipboard.Handlers;
     using Clipboard.Models;
+    using Ninject;
+    using Omnipaste.Clipping;
 
     public class ClippingListViewModel : Screen, IClippingListViewModel
     {
-        public IClipboardHandler ClipboardHandler { get; set; }
-
-        public ILocalClipboardHandler LocalClipboardHandler { get; set; }
-
-        public IOmniClipboardHandler OmniClipboardHandler { get; set; }
-
-        public IObservableCollection<Clipping> Clippings { get; set; } 
+        #region Constructors and Destructors
 
         public ClippingListViewModel(IClipboardHandler clipboardHandler)
         {
-            Clippings = new BindableCollection<Clipping>();
+            Clippings = new BindableCollection<IClippingViewModel>();
+            WebClippings = new BindableCollection<IClippingViewModel>();
+            LocalClippings = new BindableCollection<IClippingViewModel>();
 
             ClipboardHandler = clipboardHandler;
-            ClipboardHandler.Subscribe(this);
+            SetupCollections();
         }
 
-        public void OnNext(Clipping value)
+        #endregion
+
+        #region Public Properties
+
+        public IClipboardHandler ClipboardHandler { get; set; }
+
+        public IObservableCollection<IClippingViewModel> Clippings { get; set; }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
+        public IObservableCollection<IClippingViewModel> LocalClippings { get; set; }
+
+        public IObservableCollection<IClippingViewModel> WebClippings { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        private void SetupCollections()
         {
-            Clippings.Add(value);
+            ClipboardHandler.Select(CreateViewModel).Subscribe(x => Clippings.Insert(0, x));
+
+            ClipboardHandler.Where(c => c.Source == ClippingSourceEnum.Web)
+                .Select(CreateViewModel)
+                .Subscribe(x => WebClippings.Insert(0, x));
+
+            ClipboardHandler.Where(c => c.Source == ClippingSourceEnum.Local)
+                .Select(CreateViewModel)
+                .Subscribe(x => LocalClippings.Insert(0, x));
         }
 
-        public void OnError(Exception error)
+        private IClippingViewModel CreateViewModel(Clipping clipping)
         {
-            throw new NotImplementedException();
+            var clippingViewModel = Kernel.Get<IClippingViewModel>();
+            clippingViewModel.Model = clipping;
+
+            return clippingViewModel;
         }
 
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }
