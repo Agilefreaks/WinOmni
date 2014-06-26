@@ -27,7 +27,7 @@
         {
             get
             {
-                return Model.Source == ClippingSourceEnum.Web;
+                return Model.Source == ClippingSourceEnum.Cloud;
             }
         }
 
@@ -55,5 +55,10 @@
         }
 
         #endregion
+
+        public void OpenLink()
+        {
+            System.Diagnostics.Process.Start(Model.Content);
+        }
     }
 }

@@ -59,11 +59,11 @@
             <controls:MetroTabItem Header="All" Style="{StaticResource SubmenuTabItemStyle}" >
                 <ContentControl cal:View.Model="{Binding}" cal:View.Context="All" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Web" Style="{StaticResource SubmenuTabItemStyle}">
-                <ContentControl cal:View.Model="{Binding}" cal:View.Context="Web" />
-            </controls:MetroTabItem>
             <controls:MetroTabItem Header="Local" Style="{StaticResource SubmenuTabItemStyle}">
                 <ContentControl cal:View.Model="{Binding}" cal:View.Context="Local" />
+            </controls:MetroTabItem>
+            <controls:MetroTabItem Header="Cloud" Style="{StaticResource SubmenuTabItemStyle}">
+                <ContentControl cal:View.Model="{Binding}" cal:View.Context="Cloud" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>
     </Grid>
