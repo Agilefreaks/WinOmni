@@ -27,7 +27,7 @@
             </Rectangle>
         </Button>
 
-        <TextBlock Grid.Column="1" Text="{Binding Path=Model.Content}" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="{Binding Path=Model.content}" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         <Button x:Name="OpenLink" Grid.Column="2" Width="50" Height="50" Margin="6" VerticalAlignment="Center" Background="Transparent">
             <Button.Style>

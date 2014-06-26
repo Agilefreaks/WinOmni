@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System.Reactive.Linq;
     using System.Threading.Tasks;
     using Ninject;
     using OmniApi.Models;
-    using OmniApi.Resources;
-    using OmniCommon.Interfaces;
-    using Retrofit.Net;
+    using OmniApi.Resources.v1;
+    using Omnipaste.Properties;
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
@@ -17,30 +17,27 @@
 
         #region Fields
 
-        private readonly IConfigurationService _configurationService;
-
         private RetryInfo _payload;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public GetRemoteConfiguration(IAuthorizationAPI authorizationApi, IConfigurationService configurationService)
+        public GetRemoteConfiguration(IOAuth2 oAuth2)
         {
-            _configurationService = configurationService;
-            AuthorizationApi = authorizationApi;
+            OAuth2 = oAuth2;
         }
 
         #endregion
 
         #region Public Properties
 
-        public IAuthorizationAPI AuthorizationApi { get; set; }
-
         [Inject]
         public IKernel Kernel { get; set; }
 
         public override DependencyParameter Parameter { get; set; }
+
+        public IOAuth2 OAuth2 { get; set; }
 
         #endregion
 
@@ -71,51 +68,42 @@
         {
             var executeResult = new ExecuteResult();
 
-            if (string.IsNullOrEmpty(PayLoad.Token))
+            if (string.IsNullOrEmpty(PayLoad.AuthorizationCode))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
             }
             else
             {
-                var activationModelTask = await AuthorizationApi.Activate(PayLoad.Token, _configurationService.ClientId);
-                SetResultPropertiesBasedOnActivationData(executeResult, activationModelTask.Data);
+                var token = await OAuth2.Create(PayLoad.AuthorizationCode);
+                SetResultPropertiesBasedOnActivationData(executeResult, token);
             }
 
             return executeResult;
         }
-
         #endregion
 
         #region Methods
 
         private void SetResultPropertiesBasedOnActivationData(
             IExecuteResult executeResult,
-            ActivationModel activationModel)
+            Token token)
         {
-            if (activationModel == null)
+            if (token == null)
             {
-                executeResult.Data = new RetryInfo(_payload.Token, _payload.FailCount + 1);
+                executeResult.Data = new RetryInfo(_payload.AuthorizationCode, _payload.FailCount + 1);
                 executeResult.State = _payload.FailCount < MaxRetryCount
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
             }
-            else if (!string.IsNullOrEmpty(activationModel.access_token))
+            else if (string.IsNullOrEmpty(token.access_token))
             {
-                var authenticator = new Authenticator
-                                        {
-                                            AccessToken = activationModel.access_token,
-                                            RefreshToken = activationModel.refresh_token,
-                                            GrantType = activationModel.token_type
-                                        };
-                executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = authenticator;
-                Kernel.Unbind<Authenticator>();
-                Kernel.Bind<Authenticator>().ToConstant(authenticator);
+                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
+                executeResult.Data = Resources.AuthorizationCodeError;
             }
             else
             {
-                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
-                executeResult.Data = activationModel.error_description;
+                executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
+                executeResult.Data = token;
             }
         }
 

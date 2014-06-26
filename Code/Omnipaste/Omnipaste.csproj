@@ -152,12 +152,12 @@
       <HintPath>..\packages\ninject.extensions.conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Refit">
+      <HintPath>..\..\Libs\Refit\Refit.dll</HintPath>
     </Reference>
-    <Reference Include="Retrofit.Net">
-      <HintPath>..\..\Libs\Retrofit.NET\Retrofit.Net.dll</HintPath>
+    <Reference Include="Refit-Portable, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Refit\Refit-Portable.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -405,7 +405,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="AgileFreaks-codeSigningCertificate.p12" />
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>

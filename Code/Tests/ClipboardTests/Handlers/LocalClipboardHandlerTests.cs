@@ -1,8 +1,7 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
-    using System.Reactive.Subjects;
-    using Clipboard.API;
+    using Clipboard.API.Resources.v1;
     using Clipboard.Handlers;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
@@ -21,7 +20,7 @@
 
         private Mock<IWindowsClipboardWrapper> _mockWindowsClipboardWrapper;
 
-        private Mock<IClippingsApi> _mockClippingsApi;
+        private Mock<IClippings> _mockClippings;
 
         [SetUp]
         public void SetUp()
@@ -29,10 +28,10 @@
             _mockingKernel = new MockingKernel();
 
             _mockWindowsClipboardWrapper = new Mock<IWindowsClipboardWrapper>();
-            _mockClippingsApi = new Mock<IClippingsApi>();
+            _mockClippings = new Mock<IClippings>();
 
             _mockingKernel.Bind<IWindowsClipboardWrapper>().ToConstant(_mockWindowsClipboardWrapper.Object);
-            _mockingKernel.Bind<IClippingsApi>().ToConstant(_mockClippingsApi.Object);
+            _mockingKernel.Bind<IClippings>().ToConstant(_mockClippings.Object);
 
             _mockingKernel.Bind<ILocalClipboardHandler>().To<LocalClipboardsHandler>();
 
@@ -77,7 +76,7 @@
             _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
                 .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs() { Data = "42" }));
 
-            _subject.PostClipping(new Clipping() { Content = "42" });
+            _subject.PostClipping(new Clipping() { content = "42" });
 
             observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
         }

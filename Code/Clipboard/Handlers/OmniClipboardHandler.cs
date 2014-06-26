@@ -1,10 +1,10 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using System.Net;
+    using System.Diagnostics;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Clipboard.API;
+    using Clipboard.API.Resources.v1;
     using Clipboard.Enums;
     using Clipboard.Models;
     using OmniCommon.Interfaces;
@@ -22,10 +22,10 @@
 
         #region Constructors and Destructors
 
-        public OmniClipboardHandler(IClippingsApi clippingsApi, IConfigurationService configurationService)
+        public OmniClipboardHandler(IClippings clippings, IConfigurationService configurationService)
         {
             _subject = new Subject<Clipping>();
-            ClippingsApi = clippingsApi;
+            Clippings = clippings;
             ConfigurationService = configurationService;
         }
 
@@ -33,7 +33,7 @@
 
         #region Public Properties
 
-        public IClippingsApi ClippingsApi { get; private set; }
+        public IClippings Clippings { get; private set; }
 
         public IConfigurationService ConfigurationService { get; set; }
 
@@ -59,22 +59,21 @@
 
         public void OnNext(OmniMessage value)
         {
-            var clippingResponse = ClippingsApi.Last();
-            clippingResponse.Wait();
-
-            if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
-            {
-                var clipping = clippingResponse.Result.Data;
-                clipping.Source = ClippingSourceEnum.Cloud;
-
-                _subject.OnNext(clipping);
-            }
+            Clippings.Last().Subscribe(
+                // OnNext
+                c => 
+                    {
+                        c.source = ClippingSourceEnum.Cloud;
+                        _subject.OnNext(c);
+                      
+                    },
+                // OnError
+                e => Debugger.Break());
         }
 
         public void PostClipping(Clipping clipping)
         {
-            var postClipping = ClippingsApi.PostClipping(ConfigurationService.DeviceIdentifier, clipping.Content);
-            postClipping.Wait();
+            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.content).Subscribe();
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)

@@ -1,27 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <packages>
-<<<<<<< HEAD
   <package id="Caliburn.Micro" version="2.0.0" targetFramework="net45" />
   <package id="Caliburn.Micro.Core" version="2.0.0" targetFramework="net45" />
   <package id="FluentAssertions" version="3.0.107" targetFramework="net45" />
+  <package id="MahApps.Metro" version="0.13.1.0" targetFramework="net45" />
   <package id="Moq" version="4.2.1402.2112" targetFramework="net45" />
   <package id="Ninject" version="3.2.2.0" targetFramework="net45" />
   <package id="Ninject.MockingKernel" version="3.2.0.0" targetFramework="net45" />
   <package id="Ninject.MockingKernel.Moq" version="3.2.0.0" targetFramework="net45" />
   <package id="NUnit" version="2.6.3" targetFramework="net45" />
   <package id="RestSharp" version="104.4.0" targetFramework="net45" />
+  <package id="Rx-Core" version="2.2.4" targetFramework="net45" />
+  <package id="Rx-Interfaces" version="2.2.4" targetFramework="net45" />
+  <package id="Rx-Linq" version="2.2.4" targetFramework="net45" />
+<<<<<<< HEAD
 =======
-  <package id="Caliburn.Micro" version="2.0.0" targetFramework="net40" />
-  <package id="Caliburn.Micro.Core" version="2.0.0" targetFramework="net40" />
-  <package id="FluentAssertions" version="3.0.107" targetFramework="net40" />
-  <package id="Microsoft.Bcl" version="1.1.9" targetFramework="net40" />
-  <package id="Microsoft.Bcl.Async" version="1.0.168" targetFramework="net40" />
-  <package id="Microsoft.Bcl.Build" version="1.0.14" targetFramework="net40" />
-  <package id="Moq" version="4.2.1402.2112" targetFramework="net40" />
-  <package id="Ninject" version="3.2.0.0" targetFramework="net40" />
-  <package id="Ninject.MockingKernel" version="3.2.0.0" targetFramework="net40" />
-  <package id="Ninject.MockingKernel.Moq" version="3.2.0.0" targetFramework="net40" />
-  <package id="NUnit" version="2.6.3" targetFramework="net40" />
-  <package id="RestSharp" version="104.4.0" targetFramework="net40" />
->>>>>>> Added LoadingViewModel
+  <package id="Rx-Main" version="2.2.4" targetFramework="net45" />
+  <package id="Rx-PlatformServices" version="2.2.4" targetFramework="net45" />
+>>>>>>> [wo-51] updates to the lastest refit and changes the auth service
 </packages>

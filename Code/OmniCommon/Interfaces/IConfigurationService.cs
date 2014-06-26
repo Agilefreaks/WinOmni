@@ -16,8 +16,6 @@
 
         string RefreshToken { get; }
 
-        string TokenType { get; }
-
         #endregion
 
         #region Public Indexers
@@ -30,7 +28,7 @@
 
         void ResetAuthSettings();
 
-        void SaveAuthSettings(string accessToken, string tokenType, string refreshToken);
+        void SaveAuthSettings(string accessToken, string refreshToken);
 
         #endregion
     }

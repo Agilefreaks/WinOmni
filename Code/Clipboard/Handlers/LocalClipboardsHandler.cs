@@ -49,8 +49,8 @@ namespace Clipboard.Handlers
 
         public void PostClipping(Clipping clipping)
         {
-            _lastClippingContent = clipping.Content;
-            WindowsClipboardWrapper.SetData(clipping.Content);
+            _lastClippingContent = clipping.content;
+            WindowsClipboardWrapper.SetData(clipping.content);
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
@@ -78,7 +78,7 @@ namespace Clipboard.Handlers
             }
 
 
-            _subject.OnNext(new Clipping(args.Data) { Source = ClippingSourceEnum.Local} );
+            _subject.OnNext(new Clipping(args.Data) { source = ClippingSourceEnum.Local} );
         }
 
         #endregion

@@ -1,9 +1,10 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
-    using System.Net;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Clipboard.API;
+    using Clipboard.API.Resources.v1;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Moq;
@@ -12,7 +13,6 @@
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using RestSharp;
 
     [TestFixture]
     public class OmniClipboardHandlerTests
@@ -21,7 +21,7 @@
 
         private MoqMockingKernel _mockingKernel;
 
-        private Mock<IClippingsApi> _mockClippingsApi;
+        private Mock<IClippings> _mockClippings;
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -31,7 +31,7 @@
             _mockingKernel = new MoqMockingKernel();
             _mockingKernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
-            _mockClippingsApi = _mockingKernel.GetMock<IClippingsApi>();
+            _mockClippings = _mockingKernel.GetMock<IClippings>();
             _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
 
             _mockingKernel.Bind<IOmniClipboardHandler>().To<OmniClipboardHandler>();
@@ -46,9 +46,15 @@
             var observable = new Subject<OmniMessage>();
             var clipping = new Clipping();
 
-            _mockClippingsApi
+            _mockClippings
                 .Setup(c => c.Last())
-                .ReturnsAsync(new RestResponse<Clipping> { StatusCode = HttpStatusCode.OK, Data = clipping });
+                .Returns(Observable.Create<Clipping>(
+                    o =>
+                        {
+                            o.OnNext(clipping);
+                            o.OnCompleted();
+                            return Disposable.Empty;
+                        }));
 
             _omniClipboardHandler.SubscribeTo(observable);
             _omniClipboardHandler.Subscribe(observer.Object);
@@ -74,11 +80,13 @@
         [Test]
         public void PostClipping_Always_PostsToApi()
         {
+            _mockClippings.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Observable.Empty<Clipping>());
             _mockConfigurationService.Setup(cs => cs.DeviceIdentifier).Returns("Radio");
 
             _omniClipboardHandler.PostClipping(new Clipping("some content"));
 
-            _mockClippingsApi.Verify(ca => ca.PostClipping("Radio", "some content"));
+            _mockClippings.Verify(ca => ca.Create("Radio", "some content"));
         }
     }
 }

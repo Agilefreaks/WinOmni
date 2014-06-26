@@ -42,19 +42,11 @@
             }
         }
 
-        public string TokenType
-        {
-            get
-            {
-                return _configurationProvider.GetValue("tokenType");
-            }
-        }
-
         public string ClientId
         {
             get
             {
-                return ConfigurationManager.AppSettings["ClientId"];
+                return ConfigurationManager.AppSettings[ConfigurationProperties.ClientId];
             }
         }
 
@@ -107,16 +99,15 @@
 
         #region Public Methods and Operators
 
-        public void SaveAuthSettings(string accessToken, string tokenType, string refreshToken)
+        public void SaveAuthSettings(string accessToken, string refreshToken)
         {
             _configurationProvider.SetValue("accessToken", accessToken);
-            _configurationProvider.SetValue("tokenType", tokenType);
             _configurationProvider.SetValue("refreshToken", refreshToken);
         }
 
         public void ResetAuthSettings()
         {
-            SaveAuthSettings(string.Empty, string.Empty, string.Empty);
+            SaveAuthSettings(string.Empty, string.Empty);
         }
 
         #endregion

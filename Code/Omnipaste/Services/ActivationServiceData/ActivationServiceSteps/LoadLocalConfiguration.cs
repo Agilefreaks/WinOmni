@@ -2,7 +2,6 @@
 {
     using Ninject;
     using OmniCommon.Interfaces;
-    using Retrofit.Net;
 
     public class LoadLocalConfiguration : ActivationStepBase
     {
@@ -35,27 +34,15 @@
             var result = new ExecuteResult();
 
             var accessToken = _configurationService.AccessToken;
-            var refreshToken = _configurationService.RefreshToken;
-            var tokenType = _configurationService.TokenType;
-            var clientId = _configurationService.ClientId;
-            if (!string.IsNullOrEmpty(accessToken))
+            
+            if (string.IsNullOrEmpty(accessToken))
             {
-                result.Data = accessToken;
-                result.State = SimpleStepStateEnum.Successful;
-                Kernel.Bind<Authenticator>()
-                    .ToConstant(
-                        new Authenticator
-                            {
-                                AccessToken = accessToken,
-                                RefreshToken = refreshToken,
-                                GrantType = tokenType,
-                                ClientId = clientId,
-                                AuthenticationEndpoint = "oauth2/token"
-                            });
+                result.State = SimpleStepStateEnum.Failed;
             }
             else
             {
-                result.State = SimpleStepStateEnum.Failed;
+                result.Data = accessToken;
+                result.State = SimpleStepStateEnum.Successful;
             }
 
             return result;

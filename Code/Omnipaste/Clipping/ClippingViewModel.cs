@@ -27,7 +27,7 @@
         {
             get
             {
-                return Model.Source == ClippingSourceEnum.Cloud;
+                return Model.source == ClippingSourceEnum.Cloud;
             }
         }
 
@@ -35,7 +35,7 @@
         {
             get
             {
-                return Model.Source == ClippingSourceEnum.Local;
+                return Model.source == ClippingSourceEnum.Local;
             }
         }
 
@@ -58,7 +58,7 @@
 
         public void OpenLink()
         {
-            System.Diagnostics.Process.Start(Model.Content);
+            System.Diagnostics.Process.Start(Model.content);
         }
     }
 }
