@@ -222,6 +222,8 @@
     </Compile>
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="Clipping\ClippingViewModel.cs" />
+    <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -299,6 +301,10 @@
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Clipping\ClippingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
