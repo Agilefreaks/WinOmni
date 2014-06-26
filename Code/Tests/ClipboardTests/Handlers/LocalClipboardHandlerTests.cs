@@ -1,10 +1,12 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
+    using System.Reactive.Subjects;
     using Clipboard.API;
     using Clipboard.Handlers;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
+    using FluentAssertions;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
@@ -43,6 +45,19 @@
             _subject.Subscribe(new Mock<IObserver<Clipping>>().Object);
 
             _mockWindowsClipboardWrapper.Verify(wc => wc.StartWatchingClipboard(), Times.Once);
+        }
+
+        [Test]
+        public void Subscribe_OnlySubscribesOnceToTheClipboardDataReceivedEvent()
+        {
+            int clippingsReceived = 0;
+            
+            _subject.Subscribe(c => clippingsReceived++);
+            _subject.Subscribe(c => clippingsReceived++);
+
+            _mockWindowsClipboardWrapper.Raise(x => x.DataReceived += null, new ClipboardEventArgs("clipping content"));
+
+            clippingsReceived.Should().Be(2);
         }
 
         [Test]
