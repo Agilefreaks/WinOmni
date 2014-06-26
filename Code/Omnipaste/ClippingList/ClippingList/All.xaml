@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
     <Grid>
-        <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" />
+        <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" VirtualizingStackPanel.IsVirtualizing="True"/>
     </Grid>
 </UserControl>

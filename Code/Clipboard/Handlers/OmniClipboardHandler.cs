@@ -65,7 +65,7 @@
             if (clippingResponse.Result.StatusCode == HttpStatusCode.OK)
             {
                 var clipping = clippingResponse.Result.Data;
-                clipping.Source = ClippingSourceEnum.Web;
+                clipping.Source = ClippingSourceEnum.Cloud;
 
                 _subject.OnNext(clipping);
             }

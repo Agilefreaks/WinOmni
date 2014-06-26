@@ -16,7 +16,7 @@ namespace Omnipaste.ClippingList
         public ClippingListViewModel(IClipboardHandler clipboardHandler)
         {
             Clippings = new BindableCollection<IClippingViewModel>();
-            WebClippings = new BindableCollection<IClippingViewModel>();
+            CloudClippings = new BindableCollection<IClippingViewModel>();
             LocalClippings = new BindableCollection<IClippingViewModel>();
 
             ClipboardHandler = clipboardHandler;
@@ -36,7 +36,7 @@ namespace Omnipaste.ClippingList
 
         public IObservableCollection<IClippingViewModel> LocalClippings { get; set; }
 
-        public IObservableCollection<IClippingViewModel> WebClippings { get; set; }
+        public IObservableCollection<IClippingViewModel> CloudClippings { get; set; }
 
         #endregion
 
@@ -46,9 +46,9 @@ namespace Omnipaste.ClippingList
         {
             ClipboardHandler.Select(CreateViewModel).Subscribe(x => Clippings.Insert(0, x));
 
-            ClipboardHandler.Where(c => c.Source == ClippingSourceEnum.Web)
+            ClipboardHandler.Where(c => c.Source == ClippingSourceEnum.Cloud)
                 .Select(CreateViewModel)
-                .Subscribe(x => WebClippings.Insert(0, x));
+                .Subscribe(x => CloudClippings.Insert(0, x));
 
             ClipboardHandler.Where(c => c.Source == ClippingSourceEnum.Local)
                 .Select(CreateViewModel)

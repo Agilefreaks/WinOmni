@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Omnipaste.ClippingList.ClippingList.Web"
+﻿<UserControl x:Class="Omnipaste.ClippingList.ClippingList.Cloud"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ItemsControl x:Name="WebClippings" ItemTemplate="{DynamicResource ClippingTemplate}" />
+        <ItemsControl x:Name="CloudClippings" ItemTemplate="{DynamicResource ClippingTemplate}" VirtualizingStackPanel.IsVirtualizing="True"/>
     </Grid>
 </UserControl>

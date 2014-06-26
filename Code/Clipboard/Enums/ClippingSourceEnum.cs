@@ -3,6 +3,6 @@
     public enum ClippingSourceEnum
     {
         Local,
-        Web
+        Cloud
     }
 }
