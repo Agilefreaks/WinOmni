@@ -2,6 +2,9 @@ namespace Omnipaste.ClippingList
 {
     using Caliburn.Micro;
     using Ninject;
+    using Omnipaste.ClippingList.AllClippingList;
+    using Omnipaste.ClippingList.CloudClippingList;
+    using Omnipaste.ClippingList.LocalClippingList;
 
     public class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
     {

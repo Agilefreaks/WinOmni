@@ -1,4 +1,4 @@
-namespace Omnipaste.ClippingList
+namespace Omnipaste.ClippingList.CloudClippingList
 {
     public interface ICloudClippingListViewModel
     {
