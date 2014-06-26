@@ -218,7 +218,7 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingListViewModel.cs" />
+    <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="ClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
     <Compile Include="ClippingList\AllClippingList\IAllClippingListViewModel.cs" />
@@ -306,15 +306,7 @@
       <DependentUpon>UserTokenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
-    <Page Include="ClippingList\AllClippingListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ClippingList\CloudClippingList\CloudClippingListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ClippingList\LocalClippingList\LocalClippingListView.xaml">
+    <Page Include="ClippingList\ClippingListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
