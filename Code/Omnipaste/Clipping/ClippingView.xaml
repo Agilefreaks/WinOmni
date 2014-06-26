@@ -27,6 +27,6 @@
             </Rectangle>
         </Button>
 
-        <Label Grid.Column="1" Content="{Binding Path=Model.Content}" HorizontalAlignment="Stretch"/>
+        <TextBlock Grid.Column="1" Text="{Binding Path=Model.Content}" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
     </Grid>
 </UserControl>
