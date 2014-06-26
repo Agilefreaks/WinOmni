@@ -29,7 +29,7 @@
 
         private Window _view;
 
-        private IClippingListViewModel _clippingListViewModel;
+        private IMasterClippingListViewModel _clippingListViewModel;
 
         #endregion
 
@@ -74,7 +74,7 @@
         [Inject]
         public ILoadingViewModel LoadingViewModel { get; set; }
 
-        public IClippingListViewModel ClippingListViewModel
+        public IMasterClippingListViewModel ClippingListViewModel
         {
             get
             {
@@ -138,7 +138,7 @@
 
             DialogViewModel.DeactivateItem(LoadingViewModel, true);
 
-            ClippingListViewModel = Kernel.Get<IClippingListViewModel>();
+            ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
             WindowManager.ShowWindow(
                 Kernel.Get<INotificationListViewModel>(),
                 null,

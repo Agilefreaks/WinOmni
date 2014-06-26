@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Omnipaste.ClippingList.ClippingListView"
+﻿<UserControl x:Class="Omnipaste.ClippingList.MasterClippingListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -57,13 +57,13 @@
     <Grid>
         <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
             <controls:MetroTabItem Header="All" Style="{StaticResource SubmenuTabItemStyle}" >
-                <ContentControl cal:View.Model="{Binding}" cal:View.Context="All" />
+                <ContentControl cal:View.Model="{Binding AllClippingListViewModel}" />
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Local" Style="{StaticResource SubmenuTabItemStyle}">
-                <ContentControl cal:View.Model="{Binding}" cal:View.Context="Local" />
+                <ContentControl cal:View.Model="{Binding LocalClippingListViewModel}" />
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Cloud" Style="{StaticResource SubmenuTabItemStyle}">
-                <ContentControl cal:View.Model="{Binding}" cal:View.Context="Cloud" />
+                <ContentControl cal:View.Model="{Binding CloudClippingListViewModel}" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>
     </Grid>

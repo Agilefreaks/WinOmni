@@ -217,11 +217,16 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
-    <Compile Include="ClippingList\ClippingListView.xaml.cs">
-      <DependentUpon>ClippingListView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ClippingList\AllClipping\AllClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
+    <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
+    <Compile Include="ClippingList\CloudClipping\CloudClippingListViewModel.cs" />
+    <Compile Include="ClippingList\AllClipping\IAllClippingListViewModel.cs" />
     <Compile Include="ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="ClippingList\IMasterClippingListViewModel.cs" />
+    <Compile Include="ClippingList\CloudClipping\ICloudClippingListViewModel.cs" />
+    <Compile Include="ClippingList\LocalClipping\ILocalClippingListViewModel.cs" />
+    <Compile Include="ClippingList\LocalClipping\LocalClippingListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Services\ISessionManager.cs" />
@@ -300,19 +305,19 @@
       <DependentUpon>UserTokenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserToken\UserTokenViewModel.cs" />
-    <Page Include="ClippingList\ClippingListView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ClippingList\AllClipping\AllClippingListView.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClippingList\ClippingList\All.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingList\Local.xaml">
+    <Page Include="ClippingList\CloudClipping\CloudClippingListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingList\Cloud.xaml">
+    <Page Include="ClippingList\LocalClipping\LocalClippingListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ClippingList\MasterClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
