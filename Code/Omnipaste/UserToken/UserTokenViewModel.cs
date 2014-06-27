@@ -14,6 +14,8 @@
 
         private string _message;
 
+        private string _activationCode;
+
         #endregion
 
         #region Constructors and Destructors
@@ -28,7 +30,18 @@
 
         #region Public Properties
 
-        public string ActivationCode { get; set; }
+        public string ActivationCode
+        {
+            get
+            {
+                return _activationCode;
+            }
+            set
+            {
+                _activationCode = value;
+                NotifyOfPropertyChange(() => ActivationCode);
+            }
+        }
 
         public IApplicationWrapper ApplicationWrapper { get; set; }
 

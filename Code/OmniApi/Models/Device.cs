@@ -1,10 +1,11 @@
-﻿using System;
-using Retrofit.Net;
-
-namespace OmniApi.Models
+﻿namespace OmniApi.Models
 {
-    public class Device : IResource
+    using System;
+
+    public class Device
     {
+        #region Public Properties
+
         public DateTime CreatedAt { get; set; }
 
         public string Identifier { get; set; }
@@ -14,5 +15,7 @@ namespace OmniApi.Models
         public string RegistrationId { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #endregion
     }
 }

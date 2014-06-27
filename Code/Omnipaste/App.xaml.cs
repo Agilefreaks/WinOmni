@@ -6,6 +6,7 @@
     using System.Windows;
     using System.Configuration;
     using CustomizedClickOnce.Common;
+    using OmniCommon;
 
     public partial class App : ISingleInstanceApp
     {
@@ -42,8 +43,8 @@
             base.OnStartup(e);
 
             BugFreak.BugFreak.Hook(
-                ConfigurationManager.AppSettings["BugFreakApiKey"],
-                ConfigurationManager.AppSettings["BugFreakToken"],
+                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakApiKey],
+                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakToken],
                 this);
         }
 

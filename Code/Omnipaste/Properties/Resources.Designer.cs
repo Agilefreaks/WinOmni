@@ -70,6 +70,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
+        /// </summary>
+        public static string AuthorizationCodeError {
+            get {
+                return ResourceManager.GetString("AuthorizationCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {

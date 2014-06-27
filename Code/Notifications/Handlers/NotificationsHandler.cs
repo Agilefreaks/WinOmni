@@ -2,10 +2,8 @@
 {
     using System;
     using System.Diagnostics;
-    using System.Net;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Notifications.Api;
     using Notifications.Api.Resources.v1;
     using Notifications.Models;
     using OmniCommon.Models;

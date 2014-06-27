@@ -115,6 +115,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OmniApi\OmniApi.csproj">
+      <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
+      <Name>OmniApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
       <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>
       <Name>OmniCommon</Name>

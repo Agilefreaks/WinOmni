@@ -7,6 +7,7 @@
     using Ninject;
     using Clipboard.Handlers;
     using Ninject.Modules;
+    using OmniCommon;
     using OmniCommon.Interfaces;
     using Retrofit.Net;
 
@@ -18,7 +19,7 @@
 
         public ClipboardModule()
         {
-            _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
+            _baseUrl = ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl];
         }
 
         public override void Load()

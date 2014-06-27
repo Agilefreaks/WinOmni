@@ -15,7 +15,7 @@ namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 
         public virtual object GetId()
         {
-            return this.GetType();
+            return GetType();
         }
     }
 }

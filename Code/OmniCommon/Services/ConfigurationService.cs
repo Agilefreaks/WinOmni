@@ -54,7 +54,7 @@
         {
             get
             {
-                return ConfigurationManager.AppSettings["ClientId"];
+                return ConfigurationManager.AppSettings[ConfigurationProperties.ClientId];
             }
         }
 
