@@ -2,6 +2,7 @@
 {
     using System.Configuration;
     using Newtonsoft.Json.Linq;
+    using OmniCommon;
     using WampSharp;
 
     public class WebsocketConnectionFactory : IWebsocketConnectionFactory
@@ -26,7 +27,7 @@
         public IWebsocketConnection Create()
         {
             IWampChannel<JToken> channel =
-                _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings["OmniSyncUrl"]);
+                _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings[ConfigurationProperties.OmniSyncUrl]);
             
             var websocketConnection = new WebsocketConnection(channel);
             

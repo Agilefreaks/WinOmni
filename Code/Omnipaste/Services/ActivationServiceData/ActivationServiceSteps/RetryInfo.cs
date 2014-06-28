@@ -2,15 +2,15 @@
 {
     public class RetryInfo
     {
-        public string Token { get; set; }
+        public string AuthorizationCode { get; set; }
 
         public int FailCount { get; private set; }
 
         public string Error { get; private set; }
 
-        public RetryInfo(string token, int retryCount = 0, string error = "")
+        public RetryInfo(string authorizationCode, int retryCount = 0, string error = "")
         {
-            Token = token;
+            AuthorizationCode = authorizationCode;
             FailCount = retryCount;
             Error = error;
         }

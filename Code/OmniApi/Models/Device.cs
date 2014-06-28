@@ -1,18 +1,35 @@
-﻿using System;
-using Retrofit.Net;
-
-namespace OmniApi.Models
+﻿namespace OmniApi.Models
 {
-    public class Device : IResource
+    public class Device
     {
-        public DateTime CreatedAt { get; set; }
+        #region Constructors and Destructors
 
-        public string Identifier { get; set; }
+        public Device()
+        {
+        }
 
-        public string Name { get; set; }
+        public Device(string identifier)
+        {
+            this.identifier = identifier;
+        }
 
-        public string RegistrationId { get; set; }
+        public Device(string identifier, string registratonId) :  this(identifier)
+        {
+            registration_id = registratonId;
+        }
 
-        public DateTime UpdatedAt { get; set; }
+        #endregion
+
+        #region Public Properties
+
+        public string identifier { get; set; }
+
+        public string name { get; set; }
+
+        public string registration_id { get; set; }
+
+        public string provider { get; set; }
+
+        #endregion
     }
 }

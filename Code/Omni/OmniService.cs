@@ -9,10 +9,9 @@
     using Ninject;
     using Notifications;
     using OmniApi.Models;
-    using OmniApi.Resources;
+    using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using OmniSync;
-    using RestSharp;
 
     public class OmniService : IOmniService
     {
@@ -23,8 +22,6 @@
         private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
 
         private readonly IObservable<ServiceStatusEnum> _statusChanged;
-
-        private IDevicesApi _devicesApi;
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
@@ -60,6 +57,9 @@
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IDevices Devices { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -130,13 +130,11 @@
 
             if (WebsocketConnection.RegistrationId != null)
             {
-                _devicesApi = Kernel.Get<IDevicesApi>();
-
                 var deviceIdentifier = await RegisterDevice();
 
-                var activationResult = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
+                var device = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
 
-                if (activationResult.Data != null)
+                if (device != null)
                 {
                     Status = ServiceStatusEnum.Started;
 
@@ -204,14 +202,13 @@
             var deviceIdentifier = _configurationService.DeviceIdentifier;
             var machineName = _configurationService.MachineName;
 
-            await _devicesApi.Register(deviceIdentifier, machineName);
+            await Devices.Create(deviceIdentifier, machineName);
             return deviceIdentifier;
         }
 
-        private async Task<IRestResponse<Device>> ActivateDevice(string registrationId, string deviceIdentifier)
+        private async Task<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
-            const string NotificationProvider = "omni_sync";
-            var activationResult = await _devicesApi.Activate(registrationId, deviceIdentifier, NotificationProvider);
+            var activationResult = await Devices.Activate(registrationId, deviceIdentifier);
             return activationResult;
         }
 

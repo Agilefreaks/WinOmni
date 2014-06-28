@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationProperties.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />

@@ -15,10 +15,9 @@
             var mockConfigurationProvider = new Mock<IConfigurationProvider>();
             IConfigurationService service = new ConfigurationService(mockConfigurationProvider.Object);
 
-            service.SaveAuthSettings("token", "type", "refresh token");
+            service.SaveAuthSettings("token", "refresh token");
             
             mockConfigurationProvider.Verify(cp => cp.SetValue("accessToken", "token"));
-            mockConfigurationProvider.Verify(cp => cp.SetValue("tokenType", "type"));
             mockConfigurationProvider.Verify(cp => cp.SetValue("refreshToken", "refresh token"));
         }
 
@@ -31,7 +30,6 @@
             service.ResetAuthSettings();
             
             mockConfigurationProvider.Verify(cp => cp.SetValue("accessToken", string.Empty));
-            mockConfigurationProvider.Verify(cp => cp.SetValue("tokenType", string.Empty));
             mockConfigurationProvider.Verify(cp => cp.SetValue("refreshToken", string.Empty));
         }
     }

@@ -1,6 +1,8 @@
 ﻿namespace OmniTests
 {
     using System;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -10,11 +12,10 @@
     using NUnit.Framework;
     using Omni;
     using OmniApi.Models;
-    using OmniApi.Resources;
+    using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using OmniSync;
-    using RestSharp;
 
     [TestFixture]
     public class OmniServiceTests
@@ -29,7 +30,7 @@
 
         private Mock<IWebsocketConnectionFactory> _websocketConnectionFactory;
 
-        private Mock<IDevicesApi> _devicesApiMock;
+        private Mock<IDevices> _devicesMock;
 
         private Mock<IConfigurationService> _configurationServiceMock;
 
@@ -49,7 +50,7 @@
 
             _kernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
-            _devicesApiMock = _kernel.GetMock<IDevicesApi>();
+            _devicesMock = _kernel.GetMock<IDevices>();
             _configurationServiceMock = _kernel.GetMock<IConfigurationService>();
             _someHandler = _kernel.GetMock<IHandler>();
 
@@ -89,8 +90,8 @@
 
             await _subject.Start();
 
-            _devicesApiMock.Verify(api => api.Register(DeviceIdentifier, DeviceName), Times.Once());
-            _devicesApiMock.Verify(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()), Times.Once());
+            _devicesMock.Verify(api => api.Create(DeviceIdentifier, DeviceName), Times.Once());
+            _devicesMock.Verify(api => api.Activate(_registrationId, DeviceIdentifier), Times.Once());
         }
 
         [Test]
@@ -156,11 +157,28 @@
 
         private void SetupForStart(bool success = true)
         {
-            _devicesApiMock.Setup(api => api.Register(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = new Device() }));
-            _devicesApiMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier, It.IsAny<string>()))
-                .Returns(Task<IRestResponse<Device>>.Factory.StartNew(() => new RestResponse<Device> { Data = success ? new Device() : null }));
+            var observableCreate = Observable.Create<Device>(
+                o =>
+                {
+                    o.OnNext(new Device());
+                    o.OnCompleted();
+                    return Disposable.Empty;
+                });
+
+            var observableActivate = Observable.Create<Device>(
+                o =>
+                {
+                    o.OnNext(success ? new Device() : null);
+                    o.OnCompleted();
+                    return Disposable.Empty;
+                });
+
+            _devicesMock.Setup(api => api.Create(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(observableCreate);
+
+            _devicesMock
+                .Setup(api => api.Activate(_registrationId, DeviceIdentifier))
+                .Returns(observableActivate);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using Clipboard.Models;
     using OmniCommon.Models;
 
     public class ClipboardHandler : IClipboadHandler

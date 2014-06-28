@@ -1,10 +1,10 @@
 ﻿namespace Notifications.Handlers
 {
     using System;
-    using System.Net;
+    using System.Diagnostics;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Notifications.API;
+    using Notifications.Api.Resources.v1;
     using Notifications.Models;
     using OmniCommon.Models;
 
@@ -20,17 +20,17 @@
 
         #region Constructors and Destructors
 
-        public NotificationsHandler(INotificationsApi notificationsApi)
+        public NotificationsHandler(INotifications notifications)
         {
             _subject = new Subject<Notification>();
-            NotificationsApi = notificationsApi;
+            Notifications = notifications;
         }
 
         #endregion
 
         #region Public Properties
 
-        public INotificationsApi NotificationsApi { private get; set; }
+        public INotifications Notifications { private get; set; }
 
         #endregion
 
@@ -48,13 +48,11 @@
 
         public void OnNext(OmniMessage value)
         {
-            var getAllNotificationsTask = NotificationsApi.Last();
-            getAllNotificationsTask.Wait();
-
-            if (getAllNotificationsTask.Result.StatusCode == HttpStatusCode.OK)
-            {
-                _subject.OnNext(getAllNotificationsTask.Result.Data);
-            }
+            Notifications.Last().Subscribe(
+                // OnNext
+                n => _subject.OnNext(n),
+                // onError
+                e => Debugger.Break());
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
