@@ -1,20 +1,34 @@
 ﻿namespace OmniApi.Models
 {
-    using System;
-
     public class Device
     {
+        #region Constructors and Destructors
+
+        public Device()
+        {
+        }
+
+        public Device(string identifier)
+        {
+            this.identifier = identifier;
+        }
+
+        public Device(string identifier, string registratonId) :  this(identifier)
+        {
+            registration_id = registratonId;
+        }
+
+        #endregion
+
         #region Public Properties
 
-        public DateTime CreatedAt { get; set; }
+        public string identifier { get; set; }
 
-        public string Identifier { get; set; }
+        public string name { get; set; }
 
-        public string Name { get; set; }
+        public string registration_id { get; set; }
 
-        public string RegistrationId { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
+        public string provider { get; set; }
 
         #endregion
     }
