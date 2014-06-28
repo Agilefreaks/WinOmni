@@ -1,6 +1,4 @@
-﻿using Retrofit.Net;
-
-namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using OmniApi.Models;
     using OmniCommon.Interfaces;

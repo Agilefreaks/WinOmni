@@ -1,15 +1,11 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
     using System.Reactive.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
-    using OmniCommon.Interfaces;
     using Omnipaste.Properties;
-    using Retrofit.Net;
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
