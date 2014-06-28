@@ -24,8 +24,6 @@
 
         private readonly IObservable<ServiceStatusEnum> _statusChanged;
 
-        private IDevices _devices;
-
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
         private IWebsocketConnection _websocketConnection;
@@ -60,6 +58,9 @@
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IDevices Devices { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -130,11 +131,6 @@
 
             if (WebsocketConnection.RegistrationId != null)
             {
-                var token = new ConstructorArgument(
-                    "token",
-                    new Token(_configurationService.AccessToken, _configurationService.RefreshToken));
-                _devices = Kernel.Get<IDevices>(token);
-
                 var deviceIdentifier = await RegisterDevice();
 
                 var device = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
@@ -207,13 +203,13 @@
             var deviceIdentifier = _configurationService.DeviceIdentifier;
             var machineName = _configurationService.MachineName;
 
-            await _devices.Create(deviceIdentifier, machineName);
+            await Devices.Create(deviceIdentifier, machineName);
             return deviceIdentifier;
         }
 
         private async Task<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
-            var activationResult = await _devices.Activate(registrationId, deviceIdentifier);
+            var activationResult = await Devices.Activate(registrationId, deviceIdentifier);
             return activationResult;
         }
 

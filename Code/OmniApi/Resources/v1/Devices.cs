@@ -12,18 +12,8 @@
 
         #endregion
 
-        #region Constructors and Destructors
-
-        public Devices(Token token)
-        {
-            Token = token;
-        }
-
-        #endregion
-
         #region Interfaces
 
-        [Headers("Authorization: invalid")]
         public interface IDevicesApi
         {
             #region Public Methods and Operators

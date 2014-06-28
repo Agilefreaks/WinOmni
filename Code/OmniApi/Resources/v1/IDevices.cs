@@ -5,12 +5,14 @@
 
     public interface IDevices
     {
-        Token Token { get; set; }
+        #region Public Methods and Operators
 
         IObservable<Device> Activate(string registrationId, string identifier);
 
         IObservable<Device> Create(string identifier, string name);
 
         IObservable<Device> Deactivate(string identifier);
+
+        #endregion
     }
 }

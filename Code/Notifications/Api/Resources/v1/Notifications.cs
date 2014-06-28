@@ -9,13 +9,12 @@
     {
         #region Interfaces
 
-        [Headers("Authorization: bearer Xqe3xDiWlkhxmofv/1t6JLwv7awmKjvinEHOlxS028GQCHOBd0Vsokh6jioORPYStwFA2m7e17ndnbb5rnsUyA==")]
         public interface INotificationsApi
         {
             #region Public Methods and Operators
 
             [Get("/notifications")]
-            IObservable<Notification> Last();
+            IObservable<Notification> Last([Header("Authorization")] string token);
 
             #endregion
         }
@@ -26,7 +25,7 @@
 
         public IObservable<Notification> Last()
         {
-            return ResourceApi.Last();
+            return Authorize(ResourceApi.Last(AccessToken));
         }
 
         #endregion

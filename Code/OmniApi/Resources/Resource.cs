@@ -2,8 +2,10 @@
 {
     using System;
     using System.Configuration;
+    using Ninject;
     using OmniApi.Models;
     using OmniCommon;
+    using OmniCommon.Interfaces;
     using Refit;
 
     public abstract class Resource<T>
@@ -25,7 +27,16 @@
 
         #region Public Properties
 
-        public Token Token { get; set; }
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
+        public Token Token
+        {
+            get
+            {
+                return new Token(ConfigurationService.AccessToken, ConfigurationService.RefreshToken);
+            }
+        }
 
         public string AccessToken
         {

@@ -114,6 +114,10 @@
       <Project>{FE52A16D-0E4A-4794-AF54-4CA066608FF9}</Project>
       <Name>OmniApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">
+      <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

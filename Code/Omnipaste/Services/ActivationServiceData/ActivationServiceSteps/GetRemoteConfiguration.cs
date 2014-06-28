@@ -108,15 +108,8 @@
             }
             else
             {
-                var authenticator = new Authenticator
-                {
-                    AccessToken = token.access_token,
-                    RefreshToken = token.refresh_token,
-                };
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = authenticator;
-                Kernel.Unbind<Authenticator>();
-                Kernel.Bind<Authenticator>().ToConstant(authenticator);
+                executeResult.Data = token;
             }
         }
 

@@ -74,10 +74,6 @@
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Retrofit.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Retrofit.NET\Retrofit.Net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -105,7 +101,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\INotificationsAPI.cs" />
     <Compile Include="Api\Resources\v1\INotifications.cs" />
     <Compile Include="Api\Resources\v1\Notifications.cs" />
     <Compile Include="Handlers\INotificationsHandler.cs" />
