@@ -1,9 +1,13 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using FluentAssertions;
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniApi.Models;
     using OmniApi.Resources.v1;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
@@ -22,7 +26,10 @@
 
             _mockOAuth2 = mockKernel.GetMock<IOAuth2>();
 
-            _subject = new GetRemoteConfiguration(_mockOAuth2.Object);
+            _subject = new GetRemoteConfiguration(_mockOAuth2.Object)
+                           {
+                               Parameter = new DependencyParameter(string.Empty, "42")
+                           };
         }
 
         [Test]
@@ -33,21 +40,22 @@
             _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
         }
 
-//        [Test]
-//        public void ExecutePayloadIsNonEmptyStringShouldCallActivationDataProviderGetActivationDataWithThePayload()
-//        {
-//            var createSubject = new Subject<Token>();
-//            _subject.Parameter = new DependencyParameter(string.Empty, "42");
-//            _mockOAuth2.Setup(m => m.Create(It.IsAny<string>())).Returns(createSubject);
-//
-//            var task = _subject.ExecuteAsync();
-//            Thread.Sleep(100);
-//            createSubject.OnNext(new Token());
-//            Thread.Sleep(100);
-//            task.Wait();
-//
-//            _mockOAuth2.Verify(m => m.Create("42"), Times.Once);
-//        }
+        [Test]
+        public async void ExecutePayloadIsNonEmptyStringShouldCallCreateOnOAuth2()
+        {
+            IObservable<Token> createObserver = Observable.Create<Token>(
+                o =>
+                    {
+                        o.OnNext(new Token());
+                        o.OnCompleted();
+                        return Disposable.Empty;
+                    });
+            _mockOAuth2.Setup(m => m.Create(It.IsAny<string>())).Returns(createObserver);
+
+            await _subject.ExecuteAsync();
+
+            _mockOAuth2.Verify(m => m.Create("42"), Times.Once);
+        }
 
         //[Test]
         //public void ExecutePayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndEmptyTokenShouldReturnAResultWithStatusFailed()

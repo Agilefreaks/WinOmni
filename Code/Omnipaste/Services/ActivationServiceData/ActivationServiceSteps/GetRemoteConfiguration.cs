@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -61,6 +62,14 @@
 
         public override IExecuteResult Execute()
         {
+            Task<IExecuteResult> executeAsync = ExecuteAsync();
+            executeAsync.Wait();
+
+            return executeAsync.Result;
+        }
+
+        public override async Task<IExecuteResult> ExecuteAsync()
+        {
             var executeResult = new ExecuteResult();
 
             if (string.IsNullOrEmpty(PayLoad.AuthorizationCode))
@@ -69,23 +78,12 @@
             }
             else
             {
-                // TODO: move to a reactive (functional) approach
-                Token token = new Token();
-                try
-                {
-                    token = OAuth2.Create(PayLoad.AuthorizationCode).Wait();
-                }
-                catch (AggregateException)
-                {
-                    // empty
-                }
-
+                var token = await OAuth2.Create(PayLoad.AuthorizationCode);
                 SetResultPropertiesBasedOnActivationData(executeResult, token);
             }
 
             return executeResult;
         }
-
         #endregion
 
         #region Methods

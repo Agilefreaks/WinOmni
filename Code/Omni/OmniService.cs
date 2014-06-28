@@ -7,7 +7,6 @@
     using System.Timers;
     using Clipboard;
     using Ninject;
-    using Ninject.Parameters;
     using Notifications;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
