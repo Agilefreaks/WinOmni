@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:models="clr-namespace:Notifications.Models;assembly=Notifications"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="300"
         ShowActivated="False" 
@@ -17,8 +16,8 @@
         Top="40" 
         HorizontalContentAlignment="Right">
     <Window.Resources>
-        <DataTemplate x:Key="MessageTemplate" DataType="models:Notification">
-            <ContentControl cal:View.Model="{Binding .}"></ContentControl>
+        <DataTemplate x:Key="MessageTemplate">
+            <ContentControl cal:View.Model="{Binding}"></ContentControl>
         </DataTemplate>
     </Window.Resources>
     <Grid>

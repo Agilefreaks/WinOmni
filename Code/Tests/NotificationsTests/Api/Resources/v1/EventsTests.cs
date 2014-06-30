@@ -1,28 +1,28 @@
 ﻿namespace NotificationsTests.Api.Resources.v1
 {
     using System;
+    using Events.Api.Resources.v1;
+    using Events.Models;
     using FluentAssertions;
     using Moq;
-    using Notifications.Api.Resources.v1;
-    using Notifications.Models;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
 
     [TestFixture]
-    public class NotificationsTests
+    public class EventsTests
     {
-        private Notifications _subject;
+        private Events _subject;
 
         [SetUp]
         public void SetUp()
         {
-            _subject = new Notifications() { ConfigurationService = new Mock<IConfigurationService>().Object };
+            _subject = new Events() { ConfigurationService = new Mock<IConfigurationService>().Object };
         }
 
         [Test]
         public void Last_Always_ReturnsAnObservable()
         {
-            _subject.Last().Should().BeAssignableTo<IObservable<Notification>>();
+            _subject.Last().Should().BeAssignableTo<IObservable<Event>>();
         }
     }
 }

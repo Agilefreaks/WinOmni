@@ -6,8 +6,8 @@
     using System.Threading.Tasks;
     using System.Timers;
     using Clipboard;
+    using Events;
     using Ninject;
-    using Notifications;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
@@ -219,9 +219,9 @@
                 Kernel.Load(new ClipboardModule());
             }
 
-            if (Kernel.GetModules().All(m => m.GetType() != typeof(NotificationsModule)))
+            if (Kernel.GetModules().All(m => m.GetType() != typeof(EventsModule)))
             {
-                Kernel.Load(new NotificationsModule());
+                Kernel.Load(new EventsModule());
             }
 
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())

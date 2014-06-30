@@ -230,6 +230,17 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
+    <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
+    <Compile Include="Notification\NotificationViewModelTypeEnum.cs" />
+    <Compile Include="Notification\Notification\Clipping.xaml.cs">
+      <DependentUpon>Clipping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification\Notification\Hyperlink.xaml.cs">
+      <DependentUpon>Hyperlink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification\Notification\IncomingCall.xaml.cs">
+      <DependentUpon>IncomingCall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -315,6 +326,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Clipping\ClippingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\Clipping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\Hyperlink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\IncomingCall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -455,9 +478,9 @@
       <Project>{bc299433-48cc-4282-a7f4-3948e054b6ac}</Project>
       <Name>CustomizedClickOnce.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Notifications\Notifications.csproj">
-      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
-      <Name>Notifications</Name>
+    <ProjectReference Include="..\Events\Events.csproj">
+      <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>

@@ -39,7 +39,7 @@
         {
             get
             {
-                return type == "web_site" || Uri.IsWellFormedUriString(content, UriKind.RelativeOrAbsolute);
+                return type == "web_site" || Uri.IsWellFormedUriString(content, UriKind.Absolute);
             }
         }
 

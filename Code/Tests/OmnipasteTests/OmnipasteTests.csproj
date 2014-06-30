@@ -65,6 +65,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MahApps.Metro.0.13.1.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\..\packages\Rx-Testing.2.2.4\lib\net45\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -113,7 +117,7 @@
   <ItemGroup>
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
-    <Compile Include="Notification\NotificationListViewModelTests.cs" />
+    <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
@@ -138,9 +142,9 @@
       <Project>{BC299433-48CC-4282-A7F4-3948E054B6AC}</Project>
       <Name>CustomizedClickOnce.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Notifications\Notifications.csproj">
-      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
-      <Name>Notifications</Name>
+    <ProjectReference Include="..\..\Events\Events.csproj">
+      <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>

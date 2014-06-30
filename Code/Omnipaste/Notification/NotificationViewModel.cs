@@ -1,38 +1,35 @@
 ﻿namespace Omnipaste.Notification
 {
     using System;
+    using System.Diagnostics;
     using Caliburn.Micro;
-    using Notifications.Models;
+    using Omnipaste.Framework;
 
     public class NotificationViewModel : Screen, INotificationViewModel
     {
-        #region Constructors and Destructors
+        #region Public Properties
 
-        public NotificationViewModel(Notification model)
+        public bool CanOpenUrl
         {
-            Model = model;
+            get
+            {
+                return Type == NotificationViewModelTypeEnum.Hyperlink;
+            }
         }
+
+        public String Message { get; set; }
+
+        public String Title { get; set; }
+
+        public NotificationViewModelTypeEnum Type { get; set; }
 
         #endregion
 
-        #region Public Properties
+        #region Public Methods and Operators
 
-        public String Message
+        public void OpenLink()
         {
-            get
-            {
-                return Model.Message;
-            }
-        }
-
-        public Notification Model { get; private set; }
-
-        public String Title
-        {
-            get
-            {
-                return string.Concat("Incoming call from ", Model.phone_number);
-            }
+            Process.Start(Message);
         }
 
         #endregion

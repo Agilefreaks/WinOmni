@@ -113,8 +113,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Resources\v1\NotificationsTests.cs" />
-    <Compile Include="Handlers\NotificationHandlerTests.cs" />
+    <Compile Include="Api\Resources\v1\EventsTests.cs" />
+    <Compile Include="Handlers\EventHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +122,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Notifications\Notifications.csproj">
-      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
-      <Name>Notifications</Name>
+    <ProjectReference Include="..\..\Events\Events.csproj">
+      <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>

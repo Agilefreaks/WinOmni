@@ -1,20 +1,20 @@
-﻿namespace Notifications.Api.Resources.v1
+﻿namespace Events.Api.Resources.v1
 {
     using System;
-    using global::Notifications.Models;
+    using global::Events.Models;
     using OmniApi.Resources;
     using Refit;
 
-    public class Notifications : Resource<Notifications.INotificationsApi>, INotifications
+    public class Events : Resource<Events.IEventsApi>, IEvents
     {
         #region Interfaces
 
-        public interface INotificationsApi
+        public interface IEventsApi
         {
             #region Public Methods and Operators
 
             [Get("/notifications")]
-            IObservable<Notification> Last([Header("Authorization")] string token);
+            IObservable<Event> Last([Header("Authorization")] string token);
 
             #endregion
         }
@@ -23,7 +23,7 @@
 
         #region Public Methods and Operators
 
-        public IObservable<Notification> Last()
+        public IObservable<Event> Last()
         {
             return Authorize(ResourceApi.Last(AccessToken));
         }
