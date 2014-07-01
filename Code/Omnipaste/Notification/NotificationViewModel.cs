@@ -31,7 +31,7 @@
         {
             get
             {
-                return string.Concat("Incoming call from ", Model.phone_number);
+                return string.Concat("Incoming call from ", Model.PhoneNumber);
             }
         }
 

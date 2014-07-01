@@ -9,7 +9,7 @@
     {
         public NotificationTypeEnum Type { get; set; }
 
-        public string phone_number { get; set; }
+        public string PhoneNumber { get; set; }
 
         public string Title { get; set; }
 

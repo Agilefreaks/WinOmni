@@ -63,7 +63,7 @@
                 // OnNext
                 c => 
                     {
-                        c.source = ClippingSourceEnum.Cloud;
+                        c.Source = ClippingSourceEnum.Cloud;
                         _subject.OnNext(c);
                       
                     },
@@ -73,7 +73,7 @@
 
         public void PostClipping(Clipping clipping)
         {
-            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.content).Subscribe();
+            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe();
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)

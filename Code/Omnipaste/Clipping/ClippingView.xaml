@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
-    <Grid Background="White">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -19,7 +19,7 @@
             </Rectangle>
         </Button>
 
-        <Button Width="50" Height="50" Margin="6" IsEnabled="False" Style="{DynamicResource MetroCircleButtonStyle}" Visibility="{Binding Path=IsLaptopVisible, Converter={StaticResource BooleanToVisibility}}">
+        <Button Grid.Column="0" Width="50" Height="50" Margin="6" IsEnabled="False" Style="{DynamicResource MetroCircleButtonStyle}" Visibility="{Binding Path=IsLaptopVisible, Converter={StaticResource BooleanToVisibility}}">
             <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_laptop}" />
@@ -27,7 +27,7 @@
             </Rectangle>
         </Button>
 
-        <TextBlock Grid.Column="1" Text="{Binding Path=Model.content}" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="{Binding Path=Content}" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         <Button x:Name="OpenLink" Grid.Column="2" Width="50" Height="50" Margin="6" VerticalAlignment="Center" Background="Transparent">
             <Button.Style>

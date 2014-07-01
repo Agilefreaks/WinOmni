@@ -8,19 +8,19 @@
         {
         }
 
-        public Token(string accessToken, string refreshToken)
+        public Token(string accessToken, string rrefreshToken)
         {
-            access_token = accessToken;
-            refresh_token = refreshToken;
+            AccessToken = accessToken;
+            RrefreshToken = rrefreshToken;
         }
 
         #endregion
 
         #region Public Properties
 
-        public string access_token { get; set; }
+        public string AccessToken { get; set; }
 
-        public string refresh_token { get; set; }
+        public string RrefreshToken { get; set; }
 
         #endregion
     }

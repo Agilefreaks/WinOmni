@@ -56,7 +56,7 @@
                                 {
                                     if (IsUnauthorized(e))
                                     {
-                                        _oAuth2.Refresh(_token.refresh_token)
+                                        _oAuth2.Refresh(_token.RrefreshToken)
                                             .Concat((IObservable<object>)observable)
                                             .Where(o => o is T)
                                             .Cast<T>()
