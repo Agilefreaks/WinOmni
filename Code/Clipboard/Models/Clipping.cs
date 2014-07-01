@@ -1,10 +1,23 @@
 ﻿namespace Clipboard.Models
 {
     using System;
-    using Clipboard.Enums;
-    
+
     public class Clipping
     {
+        public enum ClippingSourceEnum
+        {
+            Local,
+            Cloud
+        }
+
+        public enum ClippingTypeEnum
+        {
+            PhoneNumber,
+            WebSite,
+            Address,
+            Unknown
+        }
+
         #region Constructors and Destructors
 
         public Clipping()
@@ -19,27 +32,27 @@
 
         public Clipping(string content, string identifier)
         {
-            this.content = content;
-            this.identifier = identifier;
+            Content = content;
+            Identifier = identifier;
         }
 
         #endregion
 
         #region Public Properties
 
-        public string content { get; set; }
+        public string Content { get; set; }
         
-        public string identifier { get; set; }
+        public string Identifier { get; set; }
 
-        public string type { get; set; }
+        public ClippingTypeEnum Type { get; set; }
 
-        public ClippingSourceEnum source { get; set; }
+        public ClippingSourceEnum Source { get; set; }
 
         public bool IsLink
         {
             get
             {
-                return type == "web_site" || Uri.IsWellFormedUriString(content, UriKind.Absolute);
+                return Type == ClippingTypeEnum.WebSite || Uri.IsWellFormedUriString(Content, UriKind.RelativeOrAbsolute);
             }
         }
 

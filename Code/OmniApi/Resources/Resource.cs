@@ -2,8 +2,12 @@
 {
     using System;
     using System.Configuration;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Ninject;
     using OmniApi.Models;
+    using OmniApi.Support.Converters;
+    using OmniApi.Support.Serialization;
     using OmniCommon;
     using OmniCommon.Interfaces;
     using Refit;
@@ -20,6 +24,16 @@
 
         protected Resource()
         {
+            JsonConvert.DefaultSettings = () =>
+                {
+                    var jsonSerializerSettings = new JsonSerializerSettings()
+                                                     {
+                                                         ContractResolver = new SnakeCasePropertyNamesContractResolver()
+                                                     };
+                    jsonSerializerSettings.Converters.Add(new SnakeCaseStringEnumConverter());
+                    return jsonSerializerSettings;
+                };
+
             ResourceApi = RestService.For<T>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
         }
 
@@ -42,7 +56,7 @@
         {
             get
             {
-                return string.Concat("bearer ", Token.access_token);
+                return string.Concat("bearer ", Token.AccessToken);
             }
         }
 

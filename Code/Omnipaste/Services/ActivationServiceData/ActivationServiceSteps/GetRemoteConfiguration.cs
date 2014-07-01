@@ -95,7 +95,7 @@
                                           ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
                                           : GetRemoteConfigurationStepStateEnum.Failed;
             }
-            else if (string.IsNullOrEmpty(token.access_token))
+            else if (string.IsNullOrEmpty(token.AccessToken))
             {
                 executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
                 executeResult.Data = Resources.AuthorizationCodeError;

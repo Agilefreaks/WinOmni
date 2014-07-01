@@ -15,9 +15,9 @@
         public override IExecuteResult Execute()
         {
             var token = (Token)Parameter.Value;
-            _configurationService.SaveAuthSettings(token.access_token, token.refresh_token);
+            _configurationService.SaveAuthSettings(token.AccessToken, token.RrefreshToken);
 
-            return new ExecuteResult { State = SingleStateEnum.Successful, Data = token.access_token };
+            return new ExecuteResult { State = SingleStateEnum.Successful, Data = token.AccessToken };
         }
     }
 }

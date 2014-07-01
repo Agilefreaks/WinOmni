@@ -26,8 +26,8 @@
         public void SetUp()
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _mockConfigurationService.SetupGet(m => m.AccessToken).Returns("access_token");
-            _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("refresh_token");
+            _mockConfigurationService.SetupGet(m => m.AccessToken).Returns("AccessToken");
+            _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("RrefreshToken");
 
             _subject = new TestResource { ConfigurationService = _mockConfigurationService.Object };
         }
@@ -35,13 +35,13 @@
         [Test]
         public void Token_Always_GetsReadFromConfigurationService()
         {
-            _subject.Token.ShouldBeEquivalentTo(new Token("access_token", "refresh_token"));
+            _subject.Token.ShouldBeEquivalentTo(new Token("AccessToken", "RrefreshToken"));
         }
 
         [Test]
         public void AccessToken_Always_PrefixesWithBearer()
         {
-            _subject.AccessToken.Should().Be("bearer access_token");
+            _subject.AccessToken.Should().Be("bearer AccessToken");
         }
 
         [Test]

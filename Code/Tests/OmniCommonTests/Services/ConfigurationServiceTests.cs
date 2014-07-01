@@ -2,6 +2,7 @@
 {
     using Moq;
     using NUnit.Framework;
+    using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniCommon.Services;
@@ -17,8 +18,8 @@
 
             service.SaveAuthSettings("token", "refresh token");
             
-            mockConfigurationProvider.Verify(cp => cp.SetValue("accessToken", "token"));
-            mockConfigurationProvider.Verify(cp => cp.SetValue("refreshToken", "refresh token"));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
         }
 
         [Test]
@@ -29,8 +30,8 @@
 
             service.ResetAuthSettings();
             
-            mockConfigurationProvider.Verify(cp => cp.SetValue("accessToken", string.Empty));
-            mockConfigurationProvider.Verify(cp => cp.SetValue("refreshToken", string.Empty));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, string.Empty));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, string.Empty));
         }
     }
 }

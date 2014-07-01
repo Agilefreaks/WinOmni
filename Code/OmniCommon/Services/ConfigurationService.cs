@@ -30,7 +30,7 @@
         {
             get
             {
-                return _configurationProvider.GetValue("accessToken");
+                return _configurationProvider.GetValue(ConfigurationProperties.AccessToken);
             }
         }
 
@@ -38,7 +38,7 @@
         {
             get
             {
-                return _configurationProvider.GetValue("refreshToken");
+                return _configurationProvider.GetValue(ConfigurationProperties.RefreshToken);
             }
         }
 
@@ -74,12 +74,12 @@
         {
             get
             {
-                return _configurationProvider.GetValue("autoStart", true);
+                return _configurationProvider.GetValue(ConfigurationProperties.AutoStart, true);
             }
 
             set
             {
-                _configurationProvider.SetValue("autoStart", value.ToString());
+                _configurationProvider.SetValue(ConfigurationProperties.AutoStart, value.ToString());
             }
         }
 
@@ -101,8 +101,8 @@
 
         public void SaveAuthSettings(string accessToken, string refreshToken)
         {
-            _configurationProvider.SetValue("accessToken", accessToken);
-            _configurationProvider.SetValue("refreshToken", refreshToken);
+            _configurationProvider.SetValue(ConfigurationProperties.AccessToken, accessToken);
+            _configurationProvider.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
         }
 
         public void ResetAuthSettings()

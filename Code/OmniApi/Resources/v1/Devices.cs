@@ -36,13 +36,13 @@
 
         public IObservable<Device> Activate(string registrationId, string identifier)
         {
-            var device = new Device(identifier, registrationId) { provider = NotificationProvider };
+            var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
             return Authorize(ResourceApi.Activate(device, AccessToken));
         }
 
         public IObservable<Device> Create(string identifier, string name)
         {
-            var device = new Device(identifier) { name = name };
+            var device = new Device(identifier) { Name = name };
             return Authorize(ResourceApi.Create(device, AccessToken));
         }
 

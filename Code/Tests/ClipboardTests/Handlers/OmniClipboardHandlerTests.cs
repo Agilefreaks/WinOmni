@@ -84,9 +84,9 @@
                 .Returns(Observable.Empty<Clipping>());
             _mockConfigurationService.Setup(cs => cs.DeviceIdentifier).Returns("Radio");
 
-            _omniClipboardHandler.PostClipping(new Clipping("some content"));
+            _omniClipboardHandler.PostClipping(new Clipping("some Content"));
 
-            _mockClippings.Verify(ca => ca.Create("Radio", "some content"));
+            _mockClippings.Verify(ca => ca.Create("Radio", "some Content"));
         }
     }
 }

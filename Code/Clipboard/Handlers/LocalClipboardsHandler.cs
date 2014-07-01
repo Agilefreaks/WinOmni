@@ -2,7 +2,6 @@ namespace Clipboard.Handlers
 {
     using System;
     using System.Reactive.Subjects;
-    using Clipboard.Enums;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
 
@@ -49,8 +48,8 @@ namespace Clipboard.Handlers
 
         public void PostClipping(Clipping clipping)
         {
-            _lastClippingContent = clipping.content;
-            WindowsClipboardWrapper.SetData(clipping.content);
+            _lastClippingContent = clipping.Content;
+            WindowsClipboardWrapper.SetData(clipping.Content);
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
@@ -78,7 +77,7 @@ namespace Clipboard.Handlers
             }
 
 
-            _subject.OnNext(new Clipping(args.Data) { source = ClippingSourceEnum.Local} );
+            _subject.OnNext(new Clipping(args.Data) { Source = Clipping.ClippingSourceEnum.Local} );
         }
 
         #endregion

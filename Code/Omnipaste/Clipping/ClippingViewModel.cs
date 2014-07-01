@@ -1,14 +1,12 @@
 ﻿namespace Omnipaste.Clipping
 {
+    using System.Diagnostics;
     using Caliburn.Micro;
-    using Clipboard.Enums;
     using Clipboard.Models;
 
     public class ClippingViewModel : Screen, IClippingViewModel
     {
         #region Fields
-
-        private Clipping _model;
 
         #endregion
 
@@ -23,42 +21,41 @@
 
         #region Public Properties
 
-        public bool IsCloudVisible
+        public string Content
         {
             get
             {
-                return Model.source == ClippingSourceEnum.Cloud;
+                return Model.Content;
             }
         }
 
-        public bool IsLaptopVisible
+        public Clipping.ClippingSourceEnum Source
         {
             get
             {
-                return Model.source == ClippingSourceEnum.Local;
+                return Model.Source;
             }
         }
 
-        public Clipping Model
+        public bool IsLink
         {
             get
             {
-                return _model;
-            }
-            set
-            {
-                _model = value;
-                NotifyOfPropertyChange(() => Model);
-                NotifyOfPropertyChange(() => IsCloudVisible);
-                NotifyOfPropertyChange(() => IsLaptopVisible);
+                return Model.IsLink;
             }
         }
+
+        public Clipping Model { get; set; }
 
         #endregion
 
+        #region Public Methods and Operators
+
         public void OpenLink()
         {
-            System.Diagnostics.Process.Start(Model.content);
+            Process.Start(Model.Content);
         }
+
+        #endregion
     }
 }

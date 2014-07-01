@@ -54,7 +54,7 @@
             _subject.Subscribe(c => clippingsReceived++);
             _subject.Subscribe(c => clippingsReceived++);
 
-            _mockWindowsClipboardWrapper.Raise(x => x.DataReceived += null, new ClipboardEventArgs("clipping content"));
+            _mockWindowsClipboardWrapper.Raise(x => x.DataReceived += null, new ClipboardEventArgs("clipping Content"));
 
             clippingsReceived.Should().Be(2);
         }
@@ -76,7 +76,7 @@
             _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
                 .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs() { Data = "42" }));
 
-            _subject.PostClipping(new Clipping() { content = "42" });
+            _subject.PostClipping(new Clipping() { Content = "42" });
 
             observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
         }
