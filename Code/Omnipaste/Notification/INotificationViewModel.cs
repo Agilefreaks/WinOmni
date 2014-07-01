@@ -2,17 +2,16 @@
 {
     using System;
     using Caliburn.Micro;
-    using Notifications.Models;
 
     public interface INotificationViewModel : IScreen
     {
         #region Public Properties
 
-        String Message { get; }
+        String Message { get; set; }
 
-        Notification Model { get; }
+        String Title { get; set; }
 
-        String Title { get; }
+        NotificationViewModelTypeEnum Type { get; set; }
 
         #endregion
     }

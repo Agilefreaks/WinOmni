@@ -230,6 +230,14 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
+    <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
+    <Compile Include="Notification\NotificationViewModelTypeEnum.cs" />
+    <Compile Include="Notification\Notification\Clipping.xaml.cs">
+      <DependentUpon>Clipping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification\Notification\IncomingCall.xaml.cs">
+      <DependentUpon>IncomingCall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -315,6 +323,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Clipping\ClippingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\Clipping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\IncomingCall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

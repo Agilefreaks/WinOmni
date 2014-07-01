@@ -3,6 +3,7 @@
     using System;
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
+    using Clipboard.Handlers;
     using Notifications.Handlers;
     using Notifications.Models;
     using Omnipaste.Notification;
@@ -13,16 +14,22 @@
 
         private readonly INotificationsHandler _notificationsHandler;
 
-        private IDisposable _subscription;
+        private readonly IOmniClipboardHandler _omniClipboardHandler;
+
+        private IDisposable _notificationsSubscription;
+
+        private IDisposable _clippingsSubscription;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(INotificationsHandler notificationsHandler)
+        public NotificationListViewModel(INotificationsHandler notificationsHandler, IOmniClipboardHandler omniClipboardHandler)
         {
-            _notificationsHandler = notificationsHandler;
             Notifications = new ObservableCollection<INotificationViewModel>();
+
+            _notificationsHandler = notificationsHandler;
+            _omniClipboardHandler = omniClipboardHandler;
         }
 
         #endregion
@@ -47,7 +54,7 @@
 
         public void OnNext(Notification notification)
         {
-            Execute.OnUIThread(() => Notifications.Add(new NotificationViewModel(notification)));
+            Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(notification)));
         }
 
         #endregion
@@ -58,14 +65,26 @@
         {
             base.OnActivate();
 
-            _subscription = _notificationsHandler.Subscribe(this);
+            _notificationsSubscription = _notificationsHandler.Subscribe(this);
+
+            _clippingsSubscription = _omniClipboardHandler.Subscribe(
+                c => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(c))),
+                e => { });
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
 
-            _subscription.Dispose();
+            if (_notificationsSubscription != null)
+            {
+                _notificationsSubscription.Dispose();
+            }
+
+            if (_clippingsSubscription != null)
+            {
+                _clippingsSubscription.Dispose();
+            }
         }
 
         #endregion

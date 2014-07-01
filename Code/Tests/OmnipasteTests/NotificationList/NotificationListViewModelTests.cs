@@ -1,15 +1,21 @@
-﻿namespace OmnipasteTests.Notification
+﻿namespace OmnipasteTests.NotificationList
 {
     using System;
     using System.Linq;
+    using System.Reactive;
+    using Clipboard.API.Resources.v1;
+    using Clipboard.Handlers;
+    using Clipboard.Models;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
     using Notifications.Handlers;
-    using Notifications.Models;
     using NUnit.Framework;
+    using Omnipaste.Notification;
     using Omnipaste.NotificationList;
+    using Notification = Notifications.Models.Notification;
 
     [TestFixture]
     public class NotificationListViewModelTests
@@ -19,6 +25,10 @@
         private Mock<INotificationsHandler> _mockNotificationHandler;
 
         private INotificationListViewModel _subject;
+
+        private Mock<IOmniClipboardHandler> _mockOmniClipboardHandler;
+
+        private TestScheduler _testScheduler;
 
         #endregion
 
@@ -33,7 +43,19 @@
             mockingKernel.Bind<INotificationsHandler>().ToConstant(_mockNotificationHandler.Object);
             mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
 
+            _mockOmniClipboardHandler = new Mock<IOmniClipboardHandler>{ DefaultValue = DefaultValue.Mock };
+            mockingKernel.Bind<IOmniClipboardHandler>().ToConstant(_mockOmniClipboardHandler.Object);
+
             _subject = mockingKernel.Get<INotificationListViewModel>();
+
+            _testScheduler = new TestScheduler();
+
+            ITestableObservable<Clipping> testableObservable = _testScheduler.CreateHotObservable(
+                new Recorded<Notification<Clipping>>(200, System.Reactive.Notification.CreateOnNext(new Clipping())));
+
+            _mockOmniClipboardHandler
+                .Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
+                .Callback<IObserver<Clipping>>(o => testableObservable.Subscribe(o));
         }
 
         [Test]
@@ -42,6 +64,26 @@
             _subject.Activate();
 
             _mockNotificationHandler.Verify(nh => nh.Subscribe(_subject), Times.Once);
+        }
+
+        [Test]
+        public void WhenNewClippingComesThroughOmniClipboardHandler_AddsNewNotificationViewModel()
+        {
+            _subject.Activate();
+
+            _testScheduler.Start();
+
+            _subject.Notifications.Count.Should().Be(1);
+        }
+
+        [Test]
+        public void WhenNewClippingComesThroughOmniClipboardHandler_CreatesNewNotificationViewModel()
+        {
+            _subject.Activate();
+
+            _testScheduler.Start();
+
+            _subject.Notifications.First().Type.Should().Be(NotificationViewModelTypeEnum.Clipping);
         }
 
         [Test]
@@ -69,7 +111,7 @@
 
             _subject.OnNext(notification);
 
-            _subject.Notifications.First().Model.Should().Be(notification);
+            //_subject.Notifications.First().Model.Should().Be(notification);
         }
 
         #endregion
