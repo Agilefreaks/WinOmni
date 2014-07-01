@@ -2,7 +2,6 @@
 {
     using System.Diagnostics;
     using Caliburn.Micro;
-    using Clipboard.Enums;
     using Clipboard.Models;
 
     public class ClippingViewModel : Screen, IClippingViewModel
@@ -30,19 +29,11 @@
             }
         }
 
-        public bool IsCloudVisible
+        public Clipping.ClippingSourceEnum Source
         {
             get
             {
-                return Model.Source == ClippingSourceEnum.Cloud;
-            }
-        }
-
-        public bool IsLaptopVisible
-        {
-            get
-            {
-                return Model.Source == ClippingSourceEnum.Local;
+                return Model.Source;
             }
         }
 

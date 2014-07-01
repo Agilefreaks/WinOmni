@@ -5,7 +5,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Clipboard.API.Resources.v1;
-    using Clipboard.Enums;
     using Clipboard.Models;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -63,7 +62,7 @@
                 // OnNext
                 c => 
                     {
-                        c.Source = ClippingSourceEnum.Cloud;
+                        c.Source = Clipping.ClippingSourceEnum.Cloud;
                         _subject.OnNext(c);
                       
                     },

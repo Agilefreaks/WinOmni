@@ -105,7 +105,6 @@
     <Compile Include="Handlers\WindowsClipboard\IWindowsClipboardWrapper.cs" />
     <Compile Include="Handlers\WindowsClipboard\WindowsClipboardWrapper.cs" />
     <Compile Include="Models\Clipping.cs" />
-    <Compile Include="Enums\ClippingSourceEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

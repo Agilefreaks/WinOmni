@@ -1,11 +1,16 @@
 ﻿namespace Clipboard.Models
 {
     using System;
-    using Clipboard.Enums;
-    
+
     public class Clipping
     {
-        public enum ClippingType
+        public enum ClippingSourceEnum
+        {
+            Local,
+            Cloud
+        }
+
+        public enum ClippingTypeEnum
         {
             PhoneNumber,
             WebSite,
@@ -39,7 +44,7 @@
         
         public string Identifier { get; set; }
 
-        public ClippingType Type { get; set; }
+        public ClippingTypeEnum Type { get; set; }
 
         public ClippingSourceEnum Source { get; set; }
 
@@ -47,7 +52,7 @@
         {
             get
             {
-                return Type == ClippingType.WebSite || Uri.IsWellFormedUriString(Content, UriKind.RelativeOrAbsolute);
+                return Type == ClippingTypeEnum.WebSite || Uri.IsWellFormedUriString(Content, UriKind.RelativeOrAbsolute);
             }
         }
 
