@@ -113,7 +113,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Resources\v1\NotificationsTests.cs" />
+    <Compile Include="Api\Resources\v1\EventsTests.cs" />
     <Compile Include="Handlers\EventHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -9,7 +9,7 @@
     using OmniCommon.Interfaces;
 
     [TestFixture]
-    public class NotificationsTests
+    public class EventsTests
     {
         private Events _subject;
 

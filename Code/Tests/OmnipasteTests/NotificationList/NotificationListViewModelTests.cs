@@ -21,13 +21,17 @@
     {
         #region Fields
 
-        private Mock<IEventsHandler> _mockNotificationHandler;
+        private Mock<IEventsHandler> _mockEventsHandler;
 
         private INotificationListViewModel _subject;
 
         private Mock<IOmniClipboardHandler> _mockOmniClipboardHandler;
 
         private TestScheduler _testScheduler;
+
+        private ITestableObservable<Clipping> _testableClippingsObservable;
+
+        private ITestableObservable<Event> _testableEventsObservable;
 
         #endregion
 
@@ -38,36 +42,43 @@
         {
             var mockingKernel = new MockingKernel();
 
-            _mockNotificationHandler = new Mock<IEventsHandler>();
-            mockingKernel.Bind<IEventsHandler>().ToConstant(_mockNotificationHandler.Object);
-            mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
+            _mockEventsHandler = new Mock<IEventsHandler>();
+            mockingKernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
 
             _mockOmniClipboardHandler = new Mock<IOmniClipboardHandler>{ DefaultValue = DefaultValue.Mock };
             mockingKernel.Bind<IOmniClipboardHandler>().ToConstant(_mockOmniClipboardHandler.Object);
 
+            mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
             _subject = mockingKernel.Get<INotificationListViewModel>();
 
             _testScheduler = new TestScheduler();
-
-            ITestableObservable<Clipping> testableObservable = _testScheduler.CreateHotObservable(
-                new Recorded<Notification<Clipping>>(200, System.Reactive.Notification.CreateOnNext(new Clipping())));
-
-            _mockOmniClipboardHandler
-                .Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
-                .Callback<IObserver<Clipping>>(o => testableObservable.Subscribe(o));
+            _testableClippingsObservable =
+                _testScheduler.CreateHotObservable(
+                    new Recorded<Notification<Clipping>>(200, Notification.CreateOnNext(new Clipping())));
+            _testableEventsObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event())));
         }
 
         [Test]
-        public void Activate_WillSubscribeToHandler()
+        public void NewEventArrives_AddsNewNotificationViewModel()
         {
+            _mockEventsHandler
+                .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
+                .Callback<IObserver<Event>>(o => _testableEventsObservable.Subscribe(o));
             _subject.Activate();
 
-            _mockNotificationHandler.Verify(nh => nh.Subscribe(_subject), Times.Once);
+            _testScheduler.Start();
+
+            _subject.Notifications.First().Type.Should().Be(NotificationViewModelTypeEnum.IncomingCall);
         }
 
         [Test]
         public void WhenNewClippingComesThroughOmniClipboardHandler_AddsNewNotificationViewModel()
         {
+            _mockOmniClipboardHandler
+                .Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
+                .Callback<IObserver<Clipping>>(o => _testableClippingsObservable.Subscribe(o));
             _subject.Activate();
 
             _testScheduler.Start();
@@ -78,6 +89,9 @@
         [Test]
         public void WhenNewClippingComesThroughOmniClipboardHandler_CreatesNewNotificationViewModel()
         {
+            _mockOmniClipboardHandler
+                .Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
+                .Callback<IObserver<Clipping>>(o => _testableClippingsObservable.Subscribe(o));
             _subject.Activate();
 
             _testScheduler.Start();
@@ -95,22 +109,12 @@
         public void Deativate_WillUnsubscribeFromHandler()
         {
             var mockDisposable = new Mock<IDisposable>();
-            _mockNotificationHandler.Setup(nh => nh.Subscribe(_subject)).Returns(mockDisposable.Object);
+            _mockEventsHandler.Setup(nh => nh.Subscribe(_subject)).Returns(mockDisposable.Object);
 
             _subject.Activate();
             _subject.Deactivate(true);
 
             mockDisposable.Verify(d => d.Dispose(), Times.Once);
-        }
-
-        [Test]
-        public void OnNext_Always_AddsNotificationToCollection()
-        {
-            var notification = new Event();
-
-            _subject.OnNext(notification);
-
-            //_subject.Notifications.First().Model.Should().Be(notification);
         }
 
         #endregion
