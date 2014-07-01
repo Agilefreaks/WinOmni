@@ -100,6 +100,11 @@
         public void Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
+            Close();
+        }
+
+        public void Close()
+        {
             _view.Hide();
         }
 
@@ -126,6 +131,8 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
             await Configure();
+
+            Close();
         }
 
         private async Task Configure()
