@@ -40,32 +40,15 @@
 
         #endregion
 
-        #region Public Methods and Operators
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNext(Event @event)
-        {
-            Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(@event)));
-        }
-
-        #endregion
-
         #region Methods
 
         protected override void OnActivate()
         {
             base.OnActivate();
 
-            _notificationsSubscription = _eventsHandler.Subscribe(this);
+            _notificationsSubscription = _eventsHandler.Subscribe(
+                n => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(n))),
+                e => { });
 
             _clippingsSubscription = _omniClipboardHandler.Subscribe(
                 c => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(c))),

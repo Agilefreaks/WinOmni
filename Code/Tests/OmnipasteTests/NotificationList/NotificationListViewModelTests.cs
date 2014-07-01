@@ -12,6 +12,7 @@
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
+    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Notification;
     using Omnipaste.NotificationList;
@@ -40,9 +41,11 @@
         [SetUp]
         public void Setup()
         {
-            var mockingKernel = new MockingKernel();
+            var mockingKernel = new MoqMockingKernel();
 
-            _mockEventsHandler = new Mock<IEventsHandler>();
+            mockingKernel.Bind<IDisposable>().ToMock();
+
+            _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock };
             mockingKernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
 
             _mockOmniClipboardHandler = new Mock<IOmniClipboardHandler>{ DefaultValue = DefaultValue.Mock };
@@ -103,18 +106,6 @@
         public void Constructor_WillInitializeNotificationsCollection()
         {
             _subject.Notifications.Should().NotBeNull();
-        }
-
-        [Test]
-        public void Deativate_WillUnsubscribeFromHandler()
-        {
-            var mockDisposable = new Mock<IDisposable>();
-            _mockEventsHandler.Setup(nh => nh.Subscribe(_subject)).Returns(mockDisposable.Object);
-
-            _subject.Activate();
-            _subject.Deactivate(true);
-
-            mockDisposable.Verify(d => d.Dispose(), Times.Once);
         }
 
         #endregion
