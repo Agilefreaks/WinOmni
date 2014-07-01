@@ -1,18 +1,18 @@
-﻿namespace Notifications.Handlers
+﻿namespace Events.Handlers
 {
     using System;
     using System.Diagnostics;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Notifications.Api.Resources.v1;
-    using Notifications.Models;
+    using Events.Api.Resources.v1;
+    using Events.Models;
     using OmniCommon.Models;
 
-    public class NotificationsHandler : INotificationsHandler
+    public class EventsHandler : IEventsHandler
     {
         #region Fields
 
-        private readonly Subject<Notification> _subject;
+        private readonly Subject<Event> _subject;
 
         private IDisposable _subscription;
 
@@ -20,17 +20,17 @@
 
         #region Constructors and Destructors
 
-        public NotificationsHandler(INotifications notifications)
+        public EventsHandler(IEvents events)
         {
-            _subject = new Subject<Notification>();
-            Notifications = notifications;
+            _subject = new Subject<Event>();
+            Events = events;
         }
 
         #endregion
 
         #region Public Properties
 
-        public INotifications Notifications { private get; set; }
+        public IEvents Events { private get; set; }
 
         #endregion
 
@@ -48,7 +48,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Notifications.Last().Subscribe(
+            Events.Last().Subscribe(
                 // OnNext
                 n => _subject.OnNext(n),
                 // onError
@@ -65,7 +65,7 @@
             _subscription.Dispose();
         }
 
-        public IDisposable Subscribe(IObserver<Notification> observer)
+        public IDisposable Subscribe(IObserver<Event> observer)
         {
             return _subject.Subscribe(observer);
         }

@@ -4,15 +4,15 @@
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
     using Clipboard.Handlers;
-    using Notifications.Handlers;
-    using Notifications.Models;
+    using Events.Handlers;
+    using Events.Models;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
     {
         #region Fields
 
-        private readonly INotificationsHandler _notificationsHandler;
+        private readonly IEventsHandler _eventsHandler;
 
         private readonly IOmniClipboardHandler _omniClipboardHandler;
 
@@ -24,11 +24,11 @@
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(INotificationsHandler notificationsHandler, IOmniClipboardHandler omniClipboardHandler)
+        public NotificationListViewModel(IEventsHandler eventsHandler, IOmniClipboardHandler omniClipboardHandler)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
 
-            _notificationsHandler = notificationsHandler;
+            _eventsHandler = eventsHandler;
             _omniClipboardHandler = omniClipboardHandler;
         }
 
@@ -52,9 +52,9 @@
             throw new NotImplementedException();
         }
 
-        public void OnNext(Notification notification)
+        public void OnNext(Event @event)
         {
-            Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(notification)));
+            Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(@event)));
         }
 
         #endregion
@@ -65,7 +65,7 @@
         {
             base.OnActivate();
 
-            _notificationsSubscription = _notificationsHandler.Subscribe(this);
+            _notificationsSubscription = _eventsHandler.Subscribe(this);
 
             _clippingsSubscription = _omniClipboardHandler.Subscribe(
                 c => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(c))),

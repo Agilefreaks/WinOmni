@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.NotificationList
 {
-    using Notifications.Models;
+    using Events.Models;
     using Omnipaste.Notification;
     using Clipboard.Models;
 
@@ -18,11 +18,11 @@
             return notificationViewModel;
         }
 
-        public static NotificationViewModel Build(Notification notification)
+        public static NotificationViewModel Build(Event @event)
         {
             var notificationViewModel = new NotificationViewModel
                                         {
-                                            Title = string.Concat("Incoming call from ", notification.phone_number),
+                                            Title = string.Concat("Incoming call from ", @event.phone_number),
                                             Type = NotificationViewModelTypeEnum.IncomingCall
                                         };
 

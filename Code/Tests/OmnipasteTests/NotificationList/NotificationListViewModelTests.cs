@@ -3,26 +3,25 @@
     using System;
     using System.Linq;
     using System.Reactive;
-    using Clipboard.API.Resources.v1;
     using Clipboard.Handlers;
     using Clipboard.Models;
+    using Events.Handlers;
+    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
-    using Notifications.Handlers;
     using NUnit.Framework;
     using Omnipaste.Notification;
     using Omnipaste.NotificationList;
-    using Notification = Notifications.Models.Notification;
 
     [TestFixture]
     public class NotificationListViewModelTests
     {
         #region Fields
 
-        private Mock<INotificationsHandler> _mockNotificationHandler;
+        private Mock<IEventsHandler> _mockNotificationHandler;
 
         private INotificationListViewModel _subject;
 
@@ -39,8 +38,8 @@
         {
             var mockingKernel = new MockingKernel();
 
-            _mockNotificationHandler = new Mock<INotificationsHandler>();
-            mockingKernel.Bind<INotificationsHandler>().ToConstant(_mockNotificationHandler.Object);
+            _mockNotificationHandler = new Mock<IEventsHandler>();
+            mockingKernel.Bind<IEventsHandler>().ToConstant(_mockNotificationHandler.Object);
             mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
 
             _mockOmniClipboardHandler = new Mock<IOmniClipboardHandler>{ DefaultValue = DefaultValue.Mock };
@@ -107,7 +106,7 @@
         [Test]
         public void OnNext_Always_AddsNotificationToCollection()
         {
-            var notification = new Notification();
+            var notification = new Event();
 
             _subject.OnNext(notification);
 

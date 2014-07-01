@@ -101,9 +101,9 @@
       <Project>{C7D3C627-311F-4395-BE3C-953F1F715C74}</Project>
       <Name>Clipboard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Notifications\Notifications.csproj">
+    <ProjectReference Include="..\Events\Events.csproj">
       <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
-      <Name>Notifications</Name>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>

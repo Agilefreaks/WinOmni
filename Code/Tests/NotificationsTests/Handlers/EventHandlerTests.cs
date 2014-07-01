@@ -2,25 +2,25 @@
 {
     using System;
     using System.Reactive.Subjects;
+    using Events.Api.Resources.v1;
+    using Events.Handlers;
+    using Events.Models;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
-    using Notifications.Api.Resources.v1;
-    using Notifications.Handlers;
-    using Notifications.Models;
     using NUnit.Framework;
     using OmniCommon.Models;
 
     [TestFixture]
-    public class NotificationHandlerTests
+    public class EventHandlerTests
     {
         #region Fields
 
-        private Mock<INotifications> _mockNotifications;
+        private Mock<IEvents> _mockNotifications;
 
         private MoqMockingKernel _mockingKernel;
 
-        private INotificationsHandler _notificationsHandler;
+        private IEventsHandler _eventsHandler;
 
         #endregion
 
@@ -31,24 +31,24 @@
         {
             _mockingKernel = new MoqMockingKernel();
 
-            _mockNotifications = _mockingKernel.GetMock<INotifications>();
-            _mockingKernel.Bind<INotificationsHandler>().To<NotificationsHandler>().InSingletonScope();
+            _mockNotifications = _mockingKernel.GetMock<IEvents>();
+            _mockingKernel.Bind<IEventsHandler>().To<EventsHandler>().InSingletonScope();
 
-            _notificationsHandler = _mockingKernel.Get<INotificationsHandler>();
+            _eventsHandler = _mockingKernel.Get<IEventsHandler>();
         }
 
         [Test]
         public void WhenANotificationMessageArrives_SubscriberOnNextIsCalled()
         {
-            var observer = new Mock<IObserver<Notification>>();
+            var observer = new Mock<IObserver<Event>>();
             var observable = new Subject<OmniMessage>();
-            var notificationObserver = new Subject<Notification>();
-            var notification = new Notification();
+            var notificationObserver = new Subject<Event>();
+            var notification = new Event();
 
             _mockNotifications.Setup(m => m.Last()).Returns(notificationObserver);
 
-            _notificationsHandler.Start(observable);
-            _notificationsHandler.Subscribe(observer.Object);
+            _eventsHandler.Start(observable);
+            _eventsHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
             notificationObserver.OnNext(notification);
@@ -59,14 +59,14 @@
         [Test]
         public void WhenAClippingArrives_SubscribeOnNextIsNotCalled()
         {
-            var observer = new Mock<IObserver<Notification>>();
+            var observer = new Mock<IObserver<Event>>();
             var observable = new Subject<OmniMessage>();
 
-            _notificationsHandler.Subscribe(observer.Object);
+            _eventsHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
 
-            observer.Verify(o => o.OnNext(It.IsAny<Notification>()), Times.Never);            
+            observer.Verify(o => o.OnNext(It.IsAny<Event>()), Times.Never);            
         }
 
         #endregion
