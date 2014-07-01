@@ -65,7 +65,6 @@
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
             _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
-            
 
             _kernel.Bind(
                 configure =>

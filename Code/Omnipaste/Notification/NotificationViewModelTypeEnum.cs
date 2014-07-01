@@ -3,6 +3,7 @@
     public enum NotificationViewModelTypeEnum
     {
         IncomingCall,
-        Clipping
+        Clipping,
+        Hyperlink
     }
 }

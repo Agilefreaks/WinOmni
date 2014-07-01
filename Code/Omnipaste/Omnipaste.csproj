@@ -235,6 +235,9 @@
     <Compile Include="Notification\Notification\Clipping.xaml.cs">
       <DependentUpon>Clipping.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Notification\Notification\Hyperlink.xaml.cs">
+      <DependentUpon>Hyperlink.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Notification\Notification\IncomingCall.xaml.cs">
       <DependentUpon>IncomingCall.xaml</DependentUpon>
     </Compile>
@@ -327,6 +330,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\Notification\Clipping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\Notification\Hyperlink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,7 +12,10 @@
                                         {
                                             Title = "New clipping",
                                             Message = clipping.content,
-                                            Type = NotificationViewModelTypeEnum.Clipping
+                                            Type =
+                                                clipping.type == "web_site"
+                                                    ? NotificationViewModelTypeEnum.Hyperlink
+                                                    : NotificationViewModelTypeEnum.Clipping
                                         };
 
             return notificationViewModel;
@@ -20,6 +23,7 @@
 
         public static NotificationViewModel Build(Event @event)
         {
+
             var notificationViewModel = new NotificationViewModel
                                         {
                                             Title = string.Concat("Incoming call from ", @event.phone_number),
