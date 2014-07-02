@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection.Emit;
     using System.Threading.Tasks;
@@ -64,15 +66,23 @@
 
         #region Public Methods and Operators
 
-        public async Task Run()
+        public IObservable<IActivationStep> Run()
         {
-            CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
-            while (CurrentStepIsIntermediateStep())
-            {
-                var activationStep = await CurrentStep.Execute();
+            return Observable.Create<IActivationStep>(
+                observer =>
+                    {
+                        CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
+                        while (CurrentStepIsIntermediateStep())
+                        {
+                            var activationStep = CurrentStep.Execute().Wait();
+                            MoveToNextStep(activationStep);
+                        }
 
-                MoveToNextStep(activationStep);
-            }
+                        observer.OnNext(CurrentStep);
+                        observer.OnCompleted();
+
+                        return Disposable.Empty;
+                    });
         }
 
         #endregion
