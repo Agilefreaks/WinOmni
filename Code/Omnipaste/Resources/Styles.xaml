@@ -1,33 +1,42 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Colors -->
-    <Color x:Key="NotificationBackground">#FF305FBE</Color>
-    <Color x:Key="TextForegroundColor">White</Color>
-    
-    <!-- Brushes -->
-    <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}" />
-    <SolidColorBrush x:Key="TextForegroundBrush" Color="{StaticResource TextForegroundColor}" />
-    
-    <!-- TextBlock -->
-    <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="FontFamily" Value="Arial" />
-        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}" />
-        <Setter Property="TextWrapping" Value="Wrap" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-    </Style>
-    
-    <Style TargetType="TextBlock" x:Key="TitleTextBlock" BasedOn="{StaticResource TextBlock}">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-    
-    <!-- UserToken -->
-    <Style x:Key="DescriptionHeaderStyle" TargetType="Label">
-        <Setter Property="FontSize" Value="22" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-    </Style>
+  <!-- Colors -->
+  <Color x:Key="NotificationBackground">#FF305FBE</Color>
+  <Color x:Key="TextForegroundColor">White</Color>
+
+  <!-- Brushes -->
+  <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}" />
+  <SolidColorBrush x:Key="TextForegroundBrush" Color="{StaticResource TextForegroundColor}" />
+
+  <!-- TextBlock -->
+  <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Setter Property="FontFamily" Value="Arial" />
+    <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+    <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+    <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+
+  <Style TargetType="TextBlock" x:Key="TitleTextBlock" BasedOn="{StaticResource TextBlock}">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <!-- UserToken -->
+  <Style x:Key="DescriptionHeaderStyle" TargetType="Label">
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <!-- Button -->
+  <Style x:Key="DialogButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Margin" Value="10" />
+  </Style>
+  
+  <Style x:Key="PrimaryDialogButton" TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
+    <Setter Property="Margin" Value="10" />
+  </Style>
 </ResourceDictionary>

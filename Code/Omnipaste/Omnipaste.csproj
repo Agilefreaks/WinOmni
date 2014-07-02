@@ -160,6 +160,9 @@
       <HintPath>..\..\Libs\Refit\Refit-Portable.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -235,6 +238,8 @@
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
+    <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
+    <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
     <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
@@ -243,6 +248,7 @@
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
     <Compile Include="Notification\Models\NotificationBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -277,15 +283,13 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromDeploymentUri.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetTokenFromUser.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromDeploymentUri.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfiguration.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RetryInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SingleStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
     <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
     <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />
@@ -293,16 +297,10 @@
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Framework\IApplicationWrapper.cs" />
-    <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
-    <Compile Include="Services\INotificationService.cs" />
-    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="Shell\ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
@@ -314,11 +312,8 @@
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Framework\FlyoutBaseViewModel.cs" />
     <Compile Include="Framework\IFlyoutViewModel.cs" />
-    <Compile Include="UserToken\IUserTokenViewModel.cs" />
-    <Compile Include="UserToken\UserTokenView.xaml.cs">
-      <DependentUpon>UserTokenView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserToken\UserTokenViewModel.cs" />
+    <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
+    <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -330,6 +325,10 @@
     <Page Include="Clipping\ClippingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
@@ -359,7 +358,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Loading\Loading\AwaitingUserTokenInput.xaml">
+    <Page Include="Loading\Loading\Other.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -399,7 +398,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserToken\UserTokenView.xaml">
+    <Page Include="Loading\UserToken\UserTokenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

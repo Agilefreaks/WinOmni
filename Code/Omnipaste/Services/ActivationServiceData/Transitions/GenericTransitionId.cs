@@ -2,7 +2,7 @@
 {
     public class GenericTransitionId<T> : TransitionId
     {
-        protected GenericTransitionId(object state)
+        private GenericTransitionId(object state)
             : base(typeof(T), state)
         {
         }

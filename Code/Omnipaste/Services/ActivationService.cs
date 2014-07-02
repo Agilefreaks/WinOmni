@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Services
 {
+    using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Caliburn.Micro;
-    using Ninject;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -28,52 +28,14 @@
 
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
-            _transitions = new TransitionCollection();
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetRemoteConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
-                typeof(LoadLocalConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Successful),
-                typeof(Finished));
-            _transitions.RegisterTransition(
-                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Failed),
-                typeof(GetTokenFromUser));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetRemoteConfiguration));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Failed),
-                typeof(Failed));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(
-                    GetRemoteConfigurationStepStateEnum.CommunicationFailure),
-                typeof(GetRemoteConfiguration));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
-                typeof(GetTokenFromUser));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Successful),
-                typeof(SaveConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
-                typeof(Finished));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),
-                typeof(Finished));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
-                typeof(Failed));
+            _transitions = TransitionCollection.Builder()
+                .RegisterTransition<LoadLocalConfiguration, StartOmniService, GetActivationCodeFromDeploymentUri>()
+                .RegisterTransition<GetActivationCodeFromDeploymentUri, GetRemoteConfiguration, GetActivationCodeFromUser>()
+                .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
+                .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
+                .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
+                .RegisterTransition<StartOmniService, Finished, Failed>()
+                .Build();
         }
 
         #endregion
@@ -82,14 +44,11 @@
 
         public IActivationStep CurrentStep { get; private set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator { get; set; }
-
-        public IEnumerable<object> FinalStepIds
+        public TransitionCollection Transitions
         {
             get
             {
-                return _finalStepIdIds;
+                return _transitions;
             }
         }
 
@@ -105,15 +64,23 @@
 
         #region Public Methods and Operators
 
-        public async Task Run()
+        public IObservable<IActivationStep> Run()
         {
-            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
-            while (CurrentStepIsIntermediateStep())
-            {
-                var activationStep = await CurrentStep.ExecuteAsync();
+            return Observable.Create<IActivationStep>(
+                observer =>
+                    {
+                        CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
+                        while (CurrentStepIsIntermediateStep())
+                        {
+                            var activationStep = CurrentStep.Execute().Wait();
+                            MoveToNextStep(activationStep);
+                        }
 
-                MoveToNextStep(activationStep);
-            }
+                        observer.OnNext(CurrentStep);
+                        observer.OnCompleted();
+
+                        return Disposable.Empty;
+                    });
         }
 
         #endregion

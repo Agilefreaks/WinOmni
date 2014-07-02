@@ -5,6 +5,6 @@
 
     public interface IConnectionViewModel : IScreen
     {
-        Task Connect();
+        void Connect();
     }
 }

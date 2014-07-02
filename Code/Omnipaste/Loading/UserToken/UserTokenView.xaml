@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Omnipaste.UserToken.UserTokenView"
+﻿<UserControl x:Class="Omnipaste.Loading.UserToken.UserTokenView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -37,8 +37,8 @@
                  controls:TextboxHelper.Watermark="Authorization code"
                  controls:TextboxHelper.IsWaitingForData="True"/>
 
-        <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="Authenticate" Margin="10" IsDefault="True" Background="{StaticResource AccentColorBrush}"/>
-        <Button Grid.Row="4" TabIndex="3" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" Margin="10" IsCancel="True"/>
+        <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="Authenticate" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
+        <Button Grid.Row="4" TabIndex="3" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
 
         
         <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding Path=HasMessage, Converter={StaticResource BooleanToVisibility}}">

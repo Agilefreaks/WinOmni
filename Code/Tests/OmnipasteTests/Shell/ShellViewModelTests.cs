@@ -5,9 +5,9 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Dialog;
+    using Omnipaste.Loading.UserToken;
     using Omnipaste.Shell;
     using Omnipaste.Shell.ContextMenu;
-    using Omnipaste.UserToken;
 
     [TestFixture]
     public class ShellViewModelTests

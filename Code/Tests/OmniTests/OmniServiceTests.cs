@@ -1,8 +1,10 @@
 ﻿namespace OmniTests
 {
     using System;
+    using System.Reactive;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using System.Security.Principal;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -30,7 +32,7 @@
 
         private Mock<IWebsocketConnectionFactory> _websocketConnectionFactory;
 
-        private Mock<IDevices> _devicesMock;
+        private Mock<IDevices> _mockDevices;
 
         private Mock<IConfigurationService> _configurationServiceMock;
 
@@ -50,30 +52,23 @@
 
             _kernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
-            _devicesMock = _kernel.GetMock<IDevices>();
+            _mockDevices = _kernel.GetMock<IDevices>();
             _configurationServiceMock = _kernel.GetMock<IConfigurationService>();
             _someHandler = _kernel.GetMock<IHandler>();
 
             _kernel.Bind<IHandler>().ToConstant(_someHandler.Object);
 
             _configurationServiceMock
-                .Setup(cs => cs.MachineName)
+                .SetupGet(cs => cs.MachineName)
                 .Returns(DeviceName);
 
             _configurationServiceMock
-                .Setup(cs => cs.DeviceIdentifier)
+                .SetupGet(cs => cs.DeviceIdentifier)
                 .Returns(DeviceIdentifier);
 
             _mockWebsocketConnection = _kernel.GetMock<IWebsocketConnection>();
-            _mockWebsocketConnection.SetupGet(wc => wc.RegistrationId).Returns(_registrationId);
 
             _scheduler = new TestScheduler();
-
-            ITestableObservable<WebsocketConnectionStatusEnum> testableObservable = _scheduler.CreateColdObservable(new[] { ReactiveTest.OnNext(100, WebsocketConnectionStatusEnum.Disconnected) });
-            _mockWebsocketConnection
-                .Setup(c => c.Subscribe(It.IsAny<IObserver<WebsocketConnectionStatusEnum>>()))
-                .Callback<IObserver<WebsocketConnectionStatusEnum>>(p => testableObservable.Subscribe(p));
-            _mockWebsocketConnection.SetupGet(c => c.ConnectionObservable).Returns(testableObservable);
 
             _websocketConnectionFactory = _kernel.GetMock<IWebsocketConnectionFactory>();
             _websocketConnectionFactory
@@ -84,101 +79,29 @@
         }
 
         [Test]
-        public async void Start_RegistersTheDeviceOnTheApi()
+        public void Start_WhsenSuccess_ReturnsTheDevice()
         {
-            SetupForSuccess();
+            var device = new Device { Identifier = DeviceIdentifier };
+            var testableObserver = _scheduler.CreateObserver<Device>();
+            var openWebsocketConnection = _scheduler.CreateColdObservable(
+                new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
+                new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
+            _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
+            var registerDevice = _scheduler.CreateColdObservable(
+                new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
+                new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
+            _mockDevices.Setup(m => m.Create(DeviceIdentifier, DeviceName)).Returns(registerDevice);
+            var activateDevice = _scheduler.CreateColdObservable(
+                new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
+                new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
+            _mockDevices.Setup(m => m.Activate(_registrationId, DeviceIdentifier)).Returns(activateDevice);
 
-            await _subject.Start();
-
-            _devicesMock.Verify(api => api.Create(DeviceIdentifier, DeviceName), Times.Once());
-            _devicesMock.Verify(api => api.Activate(_registrationId, DeviceIdentifier), Times.Once());
-        }
-
-        [Test]
-        public async void Start_WhenActivationIsSuccessful_HasStatusStarted()
-        {
-            SetupForSuccess();
-
-            await _subject.Start();
-
-            _subject.Status.Should().Be(ServiceStatusEnum.Started);
-        }
-
-        [Test]
-        public async void Start_WhenActivationIsNotSuccessful_HasStatusStopped()
-        {
-            SetupForFailure();
-
-            await _subject.Start();
-
-            _subject.Status.Should().Be(ServiceStatusEnum.Stopped);
-        }
-
-        [Test]
-        public async void Start_StartsHandlers()
-        {
-            SetupForSuccess();
-
-            await _subject.Start();
-
-            _someHandler.Verify(m => m.Start(It.IsAny<IObservable<OmniMessage>>()));
-        }
-
-        [Test]
-        public async Task Start_SetsTheStatusToStarted()
-        {
-            SetupForSuccess();
-
-            await _subject.Start();
-
-            Assert.That(_subject.Status, Is.EqualTo(ServiceStatusEnum.Started));
-        }
-
-        [Test]
-        public async void WhenConnectionIsLostItWillTryToReconnect()
-        {
-            SetupForSuccess();
-
-            await _subject.Start();
+            _subject.Start().Subscribe(testableObserver);
             _scheduler.Start();
 
-            _subject.Status.Should().Be(ServiceStatusEnum.Reconnecting);
-        }
-
-        private void SetupForFailure()
-        {
-            SetupForStart(false);
-        }
-
-        private void SetupForSuccess()
-        {
-            SetupForStart();
-        }
-
-        private void SetupForStart(bool success = true)
-        {
-            var observableCreate = Observable.Create<Device>(
-                o =>
-                {
-                    o.OnNext(new Device());
-                    o.OnCompleted();
-                    return Disposable.Empty;
-                });
-
-            var observableActivate = Observable.Create<Device>(
-                o =>
-                {
-                    o.OnNext(success ? new Device() : null);
-                    o.OnCompleted();
-                    return Disposable.Empty;
-                });
-
-            _devicesMock.Setup(api => api.Create(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(observableCreate);
-
-            _devicesMock
-                .Setup(api => api.Activate(_registrationId, DeviceIdentifier))
-                .Returns(observableActivate);
+            testableObserver.Messages.Should().HaveCount(2);
+            _subject.Status.Should().Be(ServiceStatusEnum.Started);
+            _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once);
         }
     }
 }

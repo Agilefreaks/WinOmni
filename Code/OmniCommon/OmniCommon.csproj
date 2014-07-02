@@ -93,6 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
+    <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />

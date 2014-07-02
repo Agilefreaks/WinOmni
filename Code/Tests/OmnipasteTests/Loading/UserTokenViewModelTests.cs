@@ -1,10 +1,10 @@
-﻿namespace OmnipasteTests.UserToken
+﻿namespace OmnipasteTests.Loading
 {
     using Caliburn.Micro;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.UserToken;
+    using Omnipaste.Loading.UserToken;
 
     [TestFixture]
     public class UserTokenViewModelTests

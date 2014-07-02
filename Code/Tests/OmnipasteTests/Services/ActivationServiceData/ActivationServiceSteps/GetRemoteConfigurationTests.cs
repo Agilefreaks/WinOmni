@@ -1,11 +1,10 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using System.Reactive.Disposables;
-    using System.Reactive.Linq;
+    using System.Reactive;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
-    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -19,222 +18,68 @@
 
         private Mock<IOAuth2> _mockOAuth2;
 
+        private ITestableObserver<IExecuteResult> _observer;
+
         [SetUp]
         public void Setup()
         {
-            var mockKernel = new MoqMockingKernel();
+            _observer = new TestScheduler().CreateObserver<IExecuteResult>();
+            _mockOAuth2 = new Mock<IOAuth2>();
 
-            _mockOAuth2 = mockKernel.GetMock<IOAuth2>();
-
-            _subject = new GetRemoteConfiguration(_mockOAuth2.Object)
-                           {
-                               Parameter = new DependencyParameter(string.Empty, "42")
-                           };
+            _subject = new GetRemoteConfiguration(_mockOAuth2.Object);
         }
 
         [Test]
-        public void ExecutePayloadIsAnEmptyStringShouldReturnAResultWithStatusFailed()
+        public void Execute_WhenAuthorizationCodeIsEmpty_WillReturnFail()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, string.Empty);
 
-            _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
+            _subject.Execute().Subscribe(_observer);
+
+            _observer.Messages.Should()
+                .Contain(
+                    m => m.Value.Kind == NotificationKind.OnNext
+                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
 
         [Test]
-        public async void ExecutePayloadIsNonEmptyStringShouldCallCreateOnOAuth2()
+        public void Execute_WhenCreateError_WillReturnFail()
         {
-            IObservable<Token> createObserver = Observable.Create<Token>(
-                o =>
-                    {
-                        o.OnNext(new Token());
-                        o.OnCompleted();
-                        return Disposable.Empty;
-                    });
-            _mockOAuth2.Setup(m => m.Create(It.IsAny<string>())).Returns(createObserver);
+            _subject.Parameter = new DependencyParameter(string.Empty, "42");
+            var testScheduler = new TestScheduler();
+            var createObservable =
+                testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnError<Token>(new Exception())));
+            _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
-            await _subject.ExecuteAsync();
+            _subject.Execute().Subscribe(_observer);
+            testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
-            _mockOAuth2.Verify(m => m.Create("42"), Times.Once);
+             _observer.Messages.Should()
+                .Contain(
+                    m => m.Value.Kind == NotificationKind.OnNext
+                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
 
-        //[Test]
-        //public void ExecutePayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndEmptyTokenShouldReturnAResultWithStatusFailed()
-        //{
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, new RetryInfo(string.Empty, GetRemoteConfiguration.MaxRetryCount - 1))
-        //    };
+        [Test]
+        public void Execute_WhenCreateSuccess_WillReturnSucccess()
+        {
+            _subject.Parameter = new DependencyParameter(string.Empty, "42");
+            var testScheduler = new TestScheduler();
+            var createObservable =
+                testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("acccess token", "refresh token"))),
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnCompleted<Token>()));
+            _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
-        //    subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
+            _subject.Execute().Subscribe(_observer);
+            testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
-        //[Test]
-        //public void ExecutePayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNullTokenShouldReturnAResultWithStatusFailed()
-        //{
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, new RetryInfo(null, GetRemoteConfiguration.MaxRetryCount - 1))
-        //    };
-
-        //    subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
-
-        //[Test]
-        //public void ExecutePayloadIsARetryInfoObjectWithFailCountSmallerThanMaxFailCountAndNonEmptyTokenShouldCallActivationDataProviderGetActivationDataWithTheToken()
-        //{
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount - 1))
-        //    };
-
-        //    subject.Execute();
-
-        //    _mockAuthorizationAPI.Verify(x => x.Activate(_token), Times.Once());
-        //}
-
-        //[Test]
-        //public void ExecutePayloadIsARetryInfoObjectWithFailCountEqualToMaxFailCountAndNonEmptyTokenShouldCallActivationDataProviderGetActivationDataWithTheToken()
-        //{
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount))
-        //    };
-
-        //    subject.Execute();
-
-        //    _mockAuthorizationAPI.Verify(x => x.Activate(_token), Times.Once());
-        //}
-
-        //[Test]
-        //public void ExecutePayloadIsARetryInfoObjectWithFailCountGreaterThanMaxFailCountAndNonEmptyTokenShouldReturnAResultWithStatusFailed()
-        //{
-        //    var subject = new GetRemoteConfiguration()
-        //                      {
-        //                          ActivationTokens = _mockAuthorizationAPI.Object,
-        //                          Parameter = new DependencyParameter(string.Empty, new RetryInfo("testToken", GetRemoteConfiguration.MaxRetryCount + 1))
-        //                      };
-
-        //    subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
-
-        //[Test]
-        //public void ExecuteGetConfigurationReturnsEmptyActivationDataShouldReturnAResultWithStatusFailed()
-        //{
-        //    _subject.Execute();
-
-        //    _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
-
-        //[Test]
-        //public void ExecuteGetConfigurationReturnsValidActivationDataObjectShouldReturnAResultWithStatusSuccessful()
-        //{
-        //    var activationData = new ActivationModel { Email = "test@email.com" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
-
-        //    _subject.Execute();
-
-        //    _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.Successful);
-        //}
-
-        //[Test]
-        //public void ExecuteGetConfigurationReturnsValidActivationDataObjectShouldReturnAResultWithDataContainingTheEmail()
-        //{
-        //    var activationData = new ActivationModel { Email = "test@email.com" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
-
-        //    _subject.Execute();
-
-        //    _subject.Execute().Data.Should().Be("test@email.com");
-        //}
-
-        //[Test]
-        //public void ExecuteGetConfigurationReturnsActivationDataObjectWithCommnuicationErrorsShouldReturnAResultWithStatusCommunicationFailure()
-        //{
-        //    var activationData = new ActivationModel { CommunicationError = "error" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
-
-        //    _subject.Execute();
-
-        //    _subject.Execute().State.Should().Be(GetRemoteConfigurationStepStateEnum.CommunicationFailure);
-        //}
-
-        //[Test]
-        //public void ExecuteGotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCountShouldReturnAResultWithTheCommunicationFailure()
-        //{
-        //    const string AuthorizationCode = "testToken";
-        //    var retryInfo = new RetryInfo(AuthorizationCode, GetRemoteConfiguration.MaxRetryCount - 1);
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, retryInfo)
-        //    };
-        //    var activationData = new ActivationModel { CommunicationError = "error" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.Is<string>(s => s == AuthorizationCode))).Returns(activationData);
-
-        //    var executeResult = subject.Execute();
-
-        //    executeResult.Data.Should().BeOfType<RetryInfo>();
-        //    ((RetryInfo)executeResult.Data).Error.Should().Be("error");
-        //}
-
-        //[Test]
-        //public void ExecuteGotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCountShouldReturnAResultWithAIncrementedFailCount()
-        //{
-        //    const string AuthorizationCode = "testToken";
-        //    var retryInfo = new RetryInfo(AuthorizationCode, GetRemoteConfiguration.MaxRetryCount - 1);
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, retryInfo)
-        //    };
-        //    var activationData = new ActivationModel { CommunicationError = "error" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.IsAny<string>())).Returns(activationData);
-
-        //    var executeResult = subject.Execute();
-
-        //    executeResult.Data.Should().BeOfType<RetryInfo>();
-        //    ((RetryInfo)executeResult.Data).FailCount.Should().Be(GetRemoteConfiguration.MaxRetryCount);
-        //}
-
-        //[Test]
-        //public void ExecuteGotConfigurationWithCommnuicationErrorAndFailCountLessThanMaxFailCountShouldReturnAResultWithTheGivenToken()
-        //{
-        //    const string AuthorizationCode = "testToken";
-        //    var retryInfo = new RetryInfo(AuthorizationCode, GetRemoteConfiguration.MaxRetryCount - 1);
-        //    var subject = new GetRemoteConfiguration
-        //    {
-        //        ActivationTokens = _mockAuthorizationAPI.Object,
-        //        Parameter = new DependencyParameter(string.Empty, retryInfo)
-        //    };
-        //    var activationData = new ActivationModel { CommunicationError = "error" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(It.Is<string>(s => s == AuthorizationCode))).Returns(activationData);
-
-        //    var executeResult = subject.Execute();
-
-        //    executeResult.Data.Should().BeOfType<RetryInfo>();
-        //    ((RetryInfo)executeResult.Data).AuthorizationCode.Should().Be(AuthorizationCode);
-        //}
-
-        //[Test]
-        //public void ExecuteGotConfigurationWithCommnuicationErrorAndFailCountEqualToMaxFailCountShouldReturnAResultWithStatusFailed()
-        //{
-        //    const string AuthorizationCode = "testToken";
-        //    var retryInfo = new RetryInfo(AuthorizationCode, GetRemoteConfiguration.MaxRetryCount);
-        //    var subject = new GetRemoteConfiguration
-        //                      {
-        //                          ActivationTokens = _mockAuthorizationAPI.Object,
-        //                          Parameter = new DependencyParameter(string.Empty, retryInfo)
-        //                      };
-        //    var activationData = new ActivationModel { CommunicationError = "error" };
-        //    _mockAuthorizationAPI.Setup(u => u.Activate(AuthorizationCode)).Returns(activationData);
-
-        //    var executeResult = subject.Execute();
-
-        //    executeResult.State.Should().Be(GetRemoteConfigurationStepStateEnum.Failed);
-        //}
+            _observer.Messages.Should()
+               .Contain(
+                   m => m.Value.Kind == NotificationKind.OnNext
+                       && m.Value.Value.State == SimpleStepStateEnum.Successful);
+            _observer.Messages.Should().HaveCount(2);
+        }
     }
 }

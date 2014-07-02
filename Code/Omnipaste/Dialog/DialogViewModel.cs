@@ -3,7 +3,7 @@
     using System;
     using Caliburn.Micro;
 
-    public class DialogViewModel : Conductor<IScreen>, IDialogViewModel
+    public class DialogViewModel : Conductor<IScreen>.Collection.OneActive, IDialogViewModel
     {
         #region Fields
 

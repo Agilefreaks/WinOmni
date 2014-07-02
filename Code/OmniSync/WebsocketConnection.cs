@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using System.Threading.Tasks;
+    using System.Reactive.Threading.Tasks;
     using Newtonsoft.Json.Linq;
     using OmniCommon.Models;
     using WampSharp;
@@ -28,32 +28,11 @@
         public WebsocketConnection(IWampChannel<JToken> channel)
         {
             _channel = channel;
-            Monitor = (WampClientConnectionMonitor<JToken>)Channel.GetMonitor();
         }
 
         #endregion
 
         #region Public Properties
-
-        public string RegistrationId
-        {
-            get
-            {
-                return Monitor.SessionId;
-            }
-        }
-
-        public WampClientConnectionMonitor<JToken> Monitor
-        {
-            get
-            {
-                return _monitor;
-            }
-            set
-            {
-                _monitor = value;
-            }
-        }
 
         public IObservable<WebsocketConnectionStatusEnum> ConnectionObservable
         {
@@ -84,13 +63,16 @@
 
         #region Public Methods and Operators
 
-        public async Task<ISubject<OmniMessage>> Connect()
+        public IObservable<string> Connect()
         {
-            await Channel.OpenAsync();
-
-            _subject = Channel.GetSubject<OmniMessage>(RegistrationId);
-
-            return _subject;
+            return Channel.OpenAsync().ToObservable()
+                .Select(
+                    result =>
+                        {
+                            var registrationId = Channel.GetMonitor().SessionId;
+                            _subject = Channel.GetSubject<OmniMessage>(registrationId);
+                            return registrationId;
+                        });
         }
 
         public void Disconnect()

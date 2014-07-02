@@ -1,7 +1,9 @@
 ﻿namespace Omnipaste.Services
 {
+    using System;
     using System.Threading.Tasks;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.ActivationServiceData.Transitions;
 
     public interface IActivationService
     {
@@ -11,11 +13,13 @@
 
         bool Success { get; }
 
+        TransitionCollection Transitions { get; }
+
         #endregion
 
         #region Public Methods and Operators
 
-        Task Run();
+        IObservable<IActivationStep> Run();
 
         #endregion
     }

@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
-
-namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
+
     public interface IActivationStep
     {
         DependencyParameter Parameter { get; set; }
 
-        IExecuteResult Execute();
-        
-        Task<IExecuteResult> ExecuteAsync();
+        IObservable<IExecuteResult> Execute();
 
         object GetId();
     }

@@ -4,6 +4,6 @@
     {
         Loading,
 
-        AwaitingUserTokenInput
+        Other
     }
 }
