@@ -4,7 +4,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
 
-    public class GetTokenFromDeploymentUri : ActivationStepBase
+    public class GetActivationCodeFromDeploymentUri : ActivationStepBase
     {
         #region Fields
 
@@ -16,7 +16,7 @@
 
         #region Constructors and Destructors
 
-        public GetTokenFromDeploymentUri(
+        public GetActivationCodeFromDeploymentUri(
             IApplicationDeploymentInfoProvider provider,
             IConfigurationProvider configurationProvider)
         {

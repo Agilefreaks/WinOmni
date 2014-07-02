@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using System.Collections.Generic;
+    using System.Reflection.Emit;
     using System.Threading.Tasks;
     using Caliburn.Micro;
     using Ninject;
@@ -28,52 +29,54 @@
 
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
-            _transitions = new TransitionCollection();
+            _transitions = TransitionCollection.Builder()
+                .RegisterTransition<LoadLocalConfiguration, Finished, GetActivationCodeFromDeploymentUri>()
+                .Build();
 
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetRemoteConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
-                typeof(LoadLocalConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Successful),
-                typeof(Finished));
-            _transitions.RegisterTransition(
-                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Failed),
-                typeof(GetTokenFromUser));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Successful),
-                typeof(GetRemoteConfiguration));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Failed),
-                typeof(Failed));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(
-                    GetRemoteConfigurationStepStateEnum.CommunicationFailure),
-                typeof(GetRemoteConfiguration));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
-                typeof(GetTokenFromUser));
-            _transitions.RegisterTransition(
-                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Successful),
-                typeof(SaveConfiguration));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
-                typeof(Finished));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),
-                typeof(Finished));
-
-            _transitions.RegisterTransition(
-                GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
-                typeof(Failed));
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetActivationCodeFromDeploymentUri>.Create(SimpleStepStateEnum.Successful),
+//                typeof(GetRemoteConfiguration));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetActivationCodeFromDeploymentUri>.Create(SimpleStepStateEnum.Failed),
+//                typeof(LoadLocalConfiguration));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Successful),
+//                typeof(Finished));
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<LoadLocalConfiguration>.Create(SimpleStepStateEnum.Failed),
+//                typeof(GetTokenFromUser));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Successful),
+//                typeof(GetRemoteConfiguration));
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetTokenFromUser>.Create(SimpleStepStateEnum.Failed),
+//                typeof(Failed));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetRemoteConfiguration>.Create(
+//                    GetRemoteConfigurationStepStateEnum.CommunicationFailure),
+//                typeof(GetRemoteConfiguration));
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Failed),
+//                typeof(GetTokenFromUser));
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<GetRemoteConfiguration>.Create(GetRemoteConfigurationStepStateEnum.Successful),
+//                typeof(SaveConfiguration));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<SaveConfiguration>.Create(SingleStateEnum.Successful),
+//                typeof(Finished));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<Finished>.Create(SingleStateEnum.Successful),
+//                typeof(Finished));
+//
+//            _transitions.RegisterTransition(
+//                GenericTransitionId<Failed>.Create(SingleStateEnum.Successful),
+//                typeof(Failed));
         }
 
         #endregion
@@ -82,14 +85,11 @@
 
         public IActivationStep CurrentStep { get; private set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator { get; set; }
-
-        public IEnumerable<object> FinalStepIds
+        public TransitionCollection Transitions
         {
             get
             {
-                return _finalStepIdIds;
+                return _transitions;
             }
         }
 
@@ -107,7 +107,7 @@
 
         public async Task Run()
         {
-            CurrentStep = _stepFactory.Create(typeof(GetTokenFromDeploymentUri));
+            CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
             while (CurrentStepIsIntermediateStep())
             {
                 var activationStep = await CurrentStep.ExecuteAsync();

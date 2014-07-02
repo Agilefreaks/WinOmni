@@ -3,8 +3,6 @@
     using FluentAssertions;
     using Moq;
     using Ninject;
-    using Ninject.Injection;
-    using Ninject.MockingKernel;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Services;
@@ -38,5 +36,22 @@
         {
             _subject.Success.Should().BeFalse();
         }
+
+        [Test]
+        public void LoadLocalConfiguration_Success_ShouldBeFinished()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
+        }
+
+        [Test]
+        public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromDeploymentUri()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<GetActivationCodeFromDeploymentUri>();
+        }
+
     }
 }
