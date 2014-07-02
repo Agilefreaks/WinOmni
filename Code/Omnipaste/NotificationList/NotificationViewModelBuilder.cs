@@ -11,9 +11,9 @@
             var notificationViewModel = new NotificationViewModel
                                         {
                                             Title = "New clipping",
-                                            Message = clipping.content,
+                                            Message = clipping.Content,
                                             Type =
-                                                clipping.type == "web_site"
+                                                clipping.Type == Clipping.ClippingTypeEnum.WebSite
                                                     ? NotificationViewModelTypeEnum.Hyperlink
                                                     : NotificationViewModelTypeEnum.Clipping
                                         };
