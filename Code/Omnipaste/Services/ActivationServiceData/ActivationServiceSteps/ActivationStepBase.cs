@@ -1,17 +1,12 @@
-﻿using System.Threading.Tasks;
-
-namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
+
     public abstract class ActivationStepBase : IActivationStep
     {
         public virtual DependencyParameter Parameter { get; set; }
 
-        public abstract IExecuteResult Execute();
-
-        public virtual async Task<IExecuteResult> ExecuteAsync()
-        {
-            return await Task.Factory.StartNew(() => Execute());
-        }
+        public abstract IObservable<IExecuteResult> Execute();
 
         public virtual object GetId()
         {

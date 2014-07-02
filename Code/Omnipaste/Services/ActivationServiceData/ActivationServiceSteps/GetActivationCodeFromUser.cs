@@ -21,24 +21,25 @@
             _eventAggregator.Subscribe(this);
         }
 
-        public override IExecuteResult Execute()
+        public override IObservable<IExecuteResult> Execute()
         {
-            _autoResetEvent = new AutoResetEvent(false);
-            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
-            _autoResetEvent.WaitOne();
-
-            var executeResult = new ExecuteResult();
-            if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
-            {
-                executeResult.State = SimpleStepStateEnum.Successful;
-                executeResult.Data = _lastRequestResult.ActivationCode;
-            }
-            else
-            {
-                executeResult.State = SimpleStepStateEnum.Failed;
-            }
-
-            return executeResult;
+            throw new NotImplementedException();
+//            _autoResetEvent = new AutoResetEvent(false);
+//            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
+//            _autoResetEvent.WaitOne();
+//
+//            var executeResult = new ExecuteResult();
+//            if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
+//            {
+//                executeResult.State = SimpleStepStateEnum.Successful;
+//                executeResult.Data = _lastRequestResult.ActivationCode;
+//            }
+//            else
+//            {
+//                executeResult.State = SimpleStepStateEnum.Failed;
+//            }
+//
+//            return executeResult;
         }
 
         public void Handle(TokenRequestResultMessage tokenRequestResultMessage)

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using System.Collections.Generic;
+    using System.Reactive.Linq;
     using System.Reflection.Emit;
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -68,7 +69,7 @@
             CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
             while (CurrentStepIsIntermediateStep())
             {
-                var activationStep = await CurrentStep.ExecuteAsync();
+                var activationStep = await CurrentStep.Execute();
 
                 MoveToNextStep(activationStep);
             }

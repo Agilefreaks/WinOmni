@@ -1,10 +1,15 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    public class VoidStep : ActivationStepBase
+    using System;
+    using System.Reactive.Linq;
+
+    public abstract class VoidStep : ActivationStepBase
     {
-        public override IExecuteResult Execute()
+        public abstract object State { get; }
+
+        public override IObservable<IExecuteResult> Execute()
         {
-            return new ExecuteResult { State = SingleStateEnum.Successful };
+            return (new IExecuteResult[] { new ExecuteResult { State = State } }).ToObservable();
         }
     }
 }

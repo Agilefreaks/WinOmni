@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using System.Collections.Specialized;
     using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
@@ -28,21 +29,22 @@
 
         #region Public Methods and Operators
 
-        public override IExecuteResult Execute()
+        public override IObservable<IExecuteResult> Execute()
         {
-            var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
-            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
-            {
-                var token = GetActivationTokenFromDeploymentParameters();
-                if (!string.IsNullOrEmpty(token))
-                {
-                    result.State = SimpleStepStateEnum.Successful;
-                    result.Data = token;
-                    _configurationProvider["deviceIdentifier"] = token;
-                }
-            }
-
-            return result;
+            throw new NotImplementedException();
+//            var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
+//            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
+//            {
+//                var token = GetActivationTokenFromDeploymentParameters();
+//                if (!string.IsNullOrEmpty(token))
+//                {
+//                    result.State = SimpleStepStateEnum.Successful;
+//                    result.Data = token;
+//                    _configurationProvider["deviceIdentifier"] = token;
+//                }
+//            }
+//
+//            return result;
         }
 
         #endregion

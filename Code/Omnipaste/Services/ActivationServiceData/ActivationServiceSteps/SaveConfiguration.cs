@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using OmniApi.Models;
     using OmniCommon.Interfaces;
 
@@ -12,12 +13,13 @@
             _configurationService = configurationService;
         }
 
-        public override IExecuteResult Execute()
+        public override IObservable<IExecuteResult> Execute()
         {
-            var token = (Token)Parameter.Value;
-            _configurationService.SaveAuthSettings(token.AccessToken, token.RrefreshToken);
-
-            return new ExecuteResult { State = SingleStateEnum.Successful, Data = token.AccessToken };
+            throw new NotImplementedException();
+//            var token = (Token)Parameter.Value;
+//            _configurationService.SaveAuthSettings(token.AccessToken, token.RrefreshToken);
+//
+//            return new ExecuteResult { State = SingleStateEnum.Successful, Data = token.AccessToken };
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using Ninject;
@@ -56,29 +57,22 @@
 
         #region Public Methods and Operators
 
-        public override IExecuteResult Execute()
+        public override IObservable<IExecuteResult> Execute()
         {
-            Task<IExecuteResult> executeAsync = ExecuteAsync();
-            executeAsync.Wait();
-
-            return executeAsync.Result;
-        }
-
-        public override async Task<IExecuteResult> ExecuteAsync()
-        {
-            var executeResult = new ExecuteResult();
-
-            if (string.IsNullOrEmpty(PayLoad.AuthorizationCode))
-            {
-                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
-            }
-            else
-            {
-                var token = await OAuth2.Create(PayLoad.AuthorizationCode);
-                SetResultPropertiesBasedOnActivationData(executeResult, token);
-            }
-
-            return executeResult;
+            throw new NotImplementedException();
+//            var executeResult = new ExecuteResult();
+//
+//            if (string.IsNullOrEmpty(PayLoad.AuthorizationCode))
+//            {
+//                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
+//            }
+//            else
+//            {
+//                var token = await OAuth2.Create(PayLoad.AuthorizationCode);
+//                SetResultPropertiesBasedOnActivationData(executeResult, token);
+//            }
+//
+//            return executeResult;
         }
 
         #endregion

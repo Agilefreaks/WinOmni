@@ -120,6 +120,8 @@
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollectionTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />

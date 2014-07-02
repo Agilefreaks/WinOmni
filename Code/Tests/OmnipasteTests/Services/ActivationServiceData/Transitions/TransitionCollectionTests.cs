@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.Transitions
 {
+    using System;
     using System.Threading.Tasks;
     using FluentAssertions;
     using NUnit.Framework;
@@ -14,7 +15,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IExecuteResult Execute()
+            public IObservable<IExecuteResult> Execute()
             {
                 throw new System.NotImplementedException();
             }
@@ -34,7 +35,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IExecuteResult Execute()
+            public IObservable<IExecuteResult> Execute()
             {
                 throw new System.NotImplementedException();
             }
@@ -54,7 +55,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IExecuteResult Execute()
+            public IObservable<IExecuteResult> Execute()
             {
                 throw new System.NotImplementedException();
             }
