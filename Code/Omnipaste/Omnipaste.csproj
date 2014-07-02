@@ -301,8 +301,6 @@
     <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
-    <Compile Include="Services\INotificationService.cs" />
-    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="Shell\ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
