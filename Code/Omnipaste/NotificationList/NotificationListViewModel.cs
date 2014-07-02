@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
-    using Events.Models;
+    using Omnipaste.Framework;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
@@ -46,13 +47,17 @@
         {
             base.OnActivate();
 
-            _notificationsSubscription = _eventsHandler.Subscribe(
-                n => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(n))),
-                e => { });
+            _notificationsSubscription = _eventsHandler
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(
+                    notification => Notifications.Add(NotificationViewModelBuilder.Build(notification)),
+                    exception => { });
 
-            _clippingsSubscription = _omniClipboardHandler.Subscribe(
-                c => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(c))),
-                e => { });
+            _clippingsSubscription = _omniClipboardHandler
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(
+                    clipping => Notifications.Add(NotificationViewModelBuilder.Build(clipping)),
+                    exception => { });
         }
 
         protected override void OnDeactivate(bool close)
