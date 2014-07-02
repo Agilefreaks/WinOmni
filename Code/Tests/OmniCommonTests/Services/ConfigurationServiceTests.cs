@@ -18,8 +18,8 @@
 
             service.SaveAuthSettings("token", "refresh token");
             
-            mockConfigurationProvider.Verify(cp => cp.SetValue("accessToken", "token"));
-            mockConfigurationProvider.Verify(cp => cp.SetValue("refreshToken", "refresh token"));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
+            mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
         }
 
         [Test]
