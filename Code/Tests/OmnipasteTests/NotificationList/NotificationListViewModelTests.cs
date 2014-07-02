@@ -19,6 +19,7 @@
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.EventNotification;
+    using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
 
     [TestFixture]
@@ -59,7 +60,7 @@
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().GetType().Should().Be(typeof(EventNotificationViewModel));
+            _subject.Notifications.First().GetType().Should().Be(typeof(IncomingCallNotificationViewModel));
         }
 
         [SetUp]

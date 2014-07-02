@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Notification.Models
 {
-    public class NotificationBase
+    public abstract class NotificationBase
     {
         public string Title { get; set; }
 

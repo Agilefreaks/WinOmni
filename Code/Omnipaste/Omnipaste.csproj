@@ -237,13 +237,12 @@
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
-    <Compile Include="Notification\EventNotification\EventNotificationViewModel.cs" />
+    <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\Models\ClippingNotification.cs" />
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
     <Compile Include="Notification\Models\NotificationBase.cs" />
-    <Compile Include="Notification\NotificationViewModelTypeEnum.cs" />
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -340,7 +339,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\EventNotification\EventNotificationView.xaml">
+    <Page Include="Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -515,9 +514,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Notification\Notification\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>

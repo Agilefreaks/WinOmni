@@ -6,6 +6,7 @@
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.EventNotification;
     using Omnipaste.Notification.HyperlinkNotification;
+    using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.Models;
 
     public class NotificationViewModelBuilder
@@ -21,7 +22,7 @@
             }
             else
             {
-                var model = new ClippingNotification() { Title = "New clipping", Message = clipping.Content };
+                var model = new ClippingNotification { Title = "New clipping", Message = clipping.Content };
                 viewModel = new ClippingNotificationViewModel { Model = model };
             }
 
@@ -34,7 +35,7 @@
                         {
                             Title = string.Concat("Incoming call from ", @event.phone_number)
                         };
-            return new EventNotificationViewModel { Model = model };
+            return new IncomingCallNotificationViewModel { Model = model };
         }
     }
 }
