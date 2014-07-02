@@ -3,34 +3,38 @@
     using Events.Models;
     using Omnipaste.Notification;
     using Clipboard.Models;
+    using Omnipaste.Notification.ClippingNotification;
+    using Omnipaste.Notification.EventNotification;
+    using Omnipaste.Notification.HyperlinkNotification;
+    using Omnipaste.Notification.Models;
 
     public class NotificationViewModelBuilder
     {
-        public static NotificationViewModel Build(Clipping clipping)
+        public static INotificationViewModel Build(Clipping clipping)
         {
-            var notificationViewModel = new NotificationViewModel
-                                        {
-                                            Title = "New clipping",
-                                            Message = clipping.Content,
-                                            Type =
-                                                clipping.Type == Clipping.ClippingTypeEnum.WebSite
-                                                    ? NotificationViewModelTypeEnum.Hyperlink
-                                                    : NotificationViewModelTypeEnum.Clipping
-                                        };
+            INotificationViewModel viewModel;
 
-            return notificationViewModel;
+            if (clipping.Type == Clipping.ClippingTypeEnum.WebSite)
+            {
+                var model = new HyperlinkNotification { Title = "Incoming Link", Message = clipping.Content };
+                viewModel = new HyperlinkNotificationViewModel { Model = model };
+            }
+            else
+            {
+                var model = new ClippingNotification() { Title = "New clipping", Message = clipping.Content };
+                viewModel = new ClippingNotificationViewModel { Model = model };
+            }
+
+            return viewModel;
         }
 
-        public static NotificationViewModel Build(Event @event)
+        public static INotificationViewModel Build(Event @event)
         {
-
-            var notificationViewModel = new NotificationViewModel
-                                        {
-                                            Title = string.Concat("Incoming call from ", @event.phone_number),
-                                            Type = NotificationViewModelTypeEnum.IncomingCall
-                                        };
-
-            return notificationViewModel;
+            var model = new IncomingCallNotification
+                        {
+                            Title = string.Concat("Incoming call from ", @event.phone_number)
+                        };
+            return new EventNotificationViewModel { Model = model };
         }
     }
 }

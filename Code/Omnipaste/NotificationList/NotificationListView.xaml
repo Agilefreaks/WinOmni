@@ -16,8 +16,69 @@
         Top="40" 
         HorizontalContentAlignment="Right">
     <Window.Resources>
+        <Storyboard x:Key="FadeInStoryBoard" TargetName="Container">
+            <DoubleAnimation From="0.01" To="1" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5"/>
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5" BeginTime="0:0:6"/>
+        </Storyboard>
+        <Storyboard x:Key="FadeOutStoryBoard" TargetName="Container">
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5" />
+        </Storyboard>
+
         <DataTemplate x:Key="MessageTemplate">
-            <ContentControl cal:View.Model="{Binding}"></ContentControl>
+            <Grid x:Name="Container" HorizontalAlignment="Right">
+                <Border Name="Border" Background="{StaticResource NotificationBackgroundBrush}" BorderThickness="0" Margin="10">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
+                    </Border.Effect>
+                    <DockPanel Height="100" Width="280" LastChildFill="True">
+                        <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <DockPanel LastChildFill="True">
+                                <Button ToolTip="Dismiss" DockPanel.Dock="Right" Background="Transparent">
+                                    <Rectangle Width="12" Height="12"
+                                       Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_close}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Button.Triggers>
+                                        <EventTrigger RoutedEvent="Button.Click">
+                                            <BeginStoryboard Storyboard="{StaticResource FadeOutStoryBoard}" />
+                                        </EventTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <TextBlock Text="{Binding Path=Title}"
+                                   Margin="2,4,4,2"
+                                   Style="{StaticResource TitleTextBlock}" />
+                            </DockPanel>
+                            <TextBlock Grid.Row="1" Margin="2,2,4,4" 
+                                       Text="{Binding Path=Message}"
+                                       Style="{StaticResource TextBlock}" />
+                        </Grid>
+                    </DockPanel>
+                </Border>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Window.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource FadeInStoryBoard}"/>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <Trigger Property="Opacity" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+            </Grid>
         </DataTemplate>
     </Window.Resources>
     <Grid>

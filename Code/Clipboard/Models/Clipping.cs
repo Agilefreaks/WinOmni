@@ -52,7 +52,7 @@
         {
             get
             {
-                return Type == ClippingTypeEnum.WebSite || Uri.IsWellFormedUriString(Content, UriKind.RelativeOrAbsolute);
+                return Type == ClippingTypeEnum.WebSite || Uri.IsWellFormedUriString(Content, UriKind.Absolute);
             }
         }
 

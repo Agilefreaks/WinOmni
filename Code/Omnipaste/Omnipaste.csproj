@@ -236,16 +236,14 @@
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
+    <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
+    <Compile Include="Notification\EventNotification\EventNotificationViewModel.cs" />
+    <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notification\Models\ClippingNotification.cs" />
+    <Compile Include="Notification\Models\HyperlinkNotification.cs" />
+    <Compile Include="Notification\Models\IncomingCallNotification.cs" />
+    <Compile Include="Notification\Models\NotificationBase.cs" />
     <Compile Include="Notification\NotificationViewModelTypeEnum.cs" />
-    <Compile Include="Notification\Notification\Clipping.xaml.cs">
-      <DependentUpon>Clipping.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Notification\Notification\Hyperlink.xaml.cs">
-      <DependentUpon>Hyperlink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Notification\Notification\IncomingCall.xaml.cs">
-      <DependentUpon>IncomingCall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -272,7 +270,7 @@
     <Compile Include="NotificationList\INotificationListViewModel.cs" />
     <Compile Include="NotificationList\NotificationListViewModel.cs" />
     <Compile Include="Notification\INotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationViewModel.cs" />
+    <Compile Include="Notification\NotificationViewModelBase.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
@@ -334,15 +332,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\Notification\Clipping.xaml">
+    <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\Notification\Hyperlink.xaml">
+    <Page Include="Notification\HyperlinkNotification\HyperlinkNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\Notification\IncomingCall.xaml">
+    <Page Include="Notification\EventNotification\EventNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -371,10 +369,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NotificationList\NotificationListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Notification\NotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -521,7 +515,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Notification\Notification\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>

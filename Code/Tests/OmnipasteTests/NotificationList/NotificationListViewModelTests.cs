@@ -17,6 +17,8 @@
     using NUnit.Framework;
     using Omnipaste.Framework;
     using Omnipaste.Notification;
+    using Omnipaste.Notification.ClippingNotification;
+    using Omnipaste.Notification.EventNotification;
     using Omnipaste.NotificationList;
 
     [TestFixture]
@@ -57,7 +59,7 @@
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().Type.Should().Be(NotificationViewModelTypeEnum.IncomingCall);
+            _subject.Notifications.First().GetType().Should().Be(typeof(EventNotificationViewModel));
         }
 
         [SetUp]
@@ -98,7 +100,7 @@
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().Type.Should().Be(NotificationViewModelTypeEnum.Clipping);
+            _subject.Notifications.First().GetType().Should().Be(typeof(ClippingNotificationViewModel));
         }
 
         #endregion
