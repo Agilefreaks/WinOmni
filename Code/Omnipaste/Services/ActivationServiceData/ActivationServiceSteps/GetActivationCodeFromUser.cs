@@ -5,7 +5,7 @@
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
 
-    public class GetTokenFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
+    public class GetActivationCodeFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {
         private readonly IEventAggregator _eventAggregator;
 
@@ -15,7 +15,7 @@
 
         public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
 
-        public GetTokenFromUser(IEventAggregator eventAggregator)
+        public GetActivationCodeFromUser(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);

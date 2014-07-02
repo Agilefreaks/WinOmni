@@ -22,7 +22,7 @@
         public void Setup()
         {
             _mockingKernel = new MoqMockingKernel();
-            
+
             _mockStepFactory = new Mock<IStepFactory>();
             _mockingKernel.Bind<IStepFactory>().ToConstant(_mockStepFactory.Object);
 
@@ -53,5 +53,50 @@
                 .Be<GetActivationCodeFromDeploymentUri>();
         }
 
+        [Test]
+        public void GetActivationCodeFromDeploymentUri_Success_ShouldBeGetRemoteConfiguration()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromDeploymentUri>(
+                SimpleStepStateEnum.Successful).Should().Be<GetRemoteConfiguration>();
+        }
+
+        [Test]
+        public void GetActivationCodeFromDeploymentUri_Failed_ShouldBeGetActivationCodeFromUser()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromDeploymentUri>(
+                SimpleStepStateEnum.Failed).Should().Be<GetActivationCodeFromUser>();
+        }
+
+        [Test]
+        public void GetActivationCodeFromUser_Success_ShouldBeGetRemoteConfiguration()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromUser>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetRemoteConfiguration>();
+        }
+
+        [Test]
+        public void GetActivationCodeFromUser_Failed_ShouldBeGetActivationCodeFromUser()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromUser>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<GetActivationCodeFromUser>();
+        }
+
+        [Test]
+        public void GetRemoteConfiguration_Success_ShouldBeFinished()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
+        }
+
+        [Test]
+        public void GetRemoteConfiguration_Failed_ShouldBeFailed()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
     }
 }
