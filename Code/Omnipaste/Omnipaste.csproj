@@ -293,12 +293,8 @@
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
-    <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Framework\IApplicationWrapper.cs" />
-    <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -18,7 +17,6 @@
     using Omnipaste.Framework;
     using Omnipaste.Framework.Attributes;
     using Omnipaste.Services;
-    using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Settings;
     using OmniSync;
@@ -63,7 +61,6 @@
                 new OmnipasteModule());
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
-            _kernel.Bind<IConnectivityHelper>().To<ConnectivityHelper>().InSingletonScope();
             _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
 
             _kernel.Bind(
@@ -122,9 +119,9 @@
         {
             ViewLocator.LocateForModelType = (modelType, displayLocation, context) =>
             {
-                IEnumerable<UseViewAttribute> useViewAttributes =
+                var useViewAttributes =
                     modelType.GetCustomAttributes(typeof(UseViewAttribute), true)
-                        .Cast<UseViewAttribute>();
+                        .Cast<UseViewAttribute>().ToArray();
 
                 string viewTypeName;
 
