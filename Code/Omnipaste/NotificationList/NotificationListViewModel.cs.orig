@@ -3,12 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+<<<<<<< HEAD
     using System.Reactive.Linq;
-    using System.Windows;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Framework;
+=======
+    using System.Windows;
+    using Caliburn.Micro;
+    using Clipboard.Handlers;
+    using Events.Handlers;
+>>>>>>> 5b7ea90... [wo-76] updates the way activation service runs
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
@@ -65,6 +71,7 @@
         {
             base.OnActivate();
 
+<<<<<<< HEAD
             _notificationsSubscription = _eventsHandler
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(
@@ -76,6 +83,17 @@
                 .Subscribe(
                     clipping => Notifications.Add(NotificationViewModelBuilder.Build(clipping)),
                     exception => { });
+=======
+            _notificationsSubscription =
+                _eventsHandler.Subscribe(
+                    n => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(n))),
+                    e => { });
+
+            _clippingsSubscription =
+                _omniClipboardHandler.Subscribe(
+                    c => Execute.OnUIThread(() => Notifications.Add(NotificationViewModelBuilder.Build(c))),
+                    e => { });
+>>>>>>> 5b7ea90... [wo-76] updates the way activation service runs
         }
 
         protected override void OnDeactivate(bool close)

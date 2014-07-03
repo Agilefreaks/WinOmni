@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.ViewModels
+﻿namespace OmnipasteTests.Loading
 {
     using Caliburn.Micro;
     using FluentAssertions;
@@ -7,7 +7,8 @@
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
     using Omnipaste.Loading;
-    using Omnipaste.UserToken;
+    using Omnipaste.Loading.ActivationFailed;
+    using Omnipaste.Loading.UserToken;
 
     [TestFixture]
     public class LoadingViewModelTests
@@ -18,12 +19,19 @@
 
         private Mock<IUserTokenViewModel> _mockUserTokenViewModel;
 
+        private Mock<IActivationFailedViewModel> _mockActivationFailedViewModel;
+
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
             _mockUserTokenViewModel = new Mock<IUserTokenViewModel>();
-            _subject = new LoadingViewModel(_eventAggregator) { UserTokenViewModel = _mockUserTokenViewModel.Object };
+            _mockActivationFailedViewModel = new Mock<IActivationFailedViewModel>();
+            _subject = new LoadingViewModel(_eventAggregator)
+                           {
+                               UserTokenViewModel = _mockUserTokenViewModel.Object,
+                               ActivationFailedViewModel = _mockActivationFailedViewModel.Object
+                           };
             var parent = new DialogViewModel();
             parent.ActivateItem(_subject);
         }
@@ -35,11 +43,11 @@
         }
 
         [Test]
-        public void Handle_GetTokenFromUser_SetsStateToAwaitingUserTokenInput()
+        public void Handle_GetTokenFromUser_SetsStateToOther()
         {
             _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage());
 
-            _subject.State.Should().Be(LoadingViewModelStateEnum.AwaitingUserTokenInput);
+            _subject.State.Should().Be(LoadingViewModelStateEnum.Other);
         }
 
         [Test]
@@ -51,12 +59,21 @@
         }
 
         [Test]
+        public void Handle_ActivationFailed_SetsStateToOtherAndActiveItem()
+        {
+            _eventAggregator.PublishOnCurrentThread(new ActivationFailedMessage());
+
+            _subject.State.Should().Be(LoadingViewModelStateEnum.Other);
+            _subject.ActiveItem.Should().Be(_mockActivationFailedViewModel.Object);
+        }
+
+        [Test]
         public void StateChange_Always_TriggersNotifyOfPropertyChanged()
         {
             string changedProperty = string.Empty;
             _subject.PropertyChanged += (sender, args) => changedProperty = args.PropertyName;
 
-            _subject.State = LoadingViewModelStateEnum.AwaitingUserTokenInput;
+            _subject.State = LoadingViewModelStateEnum.Other;
 
             changedProperty.Should().Be("State");
         }

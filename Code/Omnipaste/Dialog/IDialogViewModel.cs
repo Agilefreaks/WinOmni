@@ -3,7 +3,7 @@
     using System;
     using Caliburn.Micro;
 
-    public interface IDialogViewModel : IConductor
+    public interface IDialogViewModel : IConductActiveItem
     {
         #region Public Events
 

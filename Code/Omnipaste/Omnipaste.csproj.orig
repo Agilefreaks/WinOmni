@@ -238,9 +238,8 @@
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
-    <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
-    <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
     <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
+<<<<<<< HEAD
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
@@ -248,7 +247,19 @@
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
     <Compile Include="Notification\Models\NotificationBase.cs" />
+=======
+    <Compile Include="Notification\NotificationViewModelTypeEnum.cs" />
+    <Compile Include="Notification\Notification\Clipping.xaml.cs">
+      <DependentUpon>Clipping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification\Notification\Hyperlink.xaml.cs">
+      <DependentUpon>Hyperlink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification\Notification\IncomingCall.xaml.cs">
+      <DependentUpon>IncomingCall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
+>>>>>>> 8ec522f... [wo-76] includes OmniSevice in the Activation process
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -312,8 +323,11 @@
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Framework\FlyoutBaseViewModel.cs" />
     <Compile Include="Framework\IFlyoutViewModel.cs" />
-    <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
-    <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
+    <Compile Include="UserToken\IUserTokenViewModel.cs" />
+    <Compile Include="UserToken\UserTokenView.xaml.cs">
+      <DependentUpon>UserTokenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserToken\UserTokenViewModel.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -325,10 +339,6 @@
     <Page Include="Clipping\ClippingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
@@ -358,7 +368,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Loading\Loading\Other.xaml">
+    <Page Include="Loading\Loading\AwaitingUserTokenInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -398,7 +408,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Loading\UserToken\UserTokenView.xaml">
+    <Page Include="UserToken\UserTokenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

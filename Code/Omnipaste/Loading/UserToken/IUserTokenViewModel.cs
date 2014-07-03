@@ -1,7 +1,7 @@
-﻿using Caliburn.Micro;
-
-namespace Omnipaste.UserToken
+﻿namespace Omnipaste.Loading.UserToken
 {
+    using Caliburn.Micro;
+
     public interface IUserTokenViewModel : IScreen
     {
         string ActivationCode { get; set; }
@@ -9,5 +9,7 @@ namespace Omnipaste.UserToken
         string Message { get; set; }
 
         void Authenticate();
+
+        void Exit();
     }
 }

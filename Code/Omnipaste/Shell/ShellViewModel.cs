@@ -3,16 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
-    using Clipboard.Models;
     using Ninject;
-    using Omni;
+    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
@@ -31,9 +28,9 @@
     {
         #region Fields
 
-        private Window _view;
-
         private IMasterClippingListViewModel _clippingListViewModel;
+
+        private Window _view;
 
         #endregion
 
@@ -42,6 +39,7 @@
         public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
             eventAggregator.Subscribe(this);
+            EventAggregator = eventAggregator;
             sessionManager.SessionDestroyed += (sender, args) => Configure();
 
             DisplayName = Resources.AplicationName;
@@ -53,30 +51,6 @@
 
         [Inject]
         public IActivationService ActivationService { get; set; }
-
-        [Inject]
-        public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
-
-        [Inject]
-        public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
-
-        [Inject]
-        public IConnectionViewModel ConnectionViewModel { get; set; }
-
-        [Inject]
-        public IContextMenuViewModel ContextMenuViewModel { get; set; }
-
-        [Inject]
-        public IDialogService DialogService { get; set; }
-
-        [Inject]
-        public IDialogViewModel DialogViewModel { get; set; }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
-
-        [Inject]
-        public ILoadingViewModel LoadingViewModel { get; set; }
 
         public IMasterClippingListViewModel ClippingListViewModel
         {
@@ -92,11 +66,42 @@
         }
 
         [Inject]
+        public IConnectionViewModel ConnectionViewModel { get; set; }
+
+        [Inject]
+        public IContextMenuViewModel ContextMenuViewModel { get; set; }
+
+        [Inject]
+        public IDialogService DialogService { get; set; }
+
+        [Inject]
+        public IDialogViewModel DialogViewModel { get; set; }
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        [Inject]
+        public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
+        [Inject]
+        public ILoadingViewModel LoadingViewModel { get; set; }
+
+        [Inject]
+        public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
+
+        [Inject]
         public IWindowManager WindowManager { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
+
+        public void Close()
+        {
+            _view.Hide();
+        }
 
         public void Closing(object sender, CancelEventArgs e)
         {
@@ -104,14 +109,14 @@
             Close();
         }
 
-        public void Close()
-        {
-            _view.Hide();
-        }
-
         public void Handle(ShowShellMessage message)
         {
             Show();
+        }
+
+        public void Handle(RetryMessage message)
+        {
+            Configure();
         }
 
         public void Show()
@@ -136,24 +141,30 @@
 
         private void Configure()
         {
-            DialogViewModel.ActivateItem(LoadingViewModel);
+            DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
             ActivationService.Run()
                 .SubscribeOn(Scheduler.Default)
+                .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(
                     finalStep =>
-                    {
-                        ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
-                        // TODO Dispacher
-                        Execute.OnUIThread(
-                            () =>
+                        {
+                            if (finalStep is Failed)
                             {
+                                EventAggregator.PublishOnUIThread(new ActivationFailedMessage());
+                            }
+                            else
+                            {
+                                ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+
                                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
-                                NotificationListViewModel.ShowWindow(WindowManager, Kernel.Get<INotificationListViewModel>());
-                            });
-                    },
-                exception => Debugger.Break()
-                );
+                                NotificationListViewModel.ShowWindow(
+                                    WindowManager,
+                                    Kernel.Get<INotificationListViewModel>());
+                            }
+                        },
+                    exception =>
+                    EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = exception }));
         }
 
         private IntPtr GetHandle()
@@ -161,10 +172,10 @@
             var handle = new IntPtr();
             Execute.OnUIThread(
                 () =>
-                {
-                    var windowInteropHelper = new WindowInteropHelper(_view);
-                    handle = windowInteropHelper.Handle;
-                });
+                    {
+                        var windowInteropHelper = new WindowInteropHelper(_view);
+                        handle = windowInteropHelper.Handle;
+                    });
 
             return handle;
         }

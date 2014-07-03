@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using FluentAssertions;
@@ -8,6 +9,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
+    using OmniApi.Models;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
 
@@ -66,6 +68,7 @@
         [Test]
         public void ToggleSync_WhenIsSyncingIsFalse_PublishesStopOmniServiceMessage()
         {
+            _mockOmniService.Setup(m => m.Start()).Returns(Observable.Empty<Device>());
             _subject.IsStopped = false;
 
             _subject.ToggleSync();

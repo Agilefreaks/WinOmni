@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.UserToken
+﻿namespace Omnipaste.Loading.UserToken
 {
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;

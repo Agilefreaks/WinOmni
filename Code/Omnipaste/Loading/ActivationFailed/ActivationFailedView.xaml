@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Omnipaste.Loading.ActivationFailed.ActivationFailedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             IsTabStop="False" behaviours:FocusBehavior.FocusFirst="True" KeyboardNavigation.TabNavigation="Local" >
+  <StackPanel>
+    <TextBlock TextWrapping="WrapWithOverflow" Margin="10">
+      Sorry master we failed, please don't kill us!
+    </TextBlock>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Button TabIndex="0" Grid.Column="1" x:Name="Retry" Content="Retry" IsDefault="True" Style="{StaticResource PrimaryDialogButton}" />
+      <Button TabIndex="1" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>
