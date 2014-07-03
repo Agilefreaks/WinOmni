@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reactive.Linq;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Windows.Forms;
@@ -13,11 +14,25 @@
     {
         #region Fields
 
+        private readonly IObservable<ClipboardEventArgs> _clippingEventsStream;
+
         private IntPtr _clipboardViewerNext;
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
             Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public WindowsClipboardWrapper()
+        {
+            _clippingEventsStream =
+                Observable.FromEventPattern<ClipboardEventArgs>(x => DataReceived += x, x => DataReceived -= x)
+                    .Throttle(TimeSpan.FromMilliseconds(50))
+                    .Select(x => x.EventArgs);
+        }
 
         #endregion
 
@@ -72,6 +87,19 @@
             }
         }
 
+        public IDisposable Subscribe(IObserver<ClipboardEventArgs> observer)
+        {
+            StartWatchingClipboard();
+
+            return _clippingEventsStream.Subscribe(observer);
+        }
+
+        public void Dispose()
+        {
+            StopWatchingClipboard();
+        }
+
+
         #endregion
 
         #region Methods
@@ -99,6 +127,8 @@
             string text = null;
 
             var dataObject = GetClipboardData();
+            string[] formats = dataObject.GetFormats();
+
             if (dataObject != null)
             {
                 if (dataObject.GetDataPresent(DataFormats.Text))

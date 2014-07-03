@@ -52,6 +52,8 @@
 
     </UserControl.Resources>
     <Grid>
-        <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" VirtualizingStackPanel.IsVirtualizing="True"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" />
+        </ScrollViewer>
     </Grid>
 </UserControl>

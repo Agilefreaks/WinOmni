@@ -5,7 +5,7 @@ namespace Clipboard.Handlers
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
 
-    public class LocalClipboardsHandler : ILocalClipboardHandler
+    public class LocalClipboardHandler : ILocalClipboardHandler
     {
         #region Fields
 
@@ -13,13 +13,13 @@ namespace Clipboard.Handlers
 
         private string _lastClippingContent = string.Empty;
 
-        private bool _subscribedToWindowsClipboard;
+        private IDisposable _windowsClipboardSubscription;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public LocalClipboardsHandler(IWindowsClipboardWrapper windowsClipboardWrapper)
+        public LocalClipboardHandler(IWindowsClipboardWrapper windowsClipboardWrapper)
         {
             _subject = new Subject<Clipping>();
             WindowsClipboardWrapper = windowsClipboardWrapper;
@@ -37,13 +37,13 @@ namespace Clipboard.Handlers
 
         public void Dispose()
         {
-            WindowsClipboardWrapper.StopWatchingClipboard();
-            
-            if (_subscribedToWindowsClipboard)
+            if (_windowsClipboardSubscription != null)
             {
-                WindowsClipboardWrapper.DataReceived -= WindowsClipboardWrapperDataReceived;
-                _subscribedToWindowsClipboard = false;
+                _windowsClipboardSubscription.Dispose();
+                _windowsClipboardSubscription = null;
             }
+
+            WindowsClipboardWrapper.Dispose();
         }
 
         public void PostClipping(Clipping clipping)
@@ -54,12 +54,9 @@ namespace Clipboard.Handlers
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
         {
-            WindowsClipboardWrapper.StartWatchingClipboard();
-            
-            if (!_subscribedToWindowsClipboard)
+            if (_windowsClipboardSubscription == null)
             {
-                WindowsClipboardWrapper.DataReceived += WindowsClipboardWrapperDataReceived;
-                _subscribedToWindowsClipboard = true;
+                _windowsClipboardSubscription = WindowsClipboardWrapper.Subscribe(this);
             }
 
             return _subject.Subscribe(observer);
@@ -69,17 +66,29 @@ namespace Clipboard.Handlers
 
         #region Methods
 
-        private void WindowsClipboardWrapperDataReceived(object sender, ClipboardEventArgs args)
+        private void WindowsClipboardWrapperDataReceived(ClipboardEventArgs args)
         {
             if (_lastClippingContent.Equals(args.Data))
             {
                 return;
             }
 
-
             _subject.OnNext(new Clipping(args.Data) { Source = Clipping.ClippingSourceEnum.Local} );
         }
 
         #endregion
+
+        public void OnNext(ClipboardEventArgs value)
+        {
+            WindowsClipboardWrapperDataReceived(value);
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnCompleted()
+        {
+        }
     }
 }
