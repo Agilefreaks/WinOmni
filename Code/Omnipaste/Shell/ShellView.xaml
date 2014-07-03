@@ -142,16 +142,9 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <Grid.RowDefinitions>
-            <!--Menu-->
-            <RowDefinition Height="Auto"/>
-            <!--Content-->
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
         <ContentControl x:Name="ContextMenuViewModel" />
 
-        <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
+        <controls:MetroAnimatedSingleRowTabControl>
             <TabItem Header="Clippings">
                 <ContentControl cal:View.Model="{Binding Path=ClippingListViewModel}" />
             </TabItem>
