@@ -124,6 +124,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniServiceTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStepTests.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollectionTests.cs" />

@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
+    using System;
     using System.Deployment.Application;
     using System.Reflection;
     using System.Windows;
@@ -93,7 +94,7 @@
             }
         }
 
-        public async void ToggleSync()
+        public void ToggleSync()
         {
             if (IsStopped)
             {
@@ -101,7 +102,7 @@
             }
             else
             {
-                await OmniService.Start();
+                OmniService.Start().Subscribe();
             }
         }
 

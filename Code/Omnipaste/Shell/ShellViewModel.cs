@@ -22,6 +22,7 @@
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.SettingsHeader;
@@ -91,9 +92,6 @@
         }
 
         [Inject]
-        public IOmniService OmniService { get; set; }
-
-        [Inject]
         public IWindowManager WindowManager { get; set; }
 
         #endregion
@@ -139,14 +137,14 @@
         private void Configure()
         {
             DialogViewModel.ActivateItem(LoadingViewModel);
+
             ActivationService.Run()
                 .SubscribeOn(Scheduler.Default)
                 .Subscribe(
                     finalStep =>
                     {
-                        OmniService.Start().Wait();
-
                         ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+                        // TODO Dispacher
                         Execute.OnUIThread(
                             () =>
                             {

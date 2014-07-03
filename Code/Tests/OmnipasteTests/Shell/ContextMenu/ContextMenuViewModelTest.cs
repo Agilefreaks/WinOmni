@@ -70,9 +70,7 @@
 
             _subject.ToggleSync();
 
-            _mockOmniService.Verify(
-                m => m.Start(null),
-                Times.Once);
+            _mockOmniService.Verify(m => m.Start(), Times.Once);
         }
 
         [Test]

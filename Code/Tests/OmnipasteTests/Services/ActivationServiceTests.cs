@@ -38,11 +38,11 @@
         }
 
         [Test]
-        public void LoadLocalConfiguration_Success_ShouldBeFinished()
+        public void LoadLocalConfiguration_Success_ShouldBeStartOmniService()
         {
             _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<Finished>();
+                .Be<StartOmniService>();
         }
 
         [Test]
@@ -108,11 +108,28 @@
         }
 
         [Test]
-        public void SaveConfiguration_Success_ShouldBeFinish()
+        public void SaveConfiguration_Success_ShouldBeStartOmniService()
         {
             _subject.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Successful)
                 .Should()
+                .Be<StartOmniService>();
+        }
+
+        [Test]
+        public void StartOmniService_Failed_ShouldBeFailed()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();            
+        }
+
+        [Test]
+        public void StartOmniService_Success_ShouldBeFinish()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
+                .Should()
                 .Be<Finished>();
         }
+
     }
 }

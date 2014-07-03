@@ -119,28 +119,23 @@
 
         #region Public Methods and Operators
 
-        public async Task Start(string communicationChannel = null)
+        public IObservable<Device> Start()
         {
             if (Status == ServiceStatusEnum.Started)
             {
-                return;
+                Observable.Empty<Device>();
             }
 
-            await OpenWebsocketConnection();
-
-            if (WebsocketConnection.RegistrationId != null)
-            {
-                var deviceIdentifier = await RegisterDevice();
-
-                var device = await ActivateDevice(WebsocketConnection.RegistrationId, deviceIdentifier);
-
-                if (device != null)
-                {
-                    Status = ServiceStatusEnum.Started;
-
-                    StartHandlers();
-                }
-            }
+            return OpenWebsocketConnection()
+                .SelectMany(registrationId => RegisterDevice()
+                    .SelectMany(d => ActivateDevice(registrationId, d.Identifier)
+                        .Select(
+                            device =>
+                                {
+                                    Status = ServiceStatusEnum.Started;
+                                    StartHandlers();
+                                    return device;
+                                })));
         }
 
         public void Stop(bool unsubscribeHandlers = true)
@@ -170,10 +165,10 @@
 
         #region Methods
 
-        private async Task OpenWebsocketConnection()
+        private IObservable<string> OpenWebsocketConnection()
         {
             WebsocketConnection = WebsocketConnectionFactory.Create();
-            await WebsocketConnection.Connect();
+            return WebsocketConnection.Connect();
         }
 
         private void OnWebsocketConnectionLost()
@@ -197,19 +192,17 @@
             }
         }
 
-        private async Task<string> RegisterDevice()
+        private IObservable<Device> RegisterDevice()
         {
             var deviceIdentifier = _configurationService.DeviceIdentifier;
             var machineName = _configurationService.MachineName;
 
-            await Devices.Create(deviceIdentifier, machineName);
-            return deviceIdentifier;
+            return Devices.Create(deviceIdentifier, machineName);
         }
 
-        private async Task<Device> ActivateDevice(string registrationId, string deviceIdentifier)
+        private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
-            var activationResult = await Devices.Activate(registrationId, deviceIdentifier);
-            return activationResult;
+            return Devices.Activate(registrationId, deviceIdentifier);
         }
 
         private void StartHandlers()

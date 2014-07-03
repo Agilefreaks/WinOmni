@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
     using System;
-    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Omni;
     using OmniSync;
@@ -104,13 +103,10 @@
 
         #region Public Methods and Operators
 
-        public async Task Connect()
+        public void Connect()
         {
             Enabled = false;
-            
-            await OmniService.Start();
-
-            Enabled = true;
+            OmniService.Start().Subscribe(device => Enabled = true);
         }
 
         public void Disconnect()

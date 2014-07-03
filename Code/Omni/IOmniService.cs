@@ -1,7 +1,7 @@
 ﻿namespace Omni
 {
     using System;
-    using System.Threading.Tasks;
+    using OmniApi.Models;
     using OmniSync;
 
     public interface IOmniService : IObservable<ServiceStatusEnum>
@@ -20,7 +20,7 @@
 
         #region Public Methods and Operators
 
-        Task Start(string communicationChannel = null);
+        IObservable<Device> Start();
 
         void Stop(bool unsubscribeHandlers = true);
 

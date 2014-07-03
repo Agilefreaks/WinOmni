@@ -29,11 +29,12 @@
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
             _transitions = TransitionCollection.Builder()
-                .RegisterTransition<LoadLocalConfiguration, Finished, GetActivationCodeFromDeploymentUri>()
+                .RegisterTransition<LoadLocalConfiguration, StartOmniService, GetActivationCodeFromDeploymentUri>()
                 .RegisterTransition<GetActivationCodeFromDeploymentUri, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
-                .RegisterTransition<SaveConfiguration, Finished, Failed>()
+                .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
+                .RegisterTransition<StartOmniService, Finished, Failed>()
                 .Build();
         }
 
