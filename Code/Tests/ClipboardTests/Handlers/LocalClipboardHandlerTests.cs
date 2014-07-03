@@ -1,11 +1,13 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
+    using System.Reactive;
     using Clipboard.API.Resources.v1;
     using Clipboard.Handlers;
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel;
@@ -22,41 +24,49 @@
 
         private Mock<IClippings> _mockClippings;
 
+        private TestScheduler _testScheduler;
+
+        private ITestableObservable<ClipboardEventArgs> _clipboardEventsStream;
+
         [SetUp]
         public void SetUp()
         {
             _mockingKernel = new MockingKernel();
-
-            _mockWindowsClipboardWrapper = new Mock<IWindowsClipboardWrapper>();
+            _mockWindowsClipboardWrapper = new Mock<IWindowsClipboardWrapper> { DefaultValue = DefaultValue.Mock };
             _mockClippings = new Mock<IClippings>();
 
             _mockingKernel.Bind<IWindowsClipboardWrapper>().ToConstant(_mockWindowsClipboardWrapper.Object);
             _mockingKernel.Bind<IClippings>().ToConstant(_mockClippings.Object);
 
-            _mockingKernel.Bind<ILocalClipboardHandler>().To<LocalClipboardsHandler>();
+            _mockingKernel.Bind<ILocalClipboardHandler>().To<LocalClipboardHandler>();
+
+            _testScheduler = new TestScheduler();
+            _clipboardEventsStream = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<ClipboardEventArgs>>(1, Notification.CreateOnNext(new ClipboardEventArgs { Data = "clipping content"})));
 
             _subject = _mockingKernel.Get<ILocalClipboardHandler>();
         }
 
         [Test]
-        public void Subscribe_Always_StartsWatchingTheClipboardWrapper()
+        public void Subscribe_Always_StartsSubscribesToTheClipboardWrapper()
         {
             _subject.Subscribe(new Mock<IObserver<Clipping>>().Object);
 
-            _mockWindowsClipboardWrapper.Verify(wc => wc.StartWatchingClipboard(), Times.Once);
+            _mockWindowsClipboardWrapper.Verify(wc => wc.Subscribe(_subject), Times.Once);
         }
 
         [Test]
-        public void Subscribe_OnlySubscribesOnceToTheClipboardDataReceivedEvent()
+        public void Subscribe_CreatesClippingsFromTheClipboardEventsAndPassesThemToSubscribers()
         {
-            int clippingsReceived = 0;
-            
-            _subject.Subscribe(c => clippingsReceived++);
-            _subject.Subscribe(c => clippingsReceived++);
+            _mockWindowsClipboardWrapper
+                .Setup(wcw => wcw.Subscribe((_subject)))
+                .Callback<IObserver<ClipboardEventArgs>>(o => _clipboardEventsStream.Subscribe(o));
+            Clipping clipping = null;
+            _subject.Subscribe(c => clipping = c);
 
-            _mockWindowsClipboardWrapper.Raise(x => x.DataReceived += null, new ClipboardEventArgs("clipping Content"));
+            _testScheduler.Start();
 
-            clippingsReceived.Should().Be(2);
+            clipping.Content.Should().Be("clipping content");
         }
 
         [Test]

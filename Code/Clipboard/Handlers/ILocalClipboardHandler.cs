@@ -1,6 +1,9 @@
 namespace Clipboard.Handlers
 {
-    public interface ILocalClipboardHandler : IClipboard
+    using System;
+    using Clipboard.Handlers.WindowsClipboard;
+
+    public interface ILocalClipboardHandler : IClipboard, IObserver<ClipboardEventArgs>
     {
     }
 }

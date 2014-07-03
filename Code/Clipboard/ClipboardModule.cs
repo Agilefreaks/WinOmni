@@ -11,7 +11,7 @@
         public override void Load()
         {
             Kernel.Bind<IWindowsClipboardWrapper>().To<WindowsClipboardWrapper>().InSingletonScope();
-            Kernel.Bind<ILocalClipboardHandler>().To<LocalClipboardsHandler>().InSingletonScope();
+            Kernel.Bind<ILocalClipboardHandler>().To<LocalClipboardHandler>().InSingletonScope();
             Kernel.Bind<IOmniClipboardHandler>().To<OmniClipboardHandler>().InSingletonScope();
             Kernel.Bind<IHandler, IClipboardHandler>().To<ClipboardHandler>().InSingletonScope();
 
