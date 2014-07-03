@@ -5,7 +5,6 @@
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
-    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -40,17 +39,17 @@
             _observer.Messages.Should()
                 .Contain(
                     m => m.Value.Kind == NotificationKind.OnNext
-                        && (SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Failed);
+                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
 
         [Test]
-        public void Execute_WhenTokenIsEmpty_WillReturnFail()
+        public void Execute_WhenCreateError_WillReturnFail()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
             var testScheduler = new TestScheduler();
             var createObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("", ""))));
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnError<Token>(new Exception())));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
             _subject.Execute().Subscribe(_observer);
@@ -59,17 +58,18 @@
              _observer.Messages.Should()
                 .Contain(
                     m => m.Value.Kind == NotificationKind.OnNext
-                        && (SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Failed);
+                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
 
         [Test]
-        public void Execute_WhenTokenNotEmpty_WillReturnSucccess()
+        public void Execute_WhenCreateSuccess_WillReturnSucccess()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
             var testScheduler = new TestScheduler();
             var createObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("acccess token", "refresh token"))));
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("acccess token", "refresh token"))),
+                    new Recorded<Notification<Token>>(0, Notification.CreateOnCompleted<Token>()));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
             _subject.Execute().Subscribe(_observer);
@@ -78,8 +78,8 @@
             _observer.Messages.Should()
                .Contain(
                    m => m.Value.Kind == NotificationKind.OnNext
-                       && (SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Successful);
+                       && m.Value.Value.State == SimpleStepStateEnum.Successful);
+            _observer.Messages.Should().HaveCount(2);
         }
-
     }
 }

@@ -1,51 +1,63 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using System.Threading;
+    using System.Reactive.Subjects;
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
 
     public class GetActivationCodeFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {
+        #region Fields
+
         private readonly IEventAggregator _eventAggregator;
 
-        private AutoResetEvent _autoResetEvent;
+        private readonly Subject<IExecuteResult> _subject;
 
-        private TokenRequestResultMessage _lastRequestResult;
+        #endregion
 
-        public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
+        #region Constructors and Destructors
 
         public GetActivationCodeFromUser(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            _subject = new Subject<IExecuteResult>();
+
             _eventAggregator.Subscribe(this);
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public override IObservable<IExecuteResult> Execute()
         {
-            throw new NotImplementedException();
-//            _autoResetEvent = new AutoResetEvent(false);
-//            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
-//            _autoResetEvent.WaitOne();
-//
-//            var executeResult = new ExecuteResult();
-//            if (_lastRequestResult.Status == TokenRequestResultMessageStatusEnum.Successful)
-//            {
-//                executeResult.State = SimpleStepStateEnum.Successful;
-//                executeResult.Data = _lastRequestResult.ActivationCode;
-//            }
-//            else
-//            {
-//                executeResult.State = SimpleStepStateEnum.Failed;
-//            }
-//
-//            return executeResult;
+            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
+            return _subject;
         }
 
         public void Handle(TokenRequestResultMessage tokenRequestResultMessage)
         {
-            _lastRequestResult = tokenRequestResultMessage;
-            _autoResetEvent.Set();
+            var result = new ExecuteResult(SimpleStepStateEnum.Failed);
+            if (tokenRequestResultMessage.Status == TokenRequestResultMessageStatusEnum.Successful)
+            {
+                result.State = SimpleStepStateEnum.Successful;
+                result.Data = tokenRequestResultMessage.ActivationCode;
+            }
+            else
+            {
+                result.State = SimpleStepStateEnum.Failed;
+            }
+
+            _subject.OnNext(result);
+            _subject.OnCompleted();
         }
+
+        #endregion
     }
 }

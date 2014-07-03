@@ -9,12 +9,6 @@
 
     public class GetRemoteConfiguration : ActivationStepBase
     {
-        #region Constants
-
-        public const int MaxRetryCount = 5;
-
-        #endregion
-
         #region Fields
 
         private readonly IOAuth2 _oauth2;
@@ -43,14 +37,13 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            IObservable<IExecuteResult> result;
-            if (Parameter.Value == null || string.IsNullOrEmpty(Parameter.Value.ToString()))
+            IObservable<IExecuteResult> failResult =
+                new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.AuthorizationCodeError) }.ToObservable();
+            IObservable<IExecuteResult> result = failResult;
+            if (Parameter.Value != null && !string.IsNullOrEmpty(Parameter.Value.ToString()))
             {
-                result = new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed) }.ToObservable();
-            }
-            else
-            {
-                result = _oauth2.Create(Parameter.Value.ToString()).Select(GetExecuteResult);
+                result =
+                    _oauth2.Create(Parameter.Value.ToString()).Select(GetExecuteResult).Catch(failResult);
             }
 
             return result;
@@ -62,19 +55,7 @@
 
         private IExecuteResult GetExecuteResult(Token token)
         {
-            var result = new ExecuteResult();
-            if (string.IsNullOrEmpty(token.AccessToken))
-            {
-                result.State = GetRemoteConfigurationStepStateEnum.Failed;
-                result.Data = Resources.AuthorizationCodeError;
-            }
-            else
-            {
-                result.State = GetRemoteConfigurationStepStateEnum.Successful;
-                result.Data = token;
-            }
-
-            return result;
+            return new ExecuteResult(SimpleStepStateEnum.Successful, token);
         }
 
         #endregion

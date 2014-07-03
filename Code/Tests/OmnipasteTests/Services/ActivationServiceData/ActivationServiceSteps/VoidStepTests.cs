@@ -11,11 +11,11 @@
     {
         public class VoidStepTest : VoidStep
         {
-            public override object State
+            public override SimpleStepStateEnum State
             {
                 get
                 {
-                    return "superposition";
+                    return SimpleStepStateEnum.Successful;
                 }
             }
         }
@@ -30,7 +30,7 @@
             mockObserver.Messages.Should().HaveCount(2);
             mockObserver.Messages.Should().Contain(r => r.Value.Kind == NotificationKind.OnCompleted);
             mockObserver.Messages.Should()
-                .Contain(r => r.Value.Kind == NotificationKind.OnNext && (string)r.Value.Value.State == "superposition");
+                .Contain(r => r.Value.Kind == NotificationKind.OnNext && r.Value.Value.State == SimpleStepStateEnum.Successful);
         }
     }
 }

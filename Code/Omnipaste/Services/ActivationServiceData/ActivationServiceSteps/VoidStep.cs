@@ -5,7 +5,7 @@
 
     public abstract class VoidStep : ActivationStepBase
     {
-        public abstract object State { get; }
+        public abstract SimpleStepStateEnum State { get; }
 
         public override IObservable<IExecuteResult> Execute()
         {

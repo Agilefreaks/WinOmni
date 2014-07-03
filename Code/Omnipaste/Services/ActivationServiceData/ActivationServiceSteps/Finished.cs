@@ -2,7 +2,7 @@
 {
     public class Finished : VoidStep
     {
-        public override object State
+        public override SimpleStepStateEnum State
         {
             get
             {

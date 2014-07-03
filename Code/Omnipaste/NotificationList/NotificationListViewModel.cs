@@ -1,12 +1,14 @@
 ﻿namespace Omnipaste.NotificationList
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Framework;
+    using Events.Models;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
@@ -17,9 +19,9 @@
 
         private readonly IOmniClipboardHandler _omniClipboardHandler;
 
-        private IDisposable _notificationsSubscription;
-
         private IDisposable _clippingsSubscription;
+
+        private IDisposable _notificationsSubscription;
 
         #endregion
 
@@ -38,6 +40,22 @@
         #region Public Properties
 
         public ObservableCollection<INotificationViewModel> Notifications { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static void ShowWindow(IWindowManager windowManager, INotificationListViewModel notificationListViewModel)
+        {
+            windowManager.ShowWindow(
+                notificationListViewModel,
+                null,
+                new Dictionary<string, object>
+                    {
+                        { "Height", SystemParameters.WorkArea.Height },
+                        { "Width", SystemParameters.WorkArea.Width }
+                    });
+        }
 
         #endregion
 

@@ -32,7 +32,8 @@
                 .RegisterTransition<LoadLocalConfiguration, Finished, GetActivationCodeFromDeploymentUri>()
                 .RegisterTransition<GetActivationCodeFromDeploymentUri, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
-                .RegisterTransition<GetRemoteConfiguration, Finished, Failed>()
+                .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
+                .RegisterTransition<SaveConfiguration, Finished, Failed>()
                 .Build();
         }
 

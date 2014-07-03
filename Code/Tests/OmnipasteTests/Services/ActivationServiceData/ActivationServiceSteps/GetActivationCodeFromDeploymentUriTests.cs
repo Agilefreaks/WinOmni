@@ -38,7 +38,7 @@
             _observer.Messages.Should()
                 .Contain(m => 
                     m.Value.Kind == NotificationKind.OnNext
-                    && ((SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Successful));
+                    && m.Value.Value.State == SimpleStepStateEnum.Successful);
 
         }
     }

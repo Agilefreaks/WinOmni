@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using System.Windows;
@@ -39,7 +41,7 @@
         public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
             eventAggregator.Subscribe(this);
-            sessionManager.SessionDestroyed += async (sender, args) => await Configure();
+            sessionManager.SessionDestroyed += (sender, args) => Configure();
 
             DisplayName = Resources.AplicationName;
         }
@@ -123,7 +125,7 @@
 
         #region Methods
 
-        protected async override void OnViewLoaded(object view)
+        protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
 
@@ -131,30 +133,29 @@
             _view.Closing += Closing;
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
-            await Configure();
-
-            Close();
+            Configure();
         }
 
-        private async Task Configure()
+        private void Configure()
         {
             DialogViewModel.ActivateItem(LoadingViewModel);
-
-            await ActivationService.Run();
-
-            await OmniService.Start();
-
-            DialogViewModel.DeactivateItem(LoadingViewModel, true);
-
-            ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
-            WindowManager.ShowWindow(
-                Kernel.Get<INotificationListViewModel>(),
-                null,
-                new Dictionary<string, object>
+            ActivationService.Run()
+                .SubscribeOn(Scheduler.Default)
+                .Subscribe(
+                    finalStep =>
                     {
-                        { "Height", SystemParameters.WorkArea.Height },
-                        { "Width", SystemParameters.WorkArea.Width }
-                    });
+                        OmniService.Start().Wait();
+
+                        ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+                        Execute.OnUIThread(
+                            () =>
+                            {
+                                DialogViewModel.DeactivateItem(LoadingViewModel, true);
+                                NotificationListViewModel.ShowWindow(WindowManager, Kernel.Get<INotificationListViewModel>());
+                            });
+                    },
+                exception => Debugger.Break()
+                );
         }
 
         private IntPtr GetHandle()
@@ -162,10 +163,10 @@
             var handle = new IntPtr();
             Execute.OnUIThread(
                 () =>
-                    {
-                        var windowInteropHelper = new WindowInteropHelper(_view);
-                        handle = windowInteropHelper.Handle;
-                    });
+                {
+                    var windowInteropHelper = new WindowInteropHelper(_view);
+                    handle = windowInteropHelper.Handle;
+                });
 
             return handle;
         }

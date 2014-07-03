@@ -2,7 +2,7 @@
 {
     public interface IExecuteResult
     {
-        object State { get; set; }
+        SimpleStepStateEnum State { get; set; }
 
         object Data { get; set; }
     }

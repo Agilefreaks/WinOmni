@@ -88,15 +88,31 @@
         {
             _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<Finished>();
+                .Be<SaveConfiguration>();
         }
 
         [Test]
-        public void GetRemoteConfiguration_Failed_ShouldBeFailed()
+        public void GetRemoteConfiguration_Failed_ShouldBeGetActivationCodeFromUser()
         {
             _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Failed)
                 .Should()
+                .Be<GetActivationCodeFromUser>();
+        }
+
+        [Test]
+        public void SaveConfiguration_Failed_ShouldBeFailed()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Failed)
+                .Should()
                 .Be<Failed>();
+        }
+
+        [Test]
+        public void SaveConfiguration_Success_ShouldBeFinish()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
         }
     }
 }

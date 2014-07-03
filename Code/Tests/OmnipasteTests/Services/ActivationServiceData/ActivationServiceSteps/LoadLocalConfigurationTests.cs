@@ -1,6 +1,5 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
     using System.Reactive;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -38,7 +37,7 @@
                 .Contain(
                     m =>
                     m.Value.Kind == NotificationKind.OnNext
-                    && ((SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Successful)
+                    && m.Value.Value.State == SimpleStepStateEnum.Successful
                     && m.Value.Value.Data.GetType() == typeof(Token));
         }
 
@@ -53,7 +52,7 @@
                 .Contain(
                     m =>
                     m.Value.Kind == NotificationKind.OnNext
-                    && ((SimpleStepStateEnum)Enum.Parse(typeof(SimpleStepStateEnum), m.Value.Value.State.ToString()) == SimpleStepStateEnum.Failed));
+                    && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
     }
 };
