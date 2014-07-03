@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -18,7 +17,7 @@
 
         #region Fields
 
-        private RetryInfo _payload;
+        private readonly IOAuth2 _oauth2;
 
         #endregion
 
@@ -26,7 +25,7 @@
 
         public GetRemoteConfiguration(IOAuth2 oAuth2)
         {
-            OAuth2 = oAuth2;
+            _oauth2 = oAuth2;
         }
 
         #endregion
@@ -38,68 +37,44 @@
 
         public override DependencyParameter Parameter { get; set; }
 
-        public IOAuth2 OAuth2 { get; set; }
-
-        #endregion
-
-        #region Properties
-
-        private RetryInfo PayLoad
-        {
-            get
-            {
-                _payload = (Parameter.Value as RetryInfo) ?? new RetryInfo((string)Parameter.Value);
-                return _payload;
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
         public override IObservable<IExecuteResult> Execute()
         {
-            throw new NotImplementedException();
-//            var executeResult = new ExecuteResult();
-//
-//            if (string.IsNullOrEmpty(PayLoad.AuthorizationCode))
-//            {
-//                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
-//            }
-//            else
-//            {
-//                var token = await OAuth2.Create(PayLoad.AuthorizationCode);
-//                SetResultPropertiesBasedOnActivationData(executeResult, token);
-//            }
-//
-//            return executeResult;
+            IObservable<IExecuteResult> result;
+            if (Parameter.Value == null || string.IsNullOrEmpty(Parameter.Value.ToString()))
+            {
+                result = new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed) }.ToObservable();
+            }
+            else
+            {
+                result = _oauth2.Create(Parameter.Value.ToString()).Select(GetExecuteResult);
+            }
+
+            return result;
         }
 
         #endregion
 
         #region Methods
 
-        private void SetResultPropertiesBasedOnActivationData(
-            IExecuteResult executeResult,
-            Token token)
+        private IExecuteResult GetExecuteResult(Token token)
         {
-            if (token == null)
+            var result = new ExecuteResult();
+            if (string.IsNullOrEmpty(token.AccessToken))
             {
-                executeResult.Data = new RetryInfo(_payload.AuthorizationCode, _payload.FailCount + 1);
-                executeResult.State = _payload.FailCount < MaxRetryCount
-                                          ? GetRemoteConfigurationStepStateEnum.CommunicationFailure
-                                          : GetRemoteConfigurationStepStateEnum.Failed;
-            }
-            else if (string.IsNullOrEmpty(token.AccessToken))
-            {
-                executeResult.State = GetRemoteConfigurationStepStateEnum.Failed;
-                executeResult.Data = Resources.AuthorizationCodeError;
+                result.State = GetRemoteConfigurationStepStateEnum.Failed;
+                result.Data = Resources.AuthorizationCodeError;
             }
             else
             {
-                executeResult.State = GetRemoteConfigurationStepStateEnum.Successful;
-                executeResult.Data = token;
+                result.State = GetRemoteConfigurationStepStateEnum.Successful;
+                result.Data = token;
             }
+
+            return result;
         }
 
         #endregion

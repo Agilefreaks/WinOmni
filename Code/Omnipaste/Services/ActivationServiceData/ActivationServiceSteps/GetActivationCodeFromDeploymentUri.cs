@@ -2,27 +2,30 @@
 {
     using System;
     using System.Collections.Specialized;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
 
     public class GetActivationCodeFromDeploymentUri : ActivationStepBase
     {
+        #region Constants
+
+        private const string TokenKey = "token";
+
+        #endregion
+
         #region Fields
 
         private readonly IApplicationDeploymentInfoProvider _applicationDeploymentInfoProvider;
-
-        private readonly IConfigurationProvider _configurationProvider;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public GetActivationCodeFromDeploymentUri(
-            IApplicationDeploymentInfoProvider provider,
-            IConfigurationProvider configurationProvider)
+        public GetActivationCodeFromDeploymentUri(IApplicationDeploymentInfoProvider provider)
         {
             _applicationDeploymentInfoProvider = provider;
-            _configurationProvider = configurationProvider;
         }
 
         #endregion
@@ -31,35 +34,39 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            throw new NotImplementedException();
-//            var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
-//            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
-//            {
-//                var token = GetActivationTokenFromDeploymentParameters();
-//                if (!string.IsNullOrEmpty(token))
-//                {
-//                    result.State = SimpleStepStateEnum.Successful;
-//                    result.Data = token;
-//                    _configurationProvider["deviceIdentifier"] = token;
-//                }
-//            }
-//
-//            return result;
+            return Observable.Create<IExecuteResult>(
+                observer =>
+                    {
+                        var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
+                        if (_applicationDeploymentInfoProvider.HasValidActivationUri)
+                        {
+                            var token =
+                                GetActivationTokenFromDeploymentParameters(
+                                    _applicationDeploymentInfoProvider.ActivationUri);
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                result.State = SimpleStepStateEnum.Successful;
+                                result.Data = token;
+                            }
+                        }
+                        observer.OnNext(result);
+                        observer.OnCompleted();
+
+                        return Disposable.Empty;
+                    });
         }
 
         #endregion
 
         #region Methods
 
-        private string GetActivationTokenFromDeploymentParameters()
+        private static string GetActivationTokenFromDeploymentParameters(Uri activationUri)
         {
-            var deploymentParameters = new NameValueCollection();
-            if (_applicationDeploymentInfoProvider.HasValidActivationUri)
-            {
-                deploymentParameters = _applicationDeploymentInfoProvider.ActivationUri.GetQueryStringParameters();
-            }
+            var deploymentParameters = activationUri != null
+                                           ? activationUri.GetQueryStringParameters()
+                                           : new NameValueCollection();
 
-            return deploymentParameters["token"];
+            return deploymentParameters[TokenKey];
         }
 
         #endregion

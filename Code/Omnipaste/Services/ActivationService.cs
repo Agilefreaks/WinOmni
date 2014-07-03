@@ -4,10 +4,6 @@
     using System.Collections.Generic;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
-    using System.Reflection.Emit;
-    using System.Threading.Tasks;
-    using Caliburn.Micro;
-    using Ninject;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
