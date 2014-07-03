@@ -1,6 +1,7 @@
 namespace Omnipaste.ClippingList
 {
     using System;
+    using System.Diagnostics;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Clipboard.Models;
@@ -15,7 +16,11 @@ namespace Omnipaste.ClippingList
         {
             Clippings = new BindableCollection<IClippingViewModel>();
             ClippingsObservable = clippingsObservable;
-            ClippingsObservable.Select(CreateViewModel).Subscribe(c => Clippings.Insert(0, c));
+            ClippingsObservable
+                .Select(CreateViewModel)
+                .Subscribe(
+                    clippingViewModel => Clippings.Insert(0, clippingViewModel),
+                    exception => Debugger.Break());
         }
 
         #endregion

@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface IWindowsClipboardWrapper
+    public interface IWindowsClipboardWrapper : IObservable<ClipboardEventArgs>, IDisposable
     {
         event EventHandler<ClipboardEventArgs> DataReceived;
 
