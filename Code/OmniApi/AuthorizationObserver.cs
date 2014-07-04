@@ -6,6 +6,7 @@
     using System.Reactive.Linq;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Interfaces;
 
     public class AuthorizationObserver
     {
@@ -13,15 +14,18 @@
 
         private readonly IOAuth2 _oAuth2;
 
+        private readonly ISessionManager _sessionManager;
+
         private readonly Token _token;
 
         #endregion
 
         #region Constructors and Destructors
 
-        private AuthorizationObserver(IOAuth2 oAuth2, Token token)
+        private AuthorizationObserver(IOAuth2 oAuth2,  ISessionManager sessionManager, Token token)
         {
             _oAuth2 = oAuth2;
+            _sessionManager = sessionManager;
             _token = token;
         }
 
@@ -29,14 +33,14 @@
 
         #region Public Methods and Operators
 
-        public static IObservable<T> Authorize<T>(IObservable<T> observable, Token token)
+        public static IObservable<T> Authorize<T>(IObservable<T> observable, ISessionManager sessionManager, Token token)
         {
-            return new AuthorizationObserver(new OAuth2(), token).Authorize(observable);
+            return new AuthorizationObserver(new OAuth2(), sessionManager, token).Authorize(observable);
         }
 
-        public static IObservable<T> Authorize<T>(IObservable<T> observable, Token token, IOAuth2 oAuth2)
+        public static IObservable<T> Authorize<T>(IObservable<T> observable, IOAuth2 oAuth2, ISessionManager sessionManager, Token token)
         {
-            return new AuthorizationObserver(oAuth2, token).Authorize(observable);
+            return new AuthorizationObserver(oAuth2, sessionManager, token).Authorize(observable);
         }
 
         #endregion
@@ -60,6 +64,16 @@
                                             .Concat((IObservable<object>)observable)
                                             .Where(o => o is T)
                                             .Cast<T>()
+                                            .Catch<T, Exception>(
+                                                error =>
+                                                    {
+                                                        if (IsBadRequest(error))
+                                                        {
+                                                            _sessionManager.LogOut();
+                                                        }
+
+                                                        return Observable.Empty<T>();
+                                                    })
                                             .Subscribe(observer);
                                     }
                                     else
@@ -96,6 +110,13 @@
 
             //  TODO: dumb, but we need the HttpResponseMessage to get the code http://stackoverflow.com/questions/22217619/how-do-i-get-statuscode-from-httprequestexception
             return exception != null && exception.Message == "Response status code does not indicate success: 401 (Unauthorized).";
+        }
+
+        private bool IsBadRequest(Exception exception)
+        {
+            exception = GetHttpRequestExceptions(exception);
+            
+            return exception != null && exception.Message == "Response status code does not indicate success: 400 (Bad Request).";
         }
 
         #endregion

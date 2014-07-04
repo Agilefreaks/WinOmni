@@ -1,18 +1,14 @@
-﻿namespace Omnipaste.Services
+﻿namespace OmniCommon.Interfaces
 {
     using System;
 
     public interface ISessionManager
     {
-        #region Public Events
-
-        event EventHandler<EventArgs> SessionDestroyed;
-
-        #endregion
-
         #region Public Methods and Operators
 
         void LogOut();
+
+        IObservable<EventArgs> SessionDestroyedObservable();
 
         #endregion
     }

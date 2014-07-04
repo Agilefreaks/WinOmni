@@ -11,6 +11,7 @@
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
+    using OmniCommon.Interfaces;
     using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -40,7 +41,8 @@
         {
             eventAggregator.Subscribe(this);
             EventAggregator = eventAggregator;
-            sessionManager.SessionDestroyed += (sender, args) => Configure();
+
+            sessionManager.SessionDestroyedObservable().Subscribe(eventArgs => Execute.OnUIThread(Configure));
 
             DisplayName = Resources.AplicationName;
         }
@@ -148,21 +150,21 @@
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(
                     finalStep =>
+                    {
+                        if (finalStep is Failed)
                         {
-                            if (finalStep is Failed)
-                            {
-                                EventAggregator.PublishOnUIThread(new ActivationFailedMessage());
-                            }
-                            else
-                            {
-                                ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+                            EventAggregator.PublishOnUIThread(new ActivationFailedMessage());
+                        }
+                        else
+                        {
+                            ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
 
-                                DialogViewModel.DeactivateItem(LoadingViewModel, true);
-                                NotificationListViewModel.ShowWindow(
-                                    WindowManager,
-                                    Kernel.Get<INotificationListViewModel>());
-                            }
-                        },
+                            DialogViewModel.DeactivateItem(LoadingViewModel, true);
+                            NotificationListViewModel.ShowWindow(
+                                WindowManager,
+                                Kernel.Get<INotificationListViewModel>());
+                        }
+                    },
                     exception =>
                     EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = exception }));
         }
@@ -172,10 +174,10 @@
             var handle = new IntPtr();
             Execute.OnUIThread(
                 () =>
-                    {
-                        var windowInteropHelper = new WindowInteropHelper(_view);
-                        handle = windowInteropHelper.Handle;
-                    });
+                {
+                    var windowInteropHelper = new WindowInteropHelper(_view);
+                    handle = windowInteropHelper.Handle;
+                });
 
             return handle;
         }

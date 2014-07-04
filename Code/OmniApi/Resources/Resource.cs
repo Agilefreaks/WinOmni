@@ -3,7 +3,6 @@
     using System;
     using System.Configuration;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Support.Converters;
@@ -44,6 +43,9 @@
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
+        [Inject]
+        public ISessionManager SessionManager { get; set; }
+
         public Token Token
         {
             get
@@ -64,7 +66,7 @@
 
         public IObservable<TModel> Authorize<TModel>(IObservable<TModel> observable)
         {
-            return AuthorizationObserver.Authorize(observable, Token);
+            return AuthorizationObserver.Authorize(observable, SessionManager, Token);
         }
     }
 }
