@@ -14,7 +14,8 @@ namespace Omnipaste.ClippingList
 
         protected ClippingListViewModelBase(IObservable<Clipping> clippingsObservable)
         {
-            Clippings = new BindableCollection<IClippingViewModel>();
+            Clippings = new LimitableBindableCollection<IClippingViewModel>(42);
+            
             ClippingsObservable = clippingsObservable;
             ClippingsObservable
                 .Select(CreateViewModel)

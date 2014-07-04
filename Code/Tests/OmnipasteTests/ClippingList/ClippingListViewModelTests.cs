@@ -5,7 +5,6 @@
     using System.Reactive.Subjects;
     using Clipboard.Models;
     using FluentAssertions;
-    using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
@@ -38,6 +37,12 @@
             _mockingKernel.Bind<IObservable<Clipping>>().ToConstant(_fakeClippingSubject);
 
             _subject = _mockingKernel.Get<ClippingListViewModel>();
+        }
+
+        [Test]
+        public void Clippings_ShouldBeLimittedToACountOf42()
+        {
+            ((LimitableBindableCollection<IClippingViewModel>)_subject.Clippings).Limit.Should().Be(42);
         }
 
         [Test]

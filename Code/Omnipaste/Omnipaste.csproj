@@ -225,6 +225,7 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
+    <Compile Include="ClippingList\LimitableBindableCollection.cs" />
     <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="ClippingList\CloudClippingList\CloudClippingListViewModel.cs" />

@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
+    <Compile Include="ClippingList\LimitableBindableCollectionTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
