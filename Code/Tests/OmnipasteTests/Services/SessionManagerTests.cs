@@ -1,6 +1,9 @@
 ﻿namespace OmnipasteTests.Services
 {
+    using System;
+    using System.Reactive;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using Omni;
@@ -45,14 +48,14 @@
         }
 
         [Test]
-        public void LogOut_TriggersSessionDestroyedEvent()
+        public void LogOut_TriggersOnNextOnSessionDestroyObserver()
         {
-            bool wasCalled = false;
-            _subject.SessionDestroyed += (o, e) => wasCalled = true;
+            var testableObserver = new TestScheduler().CreateObserver<EventArgs>();
+            _subject.SessionDestroyedObservable().Subscribe(testableObserver);
 
             _subject.LogOut();
 
-            wasCalled.Should().BeTrue();
+            testableObserver.Messages.Should().Contain(m => m.Value.Kind == NotificationKind.OnNext);
         }
     }
 }

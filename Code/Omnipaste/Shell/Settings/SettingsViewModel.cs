@@ -2,8 +2,8 @@
 {
     using MahApps.Metro.Controls;
     using Ninject;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
-    using Omnipaste.Services;
 
     public class SettingsViewModel : FlyoutBaseViewModel, ISettingsViewModel
     {

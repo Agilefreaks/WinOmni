@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Shell.Settings
 {
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
-    using Omnipaste.Services;
 
     public interface ISettingsViewModel : IFlyoutViewModel
     {

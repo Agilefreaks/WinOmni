@@ -13,6 +13,7 @@
     using Omni;
     using OmniApi;
     using OmniCommon;
+    using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Attributes;

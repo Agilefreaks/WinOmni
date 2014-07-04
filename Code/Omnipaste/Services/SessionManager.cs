@@ -1,15 +1,25 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
+    using System.Reactive.Subjects;
     using Ninject;
     using Omni;
     using OmniCommon.Interfaces;
 
     public class SessionManager : ISessionManager
     {
-        #region Public Events
+        #region Fields
 
-        public event EventHandler<EventArgs> SessionDestroyed;
+        private readonly Subject<EventArgs> _sessionDestroyedObservable;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public SessionManager()
+        {
+            _sessionDestroyedObservable = new Subject<EventArgs>();
+        }
 
         #endregion
 
@@ -29,11 +39,12 @@
         {
             OmniService.Stop();
             ConfigurationService.ResetAuthSettings();
+            _sessionDestroyedObservable.OnNext(new EventArgs());
+        }
 
-            if (SessionDestroyed != null)
-            {
-                SessionDestroyed(this, new EventArgs());
-            }
+        public IObservable<EventArgs> SessionDestroyedObservable()
+        {
+            return _sessionDestroyedObservable;
         }
 
         #endregion

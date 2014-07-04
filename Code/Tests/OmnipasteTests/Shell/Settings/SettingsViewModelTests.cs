@@ -4,7 +4,7 @@
     using MahApps.Metro.Controls;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Services;
+    using OmniCommon.Interfaces;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]
