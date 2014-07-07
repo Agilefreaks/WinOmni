@@ -166,6 +166,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.4\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -238,6 +239,8 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
+    <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
+    <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />

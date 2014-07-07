@@ -39,8 +39,8 @@
 
         public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
-            eventAggregator.Subscribe(this);
             EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
 
             sessionManager.SessionDestroyedObservable().Subscribe(eventArgs => Execute.OnUIThread(Configure));
 
@@ -100,9 +100,17 @@
 
         #region Public Methods and Operators
 
-        public void Close()
+        public void Close(bool showBaloon = true)
         {
-            _view.Hide();
+            if (_view != null)
+            {
+                _view.Hide();
+            }
+
+            if (showBaloon)
+            {
+                ContextMenuViewModel.ShowBaloon("Running in the background", "Omnipaste is still running. To open the window again, double-click the icon.");
+            }
         }
 
         public void Closing(object sender, CancelEventArgs e)
@@ -139,6 +147,8 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
             Configure();
+            
+            Close(false);
         }
 
         private void Configure()

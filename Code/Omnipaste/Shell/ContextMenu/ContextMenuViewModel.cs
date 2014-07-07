@@ -10,11 +10,18 @@
     using Omni;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
+    using Omnipaste.Framework.Behaviours;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
+        #region Fields
+
+        private BaloonNotificationInfo _baloonInfo;
+
         private IClickOnceHelper _clickOnceHelper;
 
+        #endregion
+        
         #region Constructors and Destructors
 
         public ContextMenuViewModel(IOmniService omniService)
@@ -39,7 +46,22 @@
 
         #region Public Properties
 
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
         public bool AutoStart { get; set; }
+
+        public BaloonNotificationInfo BaloonInfo
+        {
+            get
+            {
+                return _baloonInfo;
+            }
+            set
+            {
+                _baloonInfo = value;
+                NotifyOfPropertyChange(() => BaloonInfo);
+            }
+        }
 
         public IClickOnceHelper ClickOnceHelper
         {
@@ -53,20 +75,18 @@
             }
         }
 
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
+
         public string IconSource { get; set; }
 
         public bool IsStopped { get; set; }
 
-        public string TooltipText { get; set; }
-
-        public IApplicationWrapper ApplicationWrapper { get; set; }
-
-        public Visibility Visibility { get; set; }
-
         public IOmniService OmniService { get; set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator { get; set; }
+        public string TooltipText { get; set; }
+
+        public Visibility Visibility { get; set; }
 
         #endregion
 
@@ -80,6 +100,11 @@
         public void Show()
         {
             EventAggregator.PublishOnUIThread(new ShowShellMessage());
+        }
+
+        public void ShowBaloon(string baloonTitle, string baloonMessage)
+        {
+            BaloonInfo = new BaloonNotificationInfo { Title = baloonTitle, Message = baloonMessage };
         }
 
         public void ToggleAutoStart()

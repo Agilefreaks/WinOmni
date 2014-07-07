@@ -132,7 +132,7 @@
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollectionTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />
-    <Compile Include="Shell\ContextMenu\ContextMenuViewModelTest.cs" />
+    <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Loading\UserTokenViewModelTests.cs" />

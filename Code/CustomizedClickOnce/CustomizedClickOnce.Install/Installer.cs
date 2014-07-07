@@ -7,7 +7,7 @@ namespace CustomizedClickOnce.Install
     using System.Reflection;
     using System.Threading;
 
-    static class Program
+    static class Installer
     {
         private static Mutex _instanceMutex;
 
@@ -27,9 +27,10 @@ namespace CustomizedClickOnce.Install
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main()
+        private static int Main()
         {           
             bool createdNew;
+
             _instanceMutex = new Mutex(
                 true, @"Local\" + Assembly.GetExecutingAssembly().GetType().GUID, out createdNew);
             if (createdNew)
@@ -40,6 +41,8 @@ namespace CustomizedClickOnce.Install
             {
                 _instanceMutex = null;
             }
+
+            return 0;
         }
 
         private static void StartIEProcessWithActivationToken()

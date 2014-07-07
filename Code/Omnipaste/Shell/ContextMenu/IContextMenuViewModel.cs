@@ -8,7 +8,7 @@
         #region Public Properties
 
         bool AutoStart { get; set; }
-
+        
         IClickOnceHelper ClickOnceHelper { get; set; }
 
         bool IsStopped { get; set; }
@@ -18,6 +18,8 @@
         #region Public Methods and Operators
 
         void Show();
+
+        void ShowBaloon(string baloonTitle, string baloonMessage);
 
         void ToggleAutoStart();
 

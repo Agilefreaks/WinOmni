@@ -16,5 +16,7 @@
         IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         void Show();
+
+        void Close(bool showBaloon);
     }
 }

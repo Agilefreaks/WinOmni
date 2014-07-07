@@ -14,7 +14,7 @@
     using Omnipaste.Shell.ContextMenu;
 
     [TestFixture]
-    public class ContextMenuViewModelTest
+    public class ContextMenuViewModelTests
     {
         #region Fields
 
