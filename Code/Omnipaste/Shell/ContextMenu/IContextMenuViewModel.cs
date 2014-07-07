@@ -2,16 +2,13 @@
 {
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
-    using Omnipaste.Framework.Behaviours;
 
     public interface IContextMenuViewModel : IScreen
     {
         #region Public Properties
 
         bool AutoStart { get; set; }
-
-        BaloonNotificationInfo BaloonInfo { get; set; }
-
+        
         IClickOnceHelper ClickOnceHelper { get; set; }
 
         bool IsStopped { get; set; }

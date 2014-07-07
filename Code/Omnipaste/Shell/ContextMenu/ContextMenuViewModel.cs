@@ -14,10 +14,14 @@
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
-        private IClickOnceHelper _clickOnceHelper;
+        #region Fields
 
         private BaloonNotificationInfo _baloonInfo;
 
+        private IClickOnceHelper _clickOnceHelper;
+
+        #endregion
+        
         #region Constructors and Destructors
 
         public ContextMenuViewModel(IOmniService omniService)
@@ -42,23 +46,9 @@
 
         #region Public Properties
 
+        public IApplicationWrapper ApplicationWrapper { get; set; }
+
         public bool AutoStart { get; set; }
-
-        public IClickOnceHelper ClickOnceHelper
-        {
-            get
-            {
-                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
-            }
-            set
-            {
-                _clickOnceHelper = value;
-            }
-        }
-
-        public string IconSource { get; set; }
-
-        public bool IsStopped { get; set; }
 
         public BaloonNotificationInfo BaloonInfo
         {
@@ -73,16 +63,30 @@
             }
         }
 
-        public string TooltipText { get; set; }
-
-        public IApplicationWrapper ApplicationWrapper { get; set; }
-
-        public Visibility Visibility { get; set; }
-
-        public IOmniService OmniService { get; set; }
+        public IClickOnceHelper ClickOnceHelper
+        {
+            get
+            {
+                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
+            }
+            set
+            {
+                _clickOnceHelper = value;
+            }
+        }
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
+
+        public string IconSource { get; set; }
+
+        public bool IsStopped { get; set; }
+
+        public IOmniService OmniService { get; set; }
+
+        public string TooltipText { get; set; }
+
+        public Visibility Visibility { get; set; }
 
         #endregion
 
@@ -100,11 +104,7 @@
 
         public void ShowBaloon(string baloonTitle, string baloonMessage)
         {
-            BaloonInfo = new BaloonNotificationInfo
-                         {
-                             Title = baloonTitle, 
-                             Message = baloonMessage
-                         };
+            BaloonInfo = new BaloonNotificationInfo { Title = baloonTitle, Message = baloonMessage };
         }
 
         public void ToggleAutoStart()
