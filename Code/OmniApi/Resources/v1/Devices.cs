@@ -14,6 +14,7 @@
 
         #region Interfaces
 
+        [ColdObservable]
         public interface IDevicesApi
         {
             #region Public Methods and Operators

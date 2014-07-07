@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Subjects;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -16,9 +15,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Framework;
-    using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
-    using Omnipaste.Notification.EventNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
 

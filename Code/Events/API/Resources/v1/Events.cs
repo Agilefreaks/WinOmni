@@ -9,6 +9,7 @@
     {
         #region Interfaces
 
+        [ColdObservable]
         public interface IEventsApi
         {
             #region Public Methods and Operators

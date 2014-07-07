@@ -4,7 +4,6 @@
     using Omnipaste.Notification;
     using Clipboard.Models;
     using Omnipaste.Notification.ClippingNotification;
-    using Omnipaste.Notification.EventNotification;
     using Omnipaste.Notification.HyperlinkNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.Models;

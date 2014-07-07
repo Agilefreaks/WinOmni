@@ -25,7 +25,7 @@
 
         #region Enums
 
-        public enum GrantType
+        public enum GrantTypeEnum
         {
             authorization_code,
 
@@ -38,6 +38,7 @@
 
         #region Interfaces
 
+        [ColdObservable]
         public interface IOAuth2Api
         {
             #region Public Methods and Operators
@@ -54,35 +55,35 @@
 
         public IObservable<Token> Create(string authorizationCode)
         {
-            return ResourceApi.Create(new AuthorizationRequest(GrantType.authorization_code, _clientId) { code = authorizationCode });
+            return ResourceApi.Create(new AuthorizationRequest(GrantTypeEnum.authorization_code, _clientId) { Code = authorizationCode });
         }
 
         public IObservable<Token> Refresh(string refreshToken)
         {
-            return ResourceApi.Create(new AuthorizationRequest(GrantType.refresh_token, _clientId) { refresh_token = refreshToken });
+            return ResourceApi.Create(new AuthorizationRequest(GrantTypeEnum.refresh_token, _clientId) { RefreshToken = refreshToken });
         }
 
         #endregion
 
         public class AuthorizationRequest
         {
-            public AuthorizationRequest(GrantType grantType, string clientId)
+            public AuthorizationRequest(GrantTypeEnum grantType, string clientId)
             {
-                grant_type = grantType.ToString();
-                client_id = clientId;
+                GrantType = grantType.ToString();
+                ClientId = clientId;
             }
 
             #region Public Properties
 
-            public string client_id { get; set; }
+            public string ClientId { get; set; }
 
-            public string client_secret { get; set; }
+            public string ClientSecret { get; set; }
 
-            public string code { get; set; }
+            public string Code { get; set; }
 
-            public string grant_type { get; set; }
+            public string GrantType { get; set; }
 
-            public string refresh_token { get; set; }
+            public string RefreshToken { get; set; }
 
             #endregion
         }

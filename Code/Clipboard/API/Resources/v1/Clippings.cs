@@ -10,6 +10,7 @@
     {
         #region Interfaces
 
+        [ColdObservable]
         public interface IClippingsApi
         {
             #region Public Methods and Operators

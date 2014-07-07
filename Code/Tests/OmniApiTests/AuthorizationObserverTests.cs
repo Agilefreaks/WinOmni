@@ -1,6 +1,7 @@
 ﻿namespace OmniApiTests
 {
     using System;
+    using System.Net;
     using System.Net.Http;
     using System.Reactive;
     using System.Reactive.Linq;
@@ -13,6 +14,7 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
+    using Refit;
 
     public class AuthorizationObserverTests
     {
@@ -78,7 +80,10 @@
                 .Authorize(_observable, _mockOAuth2.Object, _mockSessionManager.Object, new Token("access token", "refresh token"))
                 .Subscribe(_testableObserver);
 
-            _observable.OnError(new HttpRequestException("Response status code does not indicate success: 401 (Unauthorized)."));
+            var createUnauthorizedException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            createUnauthorizedException.Wait();
+
+            _observable.OnError(createUnauthorizedException.Result);
 
             _mockOAuth2.Verify(m => m.Refresh("refresh token"), Times.Once);
         }
@@ -93,8 +98,13 @@
                 .Authorize(_observable, _mockOAuth2.Object, _mockSessionManager.Object, new Token("access token", "refresh token"))
                 .Subscribe(_testableObserver);
 
-            _observable.OnError(new HttpRequestException("Response status code does not indicate success: 401 (Unauthorized)."));
-            refreshObservable.OnError(new HttpRequestException("Response status code does not indicate success: 400 (Bad Request)."));
+            var createUnauthorizedException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            createUnauthorizedException.Wait();
+            var createBadRequestException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
+            createBadRequestException.Wait();
+
+            _observable.OnError(createUnauthorizedException.Result);
+            refreshObservable.OnError(createBadRequestException.Result);
 
             _mockSessionManager.Verify(m => m.LogOut(), Times.Once);
         }
