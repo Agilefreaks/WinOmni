@@ -1,12 +1,13 @@
 ﻿namespace OmniApi
 {
     using System;
-    using System.Net.Http;
+    using System.Net;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
+    using Refit;
 
     public class AuthorizationObserver
     {
@@ -88,17 +89,17 @@
                     });
         }
 
-        private HttpRequestException GetHttpRequestExceptions(Exception exception)
+        private ApiException GetApiException(Exception exception)
         {
-            HttpRequestException result = null;
+            ApiException result = null;
 
-            if (exception is HttpRequestException)
+            if (exception is ApiException)
             {
-                result = exception as HttpRequestException;
+                result = exception as ApiException;
             }
-            else if (exception is AggregateException && exception.InnerException is HttpRequestException)
+            else if (exception is AggregateException && exception.InnerException is ApiException)
             {
-                result = exception.InnerException as HttpRequestException;
+                result = exception.InnerException as ApiException;
             }
 
             return result;
@@ -106,17 +107,16 @@
 
         private bool IsUnauthorized(Exception exception)
         {
-            exception = GetHttpRequestExceptions(exception);
+            var apiException = GetApiException(exception);
 
-            //  TODO: dumb, but we need the HttpResponseMessage to get the code http://stackoverflow.com/questions/22217619/how-do-i-get-statuscode-from-httprequestexception
-            return exception != null && exception.Message == "Response status code does not indicate success: 401 (Unauthorized).";
+            return apiException != null && apiException.StatusCode == HttpStatusCode.Unauthorized;
         }
 
         private bool IsBadRequest(Exception exception)
         {
-            exception = GetHttpRequestExceptions(exception);
-            
-            return exception != null && exception.Message == "Response status code does not indicate success: 400 (Bad Request).";
+            var apiException = GetApiException(exception);
+
+            return apiException != null && apiException.StatusCode == HttpStatusCode.BadRequest;
         }
 
         #endregion
