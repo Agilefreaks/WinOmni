@@ -23,7 +23,7 @@
 
         private Mock<IUserTokenViewModel> _mockUserTokenViewModel;
 
-        private IShellViewModel _subject;
+        private ShellViewModel _subject;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -45,7 +45,7 @@
 
             kernel.Bind<IShellViewModel>().To<ShellViewModel>();
 
-            _subject = kernel.Get<IShellViewModel>();
+            _subject = kernel.Get<ShellViewModel>();
         }
 
         [Test]
@@ -54,6 +54,14 @@
             _subject.Close();
 
             _mockContextViewModel.Verify(cvm => cvm.ShowBaloon("I am still running", "To open the window again, just click the icon."), Times.Once);
+        }
+
+        [Test]
+        public void Close_WithoutShowBaloonSetToFalse_WillNotCallContextMenuViewModelShowBaloon()
+        {
+            _subject.Close(false);
+
+            _mockContextViewModel.Verify(cvm => cvm.ShowBaloon(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
     }
 }

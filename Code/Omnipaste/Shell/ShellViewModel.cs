@@ -100,14 +100,17 @@
 
         #region Public Methods and Operators
 
-        public void Close()
+        public void Close(bool showBaloon = true)
         {
             if (_view != null)
             {
                 _view.Hide();
             }
 
-            ContextMenuViewModel.ShowBaloon("I am still running", "To open the window again, just click the icon.");
+            if (showBaloon)
+            {
+                ContextMenuViewModel.ShowBaloon("Running in the background", "Omnipaste is still running. To open the window again, double-click the icon.");
+            }
         }
 
         public void Closing(object sender, CancelEventArgs e)
@@ -144,6 +147,8 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
             Configure();
+            
+            Close(false);
         }
 
         private void Configure()
