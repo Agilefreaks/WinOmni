@@ -39,8 +39,8 @@
 
         public ShellViewModel(IEventAggregator eventAggregator, ISessionManager sessionManager)
         {
-            eventAggregator.Subscribe(this);
             EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
 
             sessionManager.SessionDestroyedObservable().Subscribe(eventArgs => Execute.OnUIThread(Configure));
 
@@ -102,7 +102,12 @@
 
         public void Close()
         {
-            _view.Hide();
+            if (_view != null)
+            {
+                _view.Hide();
+            }
+
+            ContextMenuViewModel.ShowBaloon("I am still running", "To open the window again, just click the icon.");
         }
 
         public void Closing(object sender, CancelEventArgs e)

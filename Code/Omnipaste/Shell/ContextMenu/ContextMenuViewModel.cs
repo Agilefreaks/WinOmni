@@ -10,10 +10,13 @@
     using Omni;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
+    using Omnipaste.Framework.Behaviours;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
         private IClickOnceHelper _clickOnceHelper;
+
+        private BaloonNotificationInfo _baloonInfo;
 
         #region Constructors and Destructors
 
@@ -57,6 +60,19 @@
 
         public bool IsStopped { get; set; }
 
+        public BaloonNotificationInfo BaloonInfo
+        {
+            get
+            {
+                return _baloonInfo;
+            }
+            set
+            {
+                _baloonInfo = value;
+                NotifyOfPropertyChange(() => BaloonInfo);
+            }
+        }
+
         public string TooltipText { get; set; }
 
         public IApplicationWrapper ApplicationWrapper { get; set; }
@@ -80,6 +96,15 @@
         public void Show()
         {
             EventAggregator.PublishOnUIThread(new ShowShellMessage());
+        }
+
+        public void ShowBaloon(string baloonTitle, string baloonMessage)
+        {
+            BaloonInfo = new BaloonNotificationInfo
+                         {
+                             Title = baloonTitle, 
+                             Message = baloonMessage
+                         };
         }
 
         public void ToggleAutoStart()
