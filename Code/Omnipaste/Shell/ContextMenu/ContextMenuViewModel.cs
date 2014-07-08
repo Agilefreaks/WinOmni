@@ -2,15 +2,18 @@
 {
     using System;
     using System.Deployment.Application;
+    using System.Drawing;
     using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
+    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Behaviours;
+    using OmniSync;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
@@ -20,6 +23,8 @@
 
         private IClickOnceHelper _clickOnceHelper;
 
+        private string _iconSource;
+
         #endregion
         
         #region Constructors and Destructors
@@ -27,6 +32,13 @@
         public ContextMenuViewModel(IOmniService omniService)
         {
             OmniService = omniService;
+            OmniService.StatusChangedObservable.Subscribe(
+                status => {
+                              IconSource = status == ServiceStatusEnum.Started 
+                                  ? "/Connected.ico" 
+                                  : "/Disconnected.ico";
+                },
+                exception => { });
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             if (ApplicationDeploymentHelper.IsClickOnceApplication)
@@ -36,7 +48,8 @@
             }
 
             TooltipText = "Omnipaste " + version;
-            IconSource = "/Icon.ico";
+            IconSource = "/Disconnected.ico";
+
             AutoStart = ClickOnceHelper.StartupShortcutExists();
         }
 
@@ -77,7 +90,18 @@
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
-        public string IconSource { get; set; }
+        public string IconSource
+        {
+            get
+            {
+                return _iconSource;
+            }
+            set
+            {
+                _iconSource = value;
+                NotifyOfPropertyChange(() => IconSource);
+            }
+        }
 
         public bool IsStopped { get; set; }
 

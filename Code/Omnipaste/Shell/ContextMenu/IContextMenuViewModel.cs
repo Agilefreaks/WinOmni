@@ -13,6 +13,8 @@
 
         bool IsStopped { get; set; }
 
+        string IconSource { get; set; }
+
         #endregion
 
         #region Public Methods and Operators

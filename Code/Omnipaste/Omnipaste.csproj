@@ -432,7 +432,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Icon.ico" />
+    <Resource Include="Disconnected.ico" />
     <Content Include="Uninstall.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -468,6 +468,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
+    <Resource Include="Connected.ico" />
     <Content Include="Settings\debug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
