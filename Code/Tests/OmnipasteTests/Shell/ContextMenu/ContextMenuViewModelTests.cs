@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using FluentAssertions;
@@ -12,6 +13,7 @@
     using OmniApi.Models;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
+    using OmniSync;
 
     [TestFixture]
     public class ContextMenuViewModelTests
@@ -28,6 +30,8 @@
 
         private IContextMenuViewModel _subject;
 
+        private Subject<ServiceStatusEnum> _statusChangedSubject;
+
         #endregion
 
         #region Public Methods and Operators
@@ -38,6 +42,8 @@
             _mockingKernel = new MoqMockingKernel();
 
             _mockOmniService = _mockingKernel.GetMock<IOmniService>();
+            _statusChangedSubject = new Subject<ServiceStatusEnum>();
+            _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockClickOnceHelper = _mockingKernel.GetMock<IClickOnceHelper>();
 
@@ -51,6 +57,28 @@
         public void Constructor_WhenStartupShortcutExists_SetsAutoStartToTrue()
         {
             _subject.AutoStart.Should().BeFalse();
+        }
+
+        [Test]
+        public void Constructor_SetsIconToDisconnected()
+        {
+            _subject.IconSource.Should().Be("/Disconnected.ico");
+        }
+
+        [Test]
+        public void OmniService_StatusChangedToStarted_SetsTheIconSourceToConnected()
+        {
+            _statusChangedSubject.OnNext(ServiceStatusEnum.Started);
+
+            _subject.IconSource.Should().Be("/Connected.ico");
+        }
+
+        [Test]
+        public void OmniService_StatusChangedToStopped_SetsTheIconSourceToDisconnected()
+        {
+            _statusChangedSubject.OnNext(ServiceStatusEnum.Stopped);
+
+            _subject.IconSource.Should().Be("/Disconnected.ico");
         }
 
         [Test]
