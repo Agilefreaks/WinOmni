@@ -9,7 +9,7 @@
             "BaloonInfo",
             typeof(BaloonNotificationInfo),
             typeof(ShowBubbleNotificationBehavior),
-            new FrameworkPropertyMetadata(new BaloonNotificationInfo(), OnBaloonTitlePropertyChanged));
+            new FrameworkPropertyMetadata(new BaloonNotificationInfo(), OnBaloonInfoPropertyChanged));
 
         public static BaloonNotificationInfo GetBaloonInfo(TaskbarIcon control)
         {
@@ -21,7 +21,7 @@
             control.SetValue(BaloonInfoProperty, value);
         }
 
-        private static void OnBaloonTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnBaloonInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var baloonNotificationInfo = e.NewValue as BaloonNotificationInfo;
             var taskbarIcon = d as TaskbarIcon;
