@@ -53,7 +53,7 @@
         {
             _subject.Close();
 
-            _mockContextViewModel.Verify(cvm => cvm.ShowBaloon("I am still running", "To open the window again, just click the icon."), Times.Once);
+            _mockContextViewModel.Verify(cvm => cvm.ShowBaloon(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
