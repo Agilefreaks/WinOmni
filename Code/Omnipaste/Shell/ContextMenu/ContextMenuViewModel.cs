@@ -20,8 +20,6 @@
 
         private IClickOnceHelper _clickOnceHelper;
 
-        private Visibility _visibility;
-
         #endregion
         
         #region Constructors and Destructors
@@ -40,15 +38,14 @@
             TooltipText = "Omnipaste " + version;
             IconSource = "/Icon.ico";
             AutoStart = ClickOnceHelper.StartupShortcutExists();
-
-            ApplicationWrapper = new ApplicationWrapper();
         }
 
         #endregion
 
         #region Public Properties
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
+        [Inject]
+        public IApplicationService ApplicationService { get; set; }
 
         public bool AutoStart { get; set; }
 
@@ -88,18 +85,7 @@
 
         public string TooltipText { get; set; }
 
-        public Visibility Visibility
-        {
-            get
-            {
-                return _visibility;
-            }
-            set
-            {
-                _visibility = value;
-                NotifyOfPropertyChange(() => Visibility);
-            }
-        }
+        public Visibility Visibility { get; set; }
 
         #endregion
 
@@ -107,8 +93,7 @@
 
         public void Exit()
         {
-            Visibility = Visibility.Collapsed;
-            ApplicationWrapper.ShutDown();
+            ApplicationService.ShutDown();
         }
 
         public void Show()

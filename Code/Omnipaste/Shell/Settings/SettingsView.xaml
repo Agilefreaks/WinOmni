@@ -3,22 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:Omnipaste.Shell.Settings"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="SettingsButtonTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" VerticalAlignment="Center" Margin="14,0,10.4,0.4">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <TextBlock Text="{Binding Path=(behaviours:MulticontentButton.Text), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button x:Name="LogOut">
-            <StackPanel Orientation="Horizontal">
-                <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" VerticalAlignment="Center">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_door_leave}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-                <TextBlock Text="Log Out" VerticalAlignment="Center"></TextBlock>
-            </StackPanel>
-        </Button>
+        <StackPanel Orientation="Vertical">
+            <Button x:Name="LogOut" behaviours:MulticontentButton.Text="Log out" Content="{StaticResource appbar_door_leave}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
+            <Button x:Name="Exit" behaviours:MulticontentButton.Text="Exit" Content="{StaticResource appbar_switch_off}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
+        </StackPanel>
     </Grid>
 </UserControl>

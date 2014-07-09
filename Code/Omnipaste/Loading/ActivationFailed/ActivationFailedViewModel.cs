@@ -12,7 +12,7 @@
 
         public ActivationFailedViewModel()
         {
-            ApplicationWrapper = new ApplicationWrapper();
+            ApplicationService = new ApplicationService();
         }
 
         #endregion
@@ -22,7 +22,7 @@
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
+        public IApplicationService ApplicationService { get; set; }
 
         #endregion
 
@@ -30,7 +30,7 @@
 
         public void Exit()
         {
-            ApplicationWrapper.ShutDown();
+            ApplicationService.ShutDown();
         }
 
         public void Retry()

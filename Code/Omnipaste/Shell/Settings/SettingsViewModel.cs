@@ -21,6 +21,9 @@
         [Inject]
         public ISessionManager SessionManager { get; set; }
 
+        [Inject]
+        public IApplicationService ApplicationService { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -32,7 +35,12 @@
             Close();
         }
 
-        #endregion
+        public void Exit()
+        {
+            ApplicationService.ShutDown();
+        }
+
+    #endregion
 
         #region Methods
 

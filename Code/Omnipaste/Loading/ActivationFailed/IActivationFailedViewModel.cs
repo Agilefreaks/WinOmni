@@ -10,7 +10,7 @@
 
         void Exit();
 
-        IApplicationWrapper ApplicationWrapper { get; set; }
+        IApplicationService ApplicationService { get; set; }
 
         [Inject]
         IEventAggregator EventAggregator { get; set; }
