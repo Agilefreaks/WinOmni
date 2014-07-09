@@ -63,6 +63,7 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
+            _kernel.Bind<IApplicationService>().To<ApplicationService>().InSingletonScope();
 
             _kernel.Bind(
                 configure =>

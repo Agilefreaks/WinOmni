@@ -23,7 +23,7 @@
         public UserTokenViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            ApplicationWrapper = new ApplicationWrapper();
+            ApplicationService = new ApplicationService();
         }
 
         #endregion
@@ -43,7 +43,7 @@
             }
         }
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
+        public IApplicationService ApplicationService { get; set; }
 
         public bool IsBusy
         {
@@ -102,7 +102,7 @@
 
         public void Exit()
         {
-            ApplicationWrapper.ShutDown();
+            ApplicationService.ShutDown();
         }
 
         #endregion

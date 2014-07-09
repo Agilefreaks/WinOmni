@@ -240,6 +240,7 @@
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
+    <Compile Include="Framework\Behaviours\MulticontentButtonBehavior.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
@@ -261,7 +262,7 @@
     <Compile Include="Dialog\DialogViewModel.cs" />
     <Compile Include="Dialog\IDialogViewModel.cs" />
     <Compile Include="EventAggregatorMessages\ShowShellMessage.cs" />
-    <Compile Include="Framework\ApplicationWrapper.cs" />
+    <Compile Include="Framework\ApplicationService.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
     <Compile Include="Framework\IDialogService.cs" />
@@ -301,7 +302,7 @@
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
-    <Compile Include="Framework\IApplicationWrapper.cs" />
+    <Compile Include="Framework\IApplicationService.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />

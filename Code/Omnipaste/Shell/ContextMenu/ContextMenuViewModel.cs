@@ -38,15 +38,14 @@
             TooltipText = "Omnipaste " + version;
             IconSource = "/Icon.ico";
             AutoStart = ClickOnceHelper.StartupShortcutExists();
-
-            ApplicationWrapper = new ApplicationWrapper();
         }
 
         #endregion
 
         #region Public Properties
 
-        public IApplicationWrapper ApplicationWrapper { get; set; }
+        [Inject]
+        public IApplicationService ApplicationService { get; set; }
 
         public bool AutoStart { get; set; }
 
@@ -94,7 +93,7 @@
 
         public void Exit()
         {
-            ApplicationWrapper.ShutDown();
+            ApplicationService.ShutDown();
         }
 
         public void Show()
