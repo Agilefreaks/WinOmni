@@ -2,7 +2,7 @@
 {
     using System.Windows.Threading;
 
-    public interface IApplicationWrapper
+    public interface IApplicationService
     {
         Dispatcher Dispatcher { get; }
 

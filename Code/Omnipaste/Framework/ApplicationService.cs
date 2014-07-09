@@ -3,7 +3,7 @@
     using System.Windows;
     using System.Windows.Threading;
 
-    public class ApplicationWrapper : IApplicationWrapper
+    public class ApplicationService : IApplicationService
     {
         public Dispatcher Dispatcher
         {

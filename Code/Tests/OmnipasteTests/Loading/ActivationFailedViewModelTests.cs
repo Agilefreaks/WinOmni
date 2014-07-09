@@ -14,13 +14,13 @@
     {
         private IActivationFailedViewModel _subject;
 
-        private Mock<IApplicationWrapper> _applicationWrapper;
+        private Mock<IApplicationService> _applicationWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _applicationWrapper = new Mock<IApplicationWrapper>();
-            _subject = new ActivationFailedViewModel { ApplicationWrapper = _applicationWrapper.Object };
+            _applicationWrapper = new Mock<IApplicationService>();
+            _subject = new ActivationFailedViewModel { ApplicationService = _applicationWrapper.Object };
         }
 
         [Test]
