@@ -63,6 +63,13 @@
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
+            
+            _kernel.Bind(
+                configure =>
+                    configure.FromThisAssembly()
+                        .Select(t => t.Name.EndsWith("Service"))
+                        .BindDefaultInterface()
+                        .Configure(c => c.InSingletonScope()));
 
             _kernel.Bind(
                 configure =>
@@ -78,13 +85,6 @@
                 configure.FromThisAssembly()
                     .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
                     .BindDefaultInterface());
-
-            _kernel.Bind(
-                configure =>
-                configure.FromThisAssembly()
-                    .Select(t => t.Name.EndsWith("Service"))
-                    .BindDefaultInterface()
-                    .Configure(c => c.InSingletonScope()));
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)
@@ -139,11 +139,12 @@
                 else
                 {
                     viewTypeName = modelType.FullName.Replace("Model", string.Empty);
-                    if (context != null)
-                    {
-                        viewTypeName = viewTypeName.Remove(viewTypeName.Length - 4, 4);
-                        viewTypeName = viewTypeName + "." + context;
-                    }
+                }
+
+                if (context != null)
+                {
+                    viewTypeName = viewTypeName.Remove(viewTypeName.Length - 4, 4);
+                    viewTypeName = viewTypeName + "." + context;
                 }
 
                 var viewType = (from assembly in AssemblySource.Instance

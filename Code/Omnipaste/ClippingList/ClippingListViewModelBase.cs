@@ -1,7 +1,9 @@
 namespace Omnipaste.ClippingList
 {
     using System;
+    using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Clipboard.Models;
@@ -10,17 +12,20 @@ namespace Omnipaste.ClippingList
 
     public abstract class ClippingListViewModelBase : Screen, IClippingListViewModel
     {
+        private ClippingListViewModelStatusEnum _status;
+
         #region Constructors and Destructors
 
         protected ClippingListViewModelBase(IObservable<Clipping> clippingsObservable)
         {
             Clippings = new LimitableBindableCollection<IClippingViewModel>(42);
-            
+            Clippings.CollectionChanged += ClippingsCollectionChanged;
+
             ClippingsObservable = clippingsObservable;
             ClippingsObservable
                 .Select(CreateViewModel)
                 .Subscribe(
-                    clippingViewModel => Clippings.Insert(0, clippingViewModel),
+                    clippingViewModel => Clippings.Insert(0, clippingViewModel), 
                     exception => Debugger.Break());
         }
 
@@ -35,6 +40,19 @@ namespace Omnipaste.ClippingList
         [Inject]
         public IKernel Kernel { get; set; }
 
+        public ClippingListViewModelStatusEnum Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
+                NotifyOfPropertyChange(() => Status);
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -45,6 +63,13 @@ namespace Omnipaste.ClippingList
             clippingViewModel.Model = clipping;
 
             return clippingViewModel;
+        }
+
+        private void ClippingsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Status = Clippings.Any() 
+                ? ClippingListViewModelStatusEnum.NotEmpty 
+                : ClippingListViewModelStatusEnum.Empty;
         }
 
         #endregion

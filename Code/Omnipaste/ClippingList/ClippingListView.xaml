@@ -6,54 +6,5 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
-    <UserControl.Resources>
-        <DataTemplate x:Key="ClippingTemplate">
-            <DataTemplate.Resources>
-                <Storyboard x:Key="OnMouseEnter">
-                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="rectangle">
-                        <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-                    </ObjectAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="rectangle">
-                        <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                        <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="5"/>
-                    </DoubleAnimationUsingKeyFrames>
-                </Storyboard>
-                <Storyboard x:Key="OnMouseLeave">
-                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="rectangle">
-                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}"/>
-                    </ObjectAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="rectangle">
-                        <SplineDoubleKeyFrame KeyTime="0" Value="5"/>
-                        <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0">
-                            <EasingDoubleKeyFrame.EasingFunction>
-                                <CircleEase EasingMode="EaseInOut"/>
-                            </EasingDoubleKeyFrame.EasingFunction>
-                        </EasingDoubleKeyFrame>
-                    </DoubleAnimationUsingKeyFrames>
-                </Storyboard>
-            </DataTemplate.Resources>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="0" x:Name="rectangle" Width="0" Fill="{StaticResource AccentColorBrush}" Visibility="Collapsed"/>
-                <ContentControl Grid.Column="1" cal:View.Model="{Binding}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
-            </Grid>
-            <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                    <BeginStoryboard x:Name="OnMouseEnter_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter}"/>
-                </EventTrigger>
-                <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                    <BeginStoryboard x:Name="OnMouseLeave_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave}"/>
-                </EventTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-
-    </UserControl.Resources>
-    <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" />
-        </ScrollViewer>
-    </Grid>
+    <ContentControl cal:View.Context="{Binding Path=Status}" cal:View.Model="{Binding}"></ContentControl>
 </UserControl>
