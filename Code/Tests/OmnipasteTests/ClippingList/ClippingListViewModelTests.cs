@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive.Subjects;
+    using Caliburn.Micro;
     using Clipboard.Models;
     using FluentAssertions;
     using Ninject;
@@ -32,7 +33,7 @@
         public void SetUp()
         {
             _mockingKernel = new MoqMockingKernel();
-            
+
             _fakeClippingSubject = new Subject<Clipping>();
             _mockingKernel.Bind<IObservable<Clipping>>().ToConstant(_fakeClippingSubject);
 
@@ -52,6 +53,7 @@
 
             _subject.Clippings.Count.Should().Be(1);
         }
+
         [Test]
         public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingAtTheStart()
         {
@@ -59,10 +61,37 @@
             _subject.Clippings.Add(_mockingKernel.Get<IClippingViewModel>());
             var expectedClippingViewModel = new ClippingViewModel(clipping);
             _mockingKernel.Bind<IClippingViewModel>().ToConstant(expectedClippingViewModel);
-            
+
             _fakeClippingSubject.OnNext(clipping);
 
             _subject.Clippings.First().Should().Be(expectedClippingViewModel);
+        }
+
+        [Test]
+
+        public void Clippings_WhenIsEmpty_StatusIsEmpty()
+        {
+            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
+        }
+
+        [Test]
+        public void Clippings_WhenNotEmpty_StatusIsNotEmpty()
+        {
+            var clipping = new Clipping();
+            _fakeClippingSubject.OnNext(clipping);
+
+            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.NotEmpty);
+        }
+
+        [Test]
+        public void Clippings_BecomesEmpty_StatusIsEmpty()
+        {
+            var clipping = new Clipping();
+            _fakeClippingSubject.OnNext(clipping);
+
+            _subject.Clippings.Clear();
+
+            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
         }
     }
 }

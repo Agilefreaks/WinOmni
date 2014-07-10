@@ -226,6 +226,7 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
+    <Compile Include="ClippingList\ClippingListViewModelStatusEnum.cs" />
     <Compile Include="ClippingList\LimitableBindableCollection.cs" />
     <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
@@ -318,8 +319,16 @@
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClippingList\ClippingList\Empty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClippingList\ClippingList\NotEmpty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClippingList\MasterClippingListView.xaml">
       <SubType>Designer</SubType>
