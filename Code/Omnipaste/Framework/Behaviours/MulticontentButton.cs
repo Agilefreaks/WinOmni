@@ -3,12 +3,12 @@
     using System.Windows;
     using System.Windows.Controls;
 
-    public static class MulticontentButtonBehavior
+    public static class MulticontentButton
     {
         public static readonly DependencyProperty TextProperty = DependencyProperty.RegisterAttached(
             "Text",
             typeof(string),
-            typeof(MulticontentButtonBehavior),
+            typeof(MulticontentButton),
             new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
 
         public static string GetText(Button control)
