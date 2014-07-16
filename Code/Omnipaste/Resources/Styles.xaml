@@ -2,10 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <!-- Colors -->
-  <Color x:Key="NotificationBackground">#FF305FBE</Color>
+  <Color x:Key="MainColor">#FF4E5CA9</Color>
+  <Color x:Key="NotificationBackground">#4E5CA9</Color>
   <Color x:Key="TextForegroundColor">White</Color>
 
   <!-- Brushes -->
+  <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{StaticResource MainColor}" />
+  <SolidColorBrush x:Key="MainColoBrush" Color="{StaticResource MainColor}" />
   <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}" />
   <SolidColorBrush x:Key="TextForegroundBrush" Color="{StaticResource TextForegroundColor}" />
 
