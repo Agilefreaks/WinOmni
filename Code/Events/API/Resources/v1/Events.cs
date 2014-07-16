@@ -14,7 +14,7 @@
         {
             #region Public Methods and Operators
 
-            [Get("/notifications")]
+            [Get("/events")]
             IObservable<Event> Last([Header("Authorization")] string token);
 
             #endregion

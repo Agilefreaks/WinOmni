@@ -20,6 +20,8 @@
 
         private IClickOnceHelper _clickOnceHelper;
 
+        private Visibility _visibility;
+
         #endregion
         
         #region Constructors and Destructors
@@ -86,7 +88,18 @@
 
         public string TooltipText { get; set; }
 
-        public Visibility Visibility { get; set; }
+        public Visibility Visibility
+        {
+            get
+            {
+                return _visibility;
+            }
+            set
+            {
+                _visibility = value;
+                NotifyOfPropertyChange(() => Visibility);
+            }
+        }
 
         #endregion
 
@@ -94,6 +107,7 @@
 
         public void Exit()
         {
+            Visibility = Visibility.Collapsed;
             ApplicationWrapper.ShutDown();
         }
 
