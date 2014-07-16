@@ -34,3 +34,4 @@ code/Omnipaste/omnipaste-setup.*
 
 !code/.nuget/nuget.exe
 !tools/*.exe
+!tools/AzCopy/*.exe
