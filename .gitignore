@@ -28,7 +28,9 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 code/packages/*
-!code/.nuget/nuget.exe
 code/deploy/*
 code/Omnipaste/Uninstall.*
 code/Omnipaste/omnipaste-setup.*
+
+!code/.nuget/nuget.exe
+!tools/*.exe
