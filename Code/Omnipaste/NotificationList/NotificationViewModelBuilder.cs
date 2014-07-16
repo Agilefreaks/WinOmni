@@ -14,7 +14,7 @@
         {
             INotificationViewModel viewModel;
 
-            if (clipping.Type == Clipping.ClippingTypeEnum.WebSite)
+            if (clipping.Type == Clipping.ClippingTypeEnum.Url)
             {
                 var model = new HyperlinkNotification { Title = "Incoming Link", Message = clipping.Content };
                 viewModel = new HyperlinkNotificationViewModel { Model = model };

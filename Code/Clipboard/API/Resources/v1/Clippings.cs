@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.API.Resources.v1
 {
     using System;
-    using WindowsImports;
     using Clipboard.Models;
     using OmniApi.Resources;
     using Refit;

@@ -13,7 +13,7 @@
         public enum ClippingTypeEnum
         {
             PhoneNumber,
-            WebSite,
+            Url,
             Address,
             Unknown
         }
@@ -52,7 +52,7 @@
         {
             get
             {
-                return Type == ClippingTypeEnum.WebSite || Uri.IsWellFormedUriString(Content, UriKind.Absolute);
+                return Type == ClippingTypeEnum.Url;
             }
         }
 
