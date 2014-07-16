@@ -18,8 +18,10 @@
         #region Public Methods and Operators
 
         [STAThread]
-        public static void Main()
+        public static int Main()
         {
+            var returnCode = 0;
+
             try
             {
                 bool createdNew;
@@ -37,7 +39,10 @@
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                returnCode = ex.HResult;
             }
+
+            return returnCode;
         }
 
         #endregion
