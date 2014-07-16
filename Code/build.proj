@@ -11,14 +11,14 @@
   	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
   	<Configuration>staging</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
-  	<InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
+  	<InstallUrl>http://download.omnipasteapp.com/staging/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(build_configuration)' == 'release' ">
   	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
   	<Configuration>release</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
-  	<InstallUrl>http://cdn.omnipasteapp.com/production/win/</InstallUrl>
+  	<InstallUrl>http://download.omnipasteapp.com/production/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup>

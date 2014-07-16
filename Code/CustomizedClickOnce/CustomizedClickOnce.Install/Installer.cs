@@ -12,15 +12,16 @@ namespace CustomizedClickOnce.Install
         private static Mutex _instanceMutex;
 
 #if STAGING
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
+        private const string ApplicationUrl = "http://download.omnipasteapp.com/staging/Omnipaste-staging.application?token={0}";
 #endif
 
 #if RELEASE
-        private static string applicationURL = "http://cdn.omnipasteapp.com/production/win/Omnipaste.application?token={0}";
+        private const string ApplicationUrl = "http://download.omnipasteapp.com/production/Omnipaste.application?token={0}";
 #endif
 
 #if DEBUG
-        private static string applicationURL = "http://cdn.omnipasteapp.com/staging/win/Omnipaste-staging.application?token={0}";
+        private const string ApplicationUrl = "http://localhost/Omnipaste-staging.application?token={0}";
+
 #endif
 
         /// <summary>
@@ -30,12 +31,12 @@ namespace CustomizedClickOnce.Install
         private static int Main()
         {           
             bool createdNew;
-
             _instanceMutex = new Mutex(
                 true, @"Local\" + Assembly.GetExecutingAssembly().GetType().GUID, out createdNew);
             if (createdNew)
             {
-                StartIEProcessWithActivationToken();
+                StartIeProcessWithActivationToken();
+                ReleaseMutex();
             }
             else
             {
@@ -45,12 +46,24 @@ namespace CustomizedClickOnce.Install
             return 0;
         }
 
-        private static void StartIEProcessWithActivationToken()
+        private static void ReleaseMutex()
+        {
+            if (_instanceMutex == null)
+            {
+                return;
+            }
+
+            _instanceMutex.ReleaseMutex();
+            _instanceMutex.Close();
+            _instanceMutex = null;
+        }
+
+        private static void StartIeProcessWithActivationToken()
         {
             var activationToken = GetActivationTokenFromFileName(Process.GetCurrentProcess().MainModule.FileName);
             if (!string.IsNullOrEmpty(activationToken))
             {
-                Process.Start("iexplore", string.Format(applicationURL, activationToken));
+                Process.Start("iexplore", string.Format(ApplicationUrl, activationToken));
             }
         }
 
