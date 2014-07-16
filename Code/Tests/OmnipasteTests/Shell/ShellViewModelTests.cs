@@ -7,8 +7,6 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
-    using Omnipaste.Dialog;
-    using Omnipaste.Loading.UserToken;
     using Omnipaste.Shell;
     using Omnipaste.Shell.ContextMenu;
 
@@ -19,13 +17,7 @@
 
         private Mock<IContextMenuViewModel> _mockContextViewModel;
 
-        private Mock<IDialogViewModel> _mockDialogViewModel;
-
-        private Mock<IUserTokenViewModel> _mockUserTokenViewModel;
-
         private ShellViewModel _subject;
-
-        private Mock<IEventAggregator> _mockEventAggregator;
 
         private Mock<ISessionManager> _mockSessionManager;
 
@@ -36,8 +28,6 @@
         {
             var kernel = new MoqMockingKernel();
 
-            _mockDialogViewModel = kernel.GetMock<IDialogViewModel>();
-            _mockUserTokenViewModel = kernel.GetMock<IUserTokenViewModel>();
             _mockContextViewModel = kernel.GetMock<IContextMenuViewModel>();
             kernel.Bind<IEventAggregator>().ToMock();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };

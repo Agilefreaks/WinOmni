@@ -17,7 +17,7 @@
 
         private ISubject<OmniMessage> _subject;
 
-        private WampClientConnectionMonitor<JToken> _monitor;
+        private IWampClientConnectionMonitor _monitor;
 
         private IObservable<WebsocketConnectionStatusEnum> _connectionObservable;
 
@@ -69,6 +69,7 @@
                 .Select(
                     result =>
                         {
+                            _monitor = Channel.GetMonitor();
                             var registrationId = Channel.GetMonitor().SessionId;
                             _subject = Channel.GetSubject<OmniMessage>(registrationId);
                             return registrationId;
