@@ -18,7 +18,7 @@
   	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
   	<Configuration>release</Configuration>
   	<PublishUrl>..\deploy</PublishUrl>
-  	<InstallUrl>http://download.omnipasteapp.com/production/</InstallUrl>
+  	<InstallUrl>http://download.omnipasteapp.com/release/</InstallUrl>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -43,12 +43,12 @@
       <RevisionUnderscores>$(Revision.Replace(".", "_"))</RevisionUnderscores>
     </PropertyGroup>
 
-    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\Omnipaste-$(build_configuration)_$(RevisionUnderscores)\Omnipaste-$(build_configuration).exe"' />
+    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe"' />
 
     <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\OmnipasteSetup.exe"' />
 
-    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\Omnipaste-$(build_configuration)_$(RevisionUnderscores)\Omnipaste-$(build_configuration).exe.manifest" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode' />
+    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode' />
 
-    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\Omnipaste-$(build_configuration).application" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode -appmanifest "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\Omnipaste-$(build_configuration)_$(RevisionUnderscores)\Omnipaste-$(build_configuration).exe.manifest"' />
+    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\$(PublishAssemblyName).application" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode -appmanifest "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest"' />
   </Target>
 </Project>
