@@ -16,7 +16,7 @@ namespace CustomizedClickOnce.Install
 #endif
 
 #if RELEASE
-        private const string ApplicationUrl = "http://download.omnipasteapp.com/production/Omnipaste.application?token={0}";
+        private const string ApplicationUrl = "http://download.omnipasteapp.com/release/Omnipaste.application?token={0}";
 #endif
 
 #if DEBUG
