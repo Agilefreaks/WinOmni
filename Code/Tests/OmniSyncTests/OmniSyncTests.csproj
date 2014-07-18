@@ -89,7 +89,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\WampSharp.0.65-alpha\lib\net45\WampSharp.dll</HintPath>
+      <HintPath>..\..\packages\WampSharp.0.70-alpha\lib\net45\WampSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

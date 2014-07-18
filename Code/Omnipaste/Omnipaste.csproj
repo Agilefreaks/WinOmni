@@ -204,15 +204,15 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WampSharp.0.65-alpha\lib\net45\WampSharp.dll</HintPath>
+      <HintPath>..\packages\WampSharp.0.70-alpha\lib\net45\WampSharp.dll</HintPath>
     </Reference>
-    <Reference Include="WampSharp.Default">
-      <HintPath>..\packages\WampSharp.Default.0.43-alpha\lib\net45\WampSharp.Default.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WampSharp.Default, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WampSharp.Default.0.70-alpha\lib\net45\WampSharp.Default.dll</HintPath>
     </Reference>
-    <Reference Include="WebSocket4Net">
-      <HintPath>..\packages\WebSocket4Net.0.9\lib\net45\WebSocket4Net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WebSocket4Net, Version=0.9.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\WebSocket4Net\WebSocket4Net.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
