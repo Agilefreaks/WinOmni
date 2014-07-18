@@ -24,8 +24,6 @@
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
-        private IWebsocketConnection _websocketConnection;
-
         private IDisposable _websocketConnectionObserver;
 
         #endregion
@@ -39,7 +37,7 @@
             WebsocketConnectionFactory = websocketConnectionFactory;
             _configurationService = configurationService;
 
-            _retryConnectionTimer.Elapsed += Reconnect;
+            _retryConnectionTimer.Elapsed += (sender, args) => Start().Subscribe();
 
             _statusChanged =
                 Observable.FromEventPattern<ServiceStatusEventArgs>(
@@ -89,30 +87,7 @@
 
         #region Properties
 
-        private IWebsocketConnection WebsocketConnection
-        {
-            get
-            {
-                return _websocketConnection;
-            }
-            set
-            {
-                if (_websocketConnectionObserver != null)
-                {
-                    _websocketConnectionObserver.Dispose();
-                }
-
-                _websocketConnection = value;
-
-                if (_websocketConnection != null)
-                {
-                    _websocketConnectionObserver =
-                        _websocketConnection.Where<WebsocketConnectionStatusEnum>(
-                            x => x == WebsocketConnectionStatusEnum.Disconnected)
-                            .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost());
-                }
-            }
-        }
+        private IWebsocketConnection WebsocketConnection { get; set; }
 
         #endregion
 
@@ -130,11 +105,14 @@
                     .SelectMany(d => ActivateDevice(registrationId, d.Identifier)
                         .Select(
                             device =>
-                                {
-                                    Status = ServiceStatusEnum.Started;
-                                    StartHandlers();
-                                    return device;
-                                })));
+                            {
+                                _retryConnectionTimer.Stop();
+                                Status = ServiceStatusEnum.Started;
+
+                                RegisterConnectionObserver();
+                                StartHandlers();
+                                return device;
+                            })));
         }
 
         public void Stop(bool unsubscribeHandlers = true)
@@ -170,27 +148,6 @@
             return WebsocketConnection.Connect();
         }
 
-        private void OnWebsocketConnectionLost()
-        {
-            if (Status == ServiceStatusEnum.Started)
-            {
-                Status = ServiceStatusEnum.Reconnecting;
-                _retryConnectionTimer.Start();
-            }
-
-            Stop(false);
-        }
-
-        private async void Reconnect(object sender, ElapsedEventArgs e)
-        {
-            await Start();
-
-            if (Status == ServiceStatusEnum.Started)
-            {
-                _retryConnectionTimer.Stop();
-            }
-        }
-
         private IObservable<Device> RegisterDevice()
         {
             var deviceIdentifier = _configurationService.DeviceIdentifier;
@@ -202,6 +159,30 @@
         private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
             return Devices.Activate(registrationId, deviceIdentifier);
+        }
+
+        private void OnWebsocketConnectionLost()
+        {
+            if (Status == ServiceStatusEnum.Started)
+            {
+                Status = ServiceStatusEnum.Reconnecting;
+                _retryConnectionTimer.Start();
+            }
+
+            Stop(false);
+        }
+
+        private void RegisterConnectionObserver()
+        {
+            if (_websocketConnectionObserver != null)
+            {
+                _websocketConnectionObserver.Dispose();
+            }
+
+            _websocketConnectionObserver =
+                WebsocketConnection.Where<WebsocketConnectionStatusEnum>(
+                    x => x == WebsocketConnectionStatusEnum.Disconnected)
+                    .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost());
         }
 
         private void StartHandlers()
