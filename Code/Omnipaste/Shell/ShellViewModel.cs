@@ -147,8 +147,10 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
             Configure();
-            
+
+#if !DEBUG
             Close(false);
+#endif
         }
 
         private void Configure()
