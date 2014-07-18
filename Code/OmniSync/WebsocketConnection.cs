@@ -15,9 +15,9 @@
 
         private readonly IWampChannel<JToken> _channel;
 
-        private ISubject<OmniMessage> _subject;
+        private readonly IWampClientConnectionMonitor _monitor;
 
-        private IWampClientConnectionMonitor _monitor;
+        private ISubject<OmniMessage> _subject;
 
         private IObservable<WebsocketConnectionStatusEnum> _connectionObservable;
 
@@ -28,6 +28,7 @@
         public WebsocketConnection(IWampChannel<JToken> channel)
         {
             _channel = channel;
+            _monitor = Channel.GetMonitor();
         }
 
         #endregion
@@ -69,8 +70,13 @@
                 .Select(
                     result =>
                         {
-                            _monitor = Channel.GetMonitor();
-                            var registrationId = Channel.GetMonitor().SessionId;
+                            var registrationId = _monitor.SessionId;
+
+                            if (registrationId == null)
+                            {
+                                throw new Exception("Could not connect to sync server.");
+                            }
+
                             _subject = Channel.GetSubject<OmniMessage>(registrationId);
                             return registrationId;
                         });

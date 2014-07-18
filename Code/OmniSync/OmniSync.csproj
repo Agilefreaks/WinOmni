@@ -94,11 +94,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WampSharp.0.70-alpha\lib\net45\WampSharp.dll</HintPath>
+      <HintPath>..\..\Libs\WampSharp\WampSharp.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.Default, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WampSharp.Default.0.70-alpha\lib\net45\WampSharp.Default.dll</HintPath>
+      <HintPath>..\..\Libs\WampSharp\WampSharp.Default.dll</HintPath>
     </Reference>
     <Reference Include="WebSocket4Net, Version=0.9.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
