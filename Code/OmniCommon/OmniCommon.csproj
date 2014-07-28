@@ -94,7 +94,9 @@
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
     <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />

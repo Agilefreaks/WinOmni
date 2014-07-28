@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Loading.ActivationFailed
 {
-    using System;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
