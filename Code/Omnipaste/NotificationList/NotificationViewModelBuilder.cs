@@ -21,7 +21,7 @@
             }
             else
             {
-                var model = new ClippingNotification { Title = "New clipping", Message = clipping.Content };
+                var model = new ClippingNotification { Title = "Incoming SMS", Message = clipping.Content };
                 viewModel = new ClippingNotificationViewModel { Model = model };
             }
 
