@@ -1,6 +1,7 @@
 ﻿namespace Clipboard.Handlers.WindowsClipboard
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reactive.Linq;
     using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@
         {
             _clippingEventsStream =
                 Observable.FromEventPattern<ClipboardEventArgs>(x => DataReceived += x, x => DataReceived -= x)
-                    .Throttle(TimeSpan.FromMilliseconds(50))
+                    .DistinctUntilChanged(ep => ep.EventArgs.Data) 
                     .Select(x => x.EventArgs);
         }
 

@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
+    using Omnipaste.Framework;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]
@@ -14,13 +15,19 @@
 
         private Mock<ISessionManager> _mockSessionManager;
 
+        private Mock<IApplicationService> _mockApplicationWrapper;
+
         [SetUp]
         public void SetUp()
         {
             _mockSessionManager = new Mock<ISessionManager>();
+            _mockApplicationWrapper = new Mock<IApplicationService>();
 
-            _subject = new SettingsViewModel { SessionManager = _mockSessionManager.Object };
-
+            _subject = new SettingsViewModel
+                       {
+                           SessionManager = _mockSessionManager.Object,
+                           ApplicationService = _mockApplicationWrapper.Object
+                       };
         }
 
         [Test]
@@ -51,6 +58,14 @@
             _subject.LogOut();
 
             _subject.IsOpen.Should().BeFalse();
+        }
+
+        [Test]
+        public void Exit_CallsApplicationShutdown()
+        {
+            _subject.Exit();
+
+            _mockApplicationWrapper.Verify(aw => aw.ShutDown(), Times.Once);
         }
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive.Subjects;
-    using Caliburn.Micro;
     using Clipboard.Models;
     using FluentAssertions;
     using Ninject;
