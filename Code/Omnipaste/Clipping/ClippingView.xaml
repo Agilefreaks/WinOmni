@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:models="clr-namespace:Clipboard.Models;assembly=Clipboard"
-             mc:Ignorable="d" 
+             xmlns:clipping="clr-namespace:Omnipaste.Clipping"
+             mc:Ignorable="d" MaxHeight="60"
              d:DesignHeight="300" d:DesignWidth="300" >
+    <UserControl.Resources>
+        <clipping:LimitedStringConverter x:Key="LimitedStringConverter" />
+    </UserControl.Resources>
     <Grid x:Name="ContentGrid" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -34,7 +38,8 @@
             </Rectangle>
         </Button>
 
-        <TextBlock Grid.Column="1" Text="{Binding Path=Content}" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <TextBlock VirtualizingPanel.IsVirtualizing="True"  Grid.Column="1" Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                   HorizontalAlignment="Stretch" />
 
         <Button x:Name="OpenLink" Grid.Column="2" Width="50" Height="50" Margin="6" VerticalAlignment="Center" Background="Transparent">
             <Button.Style>
