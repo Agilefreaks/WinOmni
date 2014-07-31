@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Deployment.Application;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Windows;
@@ -100,14 +101,14 @@
 
         #region Public Methods and Operators
 
-        public void Close(bool showBaloon = true)
+        public void Close()
         {
             if (_view != null)
             {
                 _view.Hide();
             }
 
-            if (showBaloon)
+            if (ApplicationDeploymentHelper.IsClickOnceApplication && ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
                 ContextMenuViewModel.ShowBaloon("Running in the background", "Omnipaste is still running. To open the window again, double-click the icon.");
             }
@@ -149,7 +150,10 @@
             Configure();
 
 #if !DEBUG
-            Close(false);
+            if (ApplicationDeploymentHelper.IsClickOnceApplication && !ApplicationDeployment.CurrentDeployment.IsFirstRun)
+            {
+                Close();
+            }
 #endif
         }
 

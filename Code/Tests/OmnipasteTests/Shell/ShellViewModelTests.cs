@@ -37,21 +37,5 @@
 
             _subject = kernel.Get<ShellViewModel>();
         }
-
-        [Test]
-        public void Close_CallsContextMenuViewModelToShowNotificationBubble()
-        {
-            _subject.Close();
-
-            _mockContextViewModel.Verify(cvm => cvm.ShowBaloon(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [Test]
-        public void Close_WithoutShowBaloonSetToFalse_WillNotCallContextMenuViewModelShowBaloon()
-        {
-            _subject.Close(false);
-
-            _mockContextViewModel.Verify(cvm => cvm.ShowBaloon(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
-        }
     }
 }

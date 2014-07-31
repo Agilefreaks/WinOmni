@@ -17,6 +17,6 @@
 
         void Show();
 
-        void Close(bool showBaloon);
+        void Close();
     }
 }
