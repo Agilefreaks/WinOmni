@@ -2,14 +2,12 @@
 {
     using System;
     using System.Deployment.Application;
-    using System.Drawing;
     using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
     using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
-    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Behaviours;
@@ -32,7 +30,7 @@
         public ContextMenuViewModel(IOmniService omniService)
         {
             OmniService = omniService;
-            OmniService.StatusChangedObservable.Subscribe(
+            OmniService.Subscribe(
                 status => {
                               IconSource = status == ServiceStatusEnum.Started 
                                   ? "/Connected.ico" 
