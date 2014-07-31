@@ -4,7 +4,7 @@
     using OmniApi.Models;
     using OmniSync;
 
-    public interface IOmniService
+    public interface IOmniService : IObservable<ServiceStatusEnum>
     {
         #region Public Events
 
@@ -15,8 +15,6 @@
         #region Public Properties
 
         ServiceStatusEnum Status { get; }
-
-        IObservable<ServiceStatusEnum> StatusChangedObservable { get; }
 
         #endregion
 

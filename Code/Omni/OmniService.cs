@@ -20,7 +20,7 @@
 
         private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
 
-        protected readonly IObservable<ServiceStatusEnum> _statusChanged;
+        private readonly IObservable<ServiceStatusEnum> _statusChanged;
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
@@ -83,14 +83,6 @@
 
         public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
 
-        public IObservable<ServiceStatusEnum> StatusChangedObservable
-        {
-            get
-            {
-                return _statusChanged;
-            }
-        }
-
         #endregion
 
         #region Properties
@@ -139,6 +131,11 @@
             }
 
             Status = ServiceStatusEnum.Stopped;
+        }
+
+        public IDisposable Subscribe(IObserver<ServiceStatusEnum> observer)
+        {
+            return _statusChanged.Subscribe(observer);
         }
 
         #endregion

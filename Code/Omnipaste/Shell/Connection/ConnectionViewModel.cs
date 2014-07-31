@@ -90,7 +90,7 @@
 
                 _omniService = value;
 
-                _omniServiceStatusObserver = _omniService.StatusChangedObservable.Subscribe(
+                _omniServiceStatusObserver = _omniService.Subscribe(
                     x =>
                         {
                             NotifyOfPropertyChange(() => CanConnect);
