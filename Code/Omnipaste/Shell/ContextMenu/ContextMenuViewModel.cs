@@ -30,7 +30,7 @@
         public ContextMenuViewModel(IOmniService omniService)
         {
             OmniService = omniService;
-            OmniService.Subscribe(
+            OmniService.StatusChangedObservable.Subscribe(
                 status => {
                               IconSource = status == ServiceStatusEnum.Started 
                                   ? "/Connected.ico" 
