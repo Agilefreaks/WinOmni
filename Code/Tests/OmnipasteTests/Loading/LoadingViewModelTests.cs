@@ -8,6 +8,7 @@
     using Omnipaste.Dialog;
     using Omnipaste.Loading;
     using Omnipaste.Loading.ActivationFailed;
+    using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.UserToken;
 
     [TestFixture]
@@ -21,16 +22,20 @@
 
         private Mock<IActivationFailedViewModel> _mockActivationFailedViewModel;
 
+        private Mock<IAndroidInstallGuideViewModel> _mockAndroidInstallGuideViewModel;
+
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
             _mockUserTokenViewModel = new Mock<IUserTokenViewModel>();
             _mockActivationFailedViewModel = new Mock<IActivationFailedViewModel>();
+            _mockAndroidInstallGuideViewModel = new Mock<IAndroidInstallGuideViewModel>();
             _subject = new LoadingViewModel(_eventAggregator)
                            {
                                UserTokenViewModel = _mockUserTokenViewModel.Object,
-                               ActivationFailedViewModel = _mockActivationFailedViewModel.Object
+                               ActivationFailedViewModel = _mockActivationFailedViewModel.Object,
+                               AndroidInstallGuideViewModel = _mockAndroidInstallGuideViewModel.Object
                            };
             var parent = new DialogViewModel();
             parent.ActivateItem(_subject);
@@ -76,6 +81,15 @@
             _subject.State = LoadingViewModelStateEnum.Other;
 
             changedProperty.Should().Be("State");
+        }
+
+        [Test]
+        public void Handle_ShowAndroidInstallGuide_SetsStateToOther()
+        {
+            _eventAggregator.PublishOnCurrentThread(new ShowAndroidInstallGuideMessage());
+
+            _subject.State.Should().Be(LoadingViewModelStateEnum.Other);
+            _subject.ActiveItem.Should().Be(_mockAndroidInstallGuideViewModel.Object);
         }
     }
 }

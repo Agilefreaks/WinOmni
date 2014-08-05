@@ -1,10 +1,10 @@
 ﻿namespace Omnipaste.Loading
 {
     using Caliburn.Micro;
-    using Castle.Components.DictionaryAdapter.Xml;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Loading.ActivationFailed;
+    using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.UserToken;
 
     public class LoadingViewModel : Conductor<IScreen>.Collection.OneActive, ILoadingViewModel
@@ -48,6 +48,9 @@
         [Inject]
         public IUserTokenViewModel UserTokenViewModel { get; set; }
 
+        [Inject]
+        public IAndroidInstallGuideViewModel AndroidInstallGuideViewModel { get; set; }
+
         public ILoadingViewModel Loading()
         {
             State = LoadingViewModelStateEnum.Loading;
@@ -79,6 +82,12 @@
         {
             ActiveItem = ActivationFailedViewModel;
 
+            State = LoadingViewModelStateEnum.Other;
+        }
+
+        public void Handle(ShowAndroidInstallGuideMessage message)
+        {
+            ActiveItem = AndroidInstallGuideViewModel;
             State = LoadingViewModelStateEnum.Other;
         }
 
