@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Omnipaste.Loading.AndroidInstallGuide.AndroidInstallGuideView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center">Great! Omnipaste installed successfully.</Label>
+            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center">Now, get Omnipaste for your other devices.</Label>
+            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center">We've sent you an installation email.</Label>
+            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center">Open the email from the devices you want and follow instructions.</Label>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Button Content="Okay, got it" cal:Message.Attach="Ok"></Button>
+            <TextBlock>
+            <Hyperlink>Resend email</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

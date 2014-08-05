@@ -124,12 +124,27 @@
         }
 
         [Test]
-        public void StartOmniService_Success_ShouldBeFinish()
+        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
         {
             _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<Finished>();
+                .Be<VerifyNumberOfDevices>();
         }
 
+        [Test]
+        public void VerifyNumberOfDevices_OnSuccess_ShouldBeAndroidInstallGuide()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<AndroidInstallGuide>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Finished>();
+        }
     }
 }

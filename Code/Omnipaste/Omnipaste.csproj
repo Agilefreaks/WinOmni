@@ -247,6 +247,8 @@
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
+    <Compile Include="Loading\AndroidInstallGuide\AndroidInstallGuideViewModel.cs" />
+    <Compile Include="Loading\AndroidInstallGuide\IAndroidInstallGuideViewModel.cs" />
     <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
@@ -255,6 +257,8 @@
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
     <Compile Include="Notification\Models\NotificationBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -343,6 +347,10 @@
     <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
