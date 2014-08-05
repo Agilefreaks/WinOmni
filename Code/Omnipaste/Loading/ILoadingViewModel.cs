@@ -4,7 +4,7 @@
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Loading.UserToken;
 
-    public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>, IHandle<ActivationFailedMessage>, IHandle<ShowAndroidInstallGuideMessage>
+    public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>, IHandle<ActivationFailedMessage>, IHandle<ShowAndroidInstallGuideMessage>, IHandle<AndroidInstallationCompleteMessage>
     {
         LoadingViewModelStateEnum State { get; set; }
 

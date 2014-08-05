@@ -81,7 +81,6 @@
         public void Handle(ActivationFailedMessage activationFailedMessage)
         {
             ActiveItem = ActivationFailedViewModel;
-
             State = LoadingViewModelStateEnum.Other;
         }
 
@@ -89,6 +88,12 @@
         {
             ActiveItem = AndroidInstallGuideViewModel;
             State = LoadingViewModelStateEnum.Other;
+        }
+
+        public void Handle(AndroidInstallationCompleteMessage message)
+        {
+            AndroidInstallGuideViewModel.Deactivate(true);
+            State = LoadingViewModelStateEnum.Loading;
         }
 
         #endregion

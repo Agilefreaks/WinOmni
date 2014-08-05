@@ -18,6 +18,7 @@
         public AndroidInstallGuide(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
             _synchronizationSubject = new Subject<IExecuteResult>();
         }
 
@@ -43,6 +44,7 @@
         public void Handle(AndroidInstallationCompleteMessage message)
         {
             _synchronizationSubject.OnNext(new ExecuteResult(SimpleStepStateEnum.Successful));
+            _synchronizationSubject.OnCompleted();
         }
     }
 }
