@@ -124,9 +124,17 @@
         }
 
         [Test]
-        public void StartOmniService_Success_ShouldBeFinish()
+        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
         {
             _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifyNumberOfDevices>();
+        }
+
+        [Test]
+        public void AndroidInstallGuide_OnSuccess_ShouldBeFinished()
+        {
+            _subject.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<Finished>();
         }

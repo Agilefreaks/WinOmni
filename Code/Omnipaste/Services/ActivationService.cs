@@ -34,7 +34,8 @@
                 .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
-                .RegisterTransition<StartOmniService, Finished, Failed>()
+                .RegisterTransition<StartOmniService, VerifyNumberOfDevices, Failed>()
+                .RegisterTransition<VerifyNumberOfDevices, Finished, Failed>()
                 .Build();
         }
 

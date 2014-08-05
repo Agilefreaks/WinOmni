@@ -27,12 +27,6 @@
 
         #endregion
 
-        #region Public Properties
-
-        public Action<TokenRequestResultMessage> OnTokenRequestResultAction { get; set; }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public override IObservable<IExecuteResult> Execute()
