@@ -16,5 +16,10 @@ namespace Omnipaste.ClippingList
 
         [Inject]
         public ILocalClippingListViewModel LocalClippingListViewModel { get; set; }
+
+        public MasterClippingListViewModel()
+        {
+            DisplayName = "Clippings";
+        }
     }
 }

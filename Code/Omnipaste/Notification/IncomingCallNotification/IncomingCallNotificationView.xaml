@@ -11,6 +11,6 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="End Call" x:Name="EndCall" />
-        <Button Grid.Column="1" Content="Send Text" />
+        <Button Grid.Column="1" Content="Send Text" x:Name="ReplyWithSms"/>
     </Grid>
 </UserControl>
