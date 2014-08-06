@@ -1,0 +1,12 @@
+﻿namespace Omnipaste.Notification.IncomingCallNotification
+{
+    using Omnipaste.Notification.Models;
+<<<<<<< HEAD
+
+=======
+>>>>>>> implemented Phones API that is used from the IncomingCall notification to dismiss an incoming call
+    public interface IIncomingCallNotificationViewModel : INotificationViewModel
+    {
+        IncomingCallNotification Model { get; set; }
+    }
+}

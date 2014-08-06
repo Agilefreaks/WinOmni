@@ -1,0 +1,52 @@
+﻿namespace OmniApi.Resources.v1
+{
+    using System;
+    using OmniApi.Models;
+    using Refit;
+
+    public class Phones : Resource<Phones.IPhonesApi>, IPhones
+    {
+<<<<<<< HEAD
+        #region Interfaces
+=======
+>>>>>>> implemented Phones API that is used from the IncomingCall notification to dismiss an incoming call
+
+        [ColdObservable]
+        public interface IPhonesApi
+        {
+<<<<<<< HEAD
+            #region Public Methods and Operators
+
+            [Post("/phones/end_call")]
+            IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public IObservable<EmptyModel> EndCall()
+        {
+            return Authorize(ResourceApi.EndCall(AccessToken));
+        }
+
+        #endregion
+=======
+            [Post("/phones/end_call")]
+            IObservable<Phone> EndCall([Header("Authorization")] string token);
+        }
+
+        public IObservable<Phone> EndCall()
+        {
+            return Authorize(ResourceApi.EndCall(AccessToken));
+        }
+    }
+
+    public interface IPhones
+    {
+        IObservable<Phone> EndCall();
+>>>>>>> implemented Phones API that is used from the IncomingCall notification to dismiss an incoming call
+    }
+}

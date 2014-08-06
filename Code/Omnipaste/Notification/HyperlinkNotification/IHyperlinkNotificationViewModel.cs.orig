@@ -1,0 +1,17 @@
+﻿namespace Omnipaste.Notification.HyperlinkNotification
+{
+    using Omnipaste.Notification.Models;
+
+    public interface IHyperlinkNotificationViewModel : INotificationViewModel
+    {
+<<<<<<< HEAD
+        HyperlinkNotification Model { get; set; }
+
+        void OpenLink();
+=======
+        void OpenLink();
+
+        HyperlinkNotification Model { get; set; }
+>>>>>>> implemented Phones API that is used from the IncomingCall notification to dismiss an incoming call
+    }
+}
