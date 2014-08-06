@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.NotificationList
 {
     using Events.Models;
+    using Ninject;
+    using OmniApi.Resources.v1;
     using Omnipaste.Notification;
     using Clipboard.Models;
     using Omnipaste.Notification.ClippingNotification;
@@ -8,16 +10,22 @@
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.Models;
 
-    public class NotificationViewModelBuilder
+    public class NotificationViewModelFactory : INotificationViewModelFactory
     {
-        public static INotificationViewModel Build(Clipping clipping)
+        [Inject]
+        public IKernel Kernel { get; set; }
+
+        public INotificationViewModel Create(Clipping clipping)
         {
             INotificationViewModel viewModel;
 
             if (clipping.Type == Clipping.ClippingTypeEnum.Url)
             {
                 var model = new HyperlinkNotification { Title = "Incoming Link", Message = clipping.Content };
-                viewModel = new HyperlinkNotificationViewModel { Model = model };
+                var hyperlinkNotificationViewModel = Kernel.Get<IHyperlinkNotificationViewModel>();
+                hyperlinkNotificationViewModel.Model = model;
+
+                viewModel = hyperlinkNotificationViewModel;
             }
             else
             {
@@ -28,13 +36,16 @@
             return viewModel;
         }
 
-        public static INotificationViewModel Build(Event @event)
+        public INotificationViewModel Create(Event @event)
         {
             var model = new IncomingCallNotification
                         {
                             Title = string.Concat("Incoming call from ", @event.phone_number)
                         };
-            return new IncomingCallNotificationViewModel { Model = model };
+            var viewModel = Kernel.Get<IIncomingCallNotificationViewModel>();
+            viewModel.Model = model;
+
+            return viewModel;
         }
     }
 }

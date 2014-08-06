@@ -17,6 +17,7 @@
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Attributes;
+    using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Settings;
@@ -49,7 +50,7 @@
 
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel) };
+            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel), typeof(NotificationViewModelFactory) };
             _kernel = new StandardKernel();
 
             SetupViewLocator();

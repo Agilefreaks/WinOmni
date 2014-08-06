@@ -8,6 +8,7 @@
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
+    using Ninject;
     using Omnipaste.Framework;
     using Omnipaste.Notification;
 
@@ -41,6 +42,9 @@
 
         public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
+        [Inject]
+        public INotificationViewModelFactory NotificationViewModelFactory { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -68,13 +72,13 @@
             _notificationsSubscription = _eventsHandler
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(
-                    notification => Notifications.Add(NotificationViewModelBuilder.Build(notification)),
+                    notification => Notifications.Add(NotificationViewModelFactory.Create(notification)),
                     exception => { });
 
             _clippingsSubscription = _omniClipboardHandler
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(
-                    clipping => Notifications.Add(NotificationViewModelBuilder.Build(clipping)),
+                    clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)),
                     exception => { });
         }
 

@@ -247,8 +247,11 @@
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
-    <Compile Include="NotificationList\NotificationViewModelBuilder.cs" />
+    <Compile Include="NotificationList\INotificationViewModelFactory.cs" />
+    <Compile Include="NotificationList\NotificationViewModelFactory.cs" />
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
+    <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\Models\ClippingNotification.cs" />
