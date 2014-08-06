@@ -132,6 +132,7 @@
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
+    <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevicesTests.cs" />
