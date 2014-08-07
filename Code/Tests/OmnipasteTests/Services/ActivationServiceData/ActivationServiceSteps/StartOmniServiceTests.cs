@@ -33,7 +33,7 @@
                 new Recorded<Notification<Device>>(0, Notification.CreateOnError<Device>(new Exception())));
             _omniService.Setup(m => m.Start()).Returns(startObservable);
 
-            _subject.InternalExecute().Subscribe(testObserver);
+            _subject.Execute().Subscribe(testObserver);
             testScheduler.Start();
 
             testObserver.Messages.Should()
@@ -51,7 +51,7 @@
                 new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
             _omniService.Setup(m => m.Start()).Returns(startObservable);
 
-            _subject.InternalExecute().Subscribe(testObserver);
+            _subject.Execute().Subscribe(testObserver);
             testScheduler.Start();
 
             testObserver.Messages.Should()

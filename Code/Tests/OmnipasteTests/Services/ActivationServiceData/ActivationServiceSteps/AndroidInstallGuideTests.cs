@@ -40,7 +40,7 @@
         [Test]
         public void Excute_Always_PublishesShowAndroidInstallGuideMessage()
         {
-            _subject.InternalExecute().Subscribe(_testableObserver);
+            _subject.Execute().Subscribe(_testableObserver);
 
             _mockEventAggregator
                 .Verify(ea => ea.Publish(
@@ -52,7 +52,7 @@
         [Test]
         public void Handle_AndroidInstallationComplete_IsSuccessful()
         {
-            _subject.InternalExecute().Subscribe(_testableObserver);
+            _subject.Execute().Subscribe(_testableObserver);
 
             _subject.Handle(new AndroidInstallationCompleteMessage());
 

@@ -34,7 +34,7 @@
         {
             _subject.Parameter = new DependencyParameter(string.Empty, string.Empty);
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
 
             _observer.Messages.Should()
                 .Contain(
@@ -52,7 +52,7 @@
                     new Recorded<Notification<Token>>(0, Notification.CreateOnError<Token>(new Exception())));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
             testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
              _observer.Messages.Should()
@@ -72,7 +72,7 @@
                     new Recorded<Notification<Token>>(0, Notification.CreateOnCompleted<Token>()));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
             testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
             _observer.Messages.Should()

@@ -31,7 +31,7 @@
         {
             _configurationService.SetupGet(m => m.AccessToken).Returns("42");
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
 
             _observer.Messages.Should()
                 .Contain(
@@ -46,7 +46,7 @@
         {
             _configurationService.SetupGet(m => m.AccessToken).Returns("");
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
 
             _observer.Messages.Should()
                 .Contain(

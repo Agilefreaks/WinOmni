@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.Transitions
 {
     using System;
-    using System.Threading.Tasks;
     using FluentAssertions;
     using NUnit.Framework;
     using Omnipaste.Services.ActivationServiceData;
@@ -14,20 +13,15 @@
         private abstract class SourceTransition : IActivationStep
         {
             public DependencyParameter Parameter { get; set; }
-
-            public IObservable<IExecuteResult> InternalExecute()
+            
+            public IObservable<IExecuteResult> Execute()
             {
-                throw new System.NotImplementedException();
-            }
-
-            public Task<IExecuteResult> ExecuteAsync()
-            {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public object GetId()
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
 
@@ -35,19 +29,14 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IObservable<IExecuteResult> InternalExecute()
+            public IObservable<IExecuteResult> Execute()
             {
-                throw new System.NotImplementedException();
-            }
-
-            public Task<IExecuteResult> ExecuteAsync()
-            {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public object GetId()
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
 
@@ -55,19 +44,14 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IObservable<IExecuteResult> InternalExecute()
+            public IObservable<IExecuteResult> Execute()
             {
-                throw new System.NotImplementedException();
-            }
-
-            public Task<IExecuteResult> ExecuteAsync()
-            {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public object GetId()
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
 

@@ -25,7 +25,7 @@
         {
             var mockObserver = new TestScheduler().CreateObserver<IExecuteResult>();
             
-            (new VoidStepTest()).InternalExecute().Subscribe(mockObserver);
+            (new VoidStepTest()).Execute().Subscribe(mockObserver);
 
             mockObserver.Messages.Should().HaveCount(2);
             mockObserver.Messages.Should().Contain(r => r.Value.Kind == NotificationKind.OnCompleted);

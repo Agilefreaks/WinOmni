@@ -33,7 +33,7 @@
             _applicationDeploymentInfoProvider.SetupGet(m => m.ActivationUri)
                 .Returns(new Uri("http://some.com?token=123"));
 
-            _subject.InternalExecute().Subscribe(_observer);
+            _subject.Execute().Subscribe(_observer);
 
             _observer.Messages.Should()
                 .Contain(m => 
