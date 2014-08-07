@@ -5,13 +5,13 @@
     <!-- Colors -->
     <Color x:Key="MainColor">#FF4E5CA9</Color>
     <Color x:Key="NotificationBackground">#4E5CA9</Color>
-    <Color x:Key="TextForegroundColor">White</Color>
 
     <!-- Brushes -->
     <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{StaticResource MainColor}" />
     <SolidColorBrush x:Key="MainColoBrush" Color="{StaticResource MainColor}" />
     <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{StaticResource NotificationBackground}" />
-    <SolidColorBrush x:Key="TextForegroundBrush" Color="{StaticResource TextForegroundColor}" />
+    <SolidColorBrush x:Key="LightTextForegroundBrush" Color="{StaticResource WhiteColor}" />
+    <SolidColorBrush x:Key="DarkTextForegroundBrush" Color="{StaticResource BlackColor}" />
 
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_laptop}" />
@@ -21,7 +21,7 @@
         <Setter Property="FontFamily" Value="Arial" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource LightTextForegroundBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
@@ -29,6 +29,12 @@
     <Style TargetType="TextBlock" x:Key="TitleTextBlock" BasedOn="{StaticResource TextBlock}">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ClippingTextBlock" BasedOn="{StaticResource TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource DarkTextForegroundBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
@@ -52,6 +58,11 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="SmartActionButton" TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+        <Setter Property="Visibility" Value="Hidden" />
+    </Style>
+
+    <!-- Shapes -->
     <Style x:Key="ClippingSource" TargetType="Rectangle">
         <Setter Property="Height" Value="22" />
         <Setter Property="Width" Value="22" />
