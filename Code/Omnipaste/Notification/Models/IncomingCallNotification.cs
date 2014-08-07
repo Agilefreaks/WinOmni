@@ -2,5 +2,6 @@
 {
     public class IncomingCallNotification : NotificationBase
     {
+        public string PhoneNumber { get; set; }
     }
 }

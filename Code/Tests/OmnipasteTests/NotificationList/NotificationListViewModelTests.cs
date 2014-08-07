@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using Caliburn.Micro;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -42,6 +43,8 @@
 
         private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
 
+        private Mock<IEventAggregator> _eventAggregator;
+
         #endregion
 
         #region Public Methods and Operators
@@ -62,6 +65,7 @@
             _mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
             _mockNotificationViewModelFactory = _mockingKernel.GetMock<INotificationViewModelFactory>();
             _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
+            _eventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _subject = _mockingKernel.Get<INotificationListViewModel>();
         }
 
@@ -101,7 +105,7 @@
         public void WhenAnIncomingCallComesThroughOmniEventsHandler_CreatesNewNotificationViewModel()
         {
             _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Event>()))
-                .Returns(new IncomingCallNotificationViewModel());
+                .Returns(new IncomingCallNotificationViewModel(_eventAggregator.Object));
             _mockEventsHandler
                 .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(o => _testableEventsObservable.Subscribe(o));
@@ -138,7 +142,7 @@
             _testableIncomingCallObservable = _testScheduler.CreateHotObservable(new Recorded<Notification<Event>>(300, Notification.CreateOnNext(new Event { phone_number = "phone number"})));
             _testableEventsObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event())));
+                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event {phone_number = "your number"})));
 
             SchedulerProvider.Dispatcher = _testScheduler;
         }

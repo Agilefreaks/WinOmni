@@ -32,5 +32,13 @@
 
             _mockPhones.Verify(p => p.EndCall(), Times.Once);
         }
+
+        [Test]
+        public void ReplyWithSms_CallsPhonesSendSms()
+        {
+            _subject.ReplyWithSms();
+
+            _mockPhones.Verify(p => p.SendSms(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
     }
 }
