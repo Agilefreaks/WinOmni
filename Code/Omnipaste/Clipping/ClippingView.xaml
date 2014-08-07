@@ -17,26 +17,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
-        <Button Grid.Column="0" Width="50" Height="50" Margin="6" IsEnabled="False" Style="{DynamicResource MetroCircleButtonStyle}">
-            <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                <Rectangle.Resources>
-                    <VisualBrush x:Key="ClouldVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_cloud}" />
-                    <VisualBrush x:Key="LocalVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_laptop}" />
-                </Rectangle.Resources>
-                <Rectangle.Style>
-                    <Style TargetType="{x:Type Rectangle}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Local}">
-                                <Setter Property="OpacityMask" Value="{DynamicResource LocalVisualBrush}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Cloud}">
-                                <Setter Property="OpacityMask" Value="{DynamicResource ClouldVisualBrush}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Rectangle.Style>
-            </Rectangle>
-        </Button>
+        <Rectangle Grid.Column="0" Style="{DynamicResource ClippingSource}" />
 
         <TextBlock VirtualizingPanel.IsVirtualizing="True"  Grid.Column="1" Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
