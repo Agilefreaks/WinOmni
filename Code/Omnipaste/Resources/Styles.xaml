@@ -89,9 +89,10 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    
     <!--SubMenu-->
     <Style x:Key="SubmenuTabItemStyle" TargetType="controls:MetroTabItem">
         <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="18"></Setter>
-    </Style
+    </Style>
 
 </ResourceDictionary>

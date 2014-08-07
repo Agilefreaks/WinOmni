@@ -38,8 +38,6 @@
 
         private Window _view;
 
-        private IEnumerable<IMasterViewModel> _masterViewModels;
-
         private int _selectedViewIndex;
 
         private IMasterNotificationListViewModel _masterNotificationListViewModel;
@@ -219,12 +217,6 @@
                         {
                             ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
                             MasterNotificationListViewModel = Kernel.Get<IMasterNotificationListViewModel>();
-                            MasterViewModels = new ObservableCollection<IMasterViewModel>()
-                                               {
-                                                   ClippingListViewModel,
-                                                   MasterNotificationListViewModel
-                                               };
-
                             SelectedViewIndex = 1;
 
                             DialogViewModel.DeactivateItem(LoadingViewModel, true);
