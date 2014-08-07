@@ -14,9 +14,11 @@
     using OmniApi;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Attributes;
+    using Omnipaste.MasterNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Shell;

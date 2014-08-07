@@ -227,6 +227,8 @@
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelStatusEnum.cs" />
+    <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
+    <Compile Include="MasterNotification\IMasterNotificationListViewModel.cs" />
     <Compile Include="ClippingList\LimitableBindableCollection.cs" />
     <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
+    <Compile Include="MasterNotification\MasterNotificationListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Clipping\LimitedStringConverter.cs" />
@@ -249,11 +252,8 @@
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
     <Compile Include="NotificationList\INotificationViewModelFactory.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactory.cs" />
-<<<<<<< HEAD
     <Compile Include="Loading\AndroidInstallGuide\AndroidInstallGuideViewModel.cs" />
     <Compile Include="Loading\AndroidInstallGuide\IAndroidInstallGuideViewModel.cs" />
-=======
->>>>>>> implemented Phones API that is used from the IncomingCall notification to dismiss an incoming call
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
@@ -263,8 +263,13 @@
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
     <Compile Include="Notification\Models\NotificationBase.cs" />
+<<<<<<< HEAD
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
+=======
+    <Compile Include="SendSms\ISendSmsViewModel.cs" />
+    <Compile Include="SendSms\SendSmsViewModel.cs" />
+>>>>>>> Added Notification screens and SMS screen
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
@@ -354,7 +359,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+<<<<<<< HEAD
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
+=======
+    <Page Include="MasterNotification\MasterNotificationListView.xaml">
+>>>>>>> Added Notification screens and SMS screen
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -367,6 +376,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SendSms\SendSmsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

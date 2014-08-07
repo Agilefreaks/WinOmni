@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Deployment.Application;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -18,8 +20,10 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Loading;
+    using Omnipaste.MasterNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
+    using Omnipaste.SendSms;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;
@@ -33,6 +37,12 @@
         private IMasterClippingListViewModel _clippingListViewModel;
 
         private Window _view;
+
+        private IEnumerable<IMasterViewModel> _masterViewModels;
+
+        private int _selectedViewIndex;
+
+        private IMasterNotificationListViewModel _masterNotificationListViewModel;
 
         #endregion
 
@@ -68,6 +78,32 @@
             }
         }
 
+        public IMasterNotificationListViewModel MasterNotificationListViewModel
+        {
+            get
+            {
+                return _masterNotificationListViewModel;
+            }
+            set
+            {
+                _masterNotificationListViewModel = value;
+                NotifyOfPropertyChange(() => MasterNotificationListViewModel);
+            }
+        }
+
+        public int SelectedViewIndex
+        {
+            get
+            {
+                return _selectedViewIndex;
+            }
+            set
+            {
+                _selectedViewIndex = value;
+                NotifyOfPropertyChange(() => SelectedViewIndex);
+            }
+        }
+
         [Inject]
         public IConnectionViewModel ConnectionViewModel { get; set; }
 
@@ -90,6 +126,9 @@
 
         [Inject]
         public ILoadingViewModel LoadingViewModel { get; set; }
+
+        [Inject]
+        public ISendSmsViewModel SendSmsViewModel { get; set; }
 
         [Inject]
         public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
@@ -125,6 +164,11 @@
             Show();
         }
 
+        public void Handle(SendSmsMessage message)
+        {
+            DialogViewModel.ActivateItem(SendSmsViewModel);
+        }
+        
         public void Handle(RetryMessage message)
         {
             Configure();
@@ -174,6 +218,14 @@
                         else
                         {
                             ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+                            MasterNotificationListViewModel = Kernel.Get<IMasterNotificationListViewModel>();
+                            MasterViewModels = new ObservableCollection<IMasterViewModel>()
+                                               {
+                                                   ClippingListViewModel,
+                                                   MasterNotificationListViewModel
+                                               };
+
+                            SelectedViewIndex = 1;
 
                             DialogViewModel.DeactivateItem(LoadingViewModel, true);
                             NotificationListViewModel.ShowWindow(
