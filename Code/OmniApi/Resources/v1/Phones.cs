@@ -6,22 +6,28 @@
 
     public class Phones : Resource<Phones.IPhonesApi>, IPhones
     {
+        #region Interfaces
 
         [ColdObservable]
         public interface IPhonesApi
         {
+            #region Public Methods and Operators
+
             [Post("/phones/end_call")]
-            IObservable<Phone> EndCall([Header("Authorization")] string token);
+            IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
+
+            #endregion
         }
 
-        public IObservable<Phone> EndCall()
+        #endregion
+
+        #region Public Methods and Operators
+
+        public IObservable<EmptyModel> EndCall()
         {
             return Authorize(ResourceApi.EndCall(AccessToken));
         }
-    }
 
-    public interface IPhones
-    {
-        IObservable<Phone> EndCall();
+        #endregion
     }
 }

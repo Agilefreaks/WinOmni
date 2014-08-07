@@ -93,7 +93,7 @@
   <ItemGroup>
     <Compile Include="AuthorizationObserver.cs" />
     <Compile Include="Models\Device.cs" />
-    <Compile Include="Models\Phone.cs" />
+    <Compile Include="Models\EmptyModel.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="OmniApiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="Resources\v1\Devices.cs" />
     <Compile Include="Resources\v1\IDevices.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />
+    <Compile Include="Resources\v1\IPhones.cs" />
     <Compile Include="Resources\v1\OAuth2.cs" />
     <Compile Include="Resources\v1\Phones.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
