@@ -35,7 +35,7 @@
 
         #region Public Methods and Operators
 
-        public override IObservable<IExecuteResult> Execute()
+        protected override IObservable<IExecuteResult> InternalExecute()
         {
             IObservable<IExecuteResult> failResult =
                 new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.AuthorizationCodeError) }.ToObservable();

@@ -27,7 +27,7 @@
         public void Execute_Always_SaveTheConfiguration()
         {
             _subject.Parameter = new DependencyParameter(null, new Token("access token", "refresh token"));
-            _subject.Execute().Subscribe(new TestScheduler().CreateObserver<IExecuteResult>());
+            _subject.InternalExecute().Subscribe(new TestScheduler().CreateObserver<IExecuteResult>());
 
             _configurationService.Verify(m => m.SaveAuthSettings("access token", "refresh token"));
         }

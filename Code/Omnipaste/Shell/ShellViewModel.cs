@@ -169,7 +169,7 @@
                     {
                         if (finalStep is Failed)
                         {
-                            EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = new Exception("Final step was Failed") });
+                            EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = finalStep.Parameter.Value as Exception });
                         }
                         else
                         {

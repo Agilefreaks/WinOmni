@@ -5,14 +5,10 @@
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              IsTabStop="False" behaviours:FocusBehavior.FocusFirst="True" KeyboardNavigation.TabNavigation="Local" >
     <StackPanel>
-        <Label Style="{StaticResource HeaderStyle}">
+        <Label Style="{StaticResource DescriptionHeaderStyle}">
             Sorry master we failed, please don't kill us!
         </Label>
         
-        <Expander Header="Show me why" IsExpanded="False">
-            <TextBox x:Name="ExceptionMessage" />
-        </Expander>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -22,5 +18,9 @@
             <Button TabIndex="0" Grid.Column="1" x:Name="Retry" Content="Retry" IsDefault="True" Style="{StaticResource PrimaryDialogButton}" />
             <Button TabIndex="1" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </Grid>
+
+        <Expander Header="Show me why" IsExpanded="False">
+            <TextBox x:Name="ExceptionMessage" IsReadOnly="True"/>
+        </Expander>
     </StackPanel>
 </UserControl>

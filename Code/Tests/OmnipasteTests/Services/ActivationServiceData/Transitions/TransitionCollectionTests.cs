@@ -15,7 +15,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IObservable<IExecuteResult> Execute()
+            public IObservable<IExecuteResult> InternalExecute()
             {
                 throw new System.NotImplementedException();
             }
@@ -35,7 +35,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IObservable<IExecuteResult> Execute()
+            public IObservable<IExecuteResult> InternalExecute()
             {
                 throw new System.NotImplementedException();
             }
@@ -55,7 +55,7 @@
         {
             public DependencyParameter Parameter { get; set; }
 
-            public IObservable<IExecuteResult> Execute()
+            public IObservable<IExecuteResult> InternalExecute()
             {
                 throw new System.NotImplementedException();
             }

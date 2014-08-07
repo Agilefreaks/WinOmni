@@ -21,12 +21,11 @@
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
 
-        public override IObservable<IExecuteResult> Execute()
+        protected override IObservable<IExecuteResult> InternalExecute()
         {
-            var failObserver = new[] { new ExecuteResult(SimpleStepStateEnum.Failed) }.ToObservable();
-            return _omniService.Start().Select(d => new ExecuteResult(SimpleStepStateEnum.Successful)).Catch(failObserver);
+            return _omniService.Start().Select(d => new ExecuteResult(SimpleStepStateEnum.Successful));
         }
 
         #endregion

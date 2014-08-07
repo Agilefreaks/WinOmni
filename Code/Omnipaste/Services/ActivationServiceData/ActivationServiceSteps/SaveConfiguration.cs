@@ -15,7 +15,7 @@
             _configurationService = configurationService;
         }
 
-        public override IObservable<IExecuteResult> Execute()
+        protected override IObservable<IExecuteResult> InternalExecute()
         {
             return Observable.Create<IExecuteResult>(
                 observer =>

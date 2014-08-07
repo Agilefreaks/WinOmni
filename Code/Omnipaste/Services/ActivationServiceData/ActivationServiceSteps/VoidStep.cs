@@ -7,7 +7,7 @@
     {
         public abstract SimpleStepStateEnum State { get; }
 
-        public override IObservable<IExecuteResult> Execute()
+        protected override IObservable<IExecuteResult> InternalExecute()
         {
             return (new IExecuteResult[] { new ExecuteResult { State = State } }).ToObservable();
         }

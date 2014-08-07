@@ -29,7 +29,7 @@
 
         #region Public Methods and Operators
 
-        public override IObservable<IExecuteResult> Execute()
+        protected override IObservable<IExecuteResult> InternalExecute()
         {
             _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage { Message = (string)Parameter.Value });
             return _subject;

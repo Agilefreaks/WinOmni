@@ -47,7 +47,7 @@
         {
             _devices.Add(new Device());
             
-            _subject.Execute().Subscribe(_testObserver);
+            _subject.InternalExecute().Subscribe(_testObserver);
             _testScheduler.Start();
 
             _testObserver.Messages
@@ -58,7 +58,7 @@
         [Test]
         public void Execute_WhenRegisteredDeviceIsTheOnlyDeviceIsSuccessful()
         {
-            _subject.Execute().Subscribe(_testObserver);
+            _subject.InternalExecute().Subscribe(_testObserver);
             _testScheduler.Start();
 
             _testObserver.Messages

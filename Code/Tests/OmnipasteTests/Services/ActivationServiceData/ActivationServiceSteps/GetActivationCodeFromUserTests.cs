@@ -35,14 +35,14 @@
         [Test]
         public void Execute_Always_PublishesEventInObserver()
         {
-            _subject.Execute();
+            _subject.InternalExecute();
             _eventAggregator.Verify(m => m.Publish(It.IsAny<GetTokenFromUserMessage>(), It.IsAny<Action<Action>>()));
         }
 
         [Test]
         public void Execute_WhenCanceled_WillFail()
         {
-            _subject.Execute().Subscribe(_observer);
+            _subject.InternalExecute().Subscribe(_observer);
             _subject.Handle(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Canceled));
 
             _observer.Messages.Should()
@@ -53,7 +53,7 @@
         [Test]
         public void Execute_WhenSuccessful_WillSucced()
         {
-            _subject.Execute().Subscribe(_observer);
+            _subject.InternalExecute().Subscribe(_observer);
             _subject.Handle(new TokenRequestResultMessage(TokenRequestResultMessageStatusEnum.Successful));
 
             _observer.Messages.Should()
