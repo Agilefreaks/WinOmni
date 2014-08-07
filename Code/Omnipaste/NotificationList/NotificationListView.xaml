@@ -56,11 +56,11 @@
                                 </Button>
                                 <TextBlock Text="{Binding Path=Title}"
                                    Margin="2,4,4,2"
-                                   Style="{StaticResource TitleTextBlock}" />
+                                   Style="{StaticResource LightTitleTextBlock}" />
                             </DockPanel>
                             <TextBlock Grid.Row="1" Margin="2,2,4,4" 
                                        Text="{Binding Path=Message}"
-                                       Style="{StaticResource TextBlock}" />
+                                       Style="{StaticResource LightTextBlock}" />
                         </Grid>
                     </DockPanel>
                 </Border>

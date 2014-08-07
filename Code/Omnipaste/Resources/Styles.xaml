@@ -21,19 +21,25 @@
         <Setter Property="FontFamily" Value="Arial" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="Foreground" Value="{StaticResource LightTextForegroundBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="TitleTextBlock" BasedOn="{StaticResource TextBlock}">
+    <Style TargetType="TextBlock" x:Key="LightTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Foreground" Value="{StaticResource LightTextForegroundBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DarkTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Foreground" Value="{StaticResource DarkTextForegroundBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="LightTitleTextBlock" BasedOn="{StaticResource LightTextBlock}">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="ClippingTextBlock" BasedOn="{StaticResource TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource DarkTextForegroundBrush}" />
+    <Style TargetType="TextBlock" x:Key="ClippingTextBlock" BasedOn="{StaticResource DarkTextBlock}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>

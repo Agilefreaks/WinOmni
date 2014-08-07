@@ -80,6 +80,7 @@
 
         public void Handle(ActivationFailedMessage activationFailedMessage)
         {
+            ActivationFailedViewModel.Exception = activationFailedMessage.Exception;
             ActiveItem = ActivationFailedViewModel;
             State = LoadingViewModelStateEnum.Other;
         }

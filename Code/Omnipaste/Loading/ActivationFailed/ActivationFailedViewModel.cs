@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Loading.ActivationFailed
 {
+    using System;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
@@ -18,10 +19,20 @@
 
         #region Public Properties
 
+        public IApplicationService ApplicationService { get; set; }
+
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
 
-        public IApplicationService ApplicationService { get; set; }
+        public Exception Exception
+        {
+            set
+            {
+                ExceptionMessage = value.ToString();
+            }
+        }
+
+        public string ExceptionMessage { get; set; }
 
         #endregion
 
