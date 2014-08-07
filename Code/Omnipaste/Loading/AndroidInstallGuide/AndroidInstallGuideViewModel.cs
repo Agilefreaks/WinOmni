@@ -5,16 +5,28 @@
 
     public class AndroidInstallGuideViewModel : Screen, IAndroidInstallGuideViewModel
     {
-        public IEventAggregator EventAggregator { get; set; }
+        #region Constructors and Destructors
 
         public AndroidInstallGuideViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public void Ok()
         {
             EventAggregator.PublishOnCurrentThread(new AndroidInstallationCompleteMessage());
         }
+
+        #endregion
     }
 }

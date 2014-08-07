@@ -1,7 +1,6 @@
 ﻿namespace OmniApi.Resources.v1
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using OmniApi.Models;
     using Refit;
