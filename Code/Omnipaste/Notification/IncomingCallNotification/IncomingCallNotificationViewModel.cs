@@ -19,7 +19,7 @@
         public void EndCall()
         {
             Phones.EndCall().Subscribe(
-                p => { }, 
+                p => TryClose(true), 
                 exception => { });
         }
 

@@ -4,8 +4,8 @@
 
     public interface IHyperlinkNotificationViewModel : INotificationViewModel
     {
-        void OpenLink();
-
         HyperlinkNotification Model { get; set; }
+
+        void OpenLink();
     }
 }
