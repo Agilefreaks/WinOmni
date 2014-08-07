@@ -22,7 +22,7 @@
                    Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" 
                    Style="{StaticResource ClippingTextBlock}" />
 
-        <Button x:Name="OpenLink" Grid.Column="2" Width="50" Height="50" Margin="6" VerticalAlignment="Center" Background="Transparent">
+        <Button x:Name="OpenLink" Grid.Column="2">
             <Button.Style>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                     <Style.Triggers>
