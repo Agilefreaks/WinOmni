@@ -38,27 +38,13 @@
 
         private ITestableObservable<Event> _testableEventsObservable;
 
+        private ITestableObservable<Event> _testableIncomingCallObservable;
+
+        private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
+
         #endregion
 
         #region Public Methods and Operators
-
-        [Test]
-        public void Constructor_WillInitializeNotificationsCollection()
-        {
-            _subject.Notifications.Should().NotBeNull();
-        }
-
-        [Test]
-        public void NewEventArrives_AddsNewNotificationViewModel()
-        {
-            _mockEventsHandler.Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Callback<IObserver<Event>>(o => _testableEventsObservable.Subscribe(o));
-            _subject.Activate();
-
-            _testScheduler.Start();
-
-            _subject.Notifications.First().GetType().Should().Be(typeof(IncomingCallNotificationViewModel));
-        }
 
         [SetUp]
         public void Setup()
@@ -74,7 +60,15 @@
             SetupClipboardHandler();
 
             _mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
+            _mockNotificationViewModelFactory = _mockingKernel.GetMock<INotificationViewModelFactory>();
+            _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
             _subject = _mockingKernel.Get<INotificationListViewModel>();
+        }
+
+        [Test]
+        public void Constructor_WillInitializeNotificationsCollection()
+        {
+            _subject.Notifications.Should().NotBeNull();
         }
 
         [Test]
@@ -92,6 +86,8 @@
         [Test]
         public void WhenNewClippingComesThroughOmniClipboardHandler_CreatesNewNotificationViewModel()
         {
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Clipping>()))
+                .Returns(new ClippingNotificationViewModel());
             _mockOmniClipboardHandler.Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Callback<IObserver<Clipping>>(o => _testableClippingsObservable.Subscribe(o));
             _subject.Activate();
@@ -99,6 +95,21 @@
             _testScheduler.Start();
 
             _subject.Notifications.First().GetType().Should().Be(typeof(ClippingNotificationViewModel));
+        }
+
+        [Test]
+        public void WhenAnIncomingCallComesThroughOmniEventsHandler_CreatesNewNotificationViewModel()
+        {
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Event>()))
+                .Returns(new IncomingCallNotificationViewModel());
+            _mockEventsHandler
+                .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
+                .Callback<IObserver<Event>>(o => _testableEventsObservable.Subscribe(o));
+            _subject.Activate();
+
+            _testScheduler.Start();
+
+            _subject.Notifications.First().GetType().Should().Be(typeof(IncomingCallNotificationViewModel));
         }
 
         #endregion
@@ -123,6 +134,8 @@
             _testableClippingsObservable =
                 _testScheduler.CreateHotObservable(
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnNext(new Clipping())));
+
+            _testableIncomingCallObservable = _testScheduler.CreateHotObservable(new Recorded<Notification<Event>>(300, Notification.CreateOnNext(new Event { phone_number = "phone number"})));
             _testableEventsObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event())));
