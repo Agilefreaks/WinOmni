@@ -17,7 +17,7 @@
             IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
 
             [Post("/phones/sms")]
-            IObservable<EmptyModel> SendSms(string phoneNumber, string content, [Header("Authorization")] string token);
+            IObservable<EmptyModel> SendSms(string phone_number, string content, [Header("Authorization")] string token);
             
             #endregion
         }

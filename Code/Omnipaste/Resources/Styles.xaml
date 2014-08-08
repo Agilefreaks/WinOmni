@@ -99,5 +99,11 @@
     <Style x:Key="SpacedTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="Margin" Value="10" />
     </Style>
+    
+    <!--StackPanel-->
+    <Style x:Key="ButtonsPanel" TargetType="StackPanel">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
 
 </ResourceDictionary>

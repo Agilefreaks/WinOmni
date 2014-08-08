@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -25,7 +24,7 @@
                  Style="{StaticResource SpacedTextBoxStyle}"
                  controls:TextboxHelper.Watermark="Message" />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="3" Style="{StaticResource ButtonsPanel}">
             <Button x:Name="Send" Content="Send" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
             <Button x:Name="TryClose" Content="Cancel" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>

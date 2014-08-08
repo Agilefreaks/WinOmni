@@ -43,6 +43,7 @@
                             Title = string.Concat("Incoming call from ", @event.phone_number),
                             PhoneNumber = @event.phone_number
                         };
+
             var viewModel = Kernel.Get<IIncomingCallNotificationViewModel>();
             viewModel.Model = model;
 

@@ -8,16 +8,10 @@
         <Label Style="{StaticResource DescriptionHeaderStyle}">
             Sorry master we failed, please don't kill us!
         </Label>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Button TabIndex="0" Grid.Column="1" x:Name="Retry" Content="Retry" IsDefault="True" Style="{StaticResource PrimaryDialogButton}" />
-            <Button TabIndex="1" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
-        </Grid>
+        <StackPanel Style="{StaticResource ButtonsPanel}">
+            <Button TabIndex="0" x:Name="Retry" Content="Retry" IsDefault="True" Style="{StaticResource PrimaryDialogButton}" />
+            <Button TabIndex="1" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
+        </StackPanel>
 
         <Expander Header="Show me why" IsExpanded="False">
             <TextBox x:Name="ExceptionMessage" IsReadOnly="True"/>
