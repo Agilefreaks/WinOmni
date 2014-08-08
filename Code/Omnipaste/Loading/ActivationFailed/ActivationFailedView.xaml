@@ -1,16 +1,16 @@
 ﻿<UserControl x:Class="Omnipaste.Loading.ActivationFailed.ActivationFailedView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              IsTabStop="False" behaviours:FocusBehavior.FocusFirst="True" KeyboardNavigation.TabNavigation="Local" >
     <StackPanel>
         <Label Style="{StaticResource DescriptionHeaderStyle}">
             Sorry master we failed, please don't kill us!
         </Label>
+        
         <StackPanel Style="{StaticResource ButtonsPanel}">
-            <Button TabIndex="0" x:Name="Retry" Content="Retry" IsDefault="True" Style="{StaticResource PrimaryDialogButton}" />
-            <Button TabIndex="1" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
+            <Button TabIndex="0" x:Name="Retry" Content="Retry" Style="{StaticResource PrimaryDialogButton}" />
+            <Button TabIndex="1" x:Name="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
 
         <Expander Header="Show me why" IsExpanded="False">
