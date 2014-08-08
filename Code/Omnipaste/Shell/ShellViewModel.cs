@@ -177,7 +177,10 @@
 
         public void Show()
         {
-            _view.Show();
+            if (_view != null)
+            {
+                _view.Show();
+            }
         }
 
         #endregion

@@ -1,10 +1,8 @@
 ﻿namespace OmnipasteTests.Shell
 {
     using Caliburn.Micro;
-    using FluentAssertions;
     using Moq;
     using Ninject;
-    using Ninject.MockingKernel;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
@@ -12,14 +10,11 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.SendSms;
     using Omnipaste.Shell;
-    using Omnipaste.Shell.ContextMenu;
 
     [TestFixture]
     public class ShellViewModelTests
     {
         #region Fields
-
-        private Mock<IContextMenuViewModel> _mockContextViewModel;
 
         private ShellViewModel _subject;
 
@@ -38,8 +33,6 @@
         {
             var kernel = new MoqMockingKernel();
 
-            _mockContextViewModel = kernel.GetMock<IContextMenuViewModel>();
-            
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             kernel.Bind<ISessionManager>().ToConstant(_mockSessionManager.Object);
 
