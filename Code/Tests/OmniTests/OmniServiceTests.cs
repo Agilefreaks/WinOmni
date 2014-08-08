@@ -79,7 +79,7 @@
         }
 
         [Test]
-        public void Start_WhsenSuccess_ReturnsTheDevice()
+        public void Start_WhenSuccess_ReturnsTheDevice()
         {
             var device = new Device { Identifier = DeviceIdentifier };
             var testableObserver = _scheduler.CreateObserver<Device>();

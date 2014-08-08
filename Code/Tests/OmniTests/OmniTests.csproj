@@ -68,12 +68,10 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
-      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.MockingKernel">
       <HintPath>..\..\packages\Ninject.MockingKernel.3.2.0.0\lib\net45-full\Ninject.MockingKernel.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject.MockingKernel.Moq">
       <HintPath>..\..\packages\Ninject.MockingKernel.Moq.3.2.0.0\lib\net45-full\Ninject.MockingKernel.Moq.dll</HintPath>
