@@ -1,6 +1,7 @@
 ﻿namespace OmniSync
 {
     using System;
+    using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Reactive.Threading.Tasks;
@@ -66,20 +67,20 @@
 
         public IObservable<string> Connect()
         {
-            return Channel.OpenAsync().ToObservable()
-                .Select(
-                    result =>
-                        {
-                            var registrationId = _monitor.SessionId;
+            return Channel.OpenAsync()
+                .ToObservable()
+                .Select(result =>
+                {
+                    if (result != null && result.Exception != null)
+                    {
+                        throw result.Exception;
+                    }
 
-                            if (registrationId == null)
-                            {
-                                throw new Exception("Could not connect to sync server.");
-                            }
+                    var registrationId = _monitor.SessionId;
 
-                            _subject = Channel.GetSubject<OmniMessage>(registrationId);
-                            return registrationId;
-                        });
+                    _subject = Channel.GetSubject<OmniMessage>(registrationId);
+                    return registrationId;
+                });
         }
 
         public void Disconnect()
