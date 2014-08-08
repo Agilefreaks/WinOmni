@@ -1,6 +1,8 @@
 ﻿namespace OmniSyncTests
 {
+    using System;
     using System.Reactive;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -31,12 +33,12 @@
         }
 
         [Test]
-        public void ConnectWhenSessionIdNullShouldCallOnError()
+        public void ConnectWhenExceptionIsNotNullShouldCallOnError()
         {
             TestScheduler testScheduler = new TestScheduler();
             var testObserver = testScheduler.CreateObserver<string>();
 
-            _mockMonitor.SetupGet(m => m.SessionId).Returns(() => null);
+            _mockChannel.Setup(m => m.OpenAsync()).Returns(Task<OpenResult>.Factory.StartNew(() => new OpenResult(new Exception())));
 
             _subject.Connect().Subscribe(testObserver);
 
