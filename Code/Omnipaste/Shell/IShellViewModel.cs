@@ -7,7 +7,7 @@
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
 
-    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>
+    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IHandle<SendSmsMessage>
     {
         ILoadingViewModel LoadingViewModel { get; set; }
 

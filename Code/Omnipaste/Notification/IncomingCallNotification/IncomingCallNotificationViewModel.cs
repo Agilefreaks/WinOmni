@@ -7,41 +7,39 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification.Models;
 
-    public class IncomingCallNotificationViewModel : NotificationViewModelBase<IncomingCallNotification>, IIncomingCallNotificationViewModel
+    public class IncomingCallNotificationViewModel : NotificationViewModelBase<IncomingCallNotification>,
+        IIncomingCallNotificationViewModel
     {
-        public IEventAggregator EventAggregator { get; set; }
-
-        #region Public Properties
-
-        [Inject]
-        public IPhones Phones { get; set; }
-
-        #endregion
+        #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        [Inject]
+        public IPhones Phones { get; set; }
+
+        #endregion
+
         #region Public Methods and Operators
 
         public void EndCall()
         {
-            Phones.EndCall().Subscribe(
-                p => TryClose(true), 
-                exception => { });
+            Phones.EndCall().Subscribe(p => TryClose(true), exception => { });
         }
-
-        #endregion
 
         public void ReplyWithSms()
         {
-            //Show application with Send SMS view
-            EventAggregator.PublishOnUIThread(new ShowShellMessage());
-
-            Phones.SendSms(Model.PhoneNumber, "Can't talk right now").Subscribe(
-                p => { },
-                exception => { });
+            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Model.PhoneNumber, Message = "" });
         }
+
+        #endregion
     }
 }

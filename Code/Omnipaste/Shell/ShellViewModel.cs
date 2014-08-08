@@ -2,12 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Deployment.Application;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -164,7 +162,12 @@
 
         public void Handle(SendSmsMessage message)
         {
+            SendSmsViewModel.Recipient = message.Recipient;
+            SendSmsViewModel.Message = message.Message;
+
             DialogViewModel.ActivateItem(SendSmsViewModel);
+         
+            Show();
         }
         
         public void Handle(RetryMessage message)
