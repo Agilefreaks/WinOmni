@@ -145,8 +145,8 @@
             <TabItem Header="{Binding Path=ClippingListViewModel.DisplayName}">
                 <ContentControl cal:View.Model="{Binding Path=ClippingListViewModel}" />
             </TabItem>
-            <TabItem Header="{Binding Path=MasterNotificationListViewModel.DisplayName}">
-                <ContentControl cal:View.Model="{Binding Path=MasterNotificationListViewModel}" />
+            <TabItem Header="{Binding Path=MasterEventListViewModel.DisplayName}">
+                <ContentControl cal:View.Model="{Binding Path=MasterEventListViewModel}" />
             </TabItem>
         </controls:MetroAnimatedSingleRowTabControl>
     </Grid>

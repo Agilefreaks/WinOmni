@@ -16,9 +16,9 @@
     using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.EventList;
     using Omnipaste.Framework;
     using Omnipaste.Loading;
-    using Omnipaste.MasterNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
     using Omnipaste.SendSms;
@@ -38,7 +38,7 @@
 
         private int _selectedViewIndex;
 
-        private IMasterNotificationListViewModel _masterNotificationListViewModel;
+        private IMasterEventListViewModel _masterEventListViewModel;
 
         #endregion
 
@@ -74,16 +74,16 @@
             }
         }
 
-        public IMasterNotificationListViewModel MasterNotificationListViewModel
+        public IMasterEventListViewModel MasterEventListViewModel
         {
             get
             {
-                return _masterNotificationListViewModel;
+                return _masterEventListViewModel;
             }
             set
             {
-                _masterNotificationListViewModel = value;
-                NotifyOfPropertyChange(() => MasterNotificationListViewModel);
+                _masterEventListViewModel = value;
+                NotifyOfPropertyChange(() => MasterEventListViewModel);
             }
         }
 
@@ -219,7 +219,7 @@
                         else
                         {
                             ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
-                            MasterNotificationListViewModel = Kernel.Get<IMasterNotificationListViewModel>();
+                            MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
                             SelectedViewIndex = 1;
 
                             DialogViewModel.DeactivateItem(LoadingViewModel, true);

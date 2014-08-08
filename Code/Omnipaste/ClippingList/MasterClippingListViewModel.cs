@@ -6,7 +6,7 @@ namespace Omnipaste.ClippingList
     using Omnipaste.ClippingList.CloudClippingList;
     using Omnipaste.ClippingList.LocalClippingList;
 
-    public class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
+    public sealed class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
     {
         [Inject]
         public IAllClippingListViewModel AllClippingListViewModel { get; set; }
