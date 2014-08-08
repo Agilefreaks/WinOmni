@@ -2,7 +2,6 @@
 {
     using Events.Models;
     using Ninject;
-    using OmniApi.Resources.v1;
     using Omnipaste.Notification;
     using Clipboard.Models;
     using Omnipaste.Notification.ClippingNotification;
