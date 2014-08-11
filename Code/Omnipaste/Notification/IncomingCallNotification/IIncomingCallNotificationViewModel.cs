@@ -1,9 +1,6 @@
 ﻿namespace Omnipaste.Notification.IncomingCallNotification
 {
-    using Omnipaste.Notification.Models;
-
-    public interface IIncomingCallNotificationViewModel : INotificationViewModel
+    public interface IIncomingCallNotificationViewModel : IEventNotificationViewModel
     {
-        IncomingCallNotification Model { get; set; }
     }
 }

@@ -1,14 +1,13 @@
 ﻿namespace Omnipaste.SendSms
 {
     using Caliburn.Micro;
+    using Omnipaste.EventAggregatorMessages;
 
-    public interface ISendSmsViewModel : IScreen
+    public interface ISendSmsViewModel : IScreen, IHandle<SendSmsMessage>
     {
         #region Public Properties
 
-        string Message { get; set; }
-
-        string Recipient { get; set; }
+        SmsMessage Model { get; set; }
 
         #endregion
 

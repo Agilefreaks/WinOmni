@@ -2,60 +2,53 @@
 {
     using System;
     using Caliburn.Micro;
+    using Ninject;
     using OmniApi.Resources.v1;
+    using Omnipaste.Dialog;
+    using Omnipaste.EventAggregatorMessages;
 
     public class SendSmsViewModel : Screen, ISendSmsViewModel
     {
-        public IPhones Phones { get; set; }
+        #region Constructors and Destructors
 
-        #region Fields
-
-        private string _message;
-
-        private string _recipient;
+        public SendSmsViewModel(IPhones phones, IEventAggregator eventAggregator)
+        {
+            Phones = phones;
+            EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
+        }
 
         #endregion
 
         #region Public Properties
 
-        public string Message
-        {
-            get
-            {
-                return _message;
-            }
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-            }
-        }
+        [Inject]
+        public IDialogViewModel DialogViewModel { get; set; }
 
-        public string Recipient
-        {
-            get
-            {
-                return _recipient;
-            }
-            set
-            {
-                _recipient = value;
-                NotifyOfPropertyChange(() => Recipient);
-            }
-        }
+        public IEventAggregator EventAggregator { get; set; }
 
-        public SendSmsViewModel(IPhones phones)
-        {
-            Phones = phones;
-        }
+        public SmsMessage Model { get; set; }
+
+        public IPhones Phones { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public void Send()
         {
-            Phones.SendSms(Recipient, Message).Subscribe(
-                m => TryClose(true), 
-                exception => { });
+            Phones.SendSms(Model.Recipient, Model.Message).Subscribe(m => TryClose(true), exception => { });
         }
 
         #endregion
+
+        public void Handle(SendSmsMessage message)
+        {
+            Model = new SmsMessage { Recipient = message.Recipient, Message = message.Message };
+
+            DialogViewModel.ActivateItem(this);
+
+            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
+        }
     }
 }

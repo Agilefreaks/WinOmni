@@ -1,16 +1,13 @@
-﻿namespace Omnipaste.Notification.IncomingCallNotification
+﻿namespace Omnipaste.Notification.IncomingSmsNotification
 {
-    using System;
     using Caliburn.Micro;
-    using Ninject;
-    using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
 
-    public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
+    public class IncomingSmsNotificationViewModel : NotificationViewModelBase, IIncomingSmsNotificationViewModel
     {
         #region Constructors and Destructors
 
-        public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
+        public IncomingSmsNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
         }
@@ -23,14 +20,11 @@
 
         public string PhoneNumber { get; set; }
 
-        [Inject]
-        public IPhones Phones { get; set; }
-
         public override string Title
         {
             get
             {
-                return string.Concat("Incoming call from ", PhoneNumber);
+                return string.Concat("Incoming SMS from ", PhoneNumber);
             }
         }
 
@@ -38,12 +32,7 @@
 
         #region Public Methods and Operators
 
-        public void EndCall()
-        {
-            Phones.EndCall().Subscribe(p => TryClose(true), exception => { });
-        }
-
-        public void ReplyWithSms()
+        public void Reply()
         {
             EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
         }

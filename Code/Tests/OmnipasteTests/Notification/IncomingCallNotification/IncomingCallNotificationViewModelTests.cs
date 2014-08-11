@@ -8,7 +8,6 @@
     using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.Models;
 
     [TestFixture]
     public class IncomingCallNotificationViewModelTests
@@ -45,7 +44,7 @@
         [Test]
         public void ReplyWithSms_CallsPhonesSendSms()
         {
-            _subject.Model = new IncomingCallNotification { PhoneNumber = "1234567" };
+            _subject.PhoneNumber = "1234567";
             _subject.ReplyWithSms();
 
             _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "1234567" && m.Message == ""), It.IsAny<System.Action<System.Action>>()));

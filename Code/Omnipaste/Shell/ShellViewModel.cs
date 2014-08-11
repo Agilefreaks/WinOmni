@@ -124,9 +124,6 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
-        public ISendSmsViewModel SendSmsViewModel { get; set; }
-
-        [Inject]
         public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
 
         [Inject]
@@ -160,16 +157,6 @@
             Show();
         }
 
-        public void Handle(SendSmsMessage message)
-        {
-            SendSmsViewModel.Recipient = message.Recipient;
-            SendSmsViewModel.Message = message.Message;
-
-            DialogViewModel.ActivateItem(SendSmsViewModel);
-         
-            Show();
-        }
-        
         public void Handle(RetryMessage message)
         {
             Configure();

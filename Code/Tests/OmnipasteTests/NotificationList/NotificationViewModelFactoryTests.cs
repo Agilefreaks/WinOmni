@@ -6,7 +6,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.Models;
+    using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
 
     [TestFixture]
@@ -14,17 +14,34 @@
     {
         private NotificationViewModelFactory _subject;
 
+        private MoqMockingKernel _kernel;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _kernel = new MoqMockingKernel();
+            _kernel.Bind<IIncomingCallNotificationViewModel>().To<IncomingCallNotificationViewModel>();
+            _kernel.Bind<IIncomingSmsNotificationViewModel>().To<IncomingSmsNotificationViewModel>();
+
+            _subject = new NotificationViewModelFactory(_kernel);
+        }
+
         [Test]
         public void Create_WithIncomingCallNotification_SetsThePhoneNumberOnTheModel()
         {
-            var kernel = new MoqMockingKernel();
-            var mockIncomingCallNotificationViewModel = kernel.GetMock<IIncomingCallNotificationViewModel>();
-            kernel.Bind<IIncomingCallNotificationViewModel>().ToConstant(mockIncomingCallNotificationViewModel.Object);
-            _subject = new NotificationViewModelFactory { Kernel = kernel };
+            var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent});
 
-            var notificationViewModel = (IIncomingCallNotificationViewModel)_subject.Create(new Event { phone_number = "your number" });
+            notificationViewModel.PhoneNumber.Should().Be("your number");
+        }
 
-            mockIncomingCallNotificationViewModel.VerifySet(vm => vm.Model = It.Is<IncomingCallNotification>(n => n.PhoneNumber == "your number"));
+        [Test]
+        public void Create_WithEventOfTypeIncomingSms_SetsThePhoneAndContentProperties()
+        {
+            var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
+                new Event { PhoneNumber = "1234567", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
+
+            notificationViewModel.PhoneNumber.Should().Be("1234567");
+            notificationViewModel.Message.Should().Be("SmsContent");
         }
     }
 }

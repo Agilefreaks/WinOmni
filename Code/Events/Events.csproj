@@ -100,6 +100,7 @@
     <Compile Include="Models\Event.cs" />
     <Compile Include="Handlers\EventsHandler.cs" />
     <Compile Include="EventsModule.cs" />
+    <Compile Include="Models\EventTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
