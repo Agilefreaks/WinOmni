@@ -162,8 +162,11 @@
 
         public void Handle(SendSmsMessage message)
         {
-            SendSmsViewModel.Recipient = message.Recipient;
-            SendSmsViewModel.Message = message.Message;
+            SendSmsViewModel.Model = new SmsMessage
+                                     {
+                                        Recipient = message.Recipient,
+                                        Message = message.Message
+                                     };
 
             DialogViewModel.ActivateItem(SendSmsViewModel);
          

@@ -147,6 +147,7 @@
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendSms\SendSmsViewModelTests.cs" />
+    <Compile Include="SendSms\SmsMessageTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevicesTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromDeploymentUriTests.cs" />
