@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Notification.HyperlinkNotification
 {
+    using System.ComponentModel;
     using System.Diagnostics;
     using Omnipaste.Notification.Models;
 
@@ -7,7 +8,14 @@
     {
         public void OpenLink()
         {
-            Process.Start(Message);
+            try
+            {
+                Process.Start(Message);
+            }
+            catch (Win32Exception)
+            {
+                // Looks like there is no way for us to act on this
+            }
         }
     }
 }
