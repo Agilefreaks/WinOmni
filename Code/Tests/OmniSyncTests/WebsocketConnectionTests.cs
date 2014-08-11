@@ -33,20 +33,6 @@
         }
 
         [Test]
-        public void ConnectWhenExceptionIsNotNullShouldCallOnError()
-        {
-            TestScheduler testScheduler = new TestScheduler();
-            var testObserver = testScheduler.CreateObserver<string>();
-
-            _mockChannel.Setup(m => m.OpenAsync()).Returns(Task<OpenResult>.Factory.StartNew(() => new OpenResult(new Exception())));
-
-            _subject.Connect().Subscribe(testObserver);
-
-            testObserver.Messages.Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnError);
-        }
-
-        [Test]
         public void ConnectWhenSessioIdIsNotNullCallsNextWithTheRegistration()
         {
             TestScheduler testScheduler = new TestScheduler();

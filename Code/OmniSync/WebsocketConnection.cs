@@ -67,20 +67,14 @@
 
         public IObservable<string> Connect()
         {
-            return Channel.OpenAsync()
-                .ToObservable()
-                .Select(result =>
-                {
-                    if (result != null && result.Exception != null)
+            return Channel.OpenAsync().ToObservable().Select(
+                result =>
                     {
-                        throw result.Exception;
-                    }
+                        var registrationId = _monitor.SessionId;
 
-                    var registrationId = _monitor.SessionId;
-
-                    _subject = Channel.GetSubject<OmniMessage>(registrationId);
-                    return registrationId;
-                });
+                        _subject = Channel.GetSubject<OmniMessage>(registrationId);
+                        return registrationId;
+                    });
         }
 
         public void Disconnect()

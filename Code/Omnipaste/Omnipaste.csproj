@@ -201,13 +201,12 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\WampSharp\WampSharp.dll</HintPath>
+    <Reference Include="WampSharp">
+      <HintPath>..\packages\WampSharp.0.81-alpha\lib\net45\WampSharp.dll</HintPath>
     </Reference>
-    <Reference Include="WampSharp.Default, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\WampSharp\WampSharp.Default.dll</HintPath>
+    <Reference Include="WampSharp.Default">
+      <HintPath>..\packages\WampSharp.Default.0.81-alpha\lib\net45\WampSharp.Default.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WebSocket4Net">
       <HintPath>..\packages\WebSocket4Net.0.10\lib\net45\WebSocket4Net.dll</HintPath>
