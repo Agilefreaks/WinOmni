@@ -61,10 +61,9 @@
         [Test]
         public void Handle_SendSms_WillSetPropertiesOnTheViewModel()
         {
-            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me obi wan kenobi"});
+            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi"});
 
-            _mockSendSmsViewModel.VerifySet(vm => vm.Recipient = "1234567");
-            _mockSendSmsViewModel.VerifySet(vm => vm.Message = "save me obi wan kenobi");
+            _mockSendSmsViewModel.VerifySet(vm => vm.Model = It.Is<SmsMessage>(m => m.Recipient == "1234567" && m.Message == "save me Obi Wan Kenobi"));
         }
     }
 }

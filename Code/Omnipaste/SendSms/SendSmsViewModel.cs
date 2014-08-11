@@ -18,31 +18,7 @@
 
         #region Public Properties
 
-        public string Message
-        {
-            get
-            {
-                return _message;
-            }
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-            }
-        }
-
-        public string Recipient
-        {
-            get
-            {
-                return _recipient;
-            }
-            set
-            {
-                _recipient = value;
-                NotifyOfPropertyChange(() => Recipient);
-            }
-        }
+        public SmsMessage Model { get; set; }
 
         public SendSmsViewModel(IPhones phones)
         {
@@ -51,7 +27,7 @@
 
         public void Send()
         {
-            Phones.SendSms(Recipient, Message).Subscribe(
+            Phones.SendSms(Model.Recipient, Model.Message).Subscribe(
                 m => TryClose(true), 
                 exception => { });
         }
