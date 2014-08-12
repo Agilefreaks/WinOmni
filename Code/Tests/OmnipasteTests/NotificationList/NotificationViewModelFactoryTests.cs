@@ -1,12 +1,9 @@
 ﻿namespace OmnipasteTests.NotificationList
 {
     using Events.Models;
-    using FluentAssertions;
-    using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.Models;
     using Omnipaste.NotificationList;
 
     [TestFixture]

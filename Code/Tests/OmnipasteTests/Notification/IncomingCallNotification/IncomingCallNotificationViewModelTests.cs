@@ -8,7 +8,6 @@
     using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.Models;
 
     [TestFixture]
     public class IncomingCallNotificationViewModelTests
