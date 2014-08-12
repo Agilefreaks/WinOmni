@@ -7,5 +7,7 @@
         public string Title { get; set; }
 
         public string Message { get; set; }
+
+        public EventTypeEnum Type { get; set; }
     }
 }

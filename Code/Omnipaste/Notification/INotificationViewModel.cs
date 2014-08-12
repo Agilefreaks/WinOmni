@@ -6,7 +6,7 @@
     {
         #region Public Properties
 
-        string Message { get; }
+        string Message { get; set; }
 
         string Title { get; }
 

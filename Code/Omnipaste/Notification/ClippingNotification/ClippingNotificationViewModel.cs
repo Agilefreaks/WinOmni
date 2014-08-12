@@ -1,8 +1,17 @@
 ﻿namespace Omnipaste.Notification.ClippingNotification
 {
-    using Omnipaste.Notification.Models;
-
-    public class ClippingNotificationViewModel : NotificationViewModelBase<ClippingNotification>
+    public class ClippingNotificationViewModel : NotificationViewModelBase, IClippingNotificationViewModel
     {
+        #region Public Properties
+
+        public override string Title
+        {
+            get
+            {
+                return "New clipping";
+            }
+        }
+
+        #endregion
     }
 }

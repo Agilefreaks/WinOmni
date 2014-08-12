@@ -7,7 +7,7 @@
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.HyperlinkNotification;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.Models;
+    using Omnipaste.Notification.IncomingSmsNotification;
 
     public class NotificationViewModelFactory : INotificationViewModelFactory
     {
@@ -16,37 +16,46 @@
 
         public INotificationViewModel Create(Clipping clipping)
         {
-            INotificationViewModel viewModel;
+            INotificationViewModel result;
 
             if (clipping.Type == Clipping.ClippingTypeEnum.Url)
             {
-                var model = new HyperlinkNotification { Title = "Incoming Link", Message = clipping.Content };
-                var hyperlinkNotificationViewModel = Kernel.Get<IHyperlinkNotificationViewModel>();
-                hyperlinkNotificationViewModel.Model = model;
-
-                viewModel = hyperlinkNotificationViewModel;
+                result = Kernel.Get<IHyperlinkNotificationViewModel>();
             }
             else
             {
-                var model = new ClippingNotification { Title = "New clipping", Message = clipping.Content };
-                viewModel = new ClippingNotificationViewModel { Model = model };
+                result = Kernel.Get<IClippingNotificationViewModel>();
             }
 
-            return viewModel;
+            result.Message = clipping.Content;
+
+            return result;
         }
 
         public INotificationViewModel Create(Event @event)
         {
-            var model = new IncomingCallNotification
-                        {
-                            Title = string.Concat("Incoming call from ", @event.phone_number),
-                            PhoneNumber = @event.phone_number
-                        };
+            INotificationViewModel result = null;
+            switch (@event.Type)
+            {
+                case EventTypeEnum.IncomingCallEvent:
+                    {
+                        var incomingCallNotificationViewModel = Kernel.Get<IIncomingCallNotificationViewModel>();
+                        incomingCallNotificationViewModel.PhoneNumber = @event.phone_number;
 
-            var viewModel = Kernel.Get<IIncomingCallNotificationViewModel>();
-            viewModel.Model = model;
+                        result = incomingCallNotificationViewModel;
+                    }
+                    break;
+                case EventTypeEnum.IncomingSmsEvent:
+                    {
+                        var incomingSmsNotificationViewModel = Kernel.Get<IIncomingSmsNotificationViewModel>();
+                        incomingSmsNotificationViewModel.PhoneNumber = @event.phone_number;
 
-            return viewModel;
+                        result = incomingSmsNotificationViewModel;
+                    }
+                    break;
+            }
+
+            return result;
         }
     }
 }

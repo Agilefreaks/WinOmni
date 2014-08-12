@@ -253,10 +253,13 @@
     <Compile Include="Loading\AndroidInstallGuide\AndroidInstallGuideViewModel.cs" />
     <Compile Include="Loading\AndroidInstallGuide\IAndroidInstallGuideViewModel.cs" />
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
+    <Compile Include="Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\Models\ClippingNotification.cs" />
     <Compile Include="Notification\Models\HyperlinkNotification.cs" />
     <Compile Include="Notification\Models\IncomingCallNotification.cs" />
@@ -372,6 +375,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

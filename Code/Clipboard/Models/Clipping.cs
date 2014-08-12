@@ -1,7 +1,5 @@
 ﻿namespace Clipboard.Models
 {
-    using System;
-
     public class Clipping
     {
         public enum ClippingSourceEnum
