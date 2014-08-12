@@ -6,9 +6,7 @@
     {
         #region Public Properties
 
-        string Message { get; set; }
-
-        string Recipient { get; set; }
+        SmsMessage Model { get; set; }
 
         #endregion
 

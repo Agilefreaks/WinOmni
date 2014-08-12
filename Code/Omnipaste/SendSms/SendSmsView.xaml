@@ -12,19 +12,22 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Content="Send SMS" Style="{DynamicResource DescriptionHeaderStyle}" />
 
-        <TextBox Grid.Row="1" x:Name="Recipient" 
+        <TextBox Grid.Row="1" x:Name="Model_Recipient" 
                  Style="{StaticResource SpacedTextBoxStyle}"
                  controls:TextboxHelper.Watermark="Recipients"/>
         
-        <TextBox Grid.Row="2" x:Name="Message" Height="90" 
+        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90" 
                  Style="{StaticResource SpacedTextBoxStyle}"
                  controls:TextboxHelper.Watermark="Message" />
 
-        <StackPanel Grid.Row="3" Style="{StaticResource ButtonsPanel}">
+        <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
+        
+        <StackPanel Grid.Row="4" Style="{StaticResource ButtonsPanel}">
             <Button x:Name="Send" Content="Send" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
             <Button x:Name="TryClose" Content="Cancel" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
