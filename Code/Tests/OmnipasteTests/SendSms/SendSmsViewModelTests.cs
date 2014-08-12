@@ -31,7 +31,7 @@
         {
             _subject.Send();
 
-            _mockPhones.Verify(p => p.SendSms(_subject.Recipient, _subject.Message), Times.Once);
+            _mockPhones.Verify(p => p.SendSms(_subject.Model.Recipient, _subject.Model.Message), Times.Once);
         }
     }
 }
