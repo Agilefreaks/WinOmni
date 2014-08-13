@@ -29,9 +29,15 @@
         [Test]
         public void Send_CallsPhoneApiSendSms()
         {
+            _subject.Model = new SmsMessage
+                             {
+                                 Message = "save me Obi-Wan Kenobi",
+                                 Recipient = "1234567"
+                             };
+
             _subject.Send();
 
-            _mockPhones.Verify(p => p.SendSms(_subject.Model.Recipient, _subject.Model.Message), Times.Once);
+            _mockPhones.Verify(p => p.SendSms("1234567", "save me Obi-Wan Kenobi"), Times.Once);
         }
     }
 }
