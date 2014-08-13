@@ -46,6 +46,7 @@
             }
 
             result.PhoneNumber = @event.PhoneNumber;
+            result.Message = @event.Content;
 
             return result;
         }
