@@ -38,32 +38,10 @@
 
             _eventAggregator = new EventAggregator();
             kernel.Bind<IEventAggregator>().ToConstant(_eventAggregator).InSingletonScope();
-
-            _mockDialogViewModel = new Mock<IDialogViewModel>();
-            kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object).InSingletonScope();
-
-            _mockSendSmsViewModel = new Mock<ISendSmsViewModel>();
-            kernel.Bind<ISendSmsViewModel>().ToConstant(_mockSendSmsViewModel.Object);
             
             kernel.Bind<IShellViewModel>().To<ShellViewModel>();
 
             _subject = kernel.Get<ShellViewModel>();
-        }
-
-        [Test]
-        public void ShellViewModel_ListensToSendSmsMessages()
-        {
-            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage());
-
-            _mockDialogViewModel.Verify(vm => vm.ActivateItem(It.IsAny<ISendSmsViewModel>()));
-        }
-
-        [Test]
-        public void Handle_SendSms_WillSetPropertiesOnTheViewModel()
-        {
-            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi"});
-
-            _mockSendSmsViewModel.VerifySet(vm => vm.Model = It.Is<SmsMessage>(m => m.Recipient == "1234567" && m.Message == "save me Obi Wan Kenobi"));
-        }
+        }        
     }
 }

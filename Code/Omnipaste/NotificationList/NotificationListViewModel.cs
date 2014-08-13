@@ -69,17 +69,24 @@
         {
             base.OnActivate();
 
-            _notificationsSubscription = _eventsHandler
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(
-                    notification => Notifications.Add(NotificationViewModelFactory.Create(notification)),
-                    exception => { });
+            CreateNotificationsFromIncomingEvents();
+            CreateNotificationsFromIncomingClippings();
+        }
 
-            _clippingsSubscription = _omniClipboardHandler
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(
-                    clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)),
-                    exception => { });
+        private void CreateNotificationsFromIncomingClippings()
+        {
+            _clippingsSubscription =
+                _omniClipboardHandler.ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)), exception => { });
+        }
+
+        private void CreateNotificationsFromIncomingEvents()
+        {
+            _notificationsSubscription =
+                _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(
+                        notification => Notifications.Add(NotificationViewModelFactory.Create(notification)),
+                        exception => { });
         }
 
         protected override void OnDeactivate(bool close)
