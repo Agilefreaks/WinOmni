@@ -11,6 +11,8 @@
 
         private string _recipient = string.Empty;
 
+        private const int MessageLimit = 160;
+
         #endregion
         
         #region Public Properties
@@ -47,11 +49,11 @@
             get
             {
                 var totalMessageLength = Message.Length;
-                var currentMessageLength = totalMessageLength % 160;
+                var currentMessageLength = totalMessageLength % MessageLimit;
                 var charactersRemaining = 0;
                 if (totalMessageLength == 0 || currentMessageLength != 0)
                 {
-                    charactersRemaining = 160 - (currentMessageLength);
+                    charactersRemaining = MessageLimit - (currentMessageLength);
                 }
 
                 return charactersRemaining;
@@ -62,10 +64,10 @@
         {
             get
             {
-                int result = 160;
+                var result = MessageLimit;
                 if (Message.Length != 0)
                 {
-                    result = (int)Math.Ceiling(((double)Message.Length) / 160) * 160;
+                    result = (int)Math.Ceiling(((double)Message.Length) / MessageLimit) * MessageLimit;
                 }
                 return result;
             }
