@@ -2,7 +2,6 @@
 {
     using Events.Models;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
@@ -17,10 +16,6 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IIncomingCallNotificationViewModel> _mockIncomingCallNotificationViewModel;
-
-        private Mock<IIncomingSmsNotificationViewModel> _mockIncomingSmsNotificationVIewModel;
-
         [SetUp]
         public void SetUp()
         {
@@ -28,7 +23,7 @@
             _kernel.Bind<IIncomingCallNotificationViewModel>().To<IncomingCallNotificationViewModel>();
             _kernel.Bind<IIncomingSmsNotificationViewModel>().To<IncomingSmsNotificationViewModel>();
 
-            _subject = new NotificationViewModelFactory { Kernel = _kernel };
+            _subject = new NotificationViewModelFactory(_kernel);
         }
 
         [Test]
