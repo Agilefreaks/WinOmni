@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Notification.IncomingCallNotification
 {
-    public interface IIncomingCallNotificationViewModel : INotificationViewModel
+    public interface IIncomingCallNotificationViewModel : IEventNotificationViewModel
     {
-        string PhoneNumber { get; set; }
     }
 }

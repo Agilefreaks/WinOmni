@@ -34,26 +34,18 @@
 
         public INotificationViewModel Create(Event @event)
         {
-            INotificationViewModel result = null;
-            switch (@event.Type)
+            IEventNotificationViewModel result;
+
+            if (@event.Type == EventTypeEnum.IncomingCallEvent)
             {
-                case EventTypeEnum.IncomingCallEvent:
-                    {
-                        var incomingCallNotificationViewModel = Kernel.Get<IIncomingCallNotificationViewModel>();
-                        incomingCallNotificationViewModel.PhoneNumber = @event.phone_number;
-
-                        result = incomingCallNotificationViewModel;
-                    }
-                    break;
-                case EventTypeEnum.IncomingSmsEvent:
-                    {
-                        var incomingSmsNotificationViewModel = Kernel.Get<IIncomingSmsNotificationViewModel>();
-                        incomingSmsNotificationViewModel.PhoneNumber = @event.phone_number;
-
-                        result = incomingSmsNotificationViewModel;
-                    }
-                    break;
+                result = Kernel.Get<IIncomingCallNotificationViewModel>();
             }
+            else
+            {
+                result = Kernel.Get<IIncomingSmsNotificationViewModel>();
+            }
+
+            result.PhoneNumber = @event.PhoneNumber;
 
             return result;
         }

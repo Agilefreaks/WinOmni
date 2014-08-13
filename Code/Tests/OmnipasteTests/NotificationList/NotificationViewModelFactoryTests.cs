@@ -19,7 +19,7 @@
             kernel.Bind<IIncomingCallNotificationViewModel>().ToConstant(mockIncomingCallNotificationViewModel.Object);
             _subject = new NotificationViewModelFactory { Kernel = kernel };
 
-            var notificationViewModel = (IIncomingCallNotificationViewModel)_subject.Create(new Event { phone_number = "your number", Type = EventTypeEnum.IncomingCallEvent});
+            var notificationViewModel = (IIncomingCallNotificationViewModel)_subject.Create(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent});
 
             mockIncomingCallNotificationViewModel.VerifySet(vm => vm.PhoneNumber = "your number");
         }

@@ -139,10 +139,10 @@
                 _testScheduler.CreateHotObservable(
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnNext(new Clipping())));
 
-            _testableIncomingCallObservable = _testScheduler.CreateHotObservable(new Recorded<Notification<Event>>(300, Notification.CreateOnNext(new Event { phone_number = "phone number"})));
+            _testableIncomingCallObservable = _testScheduler.CreateHotObservable(new Recorded<Notification<Event>>(300, Notification.CreateOnNext(new Event { PhoneNumber = "phone number"})));
             _testableEventsObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event {phone_number = "your number"})));
+                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event {PhoneNumber = "your number"})));
 
             SchedulerProvider.Dispatcher = _testScheduler;
         }

@@ -255,6 +255,7 @@
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notification\IEventNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
