@@ -13,8 +13,10 @@
                 <ContentControl cal:View.Model="{Binding Path=AllEventListViewModel}" />
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Incoming Calls" Style="{StaticResource SubmenuTabItemStyle}">
+                <ContentControl cal:View.Model="{Binding Path=IncomingCallEventListViewModel}" />
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Incoming Messages" Style="{StaticResource SubmenuTabItemStyle}">
+                <ContentControl cal:View.Model="{Binding Path=IncomingSmsEventListViewModel}" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>
     </Grid>

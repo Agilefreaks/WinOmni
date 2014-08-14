@@ -243,6 +243,8 @@
     <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingSmsEventList\IIncomingSmsEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModel.cs" />
     <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
@@ -370,6 +372,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MasterEventList\IncomingCallEventList\IncomingCallEventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
