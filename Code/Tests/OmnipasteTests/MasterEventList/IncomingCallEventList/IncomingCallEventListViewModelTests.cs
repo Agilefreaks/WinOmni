@@ -1,6 +1,8 @@
-﻿namespace OmnipasteTests.MasterEventList.AllEventList
+﻿namespace OmnipasteTests.MasterEventList.IncomingCallEventList
 {
     using System;
+    using System.Linq;
+    using System.Reactive;
     using Events.Handlers;
     using Events.Models;
     using FluentAssertions;
@@ -10,15 +12,14 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Framework;
-    using Omnipaste.MasterEventList.AllEventList;
-    using System.Reactive;
+    using Omnipaste.MasterEventList.IncomingCallEventList;
 
     [TestFixture]
-    public class AllEventListViewModelTests
+    public class IncomingCallEventListViewModelTests
     {
         private MoqMockingKernel _kernel;
 
-        private AllEventListViewModel _subject;
+        private IncomingCallEventListViewModel _subject;
 
         private Mock<IEventsHandler> _mockEventsHandler;
 
@@ -32,41 +33,35 @@
             _kernel = new MoqMockingKernel();
 
             SetupTestScheduler();
-            
+
             _mockEventsHandler = _kernel.GetMock<IEventsHandler>();
             _mockEventsHandler
                 .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(o => _testableIncomingEventsObservable.Subscribe(o));
             _kernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
 
-            _subject = _kernel.Get<AllEventListViewModel>();
+            _subject = _kernel.Get<IncomingCallEventListViewModel>();
+        }
+
+        [Test]
+        public void IncomingCallEvent_IsAddedToTheList()
+        {
+            _testScheduler.Start();
+
+            _subject.IncomingEvents.Count.Should().Be(1);
+            _subject.IncomingEvents.First().Type.Should().Be(EventTypeEnum.IncomingCallEvent);
         }
 
         private void SetupTestScheduler()
         {
             _testScheduler = new TestScheduler();
 
-            
             _testableIncomingEventsObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent })),
                     new Recorded<Notification<Event>>(200, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingSmsEvent })));
 
             SchedulerProvider.Dispatcher = _testScheduler;
-        }
-
-        [Test]
-        public void NewInstance_SubscribesToEventHandler()
-        {
-            _mockEventsHandler.Verify(h => h.Subscribe(It.IsAny<IObserver<Event>>()));
-        }
-
-        [Test]
-        public void IncomingEvents_NoMatterTheType_AreAddedToTheList()
-        {
-            _testScheduler.Start();
-
-            _subject.IncomingEvents.Count.Should().Be(2);
         }
     }
 }

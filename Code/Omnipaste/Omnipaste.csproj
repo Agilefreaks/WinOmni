@@ -239,6 +239,8 @@
     <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
     <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
@@ -362,6 +364,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\IncomingCallEventList\IncomingCallEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
