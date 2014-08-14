@@ -142,6 +142,7 @@
     <Compile Include="ClippingList\LimitableBindableCollectionTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />
+    <Compile Include="MasterEventList\AllEventList\AllEventListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />

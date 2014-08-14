@@ -16,9 +16,9 @@
     using Omnipaste.ClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.EventList;
     using Omnipaste.Framework;
     using Omnipaste.Loading;
+    using Omnipaste.MasterEventList;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
     using Omnipaste.SendSms;
