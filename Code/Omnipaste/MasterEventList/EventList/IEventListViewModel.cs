@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.MasterEventList.EventList
 {
-    public interface IEventListViewModel
+    using Caliburn.Micro;
+
+    public interface IEventListViewModel : IScreen
     {
     }
 }

@@ -224,10 +224,12 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingListViewModelStatusEnum.cs" />
+    <Compile Include="ListViewModelStatusEnum.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
+    <Compile Include="Event\EventViewModel.cs" />
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
     <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
+    <Compile Include="Event\IEventViewModel.cs" />
     <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="ClippingList\LimitableBindableCollection.cs" />
@@ -359,6 +361,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Event\EventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MasterEventList\AllEventList\AllEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -370,6 +376,18 @@
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\EventList\EventList\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MasterEventList\EventList\EventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\EventList\EventList\NotEmpty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MasterEventList\IncomingCallEventList\IncomingCallEventListView.xaml">
       <SubType>Designer</SubType>

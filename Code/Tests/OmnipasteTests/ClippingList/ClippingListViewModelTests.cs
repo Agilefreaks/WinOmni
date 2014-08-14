@@ -8,6 +8,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omnipaste;
     using Omnipaste.Clipping;
     using Omnipaste.ClippingList;
 
@@ -70,7 +71,7 @@
 
         public void Clippings_WhenIsEmpty_StatusIsEmpty()
         {
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
         }
 
         [Test]
@@ -79,7 +80,7 @@
             var clipping = new Clipping();
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.NotEmpty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
         }
 
         [Test]
@@ -90,7 +91,7 @@
 
             _subject.Clippings.Clear();
 
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
         }
     }
 }

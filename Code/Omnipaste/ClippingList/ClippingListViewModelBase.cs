@@ -12,7 +12,7 @@ namespace Omnipaste.ClippingList
 
     public abstract class ClippingListViewModelBase : Screen, IClippingListViewModel
     {
-        private ClippingListViewModelStatusEnum _status;
+        private ListViewModelStatusEnum _status;
 
         #region Constructors and Destructors
 
@@ -40,7 +40,7 @@ namespace Omnipaste.ClippingList
         [Inject]
         public IKernel Kernel { get; set; }
 
-        public ClippingListViewModelStatusEnum Status
+        public ListViewModelStatusEnum Status
         {
             get
             {
@@ -68,8 +68,8 @@ namespace Omnipaste.ClippingList
         private void ClippingsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Status = Clippings.Any() 
-                ? ClippingListViewModelStatusEnum.NotEmpty 
-                : ClippingListViewModelStatusEnum.Empty;
+                ? ListViewModelStatusEnum.NotEmpty 
+                : ListViewModelStatusEnum.Empty;
         }
 
         #endregion
