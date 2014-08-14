@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.MasterEventList.AllEventList
 {
-    public interface IAllEventListViewModel
+    using Omnipaste.MasterEventList.EventList;
+
+    public interface IAllEventListViewModel : IEventListViewModel
     {
          
     }

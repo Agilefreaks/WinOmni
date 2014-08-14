@@ -228,6 +228,7 @@
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
     <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
+    <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="ClippingList\LimitableBindableCollection.cs" />
     <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
+    <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
     <Compile Include="MasterEventList\MasterEventListViewModel.cs" />

@@ -1,28 +1,31 @@
 ﻿namespace Omnipaste.MasterEventList.IncomingCallEventList
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reactive.Linq;
     using Events.Handlers;
     using Events.Models;
-    using Omnipaste.ClippingList;
+    using Omnipaste.MasterEventList.EventList;
 
-    public class IncomingCallEventListViewModel : IIncomingCallEventListViewModel
+    public class IncomingCallEventListViewModel : EventListViewModelBase, IIncomingCallEventListViewModel
     {
-        public IEventsHandler EventsHandler { get; set; }
-
-        public IList<Event> IncomingEvents { get; set; }
-
-        public const int ListSize = 10;
+        #region Constructors and Destructors
 
         public IncomingCallEventListViewModel(IEventsHandler eventsHandler)
+            : base(eventsHandler)
         {
-            IncomingEvents = new LimitableBindableCollection<Event>(ListSize);
-            
-            EventsHandler = eventsHandler;
-            EventsHandler.Where(@event => @event.Type == EventTypeEnum.IncomingCallEvent)
-                .Subscribe(@event => IncomingEvents.Add(@event), exception => { });
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public override Func<Event, bool> Filter
+        {
+            get
+            {
+                return @event => @event.Type == EventTypeEnum.IncomingCallEvent;
+            }
+        }
+
+        #endregion
     }
 }

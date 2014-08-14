@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.MasterEventList.IncomingCallEventList
 {
-    public interface IIncomingCallEventListViewModel 
+    using Omnipaste.MasterEventList.EventList;
+
+    public interface IIncomingCallEventListViewModel : IEventListViewModel
     {
          
     }
