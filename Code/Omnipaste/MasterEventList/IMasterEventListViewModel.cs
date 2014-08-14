@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.EventList
+﻿namespace Omnipaste.MasterEventList
 {
     using Caliburn.Micro;
 

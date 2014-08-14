@@ -1,24 +1,11 @@
 ﻿namespace Omnipaste.Clipping
 {
     using System.Diagnostics;
-    using Caliburn.Micro;
     using Clipboard.Models;
+    using Omnipaste.Event;
 
-    public class ClippingViewModel : Screen, IClippingViewModel
+    public class ClippingViewModel : DetailsViewModelBase<Clipping>, IClippingViewModel
     {
-        #region Fields
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public ClippingViewModel(Clipping model)
-        {
-            Model = model;
-        }
-
-        #endregion
-
         #region Public Properties
 
         public string Content
@@ -44,8 +31,6 @@
                 return Model.IsLink;
             }
         }
-
-        public Clipping Model { get; set; }
 
         #endregion
 
