@@ -53,7 +53,7 @@
     </UserControl.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="Events" ItemTemplate="{DynamicResource EventTemplate}" />
+            <ItemsControl x:Name="ViewModels" ItemTemplate="{DynamicResource EventTemplate}" />
         </ScrollViewer>
     </Grid>
 </UserControl>

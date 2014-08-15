@@ -49,8 +49,8 @@
         {
             _testScheduler.Start();
 
-            _subject.IncomingEvents.Count.Should().Be(1);
-            _subject.IncomingEvents.First().Type.Should().Be(EventTypeEnum.IncomingSmsEvent);
+            _subject.ViewModels.Count.Should().Be(1);
+            //_subject.IncomingEvents.First().Type.Should().Be(EventTypeEnum.IncomingSmsEvent);
         }
 
         private void SetupTestScheduler()

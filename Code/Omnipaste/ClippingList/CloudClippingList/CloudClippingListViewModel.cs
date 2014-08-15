@@ -6,8 +6,8 @@ namespace Omnipaste.ClippingList.CloudClippingList
     [UseView("Omnipaste.ClippingList.ClippingListView", IsFullyQualifiedName = true)]
     public class CloudClippingListViewModel : ClippingListViewModelBase, ICloudClippingListViewModel
     {
-        public CloudClippingListViewModel(IOmniClipboardHandler clippingsObservable)
-            : base(clippingsObservable)
+        public CloudClippingListViewModel(IOmniClipboardHandler entityObservable)
+            : base(entityObservable)
         {
         }
     }
