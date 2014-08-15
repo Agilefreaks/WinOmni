@@ -3,30 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
-    </UserControl.Resources>
-    <Grid>
-        <Grid x:Name="ContentGrid" Background="{StaticResource WhiteBrush}">
-            <Grid.ColumnDefinitions>
-                <!--Icon-->
-                <ColumnDefinition Width="Auto"/>
-                <!--Content-->
-                <ColumnDefinition Width="*"/>
-                <!--Smart actions-->
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+    <Grid x:Name="ContentGrid" Background="{StaticResource WhiteBrush}">
+        <Grid.ColumnDefinitions>
+            <!--Icon-->
+            <ColumnDefinition Width="Auto"/>
+            <!--Content-->
+            <ColumnDefinition Width="*"/>
+            <!--Smart actions-->
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-            <Rectangle Grid.Column="0" Style="{DynamicResource ClippingSource}" />
+        <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}" />
 
-            <TextBlock Grid.Column="1" VirtualizingPanel.IsVirtualizing="True"
-                   Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" 
-                   Style="{StaticResource ClippingTextBlock}" />
+        <StackPanel Grid.Column="1" VirtualizingPanel.IsVirtualizing="True" Orientation="Vertical">
+            <TextBlock Text="{Binding Path=PhoneNumber}" Style="{StaticResource DarkTextBlock}" />
+            <TextBlock 
+                Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" 
+                Style="{StaticResource ClippingTextBlock}" />
+        </StackPanel>
 
-            <Button x:Name="OpenLink" Grid.Column="2">
+        <StackPanel Grid.Column="2">
+            <Button x:Name="CallBack">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                         <Style.Triggers>
@@ -38,10 +37,28 @@
                 </Button.Style>
                 <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                     <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_browser}" />
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_reply_people}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-        </Grid>
+            <Button x:Name="SendSms">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}},Path=IsMouseOver}" Value="True">
+                                <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibility}}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_reply_email}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+
     </Grid>
+    
 </UserControl>

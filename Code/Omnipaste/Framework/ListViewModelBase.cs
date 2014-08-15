@@ -27,13 +27,13 @@ namespace Omnipaste.Framework
 
         protected ListViewModelBase(IObservable<TEntity> entityObservable)
         {
-            ViewModels = new LimitableBindableCollection<TViewModel>(ListLimit);
-            ViewModels.CollectionChanged += OnViewModelsCollectionChanged;
+            Items = new LimitableBindableCollection<TViewModel>(ListLimit);
+            Items.CollectionChanged += OnViewModelsCollectionChanged;
 
             EntityObservable = entityObservable;
             EntityObservable.Where(entity => Filter(entity))
                 .Select(CreateViewModel)
-                .Subscribe(clippingViewModel => ViewModels.Insert(0, clippingViewModel), exception => Debugger.Break());
+                .Subscribe(clippingViewModel => Items.Insert(0, clippingViewModel), exception => Debugger.Break());
         }
 
         #endregion
@@ -66,7 +66,7 @@ namespace Omnipaste.Framework
             }
         }
 
-        public IObservableCollection<TViewModel> ViewModels { get; set; }
+        public IObservableCollection<TViewModel> Items { get; set; }
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace Omnipaste.Framework
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Status = ViewModels.Any() ? ListViewModelStatusEnum.NotEmpty : ListViewModelStatusEnum.Empty;
+            Status = Items.Any() ? ListViewModelStatusEnum.NotEmpty : ListViewModelStatusEnum.Empty;
         }
 
         #endregion

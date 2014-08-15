@@ -53,7 +53,7 @@
     </UserControl.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="Clippings" ItemTemplate="{DynamicResource ClippingTemplate}" />
+            <ItemsControl x:Name="Items" ItemTemplate="{DynamicResource ClippingTemplate}" />
         </ScrollViewer>
     </Grid>
 </UserControl>

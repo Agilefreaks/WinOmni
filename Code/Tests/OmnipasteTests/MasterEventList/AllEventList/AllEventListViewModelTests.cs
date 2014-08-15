@@ -67,7 +67,7 @@
         {
             _testScheduler.Start();
 
-            _subject.ViewModels.Count.Should().Be(2);
+            _subject.Items.Count.Should().Be(2);
         }
 
         [Test]

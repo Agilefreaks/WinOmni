@@ -43,7 +43,7 @@
         [Test]
         public void Clippings_ShouldBeLimittedToACountOf42()
         {
-            ((LimitableBindableCollection<IClippingViewModel>)_subject.ViewModels).Limit.Should().Be(42);
+            ((LimitableBindableCollection<IClippingViewModel>)_subject.Items).Limit.Should().Be(42);
         }
 
         [Test]
@@ -51,20 +51,20 @@
         {
             _fakeClippingSubject.OnNext(new Clipping());
 
-            _subject.ViewModels.Count.Should().Be(1);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]
         public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingAtTheStart()
         {
             var clipping = new Clipping();
-            _subject.ViewModels.Add(_mockingKernel.Get<IClippingViewModel>());
+            _subject.Items.Add(_mockingKernel.Get<IClippingViewModel>());
             var expectedClippingViewModel = new ClippingViewModel(clipping);
             _mockingKernel.Bind<IClippingViewModel>().ToConstant(expectedClippingViewModel);
 
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.ViewModels.First().Should().Be(expectedClippingViewModel);
+            _subject.Items.First().Should().Be(expectedClippingViewModel);
         }
 
         [Test]
@@ -89,7 +89,7 @@
             var clipping = new Clipping();
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.ViewModels.Clear();
+            _subject.Items.Clear();
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
         }

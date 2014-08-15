@@ -12,7 +12,6 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Framework;
-    using Omnipaste.MasterEventList.IncomingCallEventList;
     using Omnipaste.MasterEventList.IncomingSmsEventList;
 
     [TestFixture]
@@ -49,8 +48,8 @@
         {
             _testScheduler.Start();
 
-            _subject.ViewModels.Count.Should().Be(1);
-            //_subject.IncomingEvents.First().Type.Should().Be(EventTypeEnum.IncomingSmsEvent);
+            _subject.Items.Count.Should().Be(1);
+            _subject.Items.First().Type.Should().Be(EventTypeEnum.IncomingSmsEvent);
         }
 
         private void SetupTestScheduler()

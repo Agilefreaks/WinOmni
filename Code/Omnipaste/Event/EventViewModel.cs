@@ -23,6 +23,14 @@
             }
         }
 
+        public EventTypeEnum Type
+        {
+            get
+            {
+                return Model.Type;
+            }
+        }
+
         public string PhoneNumber
         {
             get

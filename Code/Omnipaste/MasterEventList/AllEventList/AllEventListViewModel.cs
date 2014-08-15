@@ -6,7 +6,7 @@
 
     [UseView("Omnipaste.MasterEventList.EventList.EventListView", IsFullyQualifiedName = true)]
     public class AllEventListViewModel : EventListViewModelBase, IAllEventListViewModel
-    {
+    { 
         public AllEventListViewModel(IEventsHandler eventsHandler) : base(eventsHandler)
         {
         }
