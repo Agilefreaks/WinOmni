@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Event
 {
-    public interface IEventViewModel
+    using Events.Models;
+
+    public interface IEventViewModel : IDetailsViewModel<Event>
     {
     }
 }

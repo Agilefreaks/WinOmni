@@ -224,6 +224,8 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
+    <Compile Include="Event\DetailsViewModelBase.cs" />
+    <Compile Include="Event\IDetailsViewModel.cs" />
     <Compile Include="Framework\ListViewModelBase.cs" />
     <Compile Include="ListViewModelStatusEnum.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
