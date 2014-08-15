@@ -144,6 +144,7 @@
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModelTests.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModelTests.cs" />
+    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
