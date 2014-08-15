@@ -250,7 +250,7 @@
     <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
-    <Compile Include="Clipping\LimitedStringConverter.cs" />
+    <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\MulticontentButton.cs" />
@@ -414,6 +414,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

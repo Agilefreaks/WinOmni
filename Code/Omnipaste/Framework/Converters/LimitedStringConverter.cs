@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Clipping
+﻿namespace Omnipaste.Framework.Converters
 {
     using System;
     using System.Globalization;
