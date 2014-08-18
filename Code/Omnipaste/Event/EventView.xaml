@@ -24,13 +24,13 @@
                 Style="{StaticResource ClippingTextBlock}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="2">
+        <StackPanel Grid.Column="2" Style="{StaticResource ButtonsPanel}">
             <Button x:Name="CallBack">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}},Path=IsMouseOver}" Value="True">
-                                <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibility}}" />
+                                <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -46,7 +46,7 @@
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}},Path=IsMouseOver}" Value="True">
-                                <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibility}}" />
+                                <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -60,5 +60,5 @@
         </StackPanel>
 
     </Grid>
-    
+
 </UserControl>
