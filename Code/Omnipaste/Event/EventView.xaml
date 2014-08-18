@@ -17,15 +17,19 @@
 
         <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}" />
 
-        <StackPanel Grid.Column="1" VirtualizingPanel.IsVirtualizing="True" Orientation="Vertical">
-            <TextBlock Text="{Binding Path=PhoneNumber}" Style="{StaticResource DarkTextBlock}" />
+        <StackPanel Grid.Column="1" Style="{StaticResource VerticalStackPanel}">
+            <StackPanel Style="{StaticResource HorizontalPanel}">
+                <TextBlock Text="{Binding Path=Title}" Style="{StaticResource BoldTextBlock}" />
+                <TextBlock Text="{Binding Path=Time, StringFormat=at {0:HH:mm}}" Style="{StaticResource ClippingTextBlock}" />
+            </StackPanel>
+            
             <TextBlock 
                 Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" 
                 Style="{StaticResource ClippingTextBlock}" />
         </StackPanel>
 
         <StackPanel Grid.Column="2" Style="{StaticResource ButtonsPanel}">
-            <Button x:Name="CallBack">
+            <Button x:Name="CallBack" ToolTip="Call back">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                         <Style.Triggers>
@@ -37,11 +41,11 @@
                 </Button.Style>
                 <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                     <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_reply_people}" />
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_people}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button x:Name="SendSms">
+            <Button x:Name="SendSms" ToolTip="Reply with SMS">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmartActionButton}">
                         <Style.Triggers>
@@ -53,7 +57,7 @@
                 </Button.Style>
                 <Rectangle Width="22" Height="22" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                     <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_reply_email}" />
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_email}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>

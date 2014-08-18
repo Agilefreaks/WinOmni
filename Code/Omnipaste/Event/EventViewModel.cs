@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Event
 {
+    using System;
     using Caliburn.Micro;
     using Events.Models;
     using Omnipaste.EventAggregatorMessages;
@@ -36,11 +37,19 @@
             }
         }
 
-        public string PhoneNumber
+        public string Title
         {
             get
             {
                 return Model.PhoneNumber;
+            }
+        }
+
+        public DateTime Time
+        {
+            get
+            {
+                return Model.Time;
             }
         }
 

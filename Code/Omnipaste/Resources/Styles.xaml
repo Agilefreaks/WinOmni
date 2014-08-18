@@ -15,10 +15,10 @@
     <SolidColorBrush x:Key="LightTextForegroundBrush" Color="{StaticResource WhiteColor}" />
     <SolidColorBrush x:Key="DarkTextForegroundBrush" Color="{StaticResource BlackColor}" />
 
-    <VisualBrush x:Key="CloudVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_cloud}" />
-    <VisualBrush x:Key="LocalVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_laptop}" />
-    <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_email_minimal}" />
-    <VisualBrush x:Key="CallVisualBrush" Stretch="Fill" Visual="{DynamicResource appbar_phone}" />
+    <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
+    <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
+    <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />
+    <VisualBrush x:Key="CallVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_phone}" />
 
     <!-- TextBlock -->
     <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -35,6 +35,12 @@
 
     <Style TargetType="TextBlock" x:Key="DarkTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Foreground" Value="{StaticResource DarkTextForegroundBrush}" />
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="BoldTextBlock" BasedOn="{StaticResource DarkTextBlock}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0, 0, 14, 0" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="LightTitleTextBlock" BasedOn="{StaticResource LightTextBlock}">
@@ -80,8 +86,9 @@
 
     <!-- Shapes -->
     <Style x:Key="ItemIcon" TargetType="Rectangle">
-        
         <Setter Property="Margin" Value="14, 0" />
+        <Setter Property="Height" Value="38" />
+        <Setter Property="Width" Value="38" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Fill" Value="{StaticResource GrayBrush2}" />
@@ -90,13 +97,9 @@
     <Style x:Key="ClippingSourceIconStyle" TargetType="Rectangle" BasedOn="{StaticResource ItemIcon}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Local}">
-                <Setter Property="Height" Value="38" />
-                <Setter Property="Width" Value="38" />
                 <Setter Property="OpacityMask" Value="{DynamicResource LocalVisualBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Cloud}">
-                <Setter Property="Height" Value="20" />
-                <Setter Property="Width" Value="38" />
                 <Setter Property="OpacityMask" Value="{DynamicResource CloudVisualBrush}"/>
             </DataTrigger>
         </Style.Triggers>
@@ -105,13 +108,9 @@
     <Style x:Key="EventTypeIconStyle" TargetType="Rectangle" BasedOn="{StaticResource ItemIcon}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models1:EventTypeEnum.IncomingCallEvent}">
-                <Setter Property="Height" Value="41" />
-                <Setter Property="Width" Value="26" />
                 <Setter Property="OpacityMask" Value="{DynamicResource CallVisualBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models1:EventTypeEnum.IncomingSmsEvent}">
-                <Setter Property="Height" Value="26" />
-                <Setter Property="Width" Value="38" />
                 <Setter Property="OpacityMask" Value="{DynamicResource EnvelopeVisualBrush}"/>
             </DataTrigger>
         </Style.Triggers>
@@ -128,9 +127,17 @@
     </Style>
     
     <!--StackPanel-->
-    <Style x:Key="ButtonsPanel" TargetType="StackPanel">
+    <Style x:Key="HorizontalPanel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    
+    <Style x:Key="ButtonsPanel" TargetType="StackPanel" BasedOn="{StaticResource HorizontalPanel}">
         <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Orientation" Value="Horizontal" />
     </Style>
 
+    <Style x:Key="VerticalStackPanel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 </ResourceDictionary>

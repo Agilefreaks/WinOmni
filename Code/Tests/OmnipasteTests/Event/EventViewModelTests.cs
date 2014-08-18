@@ -9,7 +9,6 @@
     using OmniApi.Resources.v1;
     using Omnipaste.Event;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class EventViewModelTests
