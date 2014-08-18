@@ -32,6 +32,12 @@
             [Get("/devices")]
             IObservable<List<Device>> GetAll([Header("Authorization")] string token);
 
+            [Post("/devices/end_call")]
+            IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
+
+            [Post("/devices/sms")]
+            IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);
+
             #endregion
         }
 
@@ -61,6 +67,16 @@
         {
             var observable = ResourceApi.GetAll(AccessToken);
             return Authorize(observable);
+        }
+
+        public IObservable<EmptyModel> EndCall()
+        {
+            return Authorize(ResourceApi.EndCall(AccessToken));
+        }
+
+        public IObservable<EmptyModel> SendSms(string phoneNumber, string content)
+        {
+            return Authorize(ResourceApi.SendSms(phoneNumber, content, AccessToken));
         }
 
         #endregion

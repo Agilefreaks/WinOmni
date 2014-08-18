@@ -16,7 +16,7 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IPhones> _mockPhones;
+        private Mock<IDevices> _mockDevices;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -24,8 +24,8 @@
         public void SetUp()
         {
             _kernel = new MoqMockingKernel();
-            _mockPhones = _kernel.GetMock<IPhones>();
-            _mockPhones.DefaultValue = DefaultValue.Mock;
+            _mockDevices = _kernel.GetMock<IDevices>();
+            _mockDevices.DefaultValue = DefaultValue.Mock;
             
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object).InSingletonScope();
@@ -38,7 +38,7 @@
         {
             _subject.EndCall();
 
-            _mockPhones.Verify(p => p.EndCall(), Times.Once);
+            _mockDevices.Verify(p => p.EndCall(), Times.Once);
         }
 
         [Test]

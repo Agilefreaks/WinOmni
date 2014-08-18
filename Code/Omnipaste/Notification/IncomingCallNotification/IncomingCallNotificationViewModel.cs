@@ -24,7 +24,7 @@
         public string PhoneNumber { get; set; }
 
         [Inject]
-        public IPhones Phones { get; set; }
+        public IDevices Devices { get; set; }
 
         public override string Title
         {
@@ -40,7 +40,7 @@
 
         public void EndCall()
         {
-            Phones.EndCall().Subscribe(p => TryClose(true), exception => { });
+            Devices.EndCall().Subscribe(p => TryClose(true), exception => { });
         }
 
         public void ReplyWithSms()

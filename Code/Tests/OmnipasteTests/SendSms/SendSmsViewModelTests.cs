@@ -18,7 +18,7 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IPhones> _mockPhones;
+        private Mock<IDevices> _mockDevices;
 
         private EventAggregator _eventAggregator;
 
@@ -28,8 +28,8 @@
         public void SetUp()
         {
             _kernel = new MoqMockingKernel();
-            _mockPhones = _kernel.GetMock<IPhones>();
-            _mockPhones.DefaultValue = DefaultValue.Mock;
+            _mockDevices = _kernel.GetMock<IDevices>();
+            _mockDevices.DefaultValue = DefaultValue.Mock;
 
             _eventAggregator = new EventAggregator();
             _kernel.Bind<IEventAggregator>().ToConstant(_eventAggregator).InSingletonScope();
@@ -37,7 +37,7 @@
             _mockDialogViewModel = new Mock<IDialogViewModel>();
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object).InSingletonScope();
 
-            _kernel.Bind<IPhones>().ToConstant(_mockPhones.Object);
+            _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
             _subject = _kernel.Get<SendSmsViewModel>();
         }
 
@@ -52,7 +52,7 @@
 
             _subject.Send();
 
-            _mockPhones.Verify(p => p.SendSms("1234567", "save me Obi-Wan Kenobi"), Times.Once);
+            _mockDevices.Verify(p => p.SendSms("1234567", "save me Obi-Wan Kenobi"), Times.Once);
         }
 
         [Test]

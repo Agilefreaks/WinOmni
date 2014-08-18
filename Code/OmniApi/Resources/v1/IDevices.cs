@@ -16,6 +16,10 @@
 
         IObservable<List<Device>> GetAll();
 
+        IObservable<EmptyModel> EndCall();
+
+        IObservable<EmptyModel> SendSms(string phoneNumber, string content);
+
         #endregion
     }
 }

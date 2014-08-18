@@ -102,9 +102,7 @@
     <Compile Include="Resources\v1\Devices.cs" />
     <Compile Include="Resources\v1\IDevices.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />
-    <Compile Include="Resources\v1\IPhones.cs" />
     <Compile Include="Resources\v1\OAuth2.cs" />
-    <Compile Include="Resources\v1\Phones.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
     <Compile Include="Support\Serialization\DeliminatorSeparatedPropertyNamesContractResolver.cs" />
     <Compile Include="Support\Serialization\SnakeCasePropertyNamesContractResolver.cs" />

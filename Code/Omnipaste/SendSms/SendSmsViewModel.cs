@@ -11,9 +11,9 @@
     {
         #region Constructors and Destructors
 
-        public SendSmsViewModel(IPhones phones, IEventAggregator eventAggregator)
+        public SendSmsViewModel(IDevices devices, IEventAggregator eventAggregator)
         {
-            Phones = phones;
+            Devices = devices;
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
         }
@@ -29,7 +29,7 @@
 
         public SmsMessage Model { get; set; }
 
-        public IPhones Phones { get; set; }
+        public IDevices Devices { get; set; }
 
         #endregion
 
@@ -37,7 +37,7 @@
 
         public void Send()
         {
-            Phones.SendSms(Model.Recipient, Model.Message).Subscribe(m => TryClose(true), exception => { });
+            Devices.SendSms(Model.Recipient, Model.Message).Subscribe(m => TryClose(true), exception => { });
         }
 
         #endregion
