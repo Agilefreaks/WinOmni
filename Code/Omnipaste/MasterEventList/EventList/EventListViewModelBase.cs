@@ -2,6 +2,7 @@
 {
     using Events.Handlers;
     using Events.Models;
+    using Ninject;
     using Omnipaste.Event;
     using Omnipaste.Framework;
 
@@ -20,7 +21,10 @@
 
         protected override IEventViewModel CreateViewModel(Event entity)
         {
-            return new EventViewModel(entity);
+            var eventViewModel = Kernel.Get<IEventViewModel>();
+            eventViewModel.Model = entity;
+
+            return eventViewModel;
         }
 
         #endregion

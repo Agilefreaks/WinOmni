@@ -1,14 +1,19 @@
 ﻿namespace Omnipaste.Event
 {
+    using Caliburn.Micro;
     using Events.Models;
+    using Omnipaste.EventAggregatorMessages;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
     {
+        public IEventAggregator EventAggregator { get; set; }
+
         #region Constructors and Destructors
 
-        public EventViewModel(Event model)
+        public EventViewModel(IEventAggregator eventAggregator, Event model)
             : base(model)
         {
+            EventAggregator = eventAggregator;
         }
 
         #endregion
@@ -40,5 +45,14 @@
         }
 
         #endregion
+
+        public void CallBack()
+        {
+        }
+
+        public void SendSms()
+        {
+            EventAggregator.PublishOnCurrentThread(new SendSmsMessage{ Recipient = Model.PhoneNumber });
+        }
     }
 }

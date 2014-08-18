@@ -9,5 +9,7 @@
         EventTypeEnum Type { get; }
 
         #endregion
+
+        void SendSms();
     }
 }
