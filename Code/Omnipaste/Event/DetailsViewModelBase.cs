@@ -6,11 +6,6 @@
     {
         #region Constructors and Destructors
 
-        protected DetailsViewModelBase(TEntity model)
-        {
-            Model = model;
-        }
-
         #endregion
 
         #region Public Properties

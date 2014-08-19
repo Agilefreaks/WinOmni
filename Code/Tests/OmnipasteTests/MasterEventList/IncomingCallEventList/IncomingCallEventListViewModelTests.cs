@@ -11,6 +11,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omnipaste.Event;
     using Omnipaste.Framework;
     using Omnipaste.MasterEventList.IncomingCallEventList;
 
@@ -35,6 +36,7 @@
             SetupTestScheduler();
 
             _mockEventsHandler = _kernel.GetMock<IEventsHandler>();
+            _kernel.Bind<IEventViewModel>().To<EventViewModel>();
             _mockEventsHandler
                 .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(o => _testableIncomingEventsObservable.Subscribe(o));

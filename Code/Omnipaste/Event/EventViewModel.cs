@@ -11,8 +11,7 @@
 
         #region Constructors and Destructors
 
-        public EventViewModel(IEventAggregator eventAggregator, Event model)
-            : base(model)
+        public EventViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
         }

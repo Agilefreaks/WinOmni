@@ -59,7 +59,7 @@
         {
             var clipping = new Clipping();
             _subject.Items.Add(_mockingKernel.Get<IClippingViewModel>());
-            var expectedClippingViewModel = new ClippingViewModel(clipping);
+            var expectedClippingViewModel = new ClippingViewModel { Model = clipping };
             _mockingKernel.Bind<IClippingViewModel>().ToConstant(expectedClippingViewModel);
 
             _fakeClippingSubject.OnNext(clipping);
