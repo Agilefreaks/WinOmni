@@ -6,8 +6,8 @@ namespace Omnipaste.ClippingList.AllClippingList
     [UseView("Omnipaste.ClippingList.ClippingListView", IsFullyQualifiedName = true)]
     public class AllClippingListViewModel : ClippingListViewModelBase, IAllClippingListViewModel
     {
-        public AllClippingListViewModel(IClipboardHandler clippingsObservable)
-            : base(clippingsObservable)
+        public AllClippingListViewModel(IClipboardHandler entityObservable)
+            : base(entityObservable)
         {
         }
     }

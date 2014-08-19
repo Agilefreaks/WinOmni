@@ -224,9 +224,17 @@
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingListViewModelStatusEnum.cs" />
+    <Compile Include="Event\DetailsViewModelBase.cs" />
+    <Compile Include="Event\IDetailsViewModel.cs" />
+    <Compile Include="Framework\ListViewModelBase.cs" />
+    <Compile Include="ListViewModelStatusEnum.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
-    <Compile Include="EventList\IMasterEventListViewModel.cs" />
+    <Compile Include="Event\EventViewModel.cs" />
+    <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
+    <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
+    <Compile Include="Event\IEventViewModel.cs" />
+    <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
+    <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="ClippingList\LimitableBindableCollection.cs" />
     <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
@@ -237,10 +245,15 @@
     <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
-    <Compile Include="EventList\MasterEventListViewModel.cs" />
+    <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingSmsEventList\IIncomingSmsEventListViewModel.cs" />
+    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModel.cs" />
+    <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
-    <Compile Include="Clipping\LimitedStringConverter.cs" />
+    <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
     <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\MulticontentButton.cs" />
@@ -351,6 +364,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Event\EventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\AllEventList\AllEventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -359,7 +380,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventList\MasterEventListView.xaml">
+    <Page Include="MasterEventList\EventList\EventList\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MasterEventList\EventList\EventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\EventList\EventList\NotEmpty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MasterEventList\IncomingCallEventList\IncomingCallEventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\MasterEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -376,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

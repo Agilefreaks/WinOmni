@@ -85,7 +85,7 @@
             _notificationsSubscription =
                 _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
                     .Subscribe(
-                        notification => Notifications.Add(NotificationViewModelFactory.Create(notification)),
+                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)),
                         exception => { });
         }
 

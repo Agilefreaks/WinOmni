@@ -8,6 +8,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omnipaste;
     using Omnipaste.Clipping;
     using Omnipaste.ClippingList;
 
@@ -22,8 +23,8 @@
 
         internal class ClippingListViewModel : ClippingListViewModelBase
         {
-            public ClippingListViewModel(IObservable<Clipping> clippingsObservable)
-                : base(clippingsObservable)
+            public ClippingListViewModel(IObservable<Clipping> entityObservable)
+                : base(entityObservable)
             {
             }
         }
@@ -42,7 +43,7 @@
         [Test]
         public void Clippings_ShouldBeLimittedToACountOf42()
         {
-            ((LimitableBindableCollection<IClippingViewModel>)_subject.Clippings).Limit.Should().Be(42);
+            ((LimitableBindableCollection<IClippingViewModel>)_subject.Items).Limit.Should().Be(42);
         }
 
         [Test]
@@ -50,27 +51,27 @@
         {
             _fakeClippingSubject.OnNext(new Clipping());
 
-            _subject.Clippings.Count.Should().Be(1);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]
         public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingAtTheStart()
         {
             var clipping = new Clipping();
-            _subject.Clippings.Add(_mockingKernel.Get<IClippingViewModel>());
-            var expectedClippingViewModel = new ClippingViewModel(clipping);
+            _subject.Items.Add(_mockingKernel.Get<IClippingViewModel>());
+            var expectedClippingViewModel = new ClippingViewModel { Model = clipping };
             _mockingKernel.Bind<IClippingViewModel>().ToConstant(expectedClippingViewModel);
 
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.Clippings.First().Should().Be(expectedClippingViewModel);
+            _subject.Items.First().Should().Be(expectedClippingViewModel);
         }
 
         [Test]
 
         public void Clippings_WhenIsEmpty_StatusIsEmpty()
         {
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
         }
 
         [Test]
@@ -79,7 +80,7 @@
             var clipping = new Clipping();
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.NotEmpty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
         }
 
         [Test]
@@ -88,9 +89,9 @@
             var clipping = new Clipping();
             _fakeClippingSubject.OnNext(clipping);
 
-            _subject.Clippings.Clear();
+            _subject.Items.Clear();
 
-            _subject.Status.Should().Be(ClippingListViewModelStatusEnum.Empty);
+            _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
         }
     }
 }

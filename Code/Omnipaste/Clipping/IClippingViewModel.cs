@@ -1,10 +1,9 @@
 ﻿namespace Omnipaste.Clipping
 {
-    using Caliburn.Micro;
     using Clipboard.Models;
+    using Omnipaste.Event;
 
-    public interface IClippingViewModel : IScreen
+    public interface IClippingViewModel : IDetailsViewModel<Clipping>
     {
-        Clipping Model { get; set; }
     }
 }
