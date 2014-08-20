@@ -63,7 +63,7 @@
 
         #region Methods
 
-        protected void DelayedClose(int milliseconds = 500)
+        protected void DelayedClose(int milliseconds = 1000)
         {
             if (_autoCloseTimer.IsEnabled)
             {
