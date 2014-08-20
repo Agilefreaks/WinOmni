@@ -88,6 +88,12 @@
             ((IConductor)Parent).DeactivateItem(this, true);
         }
 
+        private void InitializeTimers()
+        {
+            InitializeAutoCloseTimer();
+            InitializeDeactivationTimer();
+        }
+
         private void InitializeAutoCloseTimer()
         {
             _autoCloseTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
@@ -116,12 +122,6 @@
                 _deactivationTimer.Stop();
                 Deactivate();
             };
-        }
-
-        private void InitializeTimers()
-        {
-            InitializeAutoCloseTimer();
-            InitializeDeactivationTimer();
         }
 
         #endregion

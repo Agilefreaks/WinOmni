@@ -73,6 +73,7 @@
         public void ReplyWithSms()
         {
             EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            Dismiss();
         }
 
         #endregion
