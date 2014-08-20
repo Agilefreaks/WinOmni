@@ -65,7 +65,7 @@
                     p =>
                     {
                         EndCallButtonText = "Call ended";
-                        DelayedClose();
+                        Dismiss();
                     }, 
                 exception => { });
         }

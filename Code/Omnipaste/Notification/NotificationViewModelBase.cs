@@ -63,14 +63,14 @@
 
         #region Methods
 
-        protected void DelayedClose(int milliseconds = 1000)
+        protected void Dismiss(int delay = 1000)
         {
             if (_autoCloseTimer.IsEnabled)
             {
                 _autoCloseTimer.Stop();
             }
 
-            _autoCloseTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds);
+            _autoCloseTimer.Interval = new TimeSpan(0, 0, 0, 0, delay);
             _autoCloseTimer.Start();
         }
 
