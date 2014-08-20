@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Notification
 {
     using System;
+    using System.Windows;
     using System.Windows.Threading;
     using Caliburn.Micro;
 
@@ -17,6 +18,8 @@
         private DispatcherTimer _deactivationTimer;
 
         private ViewModelStatusEnum _state;
+
+        private DispatcherTimer _dispatcherTimer;
 
         #endregion
 
@@ -47,18 +50,36 @@
 
         #region Public Methods and Operators
 
-        public virtual void Close()
+        protected void DelayedClose(int milliseconds = 500)
         {
-            State = ViewModelStatusEnum.Closed;
             if (_autoCloseTimer.IsEnabled)
             {
                 _autoCloseTimer.Stop();
             }
 
+            _dispatcherTimer = new DispatcherTimer(
+                new TimeSpan(0, 0, 0, 0, milliseconds),
+                DispatcherPriority.Normal,
+                (sender, args) =>
+                {
+                    _dispatcherTimer.Stop();
+                    Close();
+                },
+                Application.Current.Dispatcher);
+        }
+
+        public void Close()
+        {
+            State = ViewModelStatusEnum.Closed;
+            
             _deactivationTimer = new DispatcherTimer(
                 _deactivationDuration,
                 DispatcherPriority.Normal,
-                (sender, args) => Deactivate(),
+                (sender, args) =>
+                {
+                    _deactivationTimer.Stop();
+                    Deactivate();
+                },
                 Dispatcher.CurrentDispatcher);
         }
 
@@ -73,7 +94,11 @@
             _autoCloseTimer = new DispatcherTimer(
                 _timeoutPeriod,
                 DispatcherPriority.Normal,
-                (sender, args) => Close(),
+                (sender, args) =>
+                {
+                    _autoCloseTimer.Stop();
+                    Close();
+                },
                 Dispatcher.CurrentDispatcher);
 
             State = ViewModelStatusEnum.Open;
@@ -81,11 +106,6 @@
 
         private void Deactivate()
         {
-            if (_deactivationTimer.IsEnabled)
-            {
-                _deactivationTimer.Stop();
-            }
-
             ((IConductor)Parent).DeactivateItem(this, true);
         }
 

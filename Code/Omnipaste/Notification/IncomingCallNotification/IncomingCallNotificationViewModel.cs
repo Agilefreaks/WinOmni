@@ -8,11 +8,14 @@
 
     public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
     {
+        private string _endCallButtonText;
+
         #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
+            EndCallButtonText = "End Call";
         }
 
         #endregion
@@ -22,6 +25,23 @@
         public IEventAggregator EventAggregator { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public string EndCallButtonText
+        {
+            get
+            {
+                return _endCallButtonText;
+            }
+            set
+            {
+                if (value == _endCallButtonText)
+                {
+                    return;
+                }
+                _endCallButtonText = value;
+                NotifyOfPropertyChange(() => EndCallButtonText);
+            }
+        }
 
         [Inject]
         public IDevices Devices { get; set; }
@@ -40,7 +60,14 @@
 
         public void EndCall()
         {
-            Devices.EndCall().Subscribe(p => TryClose(true), exception => { });
+            Devices.EndCall()
+                .Subscribe(
+                    p =>
+                    {
+                        EndCallButtonText = "Call ended";
+                        DelayedClose();
+                    }, 
+                exception => { });
         }
 
         public void ReplyWithSms()
