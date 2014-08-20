@@ -274,6 +274,7 @@
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
+    <Compile Include="Notification\ViewModelStatusEnum.cs" />
     <Compile Include="SendSms\SmsMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />

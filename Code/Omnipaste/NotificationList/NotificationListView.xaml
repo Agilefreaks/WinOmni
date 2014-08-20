@@ -22,16 +22,16 @@
                 <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation From="0.01" To="1" Storyboard.TargetProperty="Opacity" 
+                            <DoubleAnimation From="0.1" To="1" Storyboard.TargetProperty="Opacity" 
                                              Duration="0:0:0.5"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
-                <DataTrigger Binding="{Binding Path=State}" Value="notification:ViewModelStatusEnum.Closed">
+                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Closed}">
                     <DataTrigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Container"
                                          Duration="0:0:0.5" />
                             </Storyboard>
                         </BeginStoryboard>
@@ -70,15 +70,6 @@
                         </Grid>
                     </DockPanel>
                 </Border>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <Trigger Property="Opacity" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
             </Grid>
         </DataTemplate>
     </Window.Resources>
