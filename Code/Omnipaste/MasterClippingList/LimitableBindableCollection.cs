@@ -1,4 +1,4 @@
-namespace Omnipaste.ClippingList
+namespace Omnipaste.MasterClippingList
 {
     using System.Collections.Specialized;
     using Caliburn.Micro;

@@ -1,4 +1,4 @@
-namespace Omnipaste.ClippingList.CloudClippingList
+namespace Omnipaste.MasterClippingList.CloudClippingList
 {
     using Clipboard.Handlers;
     using Omnipaste.Framework.Attributes;

@@ -7,7 +7,7 @@ namespace Omnipaste.Framework
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.ClippingList;
+    using Omnipaste.MasterClippingList;
 
     public abstract class ListViewModelBase<TEntity, TViewModel> : Screen
     {
