@@ -223,7 +223,7 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
-    <Compile Include="ClippingList\AllClippingList\AllClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
     <Compile Include="Event\DetailsViewModelBase.cs" />
     <Compile Include="Event\IDetailsViewModel.cs" />
     <Compile Include="Framework\ListViewModelBase.cs" />
@@ -235,16 +235,16 @@
     <Compile Include="Event\IEventViewModel.cs" />
     <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
-    <Compile Include="ClippingList\LimitableBindableCollection.cs" />
-    <Compile Include="ClippingList\MasterClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingListViewModelBase.cs" />
-    <Compile Include="ClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
-    <Compile Include="ClippingList\AllClippingList\IAllClippingListViewModel.cs" />
-    <Compile Include="ClippingList\IClippingListViewModel.cs" />
-    <Compile Include="ClippingList\IMasterClippingListViewModel.cs" />
-    <Compile Include="ClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
-    <Compile Include="ClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
-    <Compile Include="ClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\LimitableBindableCollection.cs" />
+    <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\ClippingListViewModelBase.cs" />
+    <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\AllClippingList\IAllClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\IClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\IMasterClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
     <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
@@ -274,6 +274,7 @@
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
+    <Compile Include="Notification\ViewModelStatusEnum.cs" />
     <Compile Include="SendSms\SmsMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
@@ -344,19 +345,19 @@
     <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="ClippingList\ClippingListView.xaml">
+    <Page Include="MasterClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingList\Empty.xaml">
+    <Page Include="MasterClippingList\ClippingList\Empty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingList\NotEmpty.xaml">
+    <Page Include="MasterClippingList\ClippingList\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\MasterClippingListView.xaml">
+    <Page Include="MasterClippingList\MasterClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,4 @@
-namespace Omnipaste.ClippingList
+namespace Omnipaste.MasterClippingList
 {
     using System;
     using Clipboard.Models;

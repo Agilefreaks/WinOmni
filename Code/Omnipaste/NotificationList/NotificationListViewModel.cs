@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
     using Caliburn.Micro;
@@ -12,7 +14,7 @@
     using Omnipaste.Framework;
     using Omnipaste.Notification;
 
-    public class NotificationListViewModel : Conductor<IScreen>.Collection.OneActive, INotificationListViewModel
+    public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
     {
         #region Fields
 
@@ -31,6 +33,7 @@
         public NotificationListViewModel(IEventsHandler eventsHandler, IOmniClipboardHandler omniClipboardHandler)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
+            Notifications.CollectionChanged += NotificationsCollectionChanged;
 
             _eventsHandler = eventsHandler;
             _omniClipboardHandler = omniClipboardHandler;
@@ -40,25 +43,40 @@
 
         #region Public Properties
 
-        public ObservableCollection<INotificationViewModel> Notifications { get; set; }
-
         [Inject]
         public INotificationViewModelFactory NotificationViewModelFactory { get; set; }
+
+        public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public static void ShowWindow(IWindowManager windowManager, INotificationListViewModel notificationListViewModel)
+        public static void ShowWindow(
+            IWindowManager windowManager,
+            INotificationListViewModel notificationListViewModel)
         {
             windowManager.ShowWindow(
                 notificationListViewModel,
                 null,
                 new Dictionary<string, object>
+                {
+                    { "Height", SystemParameters.WorkArea.Height },
+                    { "Width", SystemParameters.WorkArea.Width }
+                });
+        }
+
+        public void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                e.NewItems.Cast<IScreen>().ToList<IScreen>().ForEach(
+                    i =>
                     {
-                        { "Height", SystemParameters.WorkArea.Height },
-                        { "Width", SystemParameters.WorkArea.Width }
+                        ActivateItem(i);
+                        i.Deactivated += OnNotificationDeactivated;
                     });
+            }
         }
 
         #endregion
@@ -71,22 +89,6 @@
 
             CreateNotificationsFromIncomingEvents();
             CreateNotificationsFromIncomingClippings();
-        }
-
-        private void CreateNotificationsFromIncomingClippings()
-        {
-            _clippingsSubscription =
-                _omniClipboardHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)), exception => { });
-        }
-
-        private void CreateNotificationsFromIncomingEvents()
-        {
-            _notificationsSubscription =
-                _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(
-                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)),
-                        exception => { });
         }
 
         protected override void OnDeactivate(bool close)
@@ -102,6 +104,31 @@
             {
                 _clippingsSubscription.Dispose();
             }
+        }
+
+        private void CreateNotificationsFromIncomingClippings()
+        {
+            _clippingsSubscription =
+                _omniClipboardHandler.ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(
+                        clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)),
+                        exception => { });
+        }
+
+        private void CreateNotificationsFromIncomingEvents()
+        {
+            _notificationsSubscription =
+                _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(
+                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)),
+                        exception => { });
+        }
+
+        private void OnNotificationDeactivated(object sender, DeactivationEventArgs e)
+        {
+            var notificationViewModel = (INotificationViewModel)sender;
+            notificationViewModel.Deactivated -= OnNotificationDeactivated;
+            Notifications.Remove(notificationViewModel);
         }
 
         #endregion

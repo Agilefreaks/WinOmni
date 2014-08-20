@@ -2,7 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.ClippingList;
+    using Omnipaste.MasterClippingList;
 
     [TestFixture]
     public class LimitableBindableCollectionTests

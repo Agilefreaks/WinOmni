@@ -6,15 +6,12 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Resources.v1;
     using Omnipaste.Event;
     using Omnipaste.EventAggregatorMessages;
 
     [TestFixture]
     public class EventViewModelTests
     {
-        private Mock<IPhones> _mockPhones;
-
         private MoqMockingKernel _kernel;
 
         private IEventViewModel _subject;

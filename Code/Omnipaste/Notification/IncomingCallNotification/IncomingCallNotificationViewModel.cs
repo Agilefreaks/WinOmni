@@ -8,11 +8,17 @@
 
     public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
     {
+        private string _endCallButtonText;
+
+        private bool _canEndCall;
+
         #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
+            EndCallButtonText = "End Call";
+            CanEndCall = true;
         }
 
         #endregion
@@ -22,6 +28,40 @@
         public IEventAggregator EventAggregator { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public bool CanEndCall
+        {
+            get
+            {
+                return _canEndCall;
+            }
+            set
+            {
+                if (value.Equals(_canEndCall))
+                {
+                    return;
+                }
+                _canEndCall = value;
+                NotifyOfPropertyChange(() => CanEndCall);
+            }
+        }
+
+        public string EndCallButtonText
+        {
+            get
+            {
+                return _endCallButtonText;
+            }
+            set
+            {
+                if (value == _endCallButtonText)
+                {
+                    return;
+                }
+                _endCallButtonText = value;
+                NotifyOfPropertyChange(() => EndCallButtonText);
+            }
+        }
 
         [Inject]
         public IDevices Devices { get; set; }
@@ -40,12 +80,22 @@
 
         public void EndCall()
         {
-            Devices.EndCall().Subscribe(p => TryClose(true), exception => { });
+            CanEndCall = false;
+
+            Devices.EndCall()
+                .Subscribe(
+                    p =>
+                    {
+                        EndCallButtonText = "Call ended";
+                        Dismiss();
+                    }, 
+                exception => { });
         }
 
         public void ReplyWithSms()
         {
             EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            Dismiss();
         }
 
         #endregion

@@ -1,10 +1,10 @@
-namespace Omnipaste.ClippingList
+namespace Omnipaste.MasterClippingList
 {
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.ClippingList.AllClippingList;
-    using Omnipaste.ClippingList.CloudClippingList;
-    using Omnipaste.ClippingList.LocalClippingList;
+    using Omnipaste.MasterClippingList.AllClippingList;
+    using Omnipaste.MasterClippingList.CloudClippingList;
+    using Omnipaste.MasterClippingList.LocalClippingList;
 
     public sealed class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
     {
