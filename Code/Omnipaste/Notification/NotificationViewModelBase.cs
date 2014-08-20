@@ -1,17 +1,18 @@
 ﻿namespace Omnipaste.Notification
 {
     using System;
-    using System.Windows;
     using System.Windows.Threading;
     using Caliburn.Micro;
+    using Ninject;
+    using Omnipaste.Framework;
 
     public abstract class NotificationViewModelBase : Screen, INotificationViewModel
     {
         #region Fields
 
-        private readonly TimeSpan _deactivationDuration = new TimeSpan(0, 0, 0, 0, 500);
+        private readonly TimeSpan _halfSecondInterval = new TimeSpan(0, 0, 0, 0, 500);
 
-        private readonly TimeSpan _timeoutPeriod = new TimeSpan(0, 0, 6);
+        private readonly TimeSpan _oneMinuteInterval = new TimeSpan(0, 0, 60);
 
         private DispatcherTimer _autoCloseTimer;
 
@@ -19,11 +20,12 @@
 
         private ViewModelStatusEnum _state;
 
-        private DispatcherTimer _dispatcherTimer;
-
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IApplicationService ApplicationService { get; set; }
 
         public string Message { get; set; }
 
@@ -50,6 +52,17 @@
 
         #region Public Methods and Operators
 
+        public void Close()
+        {
+            State = ViewModelStatusEnum.Closed;
+
+            _deactivationTimer.Start();
+        }
+
+        #endregion
+
+        #region Methods
+
         protected void DelayedClose(int milliseconds = 500)
         {
             if (_autoCloseTimer.IsEnabled)
@@ -57,56 +70,58 @@
                 _autoCloseTimer.Stop();
             }
 
-            _dispatcherTimer = new DispatcherTimer(
-                new TimeSpan(0, 0, 0, 0, milliseconds),
-                DispatcherPriority.Normal,
-                (sender, args) =>
-                {
-                    _dispatcherTimer.Stop();
-                    Close();
-                },
-                Application.Current.Dispatcher);
+            _autoCloseTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds);
+            _autoCloseTimer.Start();
         }
-
-        public void Close()
-        {
-            State = ViewModelStatusEnum.Closed;
-            
-            _deactivationTimer = new DispatcherTimer(
-                _deactivationDuration,
-                DispatcherPriority.Normal,
-                (sender, args) =>
-                {
-                    _deactivationTimer.Stop();
-                    Deactivate();
-                },
-                Dispatcher.CurrentDispatcher);
-        }
-
-        #endregion
-
-        #region Methods
 
         protected override void OnActivate()
         {
             base.OnActivate();
+            InitializeTimers();
 
-            _autoCloseTimer = new DispatcherTimer(
-                _timeoutPeriod,
-                DispatcherPriority.Normal,
-                (sender, args) =>
-                {
-                    _autoCloseTimer.Stop();
-                    Close();
-                },
-                Dispatcher.CurrentDispatcher);
-
+            _autoCloseTimer.Start();
             State = ViewModelStatusEnum.Open;
         }
 
         private void Deactivate()
         {
             ((IConductor)Parent).DeactivateItem(this, true);
+        }
+
+        private void InitializeAutoCloseTimer()
+        {
+            _autoCloseTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
+                              {
+                                  Interval
+                                      =
+                                      _oneMinuteInterval
+                              };
+            _autoCloseTimer.Tick += (sender, args) =>
+            {
+                _autoCloseTimer.Stop();
+                Close();
+            };
+        }
+
+        private void InitializeDeactivationTimer()
+        {
+            _deactivationTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
+                                 {
+                                     Interval
+                                         =
+                                         _halfSecondInterval
+                                 };
+            _deactivationTimer.Tick += (sender, args) =>
+            {
+                _deactivationTimer.Stop();
+                Deactivate();
+            };
+        }
+
+        private void InitializeTimers()
+        {
+            InitializeAutoCloseTimer();
+            InitializeDeactivationTimer();
         }
 
         #endregion
