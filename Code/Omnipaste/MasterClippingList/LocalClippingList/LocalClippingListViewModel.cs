@@ -3,7 +3,7 @@ namespace Omnipaste.MasterClippingList.LocalClippingList
     using Clipboard.Handlers;
     using Omnipaste.Framework.Attributes;
 
-    [UseView("Omnipaste.ClippingList.ClippingListView", IsFullyQualifiedName = true)]
+    [UseView("Omnipaste.MasterClippingList.ClippingListView", IsFullyQualifiedName = true)]
     public class LocalClippingListViewModel : ClippingListViewModelBase, ILocalClippingListViewModel
     {
         public LocalClippingListViewModel(ILocalClipboardHandler localClipboardHandler)
