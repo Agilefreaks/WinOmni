@@ -126,14 +126,14 @@
 
         public override void NotifyOfPropertyChange(string propertyName)
         {
-            if (propertyName != "State")
+            base.NotifyOfPropertyChange(propertyName);
+
+            if (propertyName == "State")
             {
-                return;
-            }
-            
-            if (State == ViewModelStatusEnum.Open)
-            {
-                InitializeTimers();
+                if (State == ViewModelStatusEnum.Open)
+                {
+                    InitializeTimers();
+                }
             }
         }
 
