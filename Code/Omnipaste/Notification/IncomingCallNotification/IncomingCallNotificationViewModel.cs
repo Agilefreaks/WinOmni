@@ -10,12 +10,15 @@
     {
         private string _endCallButtonText;
 
+        private bool _canEndCall;
+
         #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
             EndCallButtonText = "End Call";
+            CanEndCall = true;
         }
 
         #endregion
@@ -25,6 +28,23 @@
         public IEventAggregator EventAggregator { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public bool CanEndCall
+        {
+            get
+            {
+                return _canEndCall;
+            }
+            set
+            {
+                if (value.Equals(_canEndCall))
+                {
+                    return;
+                }
+                _canEndCall = value;
+                NotifyOfPropertyChange(() => CanEndCall);
+            }
+        }
 
         public string EndCallButtonText
         {
@@ -60,6 +80,8 @@
 
         public void EndCall()
         {
+            CanEndCall = false;
+
             Devices.EndCall()
                 .Subscribe(
                     p =>
