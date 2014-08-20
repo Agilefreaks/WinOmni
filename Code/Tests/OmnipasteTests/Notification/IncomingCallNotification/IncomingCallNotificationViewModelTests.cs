@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Notification.IncomingCallNotification
 {
+    using System.Windows.Threading;
     using Caliburn.Micro;
     using Moq;
     using Ninject;
@@ -7,6 +8,8 @@
     using NUnit.Framework;
     using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework;
+    using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
 
     [TestFixture]
@@ -20,6 +23,8 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
+        private Mock<IApplicationService> _mockApplicationService;
+
         [SetUp]
         public void SetUp()
         {
@@ -29,8 +34,13 @@
             
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object).InSingletonScope();
+
+            _mockApplicationService = _kernel.GetMock<IApplicationService>();
+            _mockApplicationService.Setup(s => s.Dispatcher).Returns(Dispatcher.CurrentDispatcher);
+            _kernel.Bind<IApplicationService>().ToConstant(_mockApplicationService.Object);
             
             _subject = _kernel.Get<IncomingCallNotificationViewModel>();
+            _subject.State = ViewModelStatusEnum.Open;
         }
 
         [Test]

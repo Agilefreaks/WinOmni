@@ -18,7 +18,7 @@
 
         private DispatcherTimer _deactivationTimer;
 
-        private ViewModelStatusEnum _state;
+        private ViewModelStatusEnum _state = ViewModelStatusEnum.Closed;
 
         #endregion
 
@@ -77,9 +77,7 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            InitializeTimers();
-
-            _autoCloseTimer.Start();
+            
             State = ViewModelStatusEnum.Open;
         }
 
@@ -107,6 +105,8 @@
                 _autoCloseTimer.Stop();
                 Close();
             };
+
+            _autoCloseTimer.Start();
         }
 
         private void InitializeDeactivationTimer()
@@ -122,6 +122,19 @@
                 _deactivationTimer.Stop();
                 Deactivate();
             };
+        }
+
+        public override void NotifyOfPropertyChange(string propertyName)
+        {
+            if (propertyName != "State")
+            {
+                return;
+            }
+            
+            if (State == ViewModelStatusEnum.Open)
+            {
+                InitializeTimers();
+            }
         }
 
         #endregion
