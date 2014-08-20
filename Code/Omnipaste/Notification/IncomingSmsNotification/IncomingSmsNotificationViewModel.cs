@@ -35,6 +35,7 @@
         public void Reply()
         {
             EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            Dismiss();
         }
 
         #endregion
