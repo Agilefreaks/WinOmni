@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:notification="clr-namespace:Omnipaste.Notification"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="300"
         ShowActivated="False" 
@@ -16,18 +17,27 @@
         Top="40" 
         HorizontalContentAlignment="Right">
     <Window.Resources>
-        <Storyboard x:Key="FadeInStoryBoard" TargetName="Container">
-            <DoubleAnimation From="0.01" To="1" Storyboard.TargetProperty="Opacity" 
-                                         Duration="0:0:0.5"/>
-            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
-                                         Duration="0:0:0.5" BeginTime="0:0:6"/>
-        </Storyboard>
-        <Storyboard x:Key="FadeOutStoryBoard" TargetName="Container">
-            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
-                                         Duration="0:0:0.5" />
-        </Storyboard>
-
         <DataTemplate x:Key="MessageTemplate">
+            <DataTemplate.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation From="0.01" To="1" Storyboard.TargetProperty="Opacity" 
+                                             Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <DataTrigger Binding="{Binding Path=State}" Value="notification:ViewModelStatusEnum.Closed">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" 
+                                         Duration="0:0:0.5" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </DataTemplate.Triggers>
             <Grid x:Name="Container" HorizontalAlignment="Right">
                 <Border Name="Border" Background="{StaticResource NotificationBackgroundBrush}" BorderThickness="0" Margin="10">
                     <Border.Effect>
@@ -41,18 +51,14 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <DockPanel LastChildFill="True">
-                                <Button ToolTip="Dismiss" DockPanel.Dock="Right" Background="Transparent">
+                                <Button cal:Message.Attach="Close" ToolTip="Dismiss" DockPanel.Dock="Right"
+                                        Background="Transparent" x:Name="CloseButton">
                                     <Rectangle Width="12" Height="12"
                                        Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                         <Rectangle.OpacityMask>
                                             <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_close}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
-                                    <Button.Triggers>
-                                        <EventTrigger RoutedEvent="Button.Click">
-                                            <BeginStoryboard Storyboard="{StaticResource FadeOutStoryBoard}" />
-                                        </EventTrigger>
-                                    </Button.Triggers>
                                 </Button>
                                 <TextBlock Text="{Binding Path=Title}"
                                    Margin="2,4,4,2"
@@ -64,11 +70,6 @@
                         </Grid>
                     </DockPanel>
                 </Border>
-                <Grid.Triggers>
-                    <EventTrigger RoutedEvent="Window.Loaded">
-                        <BeginStoryboard Storyboard="{StaticResource FadeInStoryBoard}"/>
-                    </EventTrigger>
-                </Grid.Triggers>
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Style.Triggers>
