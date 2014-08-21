@@ -210,7 +210,6 @@
                         {
                             ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
                             MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
-                            SelectedViewIndex = 1;
 
                             DialogViewModel.DeactivateItem(LoadingViewModel, true);
                             NotificationListViewModel.ShowWindow(
