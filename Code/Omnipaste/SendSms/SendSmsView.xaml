@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" 
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             mc:Ignorable="d" behaviours:FocusBehavior.FocusFirst="True"
+             IsTabStop="False" KeyboardNavigation.TabNavigation="Local"  
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,13 +19,14 @@
 
         <Label Content="Send SMS" Style="{DynamicResource DescriptionHeaderStyle}" />
 
-        <TextBox Grid.Row="1" x:Name="Model_Recipient" 
+        <TextBox Grid.Row="1" x:Name="Model_Recipient" TabIndex="1"
                  Style="{StaticResource SpacedTextBoxStyle}"
-                 controls:TextboxHelper.Watermark="Recipients"/>
-        
-        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90" 
-                 Style="{StaticResource SpacedTextBoxStyle}"
-                 controls:TextboxHelper.Watermark="Message" />
+                 controls:TextboxHelper.Watermark="Recipients" />
+
+        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="0"
+                 Style="{StaticResource SpacedTextBoxStyle}" 
+                 controls:TextboxHelper.Watermark="Message" 
+                 controls:TextboxHelper.IsWaitingForData="True"/>
 
         <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
         
