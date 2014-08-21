@@ -56,7 +56,7 @@
             IWindowManager windowManager,
             INotificationListViewModel notificationListViewModel)
         {
-            windowManager.ShowWindow(
+            windowManager.ShowPopup(
                 notificationListViewModel,
                 null,
                 new Dictionary<string, object>
