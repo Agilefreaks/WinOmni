@@ -39,6 +39,7 @@
 
             _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
             _subject = _kernel.Get<SendSmsViewModel>();
+            _subject.Model = new SmsMessage();
         }
 
         [Test]
@@ -70,6 +71,46 @@
 
             _subject.Model.Recipient.Should().Be("1234567");
             _subject.Model.Message.Should().Be("save me Obi Wan Kenobi");
+        }
+
+        [Test]
+        public void Handle_SendSms_WillSetTheStateToComposing()
+        {
+            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi" });
+
+            _subject.State.Should().Be(SendSmsStatusEnum.Composing);
+        }
+
+        [Test]
+        public void CanSend_WhenStatusIsComposing_IsTrue()
+        {
+            _subject.State = SendSmsStatusEnum.Composing;
+
+            _subject.CanSend.Should().Be(true);
+        }
+
+        [Test]
+        public void CanSend_WhenStatusIsSending_IsFalse()
+        {
+            _subject.State = SendSmsStatusEnum.Sending;
+
+            _subject.CanSend.Should().Be(false);
+        }
+
+        [Test]
+        public void CanSend_WhenStatusIsSent_IsFalse()
+        {
+            _subject.State = SendSmsStatusEnum.Sent;
+
+            _subject.CanSend.Should().Be(false);
+        }
+
+        [Test]
+        public void Send_Always_SetsTheStateToSending()
+        {
+            _subject.Send();
+
+            _subject.State.Should().Be(SendSmsStatusEnum.Sending);
         }
     }
 }

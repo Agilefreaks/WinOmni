@@ -9,6 +9,8 @@
 
     public class SendSmsViewModel : Screen, ISendSmsViewModel
     {
+        private SendSmsStatusEnum _state = SendSmsStatusEnum.Composing;
+
         #region Constructors and Destructors
 
         public SendSmsViewModel(IDevices devices, IEventAggregator eventAggregator)
@@ -31,19 +33,54 @@
 
         public IDevices Devices { get; set; }
 
+        public bool CanSend
+        {
+            get
+            {
+                return State == SendSmsStatusEnum.Composing;
+            }
+        }
+
+        public SendSmsStatusEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+                _state = value;
+                NotifyOfPropertyChange(() => State);
+                NotifyOfPropertyChange(() => CanSend);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
 
         public void Send()
         {
-            Devices.SendSms(Model.Recipient, Model.Message).Subscribe(m => TryClose(true), exception => { });
+            State = SendSmsStatusEnum.Sending;
+            Devices.SendSms(Model.Recipient, Model.Message)
+                .Subscribe(
+                    m =>
+                    {
+                        State = SendSmsStatusEnum.Sent;
+                        TryClose(true);
+                    }, 
+                    exception => { });
         }
 
         #endregion
 
         public void Handle(SendSmsMessage message)
         {
+            State = SendSmsStatusEnum.Composing;
             Model = new SmsMessage { Recipient = message.Recipient, Message = message.Message };
 
             DialogViewModel.ActivateItem(this);

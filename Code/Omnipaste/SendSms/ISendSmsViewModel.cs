@@ -9,6 +9,10 @@
 
         SmsMessage Model { get; set; }
 
+        SendSmsStatusEnum State { get; set; }
+
+        bool CanSend { get; }
+
         #endregion
 
         #region Public Methods and Operators
