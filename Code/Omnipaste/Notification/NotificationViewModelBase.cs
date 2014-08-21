@@ -65,6 +65,11 @@
 
         protected void Dismiss(int delay = 1000)
         {
+            if (State == ViewModelStatusEnum.Closed)
+            {
+                return;
+            }
+
             if (_autoCloseTimer.IsEnabled)
             {
                 _autoCloseTimer.Stop();
@@ -77,7 +82,7 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            
+
             State = ViewModelStatusEnum.Open;
         }
 
@@ -96,10 +101,9 @@
         {
             _autoCloseTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
                               {
-                                  Interval
-                                      =
-                                      _oneMinuteInterval
+                                  Interval = _oneMinuteInterval
                               };
+
             _autoCloseTimer.Tick += (sender, args) =>
             {
                 _autoCloseTimer.Stop();
