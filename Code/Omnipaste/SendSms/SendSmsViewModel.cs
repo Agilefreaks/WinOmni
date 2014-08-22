@@ -71,7 +71,6 @@
                     m =>
                     {
                         State = SendSmsStatusEnum.Sent;
-                        TryClose(true);
                     }, 
                     exception => { });
         }

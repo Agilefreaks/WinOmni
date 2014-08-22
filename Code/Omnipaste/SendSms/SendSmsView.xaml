@@ -3,36 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" behaviours:FocusBehavior.FocusFirst="True"
              IsTabStop="False" KeyboardNavigation.TabNavigation="Local"  
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Label Content="Send SMS" Style="{DynamicResource DescriptionHeaderStyle}" />
-
-        <TextBox Grid.Row="1" x:Name="Model_Recipient" TabIndex="1"
-                 Style="{StaticResource SpacedTextBoxStyle}"
-                 controls:TextboxHelper.Watermark="Recipients" />
-
-        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="0"
-                 Style="{StaticResource SpacedTextBoxStyle}" 
-                 controls:TextboxHelper.Watermark="Message" 
-                 controls:TextboxHelper.IsWaitingForData="True"/>
-
-        <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
-        
-        <StackPanel Grid.Row="4" Style="{StaticResource ButtonsPanel}">
-            <Button x:Name="Send" Content="Send" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
-            <Button x:Name="TryClose" Content="Cancel" IsCancel="True" Style="{StaticResource DialogButton}"/>
-        </StackPanel>
-    </Grid>
+    <ContentControl cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}" />
 </UserControl>
