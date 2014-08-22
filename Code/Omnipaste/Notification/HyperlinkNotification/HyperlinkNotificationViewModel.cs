@@ -24,6 +24,7 @@
             try
             {
                 Process.Start(Message);
+                Dismiss();
             }
             catch (Win32Exception)
             {
