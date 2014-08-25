@@ -5,6 +5,8 @@
 
     public class HyperlinkNotificationViewModel : NotificationViewModelBase, IHyperlinkNotificationViewModel
     {
+        private bool _canOpenLink = true;
+
         #region Public Properties
 
         public override string Title
@@ -15,12 +17,27 @@
             }
         }
 
+        public bool CanOpenLink
+        {
+            get
+            {
+                return _canOpenLink;
+            }
+            set
+            {
+                if (value.Equals(_canOpenLink)) return;
+                _canOpenLink = value;
+                NotifyOfPropertyChange(() => CanOpenLink);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
 
         public void OpenLink()
         {
+            CanOpenLink = false;
             try
             {
                 Process.Start(Message);
