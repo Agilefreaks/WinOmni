@@ -12,6 +12,8 @@
 
         private bool _canEndCall;
 
+        private bool _canReplyWithSms = true;
+
         #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
@@ -43,6 +45,23 @@
                 }
                 _canEndCall = value;
                 NotifyOfPropertyChange(() => CanEndCall);
+            }
+        }
+
+        public bool CanReplyWithSms
+        {
+            get
+            {
+                return _canReplyWithSms;
+            }
+            set
+            {
+                if (value.Equals(_canReplyWithSms))
+                {
+                    return;
+                }
+                _canReplyWithSms = value;
+                NotifyOfPropertyChange(() => CanReplyWithSms);
             }
         }
 
@@ -94,6 +113,7 @@
 
         public void ReplyWithSms()
         {
+            CanReplyWithSms = false;
             EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
             Dismiss();
         }
