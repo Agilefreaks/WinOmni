@@ -48,7 +48,9 @@
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
 
-            sessionManager.SessionDestroyedObservable().Subscribe(eventArgs => Execute.OnUIThread(Configure));
+            sessionManager.SessionDestroyedObservable()
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(eventArgs => Configure());
 
             DisplayName = Resources.AplicationName;
         }

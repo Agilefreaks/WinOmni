@@ -1,6 +1,5 @@
 ﻿namespace OmnipasteTests.Event
 {
-    using System.Reactive.Concurrency;
     using Caliburn.Micro;
     using Events.Models;
     using Microsoft.Reactive.Testing;
