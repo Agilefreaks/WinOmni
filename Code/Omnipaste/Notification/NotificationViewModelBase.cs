@@ -88,7 +88,12 @@
 
         private void Deactivate()
         {
-            ((IConductor)Parent).DeactivateItem(this, true);
+            var conductor = ((IConductor)Parent);
+
+            if (conductor != null)
+            {
+                conductor.DeactivateItem(this, true);
+            }
         }
 
         private void InitializeTimers()
