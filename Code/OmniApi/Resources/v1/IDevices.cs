@@ -10,13 +10,15 @@
 
         IObservable<Device> Activate(string registrationId, string identifier);
 
+        IObservable<EmptyModel> Call(string phoneNumber);
+
         IObservable<Device> Create(string identifier, string name);
 
         IObservable<Device> Deactivate(string identifier);
 
-        IObservable<List<Device>> GetAll();
-
         IObservable<EmptyModel> EndCall();
+
+        IObservable<List<Device>> GetAll();
 
         IObservable<EmptyModel> SendSms(string phoneNumber, string content);
 

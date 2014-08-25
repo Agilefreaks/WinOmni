@@ -37,6 +37,9 @@
 
             [Post("/devices/sms")]
             IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);
+            
+            [Post("/devices/call")]
+            IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
 
             #endregion
         }
@@ -77,6 +80,11 @@
         public IObservable<EmptyModel> SendSms(string phoneNumber, string content)
         {
             return Authorize(ResourceApi.SendSms(phoneNumber, content, AccessToken));
+        }
+
+        public IObservable<EmptyModel> Call(string phoneNumber)
+        {
+            return Authorize(ResourceApi.Call(phoneNumber, AccessToken));
         }
 
         #endregion

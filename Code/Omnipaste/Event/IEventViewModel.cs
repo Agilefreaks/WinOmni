@@ -10,6 +10,12 @@
 
         #endregion
 
+        #region Public Methods and Operators
+
+        void CallBack();
+
         void SendSms();
+
+        #endregion
     }
 }

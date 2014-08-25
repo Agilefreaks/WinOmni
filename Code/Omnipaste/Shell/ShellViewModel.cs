@@ -21,7 +21,6 @@
     using Omnipaste.MasterEventList;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
-    using Omnipaste.SendSms;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;

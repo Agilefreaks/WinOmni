@@ -233,6 +233,8 @@
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
     <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
     <Compile Include="Event\IEventViewModel.cs" />
+    <Compile Include="MasterEventList\Calling\CallingViewModel.cs" />
+    <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
     <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="MasterClippingList\LimitableBindableCollection.cs" />
@@ -379,6 +381,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MasterEventList\Calling\CallingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

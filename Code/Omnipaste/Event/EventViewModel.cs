@@ -1,14 +1,18 @@
 ﻿namespace Omnipaste.Event
 {
     using System;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Events.Models;
+    using Ninject;
+    using OmniApi.Resources.v1;
+    using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework;
+    using Omnipaste.MasterEventList.Calling;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
     {
-        public IEventAggregator EventAggregator { get; set; }
-
         #region Constructors and Destructors
 
         public EventViewModel(IEventAggregator eventAggregator)
@@ -20,6 +24,9 @@
 
         #region Public Properties
 
+        [Inject]
+        public ICallingViewModel CallingViewModel { get; set; }
+
         public string Content
         {
             get
@@ -28,11 +35,19 @@
             }
         }
 
-        public EventTypeEnum Type
+        [Inject]
+        public IDevices Devices { get; set; }
+
+        [Inject]
+        public IDialogViewModel DialogViewModel { get; set; }
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        public DateTime Time
         {
             get
             {
-                return Model.Type;
+                return Model.Time;
             }
         }
 
@@ -44,23 +59,39 @@
             }
         }
 
-        public DateTime Time
+        public EventTypeEnum Type
         {
             get
             {
-                return Model.Time;
+                return Model.Type;
             }
         }
 
         #endregion
 
+        #region Public Methods and Operators
+
         public void CallBack()
         {
+            Devices.Call(Model.PhoneNumber)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(m => ShowCallingNotification(), exception => { });
         }
 
         public void SendSms()
         {
-            EventAggregator.PublishOnCurrentThread(new SendSmsMessage{ Recipient = Model.PhoneNumber });
+            EventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = Model.PhoneNumber });
         }
+
+        #endregion
+
+        #region Methods
+
+        private void ShowCallingNotification()
+        {
+            DialogViewModel.ActivateItem(CallingViewModel);
+        }
+
+        #endregion
     }
 }
