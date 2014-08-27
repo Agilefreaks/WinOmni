@@ -1,7 +1,9 @@
 ﻿namespace Omnipaste.Loading.UserToken
 {
     using Caliburn.Micro;
+    using Ninject;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
 
     public class UserTokenViewModel : Screen, IUserTokenViewModel
@@ -44,6 +46,17 @@
         }
 
         public IApplicationService ApplicationService { get; set; }
+
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
+        public string AuthorizationCodeUrl
+        {
+            get
+            {
+                return ConfigurationService["NewAuthorizationCodeUrl"];
+            }
+        }
 
         public bool IsBusy
         {
