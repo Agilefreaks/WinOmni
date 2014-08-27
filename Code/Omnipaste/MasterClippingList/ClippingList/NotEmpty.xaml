@@ -32,7 +32,7 @@
                     </DoubleAnimationUsingKeyFrames>
                 </Storyboard>
             </DataTemplate.Resources>
-            <Grid MaxHeight="60">
+            <Grid Style="{StaticResource ListItem}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>

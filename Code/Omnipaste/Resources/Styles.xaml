@@ -154,4 +154,9 @@
         <Setter Property="Orientation" Value="Vertical"/>
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
+    
+    <!--Grid-->
+    <Style x:Key="ListItem" TargetType="Grid">
+        <Setter Property="Height" Value="62"></Setter>
+    </Style>
 </ResourceDictionary>
