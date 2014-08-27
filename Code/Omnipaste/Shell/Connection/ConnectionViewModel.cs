@@ -5,11 +5,14 @@
     using Ninject;
     using Omni;
     using Omnipaste.Services.Connectivity;
+    using Omnipaste.Services.SystemService;
     using OmniSync;
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
         #region Fields
+
+        private IConnectivityNotifyService _connectivityNotifyService;
 
         private bool _enabled = true;
 
@@ -17,7 +20,7 @@
 
         private IDisposable _omniServiceStatusObserver;
 
-        private IConnectivityNotifyService _connectivityNotifyService;
+        private ISystemService _systemService;
 
         #endregion
 
@@ -56,6 +59,31 @@
             }
         }
 
+        [Inject]
+        public IConnectivityNotifyService ConnectivityNotifyService
+        {
+            get
+            {
+                return _connectivityNotifyService;
+            }
+            set
+            {
+                if (value == _connectivityNotifyService)
+                {
+                    return;
+                }
+                if (_connectivityNotifyService != null)
+                {
+                    _connectivityNotifyService.ConnectivityChanged -= ConnectivityChanged;
+                }
+
+                _connectivityNotifyService = value;
+                _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
+
+                NotifyOfPropertyChange(() => ConnectivityNotifyService);
+            }
+        }
+
         public bool Enabled
         {
             get
@@ -68,7 +96,7 @@
                 NotifyOfPropertyChange(() => Enabled);
             }
         }
-        
+
         public IEventAggregator EventAggregator { get; set; }
 
         public bool IsConnected
@@ -96,47 +124,35 @@
 
                 _omniServiceStatusObserver = _omniService.StatusChangedObservable.Subscribe(
                     x =>
-                        {
-                            NotifyOfPropertyChange(() => CanConnect);
-                            NotifyOfPropertyChange(() => CanDisconnect);
-                        });
+                    {
+                        NotifyOfPropertyChange(() => CanConnect);
+                        NotifyOfPropertyChange(() => CanDisconnect);
+                    });
             }
         }
 
         [Inject]
-        public IConnectivityNotifyService ConnectivityNotifyService
+        public ISystemService SystemService
         {
             get
             {
-                return _connectivityNotifyService;
+                return _systemService;
             }
             set
             {
-                if (value == _connectivityNotifyService)
+                if (Equals(value, _systemService))
                 {
                     return;
                 }
-                if (_connectivityNotifyService != null)
+
+                if (_systemService != null)
                 {
-                    _connectivityNotifyService.ConnectivityChanged -= ConnectivityChanged;
+                    _systemService.Resume -= SystemResumed;
                 }
 
-                _connectivityNotifyService = value;
-                _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
-                
-                NotifyOfPropertyChange(() => ConnectivityNotifyService);
-            }
-        }
-
-        void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-        {
-            if (!e.IsConnected)
-            {
-                Disconnect();
-            }
-            else if (e.IsConnected)
-            {
-                Connect();
+                _systemService = value;
+                _systemService.Resume += SystemResumed;
+                NotifyOfPropertyChange(() => SystemService);
             }
         }
 
@@ -157,6 +173,33 @@
             OmniService.Stop();
 
             Enabled = true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            if (!e.IsConnected)
+            {
+                Disconnect();
+            }
+            else if (e.IsConnected)
+            {
+                Connect();
+            }
+        }
+
+        private void SystemResumed(object sender, EventArgs e)
+        {
+            Reconnect();
+        }
+
+        private void Reconnect()
+        {
+            Disconnect();
+            Connect();
         }
 
         #endregion
