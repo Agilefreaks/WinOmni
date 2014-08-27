@@ -23,8 +23,8 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
-            To connect, you need an authorization code. You can get one by logging in to the 
-            <Hyperlink NavigateUri="https://omnipasteapp.com">
+            To connect, you need an authorization code. You can get one from the 
+            <Hyperlink NavigateUri="https://omnipasteapp.com/authorization_codes/new">
                 <i:Interaction.Behaviors>
                     <behaviours:AutoFollowLinkBehavior/>
                 </i:Interaction.Behaviors>
