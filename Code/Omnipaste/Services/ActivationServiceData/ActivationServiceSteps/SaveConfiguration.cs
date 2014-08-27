@@ -21,7 +21,7 @@
                 observer =>
                 {
                     var token = (Token)Parameter.Value;
-                    _configurationService.SaveAuthSettings(token.AccessToken, token.RrefreshToken);
+                    _configurationService.SaveAuthSettings(token.AccessToken, token.RefreshToken);
 
                     observer.OnNext(
                         new ExecuteResult { State = SimpleStepStateEnum.Successful, Data = token.AccessToken });

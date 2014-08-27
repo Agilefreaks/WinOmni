@@ -8,10 +8,10 @@
         {
         }
 
-        public Token(string accessToken, string rrefreshToken)
+        public Token(string accessToken, string refreshToken)
         {
             AccessToken = accessToken;
-            RrefreshToken = rrefreshToken;
+            RefreshToken = refreshToken;
         }
 
         #endregion
@@ -20,7 +20,7 @@
 
         public string AccessToken { get; set; }
 
-        public string RrefreshToken { get; set; }
+        public string RefreshToken { get; set; }
 
         #endregion
     }

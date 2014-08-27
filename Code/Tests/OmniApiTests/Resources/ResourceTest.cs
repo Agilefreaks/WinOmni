@@ -27,7 +27,7 @@
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
             _mockConfigurationService.SetupGet(m => m.AccessToken).Returns("AccessToken");
-            _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("RrefreshToken");
+            _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("RefreshToken");
 
             _subject = new TestResource { ConfigurationService = _mockConfigurationService.Object };
         }
@@ -35,7 +35,7 @@
         [Test]
         public void Token_Always_GetsReadFromConfigurationService()
         {
-            _subject.Token.ShouldBeEquivalentTo(new Token("AccessToken", "RrefreshToken"));
+            _subject.Token.ShouldBeEquivalentTo(new Token("AccessToken", "RefreshToken"));
         }
 
         [Test]
