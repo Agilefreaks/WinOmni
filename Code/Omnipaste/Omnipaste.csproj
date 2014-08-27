@@ -30,8 +30,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
     <InstallUrl>https://omnipaste.blob.core.windows.net/</InstallUrl>
-    <SupportUrl>http://www.omnipasteapp.com</SupportUrl>
-    <ErrorReportUrl>http://www.omnipasteapp.com</ErrorReportUrl>
+    <SupportUrl>https://omnipasteapp.com/#faq</SupportUrl>
+    <ErrorReportUrl>https://omnipasteapp.com/#faq</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <PublisherName>Omnipaste</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
