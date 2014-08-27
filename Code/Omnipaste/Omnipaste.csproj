@@ -287,6 +287,7 @@
     <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
     <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
     <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
+    <Compile Include="Services\Connectivity\IConnectivityHelper.cs" />
     <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Services\SystemService\ISystemService.cs" />

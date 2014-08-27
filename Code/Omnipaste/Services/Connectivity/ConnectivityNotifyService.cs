@@ -7,15 +7,24 @@
 
     public class ConnectivityNotifyService : IConnectivityNotifyService
     {
+        public IConnectivityHelper ConnectivityHelper { get; set; }
+
         private static readonly object Lock = new object();
         private Timer _timer;
 
-        private bool PreviouslyConnected { get; set; }
+        public bool PreviouslyConnected { get; set; }
 
         public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
 
+        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper)
+        {
+            ConnectivityHelper = connectivityHelper;
+        }
+
         public void Start()
         {
+            PreviouslyConnected = ConnectivityHelper.InternetConnected;
+
             _timer = new Timer(Run, null, TimeSpan.FromTicks(0), TimeSpan.FromSeconds(5));
         }
 

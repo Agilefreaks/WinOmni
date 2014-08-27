@@ -164,6 +164,7 @@
     <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollectionTests.cs" />
     <Compile Include="Services\ActivationServiceTests.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityNotifyServiceTests.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />

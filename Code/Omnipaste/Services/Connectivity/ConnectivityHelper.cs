@@ -2,12 +2,12 @@
 {
     using System.Runtime.InteropServices;
 
-    public class ConnectivityHelper
+    public class ConnectivityHelper : IConnectivityHelper
     {
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int connectionDescription, int reservedValue);
 
-        public static bool InternetConnected
+        public bool InternetConnected
         {
             get
             {
