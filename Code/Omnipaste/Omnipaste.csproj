@@ -284,6 +284,10 @@
     <Compile Include="SendSms\ISendSmsViewModel.cs" />
     <Compile Include="SendSms\SendSmsViewModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
+    <Compile Include="Services\Connectivity\ConnectivityNotifyService.cs" />
+    <Compile Include="Services\Connectivity\IConnectivityNotifyService.cs" />
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
     <Compile Include="Shell\Connection\IConnectionViewModel.cs" />

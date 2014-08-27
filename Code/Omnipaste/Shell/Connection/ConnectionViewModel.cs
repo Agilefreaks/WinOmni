@@ -2,7 +2,9 @@
 {
     using System;
     using Caliburn.Micro;
+    using Ninject;
     using Omni;
+    using Omnipaste.Services.Connectivity;
     using OmniSync;
 
     public class ConnectionViewModel : Screen, IConnectionViewModel
@@ -14,6 +16,8 @@
         private IOmniService _omniService;
 
         private IDisposable _omniServiceStatusObserver;
+
+        private IConnectivityNotifyService _connectivityNotifyService;
 
         #endregion
 
@@ -96,6 +100,43 @@
                             NotifyOfPropertyChange(() => CanConnect);
                             NotifyOfPropertyChange(() => CanDisconnect);
                         });
+            }
+        }
+
+        [Inject]
+        public IConnectivityNotifyService ConnectivityNotifyService
+        {
+            get
+            {
+                return _connectivityNotifyService;
+            }
+            set
+            {
+                if (value == _connectivityNotifyService)
+                {
+                    return;
+                }
+                if (_connectivityNotifyService != null)
+                {
+                    _connectivityNotifyService.ConnectivityChanged -= ConnectivityChanged;
+                }
+
+                _connectivityNotifyService = value;
+                _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
+                
+                NotifyOfPropertyChange(() => ConnectivityNotifyService);
+            }
+        }
+
+        void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            if (!e.IsConnected && OmniService.Status == ServiceStatusEnum.Started)
+            {
+                Disconnect();
+            }
+            else if (e.IsConnected && OmniService.Status != ServiceStatusEnum.Started)
+            {
+                Connect();
             }
         }
 
