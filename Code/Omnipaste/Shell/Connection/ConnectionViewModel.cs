@@ -130,11 +130,11 @@
 
         void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            if (!e.IsConnected && OmniService.Status == ServiceStatusEnum.Started)
+            if (!e.IsConnected)
             {
                 Disconnect();
             }
-            else if (e.IsConnected && OmniService.Status != ServiceStatusEnum.Started)
+            else if (e.IsConnected)
             {
                 Connect();
             }
