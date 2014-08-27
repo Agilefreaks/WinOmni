@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using System.Timers;
+    using System.Threading;
     using Clipboard;
     using Events;
     using Ninject;
@@ -11,16 +11,19 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using OmniSync;
+    using Timer = System.Timers.Timer;
 
     public class OmniService : IOmniService
     {
         #region Fields
 
+        protected readonly IObservable<ServiceStatusEnum> _statusChanged;
+
         private readonly IConfigurationService _configurationService;
 
         private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
 
-        protected readonly IObservable<ServiceStatusEnum> _statusChanged;
+        private readonly AutoResetEvent executing = new AutoResetEvent(true);
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
@@ -81,8 +84,6 @@
             }
         }
 
-        public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
-
         public IObservable<ServiceStatusEnum> StatusChangedObservable
         {
             get
@@ -90,6 +91,8 @@
                 return _statusChanged;
             }
         }
+
+        public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
 
         #endregion
 
@@ -103,24 +106,32 @@
 
         public IObservable<Device> Start()
         {
-            if (Status == ServiceStatusEnum.Started)
+            IObservable<Device> result = Observable.Empty<Device>();
+
+            if (Status != ServiceStatusEnum.Started)
             {
-                Observable.Empty<Device>();
+                executing.WaitOne();
+
+                executing.Reset();
+
+                result = OpenWebsocketConnection()
+                    .SelectMany(
+                        registrationId =>
+                            RegisterDevice()
+                                .SelectMany(
+                                    d => ActivateDevice(registrationId, d.Identifier).Select(
+                                        device =>
+                                        {
+                                            _retryConnectionTimer.Stop();
+                                            Status = ServiceStatusEnum.Started;
+
+                                            RegisterConnectionObserver();
+                                            StartHandlers();
+                                            return device;
+                                        }))).Finally(() => executing.Set());
             }
 
-            return OpenWebsocketConnection()
-                .SelectMany(registrationId => RegisterDevice()
-                    .SelectMany(d => ActivateDevice(registrationId, d.Identifier)
-                        .Select(
-                            device =>
-                            {
-                                _retryConnectionTimer.Stop();
-                                Status = ServiceStatusEnum.Started;
-
-                                RegisterConnectionObserver();
-                                StartHandlers();
-                                return device;
-                            })));
+            return result;
         }
 
         public void Stop(bool unsubscribeHandlers = true)
@@ -145,20 +156,6 @@
 
         #region Methods
 
-        private IObservable<string> OpenWebsocketConnection()
-        {
-            WebsocketConnection = WebsocketConnectionFactory.Create();
-            return WebsocketConnection.Connect();
-        }
-
-        private IObservable<Device> RegisterDevice()
-        {
-            var deviceIdentifier = _configurationService.DeviceIdentifier;
-            var machineName = _configurationService.MachineName;
-
-            return Devices.Create(deviceIdentifier, machineName);
-        }
-
         private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
             return Devices.Activate(registrationId, deviceIdentifier);
@@ -175,6 +172,12 @@
             Stop(false);
         }
 
+        private IObservable<string> OpenWebsocketConnection()
+        {
+            WebsocketConnection = WebsocketConnectionFactory.Create();
+            return WebsocketConnection.Connect();
+        }
+
         private void RegisterConnectionObserver()
         {
             if (_websocketConnectionObserver != null)
@@ -186,6 +189,14 @@
                 WebsocketConnection.Where<WebsocketConnectionStatusEnum>(
                     x => x == WebsocketConnectionStatusEnum.Disconnected)
                     .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost());
+        }
+
+        private IObservable<Device> RegisterDevice()
+        {
+            var deviceIdentifier = _configurationService.DeviceIdentifier;
+            var machineName = _configurationService.MachineName;
+
+            return Devices.Create(deviceIdentifier, machineName);
         }
 
         private void StartHandlers()

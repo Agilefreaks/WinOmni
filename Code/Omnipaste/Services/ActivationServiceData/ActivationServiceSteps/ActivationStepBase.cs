@@ -15,7 +15,7 @@
 
         public IObservable<IExecuteResult> Execute()
         {
-            return InternalExecute().Catch<IExecuteResult, Exception>(GetFailObserver);;
+            return InternalExecute().Catch<IExecuteResult, Exception>(GetFailObserver);
         }
 
         public IObservable<IExecuteResult> GetFailObserver(Exception exception)
