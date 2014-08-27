@@ -5,46 +5,46 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-  <Grid x:Name="ContentGrid" Background="{StaticResource WhiteBrush}">
-    <Grid.ColumnDefinitions>
-      <!--Icon-->
-      <ColumnDefinition Width="Auto"/>
-      <!--Content-->
-      <ColumnDefinition Width="*"/>
-      <!--Smart actions-->
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
+    <Grid x:Name="ContentGrid" Background="{StaticResource WhiteBrush}">
+        <Grid.ColumnDefinitions>
+            <!--Icon-->
+            <ColumnDefinition Width="Auto"/>
+            <!--Content-->
+            <ColumnDefinition Width="*"/>
+            <!--Smart actions-->
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-    <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}" />
+        <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}" />
 
-    <StackPanel Grid.Column="1" Style="{StaticResource VerticalStackPanel}">
-      <StackPanel Style="{StaticResource HorizontalPanel}">
-        <TextBlock Text="{Binding Path=Title}" Style="{StaticResource BoldTextBlock}" />
-        <TextBlock Text="{Binding Path=Time, StringFormat=at {0:HH:mm}}" Style="{StaticResource ClippingTextBlock}" />
-      </StackPanel>
+        <StackPanel Grid.Column="1" Style="{StaticResource VerticalStackPanel}">
+            <StackPanel Style="{StaticResource HorizontalPanel}">
+                <TextBlock Text="{Binding Path=Title}" Style="{StaticResource BoldTextBlock}" />
+                <TextBlock Text="{Binding Path=Time, StringFormat=at {0:HH:mm}}" Style="{StaticResource ClippingTextBlock}" />
+            </StackPanel>
 
-      <TextBlock
+            <TextBlock
                 Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}"
                 Style="{StaticResource ClippingTextBlock}" />
-    </StackPanel>
+        </StackPanel>
 
-    <StackPanel Grid.Column="2" Style="{StaticResource ButtonsPanel}">
-      <Button x:Name="CallBack" ToolTip="Call back" Style="{StaticResource SmartActionButton}">
-        <Rectangle Width="20" Height="20" 
+        <StackPanel Grid.Column="2" Style="{StaticResource ButtonsPanel}">
+            <Button x:Name="CallBack" ToolTip="Call back" Style="{StaticResource SmartActionButton}">
+                <Rectangle Width="20" Height="20" 
                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-          <Rectangle.OpacityMask>
-            <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_people}"/>
-          </Rectangle.OpacityMask>
-        </Rectangle>
-      </Button>
-      <Button x:Name="SendSms" ToolTip="Reply with SMS" Style="{StaticResource SmartActionButton}">
-        <Rectangle Width="20" Height="20" 
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_people}"/>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button x:Name="SendSms" ToolTip="Reply with SMS" Style="{StaticResource SmartActionButton}">
+                <Rectangle Width="20" Height="20" 
                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-          <Rectangle.OpacityMask>
-            <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_email}"/>
-          </Rectangle.OpacityMask>
-        </Rectangle>
-      </Button>
-    </StackPanel>
-  </Grid>
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_reply_email}"/>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+    </Grid>
 </UserControl>
