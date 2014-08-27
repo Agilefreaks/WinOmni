@@ -84,10 +84,18 @@
     <Setter Property="Background" Value="Transparent" />
     <Style.Triggers>
       <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsMouseOver}" Value="True">
-        <Setter Property="Visibility" Value="Visible" />
+          <Setter Property="Visibility" Value="Visible" />
       </DataTrigger>
     </Style.Triggers>
   </Style>
+    
+    <Style x:Key="ClippingSmartActionButton" TargetType="Button" BasedOn="{StaticResource SmartActionButton}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsMouseOver}" Value="True">
+                <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibility}}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
   <!-- Shapes -->
   <Style x:Key="ItemIcon" TargetType="Rectangle">
