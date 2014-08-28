@@ -17,5 +17,7 @@
         public static string RefreshToken = "RefreshToken";
 
         public static string AutoStart = "AutoStart";
+
+        public static string DeviceIdentifier = "DeviceIdentifier";
     }
 }

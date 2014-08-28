@@ -2,8 +2,6 @@
 {
     using System;
     using System.Configuration;
-    using System.Linq;
-    using System.Net.NetworkInformation;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
 
@@ -54,11 +52,14 @@
         {
             get
             {
-                return
-                   NetworkInterface.GetAllNetworkInterfaces()
-                       .Where(nic => nic.OperationalStatus == OperationalStatus.Up)
-                       .Select(nic => nic.GetPhysicalAddress().ToString())
-                       .First();
+                var deviceIdentifier = _configurationProvider.GetValue(ConfigurationProperties.DeviceIdentifier);
+                if (string.Equals("", deviceIdentifier))
+                {
+                    deviceIdentifier = Guid.NewGuid().ToString();
+                    _configurationProvider.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
+                }
+
+                return deviceIdentifier;
             }
         }
 

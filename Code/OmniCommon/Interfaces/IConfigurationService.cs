@@ -10,11 +10,11 @@
 
         string ClientId { get; }
 
-        string DeviceIdentifier { get; }
-
         string MachineName { get; }
 
         string RefreshToken { get; }
+
+        string DeviceIdentifier { get; }
 
         #endregion
 
