@@ -134,7 +134,7 @@
             {
                 if (dataObject.GetDataPresent(DataFormats.Text))
                 {
-                    text = (string)dataObject.GetData(DataFormats.Text);
+                    text = (string)dataObject.GetData(DataFormats.UnicodeText);
                 }
             }
 
