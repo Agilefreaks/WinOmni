@@ -147,6 +147,7 @@
 
     <Style x:Key="VerticalPanel" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     
     <Style x:Key="ButtonsPanel" TargetType="StackPanel" BasedOn="{StaticResource HorizontalPanel}">
