@@ -52,7 +52,6 @@
     <Style TargetType="TextBlock" x:Key="ClippingTextBlock" BasedOn="{StaticResource DarkTextBlock}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Height" Value="62" />
     </Style>
 
     <!-- Label -->
