@@ -17,7 +17,7 @@
 
         <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}" />
 
-        <StackPanel Grid.Column="1" Style="{StaticResource VerticalStackPanel}">
+        <StackPanel Grid.Column="1" Style="{StaticResource VerticalPanel}">
             <StackPanel Style="{StaticResource HorizontalPanel}">
                 <TextBlock Text="{Binding Path=Title}" Style="{StaticResource BoldTextBlock}" />
                 <TextBlock Text="{Binding Path=Time, StringFormat=at {0:HH:mm}}" Style="{StaticResource ClippingTextBlock}" />
