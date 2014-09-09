@@ -60,7 +60,15 @@
 
         public void Stop()
         {
-            _subscription.Dispose();
+            try
+            {
+                _subscription.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         public IDisposable Subscribe(IObserver<Event> observer)

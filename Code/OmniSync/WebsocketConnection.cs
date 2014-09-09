@@ -79,7 +79,14 @@
 
         public void Disconnect()
         {
-            Channel.Close();
+            try
+            {
+                Channel.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         #endregion

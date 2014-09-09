@@ -44,7 +44,14 @@
         {
             if (_subscription != null)
             {
-                _subscription.Dispose();
+                try
+                {
+                    _subscription.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
 
