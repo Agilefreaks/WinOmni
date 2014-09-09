@@ -128,11 +128,11 @@
             string text = null;
 
             var dataObject = GetClipboardData();
-            string[] formats = dataObject.GetFormats();
+            
 
             if (dataObject != null)
             {
-                if (dataObject.GetDataPresent(DataFormats.Text))
+                if (dataObject.GetDataPresent(DataFormats.UnicodeText))
                 {
                     text = (string)dataObject.GetData(DataFormats.UnicodeText);
                 }
