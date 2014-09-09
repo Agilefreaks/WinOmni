@@ -8,5 +8,7 @@
         event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
 
         bool PreviouslyConnected { get; set; }
+
+        bool CurrentlyConnected { get; }
     }
 }

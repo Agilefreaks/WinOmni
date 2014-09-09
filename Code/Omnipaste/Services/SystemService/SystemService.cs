@@ -7,7 +7,9 @@
     {
         #region Public Events
 
-        public event EventHandler<EventArgs> Resume;
+        public event EventHandler<EventArgs> Resumed;
+        
+        public event EventHandler<EventArgs> Suspended;
 
         #endregion
 
@@ -31,7 +33,12 @@
         {
             if (e.Mode == PowerModes.Resume)
             {
-                Resume(this, new EventArgs());
+                Resumed(this, new EventArgs());
+            }
+
+            if (e.Mode == PowerModes.Suspend)
+            {
+                Suspended(this, new EventArgs());
             }
         }
 

@@ -5,6 +5,8 @@
 
     public interface ISystemService : IStartable
     {
-        event EventHandler<EventArgs> Resume;
+        event EventHandler<EventArgs> Resumed;
+
+        event EventHandler<EventArgs> Suspended;
     }
 }

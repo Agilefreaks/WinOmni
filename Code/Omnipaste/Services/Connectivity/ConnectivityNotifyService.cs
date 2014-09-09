@@ -14,6 +14,14 @@
 
         public bool PreviouslyConnected { get; set; }
 
+        public bool CurrentlyConnected
+        {
+            get
+            {
+                return ConnectivityHelper.InternetConnected;
+            }
+        }
+
         public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
 
         public ConnectivityNotifyService(IConnectivityHelper connectivityHelper)
@@ -38,10 +46,10 @@
         {
             lock (Lock)
             {
-                if (ConnectivityHelper.InternetConnected != PreviouslyConnected)
+                if (CurrentlyConnected != PreviouslyConnected)
                 {
-                    OnConnectivityChanged(ConnectivityHelper.InternetConnected);
-                    PreviouslyConnected = ConnectivityHelper.InternetConnected;
+                    OnConnectivityChanged(CurrentlyConnected);
+                    PreviouslyConnected = CurrentlyConnected;
                 }
             }
         }

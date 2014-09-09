@@ -147,11 +147,13 @@
 
                 if (_systemService != null)
                 {
-                    _systemService.Resume -= SystemResumed;
+                    _systemService.Resumed -= SystemResumed;
+                    _systemService.Suspended -= SystemSuspended;
                 }
 
                 _systemService = value;
-                _systemService.Resume += SystemResumed;
+                _systemService.Resumed += SystemResumed;
+                _systemService.Suspended += SystemSuspended;
                 NotifyOfPropertyChange(() => SystemService);
             }
         }
@@ -181,25 +183,27 @@
 
         private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            if (!e.IsConnected)
-            {
-                Disconnect();
-            }
-            else if (e.IsConnected)
+            if (e.IsConnected)
             {
                 Connect();
+            }
+            else
+            {
+                Disconnect();
             }
         }
 
         private void SystemResumed(object sender, EventArgs e)
         {
-            Reconnect();
+            if (ConnectivityNotifyService.CurrentlyConnected)
+            {
+                Connect();
+            }
         }
 
-        private void Reconnect()
+        private void SystemSuspended(object sender, EventArgs e)
         {
             Disconnect();
-            Connect();
         }
 
         #endregion
