@@ -1,9 +1,12 @@
 ﻿namespace Omni
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
     using System.Threading;
+    using BugFreak;
+    using BugFreak.Components;
     using Clipboard;
     using Events;
     using Ninject;
@@ -158,6 +161,8 @@
 
         private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
+
             return Devices.Activate(registrationId, deviceIdentifier);
         }
 

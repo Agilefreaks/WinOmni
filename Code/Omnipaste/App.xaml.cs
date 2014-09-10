@@ -4,9 +4,7 @@
     using System.Collections.Generic;
     using System.Deployment.Application;
     using System.Windows;
-    using System.Configuration;
     using CustomizedClickOnce.Common;
-    using OmniCommon;
 
     public partial class App : ISingleInstanceApp
     {
@@ -37,17 +35,7 @@
         {
             return true;
         }
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            BugFreak.BugFreak.Hook(
-                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakApiKey],
-                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakToken],
-                this);
-        }
-
+        
         private static void PerformFirstRunTasks()
         {
             if (!ApplicationDeploymentHelper.IsClickOnceApplication || !ApplicationDeployment.CurrentDeployment.IsFirstRun)

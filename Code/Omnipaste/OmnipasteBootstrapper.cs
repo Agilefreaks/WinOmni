@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
+    using BugFreak;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
@@ -112,7 +114,20 @@
             base.OnStartup(sender, e);
 
             DisplayRootViewFor<ShellViewModel>();
+            BugFreak.Hook(
+                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakApiKey],
+                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakToken],
+                Application.Current);
+
+            SetupApplicationVersionLogging();
         }
+
+        private void SetupApplicationVersionLogging()
+        {
+            var applicationService = _kernel.Get<IApplicationService>();
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", applicationService.Version.ToString()));
+        }
+
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
             return new[] { Assembly.GetExecutingAssembly() };
