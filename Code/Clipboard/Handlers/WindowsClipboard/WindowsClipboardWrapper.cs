@@ -129,7 +129,6 @@
 
             var dataObject = GetClipboardData();
             
-
             if (dataObject != null)
             {
                 if (dataObject.GetDataPresent(DataFormats.UnicodeText))

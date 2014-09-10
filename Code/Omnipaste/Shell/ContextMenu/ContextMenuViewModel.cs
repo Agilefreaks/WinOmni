@@ -38,16 +38,7 @@
                 },
                 exception => { });
 
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ApplicationDeploymentHelper.IsClickOnceApplication)
-            {
-                var ad = ApplicationDeployment.CurrentDeployment;
-                version = ad.CurrentVersion;
-            }
-
-            TooltipText = "Omnipaste " + version;
             IconSource = "/Disconnected.ico";
-
             AutoStart = ClickOnceHelper.StartupShortcutExists();
         }
 
@@ -112,6 +103,13 @@
         #endregion
 
         #region Public Methods and Operators
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+
+            TooltipText = "Omnipaste " + ApplicationService.Version;
+        }
 
         public void Exit()
         {
