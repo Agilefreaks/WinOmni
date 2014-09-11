@@ -100,7 +100,6 @@
             StopWatchingClipboard();
         }
 
-
         #endregion
 
         #region Methods

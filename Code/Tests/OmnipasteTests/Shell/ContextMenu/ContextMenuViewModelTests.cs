@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
+    using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Caliburn.Micro;
@@ -12,6 +13,7 @@
     using Omni;
     using OmniApi.Models;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework;
     using Omnipaste.Shell.ContextMenu;
     using OmniSync;
 
@@ -32,6 +34,8 @@
 
         private Subject<ServiceStatusEnum> _statusChangedSubject;
 
+        private Mock<IApplicationService> _mockApplicationService;
+
         #endregion
 
         #region Public Methods and Operators
@@ -46,6 +50,7 @@
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockClickOnceHelper = _mockingKernel.GetMock<IClickOnceHelper>();
+            _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
@@ -130,6 +135,14 @@
             _subject.ToggleAutoStart();
 
             _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
+        }
+
+        [Test]
+        public void TooltipText_HasVersion()
+        {
+            _mockApplicationService.SetupGet(s => s.Version).Returns(new Version("1.0.1.10"));
+
+            _subject.TooltipText.Should().Be("Omnipaste 1.0.1.10");
         }
 
         #endregion

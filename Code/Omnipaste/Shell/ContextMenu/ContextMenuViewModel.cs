@@ -96,21 +96,21 @@
 
         public IOmniService OmniService { get; set; }
 
-        public string TooltipText { get; set; }
+        public string TooltipText
+        {
+            get
+            {
+                return "Omnipaste " + ApplicationService.Version;
+                
+            }
+        }
 
         public Visibility Visibility { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
-
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-
-            TooltipText = "Omnipaste " + ApplicationService.Version;
-        }
-
+        
         public void Exit()
         {
             ApplicationService.ShutDown();

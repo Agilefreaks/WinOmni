@@ -15,6 +15,8 @@
 
         string IconSource { get; set; }
 
+        string TooltipText { get; }
+
         #endregion
 
         #region Public Methods and Operators
