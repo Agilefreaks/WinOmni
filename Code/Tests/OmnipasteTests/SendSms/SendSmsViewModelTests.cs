@@ -39,18 +39,13 @@
 
             _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
             _subject = _kernel.Get<SendSmsViewModel>();
-            _subject.Model = new SmsMessage();
+            _subject.Model = new SmsMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
+
         }
 
         [Test]
         public void Send_CallsPhoneApiSendSms()
         {
-            _subject.Model = new SmsMessage
-                             {
-                                 Message = "save me Obi-Wan Kenobi",
-                                 Recipient = "1234567"
-                             };
-
             _subject.Send();
 
             _mockDevices.Verify(p => p.SendSms("1234567", "save me Obi-Wan Kenobi"), Times.Once);
@@ -82,7 +77,7 @@
         }
 
         [Test]
-        public void CanSend_WhenStatusIsComposing_IsTrue()
+        public void CanSend_WhenStatusIsComposingAndThereIsARecipientAndThereIsAMessage_IsTrue()
         {
             _subject.State = SendSmsStatusEnum.Composing;
 
@@ -102,6 +97,26 @@
         {
             _subject.State = SendSmsStatusEnum.Sent;
 
+            _subject.CanSend.Should().Be(false);
+        }
+
+        [Test]
+        public void CanSend_WhenBodyIsEmpty_IsFalse()
+        {
+            _subject.State = SendSmsStatusEnum.Composing;
+
+            _subject.Model.Message = string.Empty;
+            
+            _subject.CanSend.Should().Be(false);
+        }
+
+        [Test]
+        public void CanSend_WhenRecipientIsEmpty_IsFalse()
+        {
+            _subject.State = SendSmsStatusEnum.Composing;
+
+            _subject.Model.Recipient = string.Empty;
+            
             _subject.CanSend.Should().Be(false);
         }
 

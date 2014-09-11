@@ -37,7 +37,9 @@
         {
             get
             {
-                return State == SendSmsStatusEnum.Composing;
+                return State == SendSmsStatusEnum.Composing 
+                    && !string.IsNullOrEmpty(Model.Recipient)
+                    && !string.IsNullOrEmpty(Model.Message);
             }
         }
 
