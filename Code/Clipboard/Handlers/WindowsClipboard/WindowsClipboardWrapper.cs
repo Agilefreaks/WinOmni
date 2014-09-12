@@ -12,7 +12,7 @@
     using Ninject;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
-    {
+    {   
         #region Fields
 
         private readonly IObservable<ClipboardEventArgs> _clippingEventsStream;
@@ -57,7 +57,7 @@
         public void SetData(string data)
         {
             IDataObject dataObject = new DataObject(DataFormats.Text, data);
-            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 3, 10));
+            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 10, 100));
         }
 
         public void StartWatchingClipboard()
