@@ -46,24 +46,24 @@
         }
 
         [Test]
-        public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromDeploymentUri()
+        public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromArguments()
         {
             _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<GetActivationCodeFromDeploymentUri>();
+                .Be<GetActivationCodeFromArguments>();
         }
 
         [Test]
-        public void GetActivationCodeFromDeploymentUri_Success_ShouldBeGetRemoteConfiguration()
+        public void GetActivationCodeFromArguments_Success_ShouldBeGetRemoteConfiguration()
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromDeploymentUri>(
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromArguments>(
                 SimpleStepStateEnum.Successful).Should().Be<GetRemoteConfiguration>();
         }
 
         [Test]
-        public void GetActivationCodeFromDeploymentUri_Failed_ShouldBeGetActivationCodeFromUser()
+        public void GetActivationCodeFromArguments_Failed_ShouldBeGetActivationCodeFromUser()
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromDeploymentUri>(
+            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromArguments>(
                 SimpleStepStateEnum.Failed).Should().Be<GetActivationCodeFromUser>();
         }
 

@@ -19,5 +19,9 @@
         public static string AutoStart = "AutoStart";
 
         public static string DeviceIdentifier = "DeviceIdentifier";
+
+        public static string UpdateSource = "UpdateSource";
+
+        public static string AppName = "AppName";
     }
 }

@@ -33,5 +33,8 @@ code/Omnipaste/Uninstall.*
 code/Omnipaste/omnipaste-setup.*
 
 !code/.nuget/nuget.exe
-!tools/*.exe
+!tools/**/*.exe
 !tools/AzCopy/*.exe
+Code/Installer/OmnipasteInstaller/Packages/*
+Libs/NAppUpdate/FeedBuilder/output/*
+Tools/FeedBuilder/output/*

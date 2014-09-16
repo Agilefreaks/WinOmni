@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.8</ProductVersion>
+    <ProjectGuid>19ec1bba-9846-4f88-84ba-51d551901d00</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>OmnipasteInstaller</OutputName>
+    <OutputType>Package</OutputType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>Packages\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug;SourceDir=$(SolutionDir)Omnipaste\bin\$(Configuration)</DefineConstants>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <Cultures>en-US</Cultures>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>Packages\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <DefineConstants>SourceDir=$(SolutionDir)Omnipaste\bin\$(Configuration)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|x86' ">
+    <OutputPath>Packages\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <DefineConstants>SourceDir=$(SolutionDir)Omnipaste\bin\$(Configuration)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignOutput>True</SignOutput>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CustomActions\CustomActions.wxs" />
+    <Compile Include="Fragments\Binaries.wxs" />
+    <Compile Include="Fragments\Components.wxs" />
+    <Compile Include="Fragments\Folders.wxs" />
+    <Compile Include="Fragments\Shorcuts.wxs" />
+    <Compile Include="Fragments\UninstallComponents.wxs" />
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Omnipaste\Omnipaste.csproj">
+      <Name>Omnipaste</Name>
+      <Project>{a5370d41-9479-46aa-b2fb-5cd4467379a1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\InstallerCustomActions\InstallerCustomActions.csproj">
+      <Name>InstallerCustomActions</Name>
+      <Project>{12606e51-d980-4a0c-a23a-88fd680c3d63}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomActions" />
+    <Folder Include="Fragments" />
+    <Folder Include="Includes" />
+    <Folder Include="Lang" />
+    <Folder Include="Lang\en-us" />
+    <Folder Include="Transforms" />
+    <Folder Include="Packages\en-us\" />
+    <Folder Include="Resources" />
+    <Folder Include="Packages" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Includes\OmnipasteVariables.wxi" />
+    <Content Include="Packages\en-us\OmnipasteInstaller.msi" />
+    <Content Include="Resources\Icon.ico" />
+    <Content Include="Transforms\ComponentsFilter.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Lang\en-us\Loc_en-us.wxl" />
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Target Name="BeforeBuild">
+    <HeatDirectory OutputFile="Fragments\Components.wxs" Directory="$(SolutionDir)Omnipaste\bin\$(Configuration)" ComponentGroupName="OmnipasteFiles" DirectoryRefId="INSTALLFOLDER" PreprocessorVariable="var.SourceDir" ToolPath="$(WixToolPath)" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" Transforms="$(ProjectDir)Transforms\ComponentsFilter.xslt" VerboseOutput="true">
+    </HeatDirectory>
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <PropertyGroup>
+    <PreBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent />
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Target Name="SignCabs">
+    <Exec Command="$(SolutionDir)..\Tools\signtool.exe sign /a &quot;%(SignCabs.FullPath)&quot;" />
+  </Target>
+  <Target Name="SignMsi">
+    <Exec Command="$(SolutionDir)..\Tools\signtool.exe sign /a &quot;%(SignMsi.FullPath)&quot;" />
+  </Target>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>
