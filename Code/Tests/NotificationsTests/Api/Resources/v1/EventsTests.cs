@@ -16,7 +16,10 @@
         [SetUp]
         public void SetUp()
         {
-            _subject = new Events() { ConfigurationService = new Mock<IConfigurationService>().Object };
+            var mockConfigurationService = new Mock<IConfigurationService>();
+            mockConfigurationService.SetupGet(cs => cs.AccessToken).Returns("access token");
+
+            _subject = new Events() { ConfigurationService = mockConfigurationService.Object };
         }
 
         [Test]
