@@ -2,6 +2,8 @@
 {
     using System;
     using System.Configuration;
+    using System.Diagnostics;
+    using BugFreak;
     using Newtonsoft.Json;
     using Ninject;
     using OmniApi.Models;
@@ -58,6 +60,11 @@
         {
             get
             {
+                if (string.IsNullOrEmpty(Token.AccessToken))
+                {
+                    var callingMethodName = new StackFrame(1).GetMethod().Name;
+                    ReportingService.Instance.BeginReport(new Exception(string.Format("AccessToken is empty when calling {0}",callingMethodName)));
+                }
                 return string.Concat("bearer ", Token.AccessToken);
             }
         }

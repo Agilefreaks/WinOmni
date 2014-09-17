@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -55,6 +56,11 @@
 
         private IExecuteResult GetExecuteResult(Token token)
         {
+            if (string.IsNullOrEmpty(token.AccessToken))
+            {
+                ReportingService.Instance.BeginReport(new Exception("Access token empty in GetRemoteConfiguration.GetExecuteResult - Problem in the API"));
+            }
+
             return new ExecuteResult(SimpleStepStateEnum.Successful, token);
         }
 

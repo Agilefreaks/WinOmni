@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using BugFreak;
     using OmniApi.Models;
     using OmniCommon.Interfaces;
 
@@ -22,6 +23,10 @@
                 {
                     var token = (Token)Parameter.Value;
                     _configurationService.SaveAuthSettings(token.AccessToken, token.RefreshToken);
+                    if (string.IsNullOrEmpty(_configurationService.AccessToken))
+                    {
+                        ReportingService.Instance.BeginReport(new Exception("Access token empty in SaveConfiguration - Problem with writing the file"));
+                    }
 
                     observer.OnNext(
                         new ExecuteResult { State = SimpleStepStateEnum.Successful, Data = token.AccessToken });
