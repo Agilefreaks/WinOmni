@@ -42,6 +42,7 @@
             {
                 _activationCode = value;
                 NotifyOfPropertyChange(() => ActivationCode);
+                NotifyOfPropertyChange(() => CanAuthenticate);
             }
         }
 
@@ -93,6 +94,14 @@
             get
             {
                 return !string.IsNullOrEmpty(Message);
+            }
+        }
+
+        public bool CanAuthenticate
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(ActivationCode);
             }
         }
 
