@@ -135,13 +135,40 @@
   <data name="ClickHere" xml:space="preserve">
     <value>Click Here</value>
   </data>
-  <data name="UserTokenViewLabel1" xml:space="preserve">
+  <data name="UserTokenLabel1" xml:space="preserve">
     <value>To connect, you need an authorization code. You can get one from the</value>
   </data>
-  <data name="UserTokenViewLabel2" xml:space="preserve">
+  <data name="UserTokenLabel2" xml:space="preserve">
     <value>website.</value>
   </data>
-  <data name="UserTokeViewCodeError" xml:space="preserve">
+  <data name="UserTokeCodeError" xml:space="preserve">
     <value>Invalid authorization code, the code might have expired, please generate a new one.</value>
+  </data>
+  <data name="ActivationFailedLabel" xml:space="preserve">
+    <value>Sorry master we failed, please don't kill us!</value>
+  </data>
+  <data name="AndroidInstallGuideButton" xml:space="preserve">
+    <value>Okay, got it</value>
+  </data>
+  <data name="AndroidInstallGuideLabel1" xml:space="preserve">
+    <value>Great! Omnipaste installed successfully.</value>
+  </data>
+  <data name="AndroidInstallGuideLabel2" xml:space="preserve">
+    <value>Now, get Omnipaste for your other devices.</value>
+  </data>
+  <data name="AndroidInstallGuideLabel3" xml:space="preserve">
+    <value>We've sent you an installation email.</value>
+  </data>
+  <data name="AndroidInstallGuideLabel4" xml:space="preserve">
+    <value>Open the email from the devices you want and follow instructions.</value>
+  </data>
+  <data name="LoadingLabel" xml:space="preserve">
+    <value>Loading ...</value>
+  </data>
+  <data name="ActivationFailedHeader" xml:space="preserve">
+    <value>Show me why</value>
+  </data>
+  <data name="ButtonRetry" xml:space="preserve">
+    <value>Retry</value>
   </data>
 </root>

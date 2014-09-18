@@ -1,19 +1,17 @@
 ﻿<UserControl x:Class="Omnipaste.Loading.ActivationFailed.ActivationFailedView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
-             IsTabStop="False" behaviours:FocusBehavior.FocusFirst="True" KeyboardNavigation.TabNavigation="Local" >
+             xmlns:p="clr-namespace:Omnipaste.Properties"
+             KeyboardNavigation.TabNavigation="Local">
     <StackPanel>
-        <Label Style="{StaticResource DescriptionHeaderStyle}">
-            Sorry master we failed, please don't kill us!
-        </Label>
-        
-        <StackPanel Style="{StaticResource ButtonsPanel}">
-            <Button TabIndex="0" x:Name="Retry" Content="Retry" Style="{StaticResource PrimaryDialogButton}" />
-            <Button TabIndex="1" x:Name="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
+        <Label Style="{StaticResource DescriptionHeaderStyle}" Content="{x:Static p:Resources.ActivationFailedLabel}" />
+
+        <StackPanel Style="{StaticResource ButtonsPanel}" FocusManager.FocusedElement="{Binding ElementName=Retry}" FocusManager.IsFocusScope="True">
+            <Button TabIndex="0" Name="Retry" Content="{x:Static p:Resources.ButtonRetry}" Style="{StaticResource PrimaryDialogButton}" />
+            <Button TabIndex="1" Name="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
 
-        <Expander Header="Show me why" IsExpanded="False">
+        <Expander Header="{x:Static p:Resources.ActivationFailedHeader}" IsExpanded="False">
             <TextBox x:Name="ExceptionMessage" IsReadOnly="True"/>
         </Expander>
     </StackPanel>

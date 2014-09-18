@@ -26,14 +26,14 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
-            <Run Text="{x:Static p:Resources.UserTokenViewLabel1}" />
+            <Run Text="{x:Static p:Resources.UserTokenLabel1}" />
             <Hyperlink NavigateUri="{Binding Path=AuthorizationCodeUrl}">
                 <i:Interaction.Behaviors>
                     <behaviours:AutoFollowLinkBehavior/>
                 </i:Interaction.Behaviors>
                 Omnipaste
             </Hyperlink>
-            <Run Text="{x:Static p:Resources.UserTokenViewLabel2}" />
+            <Run Text="{x:Static p:Resources.UserTokenLabel2}" />
         </TextBlock>
         <TextBox x:Name="ActivationCode" Grid.Row="3" Grid.Column="0" 
                  Grid.ColumnSpan="3" Margin="10" TabIndex="0"

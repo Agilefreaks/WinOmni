@@ -61,6 +61,69 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show me why.
+        /// </summary>
+        public static string ActivationFailedHeader {
+            get {
+                return ResourceManager.GetString("ActivationFailedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry master we failed, please don&apos;t kill us!.
+        /// </summary>
+        public static string ActivationFailedLabel {
+            get {
+                return ResourceManager.GetString("ActivationFailedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Okay, got it.
+        /// </summary>
+        public static string AndroidInstallGuideButton {
+            get {
+                return ResourceManager.GetString("AndroidInstallGuideButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Great! Omnipaste installed successfully..
+        /// </summary>
+        public static string AndroidInstallGuideLabel1 {
+            get {
+                return ResourceManager.GetString("AndroidInstallGuideLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Now, get Omnipaste for your other devices..
+        /// </summary>
+        public static string AndroidInstallGuideLabel2 {
+            get {
+                return ResourceManager.GetString("AndroidInstallGuideLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We&apos;ve sent you an installation email..
+        /// </summary>
+        public static string AndroidInstallGuideLabel3 {
+            get {
+                return ResourceManager.GetString("AndroidInstallGuideLabel3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the email from the devices you want and follow instructions..
+        /// </summary>
+        public static string AndroidInstallGuideLabel4 {
+            get {
+                return ResourceManager.GetString("AndroidInstallGuideLabel4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Omnipaste.
         /// </summary>
         public static string AplicationName {
@@ -106,6 +169,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string ButtonRetry {
+            get {
+                return ResourceManager.GetString("ButtonRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click Here.
         /// </summary>
         public static string ClickHere {
@@ -115,29 +187,38 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To connect, you need an authorization code. You can get one from the.
+        ///   Looks up a localized string similar to Loading ....
         /// </summary>
-        public static string UserTokenViewLabel1 {
+        public static string LoadingLabel {
             get {
-                return ResourceManager.GetString("UserTokenViewLabel1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to website..
-        /// </summary>
-        public static string UserTokenViewLabel2 {
-            get {
-                return ResourceManager.GetString("UserTokenViewLabel2", resourceCulture);
+                return ResourceManager.GetString("LoadingLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
         /// </summary>
-        public static string UserTokeViewCodeError {
+        public static string UserTokeCodeError {
             get {
-                return ResourceManager.GetString("UserTokeViewCodeError", resourceCulture);
+                return ResourceManager.GetString("UserTokeCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To connect, you need an authorization code. You can get one from the.
+        /// </summary>
+        public static string UserTokenLabel1 {
+            get {
+                return ResourceManager.GetString("UserTokenLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to website..
+        /// </summary>
+        public static string UserTokenLabel2 {
+            get {
+                return ResourceManager.GetString("UserTokenLabel2", resourceCulture);
             }
         }
     }
