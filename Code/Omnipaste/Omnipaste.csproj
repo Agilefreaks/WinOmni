@@ -299,11 +299,6 @@
     <Compile Include="Framework\IDialogService.cs" />
     <Compile Include="Framework\DialogService.cs" />
     <Compile Include="Framework\ViewLocator.cs" />
-    <Compile Include="Layout\ILayoutViewModel.cs" />
-    <Compile Include="Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Layout\LayoutViewModel.cs" />
     <Compile Include="Loading\ILoadingViewModel.cs" />
     <Compile Include="Loading\LoadingViewModel.cs" />
     <Compile Include="Loading\LoadingViewModelStateEnum.cs" />
@@ -446,10 +441,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialog\DialogView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

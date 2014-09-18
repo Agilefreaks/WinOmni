@@ -313,6 +313,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clippings.
+        /// </summary>
+        public static string MasterClippingListDisplayName {
+            get {
+                return ResourceManager.GetString("MasterClippingListDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MasterClippingListHeaderAll {
@@ -340,6 +349,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        public static string MasterEventListDisplayName {
+            get {
+                return ResourceManager.GetString("MasterEventListDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MasterEventListHeaderAll {
@@ -363,6 +381,24 @@ namespace Omnipaste.Properties {
         public static string MasterEventListHeaderSms {
             get {
                 return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Omnipaste is still running. To open the window again, double-click the icon..
+        /// </summary>
+        public static string ShellBallonContent {
+            get {
+                return ResourceManager.GetString("ShellBallonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running in the background.
+        /// </summary>
+        public static string ShellBallonTitle {
+            get {
+                return ResourceManager.GetString("ShellBallonTitle", resourceCulture);
             }
         }
         

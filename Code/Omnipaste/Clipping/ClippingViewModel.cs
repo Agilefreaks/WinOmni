@@ -3,7 +3,6 @@
     using System.Diagnostics;
     using Clipboard.Models;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Event;
 
     public class ClippingViewModel : DetailsViewModelBase<Clipping>, IClippingViewModel
     {

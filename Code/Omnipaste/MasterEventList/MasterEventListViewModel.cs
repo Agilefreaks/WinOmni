@@ -5,6 +5,7 @@
     using Omnipaste.MasterEventList.AllEventList;
     using Omnipaste.MasterEventList.IncomingCallEventList;
     using Omnipaste.MasterEventList.IncomingSmsEventList;
+    using Omnipaste.Properties;
     using Omnipaste.SmsComposer;
 
     public sealed class MasterEventListViewModel : Screen, IMasterEventListViewModel
@@ -23,7 +24,7 @@
 
         public MasterEventListViewModel()
         {
-            DisplayName = "Notifications";
+            DisplayName = Resources.MasterEventListDisplayName;
         }
     }
 }

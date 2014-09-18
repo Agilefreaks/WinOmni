@@ -143,7 +143,7 @@
 
             if (ApplicationDeploymentHelper.IsClickOnceApplication && ApplicationDeployment.CurrentDeployment.IsFirstRun)
             {
-                ContextMenuViewModel.ShowBaloon("Running in the background", "Omnipaste is still running. To open the window again, double-click the icon.");
+                ContextMenuViewModel.ShowBaloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
             }
         }
 

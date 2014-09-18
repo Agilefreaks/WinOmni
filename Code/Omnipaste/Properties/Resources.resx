@@ -243,4 +243,16 @@
   <data name="SmsComposerTitle" xml:space="preserve">
     <value>Send SMS</value>
   </data>
+  <data name="MasterClippingListDisplayName" xml:space="preserve">
+    <value>Clippings</value>
+  </data>
+  <data name="MasterEventListDisplayName" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="ShellBallonContent" xml:space="preserve">
+    <value>Omnipaste is still running. To open the window again, double-click the icon.</value>
+  </data>
+  <data name="ShellBallonTitle" xml:space="preserve">
+    <value>Running in the background</value>
+  </data>
 </root>

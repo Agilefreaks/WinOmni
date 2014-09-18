@@ -5,6 +5,7 @@ namespace Omnipaste.MasterClippingList
     using Omnipaste.MasterClippingList.AllClippingList;
     using Omnipaste.MasterClippingList.CloudClippingList;
     using Omnipaste.MasterClippingList.LocalClippingList;
+    using Omnipaste.Properties;
 
     public sealed class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
     {
@@ -19,7 +20,7 @@ namespace Omnipaste.MasterClippingList
 
         public MasterClippingListViewModel()
         {
-            DisplayName = "Clippings";
+            DisplayName = Resources.MasterClippingListDisplayName;
         }
     }
 }
