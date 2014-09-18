@@ -7,7 +7,6 @@
         xmlns:notification="clr-namespace:Omnipaste.Notification"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="300"
-        Background="Transparent" 
         HorizontalContentAlignment="Right">
     <UserControl.Resources>
         <DataTemplate x:Key="MessageTemplate">

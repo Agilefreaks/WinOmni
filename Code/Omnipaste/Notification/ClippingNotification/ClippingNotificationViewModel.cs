@@ -1,5 +1,7 @@
 ﻿namespace Omnipaste.Notification.ClippingNotification
 {
+    using Omnipaste.Properties;
+
     public class ClippingNotificationViewModel : NotificationViewModelBase, IClippingNotificationViewModel
     {
         #region Public Properties
@@ -8,7 +10,7 @@
         {
             get
             {
-                return "New clipping";
+                return Resources.ClippingNotificationTitle;
             }
         }
 

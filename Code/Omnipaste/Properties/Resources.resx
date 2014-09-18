@@ -171,7 +171,7 @@
   <data name="ButtonRetry" xml:space="preserve">
     <value>Retry</value>
   </data>
-  <data name="MasterClippingListEmptyLabel" xml:space="preserve">
+  <data name="ClippingListEmptyLabel" xml:space="preserve">
     <value>There are no clippings to display.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
@@ -191,5 +191,38 @@
   </data>
   <data name="MasterEventListHeaderSms" xml:space="preserve">
     <value>Incoming Messages</value>
+  </data>
+  <data name="ButtonBrowse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="ButtonReply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="CallingLabel" xml:space="preserve">
+    <value>Your phone will start calling soon. Please pick it up.</value>
+  </data>
+  <data name="ClippingNotificationTitle" xml:space="preserve">
+    <value>New clipping</value>
+  </data>
+  <data name="EventListEmpty" xml:space="preserve">
+    <value>There are no events to display.</value>
+  </data>
+  <data name="HyperlinkNotificationTitle" xml:space="preserve">
+    <value>Incoming Link</value>
+  </data>
+  <data name="IncommingCallNotificationCallEnded" xml:space="preserve">
+    <value>Call ended</value>
+  </data>
+  <data name="IncommingCallNotificationEndCall" xml:space="preserve">
+    <value>End Call</value>
+  </data>
+  <data name="IncommingCallNotificationSendSms" xml:space="preserve">
+    <value>Send Text</value>
+  </data>
+  <data name="IncommingCallNotificationTitle" xml:space="preserve">
+    <value>Incoming call from </value>
+  </data>
+  <data name="IncommingSmsNotificationTitle" xml:space="preserve">
+    <value>Incoming SMS from </value>
   </data>
 </root>

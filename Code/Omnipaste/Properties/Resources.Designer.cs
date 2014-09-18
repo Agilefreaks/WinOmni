@@ -142,6 +142,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string ButtonBrowse {
+            get {
+                return ResourceManager.GetString("ButtonBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string ButtonCancel {
@@ -169,11 +178,29 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reply.
+        /// </summary>
+        public static string ButtonReply {
+            get {
+                return ResourceManager.GetString("ButtonReply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retry.
         /// </summary>
         public static string ButtonRetry {
             get {
                 return ResourceManager.GetString("ButtonRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your phone will start calling soon. Please pick it up..
+        /// </summary>
+        public static string CallingLabel {
+            get {
+                return ResourceManager.GetString("CallingLabel", resourceCulture);
             }
         }
         
@@ -187,20 +214,92 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no clippings to display..
+        /// </summary>
+        public static string ClippingListEmptyLabel {
+            get {
+                return ResourceManager.GetString("ClippingListEmptyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New clipping.
+        /// </summary>
+        public static string ClippingNotificationTitle {
+            get {
+                return ResourceManager.GetString("ClippingNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no events to display..
+        /// </summary>
+        public static string EventListEmpty {
+            get {
+                return ResourceManager.GetString("EventListEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming Link.
+        /// </summary>
+        public static string HyperlinkNotificationTitle {
+            get {
+                return ResourceManager.GetString("HyperlinkNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call ended.
+        /// </summary>
+        public static string IncommingCallNotificationCallEnded {
+            get {
+                return ResourceManager.GetString("IncommingCallNotificationCallEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Call.
+        /// </summary>
+        public static string IncommingCallNotificationEndCall {
+            get {
+                return ResourceManager.GetString("IncommingCallNotificationEndCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Text.
+        /// </summary>
+        public static string IncommingCallNotificationSendSms {
+            get {
+                return ResourceManager.GetString("IncommingCallNotificationSendSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming call from .
+        /// </summary>
+        public static string IncommingCallNotificationTitle {
+            get {
+                return ResourceManager.GetString("IncommingCallNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming SMS from .
+        /// </summary>
+        public static string IncommingSmsNotificationTitle {
+            get {
+                return ResourceManager.GetString("IncommingSmsNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading ....
         /// </summary>
         public static string LoadingLabel {
             get {
                 return ResourceManager.GetString("LoadingLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are no clippings to display..
-        /// </summary>
-        public static string MasterClippingListEmptyLabel {
-            get {
-                return ResourceManager.GetString("MasterClippingListEmptyLabel", resourceCulture);
             }
         }
         

@@ -54,6 +54,17 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="InfoTextStyle">
+        <Setter Property="FontFamily" Value="{StaticResource HeaderFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource SubHeaderFontSize}" />
+        <Setter Property="Foreground" Value="{StaticResource GrayNormalBrush}"></Setter>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="InfoTextStyleCenter" BasedOn="{StaticResource InfoTextStyle}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
     <!-- Label -->
     <Style x:Key="HeaderStyle" TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -127,6 +138,18 @@
                 <Setter Property="OpacityMask" Value="{DynamicResource EnvelopeVisualBrush}"/>
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="EmptyListIconStyle" TargetType="Rectangle">
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Height" Value="100" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Fill" Value="{StaticResource GrayNormalBrush}" />
+        <Setter Property="OpacityMask">
+            <Setter.Value>
+                <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_smiley_glasses}" />
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!--SubMenu-->

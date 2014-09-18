@@ -6,22 +6,10 @@
              xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Style TargetType="TextBlock" x:Key="InfoTextStyle">
-            <Setter Property="FontFamily" Value="{StaticResource HeaderFontFamily}" />
-            <Setter Property="FontSize" Value="{StaticResource SubHeaderFontSize}" />
-            <Setter Property="Foreground" Value="{StaticResource GrayNormalBrush}"></Setter>
-        </Style>
-    </UserControl.Resources>
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-            <Rectangle Width="100" Height="100" Fill="{StaticResource GrayNormalBrush}" VerticalAlignment="Center">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_smiley_glasses}" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <TextBlock Text="{x:Static p:Resources.MasterClippingListEmptyLabel}" Style="{StaticResource InfoTextStyle}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Rectangle Style="{DynamicResource EmptyListIconStyle}" />
+            <TextBlock Text="{x:Static p:Resources.ClippingListEmptyLabel}" Style="{StaticResource InfoTextStyleCenter}" />
         </StackPanel>
     </Grid>
 </UserControl>

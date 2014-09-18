@@ -2,7 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.SendSms;
+    using Omnipaste.SmsComposer;
 
     [TestFixture]
     public class SmsMessageTests

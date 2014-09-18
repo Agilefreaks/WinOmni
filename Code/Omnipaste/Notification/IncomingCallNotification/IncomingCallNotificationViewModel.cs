@@ -5,6 +5,7 @@
     using Ninject;
     using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Properties;
 
     public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
     {
@@ -19,7 +20,7 @@
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
-            EndCallButtonText = "End Call";
+            EndCallButtonText = Resources.IncommingCallNotificationEndCall;
             CanEndCall = true;
         }
 
@@ -89,7 +90,7 @@
         {
             get
             {
-                return string.Concat("Incoming call from ", PhoneNumber);
+                return string.Concat(Resources.IncommingCallNotificationTitle, PhoneNumber);
             }
         }
 
@@ -105,7 +106,7 @@
                 .Subscribe(
                     p =>
                     {
-                        EndCallButtonText = "Call ended";
+                        EndCallButtonText = Resources.IncommingCallNotificationCallEnded;
                         Dismiss();
                     }, 
                 exception => { });

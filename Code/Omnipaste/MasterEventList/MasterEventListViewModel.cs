@@ -5,12 +5,12 @@
     using Omnipaste.MasterEventList.AllEventList;
     using Omnipaste.MasterEventList.IncomingCallEventList;
     using Omnipaste.MasterEventList.IncomingSmsEventList;
-    using Omnipaste.SendSms;
+    using Omnipaste.SmsComposer;
 
     public sealed class MasterEventListViewModel : Screen, IMasterEventListViewModel
     {
         [Inject]
-        public ISendSmsViewModel SendSmsViewModel { get; set; }
+        public ISmsComposerViewModel SmsComposerViewModel { get; set; }
 
         [Inject]
         public IAllEventListViewModel AllEventListViewModel { get; set; }

@@ -7,9 +7,8 @@
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.SendSms;
     using Omnipaste.Shell;
+    using Omnipaste.SmsComposer;
 
     [TestFixture]
     public class ShellViewModelTests
@@ -24,7 +23,7 @@
 
         private Mock<IDialogViewModel> _mockDialogViewModel;
 
-        private Mock<ISendSmsViewModel> _mockSendSmsViewModel;
+        private Mock<ISmsComposerViewModel> _mockSendSmsViewModel;
 
         #endregion
 

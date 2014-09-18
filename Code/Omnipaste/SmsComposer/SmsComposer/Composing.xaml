@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Omnipaste.SendSms.SendSms.Composing"
+﻿<UserControl x:Class="Omnipaste.SmsComposer.SmsComposer.Composing"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -29,7 +29,7 @@
         <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
 
         <StackPanel Grid.Row="4" Style="{StaticResource ButtonsPanel}">
-            <Button x:Name="Send" Content="Send" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
+            <Button x:Name="Send" Content="Send" Style="{StaticResource PrimaryDialogButton}"/>
             <Button x:Name="TryClose" Content="Cancel" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
     </Grid>

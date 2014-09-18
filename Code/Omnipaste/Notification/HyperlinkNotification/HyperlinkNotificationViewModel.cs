@@ -2,20 +2,17 @@
 {
     using System.ComponentModel;
     using System.Diagnostics;
+    using Omnipaste.Properties;
 
     public class HyperlinkNotificationViewModel : NotificationViewModelBase, IHyperlinkNotificationViewModel
     {
+        #region Fields
+
         private bool _canOpenLink = true;
 
-        #region Public Properties
+        #endregion
 
-        public override string Title
-        {
-            get
-            {
-                return "Incoming Link";
-            }
-        }
+        #region Public Properties
 
         public bool CanOpenLink
         {
@@ -25,9 +22,20 @@
             }
             set
             {
-                if (value.Equals(_canOpenLink)) return;
+                if (value.Equals(_canOpenLink))
+                {
+                    return;
+                }
                 _canOpenLink = value;
                 NotifyOfPropertyChange(() => CanOpenLink);
+            }
+        }
+
+        public override string Title
+        {
+            get
+            {
+                return Resources.HyperlinkNotificationTitle;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.SendSms
+﻿namespace Omnipaste.SmsComposer
 {
     using System;
     using Caliburn.Micro;

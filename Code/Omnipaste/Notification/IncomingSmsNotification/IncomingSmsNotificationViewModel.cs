@@ -2,6 +2,7 @@
 {
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Properties;
 
     public class IncomingSmsNotificationViewModel : NotificationViewModelBase, IIncomingSmsNotificationViewModel
     {
@@ -24,7 +25,7 @@
         {
             get
             {
-                return string.Concat("Incoming SMS from ", PhoneNumber);
+                return string.Concat(Resources.IncommingSmsNotificationTitle, PhoneNumber);
             }
         }
 
