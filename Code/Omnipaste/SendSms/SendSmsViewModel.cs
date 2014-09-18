@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.SendSms
 {
     using System;
+    using System.ComponentModel;
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Resources.v1;
@@ -9,7 +10,13 @@
 
     public class SendSmsViewModel : Screen, ISendSmsViewModel
     {
+        #region Fields
+
+        private SmsMessage _model;
+
         private SendSmsStatusEnum _state = SendSmsStatusEnum.Composing;
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -24,22 +31,38 @@
 
         #region Public Properties
 
+        public bool CanSend
+        {
+            get
+            {
+                return State == SendSmsStatusEnum.Composing && !string.IsNullOrEmpty(Model.Recipient)
+                       && !string.IsNullOrEmpty(Model.Message);
+            }
+        }
+
+        public IDevices Devices { get; set; }
+
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
         public IEventAggregator EventAggregator { get; set; }
 
-        public SmsMessage Model { get; set; }
-
-        public IDevices Devices { get; set; }
-
-        public bool CanSend
+        public SmsMessage Model
         {
             get
             {
-                return State == SendSmsStatusEnum.Composing 
-                    && !string.IsNullOrEmpty(Model.Recipient)
-                    && !string.IsNullOrEmpty(Model.Message);
+                return _model;
+            }
+            set
+            {
+                if (_model != null)
+                {
+                    _model.PropertyChanged -= ModelPropertyChanged;
+                }
+
+                _model = value;
+                _model.PropertyChanged += ModelPropertyChanged;
+                NotifyOfPropertyChange(() => Model);
             }
         }
 
@@ -65,20 +88,6 @@
 
         #region Public Methods and Operators
 
-        public void Send()
-        {
-            State = SendSmsStatusEnum.Sending;
-            Devices.SendSms(Model.Recipient, Model.Message)
-                .Subscribe(
-                    m =>
-                    {
-                        State = SendSmsStatusEnum.Sent;
-                    }, 
-                    exception => { });
-        }
-
-        #endregion
-
         public void Handle(SendSmsMessage message)
         {
             State = SendSmsStatusEnum.Composing;
@@ -88,5 +97,23 @@
 
             EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
         }
+
+        public void Send()
+        {
+            State = SendSmsStatusEnum.Sending;
+            Devices.SendSms(Model.Recipient, Model.Message)
+                .Subscribe(m => { State = SendSmsStatusEnum.Sent; }, exception => { });
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyOfPropertyChange(() => CanSend);
+        }
+
+        #endregion
     }
 }
