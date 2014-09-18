@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Event
+﻿namespace Omnipaste.DetailsViewModel
 {
     using Caliburn.Micro;
 

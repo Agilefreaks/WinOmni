@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Event
 {
     using Events.Models;
+    using Omnipaste.DetailsViewModel;
 
     public interface IEventViewModel : IDetailsViewModel<Event>
     {

@@ -6,6 +6,7 @@
     using Events.Models;
     using Ninject;
     using OmniApi.Resources.v1;
+    using Omnipaste.DetailsViewModel;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
