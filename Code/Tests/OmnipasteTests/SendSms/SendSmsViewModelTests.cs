@@ -127,5 +127,23 @@
 
             _subject.State.Should().Be(SendSmsStatusEnum.Sending);
         }
+
+        [Test]
+        public void WhenModelsPropertyChangesCanSendIsNotified()
+        {
+            bool called = false;
+            
+            _subject.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "CanSend")
+                {
+                    called = true;
+                }
+            };
+
+            _subject.Model.Message = "new message";
+
+            called.Should().BeTrue();
+        }
     }
 }
