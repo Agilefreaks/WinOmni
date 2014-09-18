@@ -196,6 +196,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string ButtonSend {
+            get {
+                return ResourceManager.GetString("ButtonSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your phone will start calling soon. Please pick it up..
         /// </summary>
         public static string CallingLabel {
@@ -354,6 +363,51 @@ namespace Omnipaste.Properties {
         public static string MasterEventListHeaderSms {
             get {
                 return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string SmsComposerLabelMessage {
+            get {
+                return ResourceManager.GetString("SmsComposerLabelMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipients.
+        /// </summary>
+        public static string SmsComposerLabelRecepients {
+            get {
+                return ResourceManager.GetString("SmsComposerLabelRecepients", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending ....
+        /// </summary>
+        public static string SmsComposerSending {
+            get {
+                return ResourceManager.GetString("SmsComposerSending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message sent successfully.
+        /// </summary>
+        public static string SmsComposerSuccess {
+            get {
+                return ResourceManager.GetString("SmsComposerSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send SMS.
+        /// </summary>
+        public static string SmsComposerTitle {
+            get {
+                return ResourceManager.GetString("SmsComposerTitle", resourceCulture);
             }
         }
         

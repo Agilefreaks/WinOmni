@@ -271,12 +271,12 @@
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\ViewModelStatusEnum.cs" />
-    <Compile Include="SendSms\SendSmsStatusEnum.cs" />
-    <Compile Include="SendSms\SmsMessage.cs" />
+    <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
+    <Compile Include="SmsComposer\SmsMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
-    <Compile Include="SendSms\ISendSmsViewModel.cs" />
-    <Compile Include="SendSms\SendSmsViewModel.cs" />
+    <Compile Include="SmsComposer\ISmsComposerViewModel.cs" />
+    <Compile Include="SmsComposer\SmsComposerViewModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\Connectivity\ConnectivityChangedEventArgs.cs" />
     <Compile Include="Services\Connectivity\ConnectivityHelper.cs" />
@@ -425,19 +425,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SendSms\SendSmsView.xaml">
+    <Page Include="SmsComposer\SmsComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SendSms\SendSms\Composing.xaml">
+    <Page Include="SmsComposer\SmsComposer\Composing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SendSms\SendSms\Sending.xaml">
+    <Page Include="SmsComposer\SmsComposer\Sending.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SendSms\SendSms\Sent.xaml">
+    <Page Include="SmsComposer\SmsComposer\Sent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

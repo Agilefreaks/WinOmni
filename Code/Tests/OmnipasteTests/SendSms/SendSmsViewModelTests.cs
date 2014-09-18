@@ -38,7 +38,7 @@
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object).InSingletonScope();
 
             _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
-            _subject = _kernel.Get<SmsComposerComposerViewModel>();
+            _subject = _kernel.Get<SmsComposerViewModel>();
             _subject.Model = new SmsMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
 
         }

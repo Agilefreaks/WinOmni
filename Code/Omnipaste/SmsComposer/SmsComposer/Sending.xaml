@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -11,7 +12,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Content="Sending ..." Style="{StaticResource DescriptionHeaderStyle}" />
+        <Label Content="{x:Static p:Resources.SmsComposerSending}" Style="{StaticResource DescriptionHeaderStyle}" />
         <controls:MetroProgressBar Grid.Row="1" IsIndeterminate="True"
                                 Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>

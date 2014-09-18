@@ -225,4 +225,22 @@
   <data name="IncommingSmsNotificationTitle" xml:space="preserve">
     <value>Incoming SMS from </value>
   </data>
+  <data name="ButtonSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SmsComposerLabelMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="SmsComposerLabelRecepients" xml:space="preserve">
+    <value>Recipients</value>
+  </data>
+  <data name="SmsComposerSending" xml:space="preserve">
+    <value>Sending ...</value>
+  </data>
+  <data name="SmsComposerSuccess" xml:space="preserve">
+    <value>Message sent successfully</value>
+  </data>
+  <data name="SmsComposerTitle" xml:space="preserve">
+    <value>Send SMS</value>
+  </data>
 </root>

@@ -7,13 +7,13 @@
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
 
-    public class SmsComposerComposerViewModel : Screen, ISmsComposerViewModel
+    public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {
         private SmsComposerStatusEnum _state = SmsComposerStatusEnum.Composing;
 
         #region Constructors and Destructors
 
-        public SmsComposerComposerViewModel(IDevices devices, IEventAggregator eventAggregator)
+        public SmsComposerViewModel(IDevices devices, IEventAggregator eventAggregator)
         {
             Devices = devices;
             EventAggregator = eventAggregator;
