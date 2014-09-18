@@ -1,7 +1,6 @@
 ﻿namespace OmniSync
 {
     using System;
-    using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Reactive.Threading.Tasks;
@@ -40,16 +39,27 @@
         {
             get
             {
+                var connectionLostObservable = Observable.FromEventPattern(
+                    x => _monitor.ConnectionLost += x,
+                    x => _monitor.ConnectionLost -= x)
+                    .Select(x => WebsocketConnectionStatusEnum.Disconnected);
+                
+                var connectionEstablishedObservable = Observable.FromEventPattern<WampConnectionEstablishedEventArgs>(
+                    x => _monitor.ConnectionEstablished += x,
+                    x => _monitor.ConnectionEstablished -= x)
+                    .Select(x => WebsocketConnectionStatusEnum.Connected);
+                
+                var connectionErrorObservable = Observable.FromEventPattern<WampConnectionErrorEventArgs>(
+                    x => _monitor.ConnectionError += x,
+                    x => _monitor.ConnectionError -= x)
+                    .Select(x => WebsocketConnectionStatusEnum.Disconnected);
+
                 return
-                    _connectionObservable = _connectionObservable ?? Observable.FromEventPattern(
-                            x => _monitor.ConnectionLost += x,
-                            x => _monitor.ConnectionLost -= x)
-                            .Select(x => WebsocketConnectionStatusEnum.Disconnected)
-                            .Concat(
-                                Observable.FromEventPattern<WampConnectionEstablishedEventArgs>(
-                                    x => _monitor.ConnectionEstablished += x,
-                                    x => _monitor.ConnectionEstablished -= x)
-                                    .Select(x => WebsocketConnectionStatusEnum.Connected));
+                    _connectionObservable =
+                        _connectionObservable
+                        ?? connectionLostObservable
+                            .Merge(connectionEstablishedObservable)
+                            .Merge(connectionErrorObservable);
             }
         }
 

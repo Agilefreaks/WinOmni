@@ -2,7 +2,7 @@
 {
     using System;
     using System.Reactive;
-    using System.Threading.Tasks;
+    using System.Reactive.Subjects;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -21,29 +21,44 @@
 
         private Mock<IWampClientConnectionMonitor> _mockMonitor;
 
+        private TestScheduler _testScheduler;
+
+        private ITestableObserver<string> _testObserver;
+
         [SetUp]
         public void SetUp()
         {
             _mockChannel = new Mock<IWampChannel<JToken>>();
-            _mockMonitor = new Mock<IWampClientConnectionMonitor>();
+            _mockMonitor = new Mock<IWampClientConnectionMonitor> { DefaultValue = DefaultValue.Empty };
 
             _mockChannel.Setup(m => m.GetMonitor()).Returns(_mockMonitor.Object);
 
             _subject = new WebsocketConnection(_mockChannel.Object);
+
+            _testScheduler = new TestScheduler();
+            _testObserver = _testScheduler.CreateObserver<string>();
         }
 
         [Test]
         public void ConnectWhenSessioIdIsNotNullCallsNextWithTheRegistration()
         {
-            TestScheduler testScheduler = new TestScheduler();
-            var testObserver = testScheduler.CreateObserver<string>();
-
             _mockMonitor.SetupGet(m => m.SessionId).Returns("42");
 
-            _subject.Connect().Subscribe(testObserver);
+            _subject.Connect().Subscribe(_testObserver);
 
-            testObserver.Messages.Should()
+            _testObserver.Messages.Should()
                 .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value == "42");            
+        }
+
+        [Test]
+        public void OnWebsocketError_TheConnectionObservableReturnsDisconnected()
+        {
+            bool errorReceived = false;
+
+            _subject.Subscribe<WebsocketConnectionStatusEnum>(x => errorReceived = true, e => {});
+            _mockMonitor.Raise(m => m.ConnectionError += null, new WampConnectionErrorEventArgs(new Exception()));
+
+            errorReceived.Should().BeTrue();
         }
     }
 }
