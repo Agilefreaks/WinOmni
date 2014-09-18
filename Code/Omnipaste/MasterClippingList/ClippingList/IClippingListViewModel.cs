@@ -1,4 +1,4 @@
-namespace Omnipaste.MasterClippingList
+namespace Omnipaste.MasterClippingList.ClippingList
 {
     public interface IClippingListViewModel
     {

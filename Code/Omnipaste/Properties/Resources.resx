@@ -171,4 +171,25 @@
   <data name="ButtonRetry" xml:space="preserve">
     <value>Retry</value>
   </data>
+  <data name="MasterClippingListEmptyLabel" xml:space="preserve">
+    <value>There are no clippings to display.</value>
+  </data>
+  <data name="MasterClippingListHeaderAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="MasterClippingListHeaderCloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="MasterClippingListHeaderLocal" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="MasterEventListHeaderAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="MasterEventListHeaderCalls" xml:space="preserve">
+    <value>Incoming Calls</value>
+  </data>
+  <data name="MasterEventListHeaderSms" xml:space="preserve">
+    <value>Incoming Messages</value>
+  </data>
 </root>

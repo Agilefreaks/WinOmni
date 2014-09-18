@@ -5,17 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <controls:MetroAnimatedSingleRowTabControl Grid.Row="0">
-            <controls:MetroTabItem Header="All" Style="{StaticResource SubmenuTabItemStyle}" >
+            <controls:MetroTabItem Header="{x:Static p:Resources.MasterClippingListHeaderAll}" Style="{StaticResource SubmenuTabItemStyle}" >
                 <ContentControl cal:View.Model="{Binding AllClippingListViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Local" Style="{StaticResource SubmenuTabItemStyle}">
+            <controls:MetroTabItem Header="{x:Static p:Resources.MasterClippingListHeaderLocal}" Style="{StaticResource SubmenuTabItemStyle}">
                 <ContentControl cal:View.Model="{Binding LocalClippingListViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Cloud" Style="{StaticResource SubmenuTabItemStyle}">
+            <controls:MetroTabItem Header="{x:Static p:Resources.MasterClippingListHeaderCloud}" Style="{StaticResource SubmenuTabItemStyle}">
                 <ContentControl cal:View.Model="{Binding CloudClippingListViewModel}" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>

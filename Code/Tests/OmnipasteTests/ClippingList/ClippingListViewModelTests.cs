@@ -10,7 +10,8 @@
     using NUnit.Framework;
     using Omnipaste;
     using Omnipaste.Clipping;
-    using Omnipaste.MasterClippingList;
+    using Omnipaste.Framework;
+    using Omnipaste.MasterClippingList.ClippingList;
 
     [TestFixture]
     public class ClippingListViewModelTests

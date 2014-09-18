@@ -231,12 +231,12 @@
     <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
     <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
-    <Compile Include="MasterClippingList\LimitableBindableCollection.cs" />
+    <Compile Include="Framework\LimitableBindableCollection.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\ClippingListViewModelBase.cs" />
+    <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\AllClippingList\IAllClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\IClippingListViewModel.cs" />
+    <Compile Include="MasterClippingList\ClippingList\IClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\IMasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
@@ -349,15 +349,15 @@
     <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="MasterClippingList\ClippingListView.xaml">
+    <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MasterClippingList\ClippingList\Empty.xaml">
+    <Page Include="MasterClippingList\ClippingList\ClippingList\Empty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MasterClippingList\ClippingList\NotEmpty.xaml">
+    <Page Include="MasterClippingList\ClippingList\ClippingList\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -370,10 +370,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Event\EventView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\AllEventList\AllEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -400,14 +396,6 @@
     <Page Include="MasterEventList\EventList\EventList\NotEmpty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterEventList\IncomingCallEventList\IncomingCallEventListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MasterEventList\MasterEventListView.xaml">
       <SubType>Designer</SubType>

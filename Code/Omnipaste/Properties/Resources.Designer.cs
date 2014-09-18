@@ -196,6 +196,69 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no clippings to display..
+        /// </summary>
+        public static string MasterClippingListEmptyLabel {
+            get {
+                return ResourceManager.GetString("MasterClippingListEmptyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string MasterClippingListHeaderAll {
+            get {
+                return ResourceManager.GetString("MasterClippingListHeaderAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cloud.
+        /// </summary>
+        public static string MasterClippingListHeaderCloud {
+            get {
+                return ResourceManager.GetString("MasterClippingListHeaderCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string MasterClippingListHeaderLocal {
+            get {
+                return ResourceManager.GetString("MasterClippingListHeaderLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string MasterEventListHeaderAll {
+            get {
+                return ResourceManager.GetString("MasterEventListHeaderAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming Calls.
+        /// </summary>
+        public static string MasterEventListHeaderCalls {
+            get {
+                return ResourceManager.GetString("MasterEventListHeaderCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming Messages.
+        /// </summary>
+        public static string MasterEventListHeaderSms {
+            get {
+                return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
         /// </summary>
         public static string UserTokeCodeError {
