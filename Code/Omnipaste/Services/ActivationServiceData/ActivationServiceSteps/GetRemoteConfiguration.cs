@@ -39,7 +39,7 @@
         protected override IObservable<IExecuteResult> InternalExecute()
         {
             IObservable<IExecuteResult> failResult =
-                new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.AuthorizationCodeError) }.ToObservable();
+                new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.UserTokeViewCodeError) }.ToObservable();
             IObservable<IExecuteResult> result = failResult;
             if (Parameter.Value != null && !string.IsNullOrEmpty(Parameter.Value.ToString()))
             {

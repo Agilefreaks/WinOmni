@@ -70,20 +70,38 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
+        ///   Looks up a localized string similar to Authenticate.
         /// </summary>
-        public static string AuthorizationCodeError {
+        public static string ButtonAuthenticate {
             get {
-                return ResourceManager.GetString("AuthorizationCodeError", resourceCulture);
+                return ResourceManager.GetString("ButtonAuthenticate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        public static string Cancel {
+        public static string ButtonCancel {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string ButtonExit {
+            get {
+                return ResourceManager.GetString("ButtonExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string ButtonOk {
+            get {
+                return ResourceManager.GetString("ButtonOk", resourceCulture);
             }
         }
         
@@ -97,21 +115,29 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please type in the activation token from the install page.  If you don&apos;t know how to get your token 
-        ///click the following link:.
+        ///   Looks up a localized string similar to To connect, you need an authorization code. You can get one from the.
         /// </summary>
-        public static string InputTokenMessage {
+        public static string UserTokenViewLabel1 {
             get {
-                return ResourceManager.GetString("InputTokenMessage", resourceCulture);
+                return ResourceManager.GetString("UserTokenViewLabel1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
+        ///   Looks up a localized string similar to website..
         /// </summary>
-        public static string Ok {
+        public static string UserTokenViewLabel2 {
             get {
-                return ResourceManager.GetString("Ok", resourceCulture);
+                return ResourceManager.GetString("UserTokenViewLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
+        /// </summary>
+        public static string UserTokeViewCodeError {
+            get {
+                return ResourceManager.GetString("UserTokeViewCodeError", resourceCulture);
             }
         }
     }

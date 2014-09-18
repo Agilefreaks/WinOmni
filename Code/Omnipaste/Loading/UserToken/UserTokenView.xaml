@@ -4,8 +4,11 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours" 
-             IsTabStop="False" behaviours:FocusBehavior.FocusFirst="True" KeyboardNavigation.TabNavigation="Local" >
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
+             IsTabStop="False" 
+             behaviours:FocusBehavior.FocusFirst="True" 
+             KeyboardNavigation.TabNavigation="Local" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,22 +26,22 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
-            To connect, you need an authorization code. You can get one from the 
+            <Run Text="{x:Static p:Resources.UserTokenViewLabel1}" />
             <Hyperlink NavigateUri="{Binding Path=AuthorizationCodeUrl}">
                 <i:Interaction.Behaviors>
                     <behaviours:AutoFollowLinkBehavior/>
                 </i:Interaction.Behaviors>
                 Omnipaste
             </Hyperlink>
-             website.
+            <Run Text="{x:Static p:Resources.UserTokenViewLabel2}" />
         </TextBlock>
         <TextBox x:Name="ActivationCode" Grid.Row="3" Grid.Column="0" 
                  Grid.ColumnSpan="3" Margin="10" TabIndex="0"
                  controls:TextboxHelper.Watermark="Authorization code"
                  controls:TextboxHelper.IsWaitingForData="True"/>
 
-        <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="Authenticate" IsDefault="True" Style="{StaticResource PrimaryDialogButton}"/>
-        <Button Grid.Row="4" TabIndex="3" Grid.Column="2" cal:Message.Attach="Exit" Content="Exit" IsCancel="True" Style="{StaticResource DialogButton}"/>
+        <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="{x:Static p:Resources.ButtonAuthenticate}" Style="{StaticResource PrimaryDialogButton}"/>
+        <Button Grid.Row="4" TabIndex="3" Grid.Column="2" cal:Message.Attach="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
 
         
         <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding Path=HasMessage, Converter={StaticResource BooleanToVisibility}}">
