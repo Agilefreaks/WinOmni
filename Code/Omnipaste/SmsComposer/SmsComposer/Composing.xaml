@@ -7,7 +7,7 @@
              xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid FocusManager.FocusedElement="{Binding ElementName=Model_Message}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -18,11 +18,11 @@
 
         <Label Content="{x:Static p:Resources.SmsComposerTitle}" Style="{DynamicResource DescriptionHeaderStyle}" />
 
-        <TextBox Grid.Row="1" x:Name="Model_Recipient" TabIndex="1"
+        <TextBox Grid.Row="1" x:Name="Model_Recipient" TabIndex="0"
                  Style="{StaticResource SpacedTextBoxStyle}"
                  controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelRecepients}" />
 
-        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="0"
+        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="1"
                  Style="{StaticResource SpacedTextBoxStyle}" 
                  controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelMessage}" 
                  controls:TextboxHelper.IsWaitingForData="True"/>
@@ -30,8 +30,8 @@
         <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
 
         <StackPanel Grid.Row="4" Style="{StaticResource ButtonsPanel}">
-            <Button x:Name="Send" Content="{x:Static p:Resources.ButtonSend}" Style="{StaticResource PrimaryDialogButton}"/>
-            <Button x:Name="TryClose" Content="{x:Static p:Resources.ButtonCancel}" IsCancel="True" Style="{StaticResource DialogButton}"/>
+            <Button x:Name="Send" TabIndex="2" Content="{x:Static p:Resources.ButtonSend}" Style="{StaticResource PrimaryDialogButton}"/>
+            <Button x:Name="TryClose" TabIndex="3" Content="{x:Static p:Resources.ButtonCancel}" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
     </Grid>
 </UserControl>
