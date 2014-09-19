@@ -531,9 +531,6 @@
     <Resource Include="Connected.ico" />
     <Resource Include="Resources\WindowsIcons-license.txt" />
     <Resource Include="Resources\Entypo-license.txt" />
-    <Content Include="Uninstall.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -560,9 +557,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
-    <Content Include="Uninstall.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Settings\debug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -626,9 +620,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>copy /y $(ProjectDir)..\CustomizedClickOnce\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe $(ProjectDir)Uninstall.exe
- copy /y $(ProjectDir)..\CustomizedClickOnce\CustomizedClickOnce.Uninstall\$(OutDir)\Uninstall.exe.config $(ProjectDir)Uninstall.exe.config
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
     <PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
