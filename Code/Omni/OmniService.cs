@@ -161,8 +161,6 @@
 
         private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
         {
-            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
-
             return Devices.Activate(registrationId, deviceIdentifier);
         }
 
@@ -200,7 +198,9 @@
         {
             var deviceIdentifier = _configurationService.DeviceIdentifier;
             var machineName = _configurationService.MachineName;
-
+            
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
+            
             return Devices.Create(deviceIdentifier, machineName);
         }
 
