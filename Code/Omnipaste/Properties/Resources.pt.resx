@@ -255,4 +255,10 @@
   <data name="ShellBallonTitle" xml:space="preserve">
     <value>Running in the background</value>
   </data>
+  <data name="EventTooltipCallBack" xml:space="preserve">
+    <value>Call back</value>
+  </data>
+  <data name="EventTooltipReply" xml:space="preserve">
+    <value>Reply with SMS</value>
+  </data>
 </root>

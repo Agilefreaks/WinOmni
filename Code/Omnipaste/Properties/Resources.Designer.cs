@@ -250,6 +250,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call back.
+        /// </summary>
+        public static string EventTooltipCallBack {
+            get {
+                return ResourceManager.GetString("EventTooltipCallBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reply with SMS.
+        /// </summary>
+        public static string EventTooltipReply {
+            get {
+                return ResourceManager.GetString("EventTooltipReply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incoming Link.
         /// </summary>
         public static string HyperlinkNotificationTitle {

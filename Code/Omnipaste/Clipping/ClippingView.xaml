@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
     <Grid x:Name="ContentGrid" Background="{StaticResource WhiteBrush}">
@@ -18,7 +19,7 @@
                 Text="{Binding Path=Content, Converter={StaticResource LimitedStringConverter}}" 
                 Style="{StaticResource ClippingTextBlock}" />
 
-        <Button x:Name="OpenLink" Grid.Column="2" Style="{StaticResource ClippingSmartActionButton}">
+        <Button x:Name="OpenLink" ToolTip="{x:Static p:Resources.ButtonBrowse}" Grid.Column="2" Style="{StaticResource ClippingSmartActionButton}">
             <Rectangle Width="20" Height="20" 
                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                 <Rectangle.OpacityMask>
