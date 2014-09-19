@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.SendSms
+﻿namespace OmnipasteTests.SmsComposer
 {
     using Caliburn.Micro;
     using FluentAssertions;
@@ -12,7 +12,7 @@
     using Omnipaste.SmsComposer;
 
     [TestFixture]
-    public class SendSmsViewModelTests
+    public class SmsComposerViewModelTests
     {
         private ISmsComposerViewModel _subject;
 
