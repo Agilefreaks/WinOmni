@@ -89,6 +89,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
     <Compile Include="Framework\IWorkspace.cs" />
+    <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Models\OmniMessage.cs" />
     <Compile Include="Models\OmniMessageTypeEnum.cs" />

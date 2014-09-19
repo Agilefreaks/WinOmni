@@ -12,6 +12,7 @@
     using NUnit.Framework;
     using Omni;
     using OmniApi.Models;
+    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Shell.ContextMenu;

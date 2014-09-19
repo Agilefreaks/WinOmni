@@ -15,6 +15,7 @@
     using Ninject.MockingKernel;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;

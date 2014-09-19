@@ -4,6 +4,7 @@
     using System.Windows.Threading;
     using Caliburn.Micro;
     using Ninject;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
 
     public abstract class NotificationViewModelBase : Screen, INotificationViewModel

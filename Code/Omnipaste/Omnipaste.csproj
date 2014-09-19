@@ -333,7 +333,6 @@
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
     <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
-    <Compile Include="Framework\IApplicationService.cs" />
     <Compile Include="OmnipasteModule.cs" />
     <Compile Include="Services\IActivationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />

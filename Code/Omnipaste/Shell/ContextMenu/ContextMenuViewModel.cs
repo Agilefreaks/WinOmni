@@ -8,6 +8,7 @@
     using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
+    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Behaviours;

@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework;
     using Omnipaste.Loading.ActivationFailed;
     using Action = System.Action;

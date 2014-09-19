@@ -7,6 +7,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniApi.Resources.v1;
+    using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework;
     using Omnipaste.Notification;

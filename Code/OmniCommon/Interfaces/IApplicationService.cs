@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Framework
+﻿namespace OmniCommon.Interfaces
 {
     using System;
     using System.Windows.Threading;

@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using Ninject;
     using OmniApi.Models;
+    using OmniCommon.Interfaces;
     using Refit;
 
     public class Devices : Resource<Devices.IDevicesApi>, IDevices
@@ -21,7 +23,7 @@
             #region Public Methods and Operators
 
             [Put("/devices/activate")]
-            IObservable<Device> Activate([Body] Device device, [Header("Authorization")] string token);
+            IObservable<Device> Activate([Body] Device device, [Header("Authorization")] string token, [Header("Client-Version")] string version);
 
             [Post("/devices")]
             IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
@@ -46,12 +48,16 @@
 
         #endregion
 
+        [Inject]
+        public IApplicationService ApplicationService { get; set; }
+
         #region Public Methods and Operators
 
         public IObservable<Device> Activate(string registrationId, string identifier)
         {
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
-            return Authorize(ResourceApi.Activate(device, AccessToken));
+
+            return Authorize(ResourceApi.Activate(device, AccessToken, ApplicationService.Version.ToString()));
         }
 
         public IObservable<Device> Create(string identifier, string name)

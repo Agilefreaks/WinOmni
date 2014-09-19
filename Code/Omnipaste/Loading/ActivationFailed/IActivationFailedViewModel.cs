@@ -3,7 +3,7 @@
     using System;
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.Framework;
+    using OmniCommon.Interfaces;
 
     public interface IActivationFailedViewModel : IScreen
     {
