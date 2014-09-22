@@ -31,6 +31,8 @@
     <WixTasksPath>$(WixToolPath)WixTasks.dll</WixTasksPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomActions\CustomActions.wxs" />
+    <Compile Include="Fragments\Binaries.wxs" />
     <Compile Include="Fragments\Components.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>

@@ -23,6 +23,11 @@
     <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
 			<ComponentGroupRef Id="OmnipasteFiles" />
 		</Feature>
+    
+    <InstallExecuteSequence>
+      <Custom Action="AssignCustomActionData" After="CostFinalize"/>
+      <Custom Action="StartAppWithAuthorizationKey" After="InstallFiles">NOT Installed</Custom>
+    </InstallExecuteSequence>
 	</Product>
 
   <Fragment>

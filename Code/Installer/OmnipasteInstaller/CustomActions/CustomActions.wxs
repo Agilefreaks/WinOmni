@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
+
+  <Fragment>
+    <CustomAction Id='AssignCustomActionData'
+                  Property='StartAppWithAuthorizationKey'
+                  Value='OriginalDatabase=[OriginalDatabase];TargetDir=[INSTALLFOLDER];Target=$(var.ExeProcessName)'/>
+
+    <CustomAction Id='StartAppWithAuthorizationKey'
+                  BinaryKey='InstallerCustomActions'
+                  DllEntry='StartAppWithAuthorizationKey'
+                  Return='check'
+                  Execute='commit'/>
+  </Fragment>
+</Wix>
