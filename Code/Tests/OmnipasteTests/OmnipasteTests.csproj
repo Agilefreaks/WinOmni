@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="ClippingList\LimitableBindableCollectionTests.cs" />
+    <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
     <Compile Include="Event\EventViewModelTests.cs" />
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />

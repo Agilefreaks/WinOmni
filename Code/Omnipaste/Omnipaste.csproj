@@ -135,6 +135,9 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="NDesk.Options">
+      <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -217,6 +220,9 @@
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="ApplicationInfoFactory.cs" />
+    <Compile Include="DataProviders\ArgumentsDataProvider.cs" />
+    <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
+    <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
     <Compile Include="Event\DetailsViewModelBase.cs" />
     <Compile Include="Event\IDetailsViewModel.cs" />
@@ -274,6 +280,7 @@
     <Compile Include="SendSms\SendSmsStatusEnum.cs" />
     <Compile Include="SendSms\SmsMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
     <Compile Include="SendSms\ISendSmsViewModel.cs" />
     <Compile Include="SendSms\SendSmsViewModel.cs" />

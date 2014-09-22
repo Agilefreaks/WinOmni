@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
+    <Compile Include="DataProviders\IArgumentsDataProvider.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
     <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
     <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
