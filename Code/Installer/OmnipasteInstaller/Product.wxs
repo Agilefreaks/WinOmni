@@ -28,6 +28,8 @@
 
     <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
       <ComponentGroupRef Id="OmnipasteFiles" />
+      <ComponentRef Id="ApplicationShortcuts"/>
+      <ComponentRef Id="ApplicationStartupEntry"/>
       <ComponentRef Id="CleanupMainApplicationFolder"/>
     </Feature>
     
@@ -42,13 +44,4 @@
                            CloseMessage="yes" 
                            RebootPrompt="no"/>
 	</Product>
-
-  <Fragment>
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <!--Although this is set to program files folder because of previously setting the ALLUSERS and MSIINSTALLPERUSER properties, this will point to AppData-->
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />
-      </Directory>
-    </Directory>
-  </Fragment>
 </Wix>

@@ -3,5 +3,6 @@
   <String Id="LANG">1033</String>
   <String Id="ProductName">Omnipaste</String>
   <String Id="ManufacturerName">Omnipaste</String>
+  <String Id="Description">Windows client for Omnipaste</String>
   <String Id="DotNetFrameworkMissing">Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</String>
 </WixLocalization>
