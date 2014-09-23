@@ -25,4 +25,5 @@
     and creating the desktop shortcut
     -->
     <?define ExeProcessName="Omnipaste.exe" ?>
+    <?define RegistryRootKey="SOFTWARE\Omnipaste" ?>
 </Include>

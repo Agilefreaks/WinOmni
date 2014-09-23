@@ -20,9 +20,16 @@
     <Property Id="ALLUSERS" Secure="yes" Value="2"/>
     <Property Id="MSIINSTALLPERUSER" Secure="yes" Value="1" />
 
+    <Property Id='INSTALLFOLDER'>
+      <RegistrySearch Id='InstallLocationKey' Root='HKCU'
+                      Key='$(var.RegistryRootKey)'
+                      Name='InstallLocation' Type='raw'/>
+    </Property>
+
     <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
-			<ComponentGroupRef Id="OmnipasteFiles" />
-		</Feature>
+      <ComponentGroupRef Id="OmnipasteFiles" />
+      <ComponentRef Id="CleanupMainApplicationFolder"/>
+    </Feature>
     
     <InstallExecuteSequence>
       <Custom Action="AssignCustomActionData" After="CostFinalize"/>
