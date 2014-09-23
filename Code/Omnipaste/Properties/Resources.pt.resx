@@ -121,144 +121,162 @@
     <value>Omnipaste</value>
   </data>
   <data name="ButtonAuthenticate" xml:space="preserve">
-    <value>Authenticate</value>
+    <value>Autenticar</value>
   </data>
   <data name="ButtonCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Cancelar</value>
   </data>
   <data name="ButtonExit" xml:space="preserve">
-    <value>Exit</value>
+    <value>Sair</value>
   </data>
   <data name="ButtonOk" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="ClickHere" xml:space="preserve">
-    <value>Click Here</value>
+    <value>Clique Aqui</value>
   </data>
   <data name="UserTokenLabel1" xml:space="preserve">
-    <value>To connect, you need an authorization code. You can get one from the</value>
+    <value>Para se ligar, precisa de um código de autenticação. Poderá obter um a partir do</value>
   </data>
   <data name="UserTokenLabel2" xml:space="preserve">
     <value>website.</value>
   </data>
   <data name="UserTokeCodeError" xml:space="preserve">
-    <value>Invalid authorization code, the code might have expired, please generate a new one.</value>
+    <value>Código de autenticação inválido, o código poderá ter expirado, por favor crie um novo.</value>
   </data>
   <data name="ActivationFailedLabel" xml:space="preserve">
-    <value>Sorry master we failed, please don't kill us!</value>
+    <value>Desculpe mestre, nós falhámos! Por favor não nos mate!</value>
   </data>
   <data name="AndroidInstallGuideButton" xml:space="preserve">
-    <value>Okay, got it</value>
+    <value>Ok, já está</value>
   </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
-    <value>Great! Omnipaste installed successfully.</value>
+    <value>Boa! O Omnipaste foi instalado com sucesso.</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Now, get Omnipaste for your other devices.</value>
+    <value>Agora, obtenha o Omnipaste para os seus outros dispositivos.</value>
   </data>
   <data name="AndroidInstallGuideLabel3" xml:space="preserve">
-    <value>We've sent you an installation email.</value>
+    <value>Enviámos-lhe um e-mail de instalação.</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Open the email from the devices you want and follow instructions.</value>
+    <value>Abra o e-mail a partir dos dispositivos que pretende e siga as instruções.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
-    <value>Loading ...</value>
+    <value>A carregar ...</value>
   </data>
   <data name="ActivationFailedHeader" xml:space="preserve">
-    <value>Show me why</value>
+    <value>Mostre-me como</value>
   </data>
   <data name="ButtonRetry" xml:space="preserve">
-    <value>Retry</value>
+    <value>Tentar novamente</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>There are no clippings to display.</value>
+    <value>Não existem cortes para mostrar.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
-    <value>All</value>
+    <value>Todos</value>
   </data>
   <data name="MasterClippingListHeaderCloud" xml:space="preserve">
-    <value>Cloud</value>
+    <value>Nuvem</value>
   </data>
   <data name="MasterClippingListHeaderLocal" xml:space="preserve">
-    <value>Local</value>
+    <value>Dispositivo</value>
   </data>
   <data name="MasterEventListHeaderAll" xml:space="preserve">
-    <value>All</value>
+    <value>Todos</value>
   </data>
   <data name="MasterEventListHeaderCalls" xml:space="preserve">
-    <value>Incoming Calls</value>
+    <value>Chamadas Recebidas</value>
   </data>
   <data name="MasterEventListHeaderSms" xml:space="preserve">
-    <value>Incoming Messages</value>
+    <value>Mensagens Recebidas</value>
   </data>
   <data name="ButtonBrowse" xml:space="preserve">
-    <value>Browse</value>
+    <value>Explorar</value>
   </data>
   <data name="ButtonReply" xml:space="preserve">
-    <value>Reply</value>
+    <value>Responder</value>
   </data>
   <data name="CallingLabel" xml:space="preserve">
-    <value>Your phone will start calling soon. Please pick it up.</value>
+    <value>O seu telemóvel irá tocar. Por favor atenda.</value>
   </data>
   <data name="ClippingNotificationTitle" xml:space="preserve">
-    <value>New clipping</value>
+    <value>Novo corte</value>
   </data>
   <data name="EventListEmpty" xml:space="preserve">
-    <value>There are no events to display.</value>
+    <value>Não existem eventos para mostrar.</value>
   </data>
   <data name="HyperlinkNotificationTitle" xml:space="preserve">
-    <value>Incoming Link</value>
+    <value>Ligações Recebidas</value>
   </data>
   <data name="IncommingCallNotificationCallEnded" xml:space="preserve">
-    <value>Call ended</value>
+    <value>Chamada terminada</value>
   </data>
   <data name="IncommingCallNotificationEndCall" xml:space="preserve">
-    <value>End Call</value>
+    <value>Terminar Chamada</value>
   </data>
   <data name="IncommingCallNotificationSendSms" xml:space="preserve">
-    <value>Send Text</value>
+    <value>Enviar Texto</value>
   </data>
   <data name="IncommingCallNotificationTitle" xml:space="preserve">
-    <value>Incoming call from </value>
+    <value>Chamada recebida de </value>
   </data>
   <data name="IncommingSmsNotificationTitle" xml:space="preserve">
-    <value>Incoming SMS from </value>
+    <value>Mensagem recebida de </value>
   </data>
   <data name="ButtonSend" xml:space="preserve">
-    <value>Send</value>
+    <value>Enviar</value>
   </data>
   <data name="SmsComposerLabelMessage" xml:space="preserve">
-    <value>Message</value>
+    <value>Mensagem</value>
   </data>
   <data name="SmsComposerLabelRecepients" xml:space="preserve">
-    <value>Recipients</value>
+    <value>Recebidas</value>
   </data>
   <data name="SmsComposerSending" xml:space="preserve">
-    <value>Sending ...</value>
+    <value>A enviar ...</value>
   </data>
   <data name="SmsComposerSuccess" xml:space="preserve">
-    <value>Message sent successfully</value>
+    <value>Mensagem enviada com sucesso</value>
   </data>
   <data name="SmsComposerTitle" xml:space="preserve">
-    <value>Send SMS</value>
+    <value>Enviar Mensagem</value>
   </data>
   <data name="MasterClippingListDisplayName" xml:space="preserve">
-    <value>Clippings</value>
+    <value>Cortes</value>
   </data>
   <data name="MasterEventListDisplayName" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Notificações</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
-    <value>Omnipaste is still running. To open the window again, double-click the icon.</value>
+    <value>Omnipaste está ainda em execução. Para abrir a janela novamente, faça duplo clique no ícone.</value>
   </data>
   <data name="ShellBallonTitle" xml:space="preserve">
-    <value>Running in the background</value>
+    <value>Ainda em execução</value>
   </data>
   <data name="EventTooltipCallBack" xml:space="preserve">
-    <value>Call back</value>
+    <value>Ligar de volta</value>
   </data>
   <data name="EventTooltipReply" xml:space="preserve">
-    <value>Reply with SMS</value>
+    <value>Responder por Mensagem</value>
+  </data>
+  <data name="ConnectionConnect" xml:space="preserve">
+    <value>conectar</value>
+  </data>
+  <data name="ConnectionDisconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="ContextMenuAutoStart" xml:space="preserve">
+    <value>início automático</value>
+  </data>
+  <data name="ContextMenuStopSync" xml:space="preserve">
+    <value>Parar sincronização</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Abra as configurações</value>
+  </data>
+  <data name="SettingsLogOut" xml:space="preserve">
+    <value>esconexão da rede</value>
   </data>
 </root>

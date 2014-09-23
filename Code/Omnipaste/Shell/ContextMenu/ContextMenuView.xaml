@@ -6,7 +6,7 @@
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <tb:TaskbarIcon
@@ -17,10 +17,10 @@
         behaviours:ShowBubbleNotificationBehavior.BaloonInfo="{Binding Path=BaloonInfo}">
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Auto start" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
+                <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
                 <Separator />
-                <MenuItem Header="Stop Synchronization" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsStopped}" />
-                <MenuItem Header="Exit" cal:Message.Attach="Exit" />
+                <MenuItem Header="{x:Static p:Resources.ContextMenuStopSync}" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsStopped}" />
+                <MenuItem Header="{x:Static p:Resources.ButtonExit}" cal:Message.Attach="Exit" />
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>
     </tb:TaskbarIcon>

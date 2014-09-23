@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button ToolTip="Connect" cal:Message.Attach="[Event Click]=[Action Connect]" Visibility="{Binding Path=CanConnect, Converter={StaticResource BooleanToVisibility}}" IsEnabled="{Binding Path=Enabled}">
+        <Button ToolTip="{x:Static p:Resources.ConnectionConnect}" cal:Message.Attach="[Event Click]=[Action Connect]" Visibility="{Binding Path=CanConnect, Converter={StaticResource BooleanToVisibility}}" IsEnabled="{Binding Path=Enabled}">
             <Rectangle Width="22"
                            Height="22"
                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
@@ -17,7 +18,7 @@
                 </Rectangle.OpacityMask>
             </Rectangle>
         </Button>
-        <Button ToolTip="Disconnect" cal:Message.Attach="[Event Click]=[Action Disconnect]" Visibility="{Binding Path=CanDisconnect, Converter={StaticResource BooleanToVisibility}}" IsEnabled="{Binding Path=Enabled}">
+        <Button ToolTip="{x:Static p:Resources.ConnectionDisconnect}" cal:Message.Attach="[Event Click]=[Action Disconnect]" Visibility="{Binding Path=CanDisconnect, Converter={StaticResource BooleanToVisibility}}" IsEnabled="{Binding Path=Enabled}">
             <Rectangle Width="22"
                            Height="22"
                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">

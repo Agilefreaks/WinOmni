@@ -241,6 +241,42 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string ConnectionConnect {
+            get {
+                return ResourceManager.GetString("ConnectionConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string ConnectionDisconnect {
+            get {
+                return ResourceManager.GetString("ConnectionDisconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto start.
+        /// </summary>
+        public static string ContextMenuAutoStart {
+            get {
+                return ResourceManager.GetString("ContextMenuAutoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Synchronization.
+        /// </summary>
+        public static string ContextMenuStopSync {
+            get {
+                return ResourceManager.GetString("ContextMenuStopSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no events to display..
         /// </summary>
         public static string EventListEmpty {
@@ -399,6 +435,24 @@ namespace Omnipaste.Properties {
         public static string MasterEventListHeaderSms {
             get {
                 return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open settings.
+        /// </summary>
+        public static string SettingsHeader {
+            get {
+                return ResourceManager.GetString("SettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log out.
+        /// </summary>
+        public static string SettingsLogOut {
+            get {
+                return ResourceManager.GetString("SettingsLogOut", resourceCulture);
             }
         }
         

@@ -261,4 +261,22 @@
   <data name="EventTooltipReply" xml:space="preserve">
     <value>Reply with SMS</value>
   </data>
+  <data name="ConnectionConnect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ConnectionDisconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="ContextMenuAutoStart" xml:space="preserve">
+    <value>Auto start</value>
+  </data>
+  <data name="ContextMenuStopSync" xml:space="preserve">
+    <value>Stop Synchronization</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="SettingsLogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
 </root>

@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button ToolTip="Open settings" cal:Message.Attach="[Event Click]=[Action ToggleSettingsFlyout]">
+        <Button ToolTip="{x:Static p:Resources.SettingsHeader}" cal:Message.Attach="[Event Click]=[Action ToggleSettingsFlyout]">
             <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_cogs}" />
