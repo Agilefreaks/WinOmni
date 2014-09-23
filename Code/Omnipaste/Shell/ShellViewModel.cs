@@ -59,9 +59,6 @@
 
         #region Public Properties
 
-        [Inject]
-        public IActivationService ActivationService { get; set; }
-
         public IMasterClippingListViewModel ClippingListViewModel
         {
             get
@@ -102,6 +99,9 @@
         }
 
         [Inject]
+        public IActivationService ActivationService { get; set; }
+
+        [Inject]
         public IConnectionViewModel ConnectionViewModel { get; set; }
 
         [Inject]
@@ -129,6 +129,9 @@
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
+
+        [Inject]
+        public IUpdaterService UpdaterService { get; set; }
 
         #endregion
 
@@ -200,26 +203,32 @@
             ActivationService.Run()
                 .SubscribeOn(Scheduler.Default)
                 .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(
-                    finalStep =>
-                    {
-                        if (finalStep is Failed)
-                        {
-                            EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = finalStep.Parameter.Value as Exception });
-                        }
-                        else
-                        {
-                            ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
-                            MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
+                .Subscribe(OnActivationFinished, OnActivationFailed);
+            
+            UpdaterService.CheckForUpdatesPeriodically()
+                .ObserveOn(NewThreadScheduler.Default)
+                .Subscribe(_ => UpdaterService.ApplyUpdate());
+        }
 
-                            DialogViewModel.DeactivateItem(LoadingViewModel, true);
-                            NotificationListViewModel.ShowWindow(
-                                WindowManager,
-                                Kernel.Get<INotificationListViewModel>());
-                        }
-                    },
-                    exception =>
-                    EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = exception }));
+        private void OnActivationFailed(Exception exception)
+        {
+            EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = exception });
+        }
+
+        private void OnActivationFinished(IActivationStep finalStep)
+        {
+            if (finalStep is Failed)
+            {
+                EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = finalStep.Parameter.Value as Exception });
+            }
+            else
+            {
+                ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
+                MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
+
+                DialogViewModel.DeactivateItem(LoadingViewModel, true);
+                NotificationListViewModel.ShowWindow(WindowManager, Kernel.Get<INotificationListViewModel>());
+            }
         }
 
         private IntPtr GetHandle()
