@@ -36,3 +36,4 @@ code/Omnipaste/omnipaste-setup.*
 !tools/*.exe
 !tools/AzCopy/*.exe
 Code/Installer/OmnipasteInstaller/Packages/*
+Libs/NAppUpdate/FeedBuilder/output/*
