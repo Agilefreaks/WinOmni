@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
   
 	<Product Id="*" Name="!(loc.ProductName) $(var.VersionNumber)" Language="!(loc.LANG)" Version="$(var.VersionNumber)" Manufacturer="!(loc.ManufacturerName)" UpgradeCode="$(var.UpgradeCode)">
@@ -32,9 +32,15 @@
     </Feature>
     
     <InstallExecuteSequence>
+      <Custom Action="WixCloseApplications" Before="InstallValidate"/>
       <Custom Action="AssignCustomActionData" After="CostFinalize"/>
       <Custom Action="StartAppWithAuthorizationKey" After="InstallFiles">NOT Installed</Custom>
     </InstallExecuteSequence>
+
+    <util:CloseApplication Id="CloseApplication" 
+                           Target="$(var.ExeProcessName)" 
+                           CloseMessage="yes" 
+                           RebootPrompt="no"/>
 	</Product>
 
   <Fragment>
