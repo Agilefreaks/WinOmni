@@ -34,6 +34,8 @@
 
         private string _settingsfileName;
 
+        private Object writeLock = new Object();
+
         #endregion
 
         #region Public Properties
@@ -131,11 +133,14 @@
             bool saved;
             try
             {
-                var document = File.Exists(FullSettingsFilePath)
-                                   ? UpdateExistingDocument(key, value)
-                                   : InitializeNewSettingsDocument(key, value);
-                SaveToFile(GetProtectedData(document));
-                saved = true;
+                lock (writeLock)
+                {
+                    var document = File.Exists(FullSettingsFilePath)
+                        ? UpdateExistingDocument(key, value)
+                        : InitializeNewSettingsDocument(key, value);
+                    SaveToFile(GetProtectedData(document));
+                    saved = true;
+                }
             }
             catch (Exception exception)
             {
