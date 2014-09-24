@@ -184,13 +184,6 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
             Configure();
-
-#if !DEBUG
-            if (ApplicationDeploymentHelper.IsClickOnceApplication && !ApplicationDeployment.CurrentDeployment.IsFirstRun)
-            {
-                Close();
-            }
-#endif
         }
 
         private void Configure()
@@ -211,6 +204,10 @@
                         {
                             ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
                             MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
+#if !DEBUG
+                            
+                            Close();
+#endif
 
                             DialogViewModel.DeactivateItem(LoadingViewModel, true);
                             NotificationListViewModel.ShowWindow(
