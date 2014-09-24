@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
+    using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
@@ -60,10 +61,11 @@
                 notificationListViewModel,
                 null,
                 new Dictionary<string, object>
-                {
-                    { "Height", SystemParameters.WorkArea.Height },
-                    { "Width", SystemParameters.WorkArea.Width }
-                });
+                                {
+                                    {"Placement", PlacementMode.Right},
+                                    {"PlacementRectangle", SystemParameters.WorkArea },
+                                }
+                );
         }
 
         public void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
