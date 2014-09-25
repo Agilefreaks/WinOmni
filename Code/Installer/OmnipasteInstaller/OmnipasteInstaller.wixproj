@@ -25,10 +25,8 @@
     <DefineConstants>SourceDir=$(SolutionDir)Omnipaste\bin\$(Configuration)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <WixExtDir>$(WixToolPath)</WixExtDir>
-    <WixToolPath>$(SolutionDir)packages\WiX.Toolset.3.8.1128.0\tools\wix\</WixToolPath>
-    <WixTargetsPath>$(WixToolPath)wix.targets</WixTargetsPath>
-    <WixTasksPath>$(WixToolPath)WixTasks.dll</WixTasksPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CustomActions\CustomActions.wxs" />
@@ -80,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\OmnipasteVariables.wxi" />
-    <Content Include="packages.config" />
     <Content Include="Packages\en-us\OmnipasteInstaller.msi" />
     <Content Include="Resources\Icon.ico" />
     <Content Include="Transforms\ComponentsFilter.xslt" />
