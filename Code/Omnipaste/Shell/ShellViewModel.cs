@@ -3,16 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Configuration;
     using System.Deployment.Application;
+    using System.Diagnostics;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
+    using OmniCommon;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
+    using Omnipaste.DataProviders;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -186,6 +190,12 @@
             _view.Closing += Closing;
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
+
+            if (ApplicationDeploymentHelper.IsClickOnceApplication)
+            {
+                MigrateAwayFromClickOnce();
+            }
+
             Configure();
 
 #if !DEBUG
@@ -194,6 +204,16 @@
                 Close();
             }
 #endif
+        }
+
+        private void MigrateAwayFromClickOnce()
+        {
+            Process.Start(
+                "ClickOnceTransition.exe",
+                string.Format(
+                    "-settingsPath \"{0}\" -installerUri \"{1}\"",
+                    new DPAPIConfigurationProvider().FullSettingsFilePath,
+                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource]));
         }
 
         private void Configure()
