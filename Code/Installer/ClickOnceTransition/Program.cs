@@ -6,20 +6,35 @@
     using ClickOnceTransition.Uninstaller;
     using Microsoft.Deployment.WindowsInstaller;
 
-    class Program
+    public class Program
     {
+        private const string InstallerFileName = "OmnipasteInstaller.msi";
+
+        private static string _settingsFilePath;
+
+        private static string _installerUri;
+
+        private static string _tempFolderPath;
+
+        private static string _installerPath;
+
+        private static string _applicationName;
+
         static void Main(string[] args)
         {
-            var settingsFilePath = args[1];
-            var installerUri = args[3];
+            _settingsFilePath = args[1];
+            _installerUri = args[3];
+            _applicationName = args[5];
+            _tempFolderPath = Path.GetTempPath();
+            _installerPath = Path.Combine(Path.GetTempPath(), InstallerFileName);
             
-            SaveSettingsFile(settingsFilePath);
+            SaveSettingsFile();
 
-            DownloadInstaller(installerUri);
+            DownloadInstaller();
 
             UninstallClickOnceOmnipaste();
 
-            RestoreSettingsFile(settingsFilePath);
+            RestoreSettingsFile();
             
             LaunchInstaller();
 
@@ -35,7 +50,7 @@
 
         private static void UninstallClickOnceOmnipaste()
         {
-            var uninstallInfo = UninstallInfo.Find("Omnipaste");
+            var uninstallInfo = UninstallInfo.Find(_applicationName);
             if (uninstallInfo != null)
             {
                 var uninstaller = new Uninstaller.Uninstaller();
@@ -43,32 +58,29 @@
             }
         }
 
-        private static void DownloadInstaller(string installerUri)
+        private static void DownloadInstaller()
         {
-            var installerPath = Path.Combine(Path.GetTempPath(), "OmnipasteInstaller.msi");
-        
             using (var webClient = new WebClient())
             {
-                webClient.DownloadFile(installerUri, installerPath);
+                webClient.DownloadFile(_installerUri, _installerPath);
             }
         }
 
-        private static void SaveSettingsFile(string settingsFilePath)
+        private static void SaveSettingsFile()
         {
-            var sourceFilePath = settingsFilePath;
+            var sourceFilePath = _settingsFilePath;
 
             var destinationFileName = Path.GetFileName(sourceFilePath);
             var destinationFilePath = Path.Combine(Path.GetTempPath(), destinationFileName);
             
-            File.Copy(settingsFilePath, destinationFilePath, true);
+            File.Copy(_settingsFilePath, destinationFilePath, true);
         }
 
-        private static void RestoreSettingsFile(string settingsFilePath)
+        private static void RestoreSettingsFile()
         {
-            var sourceFileName = Path.GetFileName(settingsFilePath);
+            var sourceFileName = Path.GetFileName(_settingsFilePath);
             var sourceFilePath = Path.Combine(Path.GetTempPath(), sourceFileName);
 
-            File.Copy(sourceFilePath, settingsFilePath, true);
-        }
+            File.Copy(sourceFilePath, _settingsFilePath, true);}
     }
 }

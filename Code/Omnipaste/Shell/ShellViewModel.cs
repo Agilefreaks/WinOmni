@@ -6,8 +6,10 @@
     using System.Configuration;
     using System.Deployment.Application;
     using System.Diagnostics;
+    using System.IO;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -211,9 +213,10 @@
             Process.Start(
                 "ClickOnceTransition.exe",
                 string.Format(
-                    "-settingsPath \"{0}\" -installerUri \"{1}\"",
+                    "-settingsPath \"{0}\" -installerUri \"{1}\" -applicationName \"{2}\"",
                     new DPAPIConfigurationProvider().FullSettingsFilePath,
-                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource]));
+                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                    Path.GetFileName(Assembly.GetEntryAssembly().GetName().CodeBase)));
         }
 
         private void Configure()
