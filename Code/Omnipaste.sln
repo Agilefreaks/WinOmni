@@ -355,7 +355,7 @@ Global
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Release|Mixed Platforms.Build.0 = Release|x86
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Release|x86.ActiveCfg = Release|x86
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Release|x86.Build.0 = Release|x86
-		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|Any CPU.ActiveCfg = Release|x86
+		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|Mixed Platforms.ActiveCfg = Release|x86
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|Mixed Platforms.Build.0 = Release|x86
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|x86.ActiveCfg = Release|x86
