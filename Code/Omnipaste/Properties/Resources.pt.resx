@@ -141,8 +141,8 @@
   <data name="UserTokenLabel2" xml:space="preserve">
     <value>website.</value>
   </data>
-  <data name="UserTokeCodeError" xml:space="preserve">
-    <value>Código de autenticação inválido, o código poderá ter expirado, por favor crie um novo.</value>
+  <data name="MissingUserTokenError" xml:space="preserve">
+    <value>Empty authorization code given. Please use a non empty authorization code.</value>
   </data>
   <data name="ActivationFailedLabel" xml:space="preserve">
     <value>Desculpe mestre, nós falhámos! Por favor não nos mate!</value>
@@ -278,5 +278,14 @@
   </data>
   <data name="SettingsLogOut" xml:space="preserve">
     <value>esconexão da rede</value>
+  </data>
+  <data name="BrokenCommunicationError" xml:space="preserve">
+    <value>A comunicação com o servidor falhou. Por favor tente mais tarde.</value>
+  </data>
+  <data name="EmptyTokenFromServer" xml:space="preserve">
+    <value>Token de acesso vazio em GetRemoteConfiguration.GetExecuteResult - Problema na API</value>
+  </data>
+  <data name="ExceptionDuringAuthentication" xml:space="preserve">
+    <value>Excepção encontrada ao validar código de autenticação</value>
   </data>
 </root>

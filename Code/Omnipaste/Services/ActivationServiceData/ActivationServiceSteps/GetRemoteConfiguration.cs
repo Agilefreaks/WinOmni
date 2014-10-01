@@ -38,27 +38,32 @@
 
         protected override IObservable<IExecuteResult> InternalExecute()
         {
-            IObservable<IExecuteResult> failResult =
-                new IExecuteResult[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.UserTokeCodeError) }.ToObservable();
-            IObservable<IExecuteResult> result = failResult;
-            if (Parameter.Value != null && !string.IsNullOrEmpty(Parameter.Value.ToString()))
-            {
-                result =
-                    _oauth2.Create(Parameter.Value.ToString()).Select(GetExecuteResult).Catch(failResult);
-            }
+            var givenToken = Convert.ToString(Parameter.Value);
+            return string.IsNullOrEmpty(givenToken)
+                       ? new[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError) }
+                             .ToObservable()
+                       : _oauth2.Create(givenToken)
+                             .Select(GetExecuteResult)
+                             .Catch((Func<Exception, IObservable<IExecuteResult>>)CreateErrorHandler);
+        }
 
-            return result;
+        protected IObservable<IExecuteResult> CreateErrorHandler(Exception exception)
+        {
+            ReportingService.Instance.BeginReport(new Exception(Resources.ExceptionDuringAuthentication, exception));
+            var executeResult = new ExecuteResult(SimpleStepStateEnum.Failed, Resources.BrokenCommunicationError);
+
+            return new[] { executeResult }.ToObservable();
         }
 
         #endregion
 
         #region Methods
 
-        private IExecuteResult GetExecuteResult(Token token)
+        private static IExecuteResult GetExecuteResult(Token token)
         {
             if (string.IsNullOrEmpty(token.AccessToken))
             {
-                ReportingService.Instance.BeginReport(new Exception("Access token empty in GetRemoteConfiguration.GetExecuteResult - Problem in the API"));
+                ReportingService.Instance.BeginReport(new Exception(Resources.EmptyTokenFromServer));
             }
 
             return new ExecuteResult(SimpleStepStateEnum.Successful, token);
