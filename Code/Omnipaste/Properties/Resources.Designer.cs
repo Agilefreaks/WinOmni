@@ -133,6 +133,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Communication with the server is broken. Please try again later..
+        /// </summary>
+        public static string BrokenCommunicationError {
+            get {
+                return ResourceManager.GetString("BrokenCommunicationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticate.
         /// </summary>
         public static string ButtonAuthenticate {
@@ -277,6 +286,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access token empty in GetRemoteConfiguration.GetExecuteResult - Problem in the API.
+        /// </summary>
+        public static string EmptyTokenFromServer {
+            get {
+                return ResourceManager.GetString("EmptyTokenFromServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no events to display..
         /// </summary>
         public static string EventListEmpty {
@@ -300,6 +318,15 @@ namespace Omnipaste.Properties {
         public static string EventTooltipReply {
             get {
                 return ResourceManager.GetString("EventTooltipReply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exception encountered while validating authentication code.
+        /// </summary>
+        public static string ExceptionDuringAuthentication {
+            get {
+                return ResourceManager.GetString("ExceptionDuringAuthentication", resourceCulture);
             }
         }
         
@@ -439,6 +466,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty authorization code given. Please use a non empty authorization code..
+        /// </summary>
+        public static string MissingUserTokenError {
+            get {
+                return ResourceManager.GetString("MissingUserTokenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open settings.
         /// </summary>
         public static string SettingsHeader {
@@ -516,15 +552,6 @@ namespace Omnipaste.Properties {
         public static string SmsComposerTitle {
             get {
                 return ResourceManager.GetString("SmsComposerTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid authorization code, the code might have expired, please generate a new one..
-        /// </summary>
-        public static string UserTokeCodeError {
-            get {
-                return ResourceManager.GetString("UserTokeCodeError", resourceCulture);
             }
         }
         
