@@ -39,12 +39,12 @@
         protected override IObservable<IExecuteResult> InternalExecute()
         {
             var givenToken = Convert.ToString(Parameter.Value);
-            return !string.IsNullOrEmpty(givenToken)
-                       ? _oauth2.Create(givenToken)
+            return string.IsNullOrEmpty(givenToken)
+                       ? new[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError) }
+                             .ToObservable()
+                       : _oauth2.Create(givenToken)
                              .Select(GetExecuteResult)
-                             .Catch((Func<Exception, IObservable<IExecuteResult>>)CreateErrorHandler)
-                       : new[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError) }
-                             .ToObservable();
+                             .Catch((Func<Exception, IObservable<IExecuteResult>>)CreateErrorHandler);
         }
 
         protected IObservable<IExecuteResult> CreateErrorHandler(Exception exception)
