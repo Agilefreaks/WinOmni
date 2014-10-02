@@ -1,18 +1,18 @@
 ﻿namespace ClickOnceTransition
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Net;
-    using System.Security;
-    using System.Security.Permissions;
     using ClickOnceTransition.Uninstaller;
+    using CustomizedClickOnce.Common;
     using Microsoft.Deployment.WindowsInstaller;
 
     public class ClickOneTransition
     {
         private const string InstallerFileName = "OmnipasteInstaller.msi";
-
-        private static string _settingsFilePath;
 
         private static string _installerUri;
 
@@ -22,89 +22,120 @@
 
         private static string _applicationName;
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            _settingsFilePath = args[1];
-            _installerUri = args[3];
-            _applicationName = args[5];
+            _installerUri = args[1];
+            _applicationName = args[3];
             _tempFolderPath = Path.GetTempPath();
-            _installerPath = Path.Combine(Path.GetTempPath(), InstallerFileName);
-            
-            SaveSettingsFile();
+            _installerPath = Path.Combine(_tempFolderPath, InstallerFileName);
 
-            DownloadInstaller();
+            var migrationSteps = SetupMigrationSteps();
 
-            UninstallClickOnceOmnipaste();
-
-            RestoreSettingsFile();
-            
-            LaunchInstaller();
+            var migrationResult = migrationSteps.Select(s => s()).FirstOrDefault(stepResult => stepResult != MigrationStepResultEnum.Success);
 
 #if DEBUG
             Console.ReadLine();
 #endif
+
+            return (int)migrationResult;
         }
 
-        private static void LaunchInstaller()
+        private static IEnumerable<Func<MigrationStepResultEnum>> SetupMigrationSteps()
         {
-            var installerPath = Path.Combine(Path.GetTempPath(), InstallerFileName);
-            Installer.SetInternalUI(InstallUIOptions.Silent);
-            Installer.InstallProduct(installerPath, "");
+            var migrationSteps = new List<Func<MigrationStepResultEnum>>
+                                 {
+                                     RestoreOriginalUninstaller,
+                                     DownloadInstaller,
+                                     UninstallClickOnceOmnipaste,
+                                     LaunchInstaller
+                                 };
+
+            return migrationSteps;
         }
 
-        private static void UninstallClickOnceOmnipaste()
+        private static MigrationStepResultEnum RestoreOriginalUninstaller()
         {
-            var uninstallInfo = UninstallInfo.Find(_applicationName);
-            if (uninstallInfo != null)
-            {
-                var uninstaller = new Uninstaller.Uninstaller();
-                uninstaller.Uninstall(uninstallInfo);
-            }
-        }
+            var result = MigrationStepResultEnum.RestoreOriginalUninstallerError;
 
-        private static void DownloadInstaller()
-        {
-            using (var webClient = new WebClient())
-            {
-                webClient.DownloadFile(_installerUri, _installerPath);
-            }
-        }
-
-        private static void SaveSettingsFile()
-        {
-            var destinationFileName = Path.GetFileName(_settingsFilePath);
-            var destinationFilePath = Path.Combine(Path.GetTempPath(), destinationFileName);
-
-            if (File.Exists(_settingsFilePath))
-            {
-                CheckAccessToSettingsFile();
-
-                File.Copy(_settingsFilePath, destinationFilePath, true);
-            }
-        }
-
-        private static bool CheckAccessToSettingsFile()
-        {
-            var fileIoPermission = new FileIOPermission(FileIOPermissionAccess.Read, _settingsFilePath);
-            
+            var clickOnceHelper = new ClickOnceHelper(new ApplicationInfo
+                                                      {
+                                                          ProductName = _applicationName,
+                                                          PublisherName = "Omnipaste"            
+                                                      });
             try
             {
-                fileIoPermission.Demand();
-
-                return true;
+                clickOnceHelper.KillActiveProcesses();
+                if (clickOnceHelper.RestoreOriginalUninstaller())
+                {
+                    result = MigrationStepResultEnum.Success;
+                }
             }
-            catch (SecurityException securityException)
+            catch
             {
-                return false;
             }
+
+            return result;
         }
 
-        private static void RestoreSettingsFile()
+        private static MigrationStepResultEnum LaunchInstaller()
         {
-            var sourceFileName = Path.GetFileName(_settingsFilePath);
+            var result = MigrationStepResultEnum.LaunchInstallerError;
 
-            var sourceFilePath = Path.Combine(Path.GetTempPath(), sourceFileName);
+            var installerPath = Path.Combine(_tempFolderPath, InstallerFileName);
+            Installer.SetInternalUI(InstallUIOptions.Silent);
 
-            File.Copy(sourceFilePath, _settingsFilePath, true);}
+            try
+            {
+                Installer.InstallProduct(installerPath, "");
+                result = MigrationStepResultEnum.Success;
+            }
+            catch (Exception e)
+            {
+                Process.Start("https://www.omnipasteapp.com/downloads/new?download=true&migration_error=true");
+            }
+
+            return result;
+        }
+
+        private static MigrationStepResultEnum UninstallClickOnceOmnipaste()
+        {
+            var result = MigrationStepResultEnum.UninstallClickOnceError;
+
+            try
+            {
+                var uninstallInfo = UninstallInfo.Find(_applicationName);
+                if (uninstallInfo != null)
+                {
+                    var uninstaller = new Uninstaller.Uninstaller();
+                    uninstaller.Uninstall(uninstallInfo);
+
+                    result = MigrationStepResultEnum.Success;
+                }
+            }
+            catch
+            {
+            }
+
+            return result;
+        }
+
+        private static MigrationStepResultEnum DownloadInstaller()
+        {
+            var result = MigrationStepResultEnum.DownloadInstallerError;
+            
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    webClient.DownloadFile(_installerUri, _installerPath);
+                    result = MigrationStepResultEnum.Success;
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -37,19 +37,19 @@
 
         #region Fields
 
-        private readonly RegistryKey _uninstallRegistryKey;
-
         private readonly ApplicationInfo _applicationInfo;
 
+        private readonly RegistryKey _uninstallRegistryKey;
+
         private string _appDataFolder;
+
+        private string _roamingAppDataFolder;
 
         private string _shortcutPath;
 
         private string _startupShortcutPath;
 
         private string _uninstallFilePath;
-
-        private string _roamingAppDataFolder;
 
         #endregion
 
@@ -65,6 +65,14 @@
 
         #region Public Properties
 
+        public string AppDataFolderPath
+        {
+            get
+            {
+                return _appDataFolder ?? (_appDataFolder = GetAppDataFolderPath());
+            }
+        }
+
         public string ProductName
         {
             get
@@ -78,14 +86,6 @@
             get
             {
                 return _applicationInfo.PublisherName;
-            }
-        }
-
-        public string AppDataFolderPath
-        {
-            get
-            {
-                return _appDataFolder ?? (_appDataFolder = GetAppDataFolderPath());
             }
         }
 
@@ -145,22 +145,6 @@
 
         #region Public Methods and Operators
 
-        public void UpdateUninstallParameters()
-        {
-            if (_uninstallRegistryKey == null)
-            {
-                return;
-            }
-
-            AssureAppDataFolderExists();
-            UpdateUninstallString();
-            UpdateDisplayIcon();
-            SetNoModify();
-            SetNoRepair();
-            SetHelpLink();
-            SetUrlInfoAbout();
-        }
-
         public void AddShortcutToStartup()
         {
             if (!ApplicationDeployment.IsNetworkDeployed || File.Exists(StartupShortcutPath))
@@ -171,12 +155,36 @@
             File.Copy(ShortcutPath, StartupShortcutPath);
         }
 
+        public void KillActiveProcesses()
+        {
+            foreach (Process process in Process.GetProcessesByName(ProductName))
+            {
+                process.Kill();
+                break;
+            }
+        }
+
         public void RemoveShortcutFromStartup()
         {
             if (File.Exists(StartupShortcutPath))
             {
                 File.Delete(StartupShortcutPath);
             }
+        }
+
+        public bool RestoreOriginalUninstaller()
+        {
+            bool result = false;
+
+            if (File.Exists(UninstallFilePath))
+            {
+                string uninstallString = File.ReadAllText(UninstallFilePath);
+                _uninstallRegistryKey.SetValue(UninstallString, uninstallString);
+
+                result = true;
+            }
+
+            return result;
         }
 
         public bool StartupShortcutExists()
@@ -193,8 +201,8 @@
 
             try
             {
-                KillActiveProcesses(); 
-                var uninstallProcess = RunOriginalUninstaller();
+                KillActiveProcesses();
+                Process uninstallProcess = RunOriginalUninstaller();
                 WaitForProcessToFinish(uninstallProcess);
 
                 if (ApplicationIsUninstalled())
@@ -213,9 +221,64 @@
             }
         }
 
+        public void UpdateUninstallParameters()
+        {
+            if (_uninstallRegistryKey == null)
+            {
+                return;
+            }
+
+            AssureAppDataFolderExists();
+            UpdateUninstallString();
+            UpdateDisplayIcon();
+            SetNoModify();
+            SetNoRepair();
+            SetHelpLink();
+            SetUrlInfoAbout();
+        }
+
         #endregion
 
         #region Methods
+
+        private static IEnumerable<RegistryKey> GetAccessibleUninstallKeys(RegistryKey uninstallKey)
+        {
+            return
+                uninstallKey.GetSubKeyNames()
+                    .Select(
+                        subKeyName =>
+                            uninstallKey.OpenSubKey(
+                                subKeyName,
+                                RegistryKeyPermissionCheck.ReadWriteSubTree,
+                                RegistryRights.QueryValues | RegistryRights.ReadKey | RegistryRights.WriteKey))
+                    .Where(subKey => subKey != null);
+        }
+
+        private static RegistryKey GetUninstallRegistryKeyByProductName(string productName)
+        {
+            RegistryKey uninstallKey =
+                Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
+            if (uninstallKey == null)
+            {
+                return null;
+            }
+
+            IEnumerable<RegistryKey> accessibleUninstallKeys = GetAccessibleUninstallKeys(uninstallKey);
+            IEnumerable<RegistryKey> uninstallKeyQuery = from uninstallKeys in accessibleUninstallKeys
+                from valueKey in uninstallKeys.GetValueNames().Where(valueKey => valueKey.Equals(DisplayNameKey))
+                where uninstallKeys.GetValue(valueKey).Equals(productName)
+                select uninstallKeys;
+
+            return uninstallKeyQuery.FirstOrDefault();
+        }
+
+        private static string GetUninstallerPath()
+        {
+            string directoryName = Path.GetDirectoryName(Location);
+            Debug.Assert(directoryName != null, "Should be able to get the folder where this assembly resides.");
+
+            return Path.Combine(directoryName, UninstallerName);
+        }
 
         private static void WaitForProcessToFinish(Process uninstallProcess)
         {
@@ -226,41 +289,9 @@
             }
         }
 
-        private static RegistryKey GetUninstallRegistryKeyByProductName(string productName)
+        private bool ApplicationIsUninstalled()
         {
-            var uninstallKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
-            if (uninstallKey == null)
-            {
-                return null;
-            }
-
-            var accessibleUninstallKeys = GetAccessibleUninstallKeys(uninstallKey);
-            var uninstallKeyQuery = from uninstallKeys in accessibleUninstallKeys
-                                    from valueKey in uninstallKeys.GetValueNames().Where(valueKey => valueKey.Equals(DisplayNameKey))
-                                    where uninstallKeys.GetValue(valueKey).Equals(productName)
-                                    select uninstallKeys;
-
-            return uninstallKeyQuery.FirstOrDefault();
-        }
-
-        private static IEnumerable<RegistryKey> GetAccessibleUninstallKeys(RegistryKey uninstallKey)
-        {
-            return uninstallKey.GetSubKeyNames()
-                               .Select(
-                                   subKeyName =>
-                                   uninstallKey.OpenSubKey(
-                                       subKeyName,
-                                       RegistryKeyPermissionCheck.ReadWriteSubTree,
-                                       RegistryRights.QueryValues | RegistryRights.ReadKey | RegistryRights.WriteKey))
-                               .Where(subKey => subKey != null);
-        }
-
-        private static string GetUninstallerPath()
-        {
-            var directoryName = Path.GetDirectoryName(Location);
-            Debug.Assert(directoryName != null, "Should be able to get the folder where this assembly resides.");
-
-            return Path.Combine(directoryName, UninstallerName);
+            return GetUninstallRegistryKeyByProductName(ProductName) == null;
         }
 
         private void AssureAppDataFolderExists()
@@ -276,7 +307,8 @@
             return
                 Path.Combine(
                     Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), PublisherName),
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        PublisherName),
                     ProductName);
         }
 
@@ -284,22 +316,21 @@
         {
             return
                 Path.Combine(
-                    Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PublisherName),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PublisherName),
                     ProductName);
         }
 
         private string GetShortcutPath()
         {
-            var allProgramsPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs);
-            var shortcutPath = Path.Combine(Path.Combine(allProgramsPath, PublisherName), ProductName);
+            string allProgramsPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs);
+            string shortcutPath = Path.Combine(Path.Combine(allProgramsPath, PublisherName), ProductName);
 
             return Path.Combine(shortcutPath, ProductName + ApprefExtension);
         }
 
         private string GetStartupShortcutPath()
         {
-            var startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
 
             return Path.Combine(startupPath, ProductName + ApprefExtension);
         }
@@ -307,6 +338,32 @@
         private string GetUninstallFilePath()
         {
             return Path.Combine(AppDataFolderPath, UninstallStringFile);
+        }
+
+        private void RemoveDataFolders()
+        {
+            var dataFolders = new List<string> { AppDataFolderPath, RoamingAppDataFolderPath };
+            dataFolders.Where(Directory.Exists).ToList().ForEach(folder => Directory.Delete(folder, true));
+        }
+
+        private Process RunOriginalUninstaller()
+        {
+            string uninstallString = File.ReadAllText(UninstallFilePath);
+            string fileName = uninstallString.Substring(0, uninstallString.IndexOf(" ", StringComparison.Ordinal));
+            string args = uninstallString.Substring(uninstallString.IndexOf(" ", StringComparison.Ordinal) + 1);
+
+            var uninstallProcess = new Process
+                                   {
+                                       StartInfo =
+                                       {
+                                           Arguments = args,
+                                           FileName = fileName,
+                                           UseShellExecute = false
+                                       }
+                                   };
+
+            uninstallProcess.Start();
+            return uninstallProcess;
         }
 
         private void SetHelpLink()
@@ -331,7 +388,7 @@
 
         private void UpdateDisplayIcon()
         {
-            var str = string.Format("{0},0", UninstallerPath);
+            string str = string.Format("{0},0", UninstallerPath);
             _uninstallRegistryKey.SetValue("DisplayIcon", str);
         }
 
@@ -343,43 +400,8 @@
                 File.WriteAllText(UninstallFilePath, uninstallString);
             }
 
-            var str = string.Format("\"{0}\" uninstall", UninstallerPath);
+            string str = string.Format("\"{0}\" uninstall", UninstallerPath);
             _uninstallRegistryKey.SetValue(UninstallString, str);
-        }
-
-        private void KillActiveProcesses()
-        {
-            foreach (var process in Process.GetProcessesByName(ProductName))
-            {
-                process.Kill();
-                break;
-            }
-        }
-
-        private void RemoveDataFolders()
-        {
-            var dataFolders = new List<string> { AppDataFolderPath, RoamingAppDataFolderPath };
-            dataFolders.Where(Directory.Exists).ToList().ForEach(folder => Directory.Delete(folder, true));
-        }
-
-        private bool ApplicationIsUninstalled()
-        {
-            return GetUninstallRegistryKeyByProductName(ProductName) == null;
-        }
-
-        private Process RunOriginalUninstaller()
-        {
-            var uninstallString = File.ReadAllText(UninstallFilePath);
-            var fileName = uninstallString.Substring(0, uninstallString.IndexOf(" ", StringComparison.Ordinal));
-            var args = uninstallString.Substring(uninstallString.IndexOf(" ", StringComparison.Ordinal) + 1);
-
-            var uninstallProcess = new Process
-            {
-                StartInfo = { Arguments = args, FileName = fileName, UseShellExecute = false }
-            };
-
-            uninstallProcess.Start();
-            return uninstallProcess;
         }
 
         #endregion
