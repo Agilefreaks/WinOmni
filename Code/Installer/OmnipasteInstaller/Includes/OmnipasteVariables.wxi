@@ -27,10 +27,12 @@
   <?define RegistryRootKey="SOFTWARE\Omnipaste" ?>
   
   <?if $(var.Configuration) = Debug ?>
-    <?define ExeProcessName="Omnipaste-debug.exe" ?>
+    <?define ProductName="Omnipaste-debug" ?>
   <?elseif $(var.Configuration) = Staging ?>
-    <?define ExeProcessName="Omnipaste-staging.exe" ?>
+    <?define ProductName="Omnipaste-staging" ?>
   <?else ?>
-    <?define ExeProcessName="Omnipaste.exe" ?>
+    <?define ProductName="Omnipaste" ?>
   <?endif ?>
+  
+  <?define ExeProcessName="$(var.ProductName).exe"?>
 </Include>

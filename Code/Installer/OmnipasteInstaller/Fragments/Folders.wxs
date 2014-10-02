@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
+  
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!--Although this is set to program files folder because of previously setting the ALLUSERS and MSIINSTALLPERUSER properties, this will point to AppData-->
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />
+        <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
       </Directory>
 
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationStartMenuFolder" Name="!(loc.ProductName)"/>
+        <Directory Id="ApplicationStartMenuFolder" Name="$(var.ProductName)"/>
       </Directory>
     </Directory>
   </Fragment>

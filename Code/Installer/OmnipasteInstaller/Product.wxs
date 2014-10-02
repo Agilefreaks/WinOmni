@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
   
-	<Product Id="*" Name="!(loc.ProductName) $(var.VersionNumber)" Language="!(loc.LANG)" Version="$(var.VersionNumber)" Manufacturer="!(loc.ManufacturerName)" UpgradeCode="$(var.UpgradeCode)">
+	<Product Id="*" Name="$(var.ProductName) $(var.VersionNumber)" Language="!(loc.LANG)" Version="$(var.VersionNumber)" Manufacturer="!(loc.ManufacturerName)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
 
     <MediaTemplate EmbedCab="yes" />
@@ -26,7 +26,7 @@
                       Name='InstallLocation' Type='raw'/>
     </Property>
 
-    <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
+    <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
       <ComponentGroupRef Id="OmnipasteFiles" />
       <ComponentRef Id="ApplicationShortcuts"/>
       <ComponentRef Id="ApplicationStartupEntry"/>
