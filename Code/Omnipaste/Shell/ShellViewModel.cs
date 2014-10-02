@@ -7,12 +7,17 @@
     using System.Deployment.Application;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
+    using Events;
+    using Events.Handlers;
     using Ninject;
     using OmniCommon;
     using OmniCommon.EventAggregatorMessages;
@@ -44,6 +49,8 @@
         private int _selectedViewIndex;
 
         private IMasterEventListViewModel _masterEventListViewModel;
+
+        private INotificationListViewModel _notificationListViewModel;
 
         #endregion
 
@@ -193,11 +200,6 @@
 
             Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
 
-            if (ApplicationDeploymentHelper.IsClickOnceApplication)
-            {
-                MigrateAwayFromClickOnce();
-            }
-
             Configure();
 
 #if !DEBUG
@@ -210,13 +212,34 @@
 
         private void MigrateAwayFromClickOnce()
         {
-            Process.Start(
-                "ClickOnceTransition.exe",
-                string.Format(
-                    "-settingsPath \"{0}\" -installerUri \"{1}\" -applicationName \"{2}\"",
-                    new DPAPIConfigurationProvider().FullSettingsFilePath,
-                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
-                    Path.GetFileName(Assembly.GetEntryAssembly().GetName().CodeBase)));
+            Process process = null;
+            var exitCode = -1;
+
+            try
+            {
+                process = Process.Start(
+                    "ClickOnceTransition.exe",
+                    string.Format(
+                        "-settingsPath \"{0}\" -installerUri \"{1}\" -applicationName \"{2}\"",
+                        new DPAPIConfigurationProvider().FullSettingsFilePath,
+                        ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                        Path.GetFileName(Assembly.GetEntryAssembly().GetName().CodeBase)));
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch 
+            {
+            }
+
+            if (process != null)
+            {
+                process.WaitForExit();
+                exitCode = process.ExitCode;
+            }
+
+            if (exitCode != 0)
+            {
+                ContextMenuViewModel.ShowBaloon("Update failed", "We tried to update Omnipaste but something went wrong. Please reinstall the application.");
+            }
         }
 
         private void Configure()
@@ -250,7 +273,13 @@
                 MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
 
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
-                NotificationListViewModel.ShowWindow(WindowManager, Kernel.Get<INotificationListViewModel>());
+                _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
+                NotificationListViewModel.ShowWindow(WindowManager, _notificationListViewModel);
+
+                if (ApplicationDeploymentHelper.IsClickOnceApplication)
+                {
+                    Task.Factory.StartNew(MigrateAwayFromClickOnce);
+                }
             }
         }
 
