@@ -3,10 +3,12 @@
     using System;
     using System.IO;
     using System.Net;
+    using System.Security;
+    using System.Security.Permissions;
     using ClickOnceTransition.Uninstaller;
     using Microsoft.Deployment.WindowsInstaller;
 
-    public class Program
+    public class ClickOneTransition
     {
         private const string InstallerFileName = "OmnipasteInstaller.msi";
 
@@ -38,12 +40,14 @@
             
             LaunchInstaller();
 
+#if DEBUG
             Console.ReadLine();
+#endif
         }
 
         private static void LaunchInstaller()
         {
-            var installerPath = Path.Combine(Path.GetTempPath(), "OmnipasteInstaller.msi");
+            var installerPath = Path.Combine(Path.GetTempPath(), InstallerFileName);
             Installer.SetInternalUI(InstallUIOptions.Silent);
             Installer.InstallProduct(installerPath, "");
         }
@@ -68,17 +72,37 @@
 
         private static void SaveSettingsFile()
         {
-            var sourceFilePath = _settingsFilePath;
-
-            var destinationFileName = Path.GetFileName(sourceFilePath);
+            var destinationFileName = Path.GetFileName(_settingsFilePath);
             var destinationFilePath = Path.Combine(Path.GetTempPath(), destinationFileName);
+
+            if (File.Exists(_settingsFilePath))
+            {
+                CheckAccessToSettingsFile();
+
+                File.Copy(_settingsFilePath, destinationFilePath, true);
+            }
+        }
+
+        private static bool CheckAccessToSettingsFile()
+        {
+            var fileIoPermission = new FileIOPermission(FileIOPermissionAccess.Read, _settingsFilePath);
             
-            File.Copy(_settingsFilePath, destinationFilePath, true);
+            try
+            {
+                fileIoPermission.Demand();
+
+                return true;
+            }
+            catch (SecurityException securityException)
+            {
+                return false;
+            }
         }
 
         private static void RestoreSettingsFile()
         {
             var sourceFileName = Path.GetFileName(_settingsFilePath);
+
             var sourceFilePath = Path.Combine(Path.GetTempPath(), sourceFileName);
 
             File.Copy(sourceFilePath, _settingsFilePath, true);}
