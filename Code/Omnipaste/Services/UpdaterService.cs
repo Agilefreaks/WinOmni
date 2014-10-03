@@ -19,6 +19,8 @@
     {
         private const string InstallerName = "OmnipasteInstaller.msi";
 
+        private const string UpdateFeedFileName = "FeedBuilder.xml";
+
         private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
         private readonly UpdateManager _updateManager;
 
@@ -34,10 +36,21 @@
             }
         }
 
+        protected static string FeedUrl
+        {
+            get
+            {
+                return string.Format(
+                    "{0}{1}",
+                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                    UpdateFeedFileName);
+            }
+        }
+
         public UpdaterService()
         {
             _updateManager = UpdateManager.Instance;
-            _updateManager.UpdateSource = new SimpleWebSource(ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource]);
+            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl);
             _updateManager.ReinstateIfRestarted();
         }
 

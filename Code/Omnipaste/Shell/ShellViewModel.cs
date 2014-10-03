@@ -40,6 +40,8 @@
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
+        private const string MSIFileName = "OmnipasteInstaller.msi";
+
         #region Fields
 
         private IMasterClippingListViewModel _clippingListViewModel;
@@ -212,7 +214,7 @@
             {
                 var arguments = string.Format(
                     "-installerUri \"{0}\" -applicationName \"{1}\"",
-                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource] + MSIFileName,
                     ConfigurationManager.AppSettings[ConfigurationProperties.AppName]);
 
                 var processStartInfo = new ProcessStartInfo
