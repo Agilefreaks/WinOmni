@@ -27,17 +27,18 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
+    <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
     <InstallUrl>https://omnipaste.blob.core.windows.net/</InstallUrl>
     <SupportUrl>https://omnipasteapp.com/#faq</SupportUrl>
     <ErrorReportUrl>https://omnipasteapp.com/#faq</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <PublisherName>Omnipaste</PublisherName>
+    <MinimumRequiredVersion>1.1.0.70</MinimumRequiredVersion>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>0.0.0.0</ApplicationVersion>
+    <ApplicationRevision>70</ApplicationRevision>
+    <ApplicationVersion>1.1.0.70</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
