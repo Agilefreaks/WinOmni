@@ -217,15 +217,22 @@
 
             try
             {
-                process = Process.Start(
-                    "ClickOnceTransition.exe",
-                    string.Format(
-                        "-settingsPath \"{0}\" -installerUri \"{1}\" -applicationName \"{2}\"",
-                        new DPAPIConfigurationProvider().FullSettingsFilePath,
-                        ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
-                        Path.GetFileName(Assembly.GetEntryAssembly().GetName().CodeBase)));
+                var arguments = string.Format(
+                    "-installerUri \"{0}\" -applicationName \"{1}\"",
+                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                    ConfigurationManager.AppSettings[ConfigurationProperties.AppName]);
+
+                var processStartInfo = new ProcessStartInfo
+                                       {
+                                           FileName = "ClickOnceTransition.exe",
+                                           Arguments = arguments,
+                                           CreateNoWindow = true,
+                                           UseShellExecute =false
+                                       };
+
+                process = Process.Start(processStartInfo);
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once EmptyGeneralCatchClause
             catch 
             {
             }
@@ -276,7 +283,7 @@
                 _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
                 NotificationListViewModel.ShowWindow(WindowManager, _notificationListViewModel);
 
-                if (ApplicationDeploymentHelper.IsClickOnceApplication)
+                //if (ApplicationDeploymentHelper.IsClickOnceApplication)
                 {
                     Task.Factory.StartNew(MigrateAwayFromClickOnce);
                 }
