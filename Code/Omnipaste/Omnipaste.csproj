@@ -628,9 +628,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>Copy $(SolutionDir)Installer\ClickOnceTransition\$(OutDir)ClickOnceTransition.exe $(ProjectDir)
-
-Copy $(SolutionDir)Installer\ClickOnceTransition\$(OutDir)Microsoft.Deployment.WindowsInstaller.dll $(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
     <PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
@@ -655,9 +654,8 @@ Copy $(SolutionDir)Installer\ClickOnceTransition\$(OutDir)Microsoft.Deployment.W
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)Installer\ClickOnceTransition\$(OutDir)ClickOnceTransition.exe" DestinationFolder="$(ProjectDir)" />
+    <Copy SourceFiles="$(SolutionDir)Installer\ClickOnceTransition\$(OutDir)Microsoft.Deployment.WindowsInstaller.dll" DestinationFolder="$(ProjectDir)" />
   </Target>
-  -->
 </Project>

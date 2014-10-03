@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B427A33-480F-4312-A049-06BFE5C4EBCC}"
 EndProject
@@ -35,6 +35,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardTests", "Tests\ClipboardTests\ClipboardTests.csproj", "{6EDE29D2-7189-45FE-B665-474457383C0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmnipasteTests", "Tests\OmnipasteTests\OmnipasteTests.csproj", "{EAF5BF18-557E-4910-AB61-325220A95AB3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5370D41-9479-46AA-B2FB-5CD4467379A1} = {A5370D41-9479-46AA-B2FB-5CD4467379A1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniSyncTests", "Tests\OmniSyncTests\OmniSyncTests.csproj", "{C4EEBE13-1252-460C-9C37-586A52012BD7}"
 EndProject
@@ -60,6 +63,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerCustomActions", "Installer\InstallerCustomActions\InstallerCustomActions.csproj", "{12606E51-D980-4A0C-A23A-88FD680C3D63}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "OmnipasteInstaller", "Installer\OmnipasteInstaller\OmnipasteInstaller.wixproj", "{19EC1BBA-9846-4F88-84BA-51D551901D00}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5370D41-9479-46AA-B2FB-5CD4467379A1} = {A5370D41-9479-46AA-B2FB-5CD4467379A1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickOnceTransition", "Installer\ClickOnceTransition\ClickOnceTransition.csproj", "{C6D3831D-9867-463C-9447-E4637F3C9A27}"
 EndProject
@@ -365,6 +371,7 @@ Global
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|x86.ActiveCfg = Release|x86
 		{12606E51-D980-4A0C-A23A-88FD680C3D63}.Staging|x86.Build.0 = Release|x86
 		{19EC1BBA-9846-4F88-84BA-51D551901D00}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{19EC1BBA-9846-4F88-84BA-51D551901D00}.Debug|Any CPU.Build.0 = Debug|x86
 		{19EC1BBA-9846-4F88-84BA-51D551901D00}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{19EC1BBA-9846-4F88-84BA-51D551901D00}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{19EC1BBA-9846-4F88-84BA-51D551901D00}.Debug|x86.ActiveCfg = Debug|x86
