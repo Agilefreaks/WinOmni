@@ -282,7 +282,7 @@
                 _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
                 NotificationListViewModel.ShowWindow(WindowManager, _notificationListViewModel);
 
-                //if (ApplicationDeploymentHelper.IsClickOnceApplication)
+                if (ApplicationDeploymentHelper.IsClickOnceApplication)
                 {
                     Task.Factory.StartNew(MigrateAwayFromClickOnce);
                 }
