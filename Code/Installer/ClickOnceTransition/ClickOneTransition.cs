@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Threading;
     using ClickOnceTransition.Uninstaller;
     using CustomizedClickOnce.Common;
     using Microsoft.Deployment.WindowsInstaller;
@@ -13,6 +14,8 @@
     public class ClickOneTransition
     {
         private const string InstallerFileName = "OmnipasteInstaller.msi";
+
+        private const int MaxRetryCount = 10;
 
         private static string _installerUri;
 
@@ -106,13 +109,11 @@
         private static MigrationStepResultEnum InstallNewVersion()
         {
             var result = MigrationStepResultEnum.InstallNewVersionError;
-
-            var installerPath = Path.Combine(_tempFolderPath, InstallerFileName);
             Installer.SetInternalUI(InstallUIOptions.Silent);
 
             try
             {
-                Installer.InstallProduct(installerPath, "");
+                Installer.InstallProduct(_installerPath, "");
                 result = MigrationStepResultEnum.Success;
             }
             catch
@@ -147,12 +148,19 @@
         private static MigrationStepResultEnum DownloadInstaller()
         {
             var result = MigrationStepResultEnum.DownloadInstallerError;
-
+            var remainingRetryCount = MaxRetryCount;
             using (var webClient = new WebClient())
             {
                 try
                 {
                     webClient.DownloadFile(_installerUri, _installerPath);
+                    while (remainingRetryCount-- > 0)
+                    {
+                        if (!File.Exists(_installerPath))
+                        {
+                            Thread.Sleep(1000);
+                        }
+                    }
                     result = MigrationStepResultEnum.Success;
                 }
                 catch (Exception)
