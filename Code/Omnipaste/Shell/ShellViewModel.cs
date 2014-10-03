@@ -245,7 +245,7 @@
 
             if (exitCode != 0)
             {
-                ContextMenuViewModel.ShowBaloon("Update failed", "We tried to update Omnipaste but something went wrong. Please reinstall the application.");
+                ContextMenuViewModel.ShowBaloon("Update failed", "We tried to update Omnipaste but something went wrong. Please reinstall the application at your convenience.");
             }
         }
 
