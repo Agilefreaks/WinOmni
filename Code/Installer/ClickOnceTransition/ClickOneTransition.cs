@@ -65,10 +65,24 @@
                                      RestoreOriginalUninstaller,
                                      CloseRunningInstance,
                                      UninstallClickOnceOmnipaste,
+                                     RemoveShortcutFromStartup,
                                      InstallNewVersion
                                  };
 
             return migrationSteps;
+        }
+
+        private static MigrationStepResultEnum RemoveShortcutFromStartup()
+        {
+            try
+            {
+                ClickOnceHelper.RemoveShortcutFromStartup();
+            }
+            catch
+            {
+            }
+
+            return MigrationStepResultEnum.Success;
         }
 
         private static MigrationStepResultEnum RestoreOriginalUninstaller()
