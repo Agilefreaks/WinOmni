@@ -32,23 +32,8 @@
   <Target Name="All">
   	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
 	
-  	<MSBuild 
-  		Projects="Omnipaste\Omnipaste.csproj"
-  		Targets="Publish" 
-  		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
-
-  	<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
-
     <PropertyGroup>
       <RevisionUnderscores>$(Revision.Replace(".", "_"))</RevisionUnderscores>
     </PropertyGroup>
-
-    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe"' />
-
-    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\OmnipasteSetup.exe"' />
-
-    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode' />
-
-    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\$(PublishAssemblyName).application" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode -appmanifest "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest"' />
   </Target>
 </Project>
