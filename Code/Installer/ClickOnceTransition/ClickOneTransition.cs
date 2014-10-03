@@ -22,6 +22,16 @@
 
         private static string _applicationName;
 
+        protected static ClickOnceHelper ClickOnceHelper
+        {
+            get
+            {
+                return
+                    new ClickOnceHelper(
+                        new ApplicationInfo { ProductName = _applicationName, PublisherName = "Omnipaste" });
+            }
+        }
+
         static int Main(string[] args)
         {
             _installerUri = args[1];
@@ -36,6 +46,13 @@
 #if DEBUG
             Console.ReadLine();
 #endif
+            switch (migrationResult)
+            {
+                case MigrationStepResultEnum.UninstallClickOnceError:
+                case MigrationStepResultEnum.InstallNewVersionError:
+                    ShowUpdateFailedWebPage();
+                    break;
+            }
 
             return (int)migrationResult;
         }
@@ -44,10 +61,11 @@
         {
             var migrationSteps = new List<Func<MigrationStepResultEnum>>
                                  {
-                                     RestoreOriginalUninstaller,
                                      DownloadInstaller,
+                                     RestoreOriginalUninstaller,
+                                     CloseRunningInstance,
                                      UninstallClickOnceOmnipaste,
-                                     LaunchInstaller
+                                     InstallNewVersion
                                  };
 
             return migrationSteps;
@@ -57,15 +75,9 @@
         {
             var result = MigrationStepResultEnum.RestoreOriginalUninstallerError;
 
-            var clickOnceHelper = new ClickOnceHelper(new ApplicationInfo
-                                                      {
-                                                          ProductName = _applicationName,
-                                                          PublisherName = "Omnipaste"            
-                                                      });
             try
             {
-                clickOnceHelper.KillActiveProcesses();
-                if (clickOnceHelper.RestoreOriginalUninstaller())
+                if (ClickOnceHelper.RestoreOriginalUninstaller())
                 {
                     result = MigrationStepResultEnum.Success;
                 }
@@ -77,9 +89,9 @@
             return result;
         }
 
-        private static MigrationStepResultEnum LaunchInstaller()
+        private static MigrationStepResultEnum InstallNewVersion()
         {
-            var result = MigrationStepResultEnum.LaunchInstallerError;
+            var result = MigrationStepResultEnum.InstallNewVersionError;
 
             var installerPath = Path.Combine(_tempFolderPath, InstallerFileName);
             Installer.SetInternalUI(InstallUIOptions.Silent);
@@ -89,9 +101,8 @@
                 Installer.InstallProduct(installerPath, "");
                 result = MigrationStepResultEnum.Success;
             }
-            catch (Exception e)
+            catch
             {
-                Process.Start("https://www.omnipasteapp.com/downloads/new?download=true&migration_error=true");
             }
 
             return result;
@@ -122,7 +133,7 @@
         private static MigrationStepResultEnum DownloadInstaller()
         {
             var result = MigrationStepResultEnum.DownloadInstallerError;
-            
+
             using (var webClient = new WebClient())
             {
                 try
@@ -136,6 +147,24 @@
             }
 
             return result;
+        }
+
+        private static void ShowUpdateFailedWebPage()
+        {
+            Process.Start("https://www.omnipasteapp.com/downloads/new?download=true&migration_error=true");
+        }
+
+        private static MigrationStepResultEnum CloseRunningInstance()
+        {
+            try
+            {
+                ClickOnceHelper.KillActiveProcesses();
+            }
+            catch
+            {
+            }
+
+            return MigrationStepResultEnum.Success;
         }
     }
 }

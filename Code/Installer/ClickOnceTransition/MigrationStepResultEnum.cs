@@ -4,15 +4,11 @@
     {
         Success = 0,
 
-        SaveSettingsFileError,
-
         DownloadInstallerError,
 
         UninstallClickOnceError,
 
-        RestoreSettingsFileError,
-
-        LaunchInstallerError,
+        InstallNewVersionError,
 
         RestoreOriginalUninstallerError
     }
