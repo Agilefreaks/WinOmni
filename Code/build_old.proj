@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
+  	<PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
+  	<Configuration>Debug</Configuration>
+  	<PublishUrl>http://localhost/</PublishUrl>
+  	<InstallUrl>http://localhost/</InstallUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(build_configuration)' == 'staging' ">
+  	<PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
+  	<Configuration>staging</Configuration>
+  	<PublishUrl>..\deploy</PublishUrl>
+  	<InstallUrl>http://download.omnipasteapp.com/staging/</InstallUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(build_configuration)' == 'release' ">
+  	<PublishAssemblyName>Omnipaste</PublishAssemblyName>
+  	<Configuration>release</Configuration>
+  	<PublishUrl>..\deploy</PublishUrl>
+  	<InstallUrl>http://download.omnipasteapp.com/release/</InstallUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Revision>$(revision)</Revision>
+  </PropertyGroup>    
+
+	<ItemGroup>
+		<MySourceFiles Include="$(MSBuildProjectDirectory)\CustomizedClickOnce\CustomizedClickOnce.Install\bin\$(Configuration)\OmnipasteSetup.exe"/>
+	</ItemGroup>
+
+  <Target Name="All">
+  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
+	
+  	<MSBuild 
+  		Projects="Omnipaste\Omnipaste.csproj"
+  		Targets="Publish" 
+  		Properties="Configuration=$(Configuration);ApplicationVersion=$(revision);PublishUrl=$(PublishUrl);ProductName=$(PublishAssemblyName);SuiteName=$(PublishAssemblyName);InstallUrl=$(InstallUrl);PublishAssemblyName=$(PublishAssemblyName);" />
+
+  	<Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Omnipaste\bin\$(Configuration)\app.publish\" />
+
+    <PropertyGroup>
+      <RevisionUnderscores>$(Revision.Replace(".", "_"))</RevisionUnderscores>
+    </PropertyGroup>
+
+    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe"' />
+
+    <Exec Command='..\Tools\signtool.exe sign /sha1 ee7cfbc86606d544d69ea631e0e50b22bc13c3cb  /t http://timestamp.comodoca.com/authenticode "Omnipaste\bin\$(build_configuration)\app.publish\OmnipasteSetup.exe"' />
+
+    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode' />
+
+    <Exec Command='..\Tools\mage.exe -update "Omnipaste\bin\$(build_configuration)\app.publish\$(PublishAssemblyName).application" -CertHash ee7cfbc86606d544d69ea631e0e50b22bc13c3cb -TimeStampUri http://timestamp.comodoca.com/authenticode -appmanifest "Omnipaste\bin\$(build_configuration)\app.publish\Application Files\$(PublishAssemblyName)_$(RevisionUnderscores)\$(PublishAssemblyName).exe.manifest"' />
+  </Target>
+</Project>
