@@ -93,10 +93,6 @@
     <EmbeddedResource Include="Lang\en-us\Loc_en-us.wxl" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
-  <Target Name="BeforeBuild">
-    <HeatDirectory OutputFile="Fragments\Components.wxs" Directory="$(SolutionDir)Omnipaste\bin\$(Configuration)" ComponentGroupName="OmnipasteFiles" DirectoryRefId="INSTALLFOLDER" PreprocessorVariable="var.SourceDir" ToolPath="$(WixToolPath)" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" Transforms="$(ProjectDir)Transforms\ComponentsFilter.xslt" VerboseOutput="true">
-    </HeatDirectory>
-  </Target>
   <Target Name="AfterBuild">
   </Target>
   <PropertyGroup>
@@ -118,12 +114,11 @@
   <Target Name="SignMsi">
     <Exec Command="$(SolutionDir)..\Tools\signtool.exe sign /a &quot;%(SignMsi.FullPath)&quot;" />
   </Target>
-  <!--
-	To modify your build process, add your task inside one of the targets below and uncomment it.
-	Other similar extension points exist, see Wix.targets.
-	<Target Name="BeforeBuild">
-	</Target>
-	<Target Name="AfterBuild">
-	</Target>
-	-->
+  <Target Name="BeforeBuild">
+    <HeatDirectory OutputFile="Fragments\Components.wxs" Directory="$(SolutionDir)Omnipaste\bin\$(Configuration)" ComponentGroupName="OmnipasteFiles" DirectoryRefId="INSTALLFOLDER" PreprocessorVariable="var.SourceDir" ToolPath="$(WixToolPath)" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" Transforms="$(ProjectDir)Transforms\ComponentsFilter.xslt" VerboseOutput="true">
+    </HeatDirectory>
+    <CreateProperty Condition="$(REVISION) != ''" Value="REVISION=$(REVISION);$(DefineConstants)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants" />
+    </CreateProperty>
+  </Target>
 </Project>

@@ -2,15 +2,13 @@
 <Include>
   <!--
   Versioning. These have to be changed for upgrades.
-  It's not enough to just include newer files.
+  It's not enough to just include newer files. Set from TeamCity
   -->
-  <?define MajorVersion="1" ?>
-  <?define MinorVersion="1" ?>
-  <?define BuildVersion="0" ?>
-  <!-- Revision is NOT used by WiX in the upgrade procedure -->
-  <?define Revision="10" ?>
-  <!-- Full version number to display -->
-  <?define VersionNumber="$(var.MajorVersion).$(var.MinorVersion).$(var.BuildVersion).$(var.Revision)" ?>
+  <?ifdef var.REVISION?>  
+    <?define VersionNumber="$(var.REVISION)" ?>
+  <?else?>
+    <?define VersionNumber="1.0.0.0" ?>
+  <?endif?>
   <!--
     Upgrade code HAS to be the same for all updates.
     Once you've chosen it don't change it.
