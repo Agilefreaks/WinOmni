@@ -56,7 +56,7 @@
 
         public IObservable<int> CheckForUpdatesPeriodically()
         {
-            var scheduler = Observable.Interval(_updateCheckInterval);
+            var scheduler = Observable.Timer(TimeSpan.Zero, _updateCheckInterval);
             return scheduler
                 .Where(_ => CheckIfUpdatesAvailable())
                 .Select(_ => _updateManager.UpdatesAvailable);
