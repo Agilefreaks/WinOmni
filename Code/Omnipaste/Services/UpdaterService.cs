@@ -24,6 +24,7 @@
         private const string MSIExec = "msiexec.exe";
 
         private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
+        private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
         private readonly UpdateManager _updateManager;
 
         protected static string RootDirectory
@@ -58,7 +59,7 @@
 
         public IObservable<int> CheckForUpdatesPeriodically()
         {
-            var scheduler = Observable.Timer(TimeSpan.Zero, _updateCheckInterval);
+            var scheduler = Observable.Timer(_initialUpdateCheckDelay, _updateCheckInterval);
             return scheduler
                 .Where(_ => CheckIfUpdatesAvailable())
                 .Select(_ => _updateManager.UpdatesAvailable);
