@@ -21,6 +21,8 @@
 
         private const string UpdateFeedFileName = "FeedBuilder.xml";
 
+        private const string MSIExec = "msiexec.exe";
+
         private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
         private readonly UpdateManager _updateManager;
 
@@ -94,7 +96,7 @@
                     if (installerUpdateTask == null) return;
 
                     var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-                    Process.Start(installerPath);
+                    Process.Start(MSIExec, string.Format("/package {0} /quiet", installerPath));
                 }
                 catch (Exception exception)
                 {
