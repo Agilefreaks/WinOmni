@@ -41,7 +41,7 @@
 
         public void ShutDown()
         {
-            Dispatcher.InvokeShutdown();
+            Application.Current.Shutdown();
         }
 
         #endregion

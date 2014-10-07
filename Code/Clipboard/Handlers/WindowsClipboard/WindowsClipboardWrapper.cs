@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.Handlers.WindowsClipboard
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reactive.Linq;
     using System.Runtime.InteropServices;

@@ -6,7 +6,6 @@
     using System.Reactive.Linq;
     using System.Threading;
     using BugFreak;
-    using BugFreak.Components;
     using Clipboard;
     using Events;
     using Ninject;
@@ -148,7 +147,7 @@
 
             if (unsubscribeHandlers)
             {
-                StopHandlders();
+                StopHandlers();
                 WebsocketConnection.Disconnect();
             }
 
@@ -222,7 +221,7 @@
             }
         }
 
-        private void StopHandlders()
+        private void StopHandlers()
         {
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
