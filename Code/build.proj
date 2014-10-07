@@ -30,10 +30,6 @@
 	</ItemGroup>
 
   <Target Name="All">
-  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration)" />
-	
-    <PropertyGroup>
-      <RevisionUnderscores>$(Revision.Replace(".", "_"))</RevisionUnderscores>
-    </PropertyGroup>
+  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration);revision=$(revision)" />
   </Target>
 </Project>
