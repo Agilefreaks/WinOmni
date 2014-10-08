@@ -72,7 +72,11 @@
             _updateManager.BeginCheckForUpdates(
                 asyncResult =>
                 {
-                    ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
+                    if (asyncResult.IsCompleted)
+                    {
+                        ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
+                    }
+
                     completed = asyncResult.IsCompleted;
                     autoResetEvent.Set();
                 }, null);
@@ -85,7 +89,11 @@
         {
             _updateManager.BeginPrepareUpdates(asyncResult =>
             {
-                ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
+                if (asyncResult.IsCompleted)
+                {
+                    ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
+                }
+
                 try
                 {
                     //it is necessary to do this here because the ApplyUpdates method will clear all the Tasks it has performed
