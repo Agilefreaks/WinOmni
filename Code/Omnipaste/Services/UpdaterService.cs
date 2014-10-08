@@ -2,6 +2,7 @@
 {
     using System;
     using System.Configuration;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reactive.Linq;
@@ -131,7 +132,6 @@
             _updateManager.ApplyUpdates(true);
             var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
             Process.Start(MSIExec, string.Format("/i {0} /qn", installerPath));
-            Application.Current.Shutdown();
         }
     }
 }
