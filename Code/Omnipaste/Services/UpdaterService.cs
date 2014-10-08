@@ -8,6 +8,7 @@
     using System.Reactive.Linq;
     using System.Reflection;
     using System.Threading;
+    using System.Windows;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Common;
     using NAppUpdate.Framework.Sources;
@@ -128,10 +129,11 @@
 
         private void InstallNewVersion(FileUpdateTask installerUpdateTask)
         {
-            //Download new msi to app root folder
+            //Move new msi to app root folder
             _updateManager.ApplyUpdates(true);
             var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-            Process.Start(MSIExec, string.Format("/package {0} /quiet", installerPath));
+            Process.Start(MSIExec, string.Format("/i {0} /qn", installerPath));
+            Application.Current.Shutdown();
         }
     }
 }
