@@ -26,6 +26,11 @@
                       Name='InstallLocation' Type='raw'/>
     </Property>
 
+    <util:CloseApplication Id="CloseApplication"
+                       Target="$(var.ExeProcessName)"
+                       EndSessionMessage="yes"
+                       RebootPrompt="no"/>
+
     <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
       <ComponentGroupRef Id="OmnipasteFiles" />
       <ComponentRef Id="ApplicationShortcuts"/>
@@ -34,14 +39,9 @@
     </Feature>
     
     <InstallExecuteSequence>
-      <Custom Action="WixCloseApplications" Before="InstallValidate"/>
+      <Custom Action="WixCloseApplications" Before="InstallInitialize"/>
       <Custom Action="AssignCustomActionData" After="CostFinalize"/>
       <Custom Action="StartAppWithAuthorizationKey" After="InstallFiles">NOT Installed</Custom>
     </InstallExecuteSequence>
-
-    <util:CloseApplication Id="CloseApplication" 
-                           Target="$(var.ExeProcessName)" 
-                           CloseMessage="yes" 
-                           RebootPrompt="no"/>
 	</Product>
 </Wix>

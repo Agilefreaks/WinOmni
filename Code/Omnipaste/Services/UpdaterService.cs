@@ -2,13 +2,11 @@
 {
     using System;
     using System.Configuration;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reactive.Linq;
     using System.Reflection;
     using System.Threading;
-    using System.Windows;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Common;
     using NAppUpdate.Framework.Sources;
