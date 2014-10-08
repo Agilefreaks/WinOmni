@@ -245,9 +245,9 @@
                 .SubscribeOn(Scheduler.Default)
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(OnActivationFinished, OnActivationFailed);
-            
+
             UpdaterService.CheckForUpdatesPeriodically()
-                .ObserveOn(NewThreadScheduler.Default)
+                .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(_ => UpdaterService.ApplyUpdate());
         }
 
