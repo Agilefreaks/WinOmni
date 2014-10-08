@@ -89,15 +89,15 @@
                 try
                 {
                     //it is necessary to do this here because the ApplyUpdates method will clear all the Tasks it has performed
-                    var installerUpdateTask = _updateManager.Tasks.Cast<FileUpdateTask>()
-                        .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
+                    var installerUpdateTask =
+                        _updateManager.Tasks.Where(task => task is FileUpdateTask)
+                            .Cast<FileUpdateTask>()
+                            .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
 
-                    _updateManager.ApplyUpdates(true);
-                    
-                    if (installerUpdateTask == null) return;
-
-                    var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-                    Process.Start(MSIExec, string.Format("/package {0} /quiet", installerPath));
+                    if (CheckIfNewMsiVersionAvailable(installerUpdateTask))
+                    {
+                        InstallNewVersion(installerUpdateTask);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -105,6 +105,25 @@
                     throw;
                 }
             }, null);
+        }
+
+        private static bool CheckIfNewMsiVersionAvailable(FileUpdateTask installerUpdateTask)
+        {
+            if (installerUpdateTask == null) return false;
+
+            Version msiVersion;
+            Version.TryParse(installerUpdateTask.Version, out msiVersion);
+            var exeVersion = Assembly.GetEntryAssembly().GetName().Version;
+
+            return msiVersion > exeVersion;
+        }
+
+        private void InstallNewVersion(FileUpdateTask installerUpdateTask)
+        {
+            //Download new msi to app root folder
+            _updateManager.ApplyUpdates(true);
+            var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
+            Process.Start(MSIExec, string.Format("/package {0} /quiet", installerPath));
         }
     }
 }
