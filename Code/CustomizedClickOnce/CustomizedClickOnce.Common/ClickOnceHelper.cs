@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Deployment.Application;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -147,7 +146,7 @@
 
         public void AddShortcutToStartup()
         {
-            if (!ApplicationDeployment.IsNetworkDeployed || File.Exists(StartupShortcutPath))
+            if (File.Exists(StartupShortcutPath) || !File.Exists(ShortcutPath))
             {
                 return;
             }

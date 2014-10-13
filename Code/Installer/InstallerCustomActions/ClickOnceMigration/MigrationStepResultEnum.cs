@@ -1,14 +1,10 @@
-﻿namespace ClickOnceTransition
+﻿namespace InstallerCustomActions.ClickOnceMigration
 {
     public enum MigrationStepResultEnum
     {
         Success = 0,
 
-        DownloadInstallerError,
-
         UninstallClickOnceError,
-
-        InstallNewVersionError,
 
         RestoreOriginalUninstallerError
     }

@@ -22,7 +22,11 @@
 
         void UpdateUninstallParameters();
 
+        void KillActiveProcesses();
+
         bool StartupShortcutExists();
+
+        bool RestoreOriginalUninstaller();
 
         #endregion
     }

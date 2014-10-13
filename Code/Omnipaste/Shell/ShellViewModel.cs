@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Configuration;
     using System.Deployment.Application;
-    using System.Diagnostics;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
@@ -13,7 +11,6 @@
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
@@ -198,45 +195,6 @@
             Configure();
         }
 
-        private void MigrateAwayFromClickOnce()
-        {
-            Process process = null;
-            var exitCode = -1;
-
-            try
-            {
-                var arguments = string.Format(
-                    "-installerUri \"{0}\" -applicationName \"{1}\"",
-                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource] + MSIFileName,
-                    ConfigurationManager.AppSettings[ConfigurationProperties.AppName]);
-
-                var processStartInfo = new ProcessStartInfo
-                                       {
-                                           FileName = "ClickOnceTransition.exe",
-                                           Arguments = arguments,
-                                           CreateNoWindow = true,
-                                           UseShellExecute =false
-                                       };
-
-                process = Process.Start(processStartInfo);
-            }
-                // ReSharper disable once EmptyGeneralCatchClause
-            catch 
-            {
-            }
-
-            if (process != null)
-            {
-                process.WaitForExit();
-                exitCode = process.ExitCode;
-            }
-
-            if (exitCode != 0)
-            {
-                ContextMenuViewModel.ShowBaloon("Update failed", "We tried to update Omnipaste but something went wrong. Please reinstall the application at your convenience.");
-            }
-        }
-
         private void Configure()
         {
             DialogViewModel.ActivateItem(LoadingViewModel.Loading());
@@ -274,11 +232,6 @@
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
                 _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
                 NotificationListViewModel.ShowWindow(WindowManager, _notificationListViewModel);
-
-                if (ApplicationDeploymentHelper.IsClickOnceApplication)
-                {
-                    Task.Factory.StartNew(MigrateAwayFromClickOnce);
-                }
             }
         }
 

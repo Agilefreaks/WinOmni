@@ -3,13 +3,23 @@
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
 
   <Fragment>
-    <CustomAction Id='AssignCustomActionData'
+    <CustomAction Id='AssignCustomActionDataForBootstrap'
                   Property='StartAppWithAuthorizationKey'
                   Value='OriginalDatabase=[OriginalDatabase];TargetDir=[INSTALLFOLDER];Target=$(var.ExeProcessName)'/>
 
     <CustomAction Id='StartAppWithAuthorizationKey'
                   BinaryKey='InstallerCustomActions'
                   DllEntry='StartAppWithAuthorizationKey'
+                  Return='check'
+                  Execute='commit'/>
+    
+    <CustomAction Id='AssignCustomActionDataForUnistallClickOnce'
+                  Property='UninstallClickOnce'
+                  Value='ProductName=$(var.ProductName);PublisherName=!(loc.ManufacturerName)'/>
+
+    <CustomAction Id='UninstallClickOnce'
+                  BinaryKey='InstallerCustomActions'
+                  DllEntry='UninstallClickOnce'
                   Return='check'
                   Execute='commit'/>
   </Fragment>

@@ -1,4 +1,4 @@
-﻿namespace ClickOnceTransition.Uninstaller
+﻿namespace InstallerCustomActions.ClickOnceUninstaller
 {
     using System.Collections.Generic;
     using System.Linq;
