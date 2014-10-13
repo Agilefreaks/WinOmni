@@ -50,6 +50,30 @@
             }
         }
 
+        protected static string AppName
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings[ConfigurationProperties.AppName];
+            }
+        }
+
+        protected static string InstallerTemporaryFolder
+        {
+            get
+            {
+                return Path.Combine(Path.GetTempPath(), AppName);
+            }
+        }
+
+        protected static string MsiTemporaryPath
+        {
+            get
+            {
+                return Path.Combine(InstallerTemporaryFolder, InstallerName);
+            }
+        }
+
         public UpdaterService()
         {
             _updateManager = UpdateManager.Instance;
@@ -69,6 +93,7 @@
         {
             var completed = false;
             var autoResetEvent = new AutoResetEvent(false);
+            CleanTemporaryFiles();
             _updateManager.BeginCheckForUpdates(
                 asyncResult =>
                 {
@@ -126,12 +151,26 @@
             return msiVersion > exeVersion;
         }
 
+        private static void CleanTemporaryFiles()
+        {
+            if (Directory.Exists(InstallerTemporaryFolder))
+            {
+                Directory.Delete(InstallerTemporaryFolder, true);
+            }
+        }
+
         private void InstallNewVersion(FileUpdateTask installerUpdateTask)
         {
-            //Move new msi to app root folder
             _updateManager.ApplyUpdates(true);
-            var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-            Process.Start(MSIExec, string.Format("/i {0} /qn", installerPath));
+            if (!Directory.Exists(InstallerTemporaryFolder))
+            {
+                Directory.CreateDirectory(InstallerTemporaryFolder);
+                //Move new msi to a temp file as the app directory might get uninstalled
+                var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
+                File.Copy(installerPath, MsiTemporaryPath);
+            }
+
+            Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
         }
     }
 }
