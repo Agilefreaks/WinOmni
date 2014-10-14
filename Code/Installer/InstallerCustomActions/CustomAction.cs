@@ -63,31 +63,5 @@
 
             return result;
         }
-
-        [CustomAction]
-        public static ActionResult RemoveFolder(Session session)
-        {
-            var result = ActionResult.Success;
-            try
-            {
-                var folder = session.CustomActionData["FolderToRemove"];
-                if (Directory.Exists(folder))
-                {
-                    Directory.Delete(folder, true);
-                }
-                else
-                {
-                    session.Log("No existing folder found");
-                    result = ActionResult.NotExecuted;
-                }
-            }
-            catch (Exception exception)
-            {
-                session.Log(exception.ToString());
-                result = ActionResult.Failure;
-            }
-
-            return result;
-        }
     }
 }

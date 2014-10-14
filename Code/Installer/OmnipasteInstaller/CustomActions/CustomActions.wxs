@@ -23,14 +23,6 @@
                   Return='check'
                   Execute='commit'/>
 
-    <CustomAction Id='AssignCustomActionDataForRemoveSettings'
-                  Property='RemoveSettings'
-                  Value='FolderToRemove=[APPLICATIONSETTINGSFOLDER]'/>
-
-    <CustomAction Id='RemoveSettings'
-                  BinaryKey='InstallerCustomActions'
-                  DllEntry='RemoveFolder'
-                  Return='check'
-                  Execute='commit'/>
+    <CustomAction Id='SetUninstallSettingsData' Property='RemoveApplicationSettingsFolder' Value='[APPLICATIONSETTINGSFOLDER]' />
   </Fragment>
 </Wix>

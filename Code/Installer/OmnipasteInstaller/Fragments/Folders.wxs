@@ -38,6 +38,7 @@
         <RegistryValue Root='HKCU' Key='$(var.RegistryRootKey)'
                 Name='SettingsLocation' Value='[ApplicationSettingsFolder]'
                 Type='string' KeyPath='yes'/>
+        <util:RemoveFolderEx On="uninstall" Property="RemoveApplicationSettingsFolder" />
       </Component>
     </DirectoryRef>
   </Fragment>

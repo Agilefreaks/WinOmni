@@ -46,12 +46,11 @@
     
     <InstallExecuteSequence>
       <Custom Action="WixCloseApplications" Before="InstallInitialize"/>
+      <Custom Action="SetUninstallSettingsData" Before="ValidateProductID">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <Custom Action="AssignCustomActionDataForBootstrap" After="CostFinalize"/>
-      <Custom Action="AssignCustomActionDataForRemoveSettings" After="CostFinalize"/>
       <Custom Action="AssignCustomActionDataForUnistallClickOnce" After="CostFinalize"/>
       <Custom Action="StartAppWithAuthorizationKey" After="InstallFiles">NOT Installed</Custom>
       <Custom Action="UninstallClickOnce" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="RemoveSettings" Before="InstallFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
     </InstallExecuteSequence>
 	</Product>
 </Wix>
