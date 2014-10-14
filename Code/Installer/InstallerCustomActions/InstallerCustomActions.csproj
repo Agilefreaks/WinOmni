@@ -68,6 +68,15 @@
     <Reference Include="Microsoft.Deployment.WindowsInstaller" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CustomizedClickOnce\CustomizedClickOnce.Common\ApplicationInfo.cs">
+      <Link>ClickOnceHelper\ApplicationInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\CustomizedClickOnce\CustomizedClickOnce.Common\ClickOnceHelper.cs">
+      <Link>ClickOnceHelper\ClickOnceHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\CustomizedClickOnce\CustomizedClickOnce.Common\IClickOnceHelper.cs">
+      <Link>ClickOnceHelper\IClickOnceHelper.cs</Link>
+    </Compile>
     <Compile Include="AuthorizationBootstrapper.cs" />
     <Compile Include="CustomAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
