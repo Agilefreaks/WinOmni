@@ -80,6 +80,14 @@
     <Compile Include="AuthorizationBootstrapper.cs" />
     <Compile Include="CustomAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ClickOnceUninstaller\ClickOnceRegistry.cs" />
+    <Compile Include="ClickOnceUninstaller\IUninstallStep.cs" />
+    <Compile Include="ClickOnceUninstaller\RemoveFiles.cs" />
+    <Compile Include="ClickOnceUninstaller\RemoveRegistryKeys.cs" />
+    <Compile Include="ClickOnceUninstaller\RemoveStartMenuEntry.cs" />
+    <Compile Include="ClickOnceUninstaller\RemoveUninstallEntry.cs" />
+    <Compile Include="ClickOnceUninstaller\Uninstaller.cs" />
+    <Compile Include="ClickOnceUninstaller\UninstallInfo.cs" />
     <Content Include="CustomAction.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
