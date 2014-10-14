@@ -559,9 +559,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
-    <Content Include="ClickOnceTransition.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Settings\debug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
