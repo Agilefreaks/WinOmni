@@ -25,6 +25,11 @@
                       Key='$(var.RegistryRootKey)'
                       Name='InstallLocation' Type='raw'/>
     </Property>
+    <Property Id='APPLICATIONSETTINGSFOLDER'>
+      <RegistrySearch Id='ApplicationSettingsFolderKey' Root='HKCU'
+                      Key='$(var.RegistryRootKey)'
+                      Name='SettingsLocation' Type='raw'/>
+    </Property>
 
     <util:CloseApplication Id="CloseApplication"
                        Target="$(var.ExeProcessName)"
@@ -35,11 +40,13 @@
       <ComponentGroupRef Id="OmnipasteFiles" />
       <ComponentRef Id="ApplicationShortcuts"/>
       <ComponentRef Id="ApplicationStartupEntry"/>
-      <ComponentRef Id="CleanupMainApplicationFolder"/>
+      <ComponentRef Id="MainApplicationFolder"/>
+      <ComponentRef Id="ApplicationSettingsFolder"/>
     </Feature>
     
     <InstallExecuteSequence>
       <Custom Action="WixCloseApplications" Before="InstallInitialize"/>
+      <Custom Action="SetUninstallSettingsData" Before="ValidateProductID">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <Custom Action="AssignCustomActionDataForBootstrap" After="CostFinalize"/>
       <Custom Action="AssignCustomActionDataForUnistallClickOnce" After="CostFinalize"/>
       <Custom Action="StartAppWithAuthorizationKey" After="InstallFiles">NOT Installed</Custom>
