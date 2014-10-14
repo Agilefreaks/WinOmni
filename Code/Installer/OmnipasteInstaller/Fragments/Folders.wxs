@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
   
   <Fragment>
@@ -12,6 +12,33 @@
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationStartMenuFolder" Name="$(var.ProductName)"/>
       </Directory>
+
+      <Directory Id="AppDataFolder">
+        <Directory Id="PublisherSettingsFolder" Name="!(loc.ManufacturerName)">
+          <Directory Id="ApplicationSettingsFolder" Name="$(var.ProductName)"/>
+        </Directory>
+      </Directory>
     </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="MainApplicationFolder">
+        <RegistryValue Root='HKCU' Key='$(var.RegistryRootKey)'
+                       Name='InstallLocation' Value='[INSTALLFOLDER]'
+                       Type='string' KeyPath='yes'/>
+        <util:RemoveFolderEx On="uninstall" Property="INSTALLFOLDER" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ApplicationSettingsFolder">
+      <Component Id="ApplicationSettingsFolder">
+        <RemoveFolder Id="RemoveApplicationSettingsFolder" Directory="ApplicationSettingsFolder" On="uninstall"/>
+        <RemoveFolder Id="RemovePublisherSettingsFolder" Directory="PublisherSettingsFolder" On="uninstall"/>
+        <RegistryValue Root='HKCU' Key='$(var.RegistryRootKey)'
+                Name='SettingsLocation' Value='[ApplicationSettingsFolder]'
+                Type='string' KeyPath='yes'/>
+      </Component>
+    </DirectoryRef>
   </Fragment>
 </Wix>

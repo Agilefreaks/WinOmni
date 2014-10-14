@@ -41,7 +41,6 @@
     <Compile Include="Fragments\Components.wxs" />
     <Compile Include="Fragments\Folders.wxs" />
     <Compile Include="Fragments\Shorcuts.wxs" />
-    <Compile Include="Fragments\UninstallComponents.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
