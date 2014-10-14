@@ -289,6 +289,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="SmsComposer\SmsMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
@@ -357,7 +358,6 @@
     <Compile Include="Shell\Settings\ISettingsViewModel.cs" />
     <Compile Include="Shell\Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="SingleInstance.cs" />
     <Compile Include="Framework\FlyoutBaseViewModel.cs" />
     <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
