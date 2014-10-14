@@ -1,11 +1,10 @@
-﻿using Microsoft.Deployment.WindowsInstaller;
-
-namespace InstallerCustomActions
+﻿namespace InstallerCustomActions
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
-    using System.Text.RegularExpressions;
+    using InstallerCustomActions.ClickOnceMigration;
+    using InstallerCustomActions.ClickOnceUninstaller;
+    using Microsoft.Deployment.WindowsInstaller;
 
     public class CustomActions
     {
@@ -19,6 +18,42 @@ namespace InstallerCustomActions
                 var target = session.CustomActionData["Target"];
                 var msiFileName = session.CustomActionData["OriginalDatabase"];
                 AuthorizationBootstrapper.StartApp(Path.Combine(targetDir, target), msiFileName);
+            }
+            catch (Exception exception)
+            {
+                session.Log(exception.ToString());
+                result = ActionResult.Failure;
+            }
+
+            return result;
+        }
+
+        [CustomAction]
+        public static ActionResult UninstallClickOnce(Session session)
+        {
+            ActionResult result;
+            try
+            {
+                var productName = session.CustomActionData["ProductName"];
+                var uninstallInfo = UninstallInfo.Find(productName);
+                if (uninstallInfo != null)
+                {
+                    var migrationResult = CustomizedClickOnceUninstaller.Uninstall(productName, session.CustomActionData["PublisherName"]);
+                    if (migrationResult == MigrationStepResultEnum.Success)
+                    {
+                        result = ActionResult.Success;
+                    }
+                    else
+                    {
+                        throw new Exception("Could not migrate existing click once application. Failed with: " + migrationResult);
+                    }
+                                 
+                }
+                else
+                {
+                    session.Log("No existing ClickOnce installation found");
+                    result = ActionResult.NotExecuted;
+                }
             }
             catch (Exception exception)
             {
