@@ -8,12 +8,12 @@
     using System.Reactive.Linq;
     using System.Reflection;
     using System.Threading;
+    using BugFreak;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Common;
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
-    using OmniCommon.ExtensionMethods;
 
     public class UpdaterService : IUpdaterService
     {
@@ -97,11 +97,7 @@
             _updateManager.BeginCheckForUpdates(
                 asyncResult =>
                 {
-                    if (asyncResult.IsCompleted)
-                    {
-                        ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
-                    }
-
+                    HandleAsyncResultSafely(asyncResult);
                     completed = asyncResult.IsCompleted;
                     autoResetEvent.Set();
                 }, null);
@@ -112,35 +108,15 @@
 
         public void ApplyUpdate()
         {
-            _updateManager.BeginPrepareUpdates(asyncResult =>
-            {
-                if (asyncResult.IsCompleted)
+            _updateManager.BeginPrepareUpdates(
+                asyncResult =>
                 {
-                    ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
-                }
-
-                try
-                {
-                    //it is necessary to do this here because the ApplyUpdates method will clear all the Tasks it has performed
-                    var installerUpdateTask =
-                        _updateManager.Tasks.Where(task => task is FileUpdateTask)
-                            .Cast<FileUpdateTask>()
-                            .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
-
-                    if (CheckIfNewMsiVersionAvailable(installerUpdateTask))
-                    {
-                        InstallNewVersion(installerUpdateTask);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    this.Log("An error occurred while trying to install software updates: " + exception);
-                    throw;
-                }
-            }, null);
+                    HandleAsyncResultSafely(asyncResult);
+                    OnUpdatesPrepared();
+                }, null);
         }
 
-        private static bool CheckIfNewMsiVersionAvailable(FileUpdateTask installerUpdateTask)
+        private static bool NewMsiVersionAvailable(FileUpdateTask installerUpdateTask)
         {
             if (installerUpdateTask == null) return false;
 
@@ -159,18 +135,53 @@
             }
         }
 
+        private static void HandleAsyncResultSafely(IAsyncResult asyncResult)
+        {
+            if (!asyncResult.IsCompleted) return;
+
+            try
+            {
+                ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+            }
+        }
+
+        private void OnUpdatesPrepared()
+        {
+            //it is necessary to do this here because the ApplyUpdates method will clear all the Tasks it has performed
+            var installerUpdateTask =
+                _updateManager.Tasks.Where(task => task is FileUpdateTask)
+                    .Cast<FileUpdateTask>()
+                    .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
+
+            if (NewMsiVersionAvailable(installerUpdateTask))
+            {
+                InstallNewVersion(installerUpdateTask);
+            }
+        }
+
         private void InstallNewVersion(FileUpdateTask installerUpdateTask)
         {
-            _updateManager.ApplyUpdates(true);
-            if (!Directory.Exists(InstallerTemporaryFolder))
+            try
             {
-                Directory.CreateDirectory(InstallerTemporaryFolder);
-                //Move new msi to a temp file as the app directory might get uninstalled
-                var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-                File.Copy(installerPath, MsiTemporaryPath);
-            }
+                _updateManager.ApplyUpdates(true);
+                if (!Directory.Exists(InstallerTemporaryFolder))
+                {
+                    Directory.CreateDirectory(InstallerTemporaryFolder);
+                    //Move new msi to a temp file as the app directory might get uninstalled
+                    var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
+                    File.Copy(installerPath, MsiTemporaryPath);
+                }
 
-            Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
+                Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+            }
         }
     }
 }
