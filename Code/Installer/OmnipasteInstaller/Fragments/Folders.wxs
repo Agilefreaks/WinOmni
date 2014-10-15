@@ -14,7 +14,7 @@
       </Directory>
 
       <Directory Id="AppDataFolder">
-        <Directory Id="PublisherSettingsFolder" Name="!(loc.ManufacturerName)">
+        <Directory Id="PublisherSettingsFolder" Name="$(var.ManufacturerName)">
           <Directory Id="ApplicationSettingsFolder" Name="$(var.ProductName)"/>
         </Directory>
       </Directory>

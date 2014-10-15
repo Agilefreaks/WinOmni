@@ -15,7 +15,7 @@
     
     <CustomAction Id='AssignCustomActionDataForUnistallClickOnce'
                   Property='UninstallClickOnce'
-                  Value='ProductName=$(var.ProductName);PublisherName=!(loc.ManufacturerName)'/>
+                  Value='ProductName=$(var.ProductName);PublisherName=$(var.ManufacturerName)'/>
 
     <CustomAction Id='UninstallClickOnce'
                   BinaryKey='InstallerCustomActions'

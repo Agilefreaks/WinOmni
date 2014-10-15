@@ -33,4 +33,6 @@
   <?endif ?>
   
   <?define ExeProcessName="Omnipaste.exe"?>
+
+  <?define ManufacturerName="Omnipaste"?>
 </Include>
