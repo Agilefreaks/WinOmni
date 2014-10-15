@@ -24,5 +24,8 @@
                   Execute='commit'/>
 
     <CustomAction Id='SetUninstallSettingsData' Property='RemoveApplicationSettingsFolder' Value='[APPLICATIONSETTINGSFOLDER]' />
+
+    <CustomAction Id="PrepareNetFrameworkDownload" Property="WixShellExecTarget" Value="http://www.microsoft.com/en-us/download/confirmation.aspx?id=30653" />
+    <CustomAction Id="LaunchBrowser" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="ignore" />
   </Fragment>
 </Wix>

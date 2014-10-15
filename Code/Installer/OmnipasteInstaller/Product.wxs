@@ -12,7 +12,7 @@
     <Property Id="DOTNETVERSION45FULL" Secure="yes">
       <RegistrySearch Id="DotNet45Full" Root="HKLM" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" Name="Version" Type="raw" />
     </Property>
-    <Condition Message="!(loc.DotNetFrameworkMissing)">DOTNETVERSION45FULL&gt;="#1"</Condition>
+    <!--<Condition Message="!(loc.DotNetFrameworkMissing)">DOTNETVERSION45FULL&gt;="#1"</Condition>-->
 
     <Icon Id="Icon.ico" SourceFile="$(var.ResourcesDir)\Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
@@ -44,6 +44,8 @@
       <ComponentRef Id="ApplicationSettingsFolder"/>
     </Feature>
     
+    <UIRef Id="OmnipasteUI_Minimal" />
+
     <InstallExecuteSequence>
       <Custom Action="WixCloseApplications" Before="InstallInitialize"/>
       <Custom Action="SetUninstallSettingsData" Before="ValidateProductID">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
