@@ -88,6 +88,8 @@
   <ItemGroup>
     <Content Include="Includes\OmnipasteVariables.wxi" />
     <Content Include="Packages\en-us\OmnipasteInstaller.msi" />
+    <Content Include="Resources\banner.bmp" />
+    <Content Include="Resources\side.bmp" />
     <Content Include="Resources\Icon.ico" />
     <Content Include="Transforms\ComponentsFilter.xslt" />
   </ItemGroup>

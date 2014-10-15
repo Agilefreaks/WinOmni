@@ -36,6 +36,9 @@
                        EndSessionMessage="yes"
                        RebootPrompt="no"/>
 
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ResourcesDir)\banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ResourcesDir)\side.bmp" />
+
     <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
       <ComponentGroupRef Id="OmnipasteFiles" />
       <ComponentRef Id="ApplicationShortcuts"/>
