@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Reactive.Linq;
     using System.Reflection;
     using System.Threading;
@@ -77,7 +78,7 @@
         public UpdaterService()
         {
             _updateManager = UpdateManager.Instance;
-            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl);
+            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
             _updateManager.ReinstateIfRestarted();
         }
 
