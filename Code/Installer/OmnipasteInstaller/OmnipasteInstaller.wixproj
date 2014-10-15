@@ -42,6 +42,8 @@
     <Compile Include="Fragments\Folders.wxs" />
     <Compile Include="Fragments\Shorcuts.wxs" />
     <Compile Include="Product.wxs" />
+    <Compile Include="UI\InstallNetFrameworkDialog.wxs" />
+    <Compile Include="UI\MinimalUi.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Omnipaste\Omnipaste.csproj">
@@ -67,6 +69,7 @@
     <Folder Include="Includes" />
     <Folder Include="Lang" />
     <Folder Include="Lang\en-us" />
+    <Folder Include="UI" />
     <Folder Include="Transforms" />
     <Folder Include="Packages\en-us\" />
     <Folder Include="Resources" />
@@ -85,6 +88,8 @@
   <ItemGroup>
     <Content Include="Includes\OmnipasteVariables.wxi" />
     <Content Include="Packages\en-us\OmnipasteInstaller.msi" />
+    <Content Include="Resources\banner.bmp" />
+    <Content Include="Resources\side.bmp" />
     <Content Include="Resources\Icon.ico" />
     <Content Include="Transforms\ComponentsFilter.xslt" />
   </ItemGroup>

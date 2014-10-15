@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
+
+  <Fragment>
+    <UI>
+      <Dialog Id="NetFRWDlg" Width="260" Height="95" Title="$(var.ProductName) !(loc.Installation)" NoMinimize="yes">
+
+        <Control Id="Text" Type="Text" X="48" Y="15" Width="194" Height="40">
+          <Text>!(loc.NetFrameworkPrompt)</Text>
+        </Control>
+
+        <Control Id="YesButton" Type="PushButton" X="72" Y="67" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.Yes)">
+          <Publish Event="DoAction" Value="PrepareNetFrameworkDownload" Order="1">1</Publish>
+          <Publish Event="DoAction" Value="LaunchBrowser" Order="2">1</Publish>
+          <Publish Event="EndDialog" Value="Exit" Order="3">1</Publish>
+        </Control>
+
+        <Control Id="NoButton" Type="PushButton" X="132" Y="67" Width="56" Height="17" Default="no" Cancel="yes" Text="!(loc.No)">
+          <Publish Event="EndDialog" Value="Exit">1</Publish>
+        </Control>
+
+        <Control Id="Icon" Type="Icon" X="15" Y="15" Width="24" Height="24" ToolTip="Information icon" FixedSize="yes" IconSize="32" Text="OmnipasteIcon" />
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

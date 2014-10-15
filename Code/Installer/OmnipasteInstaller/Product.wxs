@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
   
-	<Product Id="*" Name="$(var.ProductName) $(var.VersionNumber)" Language="!(loc.LANG)" Version="$(var.VersionNumber)" Manufacturer="!(loc.ManufacturerName)" UpgradeCode="$(var.UpgradeCode)">
+	<Product Id="*" Name="$(var.ProductName) $(var.VersionNumber)" Language="!(loc.LANG)" Version="$(var.VersionNumber)" Manufacturer="$(var.ManufacturerName)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
 
     <MediaTemplate EmbedCab="yes" />
@@ -12,7 +12,6 @@
     <Property Id="DOTNETVERSION45FULL" Secure="yes">
       <RegistrySearch Id="DotNet45Full" Root="HKLM" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" Name="Version" Type="raw" />
     </Property>
-    <Condition Message="!(loc.DotNetFrameworkMissing)">DOTNETVERSION45FULL&gt;="#1"</Condition>
 
     <Icon Id="Icon.ico" SourceFile="$(var.ResourcesDir)\Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
@@ -36,6 +35,9 @@
                        EndSessionMessage="yes"
                        RebootPrompt="no"/>
 
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ResourcesDir)\banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ResourcesDir)\side.bmp" />
+
     <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
       <ComponentGroupRef Id="OmnipasteFiles" />
       <ComponentRef Id="ApplicationShortcuts"/>
@@ -44,6 +46,8 @@
       <ComponentRef Id="ApplicationSettingsFolder"/>
     </Feature>
     
+    <UIRef Id="OmnipasteUI_Minimal" />
+
     <InstallExecuteSequence>
       <Custom Action="WixCloseApplications" Before="InstallInitialize"/>
       <Custom Action="SetUninstallSettingsData" Before="ValidateProductID">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
