@@ -194,14 +194,21 @@
 
         private void Configure()
         {
-            DialogViewModel.ActivateItem(LoadingViewModel.Loading());
+            if (UpdaterService.NewLocalInstallerAvailable())
+            {
+                UpdaterService.InstallNewVersion();
+            }
+            else
+            {
+                DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
-            ActivationService.Run()
-                .SubscribeOn(Scheduler.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(OnActivationFinished, OnActivationFailed);
+                ActivationService.Run()
+                    .SubscribeOn(Scheduler.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(OnActivationFinished, OnActivationFailed);
 
-            UpdaterService.SetupAutoUpdate();
+                UpdaterService.SetupAutoUpdate();   
+            }
         }
 
         private void OnActivationFailed(Exception exception)

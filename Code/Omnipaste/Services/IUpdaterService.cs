@@ -12,6 +12,10 @@
 
         void InstallNewVersionWhenIdle(TimeSpan idleTimeSpan);
 
+        void InstallNewVersion();
+
         void CleanTemporaryFiles();
+
+        bool NewLocalInstallerAvailable();
     }
 }
