@@ -136,6 +136,7 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
     <Reference Include="NAppUpdate.Framework">
       <HintPath>..\..\Libs\NAppUpdate\NAppUpdate.Framework.dll</HintPath>
     </Reference>
@@ -218,7 +219,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
