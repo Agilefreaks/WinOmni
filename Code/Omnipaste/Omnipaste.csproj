@@ -219,7 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
+    <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\UpdaterService.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -600,6 +602,10 @@
     <ProjectReference Include="..\Omni\Omni.csproj">
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
       <Name>Omni</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsImports\WindowsImports.csproj">
+      <Project>{a3325236-54ef-462d-9a88-dad57adc8d11}</Project>
+      <Name>WindowsImports</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
