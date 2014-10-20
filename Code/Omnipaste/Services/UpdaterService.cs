@@ -15,6 +15,7 @@
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using Omnipaste.Framework;
 
     public class UpdaterService : IUpdaterService
     {
@@ -24,9 +25,12 @@
 
         private const string MSIExec = "msiexec.exe";
 
-        private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
         private readonly UpdateManager _updateManager;
+
+        private IDisposable _systemIdleObserver;
+
+        public ISystemIdleService SystemIdleService { get; set; }
 
         protected static string RootDirectory
         {
@@ -75,19 +79,18 @@
             }
         }
 
-        public UpdaterService()
+        public UpdaterService(ISystemIdleService systemIdleService)
         {
+            SystemIdleService = systemIdleService;
             _updateManager = UpdateManager.Instance;
             _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
             _updateManager.ReinstateIfRestarted();
         }
 
-        public IObservable<int> CheckForUpdatesPeriodically()
+        public IObservable<bool> CreateUpdateReadyObservable(TimeSpan updateCheckInterval)
         {
-            var scheduler = Observable.Timer(_initialUpdateCheckDelay, _updateCheckInterval);
-            return scheduler
-                .Where(_ => CheckIfUpdatesAvailable())
-                .Select(_ => _updateManager.UpdatesAvailable);
+            return Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval)
+                .Select(_ => CheckIfUpdatesAvailable());
         }
 
         public bool CheckIfUpdatesAvailable()
@@ -105,6 +108,21 @@
             autoResetEvent.WaitOne();
 
             return completed && _updateManager.UpdatesAvailable > 0;
+        }
+
+        public void ApplyUpdateWhenIdle(TimeSpan systemIdleThreshold)
+        {
+            DisposeSystemIdleObserver();
+            _systemIdleObserver =
+                SystemIdleService.CreateSystemIdleObservable(systemIdleThreshold)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .Where(systemIsIdle => systemIsIdle)
+                    .Subscribe(
+                        _ =>
+                            {
+                                DisposeSystemIdleObserver();
+                                ApplyUpdate();
+                            });
         }
 
         public void ApplyUpdate()
@@ -182,6 +200,14 @@
             catch (Exception exception)
             {
                 ReportingService.Instance.BeginReport(exception);
+            }
+        }
+
+        private void DisposeSystemIdleObserver()
+        {
+            if (_systemIdleObserver != null)
+            {
+                _systemIdleObserver.Dispose();
             }
         }
     }

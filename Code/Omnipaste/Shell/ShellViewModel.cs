@@ -6,7 +6,6 @@
     using System.Deployment.Application;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -14,6 +13,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -30,9 +30,10 @@
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
-        private const string MSIFileName = "OmnipasteInstaller.msi";
-
         #region Fields
+
+        private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
+        private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
         private IMasterClippingListViewModel _clippingListViewModel;
 
@@ -204,9 +205,11 @@
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(OnActivationFinished, OnActivationFailed);
 
-            UpdaterService.CheckForUpdatesPeriodically()
+            UpdaterService.CreateUpdateReadyObservable(_updateCheckInterval)
+                .CatchAndReport()
                 .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(_ => UpdaterService.ApplyUpdate());
+                .Where(canApplyUpdate => canApplyUpdate)
+                .Subscribe(_ => UpdaterService.ApplyUpdateWhenIdle(_systemIdleThreshold));
         }
 
         private void OnActivationFailed(Exception exception)

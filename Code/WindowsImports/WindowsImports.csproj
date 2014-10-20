@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ExtendedWindowStyles.cs" />
     <Compile Include="GetWindowLongFields.cs" />
+    <Compile Include="LastInputInfo.cs" />
     <Compile Include="Msgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell32.cs" />
