@@ -218,6 +218,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />

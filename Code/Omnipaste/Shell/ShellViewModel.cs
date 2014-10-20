@@ -13,6 +13,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -205,6 +206,7 @@
                 .Subscribe(OnActivationFinished, OnActivationFailed);
 
             UpdaterService.CreateUpdateReadyObservable(_updateCheckInterval)
+                .CatchAndReport()
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Where(canApplyUpdate => canApplyUpdate)
                 .Subscribe(_ => UpdaterService.ApplyUpdateWhenIdle(_systemIdleThreshold));
