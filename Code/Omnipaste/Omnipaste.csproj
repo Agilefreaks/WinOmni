@@ -218,7 +218,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />

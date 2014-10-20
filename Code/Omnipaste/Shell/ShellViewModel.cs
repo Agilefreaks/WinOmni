@@ -13,7 +13,6 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -31,9 +30,6 @@
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
         #region Fields
-
-        private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
-        private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
         private IMasterClippingListViewModel _clippingListViewModel;
 
@@ -205,11 +201,7 @@
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(OnActivationFinished, OnActivationFailed);
 
-            UpdaterService.CreateUpdateReadyObservable(_updateCheckInterval)
-                .CatchAndReport()
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Where(canApplyUpdate => canApplyUpdate)
-                .Subscribe(_ => UpdaterService.ApplyUpdateWhenIdle(_systemIdleThreshold));
+            UpdaterService.SetupAutoUpdate();
         }
 
         private void OnActivationFailed(Exception exception)
@@ -228,8 +220,8 @@
                 ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
                 MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
 #if !DEBUG
-                            
-                            Close();
+
+                Close();
 #endif
 
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);

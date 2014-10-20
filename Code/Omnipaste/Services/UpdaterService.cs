@@ -8,13 +8,11 @@
     using System.Net;
     using System.Reactive.Linq;
     using System.Reflection;
-    using System.Threading;
-    using BugFreak;
     using NAppUpdate.Framework;
-    using NAppUpdate.Framework.Common;
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
 
     public class UpdaterService : IUpdaterService
@@ -26,6 +24,9 @@
         private const string MSIExec = "msiexec.exe";
 
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
+        private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
+        private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
+
         private readonly UpdateManager _updateManager;
 
         private IDisposable _systemIdleObserver;
@@ -87,30 +88,37 @@
             _updateManager.ReinstateIfRestarted();
         }
 
-        public IObservable<bool> CreateUpdateReadyObservable(TimeSpan updateCheckInterval)
+        public IObservable<bool> CreateUpdateAvailableObservable(TimeSpan updateCheckInterval)
         {
-            return Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval)
-                .Select(_ => CheckIfUpdatesAvailable());
+            var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval);
+            return timer.Select(_ => _updateManager.AreUpdatesAvailable().Select(__ => NewInstallerAvailable())).Switch();
         }
 
-        public bool CheckIfUpdatesAvailable()
+        public IObservable<bool> DownloadUpdates()
         {
-            var completed = false;
-            var autoResetEvent = new AutoResetEvent(false);
-            CleanTemporaryFiles();
-            _updateManager.BeginCheckForUpdates(
-                asyncResult =>
+            return _updateManager.DownloadUpdates().Select(
+                couldDownloadUpdates =>
                 {
-                    HandleAsyncResultSafely(asyncResult);
-                    completed = asyncResult.IsCompleted;
-                    autoResetEvent.Set();
-                }, null);
-            autoResetEvent.WaitOne();
-
-            return completed && _updateManager.UpdatesAvailable > 0;
+                    if (couldDownloadUpdates) PrepareDownloadedInstaller();
+                    return couldDownloadUpdates;
+                });
         }
 
-        public void ApplyUpdateWhenIdle(TimeSpan systemIdleThreshold)
+        public void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null)
+        {
+            updateCheckInterval = updateCheckInterval ?? _updateCheckInterval;
+            systemIdleThreshold = systemIdleThreshold ?? _systemIdleThreshold;
+            CreateUpdateAvailableObservable(updateCheckInterval.Value)
+                .Where(updateAvailable => updateAvailable)
+                .Select(_ => DownloadUpdates())
+                .Switch()
+                .CatchAndReport()
+                .Where(couldDownloadUpdates => couldDownloadUpdates)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(_ => InstallNewVersionWhenIdle(systemIdleThreshold.Value));
+        }
+
+        public void InstallNewVersionWhenIdle(TimeSpan systemIdleThreshold)
         {
             DisposeSystemIdleObserver();
             _systemIdleObserver =
@@ -121,32 +129,16 @@
                         _ =>
                             {
                                 DisposeSystemIdleObserver();
-                                ApplyUpdate();
+                                InstallNewVersion();
                             });
         }
 
-        public void ApplyUpdate()
+        public void InstallNewVersion()
         {
-            _updateManager.BeginPrepareUpdates(
-                asyncResult =>
-                {
-                    HandleAsyncResultSafely(asyncResult);
-                    OnUpdatesPrepared();
-                }, null);
+            Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
         }
 
-        private static bool NewMsiVersionAvailable(FileUpdateTask installerUpdateTask)
-        {
-            if (installerUpdateTask == null) return false;
-
-            Version msiVersion;
-            Version.TryParse(installerUpdateTask.Version, out msiVersion);
-            var exeVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-            return msiVersion > exeVersion;
-        }
-
-        private static void CleanTemporaryFiles()
+        public void CleanTemporaryFiles()
         {
             if (Directory.Exists(InstallerTemporaryFolder))
             {
@@ -154,53 +146,39 @@
             }
         }
 
-        private static void HandleAsyncResultSafely(IAsyncResult asyncResult)
+        private static bool RemoteInstallerHasHigherVersion(FileUpdateTask installerUpdateTask)
         {
-            if (!asyncResult.IsCompleted) return;
+            Version msiVersion;
+            Version.TryParse(installerUpdateTask.Version, out msiVersion);
+            var exeVersion = Assembly.GetEntryAssembly().GetName().Version;
 
-            try
-            {
-                ((UpdateProcessAsyncResult)asyncResult).EndInvoke();
-            }
-            catch (Exception exception)
-            {
-                ReportingService.Instance.BeginReport(exception);
-            }
+            return msiVersion > exeVersion;
         }
 
-        private void OnUpdatesPrepared()
+        private bool NewInstallerAvailable()
         {
-            //it is necessary to do this here because the ApplyUpdates method will clear all the Tasks it has performed
-            var installerUpdateTask =
+            var updateInstallerTask = GetUpdateInstallerTask();
+
+            return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
+        }
+
+        private void PrepareDownloadedInstaller()
+        {
+            CleanTemporaryFiles();
+            var updateInstallerTask = GetUpdateInstallerTask();
+            _updateManager.ApplyUpdates(false);
+            Directory.CreateDirectory(InstallerTemporaryFolder);
+            //Move new msi to a temp file as the app directory might get uninstalled
+            var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
+            File.Copy(installerPath, MsiTemporaryPath);
+        }
+
+        private FileUpdateTask GetUpdateInstallerTask()
+        {
+            return
                 _updateManager.Tasks.Where(task => task is FileUpdateTask)
                     .Cast<FileUpdateTask>()
                     .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
-
-            if (NewMsiVersionAvailable(installerUpdateTask))
-            {
-                InstallNewVersion(installerUpdateTask);
-            }
-        }
-
-        private void InstallNewVersion(FileUpdateTask installerUpdateTask)
-        {
-            try
-            {
-                _updateManager.ApplyUpdates(true);
-                if (!Directory.Exists(InstallerTemporaryFolder))
-                {
-                    Directory.CreateDirectory(InstallerTemporaryFolder);
-                    //Move new msi to a temp file as the app directory might get uninstalled
-                    var installerPath = Path.Combine(RootDirectory, installerUpdateTask.LocalPath);
-                    File.Copy(installerPath, MsiTemporaryPath);
-                }
-
-                Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
-            }
-            catch (Exception exception)
-            {
-                ReportingService.Instance.BeginReport(exception);
-            }
         }
 
         private void DisposeSystemIdleObserver()

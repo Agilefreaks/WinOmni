@@ -4,12 +4,14 @@
 
     public interface IUpdaterService
     {
-        IObservable<bool> CreateUpdateReadyObservable(TimeSpan updateCheckInterval);
+        void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null);
 
-        bool CheckIfUpdatesAvailable();
+        IObservable<bool> CreateUpdateAvailableObservable(TimeSpan updateCheckInterval);
 
-        void ApplyUpdate();
+        IObservable<bool> DownloadUpdates();
 
-        void ApplyUpdateWhenIdle(TimeSpan idleTimeSpan);
+        void InstallNewVersionWhenIdle(TimeSpan idleTimeSpan);
+
+        void CleanTemporaryFiles();
     }
 }
