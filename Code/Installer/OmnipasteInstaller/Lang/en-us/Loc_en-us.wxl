@@ -2,9 +2,8 @@
 <WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="LANG">1033</String>  
   <String Id="Description">Windows client for Omnipaste</String>
-  <String Id="DotNetFrameworkMissing">Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</String>
   <String Id="Yes">Yes</String>
-  <String Id="No">No</String>
+  <String Id="No">Quit installation</String>
   <String Id="Installation">Installation</String>
-  <String Id="NetFrameworkPrompt">This application requires the .NET Framework version 4.5 which is not currently installed. Would you like to download and install it now?</String>
+  <String Id="NetFrameworkPrompt">This application requires the .NET Framework version 4.5 which is not currently installed. You will need to restart the setup process after you install it. Would you like to download and install it now?</String>
 </WixLocalization>

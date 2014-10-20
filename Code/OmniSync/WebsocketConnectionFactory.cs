@@ -28,7 +28,7 @@
         {
             IWampChannel<JToken> channel =
                 _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings[ConfigurationProperties.OmniSyncUrl]);
-            
+
             var websocketConnection = new WebsocketConnection(channel);
             
             return websocketConnection;
