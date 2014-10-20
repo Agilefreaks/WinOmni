@@ -8,6 +8,7 @@
     using System.Net;
     using System.Reactive.Linq;
     using System.Reflection;
+    using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
@@ -24,7 +25,9 @@
         private const string MSIExec = "msiexec.exe";
 
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
+
         private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
+
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
         private readonly UpdateManager _updateManager;
@@ -91,7 +94,8 @@
         public IObservable<bool> CreateUpdateAvailableObservable(TimeSpan updateCheckInterval)
         {
             var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval);
-            return timer.Select(_ => _updateManager.AreUpdatesAvailable().Select(__ => NewInstallerAvailable())).Switch();
+            return
+                timer.Select(_ => _updateManager.AreUpdatesAvailable().Select(__ => NewRemoteInstallerAvailable())).Switch();
         }
 
         public IObservable<bool> DownloadUpdates()
@@ -146,20 +150,39 @@
             }
         }
 
+        public bool NewLocalInstallerAvailable()
+        {
+            return File.Exists(MsiTemporaryPath) && MsiHasHigherVersion(MsiTemporaryPath);
+        }
+
         private static bool RemoteInstallerHasHigherVersion(FileUpdateTask installerUpdateTask)
         {
+            return VersionIsHigherThanOwn(installerUpdateTask.Version);
+        }
+
+        private static bool MsiHasHigherVersion(string msiPath)
+        {
+            return VersionIsHigherThanOwn(GetMsiVersion(msiPath));
+        }
+
+        private static bool VersionIsHigherThanOwn(string versionString)
+        {
             Version msiVersion;
-            Version.TryParse(installerUpdateTask.Version, out msiVersion);
+            Version.TryParse(versionString, out msiVersion);
             var exeVersion = Assembly.GetEntryAssembly().GetName().Version;
 
             return msiVersion > exeVersion;
         }
 
-        private bool NewInstallerAvailable()
+        private static string GetMsiVersion(string msiPath)
         {
-            var updateInstallerTask = GetUpdateInstallerTask();
+            string versionString;
+            using (var database = new Database(msiPath))
+            {
+                versionString = database.ExecuteScalar("SELECT `Value` FROM `Property` WHERE `Property` = '{0}'", "ProductVersion") as string;
+            }
 
-            return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
+            return versionString;
         }
 
         private void PrepareDownloadedInstaller()
@@ -187,6 +210,13 @@
             {
                 _systemIdleObserver.Dispose();
             }
+        }
+
+        private bool NewRemoteInstallerAvailable()
+        {
+            var updateInstallerTask = GetUpdateInstallerTask();
+
+            return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
         }
     }
 }
