@@ -4,10 +4,12 @@
 
     public interface IUpdaterService
     {
-        IObservable<int> CheckForUpdatesPeriodically();
+        IObservable<bool> CreateUpdateReadyObservable(TimeSpan updateCheckInterval);
 
         bool CheckIfUpdatesAvailable();
 
         void ApplyUpdate();
+
+        void ApplyUpdateWhenIdle(TimeSpan idleTimeSpan);
     }
 }
