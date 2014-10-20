@@ -9,7 +9,7 @@
     public class SystemIdleService : ISystemIdleService
     {
         private static readonly TimeSpan InitialWaitTime = TimeSpan.Zero;
-        private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(10);
+        private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(1);
 
         public IObservable<bool> CreateSystemIdleObservable(TimeSpan idleThreshHold)
         {
@@ -20,19 +20,23 @@
 
         private static TimeSpan GetIdleTime()
         {
-            return TimeSpan.FromTicks(GetIdleTimeInTicks());
+            var idleTimeInTicks = GetIdleTimeInMilliseconds();
+            var fromTicks = TimeSpan.FromMilliseconds(idleTimeInTicks);
+
+            return fromTicks;
+
         }
 
-        private static long GetIdleTimeInTicks()
+        private static long GetIdleTimeInMilliseconds()
         {
             var lastInputInfo = new LastInputInfo();
-            lastInputInfo.CbSize = Convert.ToUInt32((Marshal.SizeOf(lastInputInfo)));
+            lastInputInfo.CbSize = Convert.ToUInt32(Marshal.SizeOf(lastInputInfo));
             if (!User32.GetLastInputInfo(ref lastInputInfo))
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
-            return Convert.ToUInt32(Environment.TickCount) - lastInputInfo.DwTime;
+            return Environment.TickCount - lastInputInfo.DwTime;
         }
     }
 }
