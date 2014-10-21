@@ -20,11 +20,7 @@
 
         private static TimeSpan GetIdleTime()
         {
-            var idleTimeInTicks = GetIdleTimeInMilliseconds();
-            var fromTicks = TimeSpan.FromMilliseconds(idleTimeInTicks);
-
-            return fromTicks;
-
+            return TimeSpan.FromMilliseconds(GetIdleTimeInMilliseconds());
         }
 
         private static long GetIdleTimeInMilliseconds()
