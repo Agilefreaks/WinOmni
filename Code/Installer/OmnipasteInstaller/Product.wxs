@@ -33,6 +33,7 @@
     <util:CloseApplication Id="CloseApplication"
                        Target="$(var.ExeProcessName)"
                        EndSessionMessage="yes"
+                       Timeout="15"
                        RebootPrompt="no"/>
 
     <WixVariable Id="WixUIBannerBmp" Value="$(var.ResourcesDir)\banner.bmp" />
