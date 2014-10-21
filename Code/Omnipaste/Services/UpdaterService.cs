@@ -114,12 +114,7 @@
 
         public IObservable<bool> DownloadUpdates()
         {
-            return _updateManager.DownloadUpdates().Select(
-                couldDownloadUpdates =>
-                {
-                    if (couldDownloadUpdates) PrepareDownloadedInstaller();
-                    return couldDownloadUpdates;
-                });
+            return _updateManager.DownloadUpdates(PrepareDownloadedInstaller);
         }
 
         public void InstallNewVersionWhenIdle(TimeSpan systemIdleThreshold)
