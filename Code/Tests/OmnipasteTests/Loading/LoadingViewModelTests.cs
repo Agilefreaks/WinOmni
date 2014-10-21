@@ -6,6 +6,7 @@
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
@@ -24,6 +25,8 @@
 
         private Mock<IAndroidInstallGuideViewModel> _mockAndroidInstallGuideViewModel;
 
+        private LoadingViewModel _instance;
+
         [SetUp]
         public void SetUp()
         {
@@ -31,12 +34,13 @@
             _mockUserTokenViewModel = new Mock<IUserTokenViewModel>();
             _mockActivationFailedViewModel = new Mock<IActivationFailedViewModel>();
             _mockAndroidInstallGuideViewModel = new Mock<IAndroidInstallGuideViewModel>();
-            _subject = new LoadingViewModel(_eventAggregator)
-                           {
-                               UserTokenViewModel = _mockUserTokenViewModel.Object,
-                               ActivationFailedViewModel = _mockActivationFailedViewModel.Object,
-                               AndroidInstallGuideViewModel = _mockAndroidInstallGuideViewModel.Object
-                           };
+            _instance = new LoadingViewModel(_eventAggregator)
+                            {
+                                UserTokenViewModel = _mockUserTokenViewModel.Object,
+                                ActivationFailedViewModel = _mockActivationFailedViewModel.Object,
+                                AndroidInstallGuideViewModel = _mockAndroidInstallGuideViewModel.Object
+                            };
+            _subject = _instance;
             var parent = new DialogViewModel();
             parent.ActivateItem(_subject);
         }
@@ -64,12 +68,34 @@
         }
 
         [Test]
+        public void Handle_GetTokenFromUser_SendsAShowShellMessage()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            _instance.EventAggregator = mockEventAggregator.Object;
+
+            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage());
+
+            mockEventAggregator.Verify(x => x.Publish(It.IsAny<ShowShellMessage>(), It.IsAny<System.Action<System.Action>>()));
+        }
+
+        [Test]
         public void Handle_ActivationFailed_SetsStateToOtherAndActiveItem()
         {
             _eventAggregator.PublishOnCurrentThread(new ActivationFailedMessage());
 
             _subject.State.Should().Be(LoadingViewModelStateEnum.Other);
             _subject.ActiveItem.Should().Be(_mockActivationFailedViewModel.Object);
+        }
+
+        [Test]
+        public void Handle_ActivationFailed_SendsAShowShellMessage()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            _instance.EventAggregator = mockEventAggregator.Object;
+
+            _eventAggregator.PublishOnCurrentThread(new ActivationFailedMessage());
+
+            mockEventAggregator.Verify(x => x.Publish(It.IsAny<ShowShellMessage>(), It.IsAny<System.Action<System.Action>>()));
         }
 
         [Test]
@@ -90,6 +116,17 @@
 
             _subject.State.Should().Be(LoadingViewModelStateEnum.Other);
             _subject.ActiveItem.Should().Be(_mockAndroidInstallGuideViewModel.Object);
+        }
+
+        [Test]
+        public void Handle_ShowAndroidInstallGuide_SendsAShowShellMessage()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            _instance.EventAggregator = mockEventAggregator.Object;
+
+            _eventAggregator.PublishOnCurrentThread(new GetTokenFromUserMessage());
+
+            mockEventAggregator.Verify(x => x.Publish(It.IsAny<ShowShellMessage>(), It.IsAny<System.Action<System.Action>>()));
         }
     }
 }

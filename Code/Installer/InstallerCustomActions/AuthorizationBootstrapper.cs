@@ -11,7 +11,9 @@
         public static void StartApp(string targetPath, string msiFileName)
         {
             var authorizationKey = ExtractAuthorizationKey(msiFileName);
-            var arguments = string.Format("-authorizationKey={0}", authorizationKey);
+            var arguments = string.IsNullOrWhiteSpace(authorizationKey)
+                                ? " -minimized"
+                                : string.Format("-authorizationKey={0}", authorizationKey);
             Process.Start(new ProcessStartInfo(targetPath) { Arguments = arguments });
         }
 
