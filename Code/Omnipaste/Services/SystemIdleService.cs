@@ -8,8 +8,15 @@
 
     public class SystemIdleService : ISystemIdleService
     {
+        #region Static Fields
+
         private static readonly TimeSpan InitialWaitTime = TimeSpan.Zero;
+
         private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(1);
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public IObservable<bool> CreateSystemIdleObservable(TimeSpan idleThreshHold)
         {
@@ -17,6 +24,10 @@
 
             return timer.Select(_ => GetIdleTime() > idleThreshHold);
         }
+
+        #endregion
+
+        #region Methods
 
         private static TimeSpan GetIdleTime()
         {
@@ -34,5 +45,7 @@
 
             return Environment.TickCount - lastInputInfo.DwTime;
         }
+
+        #endregion
     }
 }
