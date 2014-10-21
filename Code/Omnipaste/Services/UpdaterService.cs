@@ -8,6 +8,7 @@
     using System.Net;
     using System.Reactive.Linq;
     using System.Reflection;
+    using BugFreak;
     using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
@@ -91,11 +92,24 @@
             _updateManager.ReinstateIfRestarted();
         }
 
-        public IObservable<bool> CreateUpdateAvailableObservable(TimeSpan updateCheckInterval)
+        public void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null)
+        {
+            updateCheckInterval = updateCheckInterval ?? _updateCheckInterval;
+            systemIdleThreshold = systemIdleThreshold ?? _systemIdleThreshold;
+            AreUpdatesAvailable(updateCheckInterval.Value)
+                .Where(updateAvailable => updateAvailable)
+                .Select(_ => DownloadUpdates())
+                .Switch()
+                .CatchAndReport()
+                .Where(couldDownloadUpdates => couldDownloadUpdates)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(_ => InstallNewVersionWhenIdle(systemIdleThreshold.Value));
+        }
+
+        public IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval)
         {
             var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval);
-            return
-                timer.Select(_ => _updateManager.AreUpdatesAvailable().Select(__ => NewRemoteInstallerAvailable())).Switch();
+            return timer.Select(_ => _updateManager.AreUpdatesAvailable(NewRemoteInstallerAvailable)).Switch();
         }
 
         public IObservable<bool> DownloadUpdates()
@@ -106,20 +120,6 @@
                     if (couldDownloadUpdates) PrepareDownloadedInstaller();
                     return couldDownloadUpdates;
                 });
-        }
-
-        public void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null)
-        {
-            updateCheckInterval = updateCheckInterval ?? _updateCheckInterval;
-            systemIdleThreshold = systemIdleThreshold ?? _systemIdleThreshold;
-            CreateUpdateAvailableObservable(updateCheckInterval.Value)
-                .Where(updateAvailable => updateAvailable)
-                .Select(_ => DownloadUpdates())
-                .Switch()
-                .CatchAndReport()
-                .Where(couldDownloadUpdates => couldDownloadUpdates)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(_ => InstallNewVersionWhenIdle(systemIdleThreshold.Value));
         }
 
         public void InstallNewVersionWhenIdle(TimeSpan systemIdleThreshold)

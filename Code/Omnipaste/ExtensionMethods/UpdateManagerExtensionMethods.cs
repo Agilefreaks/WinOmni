@@ -42,25 +42,26 @@
 
         }
 
-        public static IObservable<bool> AreUpdatesAvailable(this UpdateManager updateManager)
+        public static IObservable<bool> AreUpdatesAvailable(this UpdateManager updateManager, Func<bool> updateAvailableCheck = null)
         {
+            updateAvailableCheck = updateAvailableCheck ?? (() => updateManager.UpdatesAvailable > 0);
             return Observable.Create<bool>(
                 observer =>
                 {
                     try
                     {
                         var autoResetEvent = new AutoResetEvent(false);
-                        var couldCheckForUpdates = false;
+                        var updatesAvailable = false;
                         updateManager.BeginCheckForUpdates(
                             asyncResult =>
-                            {
-                                couldCheckForUpdates = asyncResult.CompleteSafely();
-                                autoResetEvent.Set();
-                            },
+                                {
+                                    updatesAvailable = asyncResult.CompleteSafely() && updateAvailableCheck();
+                                    autoResetEvent.Set();
+                                },
                             null);
                         autoResetEvent.WaitOne();
 
-                        observer.OnNext(couldCheckForUpdates);
+                        observer.OnNext(updatesAvailable);
                     }
                     catch (Exception exception)
                     {

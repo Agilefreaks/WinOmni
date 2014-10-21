@@ -6,7 +6,7 @@
     {
         void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null);
 
-        IObservable<bool> CreateUpdateAvailableObservable(TimeSpan updateCheckInterval);
+        IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 
         IObservable<bool> DownloadUpdates();
 
