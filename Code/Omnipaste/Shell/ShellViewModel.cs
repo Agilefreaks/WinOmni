@@ -199,19 +199,12 @@
 
         private void Configure()
         {
-            if (UpdaterService.NewLocalInstallerAvailable())
-            {
-                UpdaterService.InstallNewVersion();
-            }
-            else
-            {
-                DialogViewModel.ActivateItem(LoadingViewModel.Loading());
+            DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
-                ActivationService.Run()
-                    .SubscribeOn(Scheduler.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(OnActivationFinished, OnActivationFailed);
-            }
+            ActivationService.Run()
+                .SubscribeOn(Scheduler.Default)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(OnActivationFinished, OnActivationFailed);
         }
 
         private void OnActivationFailed(Exception exception)

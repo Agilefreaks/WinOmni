@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection;
     using BugFreak;
@@ -180,15 +181,24 @@
 
         public void Start()
         {
-            _updateObserver =
-                AreUpdatesAvailable(_updateCheckInterval)
-                    .Where(updateAvailable => updateAvailable)
-                    .Select(_ => DownloadUpdates())
-                    .Switch()
-                    .CatchAndReport()
-                    .Where(couldDownloadUpdates => couldDownloadUpdates)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+            if (NewLocalInstallerAvailable())
+            {
+                InstallNewVersion();
+                _updateObserver = Disposable.Empty;
+            }
+            else
+            {
+                CleanTemporaryFiles();
+                _updateObserver =
+                    AreUpdatesAvailable(_updateCheckInterval)
+                        .Where(updateAvailable => updateAvailable)
+                        .Select(_ => DownloadUpdates())
+                        .Switch()
+                        .CatchAndReport()
+                        .Where(couldDownloadUpdates => couldDownloadUpdates)
+                        .ObserveOn(SchedulerProvider.Dispatcher)
+                        .Subscribe(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+            }
         }
 
         public void Stop()
@@ -257,7 +267,6 @@
 
         private void PrepareDownloadedInstaller()
         {
-            CleanTemporaryFiles();
             var updateInstallerTask = GetUpdateInstallerTask();
             _updateManager.ApplyUpdates(false);
             Directory.CreateDirectory(InstallerTemporaryFolder);
