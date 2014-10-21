@@ -35,6 +35,8 @@
 
         private IDisposable _systemIdleObserver;
 
+        private IDisposable _updateObserver;
+
         public ISystemIdleService SystemIdleService { get; set; }
 
         protected static string RootDirectory
@@ -90,20 +92,6 @@
             _updateManager = UpdateManager.Instance;
             _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
             _updateManager.ReinstateIfRestarted();
-        }
-
-        public void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null)
-        {
-            updateCheckInterval = updateCheckInterval ?? _updateCheckInterval;
-            systemIdleThreshold = systemIdleThreshold ?? _systemIdleThreshold;
-            AreUpdatesAvailable(updateCheckInterval.Value)
-                .Where(updateAvailable => updateAvailable)
-                .Select(_ => DownloadUpdates())
-                .Switch()
-                .CatchAndReport()
-                .Where(couldDownloadUpdates => couldDownloadUpdates)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(_ => InstallNewVersionWhenIdle(systemIdleThreshold.Value));
         }
 
         public IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval)
@@ -230,6 +218,23 @@
             var updateInstallerTask = GetUpdateInstallerTask();
 
             return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
+        }
+
+        public void Start()
+        {
+            _updateObserver = AreUpdatesAvailable(_updateCheckInterval)
+                .Where(updateAvailable => updateAvailable)
+                .Select(_ => DownloadUpdates())
+                .Switch()
+                .CatchAndReport()
+                .Where(couldDownloadUpdates => couldDownloadUpdates)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .Subscribe(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+        }
+
+        public void Stop()
+        {
+            _updateObserver.Dispose();
         }
     }
 }

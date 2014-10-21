@@ -206,8 +206,6 @@
                     .SubscribeOn(Scheduler.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .Subscribe(OnActivationFinished, OnActivationFailed);
-
-                UpdaterService.SetupAutoUpdate();   
             }
         }
 
