@@ -172,7 +172,7 @@
         {
             if (_view != null)
             {
-                _view.Show();
+                _view.Dispatcher.Invoke(_view.Show);
             }
         }
 

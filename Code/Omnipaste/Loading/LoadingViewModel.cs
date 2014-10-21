@@ -3,6 +3,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.UserToken;
@@ -51,12 +52,6 @@
         [Inject]
         public IAndroidInstallGuideViewModel AndroidInstallGuideViewModel { get; set; }
 
-        public ILoadingViewModel Loading()
-        {
-            State = LoadingViewModelStateEnum.Loading;
-            return this;
-        }
-
         [Inject]
         public IActivationFailedViewModel ActivationFailedViewModel { get; set; }
 
@@ -64,12 +59,19 @@
 
         #region Public Methods and Operators
 
+        public ILoadingViewModel Loading()
+        {
+            State = LoadingViewModelStateEnum.Loading;
+            return this;
+        }
+
         public void Handle(GetTokenFromUserMessage publishedEvent)
         {
             UserTokenViewModel.Message = publishedEvent.Message;
             ActiveItem = UserTokenViewModel;
 
             State = LoadingViewModelStateEnum.Other;
+            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
         }
 
         public void Handle(TokenRequestResultMessage publishedEvent)
@@ -83,12 +85,14 @@
             ActivationFailedViewModel.Exception = activationFailedMessage.Exception;
             ActiveItem = ActivationFailedViewModel;
             State = LoadingViewModelStateEnum.Other;
+            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
         }
 
         public void Handle(ShowAndroidInstallGuideMessage message)
         {
             ActiveItem = AndroidInstallGuideViewModel;
             State = LoadingViewModelStateEnum.Other;
+            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
         }
 
         public void Handle(AndroidInstallationCompleteMessage message)
