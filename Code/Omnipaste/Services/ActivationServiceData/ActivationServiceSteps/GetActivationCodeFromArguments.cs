@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
-    using Omnipaste.DataProviders;
+    using OmniCommon.DataProviders;
 
     public class GetActivationCodeFromArguments : ActivationStepBase
     {
