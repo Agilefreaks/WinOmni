@@ -15,6 +15,7 @@
     using Omni;
     using OmniApi;
     using OmniCommon;
+    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
@@ -29,7 +30,21 @@
 
     public class OmnipasteBootstrapper : BootstrapperBase
     {
+        private const string MinimizedParameter = "-minimized";
+
         #region Fields
+
+        private readonly Dictionary<string, object> _normalViewStartOptions = new Dictionary<string, object>
+            {
+                { "WindowState", WindowState.Normal },
+                { "ShowInTaskbar", true }
+            };
+        
+        private readonly Dictionary<string, object> _minimizedViewStartOptions = new Dictionary<string, object>
+            {
+                { "WindowState", WindowState.Minimized },
+                { "ShowInTaskbar", false }
+            };
 
         private IKernel _kernel;
 
@@ -111,9 +126,13 @@
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            var argumentsDataProvider = _kernel.Get<IArgumentsDataProvider>();
+            var viewSettings = argumentsDataProvider.Minimized ? _minimizedViewStartOptions : _normalViewStartOptions;
+
             base.OnStartup(sender, e);
 
-            DisplayRootViewFor<ShellViewModel>();
+            DisplayRootViewFor<ShellViewModel>(viewSettings);
+
             BugFreak.Hook(
                 ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakApiKey],
                 ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakToken],

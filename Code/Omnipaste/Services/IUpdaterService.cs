@@ -1,11 +1,10 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
+    using Ninject;
 
-    public interface IUpdaterService
+    public interface IUpdaterService : IStartable
     {
-        void SetupAutoUpdate(TimeSpan? updateCheckInterval = null, TimeSpan? systemIdleThreshold = null);
-
         IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 
         IObservable<bool> DownloadUpdates();

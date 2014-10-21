@@ -172,7 +172,12 @@
         {
             if (_view != null)
             {
-                _view.Show();
+                _view.Dispatcher.Invoke(() =>
+                {
+                    _view.Show();
+                    _view.WindowState = WindowState.Normal;
+                    _view.ShowInTaskbar = true;
+                });
             }
         }
 
@@ -206,8 +211,6 @@
                     .SubscribeOn(Scheduler.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .Subscribe(OnActivationFinished, OnActivationFailed);
-
-                UpdaterService.SetupAutoUpdate();   
             }
         }
 
