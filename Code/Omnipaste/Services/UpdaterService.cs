@@ -139,7 +139,14 @@
 
         public void InstallNewVersion()
         {
-            Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
+            try
+            {
+                Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+            }
         }
 
         public void CleanTemporaryFiles()
@@ -152,7 +159,18 @@
 
         public bool NewLocalInstallerAvailable()
         {
-            return File.Exists(MsiTemporaryPath) && MsiHasHigherVersion(MsiTemporaryPath);
+            bool result;
+            try
+            {
+                result = File.Exists(MsiTemporaryPath) && MsiHasHigherVersion(MsiTemporaryPath);
+            }
+            catch (Exception exception)
+            {
+                result = false;
+                ReportingService.Instance.BeginReport(exception);
+            }
+
+            return result;
         }
 
         private static bool RemoteInstallerHasHigherVersion(FileUpdateTask installerUpdateTask)
