@@ -288,4 +288,10 @@
   <data name="ExceptionDuringAuthentication" xml:space="preserve">
     <value>Excepção encontrada ao validar código de autenticação</value>
   </data>
+  <data name="OtherInstanceRunning" xml:space="preserve">
+    <value>Outra instância já está em execução. Verifique o ícone de bandeja.</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Aviso</value>
+  </data>
 </root>

@@ -5,20 +5,45 @@
 
     public class SingleInstanceApp : IDisposable
     {
+        #region Static Fields
+
+        private static readonly TimeSpan DefaultAcquireMutexTimeout = TimeSpan.FromSeconds(2);
+
+        #endregion
+
+        #region Fields
+
         private readonly Mutex _mutex;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        private SingleInstanceApp(string uniqueId, TimeSpan acquireMutexTimeout)
+        {
+            _mutex = new Mutex(false, uniqueId);
+            // Wait a few seconds if contended, in case another instance
+            // of the program is still in the process of shutting down.
+            IsFirstInstance = _mutex.WaitOne(acquireMutexTimeout, false);
+        }
+
+        #endregion
+
+        #region Public Properties
 
         public bool IsFirstInstance { get; private set; }
 
-        private SingleInstanceApp(string uniqueId)
-        {
-            bool createdNew;
-            _mutex = new Mutex(true, uniqueId, out createdNew);
-            IsFirstInstance = createdNew;
-        }
+        #endregion
 
-        public static bool InitializeAsFirstInstance(string uniqueId, out SingleInstanceApp instance)
+        #region Public Methods and Operators
+
+        public static bool InitializeAsFirstInstance(
+            string uniqueId,
+            out SingleInstanceApp instance,
+            TimeSpan? acquireMutexTimeout = null)
         {
-            instance = new SingleInstanceApp(uniqueId);
+            acquireMutexTimeout = acquireMutexTimeout ?? DefaultAcquireMutexTimeout;
+            instance = new SingleInstanceApp(uniqueId, acquireMutexTimeout.Value);
 
             return instance.IsFirstInstance;
         }
@@ -30,5 +55,7 @@
                 _mutex.Close();
             }
         }
+
+        #endregion
     }
 }

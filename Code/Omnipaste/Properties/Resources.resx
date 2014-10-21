@@ -288,4 +288,10 @@
   <data name="ExceptionDuringAuthentication" xml:space="preserve">
     <value>Exception encountered while validating authentication code</value>
   </data>
+  <data name="OtherInstanceRunning" xml:space="preserve">
+    <value>Another instance is already running. Check for the tray icon.</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

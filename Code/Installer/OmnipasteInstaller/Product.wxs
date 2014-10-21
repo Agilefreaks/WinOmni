@@ -32,7 +32,7 @@
 
     <util:CloseApplication Id="CloseApplication"
                        Target="$(var.ExeProcessName)"
-                       EndSessionMessage="yes"
+                       CloseMessage="yes"
                        Timeout="15"
                        RebootPrompt="no"/>
 
