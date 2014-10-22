@@ -125,9 +125,16 @@
 
         public void CleanTemporaryFiles()
         {
-            if (Directory.Exists(InstallerTemporaryFolder))
+            try
             {
-                Directory.Delete(InstallerTemporaryFolder, true);
+                if (Directory.Exists(InstallerTemporaryFolder))
+                {
+                    Directory.Delete(InstallerTemporaryFolder, true);
+                }
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
             }
         }
 
@@ -140,7 +147,12 @@
         {
             try
             {
-                Process.Start(MSIExec, string.Format("/i {0} /qn", MsiTemporaryPath));
+                Process.Start(new ProcessStartInfo
+                                  {
+                                      FileName = MSIExec, 
+                                      Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
+                                      WorkingDirectory = InstallerTemporaryFolder
+                                  });
             }
             catch (Exception exception)
             {
@@ -267,12 +279,20 @@
 
         private void PrepareDownloadedInstaller()
         {
-            var updateInstallerTask = GetUpdateInstallerTask();
-            _updateManager.ApplyUpdates(false);
-            Directory.CreateDirectory(InstallerTemporaryFolder);
-            //Move new msi to a temp file as the app directory might get uninstalled
-            var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
-            File.Copy(installerPath, MsiTemporaryPath);
+            try
+            {
+                var updateInstallerTask = GetUpdateInstallerTask();
+                _updateManager.ApplyUpdates(false);
+                Directory.CreateDirectory(InstallerTemporaryFolder);
+                //Move new msi to a temp file as the app directory might get uninstalled
+                var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
+                File.Copy(installerPath, MsiTemporaryPath);
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+                throw;
+            }
         }
 
         #endregion

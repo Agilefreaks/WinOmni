@@ -3,16 +3,6 @@
   <?include $(sys.CURRENTDIR)Includes\OmnipasteVariables.wxi ?>
 
   <Fragment>
-    <CustomAction Id='AssignCustomActionDataForBootstrap'
-                  Property='StartAppWithAuthorizationKey'
-                  Value='OriginalDatabase=[OriginalDatabase];TargetDir=[INSTALLFOLDER];Target=$(var.ExeProcessName)'/>
-
-    <CustomAction Id='StartAppWithAuthorizationKey'
-                  BinaryKey='InstallerCustomActions'
-                  DllEntry='StartAppWithAuthorizationKey'
-                  Return='check'
-                  Execute='commit'/>
-    
     <CustomAction Id='AssignCustomActionDataForUnistallClickOnce'
                   Property='UninstallClickOnce'
                   Value='ProductName=$(var.ProductName);PublisherName=$(var.ManufacturerName)'/>
@@ -27,5 +17,11 @@
 
     <CustomAction Id="PrepareNetFrameworkDownload" Property="WixShellExecTarget" Value="http://www.microsoft.com/en-us/download/confirmation.aspx?id=30653" />
     <CustomAction Id="LaunchBrowser" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="ignore" />
+    
+    <CustomAction Id='SetStartAppArguments' BinaryKey='InstallerCustomActions' DllEntry='SetStartArguments' Return='check'/>
+    
+    <CustomAction Id='SetAppToStart' Property='APPLICATIONTOSTART' Value='[INSTALLFOLDER]$(var.ExeProcessName)'/>
+    
+    <CustomAction Id='LaunchApplication' Property='APPLICATIONTOSTART' ExeCommand='[STARTAPPARGUMENTS]' Return='asyncNoWait' />
   </Fragment>
 </Wix>

@@ -2,27 +2,21 @@
 {
     using CustomizedClickOnce.Common;
 
-    public class RemoveShortcutFromStartupTask : IMigrationTask
+    public class RemoveShortcutFromStartupTask : MigrationTaskBase
     {
         private readonly IClickOnceHelper _clickOnceHelper;
 
         public RemoveShortcutFromStartupTask(IClickOnceHelper clickOnceHelper)
+            : base(MigrationStepResultEnum.Success)
         {
             _clickOnceHelper = clickOnceHelper;
         }
 
-        public MigrationStepResultEnum Execute()
+        protected override MigrationStepResultEnum ExecuteCore()
         {
-            try
-            {
-                _clickOnceHelper.RemoveShortcutFromStartup();
-            }
-            catch
-            {
-            }
+            _clickOnceHelper.RemoveShortcutFromStartup();
 
             return MigrationStepResultEnum.Success;
         }
- 
     }
 }

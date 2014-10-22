@@ -32,7 +32,7 @@
     <?define ProductName="Omnipaste" ?>
   <?endif ?>
   
-  <?define ExeProcessName="Omnipaste.exe"?>
+  <?define ExeProcessName="$(var.ProductName).exe"?>
 
   <?define ManufacturerName="Omnipaste"?>
 </Include>

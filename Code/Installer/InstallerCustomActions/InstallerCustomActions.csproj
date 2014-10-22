@@ -75,9 +75,9 @@
       <Link>ClickOnceHelper\IClickOnceHelper.cs</Link>
     </Compile>
     <Compile Include="AuthorizationBootstrapper.cs" />
-    <Compile Include="ClickOnceMigration\CloseRunningInstanceTask.cs" />
     <Compile Include="ClickOnceMigration\IMigrationTask.cs" />
     <Compile Include="ClickOnceMigration\MigrationStepResultEnum.cs" />
+    <Compile Include="ClickOnceMigration\MigrationTaskBase.cs" />
     <Compile Include="ClickOnceMigration\RemoveShortcutFromStartupTask.cs" />
     <Compile Include="ClickOnceMigration\RestoreOriginalUninstallerTask.cs" />
     <Compile Include="ClickOnceMigration\UninstallClickOnceTask.cs" />

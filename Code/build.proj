@@ -30,6 +30,6 @@
 	</ItemGroup>
 
   <Target Name="All">
-  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration);revision=$(revision)" />
+  	<MSBuild Projects="Omnipaste.sln" Targets="Clean;Build" Properties="Configuration=$(Configuration);revision=$(revision);PublishAssemblyName=$(PublishAssemblyName)" />
   </Target>
 </Project>

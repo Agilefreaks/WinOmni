@@ -1,21 +1,11 @@
 ﻿namespace InstallerCustomActions
 {
-    using System.Diagnostics;
     using System.IO;
     using System.Text.RegularExpressions;
 
     public class AuthorizationBootstrapper
     {
         private static readonly Regex AuthorizationKeyRegex = new Regex(@"^(.*)(\d{6})$");
-
-        public static void StartApp(string targetPath, string msiFileName)
-        {
-            var authorizationKey = ExtractAuthorizationKey(msiFileName);
-            var arguments = string.IsNullOrWhiteSpace(authorizationKey)
-                                ? " -minimized"
-                                : string.Format("-authorizationKey={0}", authorizationKey);
-            Process.Start(new ProcessStartInfo(targetPath) { Arguments = arguments });
-        }
 
         public static string ExtractAuthorizationKey(string msiFileName)
         {

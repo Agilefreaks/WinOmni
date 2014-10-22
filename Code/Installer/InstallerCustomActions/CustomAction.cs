@@ -9,26 +9,6 @@
     public class CustomActions
     {
         [CustomAction]
-        public static ActionResult StartAppWithAuthorizationKey(Session session)
-        {
-            var result = ActionResult.Success;
-            try
-            {
-                var targetDir = session.CustomActionData["TargetDir"];
-                var target = session.CustomActionData["Target"];
-                var msiFileName = session.CustomActionData["OriginalDatabase"];
-                AuthorizationBootstrapper.StartApp(Path.Combine(targetDir, target), msiFileName);
-            }
-            catch (Exception exception)
-            {
-                session.Log(exception.ToString());
-                result = ActionResult.Failure;
-            }
-
-            return result;
-        }
-
-        [CustomAction]
         public static ActionResult UninstallClickOnce(Session session)
         {
             ActionResult result;
@@ -45,6 +25,7 @@
                     }
                     else
                     {
+                        session.Log(CustomizedClickOnceUninstaller.LastException ?? string.Empty);
                         throw new Exception("Could not migrate existing click once application. Failed with: " + migrationResult);
                     }
                                  
@@ -54,6 +35,28 @@
                     session.Log("No existing ClickOnce installation found");
                     result = ActionResult.NotExecuted;
                 }
+            }
+            catch (Exception exception)
+            {
+                session.Log(exception.ToString());
+                result = ActionResult.Failure;
+            }
+
+            return result;
+        }
+
+        [CustomAction]
+        public static ActionResult SetStartArguments(Session session)
+        {
+            var result = ActionResult.Success;
+            try
+            {
+                var msiFileName = session["OriginalDatabase"];
+                var authorizationKey = AuthorizationBootstrapper.ExtractAuthorizationKey(msiFileName);
+                var arguments = string.IsNullOrWhiteSpace(authorizationKey)
+                                    ? " -minimized"
+                                    : string.Format("-authorizationKey={0}", authorizationKey);
+                session["STARTAPPARGUMENTS"] = arguments;
             }
             catch (Exception exception)
             {

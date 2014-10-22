@@ -2,32 +2,19 @@
 {
     using CustomizedClickOnce.Common;
 
-    public class RestoreOriginalUninstallerTask : IMigrationTask
+    public class RestoreOriginalUninstallerTask : MigrationTaskBase
     {
         private readonly IClickOnceHelper _clickOnceHelper;
 
         public RestoreOriginalUninstallerTask(IClickOnceHelper clickOnceHelper)
+            : base(MigrationStepResultEnum.RestoreOriginalUninstallerError)
         {
             _clickOnceHelper = clickOnceHelper;
         }
 
-        public MigrationStepResultEnum Execute()
+        protected override MigrationStepResultEnum ExecuteCore()
         {
-            var result = MigrationStepResultEnum.RestoreOriginalUninstallerError;
-
-            try
-            {
-                if (_clickOnceHelper.RestoreOriginalUninstaller())
-                {
-                    result = MigrationStepResultEnum.Success;
-                }
-            }
-            catch
-            {
-            }
-
-            return result;
+            return _clickOnceHelper.RestoreOriginalUninstaller() ? MigrationStepResultEnum.Success : StateOnFail;
         }
- 
     }
 }

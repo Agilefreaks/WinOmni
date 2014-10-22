@@ -2,35 +2,26 @@
 {
     using InstallerCustomActions.ClickOnceUninstaller;
 
-    public class UninstallClickOnceTask : IMigrationTask
+    public class UninstallClickOnceTask : MigrationTaskBase
     {
         private readonly string _applicationName;
 
         public UninstallClickOnceTask(string applicationName)
+            : base(MigrationStepResultEnum.UninstallClickOnceError)
         {
             _applicationName = applicationName;
         }
 
-        public MigrationStepResultEnum Execute()
+        protected override MigrationStepResultEnum ExecuteCore()
         {
-            var result = MigrationStepResultEnum.UninstallClickOnceError;
+            var uninstallInfo = UninstallInfo.Find(_applicationName);
 
-            try
-            {
-                var uninstallInfo = UninstallInfo.Find(_applicationName);
-                if (uninstallInfo != null)
-                {
-                    var uninstaller = new Uninstaller();
-                    uninstaller.Uninstall(uninstallInfo);
+            if (uninstallInfo == null) return MigrationStepResultEnum.UninstallClickOnceError;
 
-                    result = MigrationStepResultEnum.Success;
-                }
-            }
-            catch
-            {
-            }
+            var uninstaller = new Uninstaller();
+            uninstaller.Uninstall(uninstallInfo);
 
-            return result;
+            return MigrationStepResultEnum.Success;
         }
     }
 }
