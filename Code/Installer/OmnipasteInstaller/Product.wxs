@@ -54,7 +54,7 @@
       <Custom Action="SetUninstallSettingsData" Before="ValidateProductID">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <Custom Action="SetAppToStart" Before="InstallFinalize"/>
       <Custom Action="SetStartAppArguments" Before="InstallFinalize"/>
-      <Custom Action="LaunchApplication" After="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="LaunchApplication" After="InstallFinalize">(NOT Installed) AND (NOT UI_RAN)</Custom>
       <Custom Action="AssignCustomActionDataForUnistallClickOnce" Before="InstallFinalize"/>
       <Custom Action="UninstallClickOnce" After="AssignCustomActionDataForUnistallClickOnce">NOT Installed</Custom>
     </InstallExecuteSequence>

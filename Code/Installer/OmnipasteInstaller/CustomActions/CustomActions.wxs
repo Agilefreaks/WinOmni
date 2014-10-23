@@ -23,5 +23,7 @@
     <CustomAction Id='SetAppToStart' Property='APPLICATIONTOSTART' Value='[INSTALLFOLDER]$(var.ExeProcessName)'/>
     
     <CustomAction Id='LaunchApplication' Property='APPLICATIONTOSTART' ExeCommand='[STARTAPPARGUMENTS]' Return='asyncNoWait' />
+
+    <CustomAction Id="setUI_RAN" Property="UI_RAN" Value="1" />
   </Fragment>
 </Wix>
