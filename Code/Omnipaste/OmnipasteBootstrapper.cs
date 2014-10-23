@@ -30,8 +30,6 @@
 
     public class OmnipasteBootstrapper : BootstrapperBase
     {
-        private const string MinimizedParameter = "-minimized";
-
         #region Fields
 
         private readonly Dictionary<string, object> _normalViewStartOptions = new Dictionary<string, object>
@@ -130,12 +128,13 @@
             var viewSettings = argumentsDataProvider.Minimized ? _minimizedViewStartOptions : _normalViewStartOptions;
 
             base.OnStartup(sender, e);
+            var configurationService = _kernel.Get<IConfigurationService>();
 
             DisplayRootViewFor<ShellViewModel>(viewSettings);
 
             BugFreak.Hook(
-                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakApiKey],
-                ConfigurationManager.AppSettings[ConfigurationProperties.BugFreakToken],
+                configurationService[ConfigurationProperties.BugFreakApiKey],
+                configurationService[ConfigurationProperties.BugFreakToken],
                 Application.Current);
 
             SetupApplicationVersionLogging();

@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
-    using System.Configuration;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -15,6 +14,7 @@
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using OmniCommon.Interfaces;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
 
@@ -28,6 +28,8 @@
 
         private const string UpdateFeedFileName = "FeedBuilder.xml";
 
+        private const int DefaultUpdateIntervalInMinutes = 60;
+
         #endregion
 
         #region Fields
@@ -35,8 +37,6 @@
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
-
-        private readonly TimeSpan _updateCheckInterval = TimeSpan.FromMinutes(60);
 
         private readonly UpdateManager _updateManager;
 
@@ -48,44 +48,50 @@
 
         #region Constructors and Destructors
 
-        public UpdaterService(ISystemIdleService systemIdleService)
+        public UpdaterService(ISystemIdleService systemIdleService, IConfigurationService configurationService)
         {
             SystemIdleService = systemIdleService;
+            ConfigurationService = configurationService;
             _updateManager = UpdateManager.Instance;
             _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
             _updateManager.ReinstateIfRestarted();
+            UpdateCheckInterval = TimeSpan.FromMinutes(GetUpdateCheckInterval());
         }
 
         #endregion
 
         #region Public Properties
 
+        public TimeSpan UpdateCheckInterval { get; private set; }
+
         public ISystemIdleService SystemIdleService { get; set; }
+
+        public IConfigurationService ConfigurationService { get; set; }
 
         #endregion
 
         #region Properties
 
-        protected static string AppName
+        protected string AppName
         {
             get
             {
-                return ConfigurationManager.AppSettings[ConfigurationProperties.AppName];
+                return ConfigurationService[ConfigurationProperties.AppName];
             }
         }
 
-        protected static string FeedUrl
+        protected string FeedUrl
         {
             get
             {
                 return string.Format(
                     "{0}{1}",
-                    ConfigurationManager.AppSettings[ConfigurationProperties.UpdateSource],
+                    ConfigurationService[ConfigurationProperties.UpdateSource],
                     UpdateFeedFileName);
             }
         }
 
-        protected static string InstallerTemporaryFolder
+        protected string InstallerTemporaryFolder
         {
             get
             {
@@ -93,7 +99,7 @@
             }
         }
 
-        protected static string MsiTemporaryPath
+        protected string MsiTemporaryPath
         {
             get
             {
@@ -149,7 +155,7 @@
             {
                 Process.Start(new ProcessStartInfo
                                   {
-                                      FileName = MSIExec, 
+                                      FileName = MSIExec,
                                       Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
                                       WorkingDirectory = InstallerTemporaryFolder
                                   });
@@ -169,10 +175,10 @@
                     .Where(systemIsIdle => systemIsIdle)
                     .Subscribe(
                         _ =>
-                            {
-                                DisposeSystemIdleObserver();
-                                InstallNewVersion();
-                            });
+                        {
+                            DisposeSystemIdleObserver();
+                            InstallNewVersion();
+                        });
         }
 
         public bool NewLocalInstallerAvailable()
@@ -202,7 +208,7 @@
             {
                 CleanTemporaryFiles();
                 _updateObserver =
-                    AreUpdatesAvailable(_updateCheckInterval)
+                    AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => DownloadUpdates())
                         .Switch()
@@ -293,6 +299,18 @@
                 ReportingService.Instance.BeginReport(exception);
                 throw;
             }
+        }
+
+        private int GetUpdateCheckInterval()
+        {
+            int timeoutInMinutes;
+            var intervalSettingValue = ConfigurationService[ConfigurationProperties.UpdateInterval];
+            if (!int.TryParse(intervalSettingValue, out timeoutInMinutes))
+            {
+                timeoutInMinutes = DefaultUpdateIntervalInMinutes;
+            }
+
+            return timeoutInMinutes;
         }
 
         #endregion
