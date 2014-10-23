@@ -146,10 +146,7 @@
                 _view.Hide();
             }
 
-            if (ApplicationDeploymentHelper.IsClickOnceApplication && ApplicationDeployment.CurrentDeployment.IsFirstRun)
-            {
-                ContextMenuViewModel.ShowBaloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
-            }
+            ContextMenuViewModel.ShowBaloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
         }
 
         public void Closing(object sender, CancelEventArgs e)
@@ -222,10 +219,6 @@
             {
                 ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
                 MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
-#if !DEBUG
-
-                Close();
-#endif
 
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
                 _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
