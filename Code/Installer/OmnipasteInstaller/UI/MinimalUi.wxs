@@ -22,6 +22,7 @@
       
       <DialogRef Id="NetFRWDlg" />
 
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Order="1">NOT INSTALLED</Publish>
       <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 
       <InstallUISequence>
