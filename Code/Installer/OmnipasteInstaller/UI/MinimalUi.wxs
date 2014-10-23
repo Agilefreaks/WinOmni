@@ -22,12 +22,16 @@
       
       <DialogRef Id="NetFRWDlg" />
 
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="SetAppToStart" Order="1">NOT INSTALLED</Publish>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="SetStartAppArguments" Order="2">NOT INSTALLED</Publish>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Order="3">NOT INSTALLED</Publish>
       <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 
       <InstallUISequence>
         <Show Dialog="NetFRWDlg" After="AppSearch">
           (NOT Installed) AND (NOT DOTNETVERSION45FULL)
         </Show>
+        <Custom Action="setUI_RAN" Before="ProgressDlg"/>
         <Show Dialog="ProgressDlg" After="NetFRWDlg"/>
       </InstallUISequence>
 
