@@ -565,15 +565,15 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
-    <Content Include="Settings\debug.config">
+    <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Settings\release.config">
+    <Content Include="Settings\release.config" Condition=" $(Configuration) == 'release' OR $(Configuration) == 'Release'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Settings\staging.config">
+    <Content Include="Settings\staging.config" Condition=" $(Configuration) == 'staging' OR $(Configuration) == 'Staging'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
