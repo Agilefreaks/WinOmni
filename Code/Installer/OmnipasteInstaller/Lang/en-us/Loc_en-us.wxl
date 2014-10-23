@@ -6,4 +6,5 @@
   <String Id="No">Quit installation</String>
   <String Id="Installation">Installation</String>
   <String Id="NetFrameworkPrompt">This application requires the .NET Framework version 4.5 which is not currently installed. You will need to restart the setup process after you install it. Would you like to download and install it now?</String>
+  <String Id="ExitDialogDescription">Thank you for installing [ProductName]. Press finish to launch the application.</String>
 </WixLocalization>
