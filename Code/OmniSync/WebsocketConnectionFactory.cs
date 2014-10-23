@@ -3,6 +3,7 @@
     using System.Configuration;
     using Newtonsoft.Json.Linq;
     using OmniCommon;
+    using OmniCommon.Interfaces;
     using WampSharp;
 
     public class WebsocketConnectionFactory : IWebsocketConnectionFactory
@@ -11,13 +12,16 @@
 
         private readonly IWampChannelFactory<JToken> _wampChannelFactory;
 
+        private readonly IConfigurationService _configurationService;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public WebsocketConnectionFactory(IWampChannelFactory<JToken> wampChannelFactory)
+        public WebsocketConnectionFactory(IWampChannelFactory<JToken> wampChannelFactory, IConfigurationService configurationService)
         {
             _wampChannelFactory = wampChannelFactory;
+            _configurationService = configurationService;
         }
 
         #endregion
@@ -27,7 +31,7 @@
         public IWebsocketConnection Create()
         {
             IWampChannel<JToken> channel =
-                _wampChannelFactory.CreateChannel(ConfigurationManager.AppSettings[ConfigurationProperties.OmniSyncUrl]);
+                _wampChannelFactory.CreateChannel(_configurationService[ConfigurationProperties.OmniSyncUrl]);
 
             var websocketConnection = new WebsocketConnection(channel);
             
