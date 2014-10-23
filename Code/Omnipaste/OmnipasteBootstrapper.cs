@@ -124,13 +124,12 @@
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            base.OnStartup(sender, e);
+
             var argumentsDataProvider = _kernel.Get<IArgumentsDataProvider>();
             var viewSettings = argumentsDataProvider.Minimized ? _minimizedViewStartOptions : _normalViewStartOptions;
 
-            base.OnStartup(sender, e);
             var configurationService = _kernel.Get<IConfigurationService>();
-
-            DisplayRootViewFor<ShellViewModel>(viewSettings);
 
             BugFreak.Hook(
                 configurationService[ConfigurationProperties.BugFreakApiKey],
@@ -138,6 +137,8 @@
                 Application.Current);
 
             SetupApplicationVersionLogging();
+
+            DisplayRootViewFor<ShellViewModel>(viewSettings);
         }
 
         private void SetupApplicationVersionLogging()
