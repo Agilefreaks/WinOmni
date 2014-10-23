@@ -34,14 +34,14 @@
 
         private readonly Dictionary<string, object> _normalViewStartOptions = new Dictionary<string, object>
             {
-                { "WindowState", WindowState.Normal },
-                { "ShowInTaskbar", true }
+                { "ShowInTaskbar", true },
+                { "Visibility", Visibility.Visible }
             };
         
         private readonly Dictionary<string, object> _minimizedViewStartOptions = new Dictionary<string, object>
             {
-                { "WindowState", WindowState.Minimized },
-                { "ShowInTaskbar", false }
+                { "ShowInTaskbar", false },
+                { "Visibility", Visibility.Hidden }
             };
 
         private IKernel _kernel;

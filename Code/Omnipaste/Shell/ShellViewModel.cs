@@ -175,8 +175,8 @@
                 _view.Dispatcher.Invoke(() =>
                 {
                     _view.Show();
-                    _view.WindowState = WindowState.Normal;
                     _view.ShowInTaskbar = true;
+                    _view.Visibility = Visibility.Visible;
                 });
             }
         }
