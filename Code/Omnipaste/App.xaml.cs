@@ -1,9 +1,7 @@
 ﻿namespace Omnipaste
 {
     using System;
-    using System.Deployment.Application;
     using System.Windows;
-    using CustomizedClickOnce.Common;
 
     public partial class App
     {
@@ -20,23 +18,10 @@
             application.Run();
         }
 
-        private static void PerformFirstRunTasks()
-        {
-            if (!ApplicationDeploymentHelper.IsClickOnceApplication || !ApplicationDeployment.CurrentDeployment.IsFirstRun)
-            {
-                return;
-            }
-
-            var clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create());
-            clickOnceHelper.UpdateUninstallParameters();
-            clickOnceHelper.AddShortcutToStartup();
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             if (SingleInstanceApp.InitializeAsFirstInstance(Unique, out _singleInstance))
             {
-                PerformFirstRunTasks();
                 base.OnStartup(e);
             }
             else

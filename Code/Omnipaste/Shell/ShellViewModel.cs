@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Deployment.Application;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Windows;

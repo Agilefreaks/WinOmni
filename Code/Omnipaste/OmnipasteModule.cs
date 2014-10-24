@@ -9,7 +9,6 @@
     {
         public override void Load()
         {
-            Kernel.Bind<IApplicationDeploymentInfoProvider>().To<ApplicationDeploymentInfoProvider>();
             Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
             Kernel.Bind<IArgumentsProvider>().To<EnvironmentArgumentsProvider>();
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();
