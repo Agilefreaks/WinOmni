@@ -173,17 +173,12 @@
 
         public bool RestoreOriginalUninstaller()
         {
-            bool result = false;
+            if (!File.Exists(UninstallFilePath)) return true;
 
-            if (File.Exists(UninstallFilePath))
-            {
-                string uninstallString = File.ReadAllText(UninstallFilePath);
-                _uninstallRegistryKey.SetValue(UninstallString, uninstallString);
+            var uninstallString = File.ReadAllText(UninstallFilePath);
+            _uninstallRegistryKey.SetValue(UninstallString, uninstallString);
 
-                result = true;
-            }
-
-            return result;
+            return true;
         }
 
         public bool StartupShortcutExists()
