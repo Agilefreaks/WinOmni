@@ -24,6 +24,7 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Shell.DebugHeader;
     using Omnipaste.Shell.SettingsHeader;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
@@ -99,6 +100,8 @@
             }
         }
 
+        public IEventAggregator EventAggregator { get; set; }
+
         [Inject]
         public IActivationService ActivationService { get; set; }
 
@@ -113,8 +116,6 @@
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
-
-        public IEventAggregator EventAggregator { get; set; }
 
         [Inject]
         public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
@@ -133,6 +134,9 @@
 
         [Inject]
         public IUpdaterService UpdaterService { get; set; }
+
+        [Inject]
+        public IDebugHeaderViewModel DebugHeaderViewModel { get; set; }
 
         #endregion
 

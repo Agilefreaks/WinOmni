@@ -40,7 +40,7 @@
             ApplicationService.ShutDown();
         }
 
-    #endregion
+        #endregion
 
         #region Methods
 

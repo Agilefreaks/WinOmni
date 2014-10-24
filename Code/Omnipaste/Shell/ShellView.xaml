@@ -119,7 +119,7 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}" >
+        <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">
             <controls:FlyoutsControl.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type controls:Flyout}}" TargetType="{x:Type controls:Flyout}">
                     <Setter Property="Header" Value="{Binding Header}" />
@@ -136,7 +136,7 @@
         <controls:WindowCommands>
             <ContentControl cal:View.Model="{Binding SettingsHeaderViewModel}" />
             <ContentControl cal:View.Model="{Binding ConnectionViewModel}" />
-
+            <ContentControl cal:View.Model="{Binding DebugHeaderViewModel}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>

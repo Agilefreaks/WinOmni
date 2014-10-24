@@ -286,6 +286,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Debug {
+            get {
+                return ResourceManager.GetString("Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Access token empty in GetRemoteConfiguration.GetExecuteResult - Problem in the API.
         /// </summary>
         public static string EmptyTokenFromServer {
@@ -516,6 +525,15 @@ namespace Omnipaste.Properties {
         public static string ShellBallonTitle {
             get {
                 return ResourceManager.GetString("ShellBallonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate Notification.
+        /// </summary>
+        public static string SimulateNotification {
+            get {
+                return ResourceManager.GetString("SimulateNotification", resourceCulture);
             }
         }
         

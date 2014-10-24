@@ -219,6 +219,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shell\DebugHeader\DebugHeaderViewModel.cs" />
+    <Compile Include="Shell\DebugHeader\IDebugHeaderViewModel.cs" />
+    <Compile Include="Shell\Debug\DebugBarViewModel.cs" />
+    <Compile Include="Shell\Debug\IDebugBarViewModel.cs" />
     <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
@@ -441,6 +445,14 @@
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shell\DebugHeader\DebugHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shell\Debug\DebugBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SmsComposer\SmsComposerView.xaml">
       <SubType>Designer</SubType>

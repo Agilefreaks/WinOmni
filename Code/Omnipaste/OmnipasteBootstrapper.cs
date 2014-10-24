@@ -24,6 +24,7 @@
     using Omnipaste.Services;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
+    using Omnipaste.Shell.Debug;
     using Omnipaste.Shell.Settings;
     using OmniSync;
     using ViewLocator = Caliburn.Micro.ViewLocator;
@@ -66,7 +67,15 @@
 
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type> { typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel), typeof(NotificationViewModelFactory), typeof(ConnectivityHelper) };
+            var singletonViewModelTypes = new List<Type>
+                                              {
+                                                  typeof(ShellViewModel), 
+                                                  typeof(DialogViewModel), 
+                                                  typeof(SettingsViewModel), 
+                                                  typeof(NotificationViewModelFactory), 
+                                                  typeof(ConnectivityHelper),
+                                                  typeof(DebugBarViewModel)
+                                              };
             _kernel = new StandardKernel();
 
             SetupViewLocator();
@@ -96,6 +105,7 @@
                     .Configure(c => c.InSingletonScope()));
 
             _kernel.Bind<IFlyoutViewModel>().ToConstant(_kernel.Get<ISettingsViewModel>());
+            _kernel.Bind<IFlyoutViewModel>().ToConstant(_kernel.Get<IDebugBarViewModel>());
 
             _kernel.Bind(
                 configure =>
