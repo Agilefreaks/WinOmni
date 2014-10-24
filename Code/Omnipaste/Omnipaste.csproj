@@ -609,6 +609,10 @@
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OmniDebug\OmniDebug.csproj">
+      <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
+      <Name>OmniDebug</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>

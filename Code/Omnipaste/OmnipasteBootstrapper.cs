@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -17,6 +16,7 @@
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
+    using OmniDebug;
     using Omnipaste.Dialog;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Attributes;
@@ -104,8 +104,8 @@
                     .BindDefaultInterface()
                     .Configure(c => c.InSingletonScope()));
 
-            _kernel.Bind<IFlyoutViewModel>().ToConstant(_kernel.Get<ISettingsViewModel>());
-            _kernel.Bind<IFlyoutViewModel>().ToConstant(_kernel.Get<IDebugBarViewModel>());
+            _kernel.Bind<IEnumerable<IFlyoutViewModel>>().ToMethod(
+                context => new IFlyoutViewModel[] { _kernel.Get<ISettingsViewModel>(), _kernel.Get<IDebugBarViewModel>() });
 
             _kernel.Bind(
                 configure =>
@@ -145,6 +145,11 @@
                 configurationService[ConfigurationProperties.BugFreakApiKey],
                 configurationService[ConfigurationProperties.BugFreakToken],
                 Application.Current);
+
+            if (configurationService.DebugMode)
+            {
+                _kernel.Load(new DebugModule());
+            }
 
             SetupApplicationVersionLogging();
 

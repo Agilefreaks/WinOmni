@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Shell.DebugHeader
 {
     using Ninject;
-    using OmniCommon;
     using OmniCommon.Interfaces;
     using Omnipaste.Shell.Debug;
 
@@ -31,8 +30,7 @@
         {
             get
             {
-                bool value;
-                return bool.TryParse(_configurationService[ConfigurationProperties.ShowDebugBar], out value) && value;
+                return _configurationService.DebugMode;
             }
         }
 

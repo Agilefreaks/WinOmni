@@ -16,6 +16,8 @@
 
         string DeviceIdentifier { get; }
 
+        bool DebugMode { get; }
+
         #endregion
 
         #region Public Indexers
