@@ -7,7 +7,10 @@
              xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid Visibility="{Binding Path=IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Button ToolTip="{x:Static p:Resources.Debug}" cal:Message.Attach="[Event Click]=[Action ToggleDebugBarFlyout]">
             <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                 <Rectangle.OpacityMask>
