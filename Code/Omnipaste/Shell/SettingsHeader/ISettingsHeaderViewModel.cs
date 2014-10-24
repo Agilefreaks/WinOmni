@@ -2,11 +2,10 @@
 {
     using Caliburn.Micro;
     using Omnipaste.Shell.Settings;
+    using OmniUI.HeaderButton;
 
-    public interface ISettingsHeaderViewModel : IScreen
+    public interface ISettingsHeaderViewModel : IScreen, IHeaderButtonViewModel
     {
         ISettingsViewModel SettingsViewModel { get; set; }
-
-        void ToggleSettingsFlyout();
     }
 }

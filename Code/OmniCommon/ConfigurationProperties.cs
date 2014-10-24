@@ -25,5 +25,7 @@
         public static string AppName = "AppName";
 
         public static string UpdateInterval = "UpdateInterval";
+
+        public static string ShowDebugBar = "ShowDebugBar";
     }
 }

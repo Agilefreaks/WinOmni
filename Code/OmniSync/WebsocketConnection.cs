@@ -13,13 +13,15 @@
     {
         #region Fields
 
+        protected readonly ReplaySubject<OmniMessage> OmniMessageSubject;
+
         private readonly IWampChannel<JToken> _channel;
 
         private readonly IWampClientConnectionMonitor _monitor;
 
-        private ISubject<OmniMessage> _subject;
+        private IDisposable _channelObserver;
 
-        private IObservable<WebsocketConnectionStatusEnum> _connectionObservable;
+        private IDisposable _connectObserver;
 
         #endregion
 
@@ -28,48 +30,16 @@
         public WebsocketConnection(IWampChannel<JToken> channel)
         {
             _channel = channel;
-            _monitor = Channel.GetMonitor();
+            _monitor = _channel.GetMonitor();
+            ConnectionObservable = CreateConnectionObservable();
+            OmniMessageSubject = new ReplaySubject<OmniMessage>(0);
         }
 
         #endregion
 
         #region Public Properties
 
-        public IObservable<WebsocketConnectionStatusEnum> ConnectionObservable
-        {
-            get
-            {
-                var connectionLostObservable = Observable.FromEventPattern(
-                    x => _monitor.ConnectionLost += x,
-                    x => _monitor.ConnectionLost -= x)
-                    .Select(x => WebsocketConnectionStatusEnum.Disconnected);
-                
-                var connectionEstablishedObservable = Observable.FromEventPattern<WampConnectionEstablishedEventArgs>(
-                    x => _monitor.ConnectionEstablished += x,
-                    x => _monitor.ConnectionEstablished -= x)
-                    .Select(x => WebsocketConnectionStatusEnum.Connected);
-                
-                var connectionErrorObservable = Observable.FromEventPattern<WampConnectionErrorEventArgs>(
-                    x => _monitor.ConnectionError += x,
-                    x => _monitor.ConnectionError -= x)
-                    .Select(x => WebsocketConnectionStatusEnum.Disconnected);
-
-                return
-                    _connectionObservable =
-                        _connectionObservable
-                        ?? connectionLostObservable
-                            .Merge(connectionEstablishedObservable)
-                            .Merge(connectionErrorObservable);
-            }
-        }
-
-        private IWampChannel<JToken> Channel
-        {
-            get
-            {
-                return _channel;
-            }
-        }
+        public IObservable<WebsocketConnectionStatusEnum> ConnectionObservable { get; private set; }
 
         #endregion
 
@@ -77,29 +47,26 @@
 
         public IObservable<string> Connect()
         {
-            return Channel.OpenAsync().ToObservable().Select(
-                result =>
-                    {
-                        var registrationId = _monitor.SessionId;
+            DisposeConnectObserver();
+            var connectObservable = _channel.OpenAsync().ToObservable().Select(result => _monitor.SessionId);
+            _connectObserver = connectObservable.Subscribe(OnChannelOpened);
 
-                        _subject = Channel.GetSubject<OmniMessage>(registrationId);
-                        return registrationId;
-                    });
+            return connectObservable;
         }
 
         public void Disconnect()
         {
             try
             {
-                Channel.Close();
+                DisposeChannelObserver();
+                DisposeConnectObserver();
+                _channel.Close();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
         }
-
-        #endregion
 
         public IDisposable Subscribe(IObserver<WebsocketConnectionStatusEnum> observer)
         {
@@ -108,7 +75,64 @@
 
         public IDisposable Subscribe(IObserver<OmniMessage> observer)
         {
-            return _subject.Subscribe(observer);
+            return OmniMessageSubject.Subscribe(observer);
         }
+
+        #endregion
+
+        #region Methods
+
+        private IObservable<WebsocketConnectionStatusEnum> CreateConnectionObservable()
+        {
+            var connectionLostObservable =
+                Observable.FromEventPattern(x => _monitor.ConnectionLost += x, x => _monitor.ConnectionLost -= x)
+                    .Select(x => WebsocketConnectionStatusEnum.Disconnected);
+
+            var connectionEstablishedObservable =
+                Observable.FromEventPattern<WampConnectionEstablishedEventArgs>(
+                    x => _monitor.ConnectionEstablished += x,
+                    x => _monitor.ConnectionEstablished -= x).Select(x => WebsocketConnectionStatusEnum.Connected);
+
+            var connectionErrorObservable =
+                Observable.FromEventPattern<WampConnectionErrorEventArgs>(
+                    x => _monitor.ConnectionError += x,
+                    x => _monitor.ConnectionError -= x).Select(x => WebsocketConnectionStatusEnum.Disconnected);
+
+            return
+                ConnectionObservable =
+                ConnectionObservable
+                ?? connectionLostObservable.Merge(connectionEstablishedObservable).Merge(connectionErrorObservable);
+        }
+
+        private void DisposeChannelObserver()
+        {
+            if (_channelObserver == null)
+            {
+                return;
+            }
+
+            _channelObserver.Dispose();
+            _channelObserver = null;
+        }
+
+        private void DisposeConnectObserver()
+        {
+            if (_connectObserver == null)
+            {
+                return;
+            }
+
+            _connectObserver.Dispose();
+            _connectObserver = null;
+        }
+
+        private void OnChannelOpened(string sessionId)
+        {
+            DisposeConnectObserver();
+            DisposeChannelObserver();
+            _channelObserver = _channel.GetSubject<OmniMessage>(sessionId).Subscribe(OmniMessageSubject);
+        }
+
+        #endregion
     }
 }

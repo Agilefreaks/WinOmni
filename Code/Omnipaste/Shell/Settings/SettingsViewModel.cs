@@ -3,7 +3,7 @@
     using MahApps.Metro.Controls;
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
+    using OmniUI.Flyout;
 
     public class SettingsViewModel : FlyoutBaseViewModel, ISettingsViewModel
     {
@@ -40,7 +40,7 @@
             ApplicationService.ShutDown();
         }
 
-    #endregion
+        #endregion
 
         #region Methods
 

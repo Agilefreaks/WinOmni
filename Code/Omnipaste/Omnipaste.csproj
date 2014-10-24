@@ -269,9 +269,7 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
-    <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
-    <Compile Include="Framework\Behaviours\MulticontentButton.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
@@ -295,6 +293,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Shell\Connection\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="SmsComposer\SmsMessage.cs" />
@@ -314,7 +313,6 @@
     <Compile Include="Services\SystemService\SystemService.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
     <Compile Include="Shell\Connection\IConnectionViewModel.cs" />
-    <Compile Include="DataProviders\ApplicationDeploymentInfoProvider.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
     <Compile Include="Dialog\IDialogViewModel.cs" />
@@ -339,7 +337,6 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromDeploymentUri.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
@@ -364,8 +361,6 @@
     <Compile Include="Shell\Settings\ISettingsViewModel.cs" />
     <Compile Include="Shell\Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Framework\FlyoutBaseViewModel.cs" />
-    <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
     <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
@@ -460,10 +455,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Connection\ConnectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Dialog\DialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -489,10 +480,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\ContextMenu\ContextMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\SettingsHeader\SettingsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -599,9 +586,17 @@
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OmniDebug\OmniDebug.csproj">
+      <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
+      <Name>OmniDebug</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniUI\OmniUI.csproj">
+      <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
+      <Name>OmniUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Omni\Omni.csproj">
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>

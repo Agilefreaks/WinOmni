@@ -84,6 +84,15 @@
             }
         }
 
+        public bool DebugMode
+        {
+            get
+            {
+                bool value;
+                return bool.TryParse(this[ConfigurationProperties.ShowDebugBar], out value) && value;
+            }
+        }
+
         #endregion
 
         #region Public Indexers

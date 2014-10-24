@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="OmniDebug.DebugBar.DebugBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:OmniDebug.Properties"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DebugButtonTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="22" Height="22" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" VerticalAlignment="Center" Margin="14,0,10.4,0.4">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <TextBlock Text="{Binding Path=(behaviors:MultipleContentButton.Text), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Button x:Name="ShowNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateNotification}" Content="{StaticResource appbar_cabinet_in}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

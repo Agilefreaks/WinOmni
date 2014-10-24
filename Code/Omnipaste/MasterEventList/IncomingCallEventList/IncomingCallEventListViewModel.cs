@@ -3,8 +3,8 @@
     using System;
     using Events.Handlers;
     using Events.Models;
-    using Omnipaste.Framework.Attributes;
     using Omnipaste.MasterEventList.EventList;
+    using OmniUI.Attributes;
 
     [UseView("Omnipaste.MasterEventList.EventList.EventListView", IsFullyQualifiedName = true)]
     public class IncomingCallEventListViewModel : EventListViewModelBase, IIncomingCallEventListViewModel

@@ -1,4 +1,4 @@
-namespace Omnipaste.Framework
+namespace OmniUI.Flyout
 {
     using Caliburn.Micro;
     using MahApps.Metro.Controls;
