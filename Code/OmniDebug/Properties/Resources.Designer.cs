@@ -79,7 +79,7 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate Notification.
+        ///   Looks up a localized string similar to Replay last notification.
         /// </summary>
         public static string SimulateNotification {
             get {

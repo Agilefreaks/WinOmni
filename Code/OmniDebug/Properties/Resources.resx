@@ -124,6 +124,6 @@
     <value>appbar_futurama_bender</value>
   </data>
   <data name="SimulateNotification" xml:space="preserve">
-    <value>Simulate Notification</value>
+    <value>Replay last notification</value>
   </data>
 </root>
