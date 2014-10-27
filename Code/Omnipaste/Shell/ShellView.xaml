@@ -134,9 +134,14 @@
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <ContentControl cal:View.Model="{Binding SettingsHeaderViewModel}" />
+            <ListView ItemsSource="{Binding Path=HeaderButtonViewModels}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl cal:View.Model="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <ContentControl cal:View.Model="{Binding ConnectionViewModel}" />
-            <ContentControl cal:View.Model="{Binding DebugHeaderViewModel}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>

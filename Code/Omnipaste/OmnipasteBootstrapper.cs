@@ -10,23 +10,15 @@
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
-    using Ninject.Extensions.Conventions;
     using Omni;
     using OmniApi;
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniDebug;
-    using Omnipaste.Dialog;
-    using Omnipaste.Framework;
-    using Omnipaste.Framework.Attributes;
-    using Omnipaste.NotificationList;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
-    using Omnipaste.Shell.Debug;
-    using Omnipaste.Shell.Settings;
     using OmniSync;
+    using OmniUI.Attributes;
     using ViewLocator = Caliburn.Micro.ViewLocator;
 
     public class OmnipasteBootstrapper : BootstrapperBase
@@ -67,51 +59,16 @@
 
         protected override void Configure()
         {
-            var singletonViewModelTypes = new List<Type>
-                                              {
-                                                  typeof(ShellViewModel), 
-                                                  typeof(DialogViewModel), 
-                                                  typeof(SettingsViewModel), 
-                                                  typeof(NotificationViewModelFactory), 
-                                                  typeof(ConnectivityHelper),
-                                                  typeof(DebugBarViewModel)
-                                              };
             _kernel = new StandardKernel();
 
             SetupViewLocator();
 
             _kernel.Load(
                 new OmniCommonModule(),
+                new OmnipasteModule(),
                 new OmniApiModule(),
                 new OmniSyncModule(),
-                new OmniModule(),
-                new OmnipasteModule());
-
-            _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
-            _kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
-            
-            _kernel.Bind(
-                configure =>
-                    configure.FromThisAssembly()
-                        .Select(t => t.Name.EndsWith("Service"))
-                        .BindDefaultInterface()
-                        .Configure(c => c.InSingletonScope()));
-
-            _kernel.Bind(
-                configure =>
-                configure.FromThisAssembly()
-                    .Select(singletonViewModelTypes.Contains)
-                    .BindDefaultInterface()
-                    .Configure(c => c.InSingletonScope()));
-
-            _kernel.Bind<IEnumerable<IFlyoutViewModel>>().ToMethod(
-                context => new IFlyoutViewModel[] { _kernel.Get<ISettingsViewModel>(), _kernel.Get<IDebugBarViewModel>() });
-
-            _kernel.Bind(
-                configure =>
-                configure.FromThisAssembly()
-                    .Select(t => t.Name.EndsWith("ViewModel") && !singletonViewModelTypes.Contains(t))
-                    .BindDefaultInterface());
+                new OmniModule());
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)

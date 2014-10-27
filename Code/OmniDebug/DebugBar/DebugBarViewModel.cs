@@ -1,8 +1,8 @@
-﻿namespace Omnipaste.Shell.Debug
+﻿namespace OmniDebug.DebugBar
 {
     using MahApps.Metro.Controls;
     using Omni;
-    using Omnipaste.Framework;
+    using OmniUI.Flyout;
 
     public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
     {

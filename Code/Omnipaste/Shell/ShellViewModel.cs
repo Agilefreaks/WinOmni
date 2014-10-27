@@ -12,6 +12,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
+    using OmniDebug.DebugHeader;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -24,9 +25,9 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
-    using Omnipaste.Shell.DebugHeader;
     using Omnipaste.Shell.SettingsHeader;
     using OmniUI.Flyout;
+    using OmniUI.HeaderButton;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {
@@ -128,16 +129,13 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
-        public ISettingsHeaderViewModel SettingsHeaderViewModel { get; set; }
-
-        [Inject]
         public IWindowManager WindowManager { get; set; }
 
         [Inject]
         public IUpdaterService UpdaterService { get; set; }
 
         [Inject]
-        public IDebugHeaderViewModel DebugHeaderViewModel { get; set; }
+        public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }
 
         #endregion
 

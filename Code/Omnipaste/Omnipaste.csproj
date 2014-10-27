@@ -219,10 +219,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shell\DebugHeader\DebugHeaderViewModel.cs" />
-    <Compile Include="Shell\DebugHeader\IDebugHeaderViewModel.cs" />
-    <Compile Include="Shell\Debug\DebugBarViewModel.cs" />
-    <Compile Include="Shell\Debug\IDebugBarViewModel.cs" />
     <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
@@ -273,9 +269,7 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
-    <Compile Include="Framework\Attributes\UseViewAttribute.cs" />
     <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
-    <Compile Include="Framework\Behaviours\MulticontentButton.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
@@ -366,8 +360,6 @@
     <Compile Include="Shell\Settings\ISettingsViewModel.cs" />
     <Compile Include="Shell\Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Framework\FlyoutBaseViewModel.cs" />
-    <Compile Include="Framework\IFlyoutViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
     <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
@@ -446,14 +438,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Shell\DebugHeader\DebugHeaderView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Shell\Debug\DebugBarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="SmsComposer\SmsComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -499,10 +483,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\ContextMenu\ContextMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\SettingsHeader\SettingsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -616,6 +596,10 @@
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniUI\OmniUI.csproj">
+      <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
+      <Name>OmniUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Omni\Omni.csproj">
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>

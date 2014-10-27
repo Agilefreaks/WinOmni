@@ -1,6 +1,6 @@
-﻿namespace Omnipaste.Shell.Debug
+﻿namespace OmniDebug.DebugBar
 {
-    using Omnipaste.Framework;
+    using OmniUI.Flyout;
 
     public interface IDebugBarViewModel : IFlyoutViewModel
     {

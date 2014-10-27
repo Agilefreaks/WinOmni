@@ -1,9 +1,12 @@
-﻿namespace Omnipaste.Shell.DebugHeader
+﻿namespace OmniDebug.DebugHeader
 {
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.Shell.Debug;
+    using OmniDebug.DebugBar;
+    using OmniDebug.Properties;
+    using OmniUI.Attributes;
 
+    [UseView("OmniUI.HeaderButton.HeaderButtonView", IsFullyQualifiedName = true)]
     public class DebugHeaderViewModel : IDebugHeaderViewModel
     {
         #region Fields
@@ -23,8 +26,21 @@
 
         #region Public Properties
 
-        [Inject]
-        public IDebugBarViewModel DebugBarViewModel { get; set; }
+        public string ButtonToolTip
+        {
+            get
+            {
+                return Resources.Debug;
+            }
+        }
+
+        public string Icon
+        {
+            get
+            {
+                return Resources.DebugIconName;
+            }
+        }
 
         public bool IsAvailable
         {
@@ -34,11 +50,14 @@
             }
         }
 
+        [Inject]
+        public IDebugBarViewModel DebugBarViewModel { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
 
-        public void ToggleDebugBarFlyout()
+        public void OnButtonClick()
         {
             DebugBarViewModel.IsOpen = !DebugBarViewModel.IsOpen;
         }
