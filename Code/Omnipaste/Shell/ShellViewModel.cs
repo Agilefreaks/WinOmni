@@ -26,6 +26,7 @@
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.DebugHeader;
     using Omnipaste.Shell.SettingsHeader;
+    using OmniUI.Flyout;
 
     public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
     {

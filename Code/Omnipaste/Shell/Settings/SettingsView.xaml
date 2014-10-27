@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:p="clr-namespace:Omnipaste.Properties"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -19,7 +19,7 @@
                         <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
-                <TextBlock Text="{Binding Path=(behaviours:MulticontentButton.Text), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Grid.Column="1"/>
+                <TextBlock Text="{Binding Path=(behaviors:MultipleContentButton.Text), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Grid.Column="1"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -29,8 +29,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <Button x:Name="LogOut" behaviours:MulticontentButton.Text="{x:Static p:Resources.SettingsLogOut}" Content="{StaticResource appbar_door_leave}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
-            <Button x:Name="Exit" behaviours:MulticontentButton.Text="{x:Static p:Resources.ButtonExit}" Content="{StaticResource appbar_switch_off}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
+            <Button x:Name="LogOut" behaviors:MultipleContentButton.Text="{x:Static p:Resources.SettingsLogOut}" Content="{StaticResource appbar_door_leave}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
+            <Button x:Name="Exit" behaviors:MultipleContentButton.Text="{x:Static p:Resources.ButtonExit}" Content="{StaticResource appbar_switch_off}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
         </StackPanel>
     </Grid>
 </UserControl>

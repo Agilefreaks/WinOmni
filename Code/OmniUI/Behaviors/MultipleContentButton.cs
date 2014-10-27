@@ -1,14 +1,14 @@
-﻿namespace Omnipaste.Framework.Behaviours
+﻿namespace OmniUI.Behaviors
 {
     using System.Windows;
     using System.Windows.Controls;
 
-    public static class MulticontentButton
+    public static class MultipleContentButton
     {
         public static readonly DependencyProperty TextProperty = DependencyProperty.RegisterAttached(
             "Text",
             typeof(string),
-            typeof(MulticontentButton),
+            typeof(MultipleContentButton),
             new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
 
         public static string GetText(Button control)

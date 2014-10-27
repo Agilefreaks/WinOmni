@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Framework.Attributes
+﻿namespace OmniUI.Attributes
 {
     using System;
 

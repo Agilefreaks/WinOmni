@@ -294,4 +294,7 @@
   <data name="Warning" xml:space="preserve">
     <value>Aviso</value>
   </data>
+  <data name="SettingsIconName" xml:space="preserve">
+    <value>appbar_cogs</value>
+  </data>
 </root>

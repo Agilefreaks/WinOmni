@@ -294,10 +294,7 @@
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
-  <data name="Debug" xml:space="preserve">
-    <value>Debug</value>
-  </data>
-  <data name="SimulateNotification" xml:space="preserve">
-    <value>Simulate Notification</value>
+  <data name="SettingsIconName" xml:space="preserve">
+    <value>appbar_cogs</value>
   </data>
 </root>
