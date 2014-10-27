@@ -1,29 +1,31 @@
 ﻿namespace OmniDebug
 {
+    using Newtonsoft.Json.Linq;
+    using OmniCommon.Interfaces;
     using OmniSync;
+    using WampSharp;
 
-    public class WebsocketConnectionFactoryWrapper : IWebsocketConnectionFactory
+
+    public class WebsocketConnectionFactoryWrapper : WebsocketConnectionFactory
     {
         #region Fields
-
-        private readonly IWebsocketConnectionFactory _websocketConnectionFactory;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public WebsocketConnectionFactoryWrapper(IWebsocketConnectionFactory websocketConnectionFactory)
-        {
-            _websocketConnectionFactory = websocketConnectionFactory;
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
-        public IWebsocketConnection Create()
+        public WebsocketConnectionFactoryWrapper(IWampChannelFactory<JToken> wampChannelFactory, IConfigurationService configurationService)
+            : base(wampChannelFactory, configurationService)
         {
-            return new WebsocketConnectionWrapper(_websocketConnectionFactory.Create());
+        }
+
+        public override IWebsocketConnection Create()
+        {
+            return new WebsocketConnectionWrapper(GetWampChannel());
         }
 
         #endregion

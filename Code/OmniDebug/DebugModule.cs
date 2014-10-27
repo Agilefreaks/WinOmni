@@ -17,8 +17,6 @@
     {
         #region Fields
 
-        private IWebsocketConnectionFactory _existingWebSocketConnectionFactory;
-
         #endregion
 
         #region Methods
@@ -32,23 +30,13 @@
         {
             AssemblySource.Instance.Add(GetType().Assembly);
 
-            Kernel.Bind<WebsocketConnectionFactoryWrapper>()
-                .ToConstant(new WebsocketConnectionFactoryWrapper(_existingWebSocketConnectionFactory))
-                .InSingletonScope();
-            Kernel.Bind<IWebsocketConnectionFactory>()
-                .ToMethod(context => context.Kernel.Get<WebsocketConnectionFactoryWrapper>());
+            Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactoryWrapper>().InSingletonScope();
 
             Kernel.Bind<IOmniServiceWrapper>().To<OmniServiceWrapper>().InSingletonScope();
             Kernel.Bind<IOmniService>().ToMethod(context => context.Kernel.Get<IOmniServiceWrapper>());
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
-        }
-
-        protected override void RemoveExistingBindings()
-        {
-            _existingWebSocketConnectionFactory = Kernel.Get<IWebsocketConnectionFactory>();
-            base.RemoveExistingBindings();
         }
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()

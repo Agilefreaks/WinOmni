@@ -1,4 +1,4 @@
-namespace OmniDebug
+namespace OmniSync
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@ namespace OmniDebug
     using Castle.Core.Internal;
     using OmniCommon.Models;
 
-    internal class OmniMessageSubject : ISubject<OmniMessage>
+    public class OmniMessageSubject : ISubject<OmniMessage>
     {
         #region Fields
 
