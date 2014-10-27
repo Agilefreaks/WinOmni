@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <converters:StringToVisualBrushConverter x:Key="StringToVisualBrushConverter"/>
+        <converters:StringToResourceConverter x:Key="StringToVisualBrushConverter"/>
     </UserControl.Resources>
     <Grid>
         <Button ToolTip="{Binding Path=ButtonToolTip}" x:Name="PerformAction">
