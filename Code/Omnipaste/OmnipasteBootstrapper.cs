@@ -18,6 +18,7 @@
     using OmniDebug;
     using Omnipaste.Shell;
     using OmniSync;
+    using OmniUI;
     using OmniUI.Attributes;
     using ViewLocator = Caliburn.Micro.ViewLocator;
 
@@ -65,10 +66,11 @@
 
             _kernel.Load(
                 new OmniCommonModule(),
-                new OmnipasteModule(),
                 new OmniApiModule(),
                 new OmniSyncModule(),
-                new OmniModule());
+                new OmniUiModule(),
+                new OmniModule(),
+                new OmnipasteModule());
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)

@@ -1,26 +1,35 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
     using System;
+    using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using Omnipaste.Properties;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Services.SystemService;
     using OmniSync;
+    using OmniUI.Attributes;
 
+    [UseView("OmniUI.HeaderButton.HeaderButtonView", IsFullyQualifiedName = true)]
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
         #region Fields
 
         private IConnectivityNotifyService _connectivityNotifyService;
 
-        private bool _enabled = true;
+        private bool _canPerformAction = true;
 
         private IOmniService _omniService;
 
         private IDisposable _omniServiceStatusObserver;
 
         private ISystemService _systemService;
+
+        private ConnectionStateEnum _state;
+
+        private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
+        private readonly Dictionary<ConnectionStateEnum, string> _icons;
 
         #endregion
 
@@ -29,33 +38,98 @@
         public ConnectionViewModel(IOmniService omniService)
         {
             OmniService = omniService;
+            _toolTips = new Dictionary<ConnectionStateEnum, string>
+                            {
+                                { ConnectionStateEnum.Connected, Resources.ConnectionDisconnect },
+                                { ConnectionStateEnum.Disconnected, Resources.ConnectionConnect }
+                            };
+            _icons = new Dictionary<ConnectionStateEnum, string>
+                         {
+                             { ConnectionStateEnum.Connected, Resources.DisconnectIcon },
+                             { ConnectionStateEnum.Disconnected, Resources.ConnectIcon }
+                         };
         }
 
         #endregion
 
         #region Public Properties
 
-        public bool CanConnect
+        public string ButtonToolTip
         {
             get
             {
-                return !Connected;
+                return _toolTips[State];
             }
         }
 
-        public bool CanDisconnect
+        public bool CanPerformAction
         {
             get
             {
-                return Connected;
+                return _canPerformAction;
+            }
+            set
+            {
+                _canPerformAction = value;
+                NotifyOfPropertyChange();
             }
         }
 
-        public bool Connected
+        public ConnectionStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ButtonToolTip);
+                NotifyOfPropertyChange(() => Icon);
+            }
+        }
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        public string Icon
+        {
+            get
+            {
+                return _icons[State];
+            }
+        }
+
+        public bool IsConnected
         {
             get
             {
                 return OmniService.Status == ServiceStatusEnum.Started;
+            }
+        }
+
+        public IOmniService OmniService
+        {
+            get
+            {
+                return _omniService;
+            }
+            set
+            {
+                if (_omniServiceStatusObserver != null)
+                {
+                    _omniServiceStatusObserver.Dispose();
+                }
+
+                _omniService = value;
+
+                _omniServiceStatusObserver =
+                    _omniService.StatusChangedObservable.Subscribe(
+                        x =>
+                        State =
+                        _omniService.Status == ServiceStatusEnum.Started
+                            ? ConnectionStateEnum.Connected
+                            : ConnectionStateEnum.Disconnected);
             }
         }
 
@@ -81,53 +155,6 @@
                 _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
 
                 NotifyOfPropertyChange(() => ConnectivityNotifyService);
-            }
-        }
-
-        public bool Enabled
-        {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                _enabled = value;
-                NotifyOfPropertyChange(() => Enabled);
-            }
-        }
-
-        public IEventAggregator EventAggregator { get; set; }
-
-        public bool IsConnected
-        {
-            get
-            {
-                return OmniService.Status == ServiceStatusEnum.Started;
-            }
-        }
-
-        public IOmniService OmniService
-        {
-            get
-            {
-                return _omniService;
-            }
-            set
-            {
-                if (_omniServiceStatusObserver != null)
-                {
-                    _omniServiceStatusObserver.Dispose();
-                }
-
-                _omniService = value;
-
-                _omniServiceStatusObserver = _omniService.StatusChangedObservable.Subscribe(
-                    x =>
-                    {
-                        NotifyOfPropertyChange(() => CanConnect);
-                        NotifyOfPropertyChange(() => CanDisconnect);
-                    });
             }
         }
 
@@ -164,17 +191,29 @@
 
         public void Connect()
         {
-            Enabled = false;
-            OmniService.Start().Subscribe(device => Enabled = true);
+            CanPerformAction = false;
+            OmniService.Start().Subscribe(device => CanPerformAction = true);
         }
 
         public void Disconnect()
         {
-            Enabled = false;
+            CanPerformAction = false;
 
             OmniService.Stop();
 
-            Enabled = true;
+            CanPerformAction = true;
+        }
+
+        public void PerformAction()
+        {
+            if (State == ConnectionStateEnum.Connected)
+            {
+                Disconnect();
+            }
+            else
+            {
+                Connect();
+            }
         }
 
         #endregion

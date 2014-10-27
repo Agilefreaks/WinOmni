@@ -6,8 +6,6 @@
 
     public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
     {
-        public IOmniService OmniService { get; set; }
-
         #region Constructors and Destructors
 
         public DebugBarViewModel(IOmniService omniService)
@@ -15,6 +13,12 @@
             OmniService = omniService;
             Position = Position.Right;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public IOmniService OmniService { get; set; }
 
         #endregion
 

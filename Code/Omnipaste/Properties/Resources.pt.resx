@@ -297,4 +297,10 @@
   <data name="SettingsIconName" xml:space="preserve">
     <value>appbar_cogs</value>
   </data>
+  <data name="ConnectIcon" xml:space="preserve">
+    <value>appbar_connect</value>
+  </data>
+  <data name="DisconnectIcon" xml:space="preserve">
+    <value>appbar_disconnect</value>
+  </data>
 </root>

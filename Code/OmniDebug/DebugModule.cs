@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon;
@@ -26,6 +27,7 @@
 
         public override void LoadCore()
         {
+            AssemblySource.Instance.Add(GetType().Assembly);
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
         }

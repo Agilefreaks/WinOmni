@@ -14,6 +14,7 @@
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
+    using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SettingsHeader;
     using OmniUI.Flyout;
@@ -33,6 +34,7 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
+            Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
         }
 
         protected override IEnumerable<Type> GenerateSingleTypesList()
@@ -41,7 +43,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(ISettingsHeaderViewModel)
+                           typeof(ISettingsHeaderViewModel), typeof(IConnectionViewModel)
                        };
         }
     }

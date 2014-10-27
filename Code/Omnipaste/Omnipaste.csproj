@@ -293,6 +293,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Shell\Connection\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="SmsComposer\SmsMessage.cs" />
@@ -451,10 +452,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SmsComposer\SmsComposer\Sent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\Connection\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

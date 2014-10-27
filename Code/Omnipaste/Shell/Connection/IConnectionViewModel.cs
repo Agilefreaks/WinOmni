@@ -1,9 +1,8 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
-    using System.Threading.Tasks;
-    using Caliburn.Micro;
+    using OmniUI.HeaderButton;
 
-    public interface IConnectionViewModel : IScreen
+    public interface IConnectionViewModel : IHeaderButtonViewModel
     {
         void Connect();
     }

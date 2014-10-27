@@ -250,6 +250,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to appbar_connect.
+        /// </summary>
+        public static string ConnectIcon {
+            get {
+                return ResourceManager.GetString("ConnectIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string ConnectionConnect {
@@ -282,6 +291,15 @@ namespace Omnipaste.Properties {
         public static string ContextMenuStopSync {
             get {
                 return ResourceManager.GetString("ContextMenuStopSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appbar_disconnect.
+        /// </summary>
+        public static string DisconnectIcon {
+            get {
+                return ResourceManager.GetString("DisconnectIcon", resourceCulture);
             }
         }
         

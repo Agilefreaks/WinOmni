@@ -28,7 +28,7 @@
             }
         }
 
-        public void OnButtonClick()
+        public void PerformAction()
         {
             SettingsViewModel.IsOpen = !SettingsViewModel.IsOpen;
         }

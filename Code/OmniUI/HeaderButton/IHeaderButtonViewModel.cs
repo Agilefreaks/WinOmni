@@ -6,6 +6,6 @@
 
         string Icon { get; }
 
-        void OnButtonClick();
+        void PerformAction();
     }
 }

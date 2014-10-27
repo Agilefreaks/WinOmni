@@ -57,7 +57,7 @@
 
         #region Public Methods and Operators
 
-        public void OnButtonClick()
+        public void PerformAction()
         {
             DebugBarViewModel.IsOpen = !DebugBarViewModel.IsOpen;
         }
