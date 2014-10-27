@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Reactive.Threading.Tasks;
     using Newtonsoft.Json.Linq;
     using OmniCommon.Models;
@@ -12,7 +13,7 @@
     {
         #region Fields
 
-        protected readonly OmniMessageSubject OmniMessageSubject;
+        protected readonly ReplaySubject<OmniMessage> OmniMessageSubject;
 
         private readonly IWampChannel<JToken> _channel;
 
@@ -29,9 +30,9 @@
         public WebsocketConnection(IWampChannel<JToken> channel)
         {
             _channel = channel;
-            _monitor = Channel.GetMonitor();
+            _monitor = _channel.GetMonitor();
             ConnectionObservable = CreateConnectionObservable();
-            OmniMessageSubject = new OmniMessageSubject();
+            OmniMessageSubject = new ReplaySubject<OmniMessage>(0);
         }
 
         #endregion
@@ -42,24 +43,12 @@
 
         #endregion
 
-        #region Properties
-
-        private IWampChannel<JToken> Channel
-        {
-            get
-            {
-                return _channel;
-            }
-        }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public IObservable<string> Connect()
         {
             DisposeConnectObserver();
-            var connectObservable = Channel.OpenAsync().ToObservable().Select(result => _monitor.SessionId);
+            var connectObservable = _channel.OpenAsync().ToObservable().Select(result => _monitor.SessionId);
             _connectObserver = connectObservable.Subscribe(OnChannelOpened);
 
             return connectObservable;
@@ -71,7 +60,7 @@
             {
                 DisposeChannelObserver();
                 DisposeConnectObserver();
-                Channel.Close();
+                _channel.Close();
             }
             catch (Exception e)
             {
@@ -141,7 +130,7 @@
         {
             DisposeConnectObserver();
             DisposeChannelObserver();
-            _channelObserver = Channel.GetSubject<OmniMessage>(sessionId).Subscribe(OmniMessageSubject);
+            _channelObserver = _channel.GetSubject<OmniMessage>(sessionId).Subscribe(OmniMessageSubject);
         }
 
         #endregion

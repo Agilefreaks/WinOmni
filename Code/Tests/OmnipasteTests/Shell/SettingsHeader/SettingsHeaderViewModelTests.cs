@@ -20,19 +20,19 @@
         }
 
         [Test]
-        public void ToggleSettingsFlyout_ChangesSettingsViewModelIsOpenProperty()
+        public void PerformAction_ChangesSettingsViewModelIsOpenProperty()
         {
-            _settingsHeaderViewModel.ToggleSettingsFlyout();
+            _settingsHeaderViewModel.PerformAction();
 
             _mockSettingsViewModel.VerifySet(svm => svm.IsOpen = true, Times.Once());
         }
 
         [Test]
-        public void ToggleSettingsFlyout_WhenSettingsIsOpen_WillCloseTheFlyout()
+        public void PerformAction_WhenSettingsIsOpen_WillCloseTheFlyout()
         {
             _mockSettingsViewModel.SetupGet(svm => svm.IsOpen).Returns(true);
 
-            _settingsHeaderViewModel.ToggleSettingsFlyout();
+            _settingsHeaderViewModel.PerformAction();
 
             _mockSettingsViewModel.VerifySet(svm => svm.IsOpen = false, Times.Once());
         }

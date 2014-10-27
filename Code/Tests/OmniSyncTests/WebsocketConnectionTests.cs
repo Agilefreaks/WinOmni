@@ -3,11 +3,13 @@
     using System;
     using System.Reactive;
     using System.Reactive.Subjects;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Newtonsoft.Json.Linq;
     using NUnit.Framework;
+    using OmniCommon.Models;
     using OmniSync;
     using WampSharp;
     using WampSharp.Auxiliary.Client;
@@ -40,7 +42,7 @@
         }
 
         [Test]
-        public void ConnectWhenSessioIdIsNotNullCallsNextWithTheRegistration()
+        public void ConnectWhenSessionIdIsNotNullCallsNextWithTheRegistration()
         {
             _mockMonitor.SetupGet(m => m.SessionId).Returns("42");
 
@@ -53,12 +55,37 @@
         [Test]
         public void OnWebsocketError_TheConnectionObservableReturnsDisconnected()
         {
-            bool errorReceived = false;
+            WebsocketConnectionStatusEnum? messageReceived = null;
 
-            _subject.Subscribe<WebsocketConnectionStatusEnum>(x => errorReceived = true, e => {});
+            _subject.Subscribe<WebsocketConnectionStatusEnum>(
+                x => messageReceived = x, e => {});
             _mockMonitor.Raise(m => m.ConnectionError += null, new WampConnectionErrorEventArgs(new Exception()));
 
-            errorReceived.Should().BeTrue();
+            messageReceived.Should().Be(WebsocketConnectionStatusEnum.Disconnected);
+        }
+
+        [Test]
+        public void SubscribeOmniMessageObserver_ConnectWasNeverCalled_DoesNotThrowException()
+        {	
+            var connection = new WebsocketConnection(_mockChannel.Object);
+
+            connection.Subscribe<OmniMessage>(x => {}, e => { });
+        }        
+        
+        [Test]
+        public void Connect_Always_SetsUpTheConnectionToRelayChannelMessages()
+        {
+            OmniMessage receivedMessage = null;
+            var messageToSimulate = new OmniMessage();
+            var replaySubject = new ReplaySubject<OmniMessage>();
+
+            _subject.Subscribe<OmniMessage>(x => receivedMessage = x, e => { });
+            _mockMonitor.SetupGet(m => m.SessionId).Returns("42");
+            _mockChannel.Setup(x => x.GetSubject<OmniMessage>("42")).Returns(replaySubject);
+            _subject.Connect();
+            replaySubject.OnNext(messageToSimulate);
+
+            receivedMessage.Should().Be(messageToSimulate);
         }
     }
 }

@@ -104,7 +104,6 @@
   <ItemGroup>
     <Compile Include="IWebsocketConnection.cs" />
     <Compile Include="IWebsocketConnectionFactory.cs" />
-    <Compile Include="OmniMessageSubject.cs" />
     <Compile Include="OmniSyncServiceStatusEnum.cs" />
     <Compile Include="ServiceStatusEventArgs.cs" />
     <Compile Include="WebsocketConnectionStatusEnum.cs" />

@@ -156,7 +156,6 @@
     <Compile Include="SmsComposer\SmsMessageTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevicesTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromDeploymentUriTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
@@ -207,6 +206,10 @@
     <ProjectReference Include="..\..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OmniUI\OmniUI.csproj">
+      <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
+      <Name>OmniUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Omni\Omni.csproj">
       <Project>{B3F798A0-A219-49EA-8A25-183A91662E82}</Project>
