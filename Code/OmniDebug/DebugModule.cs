@@ -3,38 +3,59 @@
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
-    using Castle.Core.Internal;
     using Ninject;
+    using Omni;
     using OmniCommon;
     using OmniDebug.DebugBar;
     using OmniDebug.DebugHeader;
+    using OmniDebug.Services;
     using OmniSync;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 
     public class DebugModule : ModuleBase
     {
-        public override void ReplaceExistingBindings()
-        {
-            var existingWebsocketConnectionFactory = Kernel.Get<IWebsocketConnectionFactory>();
-            var bindings = Kernel.GetBindings(typeof(IWebsocketConnectionFactory));
-            bindings.ForEach(binding => Kernel.RemoveBinding(binding));
+        #region Fields
 
-            Kernel.Bind<IWebsocketConnectionFactory>()
-                .ToConstant(new WebsocketConnectionFactoryWrapper(existingWebsocketConnectionFactory))
-                .InSingletonScope();
+        private IWebsocketConnectionFactory _existingWebSocketConnectionFactory;
+
+        #endregion
+
+        #region Methods
+
+        protected override IEnumerable<Type> GenerateSingletonTypesList()
+        {
+            return new[] { typeof(DebugHeaderViewModel), typeof(DebugBarViewModel) };
         }
 
-        public override void LoadCore()
+        protected override void LoadCore()
         {
             AssemblySource.Instance.Add(GetType().Assembly);
+
+            Kernel.Bind<WebsocketConnectionFactoryWrapper>()
+                .ToConstant(new WebsocketConnectionFactoryWrapper(_existingWebSocketConnectionFactory))
+                .InSingletonScope();
+            Kernel.Bind<IWebsocketConnectionFactory>()
+                .ToMethod(context => context.Kernel.Get<WebsocketConnectionFactoryWrapper>());
+
+            Kernel.Bind<IOmniServiceWrapper>().To<OmniServiceWrapper>().InSingletonScope();
+            Kernel.Bind<IOmniService>().ToMethod(context => context.Kernel.Get<IOmniServiceWrapper>());
+
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
         }
 
-        protected override IEnumerable<Type> GenerateSingleTypesList()
+        protected override void RemoveExistingBindings()
         {
-            return new[] { typeof(DebugHeaderViewModel), typeof(DebugBarViewModel) };
+            _existingWebSocketConnectionFactory = Kernel.Get<IWebsocketConnectionFactory>();
+            base.RemoveExistingBindings();
         }
+
+        protected override IEnumerable<Type> TypesToOverriderBindingsFor()
+        {
+            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService) };
+        }
+
+        #endregion
     }
 }

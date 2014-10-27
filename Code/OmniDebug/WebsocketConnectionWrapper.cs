@@ -12,6 +12,8 @@
 
         private readonly IWebsocketConnection _existingConnection;
 
+        private IDisposable _connectionObserver;
+
         #endregion
 
         #region Constructors and Destructors
@@ -20,7 +22,6 @@
         {
             _existingConnection = existingConnection;
             _omniMessageSubject = new OmniMessageSubject();
-            _existingConnection.Subscribe(_omniMessageSubject);
         }
 
         #endregion
@@ -61,7 +62,16 @@
 
         public IDisposable Subscribe(IObserver<OmniMessage> observer)
         {
+            SubscribeWrapper();
             return _omniMessageSubject.Subscribe(observer);
+        }
+
+        private void SubscribeWrapper()
+        {
+            if (_connectionObserver == null)
+            {
+                _connectionObserver = _existingConnection.Subscribe(_omniMessageSubject);
+            }
         }
 
         #endregion

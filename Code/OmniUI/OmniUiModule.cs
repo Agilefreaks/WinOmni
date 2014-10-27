@@ -5,7 +5,7 @@
 
     public class OmniUiModule : ModuleBase
     {
-        public override void LoadCore()
+        protected override void LoadCore()
         {
             AssemblySource.Instance.Add(GetType().Assembly);
             base.LoadCore();

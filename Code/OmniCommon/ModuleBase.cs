@@ -20,7 +20,7 @@
         {
             get
             {
-                return _singletonTypes ?? (_singletonTypes = GenerateSingleTypesList());
+                return _singletonTypes ?? (_singletonTypes = GenerateSingletonTypesList());
             }
         }
 
@@ -28,36 +28,9 @@
 
         #region Public Methods and Operators
 
-        public virtual void BindServices()
-        {
-            Kernel.Bind(
-                configure =>
-                configure.FromAssemblyContaining(GetType())
-                    .Select(type => type.Name.EndsWith("Service"))
-                    .BindDefaultInterface()
-                    .Configure(c => c.InSingletonScope()));
-        }
-
-        public virtual void BindSingletons()
-        {
-            Kernel.Bind(
-                configure =>
-                configure.FromAssemblyContaining(GetType())
-                    .Select(SingletonTypes.Contains)
-                    .BindDefaultInterface()
-                    .Configure(c => c.InSingletonScope()));
-        }
-
-        public virtual void BindViewModels()
-        {
-            Kernel.Bind(
-                configure =>
-                configure.FromAssemblyContaining(GetType()).Select(ShouldBindViewModel).BindDefaultInterface());
-        }
-
         public override void Load()
         {
-            ReplaceExistingBindings();
+            RemoveExistingBindings();
 
             BindSingletons();
 
@@ -68,26 +41,62 @@
             LoadCore();
         }
 
-        public virtual void LoadCore()
-        {
-        }
-
-        public virtual void ReplaceExistingBindings()
-        {
-        }
-
         #endregion
 
         #region Methods
 
-        protected virtual IEnumerable<Type> GenerateSingleTypesList()
+        protected virtual void BindServices()
+        {
+            Kernel.Bind(
+                configure =>
+                configure.FromAssemblyContaining(GetType())
+                    .Select(type => type.Name.EndsWith("Service"))
+                    .BindDefaultInterface()
+                    .Configure(c => c.InSingletonScope()));
+        }
+
+        protected virtual void BindSingletons()
+        {
+            Kernel.Bind(
+                configure =>
+                configure.FromAssemblyContaining(GetType())
+                    .Select(SingletonTypes.Contains)
+                    .BindDefaultInterface()
+                    .Configure(c => c.InSingletonScope()));
+        }
+
+        protected virtual void BindViewModels()
+        {
+            Kernel.Bind(
+                configure =>
+                configure.FromAssemblyContaining(GetType()).Select(ShouldBindViewModel).BindDefaultInterface());
+        }
+
+        protected virtual IEnumerable<Type> GenerateSingletonTypesList()
         {
             return Enumerable.Empty<Type>();
+        }
+
+        protected virtual void LoadCore()
+        {
+        }
+
+        protected virtual void RemoveExistingBindings()
+        {
+            foreach (var binding in TypesToOverriderBindingsFor().SelectMany(type => Kernel.GetBindings(type)))
+            {
+                Kernel.RemoveBinding(binding);
+            }
         }
 
         protected virtual bool ShouldBindViewModel(Type value)
         {
             return value.Name.EndsWith("ViewModel") && !SingletonTypes.Contains(value);
+        }
+
+        protected virtual IEnumerable<Type> TypesToOverriderBindingsFor()
+        {
+            return Enumerable.Empty<Type>();
         }
 
         #endregion

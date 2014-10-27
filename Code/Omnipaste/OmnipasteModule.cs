@@ -22,7 +22,7 @@
 
     public class OmnipasteModule : ModuleBase
     {
-        public override void LoadCore()
+        protected override void LoadCore()
         {
             Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             Kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
@@ -37,7 +37,7 @@
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
         }
 
-        protected override IEnumerable<Type> GenerateSingleTypesList()
+        protected override IEnumerable<Type> GenerateSingletonTypesList()
         {
             return new[]
                        {

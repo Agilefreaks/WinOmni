@@ -100,7 +100,7 @@
 
         #region Properties
 
-        private IWebsocketConnection WebsocketConnection { get; set; }
+        protected IWebsocketConnection WebsocketConnection { get; set; }
 
         #endregion
 
