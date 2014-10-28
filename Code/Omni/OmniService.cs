@@ -6,8 +6,6 @@
     using System.Reactive.Linq;
     using System.Threading;
     using BugFreak;
-    using Clipboard;
-    using Events;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -19,13 +17,13 @@
     {
         #region Fields
 
-        protected readonly IObservable<ServiceStatusEnum> _statusChanged;
+        protected readonly IObservable<ServiceStatusEnum> StatusChanged;
 
         private readonly IConfigurationService _configurationService;
 
         private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
 
-        private readonly AutoResetEvent executing = new AutoResetEvent(true);
+        private readonly AutoResetEvent _executing = new AutoResetEvent(true);
 
         private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
 
@@ -42,9 +40,9 @@
             WebsocketConnectionFactory = websocketConnectionFactory;
             _configurationService = configurationService;
 
-            _retryConnectionTimer.Elapsed += (sender, args) => Start().Subscribe();
+            _retryConnectionTimer.Elapsed += (sender, arguments) => Start().Subscribe();
 
-            _statusChanged =
+            StatusChanged =
                 Observable.FromEventPattern<ServiceStatusEventArgs>(
                     x => ConnectivityChanged += x,
                     x => ConnectivityChanged -= x).Select(x => x.EventArgs.Status);
@@ -90,7 +88,7 @@
         {
             get
             {
-                return _statusChanged;
+                return StatusChanged;
             }
         }
 
@@ -112,9 +110,9 @@
 
             if (Status != ServiceStatusEnum.Started)
             {
-                executing.WaitOne();
+                _executing.WaitOne();
 
-                executing.Reset();
+                _executing.Reset();
 
                 result = OpenWebsocketConnection()
                     .SelectMany(
@@ -130,7 +128,7 @@
                                             RegisterConnectionObserver();
                                             StartHandlers();
                                             return device;
-                                        }))).Finally(() => executing.Set());
+                                        }))).Finally(() => _executing.Set());
             }
 
             return result;
@@ -205,16 +203,6 @@
 
         private void StartHandlers()
         {
-            if (Kernel.GetModules().All(m => m.GetType() != typeof(ClipboardModule)))
-            {
-                Kernel.Load(new ClipboardModule());
-            }
-
-            if (Kernel.GetModules().All(m => m.GetType() != typeof(EventsModule)))
-            {
-                Kernel.Load(new EventsModule());
-            }
-
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
                 handler.Start(WebsocketConnection);
