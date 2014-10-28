@@ -5,7 +5,6 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]
