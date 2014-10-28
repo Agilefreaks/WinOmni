@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="DebugBar\IDebugBarPanel.cs" />
     <Compile Include="DebugBar\IncomingClipping\IncomingClippingViewModel.cs" />
+    <Compile Include="DebugBar\Notification\NotificationPanelBase.cs" />
     <Compile Include="DebugBar\PhoneNotification\PhoneNotificationViewModel.cs" />
     <Compile Include="DebugBar\SMSNotification\SMSNotificationViewModel.cs" />
     <Compile Include="DebugHeader\DebugHeaderViewModel.cs" />
@@ -171,13 +172,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DebugBar\PhoneNotification\PhoneNotificationView.xaml">
+    <Page Include="DebugBar\Notification\NotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DebugBar\SMSNotification\SMSNotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>

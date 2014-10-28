@@ -1,43 +1,30 @@
 ﻿namespace OmniDebug.DebugBar.SMSNotification
 {
-    using System;
     using Events.Models;
-    using OmniCommon.Models;
+    using OmniDebug.DebugBar.Notification;
     using OmniDebug.Services;
+    using OmniUI.Attributes;
 
-    public class SMSNotificationViewModel : IDebugBarPanel
+    [UseView("OmniDebug.DebugBar.SMSNotification.SMSNotificationView", IsFullyQualifiedName = true)]
+    public class SMSNotificationViewModel : NotificationPanelBase, IDebugBarPanel
     {
-        #region Fields
-
-        private readonly IEventsWrapper _eventsWrapper;
-
-        private readonly IOmniServiceWrapper _omniServiceWrapper;
-
-        #endregion
-
         #region Constructors and Destructors
 
         public SMSNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
+            : base(omniServiceWrapper, eventsWrapper)
         {
-            _omniServiceWrapper = omniServiceWrapper;
-            _eventsWrapper = eventsWrapper;
         }
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Properties
 
-        public void SimulateSmsNotification()
+        protected override EventTypeEnum NotificationType
         {
-            _eventsWrapper.MockLast(
-                new Event
-                    {
-                        Content = "test",
-                        Time = DateTime.Now,
-                        Type = EventTypeEnum.IncomingSmsEvent,
-                        PhoneNumber = "0700123456"
-                    });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+            get
+            {
+                return EventTypeEnum.IncomingSmsEvent;
+            }
         }
 
         #endregion

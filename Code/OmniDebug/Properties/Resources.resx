@@ -138,6 +138,9 @@
   <data name="NotificationTime" xml:space="preserve">
     <value>Notification Time</value>
   </data>
+  <data name="PhoneIcon" xml:space="preserve">
+    <value>appbar_phone</value>
+  </data>
   <data name="SimulateCallNotification" xml:space="preserve">
     <value>Simulate call notification</value>
   </data>
@@ -146,5 +149,8 @@
   </data>
   <data name="SimulateSMSNotification" xml:space="preserve">
     <value>Simulate SMS notification</value>
+  </data>
+  <data name="SMSIcon" xml:space="preserve">
+    <value>appbar_email_minimal</value>
   </data>
 </root>

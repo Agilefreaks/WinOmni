@@ -124,6 +124,15 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to appbar_phone.
+        /// </summary>
+        public static string PhoneIcon {
+            get {
+                return ResourceManager.GetString("PhoneIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulate call notification.
         /// </summary>
         public static string SimulateCallNotification {
@@ -147,6 +156,15 @@ namespace OmniDebug.Properties {
         public static string SimulateSMSNotification {
             get {
                 return ResourceManager.GetString("SimulateSMSNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appbar_email_minimal.
+        /// </summary>
+        public static string SMSIcon {
+            get {
+                return ResourceManager.GetString("SMSIcon", resourceCulture);
             }
         }
     }
