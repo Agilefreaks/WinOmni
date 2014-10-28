@@ -38,5 +38,5 @@ code/Omnipaste/omnipaste-setup.*
 Code/Installer/OmnipasteInstaller/Packages/*
 Libs/NAppUpdate/FeedBuilder/output/*
 Tools/FeedBuilder/output/*
-!code/OmniDebug/DebugBar/*
-!code/OmniDebug/DebugHeader/*
+!Code/OmniDebug/DebugBar*
+!Code/OmniDebug/DebugHeader*

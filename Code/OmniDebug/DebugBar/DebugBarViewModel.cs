@@ -1,28 +1,16 @@
 ﻿namespace OmniDebug.DebugBar
 {
-    using System;
-    using Clipboard.Models;
-    using Events.Models;
+    using System.Collections.Generic;
     using MahApps.Metro.Controls;
-    using OmniCommon.Models;
-    using OmniDebug.Services;
     using OmniUI.Flyout;
 
     public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
     {
-        private readonly IOmniServiceWrapper _omniServiceWrapper;
-
-        private readonly IEventsWrapper _eventsWrapper;
-
-        private readonly IClippingsWrapper _clippingsWrapper;
-
         #region Constructors and Destructors
 
-        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper, IClippingsWrapper clippingsWrapper)
+        public DebugBarViewModel(IEnumerable<IDebugBarPanel> debugBarPanels)
         {
-            _omniServiceWrapper = omniServiceWrapper;
-            _eventsWrapper = eventsWrapper;
-            _clippingsWrapper = clippingsWrapper;
+            DebugBarPanels = debugBarPanels;
             Position = Position.Left;
         }
 
@@ -30,27 +18,7 @@
 
         #region Public Properties
 
-        #endregion
-
-        #region Public Methods and Operators
-
-        public void SimulateSmsNotification()
-        {
-            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent, PhoneNumber = "0700123456" });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
-        }
-
-        public void SimulateCallNotification()
-        {
-            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingCallEvent, PhoneNumber = "0700123456" });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
-        }
-
-        public void SimulateIncomingClipping()
-        {
-            _clippingsWrapper.MockLast(new Clipping { Content = "test", Type = Clipping.ClippingTypeEnum.Unknown });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Clipboard));
-        }
+        public IEnumerable<IDebugBarPanel> DebugBarPanels { get; set; }
 
         #endregion
     }

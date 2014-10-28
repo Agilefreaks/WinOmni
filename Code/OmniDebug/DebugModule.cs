@@ -9,6 +9,9 @@
     using Omni;
     using OmniCommon;
     using OmniDebug.DebugBar;
+    using OmniDebug.DebugBar.IncomingClipping;
+    using OmniDebug.DebugBar.PhoneNotification;
+    using OmniDebug.DebugBar.SMSNotification;
     using OmniDebug.DebugHeader;
     using OmniDebug.Services;
     using OmniSync;
@@ -51,6 +54,10 @@
             Kernel.Bind<ClippingsWrapper>().ToConstant(new ClippingsWrapper(_clippings));
             Kernel.Bind<IClippingsWrapper>().ToMethod(context => context.Kernel.Get<ClippingsWrapper>());
             Kernel.Bind<IClippings>().ToMethod(context => context.Kernel.Get<IClippingsWrapper>());
+
+            Kernel.Bind<IDebugBarPanel>().To<SMSNotificationViewModel>();
+            Kernel.Bind<IDebugBarPanel>().To<PhoneNotificationViewModel>();
+            Kernel.Bind<IDebugBarPanel>().To<IncomingClippingViewModel>();
         }
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
