@@ -135,6 +135,9 @@
         [Inject]
         public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }
 
+        [Inject]
+        public IWindowHandleProvider WindowHandleProvider { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -189,7 +192,7 @@
             _view = (Window)view;
             _view.Closing += Closing;
 
-            Kernel.Bind<IntPtr>().ToMethod(context => GetHandle());
+            WindowHandleProvider.SetHandle(GetHandle());
 
             Configure();
         }
