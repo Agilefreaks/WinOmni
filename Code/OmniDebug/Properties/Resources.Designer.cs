@@ -61,6 +61,24 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clipping Content.
+        /// </summary>
+        public static string ClippingContent {
+            get {
+                return ResourceManager.GetString("ClippingContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clipping Type.
+        /// </summary>
+        public static string ClippingType {
+            get {
+                return ResourceManager.GetString("ClippingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string Debug {
