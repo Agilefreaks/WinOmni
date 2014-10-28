@@ -79,6 +79,15 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulate call notification.
+        /// </summary>
+        public static string SimulateCallNotification {
+            get {
+                return ResourceManager.GetString("SimulateCallNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulate SMS notification.
         /// </summary>
         public static string SimulateSMSNotification {

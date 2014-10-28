@@ -123,6 +123,9 @@
   <data name="DebugIconName" xml:space="preserve">
     <value>appbar_futurama_bender</value>
   </data>
+  <data name="SimulateCallNotification" xml:space="preserve">
+    <value>Simulate call notification</value>
+  </data>
   <data name="SimulateSMSNotification" xml:space="preserve">
     <value>Simulate SMS notification</value>
   </data>

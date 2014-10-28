@@ -35,6 +35,12 @@
             _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent, PhoneNumber = "0700123456" });
             _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }
+        
+        public void SimulateCallNotification()
+        {
+            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingCallEvent, PhoneNumber = "0700123456"});
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+        }
 
         #endregion
     }
