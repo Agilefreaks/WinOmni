@@ -1,10 +1,9 @@
 ﻿namespace Events.Api.Resources.v1
 {
-    using System;
     using global::Events.Models;
+    using OmniCommon.Interfaces;
 
-    public interface IEvents
+    public interface IEvents : IResource<Event>
     {
-        IObservable<Event> Last();
     }
 }
