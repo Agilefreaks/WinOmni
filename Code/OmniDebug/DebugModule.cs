@@ -3,10 +3,15 @@
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
+    using Clipboard.API.Resources.v1;
+    using Events.Api.Resources.v1;
     using Ninject;
     using Omni;
     using OmniCommon;
     using OmniDebug.DebugBar;
+    using OmniDebug.DebugBar.IncomingClipping;
+    using OmniDebug.DebugBar.PhoneNotification;
+    using OmniDebug.DebugBar.SMSNotification;
     using OmniDebug.DebugHeader;
     using OmniDebug.Services;
     using OmniSync;
@@ -15,6 +20,10 @@
 
     public class DebugModule : ModuleBase
     {
+        private IEvents _events;
+
+        private IClippings _clippings;
+
         #region Fields
 
         #endregion
@@ -37,11 +46,30 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
+
+            Kernel.Bind<EventsWrapper>().ToConstant(new EventsWrapper(_events));
+            Kernel.Bind<IEventsWrapper>().ToMethod(context => context.Kernel.Get<EventsWrapper>());
+            Kernel.Bind<IEvents>().ToMethod(context => context.Kernel.Get<IEventsWrapper>());
+            
+            Kernel.Bind<ClippingsWrapper>().ToConstant(new ClippingsWrapper(_clippings));
+            Kernel.Bind<IClippingsWrapper>().ToMethod(context => context.Kernel.Get<ClippingsWrapper>());
+            Kernel.Bind<IClippings>().ToMethod(context => context.Kernel.Get<IClippingsWrapper>());
+
+            Kernel.Bind<IDebugBarPanel>().To<SMSNotificationViewModel>();
+            Kernel.Bind<IDebugBarPanel>().To<PhoneNotificationViewModel>();
+            Kernel.Bind<IDebugBarPanel>().To<IncomingClippingViewModel>();
         }
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
         {
-            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService) };
+            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(IEvents), typeof(IClippings) };
+        }
+
+        protected override void RemoveExistingBindings()
+        {
+            _events = Kernel.Get<IEvents>();
+            _clippings = Kernel.Get<IClippings>();
+            base.RemoveExistingBindings();
         }
 
         #endregion

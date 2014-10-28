@@ -1,34 +1,24 @@
 ﻿namespace OmniDebug.DebugBar
 {
+    using System.Collections.Generic;
     using MahApps.Metro.Controls;
-    using OmniCommon.Models;
-    using OmniDebug.Services;
     using OmniUI.Flyout;
 
     public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
     {
         #region Constructors and Destructors
 
-        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper)
+        public DebugBarViewModel(IEnumerable<IDebugBarPanel> debugBarPanels)
         {
-            OmniServiceWrapper = omniServiceWrapper;
-            Position = Position.Right;
+            DebugBarPanels = debugBarPanels;
+            Position = Position.Left;
         }
 
         #endregion
 
         #region Public Properties
 
-        public IOmniServiceWrapper OmniServiceWrapper { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public void ShowNotification()
-        {
-            OmniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
-        }
+        public IEnumerable<IDebugBarPanel> DebugBarPanels { get; set; }
 
         #endregion
     }

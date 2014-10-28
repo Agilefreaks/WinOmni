@@ -277,7 +277,7 @@
                     <Setter Property="Position" Value="{Binding Position}" />
                     <Setter Property="IsModal" Value="{Binding IsModal}" />
                     <Setter Property="Template" Value="{StaticResource FlyoutTemplate}" />
-                    <Setter Property="Width" Value="300" />
+                    <Setter Property="MinWidth" Value="300" />
                 </Style>
             </controls:FlyoutsControl.ItemContainerStyle>
         </controls:FlyoutsControl>

@@ -8,26 +8,31 @@
     using System.Windows.Forms;
     using System.Windows.Interop;
     using WindowsImports;
-    using Ninject;
+    using OmniCommon.Interfaces;
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
-    {   
+    {
         #region Fields
 
         private readonly IObservable<ClipboardEventArgs> _clippingEventsStream;
 
         private IntPtr _clipboardViewerNext;
 
+        private readonly IWindowHandleProvider _windowHandleProvider;
+
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
             Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
+
+        private IDisposable _getHandleObserver;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public WindowsClipboardWrapper()
+        public WindowsClipboardWrapper(IWindowHandleProvider windowHandleProvider)
         {
+            _windowHandleProvider = windowHandleProvider;
             _clippingEventsStream =
                 Observable.FromEventPattern<ClipboardEventArgs>(x => DataReceived += x, x => DataReceived -= x)
                     .DistinctUntilChanged(ep => ep.EventArgs.Data) 
@@ -46,9 +51,6 @@
 
         public bool IsWatchingClippings { get; set; }
 
-        [Inject]
-        public IntPtr WindowHandle { get; set; }
-
         #endregion
 
         #region Public Methods and Operators
@@ -61,22 +63,13 @@
 
         public void StartWatchingClipboard()
         {
-            if (WindowHandle != IntPtr.Zero && !IsWatchingClippings)
-            {
-                _hWndSource = HwndSource.FromHwnd(WindowHandle);
-
-                if (_hWndSource != null)
-                {
-                    _hWndSource.AddHook(HandleClipboardMessage);
-                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
-
-                    IsWatchingClippings = true;
-                }
-            }
+            DisposeGetHandleObserver();
+            _getHandleObserver = _windowHandleProvider.Subscribe(OnHandleObtained);
         }
 
         public void StopWatchingClipboard()
         {
+            DisposeGetHandleObserver();
             if (IsWatchingClippings)
             {
                 User32.ChangeClipboardChain(_hWndSource.Handle, _clipboardViewerNext);
@@ -102,6 +95,32 @@
         #endregion
 
         #region Methods
+
+        private void OnHandleObtained(IntPtr windowHandle)
+        {
+            DisposeGetHandleObserver();
+            if (windowHandle != IntPtr.Zero && !IsWatchingClippings)
+            {
+                _hWndSource = HwndSource.FromHwnd(windowHandle);
+
+                if (_hWndSource != null)
+                {
+                    _hWndSource.AddHook(HandleClipboardMessage);
+                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+
+                    IsWatchingClippings = true;
+                }
+            }
+        }
+
+        private void DisposeGetHandleObserver()
+        {
+            if (_getHandleObserver != null)
+            {
+                _getHandleObserver.Dispose();
+                _getHandleObserver = null;
+            }
+        }
 
         private static IDataObject GetClipboardData()
         {

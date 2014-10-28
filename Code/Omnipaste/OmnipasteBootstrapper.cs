@@ -9,6 +9,8 @@
     using BugFreak;
     using Caliburn.Micro;
     using Castle.Core.Internal;
+    using Clipboard;
+    using Events;
     using Ninject;
     using Omni;
     using OmniApi;
@@ -70,6 +72,8 @@
                 new OmniSyncModule(),
                 new OmniUiModule(),
                 new OmniModule(),
+                new ClipboardModule(),
+                new EventsModule(),
                 new OmnipasteModule());
         }
 

@@ -61,6 +61,24 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clipping Content.
+        /// </summary>
+        public static string ClippingContent {
+            get {
+                return ResourceManager.GetString("ClippingContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clipping Type.
+        /// </summary>
+        public static string ClippingType {
+            get {
+                return ResourceManager.GetString("ClippingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string Debug {
@@ -79,11 +97,74 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Replay last notification.
+        ///   Looks up a localized string similar to Notification Content.
         /// </summary>
-        public static string SimulateNotification {
+        public static string NotificationContent {
             get {
-                return ResourceManager.GetString("SimulateNotification", resourceCulture);
+                return ResourceManager.GetString("NotificationContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification Phone Number.
+        /// </summary>
+        public static string NotificationPhoneNumber {
+            get {
+                return ResourceManager.GetString("NotificationPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification Time.
+        /// </summary>
+        public static string NotificationTime {
+            get {
+                return ResourceManager.GetString("NotificationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appbar_phone.
+        /// </summary>
+        public static string PhoneIcon {
+            get {
+                return ResourceManager.GetString("PhoneIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate call notification.
+        /// </summary>
+        public static string SimulateCallNotification {
+            get {
+                return ResourceManager.GetString("SimulateCallNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate incoming clipping.
+        /// </summary>
+        public static string SimulateIncomingClipping {
+            get {
+                return ResourceManager.GetString("SimulateIncomingClipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate SMS notification.
+        /// </summary>
+        public static string SimulateSMSNotification {
+            get {
+                return ResourceManager.GetString("SimulateSMSNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appbar_email_minimal.
+        /// </summary>
+        public static string SMSIcon {
+            get {
+                return ResourceManager.GetString("SMSIcon", resourceCulture);
             }
         }
     }

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="OmniDebug.DebugBar.SMSNotification.SMSNotificationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             xmlns:properties="clr-namespace:OmniDebug.Properties"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:OmniUI.Converters;assembly=OmniUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:StringToResourceConverter x:Key="StringToResourceConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+            <Label Content="{x:Static properties:Resources.NotificationContent}"/>
+            <TextBox x:Name="NotificationContent" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100"/>
+            <Label Content="{x:Static properties:Resources.NotificationPhoneNumber}"/>
+            <TextBox x:Name="NotificationPhoneNumber"/>
+            <Label Content="{x:Static properties:Resources.NotificationTime}"/>
+            <DatePicker x:Name="NotificationTime" SelectedDate="{x:Static sys:DateTime.Now}"/>
+        </StackPanel>
+        <Button Grid.Row="1"  x:Name="SimulateNotification" behaviors:MultipleContentButton.Text="{Binding Path=PerformActionName}" 
+                Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" HorizontalContentAlignment="Stretch"
+                ContentTemplate="{DynamicResource DebugButtonTemplate}" />
+    </Grid>
+</UserControl>
