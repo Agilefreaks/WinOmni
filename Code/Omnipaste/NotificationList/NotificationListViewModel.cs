@@ -61,11 +61,11 @@
                 notificationListViewModel,
                 null,
                 new Dictionary<string, object>
-                                {
-                                    {"Placement", PlacementMode.Right},
-                                    {"PlacementRectangle", SystemParameters.WorkArea },
-                                }
-                );
+                    {
+                        { "Placement", PlacementMode.Absolute },
+                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
+                        { "VerticalOffset", SystemParameters.WorkArea.Top }
+                    });
         }
 
         public void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
