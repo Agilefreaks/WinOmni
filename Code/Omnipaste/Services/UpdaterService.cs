@@ -292,7 +292,7 @@
                 Directory.CreateDirectory(InstallerTemporaryFolder);
                 //Move new msi to a temp file as the app directory might get uninstalled
                 var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
-                File.Copy(installerPath, MsiTemporaryPath);
+                File.Copy(installerPath, MsiTemporaryPath, true);
             }
             catch (Exception exception)
             {
