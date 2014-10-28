@@ -81,6 +81,15 @@ namespace OmniDebug.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Replay last notification.
         /// </summary>
+        public static string ReplayNotification {
+            get {
+                return ResourceManager.GetString("ReplayNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate notification.
+        /// </summary>
         public static string SimulateNotification {
             get {
                 return ResourceManager.GetString("SimulateNotification", resourceCulture);

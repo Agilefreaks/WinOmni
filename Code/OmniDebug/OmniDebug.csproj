@@ -69,7 +69,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
@@ -110,12 +111,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.pt.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\EventsWrapper.cs" />
+    <Compile Include="Services\IEventsWrapper.cs" />
     <Compile Include="Services\IOmniServiceWrapper.cs" />
     <Compile Include="Services\OmniServiceWrapper.cs" />
     <Compile Include="WebSocketConnectionFactoryWrapper.cs" />
     <Compile Include="WebsocketConnectionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Events\Events.csproj">
+      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
+      <Name>Events</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
       <Name>OmniApi</Name>

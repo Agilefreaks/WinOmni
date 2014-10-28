@@ -29,6 +29,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
+            <Button x:Name="ReplayNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.ReplayNotification}" Content="{StaticResource appbar_repeat}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
             <Button x:Name="ShowNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateNotification}" Content="{StaticResource appbar_cabinet_in}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
         </StackPanel>
     </Grid>

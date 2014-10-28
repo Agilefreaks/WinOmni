@@ -1,5 +1,7 @@
 ﻿namespace OmniDebug.DebugBar
 {
+    using System;
+    using Events.Models;
     using MahApps.Metro.Controls;
     using OmniCommon.Models;
     using OmniDebug.Services;
@@ -7,11 +9,16 @@
 
     public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
     {
+        private readonly IOmniServiceWrapper _omniServiceWrapper;
+
+        private readonly IEventsWrapper _eventsWrapper;
+
         #region Constructors and Destructors
 
-        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper)
+        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
         {
-            OmniServiceWrapper = omniServiceWrapper;
+            _omniServiceWrapper = omniServiceWrapper;
+            _eventsWrapper = eventsWrapper;
             Position = Position.Right;
         }
 
@@ -19,15 +26,19 @@
 
         #region Public Properties
 
-        public IOmniServiceWrapper OmniServiceWrapper { get; set; }
-
         #endregion
 
         #region Public Methods and Operators
 
+        public void ReplayNotification()
+        {
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+        }
+
         public void ShowNotification()
         {
-            OmniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent});
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }
 
         #endregion

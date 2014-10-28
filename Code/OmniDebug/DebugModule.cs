@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
+    using Events.Api.Resources.v1;
     using Ninject;
     using Omni;
     using OmniCommon;
@@ -15,6 +16,8 @@
 
     public class DebugModule : ModuleBase
     {
+        private IEvents _events;
+
         #region Fields
 
         #endregion
@@ -37,11 +40,21 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
+
+            Kernel.Bind<EventsWrapper>().ToConstant(new EventsWrapper(_events));
+            Kernel.Bind<IEventsWrapper>().ToMethod(context => context.Kernel.Get<EventsWrapper>());
+            Kernel.Bind<IEvents>().ToMethod(context => context.Kernel.Get<IEventsWrapper>());
         }
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
         {
-            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService) };
+            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(IEvents) };
+        }
+
+        protected override void RemoveExistingBindings()
+        {
+            _events = Kernel.Get<IEvents>();
+            base.RemoveExistingBindings();
         }
 
         #endregion
