@@ -31,6 +31,7 @@
         <StackPanel Orientation="Vertical">
             <Button x:Name="SimulateSMSNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateSMSNotification}" Content="{StaticResource appbar_email_minimal}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
             <Button x:Name="SimulateCallNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateCallNotification}" Content="{StaticResource appbar_phone}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
+            <Button x:Name="SimulateIncomingClipping" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateIncomingClipping}" Content="{StaticResource appbar_cloud}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
         </StackPanel>
     </Grid>
 </UserControl>

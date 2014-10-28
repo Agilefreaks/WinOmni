@@ -1,6 +1,7 @@
 ﻿namespace OmniDebug.DebugBar
 {
     using System;
+    using Clipboard.Models;
     using Events.Models;
     using MahApps.Metro.Controls;
     using OmniCommon.Models;
@@ -13,12 +14,15 @@
 
         private readonly IEventsWrapper _eventsWrapper;
 
+        private readonly IClippingsWrapper _clippingsWrapper;
+
         #region Constructors and Destructors
 
-        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
+        public DebugBarViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper, IClippingsWrapper clippingsWrapper)
         {
             _omniServiceWrapper = omniServiceWrapper;
             _eventsWrapper = eventsWrapper;
+            _clippingsWrapper = clippingsWrapper;
             Position = Position.Left;
         }
 
@@ -35,11 +39,17 @@
             _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent, PhoneNumber = "0700123456" });
             _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }
-        
+
         public void SimulateCallNotification()
         {
-            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingCallEvent, PhoneNumber = "0700123456"});
+            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingCallEvent, PhoneNumber = "0700123456" });
             _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+        }
+
+        public void SimulateIncomingClipping()
+        {
+            _clippingsWrapper.MockLast(new Clipping { Content = "test", Type = Clipping.ClippingTypeEnum.Unknown });
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Clipboard));
         }
 
         #endregion

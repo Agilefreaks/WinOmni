@@ -88,6 +88,15 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulate incoming clipping.
+        /// </summary>
+        public static string SimulateIncomingClipping {
+            get {
+                return ResourceManager.GetString("SimulateIncomingClipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulate SMS notification.
         /// </summary>
         public static string SimulateSMSNotification {

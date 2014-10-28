@@ -111,14 +111,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.pt.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\ClippingsWrapper.cs" />
     <Compile Include="Services\EventsWrapper.cs" />
+    <Compile Include="Services\IClipboardWrapper.cs" />
     <Compile Include="Services\IEventsWrapper.cs" />
     <Compile Include="Services\IOmniServiceWrapper.cs" />
     <Compile Include="Services\OmniServiceWrapper.cs" />
+    <Compile Include="Services\ResourceWrapperBase.cs" />
     <Compile Include="WebSocketConnectionFactoryWrapper.cs" />
     <Compile Include="WebsocketConnectionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Clipboard\Clipboard.csproj">
+      <Project>{c7d3c627-311f-4395-be3c-953f1f715c74}</Project>
+      <Name>Clipboard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Events\Events.csproj">
       <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
       <Name>Events</Name>

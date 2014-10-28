@@ -126,6 +126,9 @@
   <data name="SimulateCallNotification" xml:space="preserve">
     <value>Simulate call notification</value>
   </data>
+  <data name="SimulateIncomingClipping" xml:space="preserve">
+    <value>Simulate incoming clipping</value>
+  </data>
   <data name="SimulateSMSNotification" xml:space="preserve">
     <value>Simulate SMS notification</value>
   </data>
