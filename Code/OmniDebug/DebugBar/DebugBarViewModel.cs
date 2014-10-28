@@ -30,14 +30,9 @@
 
         #region Public Methods and Operators
 
-        public void ReplayNotification()
+        public void SimulateSmsNotification()
         {
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
-        }
-
-        public void ShowNotification()
-        {
-            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent});
+            _eventsWrapper.MockLast(new Event { Content = "test", Time = DateTime.Now, Type = EventTypeEnum.IncomingSmsEvent, PhoneNumber = "0700123456" });
             _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }
 

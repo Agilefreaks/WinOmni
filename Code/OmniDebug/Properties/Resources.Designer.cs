@@ -79,20 +79,11 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Replay last notification.
+        ///   Looks up a localized string similar to Simulate SMS notification.
         /// </summary>
-        public static string ReplayNotification {
+        public static string SimulateSMSNotification {
             get {
-                return ResourceManager.GetString("ReplayNotification", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Simulate notification.
-        /// </summary>
-        public static string SimulateNotification {
-            get {
-                return ResourceManager.GetString("SimulateNotification", resourceCulture);
+                return ResourceManager.GetString("SimulateSMSNotification", resourceCulture);
             }
         }
     }

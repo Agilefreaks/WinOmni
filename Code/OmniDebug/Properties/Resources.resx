@@ -123,10 +123,7 @@
   <data name="DebugIconName" xml:space="preserve">
     <value>appbar_futurama_bender</value>
   </data>
-  <data name="ReplayNotification" xml:space="preserve">
-    <value>Replay last notification</value>
-  </data>
-  <data name="SimulateNotification" xml:space="preserve">
-    <value>Simulate notification</value>
+  <data name="SimulateSMSNotification" xml:space="preserve">
+    <value>Simulate SMS notification</value>
   </data>
 </root>
