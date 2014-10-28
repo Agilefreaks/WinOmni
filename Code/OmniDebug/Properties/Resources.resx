@@ -129,6 +129,15 @@
   <data name="DebugIconName" xml:space="preserve">
     <value>appbar_futurama_bender</value>
   </data>
+  <data name="NotificationContent" xml:space="preserve">
+    <value>Notification Content</value>
+  </data>
+  <data name="NotificationPhoneNumber" xml:space="preserve">
+    <value>Notification Phone Number</value>
+  </data>
+  <data name="NotificationTime" xml:space="preserve">
+    <value>Notification Time</value>
+  </data>
   <data name="SimulateCallNotification" xml:space="preserve">
     <value>Simulate call notification</value>
   </data>

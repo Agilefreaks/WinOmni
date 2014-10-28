@@ -5,9 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              xmlns:properties="clr-namespace:OmniDebug.Properties"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button x:Name="SimulateCallNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateCallNotification}" Content="{StaticResource appbar_phone}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+            <Label Content="{x:Static properties:Resources.NotificationContent}"/>
+            <TextBox x:Name="NotificationContent"/>
+            <Label Content="{x:Static properties:Resources.NotificationPhoneNumber}"/>
+            <TextBox x:Name="NotificationPhoneNumber"/>
+            <Label Content="{x:Static properties:Resources.NotificationTime}"/>
+            <DatePicker x:Name="NotificationTime" SelectedDate="{x:Static sys:DateTime.Now}"/>
+        </StackPanel>
+        <Button Grid.Row="1" x:Name="SimulateCallNotification" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateCallNotification}" Content="{StaticResource appbar_phone}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource DebugButtonTemplate}" />
     </Grid>
 </UserControl>

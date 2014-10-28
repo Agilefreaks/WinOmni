@@ -97,6 +97,33 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notification Content.
+        /// </summary>
+        public static string NotificationContent {
+            get {
+                return ResourceManager.GetString("NotificationContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification Phone Number.
+        /// </summary>
+        public static string NotificationPhoneNumber {
+            get {
+                return ResourceManager.GetString("NotificationPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification Time.
+        /// </summary>
+        public static string NotificationTime {
+            get {
+                return ResourceManager.GetString("NotificationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulate call notification.
         /// </summary>
         public static string SimulateCallNotification {
