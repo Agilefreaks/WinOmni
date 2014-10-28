@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0">
             <Label Content="{x:Static properties:Resources.NotificationContent}"/>
-            <TextBox x:Name="NotificationContent"/>
+            <TextBox x:Name="NotificationContent" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100"/>
             <Label Content="{x:Static properties:Resources.NotificationPhoneNumber}"/>
             <TextBox x:Name="NotificationPhoneNumber"/>
             <Label Content="{x:Static properties:Resources.NotificationTime}"/>

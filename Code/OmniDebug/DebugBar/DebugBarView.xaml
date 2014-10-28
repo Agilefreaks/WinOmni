@@ -23,10 +23,10 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <ListView ItemsSource="{Binding Path=DebugBarPanels}">
+    <ListView ItemsSource="{Binding Path=DebugBarPanels}" Padding="0, 20, 0, 20">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ContentControl cal:View.Model="{Binding}"/>
+                <ContentControl cal:View.Model="{Binding}" Margin="20, 0, 20, 0" HorizontalContentAlignment="Center"/>
             </DataTemplate>
         </ListView.ItemTemplate>
         <ListView.ItemsPanel>
