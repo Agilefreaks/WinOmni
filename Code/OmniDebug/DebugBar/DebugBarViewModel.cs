@@ -19,7 +19,7 @@
         {
             _omniServiceWrapper = omniServiceWrapper;
             _eventsWrapper = eventsWrapper;
-            Position = Position.Right;
+            Position = Position.Left;
         }
 
         #endregion
