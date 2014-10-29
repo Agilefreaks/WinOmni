@@ -1,6 +1,6 @@
 ﻿namespace InstallerCustomActions.ClickOnceMigration
 {
-    using CustomizedClickOnce.Common;
+    using InstallerCustomActions.ClickOnceHelper;
 
     public class RemoveShortcutFromStartupTask : MigrationTaskBase
     {
