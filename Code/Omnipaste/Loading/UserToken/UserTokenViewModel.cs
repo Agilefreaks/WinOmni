@@ -4,7 +4,6 @@
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
 
     public class UserTokenViewModel : Screen, IUserTokenViewModel
     {
@@ -22,10 +21,10 @@
 
         #region Constructors and Destructors
 
-        public UserTokenViewModel(IEventAggregator eventAggregator)
+        public UserTokenViewModel(IEventAggregator eventAggregator, IApplicationService applicationService)
         {
             _eventAggregator = eventAggregator;
-            ApplicationService = new ApplicationService();
+            ApplicationService = applicationService;
         }
 
         #endregion

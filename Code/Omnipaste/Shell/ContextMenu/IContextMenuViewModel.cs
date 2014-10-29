@@ -22,8 +22,6 @@
 
         void ShowBalloon(string balloonTitle, string balloonMessage);
 
-        void ToggleAutoStart();
-
         void ToggleSync();
 
         #endregion

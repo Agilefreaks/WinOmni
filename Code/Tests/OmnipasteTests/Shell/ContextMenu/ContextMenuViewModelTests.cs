@@ -112,25 +112,25 @@
             _mockEventAggregator.Verify(m => m.Publish(It.IsAny<ShowShellMessage>(), Execute.OnUIThread));
         }
 
-        //[Test]
-        //public void ToggleAutoStart_WhenAutoStartIsFalse_CallsRemoveShortcutFromStartup()
-        //{
-        //    _subject.AutoStart = false;
+        [Test]
+        public void SetAutoStart_WhenAutoStartIsFalseAndNewValueIsTrue_SetsApplicationServiceAutoStartToTrue()
+        {
+            _mockApplicationService.SetupGet(x => x.AutoStart).Returns(false);
 
-        //    _subject.ToggleAutoStart();
+            _subject.AutoStart = true;
 
-        //    _mockClickOnceHelper.Verify(m => m.RemoveShortcutFromStartup(), Times.Once);
-        //}
+            _mockApplicationService.VerifySet(x => x.AutoStart = true, Times.Once);
+        }
 
-        //[Test]
-        //public void ToggleAutoStart_WhenAutoStartIsTrue_CallsAddShortcutToStartup()
-        //{
-        //    _subject.AutoStart = true;
+        [Test]
+        public void SetAutoStart_WhenAutoStartIsTrueAndNewValueIsFalse_SetsApplicationServiceAutoStartToFalse()
+        {
+            _mockApplicationService.SetupGet(x => x.AutoStart).Returns(true);
 
-        //    _subject.ToggleAutoStart();
+            _subject.AutoStart = false;
 
-        //    _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
-        //}
+            _mockApplicationService.VerifySet(x => x.AutoStart = false, Times.Once);
+        }
 
         [Test]
         public void TooltipText_HasVersion()

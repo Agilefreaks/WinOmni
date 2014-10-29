@@ -14,23 +14,21 @@
     {
         #region Fields
 
+        private readonly IOmniService _omniService;
+
         private BalloonNotificationInfo _balloonInfo;
 
         private string _iconSource;
 
         #endregion
-        
+
         #region Constructors and Destructors
 
         public ContextMenuViewModel(IOmniService omniService)
         {
-            OmniService = omniService;
-            OmniService.StatusChangedObservable.Subscribe(
-                status => {
-                              IconSource = status == ServiceStatusEnum.Started 
-                                  ? "/Connected.ico" 
-                                  : "/Disconnected.ico";
-                },
+            _omniService = omniService;
+            _omniService.StatusChangedObservable.Subscribe(
+                status => { IconSource = status == ServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico"; },
                 exception => { });
 
             IconSource = "/Disconnected.ico";
@@ -43,7 +41,22 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
-        public bool AutoStart { get; set; }
+        public bool AutoStart
+        {
+            get
+            {
+                return ApplicationService.AutoStart;
+            }
+            set
+            {
+                if (value.Equals(ApplicationService.AutoStart))
+                {
+                    return;
+                }
+                ApplicationService.AutoStart = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public BalloonNotificationInfo BalloonInfo
         {
@@ -76,14 +89,11 @@
 
         public bool IsStopped { get; set; }
 
-        public IOmniService OmniService { get; set; }
-
         public string TooltipText
         {
             get
             {
                 return "Omnipaste " + ApplicationService.Version;
-                
             }
         }
 
@@ -92,7 +102,7 @@
         #endregion
 
         #region Public Methods and Operators
-        
+
         public void Exit()
         {
             ApplicationService.ShutDown();
@@ -108,19 +118,15 @@
             BalloonInfo = new BalloonNotificationInfo { Title = balloonTitle, Message = balloonMessage };
         }
 
-        public void ToggleAutoStart()
-        {            
-        }
-
         public void ToggleSync()
         {
             if (IsStopped)
             {
-                OmniService.Stop();
+                _omniService.Stop();
             }
             else
             {
-                OmniService.Start().Subscribe();
+                _omniService.Start().Subscribe();
             }
         }
 

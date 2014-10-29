@@ -6,7 +6,6 @@
     using NUnit.Framework;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
     using Omnipaste.Loading.ActivationFailed;
     using Action = System.Action;
 
@@ -21,7 +20,7 @@
         public void SetUp()
         {
             _applicationWrapper = new Mock<IApplicationService>();
-            _subject = new ActivationFailedViewModel { ApplicationService = _applicationWrapper.Object };
+            _subject = new ActivationFailedViewModel(_applicationWrapper.Object);
         }
 
         [Test]
