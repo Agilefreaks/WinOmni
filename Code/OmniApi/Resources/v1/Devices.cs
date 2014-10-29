@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using Ninject;
     using OmniApi.Models;
+    using OmniCommon;
     using OmniCommon.Interfaces;
     using Refit;
 
-    public class Devices : Resource<Devices.IDevicesApi>, IDevices
+    public class Devices : Resource<IDevicesApi>, IDevices
     {
         #region Constants
 
@@ -15,41 +17,21 @@
 
         #endregion
 
-        #region Interfaces
+        #region Constructors and Destructors
 
-        [ColdObservable]
-        public interface IDevicesApi
+        public Devices()
+            : base(CreateResourceApi())
         {
-            #region Public Methods and Operators
-
-            [Put("/devices/activate")]
-            IObservable<Device> Activate([Body] Device device, [Header("Authorization")] string token, [Header("Client-Version")] string version);
-
-            [Post("/devices")]
-            IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
-
-            [Put("/devices/deactivate")]
-            IObservable<Device> Deactivate([Body] Device device, [Header("Authorization")] string token);
-
-            [Get("/devices")]
-            IObservable<List<Device>> GetAll([Header("Authorization")] string token);
-
-            [Post("/devices/end_call")]
-            IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
-
-            [Post("/devices/sms")]
-            IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);
-            
-            [Post("/devices/call")]
-            IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
-
-            #endregion
         }
 
         #endregion
 
+        #region Public Properties
+
         [Inject]
         public IApplicationService ApplicationService { get; set; }
+
+        #endregion
 
         #region Public Methods and Operators
 
@@ -58,6 +40,11 @@
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
 
             return Authorize(ResourceApi.Activate(device, AccessToken, ApplicationService.Version.ToString()));
+        }
+
+        public IObservable<EmptyModel> Call(string phoneNumber)
+        {
+            return Authorize(ResourceApi.Call(phoneNumber, AccessToken));
         }
 
         public IObservable<Device> Create(string identifier, string name)
@@ -72,15 +59,15 @@
             return Authorize(ResourceApi.Deactivate(device, AccessToken));
         }
 
+        public IObservable<EmptyModel> EndCall()
+        {
+            return Authorize(ResourceApi.EndCall(AccessToken));
+        }
+
         public IObservable<List<Device>> GetAll()
         {
             var observable = ResourceApi.GetAll(AccessToken);
             return Authorize(observable);
-        }
-
-        public IObservable<EmptyModel> EndCall()
-        {
-            return Authorize(ResourceApi.EndCall(AccessToken));
         }
 
         public IObservable<EmptyModel> SendSms(string phoneNumber, string content)
@@ -88,9 +75,13 @@
             return Authorize(ResourceApi.SendSms(phoneNumber, content, AccessToken));
         }
 
-        public IObservable<EmptyModel> Call(string phoneNumber)
+        #endregion
+
+        #region Methods
+
+        private static IDevicesApi CreateResourceApi()
         {
-            return Authorize(ResourceApi.Call(phoneNumber, AccessToken));
+            return RestService.For<IDevicesApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
         }
 
         #endregion

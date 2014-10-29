@@ -14,6 +14,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>3e5fae27</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +51,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -64,11 +65,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="Refit, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Refit\Refit.dll</HintPath>
-    </Reference>
-    <Reference Include="Refit-Portable, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Refit\Refit-Portable.dll</HintPath>
+      <HintPath>..\packages\refit.2.0.2\lib\Net45\Refit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -96,12 +93,16 @@
   <ItemGroup>
     <Compile Include="Api\Resources\v1\IEvents.cs" />
     <Compile Include="Api\Resources\v1\Events.cs" />
+    <Compile Include="Api\Resources\v1\IEventsApi.cs" />
     <Compile Include="Handlers\IEventsHandler.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Handlers\EventsHandler.cs" />
     <Compile Include="EventsModule.cs" />
     <Compile Include="Models\EventTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefitStubs.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
@@ -125,7 +126,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\refit.2.0.2\build\refit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\refit.2.0.2\build\refit.targets'))" />
   </Target>
+  <Import Project="..\packages\refit.2.0.2\build\refit.targets" Condition="Exists('..\packages\refit.2.0.2\build\refit.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
