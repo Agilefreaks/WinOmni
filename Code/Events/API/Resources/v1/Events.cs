@@ -1,23 +1,19 @@
 ﻿namespace Events.Api.Resources.v1
 {
     using System;
+    using System.Configuration;
     using global::Events.Models;
     using OmniApi.Resources;
+    using OmniCommon;
     using Refit;
 
-    public class Events : Resource<Events.IEventsApi>, IEvents
+    public class Events : Resource<IEventsApi>, IEvents
     {
-        #region Interfaces
+        #region Constructors and Destructors
 
-        [ColdObservable]
-        public interface IEventsApi
+        public Events()
+            : base(CreateResourceApi())
         {
-            #region Public Methods and Operators
-
-            [Get("/events")]
-            IObservable<Event> Last([Header("Authorization")] string token);
-
-            #endregion
         }
 
         #endregion
@@ -27,6 +23,15 @@
         public IObservable<Event> Last()
         {
             return Authorize(ResourceApi.Last(AccessToken));
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static IEventsApi CreateResourceApi()
+        {
+            return RestService.For<IEventsApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
         }
 
         #endregion

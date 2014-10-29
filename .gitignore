@@ -40,3 +40,4 @@ Libs/NAppUpdate/FeedBuilder/output/*
 Tools/FeedBuilder/output/*
 !Code/OmniDebug/DebugBar*
 !Code/OmniDebug/DebugHeader*
+*RefitStubs.cs

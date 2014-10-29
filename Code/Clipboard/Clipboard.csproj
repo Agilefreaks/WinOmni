@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="API\Resources\v1\Clippings.cs" />
     <Compile Include="API\Resources\v1\IClippings.cs" />
+    <Compile Include="API\Resources\v1\IClippingsApi.cs" />
     <Compile Include="ClipboardModule.cs" />
     <Compile Include="Handlers\ClipboardHandler.cs" />
     <Compile Include="Handlers\IClipboardHandler.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Handlers\WindowsClipboard\WindowsClipboardWrapper.cs" />
     <Compile Include="Models\Clipping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefitStubs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

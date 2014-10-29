@@ -6,7 +6,7 @@
     using OmniCommon;
     using Refit;
 
-    public class OAuth2 : Resource<OAuth2.IOAuth2Api>, IOAuth2
+    public class OAuth2 : Resource<IOAuth2Api>, IOAuth2
     {
         #region Fields
 
@@ -17,36 +17,9 @@
         #region Constructors and Destructors
 
         public OAuth2()
+            : base(CreateResourceApi())
         {
             _clientId = ConfigurationManager.AppSettings[ConfigurationProperties.ClientId];
-        }
-
-        #endregion
-
-        #region Enums
-
-        public enum GrantTypeEnum
-        {
-            authorization_code,
-
-            refresh_token,
-
-            client_credentials
-        }
-
-        #endregion
-
-        #region Interfaces
-
-        [ColdObservable]
-        public interface IOAuth2Api
-        {
-            #region Public Methods and Operators
-
-            [Post("/oauth2/token")]
-            IObservable<Token> Create([Body] AuthorizationRequest request);
-
-            #endregion
         }
 
         #endregion
@@ -55,37 +28,27 @@
 
         public IObservable<Token> Create(string authorizationCode)
         {
-            return ResourceApi.Create(new AuthorizationRequest(GrantTypeEnum.authorization_code, _clientId) { Code = authorizationCode });
+            return
+                ResourceApi.Create(
+                    new AuthorizationRequest(GrantTypeEnum.authorization_code, _clientId) { Code = authorizationCode });
         }
 
         public IObservable<Token> Refresh(string refreshToken)
         {
-            return ResourceApi.Create(new AuthorizationRequest(GrantTypeEnum.refresh_token, _clientId) { RefreshToken = refreshToken });
+            return
+                ResourceApi.Create(
+                    new AuthorizationRequest(GrantTypeEnum.refresh_token, _clientId) { RefreshToken = refreshToken });
         }
 
         #endregion
 
-        public class AuthorizationRequest
+        #region Methods
+
+        private static IOAuth2Api CreateResourceApi()
         {
-            public AuthorizationRequest(GrantTypeEnum grantType, string clientId)
-            {
-                GrantType = grantType.ToString();
-                ClientId = clientId;
-            }
-
-            #region Public Properties
-
-            public string ClientId { get; set; }
-
-            public string ClientSecret { get; set; }
-
-            public string Code { get; set; }
-
-            public string GrantType { get; set; }
-
-            public string RefreshToken { get; set; }
-
-            #endregion
+            return RestService.For<IOAuth2Api>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
         }
+
+        #endregion
     }
 }

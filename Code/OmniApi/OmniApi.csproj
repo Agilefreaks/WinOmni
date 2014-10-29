@@ -99,11 +99,16 @@
     <Compile Include="Models\Token.cs" />
     <Compile Include="OmniApiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefitStubs.cs" />
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\Resource.cs" />
+    <Compile Include="Resources\v1\AuthorizationRequest.cs" />
     <Compile Include="Resources\v1\Devices.cs" />
+    <Compile Include="Resources\v1\GrantTypeEnum.cs" />
     <Compile Include="Resources\v1\IDevices.cs" />
+    <Compile Include="Resources\v1\IDevicesApi.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />
+    <Compile Include="Resources\v1\IOAuth2Api.cs" />
     <Compile Include="Resources\v1\OAuth2.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
     <Compile Include="Support\Serialization\DeliminatorSeparatedPropertyNamesContractResolver.cs" />

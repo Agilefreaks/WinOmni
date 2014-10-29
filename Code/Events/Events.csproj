@@ -93,12 +93,16 @@
   <ItemGroup>
     <Compile Include="Api\Resources\v1\IEvents.cs" />
     <Compile Include="Api\Resources\v1\Events.cs" />
+    <Compile Include="Api\Resources\v1\IEventsApi.cs" />
     <Compile Include="Handlers\IEventsHandler.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Handlers\EventsHandler.cs" />
     <Compile Include="EventsModule.cs" />
     <Compile Include="Models\EventTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefitStubs.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">

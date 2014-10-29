@@ -6,21 +6,14 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
-    using OmniApi.Resources;
     using OmniCommon.Interfaces;
 
+    [TestFixture]
     public class ResourceTest
     {
         private TestResource _subject;
 
         private Mock<IConfigurationService> _mockConfigurationService;
-
-        public class TestResource : Resource<TestResource.ITestApi>
-        {
-            public interface ITestApi
-            {
-            }
-        }
 
         [SetUp]
         public void SetUp()

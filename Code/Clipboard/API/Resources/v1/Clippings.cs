@@ -1,26 +1,23 @@
 ﻿namespace Clipboard.API.Resources.v1
 {
     using System;
+    using System.Configuration;
     using Clipboard.Models;
     using OmniApi.Resources;
+    using OmniCommon;
     using Refit;
 
-    public class Clippings : Resource<Clippings.IClippingsApi>, IClippings
+    public class Clippings : Resource<IClippingsApi>, IClippings
     {
         #region Interfaces
 
-        [ColdObservable]
-        public interface IClippingsApi
+        #endregion
+
+        #region Constructors and Destructors
+
+        public Clippings()
+            : base(CreateResourceApi())
         {
-            #region Public Methods and Operators
-
-            [Post("/clippings")]
-            IObservable<Clipping> Create([Body] Clipping clipping, [Header("Authorization")] string token);
-
-            [Get("/clippings/last")]
-            IObservable<Clipping> Last([Header("Authorization")] string token);
-
-            #endregion
         }
 
         #endregion
@@ -38,5 +35,15 @@
         }
 
         #endregion
+
+        #region Methods
+
+        private static IClippingsApi CreateResourceApi()
+        {
+            return RestService.For<IClippingsApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+        }
+
+        #endregion
+
     }
 }
