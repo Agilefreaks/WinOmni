@@ -9,6 +9,8 @@
 
         Version Version { get; }
 
+        bool AutoStart { get; set; }
+
         void ShutDown();
     }
 }

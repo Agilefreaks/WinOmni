@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using CustomizedClickOnce.Common;
+    using InstallerCustomActions.ClickOnceHelper;
     using InstallerCustomActions.ClickOnceMigration;
 
     public class CustomizedClickOnceUninstaller

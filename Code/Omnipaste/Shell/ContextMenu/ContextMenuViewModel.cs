@@ -1,16 +1,12 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
     using System;
-    using System.Deployment.Application;
-    using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
-    using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Framework.Behaviours;
     using OmniSync;
 
@@ -18,29 +14,24 @@
     {
         #region Fields
 
-        private BaloonNotificationInfo _baloonInfo;
+        private readonly IOmniService _omniService;
 
-        private IClickOnceHelper _clickOnceHelper;
+        private BalloonNotificationInfo _balloonInfo;
 
         private string _iconSource;
 
         #endregion
-        
+
         #region Constructors and Destructors
 
         public ContextMenuViewModel(IOmniService omniService)
         {
-            OmniService = omniService;
-            OmniService.StatusChangedObservable.Subscribe(
-                status => {
-                              IconSource = status == ServiceStatusEnum.Started 
-                                  ? "/Connected.ico" 
-                                  : "/Disconnected.ico";
-                },
+            _omniService = omniService;
+            _omniService.StatusChangedObservable.Subscribe(
+                status => { IconSource = status == ServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico"; },
                 exception => { });
 
             IconSource = "/Disconnected.ico";
-            AutoStart = ClickOnceHelper.StartupShortcutExists();
         }
 
         #endregion
@@ -50,30 +41,33 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
-        public bool AutoStart { get; set; }
-
-        public BaloonNotificationInfo BaloonInfo
+        public bool AutoStart
         {
             get
             {
-                return _baloonInfo;
+                return ApplicationService.AutoStart;
             }
             set
             {
-                _baloonInfo = value;
-                NotifyOfPropertyChange(() => BaloonInfo);
+                if (value.Equals(ApplicationService.AutoStart))
+                {
+                    return;
+                }
+                ApplicationService.AutoStart = value;
+                NotifyOfPropertyChange();
             }
         }
 
-        public IClickOnceHelper ClickOnceHelper
+        public BalloonNotificationInfo BalloonInfo
         {
             get
             {
-                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
+                return _balloonInfo;
             }
             set
             {
-                _clickOnceHelper = value;
+                _balloonInfo = value;
+                NotifyOfPropertyChange(() => BalloonInfo);
             }
         }
 
@@ -95,14 +89,11 @@
 
         public bool IsStopped { get; set; }
 
-        public IOmniService OmniService { get; set; }
-
         public string TooltipText
         {
             get
             {
                 return "Omnipaste " + ApplicationService.Version;
-                
             }
         }
 
@@ -111,7 +102,7 @@
         #endregion
 
         #region Public Methods and Operators
-        
+
         public void Exit()
         {
             ApplicationService.ShutDown();
@@ -122,32 +113,20 @@
             EventAggregator.PublishOnUIThread(new ShowShellMessage());
         }
 
-        public void ShowBaloon(string baloonTitle, string baloonMessage)
+        public void ShowBalloon(string balloonTitle, string balloonMessage)
         {
-            BaloonInfo = new BaloonNotificationInfo { Title = baloonTitle, Message = baloonMessage };
-        }
-
-        public void ToggleAutoStart()
-        {
-            if (AutoStart)
-            {
-                ClickOnceHelper.AddShortcutToStartup();
-            }
-            else
-            {
-                ClickOnceHelper.RemoveShortcutFromStartup();
-            }
+            BalloonInfo = new BalloonNotificationInfo { Title = balloonTitle, Message = balloonMessage };
         }
 
         public void ToggleSync()
         {
             if (IsStopped)
             {
-                OmniService.Stop();
+                _omniService.Stop();
             }
             else
             {
-                OmniService.Start().Subscribe();
+                _omniService.Start().Subscribe();
             }
         }
 

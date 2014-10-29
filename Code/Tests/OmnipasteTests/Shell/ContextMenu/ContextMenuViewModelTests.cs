@@ -4,7 +4,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Caliburn.Micro;
-    using CustomizedClickOnce.Common;
     using FluentAssertions;
     using Moq;
     using Ninject;
@@ -14,7 +13,6 @@
     using OmniApi.Models;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Shell.ContextMenu;
     using OmniSync;
 
@@ -26,8 +24,6 @@
         private Mock<IOmniService> _mockOmniService;
 
         private Mock<IEventAggregator> _mockEventAggregator;
-
-        private Mock<IClickOnceHelper> _mockClickOnceHelper;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -50,13 +46,11 @@
             _statusChangedSubject = new Subject<ServiceStatusEnum>();
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
-            _mockClickOnceHelper = _mockingKernel.GetMock<IClickOnceHelper>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
             _subject = _mockingKernel.Get<IContextMenuViewModel>();
-            _subject.ClickOnceHelper = _mockClickOnceHelper.Object;
         }
 
         [Test]
@@ -119,23 +113,23 @@
         }
 
         [Test]
-        public void ToggleAutoStart_WhenAutoStartIsFalse_CallsRemoveShortcutFromStartup()
+        public void SetAutoStart_WhenAutoStartIsFalseAndNewValueIsTrue_SetsApplicationServiceAutoStartToTrue()
         {
-            _subject.AutoStart = false;
+            _mockApplicationService.SetupGet(x => x.AutoStart).Returns(false);
 
-            _subject.ToggleAutoStart();
+            _subject.AutoStart = true;
 
-            _mockClickOnceHelper.Verify(m => m.RemoveShortcutFromStartup(), Times.Once);
+            _mockApplicationService.VerifySet(x => x.AutoStart = true, Times.Once);
         }
 
         [Test]
-        public void ToggleAutoStart_WhenAutoStartIsTrue_CallsAddShortcutToStartup()
+        public void SetAutoStart_WhenAutoStartIsTrueAndNewValueIsFalse_SetsApplicationServiceAutoStartToFalse()
         {
-            _subject.AutoStart = true;
+            _mockApplicationService.SetupGet(x => x.AutoStart).Returns(true);
 
-            _subject.ToggleAutoStart();
+            _subject.AutoStart = false;
 
-            _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
+            _mockApplicationService.VerifySet(x => x.AutoStart = false, Times.Once);
         }
 
         [Test]

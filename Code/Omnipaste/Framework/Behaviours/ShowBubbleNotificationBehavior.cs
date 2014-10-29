@@ -5,30 +5,30 @@
 
     public class ShowBubbleNotificationBehavior
     {
-        public static readonly DependencyProperty BaloonInfoProperty = DependencyProperty.RegisterAttached(
-            "BaloonInfo",
-            typeof(BaloonNotificationInfo),
+        public static readonly DependencyProperty BalloonInfoProperty = DependencyProperty.RegisterAttached(
+            "BalloonInfo",
+            typeof(BalloonNotificationInfo),
             typeof(ShowBubbleNotificationBehavior),
-            new FrameworkPropertyMetadata(new BaloonNotificationInfo(), OnBaloonInfoPropertyChanged));
+            new FrameworkPropertyMetadata(new BalloonNotificationInfo(), OnBalloonInfoPropertyChanged));
 
-        public static BaloonNotificationInfo GetBaloonInfo(TaskbarIcon control)
+        public static BalloonNotificationInfo GetBalloonInfo(TaskbarIcon control)
         {
-            return (BaloonNotificationInfo)control.GetValue(BaloonInfoProperty);
+            return (BalloonNotificationInfo)control.GetValue(BalloonInfoProperty);
         }
 
-        public static void SetBaloonInfo(TaskbarIcon control, BaloonNotificationInfo value)
+        public static void SetBalloonInfo(TaskbarIcon control, BalloonNotificationInfo value)
         {
-            control.SetValue(BaloonInfoProperty, value);
+            control.SetValue(BalloonInfoProperty, value);
         }
 
-        private static void OnBaloonInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnBalloonInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var baloonNotificationInfo = e.NewValue as BaloonNotificationInfo;
+            var balloonNotificationInfo = e.NewValue as BalloonNotificationInfo;
             var taskbarIcon = d as TaskbarIcon;
             
-            if (baloonNotificationInfo != null && taskbarIcon != null)
+            if (balloonNotificationInfo != null && taskbarIcon != null)
             {
-                taskbarIcon.ShowBalloonTip(baloonNotificationInfo.Title, baloonNotificationInfo.Message, BalloonIcon.Info);
+                taskbarIcon.ShowBalloonTip(balloonNotificationInfo.Title, balloonNotificationInfo.Message, BalloonIcon.Info);
             }
         }
     }

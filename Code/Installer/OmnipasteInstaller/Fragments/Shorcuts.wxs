@@ -24,11 +24,12 @@
   <Fragment>
     <DirectoryRef Id="ApplicationStartMenuFolder">
       <Component Id="ApplicationStartupEntry">
+        <Condition>SHOULDADDSTARTUP</Condition>
         <RegistryValue Root="HKCU"
                        Key="Software\Microsoft\Windows\CurrentVersion\Run"
                        Name="$(var.ProductName)"
-                       Value="[INSTALLFOLDER]$(var.ExeProcessName) -minimized"
-                       Type="string" />
+                       Value="&quot;[INSTALLFOLDER]$(var.ExeProcessName)&quot; -minimized"
+                       Type="string"/>
       </Component>
     </DirectoryRef>
   </Fragment>

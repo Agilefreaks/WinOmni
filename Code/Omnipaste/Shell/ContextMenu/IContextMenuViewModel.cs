@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
     using Caliburn.Micro;
-    using CustomizedClickOnce.Common;
 
     public interface IContextMenuViewModel : IScreen
     {
@@ -9,8 +8,6 @@
 
         bool AutoStart { get; set; }
         
-        IClickOnceHelper ClickOnceHelper { get; set; }
-
         bool IsStopped { get; set; }
 
         string IconSource { get; set; }
@@ -23,9 +20,7 @@
 
         void Show();
 
-        void ShowBaloon(string baloonTitle, string baloonMessage);
-
-        void ToggleAutoStart();
+        void ShowBalloon(string balloonTitle, string balloonMessage);
 
         void ToggleSync();
 

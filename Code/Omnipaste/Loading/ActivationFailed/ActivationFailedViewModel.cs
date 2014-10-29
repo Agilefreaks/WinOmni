@@ -5,15 +5,14 @@
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
 
     public class ActivationFailedViewModel : Screen, IActivationFailedViewModel
     {
         #region Constructors and Destructors
 
-        public ActivationFailedViewModel()
+        public ActivationFailedViewModel(IApplicationService applicationService)
         {
-            ApplicationService = new ApplicationService();
+            ApplicationService = applicationService;
         }
 
         #endregion

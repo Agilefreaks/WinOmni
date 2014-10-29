@@ -14,10 +14,10 @@
         ToolTipText="{Binding Path=TooltipText}"
         IconSource="{Binding Path=IconSource}"
         cal:Message.Attach="[Event TrayMouseDoubleClick] = [Action Show]" 
-        behaviours:ShowBubbleNotificationBehavior.BaloonInfo="{Binding Path=BaloonInfo}">
+        behaviours:ShowBubbleNotificationBehavior.BalloonInfo="{Binding Path=BalloonInfo}">
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" cal:Message.Attach="ToggleAutoStart" IsCheckable="True" IsChecked="{Binding Path=AutoStart}" />
+                <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" IsCheckable="True" IsChecked="{Binding Path=AutoStart, Mode=TwoWay}" />
                 <Separator />
                 <MenuItem Header="{x:Static p:Resources.ContextMenuStopSync}" cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsStopped}" />
                 <MenuItem Header="{x:Static p:Resources.ButtonExit}" cal:Message.Attach="Exit" />

@@ -1,4 +1,4 @@
-﻿namespace CustomizedClickOnce.Common
+﻿namespace InstallerCustomActions.ClickOnceHelper
 {
     using System;
     using System.Collections.Generic;

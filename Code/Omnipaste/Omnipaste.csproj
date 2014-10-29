@@ -232,7 +232,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ApplicationDeploymentHelper.cs" />
-    <Compile Include="ApplicationInfoFactory.cs" />
     <Compile Include="DataProviders\ArgumentsDataProvider.cs" />
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
@@ -269,7 +268,7 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
-    <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
+    <Compile Include="Framework\Behaviours\BalloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
@@ -571,10 +570,6 @@
     <ProjectReference Include="..\Clipboard\Clipboard.csproj">
       <Project>{c7d3c627-311f-4395-be3c-953f1f715c74}</Project>
       <Name>Clipboard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CustomizedClickOnce\CustomizedClickOnce.Common\CustomizedClickOnce.Common.csproj">
-      <Project>{bc299433-48cc-4282-a7f4-3948e054b6ac}</Project>
-      <Name>CustomizedClickOnce.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Events\Events.csproj">
       <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
