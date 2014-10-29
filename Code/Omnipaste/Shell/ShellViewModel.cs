@@ -149,7 +149,7 @@
                 _view.Hide();
             }
 
-            ContextMenuViewModel.ShowBaloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
+            ContextMenuViewModel.ShowBalloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
         }
 
         public void Closing(object sender, CancelEventArgs e)

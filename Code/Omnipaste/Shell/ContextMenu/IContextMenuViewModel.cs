@@ -20,7 +20,7 @@
 
         void Show();
 
-        void ShowBaloon(string baloonTitle, string baloonMessage);
+        void ShowBalloon(string balloonTitle, string balloonMessage);
 
         void ToggleAutoStart();
 

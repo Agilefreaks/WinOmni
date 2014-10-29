@@ -268,7 +268,7 @@
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
-    <Compile Include="Framework\Behaviours\BaloonNotificationInfo.cs" />
+    <Compile Include="Framework\Behaviours\BalloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />

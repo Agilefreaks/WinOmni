@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Framework.Behaviours
 {
-    public class BaloonNotificationInfo
+    public class BalloonNotificationInfo
     {
         public string Message { get; set; }
 

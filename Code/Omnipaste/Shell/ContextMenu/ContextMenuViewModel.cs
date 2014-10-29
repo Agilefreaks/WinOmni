@@ -14,7 +14,7 @@
     {
         #region Fields
 
-        private BaloonNotificationInfo _baloonInfo;
+        private BalloonNotificationInfo _balloonInfo;
 
         private string _iconSource;
 
@@ -45,16 +45,16 @@
 
         public bool AutoStart { get; set; }
 
-        public BaloonNotificationInfo BaloonInfo
+        public BalloonNotificationInfo BalloonInfo
         {
             get
             {
-                return _baloonInfo;
+                return _balloonInfo;
             }
             set
             {
-                _baloonInfo = value;
-                NotifyOfPropertyChange(() => BaloonInfo);
+                _balloonInfo = value;
+                NotifyOfPropertyChange(() => BalloonInfo);
             }
         }
 
@@ -103,9 +103,9 @@
             EventAggregator.PublishOnUIThread(new ShowShellMessage());
         }
 
-        public void ShowBaloon(string baloonTitle, string baloonMessage)
+        public void ShowBalloon(string balloonTitle, string balloonMessage)
         {
-            BaloonInfo = new BaloonNotificationInfo { Title = baloonTitle, Message = baloonMessage };
+            BalloonInfo = new BalloonNotificationInfo { Title = balloonTitle, Message = balloonMessage };
         }
 
         public void ToggleAutoStart()
