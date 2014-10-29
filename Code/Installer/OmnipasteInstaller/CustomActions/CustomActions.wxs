@@ -25,5 +25,7 @@
     <CustomAction Id='LaunchApplication' Property='APPLICATIONTOSTART' ExeCommand='[STARTAPPARGUMENTS]' Return='asyncNoWait' />
 
     <CustomAction Id="setUI_RAN" Property="UI_RAN" Value="1" />
+
+    <CustomAction Id="SetShouldAddStartup" Property="SHOULDADDSTARTUP" Value="1"/>
   </Fragment>
 </Wix>
