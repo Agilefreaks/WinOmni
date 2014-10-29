@@ -1,16 +1,12 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
     using System;
-    using System.Deployment.Application;
-    using System.Reflection;
     using System.Windows;
     using Caliburn.Micro;
-    using CustomizedClickOnce.Common;
     using Ninject;
     using Omni;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Framework.Behaviours;
     using OmniSync;
 
@@ -19,8 +15,6 @@
         #region Fields
 
         private BaloonNotificationInfo _baloonInfo;
-
-        private IClickOnceHelper _clickOnceHelper;
 
         private string _iconSource;
 
@@ -40,7 +34,6 @@
                 exception => { });
 
             IconSource = "/Disconnected.ico";
-            AutoStart = ClickOnceHelper.StartupShortcutExists();
         }
 
         #endregion
@@ -62,18 +55,6 @@
             {
                 _baloonInfo = value;
                 NotifyOfPropertyChange(() => BaloonInfo);
-            }
-        }
-
-        public IClickOnceHelper ClickOnceHelper
-        {
-            get
-            {
-                return _clickOnceHelper ?? (_clickOnceHelper = new ClickOnceHelper(ApplicationInfoFactory.Create()));
-            }
-            set
-            {
-                _clickOnceHelper = value;
             }
         }
 
@@ -128,15 +109,7 @@
         }
 
         public void ToggleAutoStart()
-        {
-            if (AutoStart)
-            {
-                ClickOnceHelper.AddShortcutToStartup();
-            }
-            else
-            {
-                ClickOnceHelper.RemoveShortcutFromStartup();
-            }
+        {            
         }
 
         public void ToggleSync()

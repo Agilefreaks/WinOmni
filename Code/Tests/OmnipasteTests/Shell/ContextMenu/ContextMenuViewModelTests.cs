@@ -4,7 +4,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Caliburn.Micro;
-    using CustomizedClickOnce.Common;
     using FluentAssertions;
     using Moq;
     using Ninject;
@@ -14,7 +13,6 @@
     using OmniApi.Models;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Shell.ContextMenu;
     using OmniSync;
 
@@ -26,8 +24,6 @@
         private Mock<IOmniService> _mockOmniService;
 
         private Mock<IEventAggregator> _mockEventAggregator;
-
-        private Mock<IClickOnceHelper> _mockClickOnceHelper;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -50,13 +46,11 @@
             _statusChangedSubject = new Subject<ServiceStatusEnum>();
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
-            _mockClickOnceHelper = _mockingKernel.GetMock<IClickOnceHelper>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
             _subject = _mockingKernel.Get<IContextMenuViewModel>();
-            _subject.ClickOnceHelper = _mockClickOnceHelper.Object;
         }
 
         [Test]
@@ -118,25 +112,25 @@
             _mockEventAggregator.Verify(m => m.Publish(It.IsAny<ShowShellMessage>(), Execute.OnUIThread));
         }
 
-        [Test]
-        public void ToggleAutoStart_WhenAutoStartIsFalse_CallsRemoveShortcutFromStartup()
-        {
-            _subject.AutoStart = false;
+        //[Test]
+        //public void ToggleAutoStart_WhenAutoStartIsFalse_CallsRemoveShortcutFromStartup()
+        //{
+        //    _subject.AutoStart = false;
 
-            _subject.ToggleAutoStart();
+        //    _subject.ToggleAutoStart();
 
-            _mockClickOnceHelper.Verify(m => m.RemoveShortcutFromStartup(), Times.Once);
-        }
+        //    _mockClickOnceHelper.Verify(m => m.RemoveShortcutFromStartup(), Times.Once);
+        //}
 
-        [Test]
-        public void ToggleAutoStart_WhenAutoStartIsTrue_CallsAddShortcutToStartup()
-        {
-            _subject.AutoStart = true;
+        //[Test]
+        //public void ToggleAutoStart_WhenAutoStartIsTrue_CallsAddShortcutToStartup()
+        //{
+        //    _subject.AutoStart = true;
 
-            _subject.ToggleAutoStart();
+        //    _subject.ToggleAutoStart();
 
-            _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
-        }
+        //    _mockClickOnceHelper.Verify(m => m.AddShortcutToStartup(), Times.Once);
+        //}
 
         [Test]
         public void TooltipText_HasVersion()
