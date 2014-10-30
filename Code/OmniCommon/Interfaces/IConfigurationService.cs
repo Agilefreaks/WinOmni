@@ -18,6 +18,8 @@
 
         bool DebugMode { get; }
 
+        ProxyConfiguration ProxyConfiguration { get; }
+
         #endregion
 
         #region Public Indexers
@@ -31,6 +33,8 @@
         void ResetAuthSettings();
 
         void SaveAuthSettings(string accessToken, string refreshToken);
+
+        void SaveProxyConfiguration(ProxyConfiguration proxyConfiguration);
 
         #endregion
     }

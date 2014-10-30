@@ -69,5 +69,50 @@
 
             _mockConfigurationProvider.Verify(cp => cp.SetValue("DeviceIdentifier", deviceIdentifier), Times.Once);
         }
+
+        [Test]
+        public void GetProxyConfiguration_ConfigurationProviderDoesNotContainAProxyConfiguration_ReturnsEmptyProxyConfiguration()
+        {
+            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.ProxyConfiguration])
+                .Returns((string)null);
+
+            var proxyConfiguration = _subject.ProxyConfiguration;
+
+            proxyConfiguration.Should().Be(ProxyConfiguration.Empty());
+        }
+
+        [Test]
+        public void GetProxyConfiguration_ConfigurationProviderHasInvalidData_ReturnsEmptyProxyConfiguration()
+        {
+            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.ProxyConfiguration])
+                .Returns("some-garbled-data");
+
+            var proxyConfiguration = _subject.ProxyConfiguration;
+
+            proxyConfiguration.Should().Be(ProxyConfiguration.Empty());
+        }
+
+        [Test]
+        public void GetProxyConfiguration_Always_CanReadAConfigurationPreviouslySaved()
+        {
+            string valueSet = null;
+            var proxyConfiguration = new ProxyConfiguration
+                                         {
+                                             Address = "testA",
+                                             Password = "testP",
+                                             Username = "testU",
+                                             Port = 12,
+                                             Type = ProxyTypeEnum.Socks4
+                                         };
+            _mockConfigurationProvider.Setup(
+                x => x.SetValue(ConfigurationProperties.ProxyConfiguration, It.IsAny<string>()))
+                .Callback<string, string>((key, value) => valueSet = value);
+
+            _subject.SaveProxyConfiguration(proxyConfiguration);
+            valueSet.Should().NotBeNull();
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
+            
+            _subject.ProxyConfiguration.Should().Be(proxyConfiguration);
+        }
     }
 }

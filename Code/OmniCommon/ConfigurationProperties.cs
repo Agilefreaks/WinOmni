@@ -27,5 +27,7 @@
         public static string UpdateInterval = "UpdateInterval";
 
         public static string ShowDebugBar = "ShowDebugBar";
+
+        public static string ProxyConfiguration = "ProxyConfiguration";
     }
 }

@@ -2,6 +2,10 @@
 {
     using System;
     using System.Configuration;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using BugFreak;
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
@@ -30,6 +34,14 @@
             get
             {
                 return _configurationProvider.GetValue(ConfigurationProperties.AccessToken);
+            }
+        }
+
+        public ProxyConfiguration ProxyConfiguration
+        {
+            get
+            {
+                return GetProxyConfiguration();
             }
         }
 
@@ -119,6 +131,54 @@
         public void ResetAuthSettings()
         {
             SaveAuthSettings(string.Empty, string.Empty);
+        }
+
+        public void SaveProxyConfiguration(ProxyConfiguration value)
+        {
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));
+                var stringWriter = new StringWriter();
+                xmlSerializer.Serialize(stringWriter, value);
+
+                _configurationProvider.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private ProxyConfiguration GetProxyConfiguration()
+        {
+            ProxyConfiguration? savedConfiguration = null;
+
+            try
+            {
+                var serializedConfiguration = _configurationProvider.GetValue(ConfigurationProperties.ProxyConfiguration);
+                if (!string.IsNullOrWhiteSpace(serializedConfiguration))
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));
+                    var stringReader = new StringReader(serializedConfiguration);
+                    var xmlReader = XmlReader.Create(stringReader);
+                    if (xmlSerializer.CanDeserialize(xmlReader))
+                    {
+                        savedConfiguration = (ProxyConfiguration)xmlSerializer.Deserialize(xmlReader);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                ReportingService.Instance.BeginReport(exception);
+            }
+
+            savedConfiguration = savedConfiguration ?? ProxyConfiguration.Empty();
+
+            return savedConfiguration.Value;
         }
 
         #endregion

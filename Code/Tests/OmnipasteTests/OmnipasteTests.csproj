@@ -125,6 +125,7 @@
     <Compile Include="Services\ActivationServiceTests.cs" />
     <Compile Include="Services\ConfigurationServiceTests.cs" />
     <Compile Include="Services\Connectivity\ConnectivityNotifyServiceTests.cs" />
+    <Compile Include="Services\ProxyConfigurationTests.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />
     <Compile Include="Services\UpdaterServiceTests.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
