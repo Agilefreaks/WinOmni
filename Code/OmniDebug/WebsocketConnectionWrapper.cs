@@ -3,7 +3,7 @@
     using Newtonsoft.Json.Linq;
     using OmniCommon.Models;
     using OmniSync;
-    using WampSharp;
+    using WampSharp.V1;
 
     public class WebsocketConnectionWrapper : WebsocketConnection
     {
