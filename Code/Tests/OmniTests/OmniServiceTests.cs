@@ -2,10 +2,6 @@
 {
     using System;
     using System.Reactive;
-    using System.Reactive.Disposables;
-    using System.Reactive.Linq;
-    using System.Security.Principal;
-    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -16,7 +12,6 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
-    using OmniCommon.Models;
     using OmniSync;
 
     [TestFixture]
@@ -101,7 +96,7 @@
 
             testableObserver.Messages.Should().HaveCount(2);
             _subject.Status.Should().Be(ServiceStatusEnum.Started);
-            _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once);
+            _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once());
         }
     }
 }

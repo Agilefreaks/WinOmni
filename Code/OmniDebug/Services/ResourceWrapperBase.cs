@@ -21,7 +21,7 @@
             IObservable<T> observable;
             if (_resourceToPush != null)
             {
-                observable = new[] { _resourceToPush }.ToObservable();
+                observable = Observable.Return(_resourceToPush);
                 _resourceToPush = null;
             }
             else

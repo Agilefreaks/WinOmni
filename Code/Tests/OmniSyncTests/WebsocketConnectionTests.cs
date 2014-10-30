@@ -5,7 +5,6 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Subjects;
     using System.Threading;
-    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -13,8 +12,9 @@
     using NUnit.Framework;
     using OmniCommon.Models;
     using OmniSync;
-    using WampSharp;
-    using WampSharp.Auxiliary.Client;
+    using WampSharp.Core.Listener;
+    using WampSharp.V1;
+    using WampSharp.V1.Auxiliary.Client;
 
     [TestFixture]
     public class WebsocketConnectionTests

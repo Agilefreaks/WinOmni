@@ -32,7 +32,7 @@
 
         #region Public Methods and Operators
 
-        protected override IObservable<IExecuteResult> InternalExecute()
+        public override IObservable<IExecuteResult> Execute()
         {
             EventAggregator.PublishOnCurrentThread(new ShowAndroidInstallGuideMessage());
 

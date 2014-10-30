@@ -2,7 +2,6 @@
 {
     using System;
     using System.Configuration;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -10,8 +9,8 @@
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using BugFreak;
     using OmniCommon.DataProviders;
-    using OmniCommon.ExtensionMethods;
 
     public class DPAPIConfigurationProvider : IConfigurationProvider
     {
@@ -107,8 +106,6 @@
 
         #region Public Methods and Operators
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
         public string GetValue(string key)
         {
             var xDocument = LoadData();
@@ -158,7 +155,7 @@
             catch (Exception exception)
             {
                 saved = false;
-                this.Log(exception);
+                ReportingService.Instance.BeginReport(exception);
             }
 
             return saved;
@@ -227,8 +224,6 @@
             return protectedData;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
         private XDocument LoadData()
         {
             XDocument xDocument;
@@ -263,8 +258,6 @@
             }
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
         private XDocument UpdateExistingDocument(string key, string value)
         {
             var xDocument = LoadData();

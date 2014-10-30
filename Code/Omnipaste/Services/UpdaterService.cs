@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection;
@@ -20,6 +19,8 @@
 
     public class UpdaterService : IUpdaterService
     {
+        private readonly IWebProxyFactory _webProxyFactory;
+
         #region Constants
 
         private const string InstallerName = "OmnipasteInstaller.msi";
@@ -48,14 +49,20 @@
 
         #region Constructors and Destructors
 
-        public UpdaterService(ISystemIdleService systemIdleService, IConfigurationService configurationService)
+        public UpdaterService(
+            ISystemIdleService systemIdleService,
+            IConfigurationService configurationService,
+            IWebProxyFactory webProxyFactory)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = UpdateManager.Instance;
-            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
+            _webProxyFactory = webProxyFactory;
+
+            SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
             UpdateCheckInterval = TimeSpan.FromMinutes(GetUpdateCheckInterval());
+            ConfigurationService.AddProxyConfigurationObserver(this);
         }
 
         #endregion
@@ -212,7 +219,6 @@
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => DownloadUpdates())
                         .Switch()
-                        .Where(couldDownloadUpdates => couldDownloadUpdates)
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
@@ -221,6 +227,11 @@
         public void Stop()
         {
             _updateObserver.Dispose();
+        }
+
+        public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
+        {
+            SetUpdateSource();
         }
 
         #endregion
@@ -310,6 +321,12 @@
             }
 
             return timeoutInMinutes;
+        }
+
+        private void SetUpdateSource()
+        {
+            var proxy = _webProxyFactory.CreateFromAppConfiguration();
+            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
         }
 
         #endregion

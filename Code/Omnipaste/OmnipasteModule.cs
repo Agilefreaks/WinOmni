@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using Omnipaste.DataProviders;
@@ -12,11 +11,14 @@
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SettingsHeader;
+    using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 
@@ -36,6 +38,10 @@
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
+
+            Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
+            Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
+            Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
@@ -44,7 +50,8 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel)
+                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
+                           typeof(WebProxyFactory)
                        };
         }
     }

@@ -10,7 +10,7 @@
     <Grid>
         <controls:TransitioningContentControl cal:View.Context="{Binding State}"
                                               cal:View.Model="{Binding}"
-                                              Height="300"
+                                              MinHeight="300" MaxHeight="600"
                                               HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Top">
         </controls:TransitioningContentControl>

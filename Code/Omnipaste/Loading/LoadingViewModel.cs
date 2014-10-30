@@ -6,6 +6,7 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
+    using Omnipaste.Loading.ConnectionTroubleshooter;
     using Omnipaste.Loading.UserToken;
 
     public class LoadingViewModel : Conductor<IScreen>.Collection.OneActive, ILoadingViewModel
@@ -54,6 +55,9 @@
 
         [Inject]
         public IActivationFailedViewModel ActivationFailedViewModel { get; set; }
+        
+        [Inject]
+        public IConnectionTroubleshooterViewModel ConnectionTroubleshooterViewModel { get; set; }
 
         #endregion
 
@@ -102,5 +106,12 @@
         }
 
         #endregion
+
+        public void Handle(ShowConnectionTroubleshooterMessage message)
+        {
+            ActiveItem = ConnectionTroubleshooterViewModel;
+            State = LoadingViewModelStateEnum.Other;
+            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
+        }
     }
 }

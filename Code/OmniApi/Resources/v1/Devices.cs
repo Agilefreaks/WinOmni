@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
+    using System.Net.Http;
     using Ninject;
     using OmniApi.Models;
-    using OmniCommon;
     using OmniCommon.Interfaces;
     using Refit;
 
-    public class Devices : Resource<IDevicesApi>, IDevices
+    public class Devices : ResourceWithAuthorization<IDevicesApi>, IDevices
     {
         #region Constants
 
@@ -19,8 +18,8 @@
 
         #region Constructors and Destructors
 
-        public Devices()
-            : base(CreateResourceApi())
+        public Devices(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 
@@ -79,9 +78,9 @@
 
         #region Methods
 
-        private static IDevicesApi CreateResourceApi()
+        protected override IDevicesApi CreateResourceApi(HttpClient httpClient)
         {
-            return RestService.For<IDevicesApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            return RestService.For<IDevicesApi>(httpClient);
         }
 
         #endregion

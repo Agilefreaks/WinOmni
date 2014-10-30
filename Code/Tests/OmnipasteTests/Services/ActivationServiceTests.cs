@@ -1,5 +1,9 @@
 ﻿namespace OmnipasteTests.Services
 {
+    using System;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using BugFreak;
     using FluentAssertions;
     using Moq;
     using Ninject;
@@ -8,25 +12,44 @@
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.ActivationServiceData.Transitions;
 
     [TestFixture]
     public class ActivationServiceTests
     {
         private MoqMockingKernel _mockingKernel;
 
-        private Mock<IStepFactory> _mockStepFactory;
+        private IStepFactory _stepFactory;
 
         private IActivationService _subject;
+
+        private Mock<IActivationSequenceProvider> _mockActivationSequenceProvider;
+
+        private Mock<IStep1> _mockStep1;
+
+        private Mock<IStep2> _mockStep2;
+
+        private ActivationSequence _activationSequence;
+
+        private Mock<IStep3> _mockStep3;
 
         [SetUp]
         public void Setup()
         {
+            SetupBugfreak();
+
             _mockingKernel = new MoqMockingKernel();
 
-            _mockStepFactory = new Mock<IStepFactory>();
-            _mockingKernel.Bind<IStepFactory>().ToConstant(_mockStepFactory.Object);
+            _mockingKernel.Bind<IStepFactory>().To<StepFactory>();
+            _stepFactory = _mockingKernel.Get<IStepFactory>();
+
+            _mockActivationSequenceProvider = new Mock<IActivationSequenceProvider>();
+            _mockingKernel.Bind<IActivationSequenceProvider>().ToConstant(_mockActivationSequenceProvider.Object);
 
             _mockingKernel.Bind<IActivationService>().To<ActivationService>();
+
+            _activationSequence = SetupMockActivationSequence();
+            _mockActivationSequenceProvider.Setup(x => x.Get()).Returns(_activationSequence);
 
             _subject = _mockingKernel.Get<IActivationService>();
         }
@@ -38,113 +61,81 @@
         }
 
         [Test]
-        public void LoadLocalConfiguration_Success_ShouldBeStartOmniService()
+        public void Run_CurrentActivationStepTerminatesWithAnError_MovesToTheOnFailedRegisteredStep()
         {
-            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<StartOmniService>();
+            var observable = Observable.Throw<IExecuteResult>(new Exception());
+            _mockStep1.Setup(x => x.Execute()).Returns(observable);
+
+            _subject.Run().Wait();
+
+            _subject.CurrentStep.Should().Be(_mockStep3.Object);
         }
 
         [Test]
-        public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromArguments()
+        public void Run_CurrentActivationStepTerminatesWithASuccessExecuteResult_MovesToTheOnSuccessRegisteredStep()
         {
-            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<GetActivationCodeFromArguments>();
+            var observable = Observable.Return(new ExecuteResult(SimpleStepStateEnum.Successful));
+            _mockStep1.Setup(x => x.Execute()).Returns(observable);
+
+            _subject.Run().Wait();
+
+            _subject.CurrentStep.Should().Be(_mockStep2.Object);
         }
 
         [Test]
-        public void GetActivationCodeFromArguments_Success_ShouldBeGetRemoteConfiguration()
+        public void Run_CurrentActivationStepTerminatesWithAFailedExecuteResult_MovesToTheOnFailedRegisteredStep()
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromArguments>(
-                SimpleStepStateEnum.Successful).Should().Be<GetRemoteConfiguration>();
+            var observable = Observable.Return(new ExecuteResult(SimpleStepStateEnum.Failed));
+            _mockStep1.Setup(x => x.Execute()).Returns(observable);
+
+            _subject.Run().Wait();
+
+            _subject.CurrentStep.Should().Be(_mockStep3.Object);
         }
 
-        [Test]
-        public void GetActivationCodeFromArguments_Failed_ShouldBeGetActivationCodeFromUser()
+        private ActivationSequence SetupMockActivationSequence()
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromArguments>(
-                SimpleStepStateEnum.Failed).Should().Be<GetActivationCodeFromUser>();
+            _mockStep1 = CreateMockStep<IStep1>();
+            _mockStep2 = CreateMockStep<IStep2>();
+            _mockStep3 = CreateMockStep<IStep3>();
+            var activationSequence = new ActivationSequence { InitialStepId = typeof(IStep1) };
+            activationSequence.FinalStepIdIds.Add(typeof(IStep2));
+            activationSequence.FinalStepIdIds.Add(typeof(IStep3));
+            activationSequence.Transitions =
+                TransitionCollection.Builder().RegisterTransition<IStep1, IStep2, IStep3>().Build();
+
+            return activationSequence;
         }
 
-        [Test]
-        public void GetActivationCodeFromUser_Success_ShouldBeGetRemoteConfiguration()
+        private Mock<T> CreateMockStep<T>() where T : class, IActivationStep
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromUser>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<GetRemoteConfiguration>();
+            var mockStep = new Mock<T>();
+            _mockingKernel.Bind<T>().ToConstant(mockStep.Object);
+            mockStep.Setup(x => x.GetId()).Returns(typeof(T));
+            var executeResult = new ExecuteResult { State = SimpleStepStateEnum.Successful };
+            var executeObservable = Observable.Return(executeResult);
+            mockStep.Setup(x => x.Execute()).Returns(executeObservable);
+            return mockStep;
         }
 
-        [Test]
-        public void GetActivationCodeFromUser_Failed_ShouldBeGetActivationCodeFromUser()
+        public interface IStep1 : IActivationStep
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetActivationCodeFromUser>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<GetActivationCodeFromUser>();
         }
 
-        [Test]
-        public void GetRemoteConfiguration_Success_ShouldBeFinished()
+        public interface IStep2 : IActivationStep
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<SaveConfiguration>();
         }
 
-        [Test]
-        public void GetRemoteConfiguration_Failed_ShouldBeGetActivationCodeFromUser()
+        public interface IStep3 : IActivationStep
         {
-            _subject.Transitions.GetTargetTypeForTransition<GetRemoteConfiguration>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<GetActivationCodeFromUser>();
         }
 
-        [Test]
-        public void SaveConfiguration_Failed_ShouldBeFailed()
+        private static void SetupBugfreak()
         {
-            _subject.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<Failed>();
-        }
-
-        [Test]
-        public void SaveConfiguration_Success_ShouldBeStartOmniService()
-        {
-            _subject.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<StartOmniService>();
-        }
-
-        [Test]
-        public void StartOmniService_Failed_ShouldBeFailed()
-        {
-            _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<Failed>();            
-        }
-
-        [Test]
-        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
-        {
-            _subject.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<VerifyNumberOfDevices>();
-        }
-
-        [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeAndroidInstallGuide()
-        {
-            _subject.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<AndroidInstallGuide>();
-        }
-
-        [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
-        {
-            _subject.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<Finished>();
+            GlobalConfig.ServiceEndPoint = "http://127.0.0.1";
+            GlobalConfig.Token = "test";
+            GlobalConfig.ApiKey = "test";
+            ReportingService.Init();
         }
     }
 }

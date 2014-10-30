@@ -67,7 +67,6 @@
             SetupViewLocator();
 
             _kernel.Load(
-                new OmniCommonModule(),
                 new OmniApiModule(),
                 new OmniSyncModule(),
                 new OmniUiModule(),

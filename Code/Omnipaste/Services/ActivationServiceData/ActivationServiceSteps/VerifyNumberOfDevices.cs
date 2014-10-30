@@ -19,7 +19,7 @@
 
         #region Public Methods and Operators
 
-        protected override IObservable<IExecuteResult> InternalExecute()
+        public override IObservable<IExecuteResult> Execute()
         {
             return Devices.GetAll().Select(
                 deviceCount => deviceCount.Count <= 1 

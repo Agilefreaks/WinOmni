@@ -2,8 +2,9 @@
 {
     using System;
     using Ninject;
+    using OmniCommon.Interfaces;
 
-    public interface IUpdaterService : IStartable
+    public interface IUpdaterService : IStartable, IProxyConfigurationObserver
     {
         IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 

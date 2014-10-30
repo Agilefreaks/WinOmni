@@ -1,11 +1,8 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
-    using System.Reactive.Disposables;
-    using System.Reactive.Linq;
     using OmniCommon.DataProviders;
 
-    public class GetActivationCodeFromArguments : ActivationStepBase
+    public class GetActivationCodeFromArguments : SynchronousStepBase
     {
         private readonly IArgumentsDataProvider _dataProvider;
 
@@ -14,23 +11,17 @@
             _dataProvider = dataProvider;
         }
 
-        protected override IObservable<IExecuteResult> InternalExecute()
+        protected override IExecuteResult ExecuteSynchronously()
         {
-            return Observable.Create<IExecuteResult>(
-                observer =>
-                {
-                    var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
-                    var token = _dataProvider.AuthorizationKey;
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        result.State = SimpleStepStateEnum.Successful;
-                        result.Data = token;
-                    }
-                    observer.OnNext(result);
-                    observer.OnCompleted();
+            var result = new ExecuteResult { State = SimpleStepStateEnum.Failed };
+            var token = _dataProvider.AuthorizationKey;
+            if (!string.IsNullOrEmpty(token))
+            {
+                result.State = SimpleStepStateEnum.Successful;
+                result.Data = token;
+            }
 
-                    return Disposable.Empty;
-                });
+            return result;
         }
     }
 }

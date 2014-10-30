@@ -23,7 +23,7 @@
 
         #region Methods
 
-        protected override IObservable<IExecuteResult> InternalExecute()
+        public override IObservable<IExecuteResult> Execute()
         {
             return _omniService.Start().Select(d => new ExecuteResult(SimpleStepStateEnum.Successful));
         }

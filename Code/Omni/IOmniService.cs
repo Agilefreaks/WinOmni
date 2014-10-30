@@ -2,9 +2,10 @@
 {
     using System;
     using OmniApi.Models;
+    using OmniCommon.Interfaces;
     using OmniSync;
 
-    public interface IOmniService
+    public interface IOmniService : IProxyConfigurationObserver
     {
         #region Public Events
 

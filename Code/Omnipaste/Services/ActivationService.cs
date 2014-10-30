@@ -1,9 +1,8 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using BugFreak;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -12,32 +11,18 @@
     {
         #region Fields
 
-        private readonly List<object> _finalStepIdIds;
-
         private readonly IStepFactory _stepFactory;
 
-        private readonly TransitionCollection _transitions;
+        private readonly ActivationSequence _activationSequence;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ActivationService(IStepFactory stepFactory)
+        public ActivationService(IStepFactory stepFactory, IActivationSequenceProvider activationSequenceProvider)
         {
             _stepFactory = stepFactory;
-
-            _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
-
-            _transitions = TransitionCollection.Builder()
-                .RegisterTransition<LoadLocalConfiguration, StartOmniService, GetActivationCodeFromArguments>()
-                .RegisterTransition<GetActivationCodeFromArguments, GetRemoteConfiguration, GetActivationCodeFromUser>()
-                .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
-                .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
-                .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
-                .RegisterTransition<StartOmniService, VerifyNumberOfDevices, Failed>()
-                .RegisterTransition<VerifyNumberOfDevices, AndroidInstallGuide, Finished>()
-                .RegisterTransition<AndroidInstallGuide, Finished, Finished>()
-                .Build();
+            _activationSequence = activationSequenceProvider.Get();
         }
 
         #endregion
@@ -45,14 +30,6 @@
         #region Public Properties
 
         public IActivationStep CurrentStep { get; private set; }
-
-        public TransitionCollection Transitions
-        {
-            get
-            {
-                return _transitions;
-            }
-        }
 
         public bool Success
         {
@@ -68,38 +45,60 @@
 
         public IObservable<IActivationStep> Run()
         {
-            return Observable.Create<IActivationStep>(
-                observer =>
-                    {
-                        CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
-                        while (CurrentStepIsIntermediateStep())
-                        {
-                            var activationStep = CurrentStep.Execute().Wait();
-                            MoveToNextStep(activationStep);
-                        }
-
-                        observer.OnNext(CurrentStep);
-                        observer.OnCompleted();
-
-                        return Disposable.Empty;
-                    });
+            return Observable.Start<IActivationStep>(RunSynchronously);
         }
 
         #endregion
 
         #region Methods
 
-        private bool CurrentStepIsIntermediateStep()
+        private IActivationStep RunSynchronously()
         {
-            return CurrentStep == null || !_finalStepIdIds.Contains(CurrentStep.GetId());
+            IExecuteResult result = null;
+            CurrentStep = null;
+            while (MoveToNextStep(result))
+            {
+                try
+                {
+                    result = CurrentStep.Execute().Wait();
+                }
+                catch (Exception exception)
+                {
+                    ReportingService.Instance.BeginReport(exception);
+                    result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
+                }
+            }
+
+            return CurrentStep;
         }
 
-        private void MoveToNextStep(IExecuteResult previousResult)
+        private bool CurrentStepIsIntermediateStep()
         {
-            var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
-            var nextStepType = _transitions.GetTargetTypeForTransition(transitionId);
+            return CurrentStep == null || !_activationSequence.FinalStepIdIds.Contains(CurrentStep.GetId());
+        }
 
-            CurrentStep = _stepFactory.Create(nextStepType, previousResult.Data);
+        private bool MoveToNextStep(IExecuteResult previousResult)
+        {
+            if (!CurrentStepIsIntermediateStep()) return false;
+
+            if (CurrentStep == null)
+            {
+                CurrentStep = GetStepById(_activationSequence.InitialStepId);
+            }
+            else
+            {
+                var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
+                var nextStepType = _activationSequence.Transitions.GetTargetTypeForTransition(transitionId);
+
+                CurrentStep = GetStepById(nextStepType, previousResult.Data);
+            }
+
+            return true;
+        }
+
+        private IActivationStep GetStepById(Type initialStepId, object payload = null)
+        {
+            return _stepFactory.Create(initialStepId, payload);
         }
 
         #endregion

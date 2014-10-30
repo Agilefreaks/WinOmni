@@ -1,20 +1,24 @@
 ﻿namespace OmniApiTests.Resources
 {
-    using System.Configuration;
+    using System.Net.Http;
     using OmniApi.Resources;
-    using OmniCommon;
+    using OmniCommon.Interfaces;
     using Refit;
 
-    public class TestResource : Resource<ITestApi>
+    public class TestResource : ResourceWithAuthorization<ITestApi>
     {
-        public TestResource()
-            : base(CreateResourceApi())
+        #region Constructors and Destructors
+
+        public TestResource(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 
-        public static ITestApi CreateResourceApi()
+        #endregion
+
+        protected override ITestApi CreateResourceApi(HttpClient httpClient)
         {
-            return RestService.For<ITestApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            return RestService.For<ITestApi>(httpClient);
         }
     }
 }

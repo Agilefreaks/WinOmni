@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Omnipaste.Loading.ConnectionTroubleshooter.ConnectionTroubleshooter.Http"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:helpers="clr-namespace:OmniUI.Helpers;assembly=OmniUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Orientation="Vertical">
+        <Label Content="{x:Static p:Resources.ProxyHost}"/>
+        <TextBox x:Name="ProxyHost"/>
+        <Label Content="{x:Static p:Resources.ProxyPort}"/>
+        <controls:NumericUpDown x:Name="ProxyPort" Value="{Binding Path=ProxyPort, Mode=TwoWay}"/>
+        <Label Content="{x:Static p:Resources.ProxyUsername}"/>
+        <TextBox x:Name="ProxyUsername"/>
+        <Label Content="{x:Static p:Resources.ProxyPassword}"/>
+        <PasswordBox helpers:PasswordHelper.Attach="True" helpers:PasswordHelper.Password="{Binding Path=ProxyPassword, Mode=TwoWay}"/>
+    </StackPanel>
+</UserControl>

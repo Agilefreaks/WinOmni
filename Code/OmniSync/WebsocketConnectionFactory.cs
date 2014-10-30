@@ -1,26 +1,17 @@
 ﻿namespace OmniSync
 {
     using Newtonsoft.Json.Linq;
-    using OmniCommon;
-    using OmniCommon.Interfaces;
-    using WampSharp;
+    using WampSharp.V1;
 
     public class WebsocketConnectionFactory : IWebsocketConnectionFactory
     {
-        #region Fields
-
-        protected readonly IWampChannelFactory<JToken> WampChannelFactory;
-
-        protected readonly IConfigurationService ConfigurationService;
-
-        #endregion
+        private readonly IWampChannelProvider _wampChannelProvider;
 
         #region Constructors and Destructors
 
-        public WebsocketConnectionFactory(IWampChannelFactory<JToken> wampChannelFactory, IConfigurationService configurationService)
+        public WebsocketConnectionFactory(IWampChannelProvider wampChannelProvider)
         {
-            WampChannelFactory = wampChannelFactory;
-            ConfigurationService = configurationService;
+            _wampChannelProvider = wampChannelProvider;
         }
 
         #endregion
@@ -34,7 +25,7 @@
 
         protected IWampChannel<JToken> GetWampChannel()
         {
-            return WampChannelFactory.CreateChannel(ConfigurationService[ConfigurationProperties.OmniSyncUrl]);
+            return _wampChannelProvider.GetChannel();
         }
 
         #endregion

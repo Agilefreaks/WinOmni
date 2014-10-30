@@ -34,11 +34,6 @@
 
         #region Public Methods and Operators
 
-        public static IObservable<T> Authorize<T>(IObservable<T> observable, ISessionManager sessionManager, Token token)
-        {
-            return new AuthorizationObserver(new OAuth2(), sessionManager, token).Authorize(observable);
-        }
-
         public static IObservable<T> Authorize<T>(IObservable<T> observable, IOAuth2 oAuth2, ISessionManager sessionManager, Token token)
         {
             return new AuthorizationObserver(oAuth2, sessionManager, token).Authorize(observable);
