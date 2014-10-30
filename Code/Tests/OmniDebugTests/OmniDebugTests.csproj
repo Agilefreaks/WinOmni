@@ -31,18 +31,27 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,15 +70,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Events\Events.csproj">
+    <ProjectReference Include="..\..\Events\Events.csproj">
       <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
       <Name>Events</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+    <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OmniDebug\OmniDebug.csproj">
+    <ProjectReference Include="..\..\OmniDebug\OmniDebug.csproj">
       <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
       <Name>OmniDebug</Name>
     </ProjectReference>
