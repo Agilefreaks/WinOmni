@@ -2,7 +2,7 @@
 {
     using Newtonsoft.Json.Linq;
     using Ninject.Modules;
-    using WampSharp;
+    using WampSharp.V1;
 
     public class OmniSyncModule : NinjectModule
     {
