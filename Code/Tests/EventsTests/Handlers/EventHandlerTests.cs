@@ -1,4 +1,4 @@
-﻿namespace NotificationsTests.Handlers
+﻿namespace EventsTests.Handlers
 {
     using System;
     using System.Reactive.Subjects;

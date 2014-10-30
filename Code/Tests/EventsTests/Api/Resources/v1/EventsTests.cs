@@ -1,4 +1,4 @@
-﻿namespace NotificationsTests.Api.Resources.v1
+﻿namespace EventsTests.Api.Resources.v1
 {
     using System;
     using Events.Api.Resources.v1;
