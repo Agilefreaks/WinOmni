@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using Omnipaste.DataProviders;
@@ -17,6 +16,7 @@
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SettingsHeader;
+    using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 
@@ -36,6 +36,9 @@
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
+
+            Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
+            Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()

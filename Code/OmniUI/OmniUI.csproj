@@ -53,6 +53,10 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Extensions.Conventions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -74,6 +78,7 @@
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderButtonViewModel.cs" />
+    <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Flyout\FlyoutBaseViewModel.cs" />

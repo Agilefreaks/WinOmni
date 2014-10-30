@@ -7,7 +7,6 @@
     using Events.Api.Resources.v1;
     using Ninject;
     using Omni;
-    using OmniCommon;
     using OmniDebug.DebugBar;
     using OmniDebug.DebugBar.IncomingClipping;
     using OmniDebug.DebugBar.PhoneNotification;
@@ -15,6 +14,7 @@
     using OmniDebug.DebugHeader;
     using OmniDebug.Services;
     using OmniSync;
+    using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 

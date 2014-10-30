@@ -1,4 +1,4 @@
-﻿namespace OmniCommon
+﻿namespace OmniUI
 {
     using System;
     using System.Collections.Generic;

@@ -10,7 +10,6 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
-    using OmniCommon.Framework;
     using OmniCommon.Interfaces;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
@@ -28,7 +27,7 @@
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 
-    public sealed class ShellViewModel : Conductor<IWorkspace>.Collection.OneActive, IShellViewModel
+    public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {
         #region Fields
 

@@ -1,7 +1,8 @@
-﻿namespace OmniCommon.Services
+﻿namespace Omnipaste.Services
 {
     using System;
     using System.Configuration;
+    using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
 

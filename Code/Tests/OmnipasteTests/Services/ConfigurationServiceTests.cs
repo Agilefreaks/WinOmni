@@ -1,4 +1,4 @@
-﻿namespace OmniCommonTests.Services
+﻿namespace OmnipasteTests.Services
 {
     using FluentAssertions;
     using Moq;
@@ -6,7 +6,7 @@
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
-    using OmniCommon.Services;
+    using Omnipaste.Services;
 
     [TestFixture]
     public class ConfigurationServiceTests
@@ -26,7 +26,7 @@
         public void SaveAuthSettings_SetsAllSettingsNeededForAuthentication()
         {
             _subject.SaveAuthSettings("token", "refresh token");
-            
+
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
         }
@@ -35,7 +35,7 @@
         public void ResetAuthSettings_ResetsAllSettingsNeededForAuthentication()
         {
             _subject.ResetAuthSettings();
-            
+
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, string.Empty));
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, string.Empty));
         }
