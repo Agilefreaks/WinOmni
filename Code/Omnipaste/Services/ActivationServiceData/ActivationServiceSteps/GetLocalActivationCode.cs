@@ -6,7 +6,7 @@
     using OmniApi.Models;
     using OmniCommon.Interfaces;
 
-    public class LoadLocalConfiguration : ActivationStepBase
+    public class GetLocalActivationCode : ActivationStepBase
     {
         #region Fields
 
@@ -16,7 +16,7 @@
 
         #region Constructors and Destructors
 
-        public LoadLocalConfiguration(IConfigurationService configurationService)
+        public GetLocalActivationCode(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }

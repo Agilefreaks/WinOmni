@@ -29,7 +29,7 @@
             _finalStepIdIds = new List<object> { typeof(Finished), typeof(Failed) };
 
             _transitions = TransitionCollection.Builder()
-                .RegisterTransition<LoadLocalConfiguration, StartOmniService, GetActivationCodeFromArguments>()
+                .RegisterTransition<GetLocalActivationCode, StartOmniService, GetActivationCodeFromArguments>()
                 .RegisterTransition<GetActivationCodeFromArguments, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
                 .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
@@ -71,7 +71,7 @@
             return Observable.Create<IActivationStep>(
                 observer =>
                     {
-                        CurrentStep = _stepFactory.Create(typeof(LoadLocalConfiguration));
+                        CurrentStep = _stepFactory.Create(typeof(GetLocalActivationCode));
                         while (CurrentStepIsIntermediateStep())
                         {
                             var activationStep = CurrentStep.Execute().Wait();

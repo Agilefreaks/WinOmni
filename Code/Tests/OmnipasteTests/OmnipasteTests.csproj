@@ -115,7 +115,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\LoadLocalConfigurationTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetLocalActivationCodeTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniServiceTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevicesTests.cs" />

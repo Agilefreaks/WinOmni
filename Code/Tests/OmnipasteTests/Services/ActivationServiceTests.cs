@@ -40,7 +40,7 @@
         [Test]
         public void LoadLocalConfiguration_Success_ShouldBeStartOmniService()
         {
-            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Successful)
+            _subject.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<StartOmniService>();
         }
@@ -48,7 +48,7 @@
         [Test]
         public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromArguments()
         {
-            _subject.Transitions.GetTargetTypeForTransition<LoadLocalConfiguration>(SimpleStepStateEnum.Failed)
+            _subject.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<GetActivationCodeFromArguments>();
         }

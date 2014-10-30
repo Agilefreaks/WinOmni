@@ -10,9 +10,9 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
-    public class LoadLocalConfigurationTests
+    public class GetLocalActivationCodeTests
     {
-        private LoadLocalConfiguration _subject;
+        private GetLocalActivationCode _subject;
 
         private ITestableObserver<IExecuteResult> _observer;
 
@@ -23,7 +23,7 @@
         {
             _observer = new TestScheduler().CreateObserver<IExecuteResult>();
             _configurationService = new Mock<IConfigurationService>();
-            _subject = new LoadLocalConfiguration(_configurationService.Object);
+            _subject = new GetLocalActivationCode(_configurationService.Object);
         }
 
         [Test]
