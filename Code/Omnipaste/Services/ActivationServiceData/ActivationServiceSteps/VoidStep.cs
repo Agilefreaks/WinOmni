@@ -9,7 +9,7 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            return (new IExecuteResult[] { new ExecuteResult { State = State } }).ToObservable();
+            return Observable.Empty<IExecuteResult>();
         }
     }
 }

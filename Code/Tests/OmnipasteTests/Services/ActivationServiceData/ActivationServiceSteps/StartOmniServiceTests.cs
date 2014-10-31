@@ -25,7 +25,7 @@
         }
 
         [Test]
-        public void Execute_WhenStartFails_WillReturnFailed()
+        public void Execute_WhenStartFails_WillCompleteWithOnError()
         {
             TestScheduler testScheduler = new TestScheduler();
             var testObserver = testScheduler.CreateObserver<IExecuteResult>();
@@ -38,7 +38,7 @@
 
             testObserver.Messages.Should()
                 .Contain(
-                    m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                    m => m.Value.Kind == NotificationKind.OnError);
         }
 
         [Test]

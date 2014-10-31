@@ -43,7 +43,7 @@
         }
 
         [Test]
-        public void Execute_WhenCreateError_WillReturnFail()
+        public void Execute_WhenCreateError_WillCompleteWithOnError()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
             var testScheduler = new TestScheduler();
@@ -56,9 +56,7 @@
             testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
              _observer.Messages.Should()
-                .Contain(
-                    m => m.Value.Kind == NotificationKind.OnNext
-                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                .Contain(m => m.Value.Kind == NotificationKind.OnError);
         }
 
         [Test]

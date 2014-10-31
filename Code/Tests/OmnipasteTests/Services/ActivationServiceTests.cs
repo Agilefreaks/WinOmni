@@ -128,13 +128,7 @@
             _mockingKernel.Bind<T>().ToConstant(mockStep.Object);
             mockStep.Setup(x => x.GetId()).Returns(typeof(T));
             var executeResult = new ExecuteResult { State = SimpleStepStateEnum.Successful };
-            var executeObservable = Observable.Create<IExecuteResult>(
-                observer =>
-                {
-                    observer.OnNext(executeResult);
-                    observer.OnCompleted();
-                    return Disposable.Empty;
-                });
+            var executeObservable = Observable.Return(executeResult);
             mockStep.Setup(x => x.Execute()).Returns(executeObservable);
             return mockStep;
         }

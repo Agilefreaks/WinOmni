@@ -27,10 +27,8 @@
             
             (new VoidStepTest()).Execute().Subscribe(mockObserver);
 
-            mockObserver.Messages.Should().HaveCount(2);
+            mockObserver.Messages.Should().HaveCount(1);
             mockObserver.Messages.Should().Contain(r => r.Value.Kind == NotificationKind.OnCompleted);
-            mockObserver.Messages.Should()
-                .Contain(r => r.Value.Kind == NotificationKind.OnNext && r.Value.Value.State == SimpleStepStateEnum.Successful);
         }
     }
 }
