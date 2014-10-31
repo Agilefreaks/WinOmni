@@ -3,7 +3,6 @@
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using System.Reactive.Threading.Tasks;
     using Newtonsoft.Json.Linq;
     using OmniCommon.Models;
     using WampSharp;
@@ -48,8 +47,8 @@
         public IObservable<string> Connect()
         {
             DisposeConnectObserver();
-            var connectObservable = _channel.OpenAsync().ToObservable().Select(result => _monitor.SessionId);
-            _connectObserver = connectObservable.Subscribe(OnChannelOpened);
+            var connectObservable = Observable.Start(_channel.Open).Select(result => _monitor.SessionId);
+            _connectObserver = connectObservable.Subscribe(OnChannelOpened, _ => {});
 
             return connectObservable;
         }
