@@ -36,7 +36,7 @@
 
         #region Public Methods and Operators
 
-        protected override IObservable<IExecuteResult> InternalExecute()
+        public override IObservable<IExecuteResult> Execute()
         {
             var givenToken = Convert.ToString(Parameter.Value);
             return string.IsNullOrEmpty(givenToken)

@@ -6,7 +6,7 @@
 
     public abstract class SynchronousStepBase : ActivationStepBase
     {
-        protected override IObservable<IExecuteResult> InternalExecute()
+        public override IObservable<IExecuteResult> Execute()
         {
             return Observable.Create<IExecuteResult>(
                 observer =>

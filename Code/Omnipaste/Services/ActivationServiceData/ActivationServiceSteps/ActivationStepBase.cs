@@ -12,21 +12,12 @@
 
         #region Public Methods and Operators
 
-        public IObservable<IExecuteResult> Execute()
-        {
-            return InternalExecute();
-        }
-
         public virtual object GetId()
         {
             return GetType();
         }
 
-        #endregion
-
-        #region Methods
-
-        protected abstract IObservable<IExecuteResult> InternalExecute();
+        public abstract IObservable<IExecuteResult> Execute();
 
         #endregion
     }
