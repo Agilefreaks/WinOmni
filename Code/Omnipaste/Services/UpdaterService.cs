@@ -212,9 +212,10 @@
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => DownloadUpdates())
                         .Switch()
-                        .Where(couldDownloadUpdates => couldDownloadUpdates)
                         .ObserveOn(SchedulerProvider.Dispatcher)
-                        .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+                        .SubscribeAndHandleErrors(
+                            _ => InstallNewVersionWhenIdle(_systemIdleThreshold),
+                            ReportingService.Instance.BeginReport);
             }
         }
 

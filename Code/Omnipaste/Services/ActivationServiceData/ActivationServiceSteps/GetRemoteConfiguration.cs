@@ -40,8 +40,7 @@
         {
             var givenToken = Convert.ToString(Parameter.Value);
             return string.IsNullOrEmpty(givenToken)
-                       ? new[] { new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError) }
-                             .ToObservable()
+                       ? Observable.Return(new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError))
                        : _oauth2.Create(givenToken)
                              .Select(GetExecuteResult)
                              .Catch((Func<Exception, IObservable<IExecuteResult>>)CreateErrorHandler);
@@ -52,7 +51,7 @@
             ReportingService.Instance.BeginReport(new Exception(Resources.ExceptionDuringAuthentication, exception));
             var executeResult = new ExecuteResult(SimpleStepStateEnum.Failed, Resources.BrokenCommunicationError);
 
-            return new[] { executeResult }.ToObservable();
+            return Observable.Return(executeResult);
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Clipboard.API.Resources.v1;
@@ -48,13 +47,7 @@
 
             _mockClippings
                 .Setup(c => c.Last())
-                .Returns(Observable.Create<Clipping>(
-                    o =>
-                        {
-                            o.OnNext(clipping);
-                            o.OnCompleted();
-                            return Disposable.Empty;
-                        }));
+                .Returns(Observable.Return(clipping));
 
             _omniClipboardHandler.SubscribeTo(observable);
             _omniClipboardHandler.Subscribe(observer.Object);

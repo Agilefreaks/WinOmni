@@ -63,13 +63,7 @@
         [Test]
         public void Run_CurrentActivationStepTerminatesWithAnError_MovesToTheOnFailedRegisteredStep()
         {
-            var observable = Observable.Create<IExecuteResult>(
-                observer =>
-                {
-                    observer.OnError(new Exception("test"));
-                    observer.OnCompleted();
-                    return Disposable.Empty;
-                });
+            var observable = Observable.Throw<IExecuteResult>(new Exception());
             _mockStep1.Setup(x => x.Execute()).Returns(observable);
 
             _subject.Run().Wait();
@@ -80,13 +74,7 @@
         [Test]
         public void Run_CurrentActivationStepTerminatesWithASuccessExecuteResult_MovesToTheOnSuccessRegisteredStep()
         {
-            var observable = Observable.Create<IExecuteResult>(
-                observer =>
-                {
-                    observer.OnNext(new ExecuteResult(SimpleStepStateEnum.Successful));
-                    observer.OnCompleted();
-                    return Disposable.Empty;
-                });
+            var observable = Observable.Return(new ExecuteResult(SimpleStepStateEnum.Successful));
             _mockStep1.Setup(x => x.Execute()).Returns(observable);
 
             _subject.Run().Wait();
@@ -97,13 +85,7 @@
         [Test]
         public void Run_CurrentActivationStepTerminatesWithAFailedExecuteResult_MovesToTheOnFailedRegisteredStep()
         {
-            var observable = Observable.Create<IExecuteResult>(
-                observer =>
-                {
-                    observer.OnNext(new ExecuteResult(SimpleStepStateEnum.Failed));
-                    observer.OnCompleted();
-                    return Disposable.Empty;
-                });
+            var observable = Observable.Return(new ExecuteResult(SimpleStepStateEnum.Failed));
             _mockStep1.Setup(x => x.Execute()).Returns(observable);
 
             _subject.Run().Wait();

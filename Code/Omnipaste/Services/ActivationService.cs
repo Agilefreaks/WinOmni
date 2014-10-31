@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using BugFreak;
     using Omnipaste.Services.ActivationServiceData;
@@ -46,33 +45,31 @@
 
         public IObservable<IActivationStep> Run()
         {
-            return Observable.Create<IActivationStep>(
-                observer =>
-                {
-                    IExecuteResult result = null;
-                    while (MoveToNextStep(result))
-                    {
-                        try
-                        {
-                            result = CurrentStep.Execute().Wait();
-                        }
-                        catch (Exception exception)
-                        {
-                            ReportingService.Instance.BeginReport(exception);
-                            result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
-                        }
-                    }
-
-                    observer.OnNext(CurrentStep);
-                    observer.OnCompleted();
-
-                    return Disposable.Empty;
-                });
+            return Observable.Start<IActivationStep>(RunSynchronously);
         }
 
         #endregion
 
         #region Methods
+
+        private IActivationStep RunSynchronously()
+        {
+            IExecuteResult result = null;
+            while (MoveToNextStep(result))
+            {
+                try
+                {
+                    result = CurrentStep.Execute().Wait();
+                }
+                catch (Exception exception)
+                {
+                    ReportingService.Instance.BeginReport(exception);
+                    result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
+                }
+            }
+
+            return CurrentStep;
+        }
 
         private bool CurrentStepIsIntermediateStep()
         {
