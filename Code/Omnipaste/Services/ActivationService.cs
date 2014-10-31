@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using BugFreak;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -57,6 +58,7 @@
                         }
                         catch (Exception exception)
                         {
+                            ReportingService.Instance.BeginReport(exception);
                             result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
                         }
                     }

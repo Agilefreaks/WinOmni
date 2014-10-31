@@ -46,7 +46,8 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider)
+                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
+                           typeof(WebProxyFactory)
                        };
         }
     }

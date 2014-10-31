@@ -29,5 +29,7 @@
         public static string ShowDebugBar = "ShowDebugBar";
 
         public static string ProxyConfiguration = "ProxyConfiguration";
+
+        public static string PingEndpoint = "PingEndpoint";
     }
 }

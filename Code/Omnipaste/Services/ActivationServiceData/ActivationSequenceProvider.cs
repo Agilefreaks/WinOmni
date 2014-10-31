@@ -22,6 +22,7 @@
 
             var transitions =
                 TransitionCollection.Builder()
+                    .RegisterTransition<VerifyConnectivity, GetLocalActivationCode, GetLocalActivationCode>()
                     .RegisterTransition<GetLocalActivationCode, StartOmniService, GetActivationCodeFromArguments>()
                     .RegisterTransition<GetActivationCodeFromArguments, GetRemoteConfiguration, GetActivationCodeFromUser>()
                     .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()

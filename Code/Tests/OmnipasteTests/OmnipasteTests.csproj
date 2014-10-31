@@ -41,6 +41,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BugFreak.WPF, Version=1.0.1.11, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BugFreak.WPF.1.0.1.11\lib\net35-Client\BugFreak.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
@@ -132,7 +136,6 @@
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
-    <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsMessageTests.cs" />
   </ItemGroup>
