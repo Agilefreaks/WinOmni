@@ -38,7 +38,6 @@
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
-            Kernel.Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
@@ -47,7 +46,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel)
+                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider)
                        };
         }
     }

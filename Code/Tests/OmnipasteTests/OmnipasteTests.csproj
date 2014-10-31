@@ -112,6 +112,7 @@
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />

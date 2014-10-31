@@ -11,7 +11,15 @@
             return Observable.Create<IExecuteResult>(
                 observer =>
                     {
-                        observer.OnNext(ExecuteSynchronously());
+                        try
+                        {
+                            observer.OnNext(ExecuteSynchronously());
+                        }
+                        catch (Exception exception)
+                        {
+                            observer.OnError(exception);
+                        }
+
                         observer.OnCompleted();
 
                         return Disposable.Empty;

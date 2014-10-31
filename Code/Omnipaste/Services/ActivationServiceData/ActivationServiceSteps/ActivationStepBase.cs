@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using System.Reactive.Linq;
 
     public abstract class ActivationStepBase : IActivationStep
     {
@@ -15,12 +14,7 @@
 
         public IObservable<IExecuteResult> Execute()
         {
-            return InternalExecute().Catch<IExecuteResult, Exception>(GetFailObserver);
-        }
-
-        public IObservable<IExecuteResult> GetFailObserver(Exception exception)
-        {
-            return new[] { new ExecuteResult(SimpleStepStateEnum.Failed, exception) }.ToObservable();
+            return InternalExecute();
         }
 
         public virtual object GetId()

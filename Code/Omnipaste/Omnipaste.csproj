@@ -225,8 +225,11 @@
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SynchronousStepBase.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
