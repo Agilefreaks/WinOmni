@@ -277,6 +277,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not reach the Omnipaste server. Please try again or check the connection settings bellow..
+        /// </summary>
+        public static string ConnectionFailed {
+            get {
+                return ResourceManager.GetString("ConnectionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Settings.
+        /// </summary>
+        public static string ConnectionSettingsHeader {
+            get {
+                return ResourceManager.GetString("ConnectionSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto start.
         /// </summary>
         public static string ContextMenuAutoStart {
@@ -493,11 +511,65 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No proxy server is used. A direct connection is made to the Omnipaste server..
+        /// </summary>
+        public static string NoProxyUsed {
+            get {
+                return ResourceManager.GetString("NoProxyUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Another instance is already running. Check for the tray icon..
         /// </summary>
         public static string OtherInstanceRunning {
             get {
                 return ResourceManager.GetString("OtherInstanceRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host:.
+        /// </summary>
+        public static string ProxyHost {
+            get {
+                return ResourceManager.GetString("ProxyHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string ProxyPassword {
+            get {
+                return ResourceManager.GetString("ProxyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port number:.
+        /// </summary>
+        public static string ProxyPort {
+            get {
+                return ResourceManager.GetString("ProxyPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Type.
+        /// </summary>
+        public static string ProxyType {
+            get {
+                return ResourceManager.GetString("ProxyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username:.
+        /// </summary>
+        public static string ProxyUsername {
+            get {
+                return ResourceManager.GetString("ProxyUsername", resourceCulture);
             }
         }
         

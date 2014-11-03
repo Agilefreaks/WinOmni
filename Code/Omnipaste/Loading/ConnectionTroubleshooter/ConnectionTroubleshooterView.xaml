@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Omnipaste.Loading.ConnectionTroubleshooter.ConnectionTroubleshooterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Omnipaste.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             KeyboardNavigation.TabNavigation="Local">
+    <StackPanel>
+        <TextBlock Style="{StaticResource DescriptionHeaderStyleTextBlock}" Text="{x:Static p:Resources.ConnectionFailed}"  />
+
+        <StackPanel Style="{StaticResource ButtonsPanel}" FocusManager.FocusedElement="{Binding ElementName=Retry}" FocusManager.IsFocusScope="True">
+            <Button TabIndex="0" Name="Retry" Content="{x:Static p:Resources.ButtonRetry}" Style="{StaticResource PrimaryDialogButton}" />
+            <Button TabIndex="1" Name="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
+        </StackPanel>
+
+        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
+            <StackPanel Orientation="Vertical">
+                <Label Content="{x:Static p:Resources.ProxyType}"/>
+                <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes"/>
+                <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
+            </StackPanel>
+        </Expander>
+    </StackPanel>
+</UserControl>

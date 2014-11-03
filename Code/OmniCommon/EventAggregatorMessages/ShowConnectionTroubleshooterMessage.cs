@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
+﻿namespace OmniCommon.EventAggregatorMessages
 {
     public class ShowConnectionTroubleshooterMessage
     {

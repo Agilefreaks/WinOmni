@@ -65,6 +65,12 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="DescriptionHeaderStyleTextBlock" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
+    </Style>
+
     <!-- Label -->
     <Style x:Key="HeaderStyle" TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
