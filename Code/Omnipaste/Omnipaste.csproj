@@ -236,6 +236,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SocksProxyConfigurationDetector.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowConnectionTroubleshooter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SynchronousStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SystemWebProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />

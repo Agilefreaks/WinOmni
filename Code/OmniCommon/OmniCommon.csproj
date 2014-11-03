@@ -75,6 +75,7 @@
     <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
     <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Interfaces\IResource.cs" />
