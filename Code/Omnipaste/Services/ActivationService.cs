@@ -55,6 +55,7 @@
         private IActivationStep RunSynchronously()
         {
             IExecuteResult result = null;
+            CurrentStep = null;
             while (MoveToNextStep(result))
             {
                 try
@@ -82,17 +83,22 @@
 
             if (CurrentStep == null)
             {
-                CurrentStep = _stepFactory.Create(_activationSequence.InitialStepId);                
+                CurrentStep = GetStepById(_activationSequence.InitialStepId);
             }
             else
             {
                 var transitionId = new TransitionId(CurrentStep.GetId(), previousResult.State);
                 var nextStepType = _activationSequence.Transitions.GetTargetTypeForTransition(transitionId);
 
-                CurrentStep = _stepFactory.Create(nextStepType, previousResult.Data);
+                CurrentStep = GetStepById(nextStepType, previousResult.Data);
             }
 
             return true;
+        }
+
+        private IActivationStep GetStepById(Type initialStepId, object payload = null)
+        {
+            return _stepFactory.Create(initialStepId, payload);
         }
 
         #endregion

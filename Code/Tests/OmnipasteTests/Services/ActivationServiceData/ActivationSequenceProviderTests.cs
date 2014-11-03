@@ -128,5 +128,71 @@
                 .Should()
                 .Be<Finished>();
         }
+
+        [Test]
+        public void VerifyConnectivity_OnSuccess_ShouldTransitionToGetLocalActivationCode()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyConnectivity>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetLocalActivationCode>();
+        }
+
+        [Test]
+        public void VerifyConnectivity_OnFail_ShouldTransitionToFixProxyConfiguration()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyConnectivity>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<FixProxyConfiguration>();
+        }
+
+        [Test]
+        public void FixProxyConfiguration_OnSuccess_ShouldTransitionToVerifyConnectivity()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<FixProxyConfiguration>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifyConnectivity>();
+        }
+
+        [Test]
+        public void FixProxyConfiguration_OnFail_ShouldTransitionToShowConnectionTroubleshooter()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<FixProxyConfiguration>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<ShowConnectionTroubleshooter>();
+        }
+
+        [Test]
+        public void ShowConnectionTroubleshooter_OnSuccess_ShouldTransitionToVerifyConnectivity()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<FixProxyConfiguration>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifyConnectivity>();
+        }
+
+        [Test]
+        public void ShowConnectionTroubleshooter_OnFail_ShouldTransitionToVerifyConnectivity()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<FixProxyConfiguration>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<ShowConnectionTroubleshooter>();
+        }
+
+        [Test]
+        public void InitialStepId_Always_IsVerifyConnectivity()
+        {
+            _sequence.InitialStepId.Should().Be<VerifyConnectivity>();
+        }
+
+        [Test]
+        public void FinalStepIds_Always_ContainsFinished()
+        {
+            _sequence.FinalStepIdIds.Should().Contain(typeof(Finished));
+        }
+
+        [Test]
+        public void FinalStepIds_Always_ContainsFailed()
+        {
+            _sequence.FinalStepIdIds.Should().Contain(typeof(Failed));
+        }
     }
 }
