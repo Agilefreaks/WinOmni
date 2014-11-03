@@ -11,6 +11,8 @@
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
@@ -38,6 +40,8 @@
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
+            Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
+            Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()

@@ -232,7 +232,12 @@
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IProxyConfigurationDetector.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SocksProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SynchronousStepBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SystemWebProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
