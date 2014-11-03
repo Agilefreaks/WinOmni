@@ -129,6 +129,10 @@
             _configurationService = configurationService;
             var existingProxyConfiguration = configurationService.ProxyConfiguration;
             ProxyType = existingProxyConfiguration.Type;
+            ProxyHost = existingProxyConfiguration.Address;
+            ProxyPort = existingProxyConfiguration.Port;
+            ProxyUsername = existingProxyConfiguration.Username;
+            ProxyPassword = existingProxyConfiguration.Password;
         }
 
         public void Exit()
