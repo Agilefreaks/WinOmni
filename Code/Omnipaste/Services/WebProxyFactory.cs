@@ -6,10 +6,31 @@
     using LandonKey.SocksWebProxy;
     using LandonKey.SocksWebProxy.Proxy;
     using OmniCommon;
+    using OmniCommon.Interfaces;
 
     public class WebProxyFactory : IWebProxyFactory
     {
+        #region Fields
+
+        private readonly IConfigurationService _configurationService;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public WebProxyFactory(IConfigurationService configurationService)
+        {
+            _configurationService = configurationService;
+        }
+
+        #endregion
+
         #region Public Methods and Operators
+
+        public IWebProxy CreateFromAppConfiguration()
+        {
+            return CreateForConfiguration(_configurationService.ProxyConfiguration);
+        }
 
         public IWebProxy CreateForConfiguration(ProxyConfiguration proxyConfiguration)
         {

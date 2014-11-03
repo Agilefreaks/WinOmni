@@ -6,5 +6,7 @@
     public interface IWebProxyFactory
     {
         IWebProxy CreateForConfiguration(ProxyConfiguration proxyConfiguration);
+
+        IWebProxy CreateFromAppConfiguration();
     }
 }

@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection;
@@ -48,12 +47,16 @@
 
         #region Constructors and Destructors
 
-        public UpdaterService(ISystemIdleService systemIdleService, IConfigurationService configurationService)
+        public UpdaterService(
+            ISystemIdleService systemIdleService,
+            IConfigurationService configurationService,
+            IWebProxyFactory webProxyFactory)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = UpdateManager.Instance;
-            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = WebRequest.GetSystemWebProxy() };
+            var proxy = webProxyFactory.CreateFromAppConfiguration();
+            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
             _updateManager.ReinstateIfRestarted();
             UpdateCheckInterval = TimeSpan.FromMinutes(GetUpdateCheckInterval());
         }
