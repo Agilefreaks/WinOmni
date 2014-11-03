@@ -1,26 +1,19 @@
 ﻿namespace OmniApi.Resources
 {
     using System;
-    using System.Diagnostics;
-    using BugFreak;
+    using System.Configuration;
+    using System.Net.Http;
     using Newtonsoft.Json;
-    using Ninject;
-    using OmniApi.Models;
     using OmniApi.Support.Converters;
     using OmniApi.Support.Serialization;
+    using OmniCommon;
     using OmniCommon.Interfaces;
 
     public abstract class Resource<T>
     {
-        #region Fields
-
-        public T ResourceApi { protected get; set; }
-
-        #endregion
-
         #region Constructors and Destructors
 
-        protected Resource(T resourceApi)
+        protected Resource(IWebProxyFactory webProxyFactory)
         {
             JsonConvert.DefaultSettings = () =>
                 {
@@ -31,45 +24,36 @@
                     jsonSerializerSettings.Converters.Add(new SnakeCaseStringEnumConverter());
                     return jsonSerializerSettings;
                 };
-            ResourceApi = resourceApi;
+            WebProxyFactory = webProxyFactory;
+            ResourceApi = CreateResourceApi(CreateHttpClient());
         }
 
         #endregion
 
         #region Public Properties
 
-        [Inject]
-        public IConfigurationService ConfigurationService { get; set; }
+        public T ResourceApi { protected get; set; }
 
-        [Inject]
-        public ISessionManager SessionManager { get; set; }
-
-        public Token Token
-        {
-            get
-            {
-                return new Token(ConfigurationService.AccessToken, ConfigurationService.RefreshToken);
-            }
-        }
-
-        public string AccessToken
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Token.AccessToken))
-                {
-                    var callingMethodName = new StackFrame(1).GetMethod().Name;
-                    ReportingService.Instance.BeginReport(new Exception(string.Format("AccessToken is empty when calling {0}",callingMethodName)));
-                }
-                return string.Concat("bearer ", Token.AccessToken);
-            }
-        }
+        public IWebProxyFactory WebProxyFactory { get; set; }
 
         #endregion
 
-        public IObservable<TModel> Authorize<TModel>(IObservable<TModel> observable)
+        #region Methods
+
+        protected abstract T CreateResourceApi(HttpClient httpClient);
+
+        protected HttpClient CreateHttpClient()
         {
-            return AuthorizationObserver.Authorize(observable, SessionManager, Token);
+            var baseAddress = new Uri(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            var handler = new HttpClientHandler
+                              {
+                                  Proxy = WebProxyFactory.CreateFromAppConfiguration(),
+                                  UseProxy = true,
+                                  AllowAutoRedirect = true,
+                              };
+            return new HttpClient(handler) { BaseAddress = baseAddress };
         }
+
+        #endregion
     }
 }

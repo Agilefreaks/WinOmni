@@ -2,8 +2,10 @@
 {
     using System;
     using System.Configuration;
+    using System.Net.Http;
     using OmniApi.Models;
     using OmniCommon;
+    using OmniCommon.Interfaces;
     using Refit;
 
     public class OAuth2 : Resource<IOAuth2Api>, IOAuth2
@@ -16,8 +18,8 @@
 
         #region Constructors and Destructors
 
-        public OAuth2()
-            : base(CreateResourceApi())
+        public OAuth2(IWebProxyFactory webProxyFactory)
+            :base(webProxyFactory)
         {
             _clientId = ConfigurationManager.AppSettings[ConfigurationProperties.ClientId];
         }
@@ -44,9 +46,9 @@
 
         #region Methods
 
-        private static IOAuth2Api CreateResourceApi()
+        protected override IOAuth2Api CreateResourceApi(HttpClient httpClient)
         {
-            return RestService.For<IOAuth2Api>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            return RestService.For<IOAuth2Api>(httpClient);
         }
 
         #endregion

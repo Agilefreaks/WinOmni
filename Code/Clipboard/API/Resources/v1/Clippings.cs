@@ -1,13 +1,13 @@
 ﻿namespace Clipboard.API.Resources.v1
 {
     using System;
-    using System.Configuration;
+    using System.Net.Http;
     using Clipboard.Models;
     using OmniApi.Resources;
-    using OmniCommon;
+    using OmniCommon.Interfaces;
     using Refit;
 
-    public class Clippings : Resource<IClippingsApi>, IClippings
+    public class Clippings : ResourceWithAuthorization<IClippingsApi>, IClippings
     {
         #region Interfaces
 
@@ -15,8 +15,8 @@
 
         #region Constructors and Destructors
 
-        public Clippings()
-            : base(CreateResourceApi())
+        public Clippings(IWebProxyFactory webProxyFactory)
+            : base(webProxyFactory)
         {
         }
 
@@ -38,9 +38,9 @@
 
         #region Methods
 
-        private static IClippingsApi CreateResourceApi()
+        protected override IClippingsApi CreateResourceApi(HttpClient httpClient)
         {
-            return RestService.For<IClippingsApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            return RestService.For<IClippingsApi>(httpClient);
         }
 
         #endregion

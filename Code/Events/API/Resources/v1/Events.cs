@@ -1,18 +1,18 @@
 ﻿namespace Events.Api.Resources.v1
 {
     using System;
-    using System.Configuration;
+    using System.Net.Http;
     using global::Events.Models;
     using OmniApi.Resources;
-    using OmniCommon;
+    using OmniCommon.Interfaces;
     using Refit;
 
-    public class Events : Resource<IEventsApi>, IEvents
+    public class Events : ResourceWithAuthorization<IEventsApi>, IEvents
     {
         #region Constructors and Destructors
 
-        public Events()
-            : base(CreateResourceApi())
+        public Events(IWebProxyFactory webProxyFactory)
+            : base(webProxyFactory)
         {
         }
 
@@ -29,9 +29,9 @@
 
         #region Methods
 
-        private static IEventsApi CreateResourceApi()
+        protected override IEventsApi CreateResourceApi(HttpClient httpClient)
         {
-            return RestService.For<IEventsApi>(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            return RestService.For<IEventsApi>(httpClient);
         }
 
         #endregion

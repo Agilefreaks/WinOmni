@@ -6,6 +6,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
 
     [TestFixture]
@@ -13,13 +14,23 @@
     {
         private Events _subject;
 
+        private Mock<IWebProxyFactory> _mockWebProxyFactory;
+
+        private Mock<IOAuth2> _mockOAuth2;
+
         [SetUp]
         public void SetUp()
         {
             var mockConfigurationService = new Mock<IConfigurationService>();
             mockConfigurationService.SetupGet(cs => cs.AccessToken).Returns("access token");
 
-            _subject = new Events() { ConfigurationService = mockConfigurationService.Object };
+            _mockWebProxyFactory = new Mock<IWebProxyFactory>();
+            _mockOAuth2 = new Mock<IOAuth2>();
+            _subject = new Events(_mockWebProxyFactory.Object)
+                           {
+                               ConfigurationService = mockConfigurationService.Object,
+                               OAuth2 = _mockOAuth2.Object
+                           };
         }
 
         [Test]

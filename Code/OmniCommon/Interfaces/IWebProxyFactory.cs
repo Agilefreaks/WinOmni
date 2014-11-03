@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services
+﻿namespace OmniCommon.Interfaces
 {
     using System.Net;
     using OmniCommon;

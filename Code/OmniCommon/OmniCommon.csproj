@@ -79,6 +79,7 @@
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Interfaces\IResource.cs" />
+    <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Models\OmniMessage.cs" />
     <Compile Include="Models\OmniMessageTypeEnum.cs" />

@@ -246,7 +246,6 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
-    <Compile Include="Services\IWebProxyFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\UpdaterService.cs" />
     <Page Include="App.xaml">
