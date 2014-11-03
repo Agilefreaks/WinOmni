@@ -1,6 +1,5 @@
 namespace OmniSync
 {
-    using System.Linq;
     using System.Net;
     using OmniCommon;
     using OmniSync.ClientEngine;
@@ -36,7 +35,7 @@ namespace OmniSync
         private static IProxyConnector CreateSocks5ProxyConnector(ProxyConfiguration proxyConfiguration)
         {
             return new Socks5Connector(
-                GetIPEndpoint(proxyConfiguration.Address, proxyConfiguration.Port),
+                new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port),
                 proxyConfiguration.Username ?? string.Empty,
                 proxyConfiguration.Password ?? string.Empty);
         }
@@ -44,26 +43,20 @@ namespace OmniSync
         private static IProxyConnector CreateSocks4AProxyConnector(ProxyConfiguration proxyConfiguration)
         {
             return new Socks4aConnector(
-                GetIPEndpoint(proxyConfiguration.Address, proxyConfiguration.Port),
+                new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port),
                 proxyConfiguration.Username ?? string.Empty);
         }
 
         private static IProxyConnector CreateSocks4ProxyConnector(ProxyConfiguration proxyConfiguration)
         {
             return new Socks4Connector(
-                GetIPEndpoint(proxyConfiguration.Address, proxyConfiguration.Port),
+                new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port),
                 proxyConfiguration.Username ?? string.Empty);
         }
 
         private static IProxyConnector CreateHttpProxyConnector(ProxyConfiguration proxyConfiguration)
         {
-            return new HttpConnectProxy(GetIPEndpoint(proxyConfiguration.Address, proxyConfiguration.Port));
-        }
-
-        private static IPEndPoint GetIPEndpoint(string address, int port)
-        {
-            var hostAddresses = Dns.GetHostAddresses(address);
-            return new IPEndPoint(hostAddresses.First(), port);
+            return new HttpConnectProxy(new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port));
         }
     }
 }

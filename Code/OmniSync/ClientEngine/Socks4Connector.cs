@@ -37,7 +37,7 @@
 
         public override void Connect(EndPoint remoteEndPoint)
         {
-            IPEndPoint targetEndPoint = remoteEndPoint as IPEndPoint;
+            IPEndPoint targetEndPoint = remoteEndPoint as IPEndPoint ?? ResolveDNSEndpoint(remoteEndPoint as DnsEndPoint);
 
             if (targetEndPoint == null)
             {

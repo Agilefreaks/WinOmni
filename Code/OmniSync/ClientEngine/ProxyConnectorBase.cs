@@ -1,6 +1,7 @@
 ﻿namespace OmniSync.ClientEngine
 {
     using System;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
@@ -94,6 +95,16 @@
             {
                 ProcessSend(e);
             }
+        }
+
+        protected IPEndPoint ResolveDNSEndpoint(DnsEndPoint dnsEndPoint)
+        {
+            if (dnsEndPoint == null)
+            {
+                throw new ArgumentNullException("dnsEndPoint");
+            }
+            var hostAddresses = Dns.GetHostAddresses(dnsEndPoint.Host);
+            return new IPEndPoint(hostAddresses.First(), dnsEndPoint.Port);
         }
 
         protected virtual void StartReceive(Socket socket, SocketAsyncEventArgs e)
