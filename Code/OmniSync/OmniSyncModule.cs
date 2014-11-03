@@ -11,6 +11,7 @@
             Kernel.Bind<IWampChannelFactory<JToken>>().To<DefaultWampChannelFactory>().InSingletonScope();
             Kernel.Bind<IWampChannelProvider>().To<WampChannelProvider>().InSingletonScope();
             Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactory>().InSingletonScope();
+            Kernel.Bind<IProxyConnectorFactory>().To<ProxyConnectorFactory>().InSingletonScope();
         }
     }
 }

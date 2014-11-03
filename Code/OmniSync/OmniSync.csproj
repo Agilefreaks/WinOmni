@@ -108,7 +108,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientEngine\HttpConnectProxy.cs" />
+    <Compile Include="ClientEngine\ProxyConnectorBase.cs" />
+    <Compile Include="ClientEngine\Socks4aConnector.cs" />
+    <Compile Include="ClientEngine\Socks4Connector.cs" />
+    <Compile Include="ClientEngine\Socks5Connector.cs" />
+    <Compile Include="IProxyConnectorFactory.cs" />
     <Compile Include="IWampChannelProvider.cs" />
+    <Compile Include="ProxyConnectorFactory.cs" />
     <Compile Include="WampChannelProvider.cs" />
     <Compile Include="IWebsocketConnection.cs" />
     <Compile Include="IWebsocketConnectionFactory.cs" />
