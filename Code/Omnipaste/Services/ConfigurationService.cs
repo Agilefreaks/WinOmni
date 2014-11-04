@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
     using System.Xml;
@@ -16,6 +17,8 @@
 
         private readonly IConfigurationProvider _configurationProvider;
 
+        private readonly List<IProxyConfigurationObserver> _proxyConfigurationObservers;
+
         #endregion
 
         #region Constructors and Destructors
@@ -23,6 +26,7 @@
         public ConfigurationService(IConfigurationProvider configurationProvider)
         {
             _configurationProvider = configurationProvider;
+            _proxyConfigurationObservers = new List<IProxyConfigurationObserver>();
         }
 
         #endregion
@@ -142,11 +146,22 @@
                 xmlSerializer.Serialize(stringWriter, value);
 
                 _configurationProvider.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
+                _proxyConfigurationObservers.ForEach(observer => observer.OnConfigurationChanged(ProxyConfiguration));
             }
             catch (Exception exception)
             {
                 ReportingService.Instance.BeginReport(exception);
             }
+        }
+
+        public void AddProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver)
+        {
+            _proxyConfigurationObservers.Add(proxyConfigurationObserver);
+        }
+
+        public void RemoveProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver)
+        {
+            _proxyConfigurationObservers.Remove(proxyConfigurationObserver);
         }
 
         #endregion

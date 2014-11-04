@@ -78,6 +78,7 @@
     <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
+    <Compile Include="Interfaces\IProxyConfigurationObserver.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />

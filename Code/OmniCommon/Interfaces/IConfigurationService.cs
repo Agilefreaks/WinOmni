@@ -10,15 +10,15 @@
 
         string ClientId { get; }
 
-        string MachineName { get; }
-
-        string RefreshToken { get; }
+        bool DebugMode { get; }
 
         string DeviceIdentifier { get; }
 
-        bool DebugMode { get; }
+        string MachineName { get; }
 
         ProxyConfiguration ProxyConfiguration { get; }
+
+        string RefreshToken { get; }
 
         #endregion
 
@@ -29,6 +29,10 @@
         #endregion
 
         #region Public Methods and Operators
+
+        void AddProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver);
+
+        void RemoveProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver);
 
         void ResetAuthSettings();
 

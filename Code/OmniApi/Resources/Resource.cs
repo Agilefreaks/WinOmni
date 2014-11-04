@@ -8,7 +8,7 @@
     using OmniCommon;
     using OmniCommon.Interfaces;
 
-    public abstract class Resource<T>
+    public abstract class Resource<T> : IProxyConfigurationObserver
     {
         protected readonly IConfigurationService ConfigurationService;
 
@@ -28,6 +28,7 @@
                 };
             WebProxyFactory = webProxyFactory;
             ResourceApi = CreateResourceApi(CreateHttpClient());
+            ConfigurationService.AddProxyConfigurationObserver(this);
         }
 
         #endregion
@@ -57,5 +58,10 @@
         }
 
         #endregion
+
+        public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
+        {
+            ResourceApi = CreateResourceApi(CreateHttpClient());
+        }
     }
 }

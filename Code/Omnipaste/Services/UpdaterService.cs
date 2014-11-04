@@ -19,6 +19,8 @@
 
     public class UpdaterService : IUpdaterService
     {
+        private readonly IWebProxyFactory _webProxyFactory;
+
         #region Constants
 
         private const string InstallerName = "OmnipasteInstaller.msi";
@@ -55,10 +57,12 @@
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = UpdateManager.Instance;
-            var proxy = webProxyFactory.CreateFromAppConfiguration();
-            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
+            _webProxyFactory = webProxyFactory;
+
+            SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
             UpdateCheckInterval = TimeSpan.FromMinutes(GetUpdateCheckInterval());
+            ConfigurationService.AddProxyConfigurationObserver(this);
         }
 
         #endregion
@@ -227,6 +231,11 @@
             _updateObserver.Dispose();
         }
 
+        public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
+        {
+            SetUpdateSource();
+        }
+
         #endregion
 
         #region Methods
@@ -314,6 +323,12 @@
             }
 
             return timeoutInMinutes;
+        }
+
+        private void SetUpdateSource()
+        {
+            var proxy = _webProxyFactory.CreateFromAppConfiguration();
+            _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
         }
 
         #endregion
