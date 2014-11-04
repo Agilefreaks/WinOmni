@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Framework;
     using Omnipaste.Properties;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Services.SystemService;
@@ -124,7 +128,7 @@
                 _omniService = value;
 
                 _omniServiceStatusObserver =
-                    _omniService.StatusChangedObservable.Subscribe(
+                    _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
                         x =>
                         State =
                         _omniService.Status == ServiceStatusEnum.Started
@@ -192,7 +196,10 @@
         public void Connect()
         {
             CanPerformAction = false;
-            OmniService.Start().Subscribe(device => CanPerformAction = true);
+            OmniService.Start()
+                .SubscribeOn(Scheduler.Default)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .SubscribeAndHandleErrors(device => CanPerformAction = true);
         }
 
         public void Disconnect()

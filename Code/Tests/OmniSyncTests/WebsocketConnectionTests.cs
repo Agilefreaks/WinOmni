@@ -2,7 +2,9 @@
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Subjects;
+    using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -78,13 +80,19 @@
             OmniMessage receivedMessage = null;
             var messageToSimulate = new OmniMessage();
             var replaySubject = new ReplaySubject<OmniMessage>();
-
-            _subject.Subscribe<OmniMessage>(x => receivedMessage = x, e => { });
+            var autoResetEvent = new AutoResetEvent(false);
+            _subject.Subscribe<OmniMessage>(
+                x =>
+                    {
+                        receivedMessage = x;
+                        autoResetEvent.Set();
+                    });
             _mockMonitor.SetupGet(m => m.SessionId).Returns("42");
             _mockChannel.Setup(x => x.GetSubject<OmniMessage>("42")).Returns(replaySubject);
             _subject.Connect();
             replaySubject.OnNext(messageToSimulate);
 
+            autoResetEvent.WaitOne();
             receivedMessage.Should().Be(messageToSimulate);
         }
     }

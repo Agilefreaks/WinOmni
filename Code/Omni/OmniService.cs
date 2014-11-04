@@ -40,7 +40,7 @@
             WebsocketConnectionFactory = websocketConnectionFactory;
             _configurationService = configurationService;
 
-            _retryConnectionTimer.Elapsed += (sender, arguments) => Start().Subscribe();
+            _retryConnectionTimer.Elapsed += (sender, arguments) => Start().Subscribe(_ => { }, _ => { });
 
             StatusChanged =
                 Observable.FromEventPattern<ServiceStatusEventArgs>(
@@ -188,7 +188,7 @@
             _websocketConnectionObserver =
                 WebsocketConnection.Where<WebsocketConnectionStatusEnum>(
                     x => x == WebsocketConnectionStatusEnum.Disconnected)
-                    .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost());
+                    .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost(), _ => {});
         }
 
         private IObservable<Device> RegisterDevice()

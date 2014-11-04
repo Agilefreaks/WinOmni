@@ -12,6 +12,7 @@
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Framework;
     using OmniCommon.Interfaces;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -52,7 +53,7 @@
 
             sessionManager.SessionDestroyedObservable()
                 .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(eventArgs => Configure());
+                .SubscribeAndHandleErrors(eventArgs => Configure());
 
             DisplayName = Resources.AplicationName;
         }

@@ -1,6 +1,7 @@
 ﻿namespace OmniSync
 {
     using System;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Newtonsoft.Json.Linq;
@@ -48,7 +49,8 @@
         {
             DisposeConnectObserver();
             var connectObservable = Observable.Start(_channel.Open).Select(result => _monitor.SessionId);
-            _connectObserver = connectObservable.Subscribe(OnChannelOpened, _ => {});
+            _connectObserver = connectObservable.SubscribeOn(Scheduler.Default)
+                .Subscribe(OnChannelOpened, _ => DisposeConnectObserver());
 
             return connectObservable;
         }

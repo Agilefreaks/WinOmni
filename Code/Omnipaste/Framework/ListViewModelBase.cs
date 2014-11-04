@@ -7,6 +7,7 @@ namespace Omnipaste.Framework
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
 
     public abstract class ListViewModelBase<TEntity, TViewModel> : Screen
@@ -33,7 +34,7 @@ namespace Omnipaste.Framework
             EntityObservable = entityObservable;
             EntityObservable.Where(entity => Filter(entity))
                 .Select(CreateViewModel)
-                .Subscribe(clippingViewModel => Items.Insert(0, clippingViewModel), exception => Debugger.Break());
+                .SubscribeAndHandleErrors(clippingViewModel => Items.Insert(0, clippingViewModel));
         }
 
         #endregion

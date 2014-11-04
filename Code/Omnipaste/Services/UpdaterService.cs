@@ -173,7 +173,7 @@
                 SystemIdleService.CreateSystemIdleObservable(systemIdleThreshold)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .Where(systemIsIdle => systemIsIdle)
-                    .Subscribe(
+                    .SubscribeAndHandleErrors(
                         _ =>
                         {
                             DisposeSystemIdleObserver();
@@ -212,10 +212,9 @@
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => DownloadUpdates())
                         .Switch()
-                        .CatchAndReport()
                         .Where(couldDownloadUpdates => couldDownloadUpdates)
                         .ObserveOn(SchedulerProvider.Dispatcher)
-                        .Subscribe(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+                        .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
         }
 

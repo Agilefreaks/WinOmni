@@ -47,11 +47,13 @@
 
             _omniClipboardSubscription = OmniClipboardHandler.Subscribe(
                 // OnNext
-                clipping => LocalClipboardHandler.PostClipping(clipping));
+                clipping => LocalClipboardHandler.PostClipping(clipping),
+                _ => {});
 
             _localClipboardSubscriber = LocalClipboardHandler.Subscribe(
                 // OnNext
-                clipping => OmniClipboardHandler.PostClipping(clipping));
+                clipping => OmniClipboardHandler.PostClipping(clipping),
+                _ => {});
         }
 
         public void Stop()

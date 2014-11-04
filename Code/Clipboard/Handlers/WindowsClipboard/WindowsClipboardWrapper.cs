@@ -64,7 +64,7 @@
         public void StartWatchingClipboard()
         {
             DisposeGetHandleObserver();
-            _getHandleObserver = _windowHandleProvider.Subscribe(OnHandleObtained);
+            _getHandleObserver = _windowHandleProvider.Subscribe(OnHandleObtained, _ => {});
         }
 
         public void StopWatchingClipboard()

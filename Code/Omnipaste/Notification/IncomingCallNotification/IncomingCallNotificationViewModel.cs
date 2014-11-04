@@ -5,6 +5,7 @@
     using Ninject;
     using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Properties;
 
     public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
@@ -103,13 +104,12 @@
             CanEndCall = false;
 
             Devices.EndCall()
-                .Subscribe(
+                .SubscribeAndHandleErrors(
                     p =>
                     {
                         EndCallButtonText = Resources.IncommingCallNotificationCallEnded;
                         Dismiss();
-                    }, 
-                exception => { });
+                    });
         }
 
         public void ReplyWithSms()

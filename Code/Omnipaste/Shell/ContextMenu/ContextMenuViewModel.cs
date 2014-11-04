@@ -7,6 +7,7 @@
     using Omni;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Behaviours;
     using OmniSync;
 
@@ -27,9 +28,8 @@
         public ContextMenuViewModel(IOmniService omniService)
         {
             _omniService = omniService;
-            _omniService.StatusChangedObservable.Subscribe(
-                status => { IconSource = status == ServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico"; },
-                exception => { });
+            _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+                status => { IconSource = status == ServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico"; });
 
             IconSource = "/Disconnected.ico";
         }
@@ -126,7 +126,7 @@
             }
             else
             {
-                _omniService.Start().Subscribe();
+                _omniService.Start().SubscribeAndHandleErrors();
             }
         }
 
