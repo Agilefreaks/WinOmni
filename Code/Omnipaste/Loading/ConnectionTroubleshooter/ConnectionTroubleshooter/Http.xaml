@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:p="clr-namespace:Omnipaste.Properties"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:helpers="clr-namespace:OmniUI.Helpers;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical">
@@ -15,6 +17,6 @@
         <Label Content="{x:Static p:Resources.ProxyUsername}"/>
         <TextBox x:Name="ProxyUsername"/>
         <Label Content="{x:Static p:Resources.ProxyPassword}"/>
-        <PasswordBox x:Name="ProxyPassword" />
+        <PasswordBox helpers:PasswordHelper.Attach="True" helpers:PasswordHelper.Password="{Binding Path=ProxyPassword, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

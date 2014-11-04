@@ -78,6 +78,7 @@
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderButtonViewModel.cs" />
+    <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
