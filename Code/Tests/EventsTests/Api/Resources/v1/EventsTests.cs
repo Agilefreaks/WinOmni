@@ -26,9 +26,8 @@
 
             _mockWebProxyFactory = new Mock<IWebProxyFactory>();
             _mockOAuth2 = new Mock<IOAuth2>();
-            _subject = new Events(_mockWebProxyFactory.Object)
+            _subject = new Events(mockConfigurationService.Object, _mockWebProxyFactory.Object)
                            {
-                               ConfigurationService = mockConfigurationService.Object,
                                OAuth2 = _mockOAuth2.Object
                            };
         }

@@ -12,8 +12,8 @@
     {
         #region Constructors and Destructors
 
-        protected ResourceWithAuthorization(IWebProxyFactory webProxyFactory)
-            : base(webProxyFactory)
+        protected ResourceWithAuthorization(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 
@@ -34,9 +34,6 @@
                 return string.Concat("bearer ", Token.AccessToken);
             }
         }
-
-        [Inject]
-        public IConfigurationService ConfigurationService { get; set; }
 
         [Inject]
         public IOAuth2 OAuth2 { get; set; }

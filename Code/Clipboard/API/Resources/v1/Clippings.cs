@@ -15,8 +15,8 @@
 
         #region Constructors and Destructors
 
-        public Clippings(IWebProxyFactory webProxyFactory)
-            : base(webProxyFactory)
+        public Clippings(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 

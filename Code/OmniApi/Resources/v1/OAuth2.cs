@@ -1,7 +1,6 @@
 ﻿namespace OmniApi.Resources.v1
 {
     using System;
-    using System.Configuration;
     using System.Net.Http;
     using OmniApi.Models;
     using OmniCommon;
@@ -18,10 +17,10 @@
 
         #region Constructors and Destructors
 
-        public OAuth2(IWebProxyFactory webProxyFactory)
-            :base(webProxyFactory)
+        public OAuth2(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            :base(configurationService, webProxyFactory)
         {
-            _clientId = ConfigurationManager.AppSettings[ConfigurationProperties.ClientId];
+            _clientId = configurationService[ConfigurationProperties.ClientId];
         }
 
         #endregion

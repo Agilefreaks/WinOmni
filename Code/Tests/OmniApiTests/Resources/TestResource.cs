@@ -9,8 +9,8 @@
     {
         #region Constructors and Destructors
 
-        public TestResource(IWebProxyFactory webProxyFactory)
-            : base(webProxyFactory)
+        public TestResource(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 

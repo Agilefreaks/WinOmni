@@ -11,8 +11,8 @@
     {
         #region Constructors and Destructors
 
-        public Events(IWebProxyFactory webProxyFactory)
-            : base(webProxyFactory)
+        public Events(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 

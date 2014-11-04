@@ -1,7 +1,6 @@
 ﻿namespace OmniApi.Resources
 {
     using System;
-    using System.Configuration;
     using System.Net.Http;
     using Newtonsoft.Json;
     using OmniApi.Support.Converters;
@@ -11,10 +10,13 @@
 
     public abstract class Resource<T>
     {
+        protected readonly IConfigurationService ConfigurationService;
+
         #region Constructors and Destructors
 
-        protected Resource(IWebProxyFactory webProxyFactory)
+        protected Resource(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
         {
+            ConfigurationService = configurationService;
             JsonConvert.DefaultSettings = () =>
                 {
                     var jsonSerializerSettings = new JsonSerializerSettings
@@ -44,7 +46,7 @@
 
         protected HttpClient CreateHttpClient()
         {
-            var baseAddress = new Uri(ConfigurationManager.AppSettings[ConfigurationProperties.BaseUrl]);
+            var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
             var handler = new HttpClientHandler
                               {
                                   Proxy = WebProxyFactory.CreateFromAppConfiguration(),

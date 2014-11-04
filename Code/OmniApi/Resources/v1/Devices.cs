@@ -18,8 +18,8 @@
 
         #region Constructors and Destructors
 
-        public Devices(IWebProxyFactory webProxyFactory)
-            : base(webProxyFactory)
+        public Devices(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+            : base(configurationService, webProxyFactory)
         {
         }
 
