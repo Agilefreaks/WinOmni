@@ -4,6 +4,7 @@
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
+    using System.Text;
     using SuperSocket.ClientEngine;
 
     public class HttpConnectProxy : ProxyConnectorBase
@@ -16,6 +17,7 @@
         }
 
         private const string m_RequestTemplate = "CONNECT {0}:{1} HTTP/1.1\r\nHost: {0}:{1}\r\nProxy-Connection: Keep-Alive\r\n\r\n";
+        private const string m_RequestTemplateWithAuth = "CONNECT {0}:{1} HTTP/1.1\r\nHOST {0}:{1}\r\nProxy-Connection: Keep-Alive\r\nProxy-Authorization: Basic {2}\r\n\r\n";
 
         private const string m_ResponsePrefix = "HTTP/1.1";
         private const char m_Space = ' ';
@@ -28,6 +30,8 @@
         }
 
         private int m_ReceiveBufferSize;
+        private string m_Username;
+        private string m_Password;
 
 #if SILVERLIGHT && !WINDOWS_PHONE
         public HttpConnectProxy(EndPoint proxyEndPoint, SocketClientAccessPolicyProtocol clientAccessPolicyProtocol)
@@ -46,6 +50,19 @@
             : this(proxyEndPoint, 128)
         {
 
+        }
+
+        public HttpConnectProxy(EndPoint proxyEndPoint, string username, string password)
+            : this(proxyEndPoint, username, password, 128)
+        {
+
+        }
+        
+        public HttpConnectProxy(EndPoint proxyEndPoint, string username, string password, int receiverBufferSize)
+            : this(proxyEndPoint, receiverBufferSize)
+        {
+            m_Username = username;
+            m_Password = password;
         }
 
         public HttpConnectProxy(EndPoint proxyEndPoint, int receiveBufferSize)
@@ -96,15 +113,29 @@
 
             string request;
 
-            if (e.UserToken is DnsEndPoint)
+            string targetHost;
+            int targetPort;
+            var dnsEndPoint = targetEndPoint as DnsEndPoint;
+            if (dnsEndPoint != null)
             {
-                var targetDnsEndPoint = (DnsEndPoint)targetEndPoint;
-                request = string.Format(m_RequestTemplate, targetDnsEndPoint.Host, targetDnsEndPoint.Port);
+                targetHost = dnsEndPoint.Host;
+                targetPort = dnsEndPoint.Port;
             }
             else
             {
                 var targetIPEndPoint = (IPEndPoint)targetEndPoint;
-                request = string.Format(m_RequestTemplate, targetIPEndPoint.Address, targetIPEndPoint.Port);
+                targetHost = targetIPEndPoint.Address.ToString();
+                targetPort = targetIPEndPoint.Port;
+            }
+
+            if (string.IsNullOrEmpty(m_Username))
+            {
+                request = string.Format(m_RequestTemplate, targetHost, targetPort);
+            }
+            else
+            {
+                var authHash = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", m_Username, m_Password)));
+                request = string.Format(m_RequestTemplateWithAuth, targetHost, targetPort, authHash);
             }
 
             var requestData = ASCIIEncoding.GetBytes(request);
