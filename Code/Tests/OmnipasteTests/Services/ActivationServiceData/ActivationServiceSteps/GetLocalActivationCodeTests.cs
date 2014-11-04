@@ -32,7 +32,9 @@
         {
             _configurationService.SetupGet(m => m.AccessToken).Returns("42");
 
-            _subject.Execute().Subscribe(_observer);
+            var observable = _subject.Execute();
+            observable.Subscribe(_observer);
+            observable.Wait();
 
             _observer.Messages.Should()
                 .Contain(
