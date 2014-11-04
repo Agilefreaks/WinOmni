@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System.Reactive;
+    using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -27,7 +28,7 @@
         }
 
         [Test]
-        public void Execute_WhenConfigurationServiceHasAccessToken_WillSucced()
+        public void Execute_WhenConfigurationServiceHasAccessToken_WillSucceed()
         {
             _configurationService.SetupGet(m => m.AccessToken).Returns("42");
 
@@ -44,9 +45,12 @@
         [Test]
         public void Execute_WhenConfigurationServiceDoesNotHaveAccessToken_WillFail()
         {
-            _configurationService.SetupGet(m => m.AccessToken).Returns("");
+            _configurationService.SetupGet(m => m.AccessToken).Returns(string.Empty);
 
-            _subject.Execute().Subscribe(_observer);
+            var observable = _subject.Execute();
+            observable.Subscribe(_observer);
+            
+            observable.Wait();
 
             _observer.Messages.Should()
                 .Contain(
