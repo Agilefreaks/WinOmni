@@ -56,7 +56,9 @@ namespace OmniSync
 
         private static IProxyConnector CreateHttpProxyConnector(ProxyConfiguration proxyConfiguration)
         {
-            return new HttpConnectProxy(new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port));
+            return new HttpConnectProxy(new DnsEndPoint(proxyConfiguration.Address, proxyConfiguration.Port),
+                proxyConfiguration.Username ?? string.Empty,
+                proxyConfiguration.Password ?? string.Empty);
         }
     }
 }
