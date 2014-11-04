@@ -3,12 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Threading;
     using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon;
     using OmniCommon.Interfaces;
     using OmniSync;
     using Timer = System.Timers.Timer;
@@ -40,7 +42,8 @@
             WebsocketConnectionFactory = websocketConnectionFactory;
             _configurationService = configurationService;
 
-            _retryConnectionTimer.Elapsed += (sender, arguments) => Start().Subscribe(_ => { }, _ => { });
+            _configurationService.AddProxyConfigurationObserver(this);
+            _retryConnectionTimer.Elapsed += (sender, arguments) => Start().SubscribeOn(Scheduler.Default).Subscribe(_ => { }, _ => { });
 
             StatusChanged =
                 Observable.FromEventPattern<ServiceStatusEventArgs>(
@@ -143,13 +146,15 @@
 
             Status = ServiceStatusEnum.Stopping;
 
-            if (unsubscribeHandlers)
-            {
-                StopHandlers();
-                WebsocketConnection.Disconnect();
-            }
+            StopHandlers();
+            WebsocketConnection.Disconnect();
 
             Status = ServiceStatusEnum.Stopped;
+        }
+
+        public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
+        {
+            RestartIfStarted();
         }
 
         #endregion
@@ -163,13 +168,16 @@
 
         private void OnWebsocketConnectionLost()
         {
-            if (Status == ServiceStatusEnum.Started)
-            {
-                Status = ServiceStatusEnum.Reconnecting;
-                _retryConnectionTimer.Start();
-            }
+            RestartIfStarted();
+        }
 
-            Stop(false);
+        private void RestartIfStarted()
+        {
+            if (Status != ServiceStatusEnum.Started) return;
+
+            Stop();
+            Status = ServiceStatusEnum.Reconnecting;
+            _retryConnectionTimer.Start();
         }
 
         private IObservable<string> OpenWebsocketConnection()
