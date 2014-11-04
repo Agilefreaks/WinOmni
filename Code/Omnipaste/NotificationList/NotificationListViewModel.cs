@@ -12,6 +12,7 @@
     using Clipboard.Handlers;
     using Events.Handlers;
     using Ninject;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
     using Omnipaste.Notification;
 
@@ -112,18 +113,16 @@
         {
             _clippingsSubscription =
                 _omniClipboardHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(
-                        clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)),
-                        exception => { });
+                    .SubscribeAndHandleErrors(
+                        clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
         }
 
         private void CreateNotificationsFromIncomingEvents()
         {
             _notificationsSubscription =
                 _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(
-                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)),
-                        exception => { });
+                    .SubscribeAndHandleErrors(
+                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)));
         }
 
         private void OnNotificationDeactivated(object sender, DeactivationEventArgs e)

@@ -79,7 +79,7 @@
 
         public void PostClipping(Clipping clipping)
         {
-            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe();
+            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => {}, _ => {});
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)

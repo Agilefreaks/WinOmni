@@ -1,12 +1,12 @@
 ﻿namespace Omnipaste.SmsComposer
 {
-    using System;
     using System.ComponentModel;
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Resources.v1;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
 
     public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {
@@ -102,7 +102,7 @@
         {
             State = SmsComposerStatusEnum.Sending;
             Devices.SendSms(Model.Recipient, Model.Message)
-                .Subscribe(m => { State = SmsComposerStatusEnum.Sent; }, exception => { });
+                .SubscribeAndHandleErrors(m => { State = SmsComposerStatusEnum.Sent; });
         }
 
         #endregion

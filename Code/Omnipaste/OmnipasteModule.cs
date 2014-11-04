@@ -44,7 +44,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(ISettingsHeaderViewModel), typeof(IConnectionViewModel)
+                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel)
                        };
         }
     }

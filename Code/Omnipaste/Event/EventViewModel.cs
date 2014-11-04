@@ -9,6 +9,7 @@
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
     using Omnipaste.MasterEventList.Calling;
 
@@ -76,7 +77,7 @@
         {
             Devices.Call(Model.PhoneNumber)
                 .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(m => ShowCallingNotification(), exception => { });
+                .SubscribeAndHandleErrors(m => ShowCallingNotification());
         }
 
         public void SendSms()

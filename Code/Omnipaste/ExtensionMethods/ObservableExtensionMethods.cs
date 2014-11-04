@@ -1,19 +1,18 @@
 ﻿namespace Omnipaste.ExtensionMethods
 {
     using System;
-    using System.Reactive.Linq;
     using BugFreak;
 
     public static class ObservableExtensionMethods
     {
-        public static IObservable<T> CatchAndReport<T>(this IObservable<T> observable, T onCatch = default(T))
+        public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable)
         {
-            return observable.Catch<T, Exception>(
-                exception =>
-                {
-                    ReportingService.Instance.BeginReport(exception);
-                    return new[] { onCatch }.ToObservable();
-                });
+            return observable.Subscribe(_ => { }, exception => ReportingService.Instance.BeginReport(exception));
+        }
+
+        public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
+        {
+            return observable.Subscribe(onNext, exception => ReportingService.Instance.BeginReport(exception));
         }
     }
 }
