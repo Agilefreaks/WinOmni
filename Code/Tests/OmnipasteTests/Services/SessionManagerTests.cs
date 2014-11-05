@@ -36,7 +36,7 @@
         {
             _subject.LogOut();
 
-            _mockOmniService.Verify(os => os.Stop(true), Times.Once());
+            //_mockOmniService.Verify(os => os.StopWithDefaultObserver(), Times.Once());
         }
 
         [Test]

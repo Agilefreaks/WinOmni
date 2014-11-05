@@ -1,31 +1,25 @@
 ﻿namespace Omni
 {
     using System;
-    using OmniApi.Models;
-    using OmniCommon.Interfaces;
-    using OmniSync;
+    using System.Reactive;
 
-    public interface IOmniService : IProxyConfigurationObserver
+    public interface IOmniService
     {
-        #region Public Events
-
-        event EventHandler<ServiceStatusEventArgs> ConnectivityChanged;
-
-        #endregion
-
         #region Public Properties
 
-        ServiceStatusEnum Status { get; }
+        IObservable<OmniServiceStatusEnum> StatusChangedObservable { get; }
 
-        IObservable<ServiceStatusEnum> StatusChangedObservable { get; }
+        OmniServiceStatusEnum State { get; }
+
+        bool InTransition { get; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        IObservable<Device> Start();
+        IObservable<Unit> Start();
 
-        void Stop(bool unsubscribeHandlers = true);
+        IObservable<Unit> Stop();
 
         #endregion
     }

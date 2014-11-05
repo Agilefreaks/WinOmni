@@ -9,10 +9,10 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using Omnipaste.Dialog;
     using Omnipaste.Event;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.MasterEventList.Calling;
 
     [TestFixture]

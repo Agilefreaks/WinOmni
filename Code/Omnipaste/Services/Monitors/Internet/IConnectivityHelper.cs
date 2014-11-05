@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.Connectivity
+﻿namespace Omnipaste.Services.Monitors.Internet
 {
     public interface IConnectivityHelper
     {

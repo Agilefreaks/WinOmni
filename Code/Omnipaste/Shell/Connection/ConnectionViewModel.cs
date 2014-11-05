@@ -1,18 +1,11 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
-    using System;
     using System.Collections.Generic;
-    using System.Reactive.Concurrency;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Ninject;
     using Omni;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.Properties;
-    using Omnipaste.Services.Connectivity;
-    using Omnipaste.Services.SystemService;
-    using OmniSync;
+    using Omnipaste.Services.Monitors.User;
     using OmniUI.Attributes;
 
     [UseView("OmniUI.HeaderButton.HeaderButtonView", IsFullyQualifiedName = true)]
@@ -20,28 +13,23 @@
     {
         #region Fields
 
-        private IConnectivityNotifyService _connectivityNotifyService;
+        private readonly Dictionary<ConnectionStateEnum, string> _icons;
+
+        private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
+
+        private readonly IUserMonitor _userMonitor;
 
         private bool _canPerformAction = true;
 
-        private IOmniService _omniService;
-
-        private IDisposable _omniServiceStatusObserver;
-
-        private ISystemService _systemService;
-
         private ConnectionStateEnum _state;
-
-        private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
-        private readonly Dictionary<ConnectionStateEnum, string> _icons;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ConnectionViewModel(IOmniService omniService)
+        public ConnectionViewModel(IUserMonitor userMonitor, IOmniService omniService)
         {
-            OmniService = omniService;
+            _userMonitor = userMonitor;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
                             {
                                 { ConnectionStateEnum.Connected, Resources.ConnectionDisconnect },
@@ -52,6 +40,12 @@
                              { ConnectionStateEnum.Connected, Resources.DisconnectIcon },
                              { ConnectionStateEnum.Disconnected, Resources.ConnectIcon }
                          };
+            omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+                newStatus =>
+                State =
+                newStatus == OmniServiceStatusEnum.Started
+                    ? ConnectionStateEnum.Connected
+                    : ConnectionStateEnum.Disconnected);
         }
 
         #endregion
@@ -79,21 +73,6 @@
             }
         }
 
-        public ConnectionStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => ButtonToolTip);
-                NotifyOfPropertyChange(() => Icon);
-            }
-        }
-
         public IEventAggregator EventAggregator { get; set; }
 
         public string Icon
@@ -108,84 +87,23 @@
         {
             get
             {
-                return OmniService.Status == ServiceStatusEnum.Started;
+                return State == ConnectionStateEnum.Connected;
             }
         }
 
-        public IOmniService OmniService
+        public ConnectionStateEnum State
         {
             get
             {
-                return _omniService;
+                return _state;
             }
             set
             {
-                if (_omniServiceStatusObserver != null)
-                {
-                    _omniServiceStatusObserver.Dispose();
-                }
-
-                _omniService = value;
-
-                _omniServiceStatusObserver =
-                    _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                        x =>
-                        State =
-                        _omniService.Status == ServiceStatusEnum.Started
-                            ? ConnectionStateEnum.Connected
-                            : ConnectionStateEnum.Disconnected);
-            }
-        }
-
-        [Inject]
-        public IConnectivityNotifyService ConnectivityNotifyService
-        {
-            get
-            {
-                return _connectivityNotifyService;
-            }
-            set
-            {
-                if (value == _connectivityNotifyService)
-                {
-                    return;
-                }
-                if (_connectivityNotifyService != null)
-                {
-                    _connectivityNotifyService.ConnectivityChanged -= ConnectivityChanged;
-                }
-
-                _connectivityNotifyService = value;
-                _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
-
-                NotifyOfPropertyChange(() => ConnectivityNotifyService);
-            }
-        }
-
-        [Inject]
-        public ISystemService SystemService
-        {
-            get
-            {
-                return _systemService;
-            }
-            set
-            {
-                if (Equals(value, _systemService))
-                {
-                    return;
-                }
-
-                if (_systemService != null)
-                {
-                    _systemService.Resumed -= SystemResumed;
-                    _systemService.Suspended -= SystemSuspended;
-                }
-
-                _systemService = value;
-                _systemService.Resumed += SystemResumed;
-                _systemService.Suspended += SystemSuspended;
-                NotifyOfPropertyChange(() => SystemService);
+                _state = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ButtonToolTip);
+                NotifyOfPropertyChange(() => Icon);
+                NotifyOfPropertyChange(() => IsConnected);
             }
         }
 
@@ -196,17 +114,17 @@
         public void Connect()
         {
             CanPerformAction = false;
-            OmniService.Start()
-                .SubscribeOn(Scheduler.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(device => CanPerformAction = true);
+
+            _userMonitor.SendEvent(UserEventTypeEnum.Connect);
+
+            CanPerformAction = true;
         }
 
         public void Disconnect()
         {
             CanPerformAction = false;
 
-            OmniService.Stop();
+            _userMonitor.SendEvent(UserEventTypeEnum.Disconnect);
 
             CanPerformAction = true;
         }
@@ -221,35 +139,6 @@
             {
                 Connect();
             }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-        {
-            if (e.IsConnected)
-            {
-                Connect();
-            }
-            else
-            {
-                Disconnect();
-            }
-        }
-
-        private void SystemResumed(object sender, EventArgs e)
-        {
-            if (ConnectivityNotifyService.CurrentlyConnected)
-            {
-                Connect();
-            }
-        }
-
-        private void SystemSuspended(object sender, EventArgs e)
-        {
-            Disconnect();
         }
 
         #endregion

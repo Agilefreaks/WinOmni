@@ -10,6 +10,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;

@@ -88,7 +88,6 @@
     <Compile Include="IOmniService.cs" />
     <Compile Include="OmniModule.cs" />
     <Compile Include="OmniService.cs" />
-    <Compile Include="OmniServiceStatusChanged.cs" />
     <Compile Include="OmniServiceStatusEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -25,7 +25,10 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            return _omniService.Start().Select(d => new ExecuteResult(SimpleStepStateEnum.Successful));
+            return
+                _omniService.Start()
+                    .Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful))
+                    .DefaultIfEmpty(new ExecuteResult(SimpleStepStateEnum.Failed));
         }
 
         #endregion

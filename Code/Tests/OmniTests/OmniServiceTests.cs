@@ -11,6 +11,7 @@
     using Omni;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
 
@@ -70,18 +71,21 @@
                 .Setup(f => f.Create())
                 .Returns(_mockWebsocketConnection.Object);
 
+            SchedulerProvider.Default = _scheduler;
+
             _subject = _kernel.Get<IOmniService>();
         }
 
         [Test]
-        public void Start_WhenSuccess_ReturnsTheDevice()
+        public void Start_WhenSuccess_ReturnsAUnit()
         {
             var device = new Device { Identifier = DeviceIdentifier };
-            var testableObserver = _scheduler.CreateObserver<Device>();
+            var testableObserver = _scheduler.CreateObserver<Unit>();
             var openWebsocketConnection = _scheduler.CreateColdObservable(
                 new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
                 new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
             _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
+            _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
             var registerDevice = _scheduler.CreateColdObservable(
                 new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
                 new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
@@ -95,7 +99,7 @@
             _scheduler.Start();
 
             testableObserver.Messages.Should().HaveCount(2);
-            _subject.Status.Should().Be(ServiceStatusEnum.Started);
+            _subject.State.Should().Be(OmniServiceStatusEnum.Started);
             _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once());
         }
     }

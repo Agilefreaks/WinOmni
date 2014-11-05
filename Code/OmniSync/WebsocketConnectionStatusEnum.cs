@@ -1,6 +1,6 @@
 ﻿namespace OmniSync
 {
-    public enum WebsocketConnectionStatusEnum
+    public enum WebSocketConnectionStatusEnum
     {
         Connected,
 
