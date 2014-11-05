@@ -5,10 +5,8 @@
 
     public interface IConnectivityNotifyService : IStartable
     {
-        event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
-
-        bool PreviouslyConnected { get; set; }
-
         bool CurrentlyConnected { get; }
+
+        IObservable<bool> ConnectivityChangedObservable { get; }
     }
 }

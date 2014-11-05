@@ -1,68 +1,87 @@
 ﻿namespace Omnipaste.Services.Connectivity
 {
     using System;
-    using System.Threading;
-    using System.Windows;
-    using System.Windows.Threading;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
     public class ConnectivityNotifyService : IConnectivityNotifyService
     {
-        public IConnectivityHelper ConnectivityHelper { get; set; }
+        #region Fields
 
-        private static readonly object Lock = new object();
-        private Timer _timer;
+        private readonly IConnectivityHelper _connectivityHelper;
 
-        public bool PreviouslyConnected { get; set; }
+        private readonly TimeSpan _defaultCheckInterval = TimeSpan.FromSeconds(5);
+
+        private readonly IObservable<bool> _stateChangedObservable;
+
+        private readonly ReplaySubject<bool> _subject;
+
+        private IDisposable _stateChangedObserver;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper, TimeSpan? checkInterval = null)
+        {
+            _connectivityHelper = connectivityHelper;
+            _subject = new ReplaySubject<bool>(0);
+            _stateChangedObservable =
+                Observable.Timer(TimeSpan.Zero, checkInterval ?? _defaultCheckInterval)
+                    .Select(_ => CurrentlyConnected)
+                    .DistinctUntilChanged()
+                    .Skip(1);
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public IObservable<bool> ConnectivityChangedObservable
+        {
+            get
+            {
+                return _subject;
+            }
+        }
 
         public bool CurrentlyConnected
         {
             get
             {
-                return ConnectivityHelper.InternetConnected;
+                return _connectivityHelper.InternetConnected;
             }
         }
 
-        public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
+        #endregion
 
-        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper)
-        {
-            ConnectivityHelper = connectivityHelper;
-        }
+        #region Public Methods and Operators
 
         public void Start()
         {
-            PreviouslyConnected = ConnectivityHelper.InternetConnected;
-
-            _timer = new Timer(Run, null, TimeSpan.FromTicks(0), TimeSpan.FromSeconds(5));
+            DisposeStateChangedObserver();
+            _stateChangedObserver =
+                _stateChangedObservable.SubscribeOn(Scheduler.Default).ObserveOn(Scheduler.Default).Subscribe(_subject);
         }
 
         public void Stop()
         {
-            ConnectivityChanged = null;
-            _timer.Dispose();
+            DisposeStateChangedObserver();
         }
 
-        protected void Run(object state)
+        #endregion
+
+        #region Methods
+
+        private void DisposeStateChangedObserver()
         {
-            lock (Lock)
+            if (_stateChangedObserver != null)
             {
-                if (CurrentlyConnected != PreviouslyConnected)
-                {
-                    OnConnectivityChanged(CurrentlyConnected);
-                    PreviouslyConnected = CurrentlyConnected;
-                }
+                _stateChangedObserver.Dispose();
             }
         }
 
-        protected virtual void OnConnectivityChanged(bool isConnected)
-        {
-            var handler = ConnectivityChanged;
-            if (handler != null)
-            {
-                Action target = () => handler(this, new ConnectivityChangedEventArgs(isConnected));
-
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, target);
-            }
-        }
+        #endregion
     }
 }

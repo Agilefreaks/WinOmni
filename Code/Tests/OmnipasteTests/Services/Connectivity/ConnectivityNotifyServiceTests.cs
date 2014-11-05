@@ -1,37 +1,46 @@
 ﻿namespace OmnipasteTests.Services.Connectivity
 {
+    using System;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Threading;
     using FluentAssertions;
     using Moq;
-    using Ninject;
-    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Services.Connectivity;
 
     [TestFixture]
     public class ConnectivityNotifyServiceTests
     {
-        private MoqMockingKernel _kernel;
-
         private IConnectivityNotifyService _subject;
 
         private Mock<IConnectivityHelper> _mockConnectivityHelper;
 
+        private TimeSpan _checkInterval;
+
         [SetUp]
         public void SetUp()
         {
-            _kernel = new MoqMockingKernel();
-            _mockConnectivityHelper = _kernel.GetMock<IConnectivityHelper>();
-            _kernel.Bind<IConnectivityHelper>().ToConstant(_mockConnectivityHelper.Object);
+            _mockConnectivityHelper = new Mock<IConnectivityHelper>();
+            _checkInterval = TimeSpan.FromMilliseconds(100);
+            _subject = new ConnectivityNotifyService(_mockConnectivityHelper.Object, _checkInterval);
         }
 
         [Test]
-        public void Ctor_SetsThePreviousStateToTheCurrentConnectivityStatus()
+        public void ConnectivityChangedObservable_AfterCallingStart_GeneratesANewValueForEachTimeTheInternetConnectedPropertyChanges()
         {
-            _mockConnectivityHelper.SetupGet(ch => ch.InternetConnected).Returns(true);
-            
-            _subject = _kernel.Get<ConnectivityNotifyService>();
+            var values = new [] { false, true, true, true, false };
+            var index = 0;
+            _mockConnectivityHelper.SetupGet(x => x.InternetConnected).Returns(() => values[index++]);
 
-            _subject.PreviouslyConnected.Should().Be(true);
+            var detectedChangeCount = 0;
+            _subject.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
+                .ObserveOn(Scheduler.Default)
+                .Subscribe(_ => detectedChangeCount++);
+            _subject.Start();
+
+            Thread.Sleep(TimeSpan.FromMilliseconds(_checkInterval.TotalMilliseconds * values.Length));
+            detectedChangeCount.Should().Be(2);
         }
     }
 }

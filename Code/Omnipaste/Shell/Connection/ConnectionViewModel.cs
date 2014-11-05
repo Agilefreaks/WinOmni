@@ -20,7 +20,7 @@
     {
         #region Fields
 
-        private IConnectivityNotifyService _connectivityNotifyService;
+        private readonly IConnectivityNotifyService _connectivityNotifyService;
 
         private bool _canPerformAction = true;
 
@@ -39,8 +39,14 @@
 
         #region Constructors and Destructors
 
-        public ConnectionViewModel(IOmniService omniService)
+        public ConnectionViewModel(
+            IOmniService omniService,
+            IConnectivityNotifyService connectivityNotifyService)
         {
+            _connectivityNotifyService = connectivityNotifyService;
+            connectivityNotifyService.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
+                .ObserveOn(SchedulerProvider.Dispatcher)
+                .SubscribeAndHandleErrors(OnConnectivityChanged);
             OmniService = omniService;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
                             {
@@ -138,31 +144,6 @@
         }
 
         [Inject]
-        public IConnectivityNotifyService ConnectivityNotifyService
-        {
-            get
-            {
-                return _connectivityNotifyService;
-            }
-            set
-            {
-                if (value == _connectivityNotifyService)
-                {
-                    return;
-                }
-                if (_connectivityNotifyService != null)
-                {
-                    _connectivityNotifyService.ConnectivityChanged -= ConnectivityChanged;
-                }
-
-                _connectivityNotifyService = value;
-                _connectivityNotifyService.ConnectivityChanged += ConnectivityChanged;
-
-                NotifyOfPropertyChange(() => ConnectivityNotifyService);
-            }
-        }
-
-        [Inject]
         public ISystemService SystemService
         {
             get
@@ -227,9 +208,9 @@
 
         #region Methods
 
-        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private void OnConnectivityChanged(bool currentlyConnected)
         {
-            if (e.IsConnected)
+            if (currentlyConnected)
             {
                 Connect();
             }
