@@ -13,9 +13,9 @@
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
 
     public class UpdaterService : IUpdaterService
     {

@@ -4,9 +4,8 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Microsoft.Win32;
-    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
 
     public class SystemService : ISystemService
     {

@@ -1,89 +1,39 @@
 ﻿namespace Omni
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Threading;
-    using BugFreak;
-    using Ninject;
-    using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon;
-    using OmniCommon.Interfaces;
     using OmniSync;
-    using Timer = System.Timers.Timer;
 
     public class OmniService : IOmniService
     {
         #region Fields
 
-        protected readonly IObservable<ServiceStatusEnum> StatusChanged;
-
-        private readonly IConfigurationService _configurationService;
-
-        private readonly Timer _retryConnectionTimer = new Timer(5000) { AutoReset = true };
-
-        private readonly AutoResetEvent _executing = new AutoResetEvent(true);
-
-        private ServiceStatusEnum _status = ServiceStatusEnum.Stopped;
-
-        private IDisposable _websocketConnectionObserver;
+        private readonly IConnectionManager _connectionManager;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public OmniService(
-            IConfigurationService configurationService,
-            IWebsocketConnectionFactory websocketConnectionFactory)
+        public OmniService(IConnectionManager connectionManager)
         {
-            WebsocketConnectionFactory = websocketConnectionFactory;
-            _configurationService = configurationService;
-
+            _connectionManager = connectionManager;
             _configurationService.AddProxyConfigurationObserver(this);
             _retryConnectionTimer.Elapsed += (sender, arguments) => Start().SubscribeOn(Scheduler.Default).Subscribe(_ => { }, _ => { });
-
-            StatusChanged =
-                Observable.FromEventPattern<ServiceStatusEventArgs>(
-                    x => ConnectivityChanged += x,
-                    x => ConnectivityChanged -= x).Select(x => x.EventArgs.Status);
         }
-
-        #endregion
-
-        #region Public Events
-
-        public event EventHandler<ServiceStatusEventArgs> ConnectivityChanged;
 
         #endregion
 
         #region Public Properties
 
-        [Inject]
-        public IDevices Devices { get; set; }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
-
         public ServiceStatusEnum Status
         {
             get
             {
-                return _status;
-            }
-            private set
-            {
-                if (_status != value)
-                {
-                    _status = value;
-
-                    if (ConnectivityChanged != null)
-                    {
-                        ConnectivityChanged(this, new ServiceStatusEventArgs(_status));
-                    }
-                }
+                return _connectionManager.Status;
             }
         }
 
@@ -91,65 +41,32 @@
         {
             get
             {
-                return StatusChanged;
+                return _connectionManager.StatusChangedObservable.StartWith(_connectionManager.Status);
             }
         }
-
-        public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
-
-        #endregion
-
-        #region Properties
-
-        protected IWebsocketConnection WebsocketConnection { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public IObservable<Device> Start()
+        public IObservable<Unit> Start()
         {
-            IObservable<Device> result = Observable.Empty<Device>();
-
-            if (Status != ServiceStatusEnum.Started)
-            {
-                _executing.WaitOne();
-
-                _executing.Reset();
-
-                result = OpenWebsocketConnection()
-                    .SelectMany(
-                        registrationId =>
-                            RegisterDevice()
-                                .SelectMany(
-                                    d => ActivateDevice(registrationId, d.Identifier).Select(
-                                        device =>
-                                        {
-                                            _retryConnectionTimer.Stop();
-                                            Status = ServiceStatusEnum.Started;
-
-                                            RegisterConnectionObserver();
-                                            StartHandlers();
-                                            return device;
-                                        }))).Finally(() => _executing.Set());
-            }
-
-            return result;
+            return _connectionManager.GoToState(ServiceStatusEnum.Started);
         }
 
-        public void Stop(bool unsubscribeHandlers = true)
+        public void StartWithDefaultObserver()
         {
-            if (Status != ServiceStatusEnum.Started)
-            {
-                return;
-            }
+            RunObservable(Start());
+        }
 
-            Status = ServiceStatusEnum.Stopping;
+        public IObservable<Unit> Stop()
+        {
+            return _connectionManager.GoToState(ServiceStatusEnum.Stopped);
+        }
 
-            StopHandlers();
-            WebsocketConnection.Disconnect();
-
-            Status = ServiceStatusEnum.Stopped;
+        public void StopWithDefaultObserver()
+        {
+            RunObservable(Stop());
         }
 
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
@@ -161,68 +78,9 @@
 
         #region Methods
 
-        private IObservable<Device> ActivateDevice(string registrationId, string deviceIdentifier)
+        private static void RunObservable<T>(IObservable<T> observable)
         {
-            return Devices.Activate(registrationId, deviceIdentifier);
-        }
-
-        private void OnWebsocketConnectionLost()
-        {
-            RestartIfStarted();
-        }
-
-        private void RestartIfStarted()
-        {
-            if (Status != ServiceStatusEnum.Started) return;
-
-            Stop();
-            Status = ServiceStatusEnum.Reconnecting;
-            _retryConnectionTimer.Start();
-        }
-
-        private IObservable<string> OpenWebsocketConnection()
-        {
-            WebsocketConnection = WebsocketConnectionFactory.Create();
-            return WebsocketConnection.Connect();
-        }
-
-        private void RegisterConnectionObserver()
-        {
-            if (_websocketConnectionObserver != null)
-            {
-                _websocketConnectionObserver.Dispose();
-            }
-
-            _websocketConnectionObserver =
-                WebsocketConnection.Where<WebsocketConnectionStatusEnum>(
-                    x => x == WebsocketConnectionStatusEnum.Disconnected)
-                    .Subscribe<WebsocketConnectionStatusEnum>(x => OnWebsocketConnectionLost(), _ => {});
-        }
-
-        private IObservable<Device> RegisterDevice()
-        {
-            var deviceIdentifier = _configurationService.DeviceIdentifier;
-            var machineName = _configurationService.MachineName;
-            
-            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
-            
-            return Devices.Create(deviceIdentifier, machineName);
-        }
-
-        private void StartHandlers()
-        {
-            foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
-            {
-                handler.Start(WebsocketConnection);
-            }
-        }
-
-        private void StopHandlers()
-        {
-            foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
-            {
-                handler.Stop();
-            }
+            observable.SubscribeOn(Scheduler.Default).ObserveOn(Scheduler.Default).Subscribe(_ => { }, _ => { });
         }
 
         #endregion

@@ -294,7 +294,6 @@
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
     <Compile Include="Framework\Behaviours\BalloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
-    <Compile Include="Framework\SchedulerProvider.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
     <Compile Include="NotificationList\INotificationViewModelFactory.cs" />

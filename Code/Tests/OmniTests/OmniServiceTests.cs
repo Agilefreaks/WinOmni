@@ -11,6 +11,7 @@
     using Omni;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
 
@@ -70,6 +71,10 @@
                 .Setup(f => f.Create())
                 .Returns(_mockWebsocketConnection.Object);
 
+            SchedulerProvider.Default = _scheduler;
+
+            _kernel.Bind<IConnectionManager>().ToConstant(_kernel.Get<ConnectionManager>());
+
             _subject = _kernel.Get<IOmniService>();
         }
 
@@ -77,7 +82,7 @@
         public void Start_WhenSuccess_ReturnsTheDevice()
         {
             var device = new Device { Identifier = DeviceIdentifier };
-            var testableObserver = _scheduler.CreateObserver<Device>();
+            var testableObserver = _scheduler.CreateObserver<Unit>();
             var openWebsocketConnection = _scheduler.CreateColdObservable(
                 new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
                 new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));

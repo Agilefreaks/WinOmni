@@ -7,8 +7,9 @@
     using Caliburn.Micro;
     using Microsoft.Win32;
     using Omni;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.Properties;
     using Omnipaste.Services.Connectivity;
     using Omnipaste.Services.SystemService;
@@ -22,6 +23,10 @@
 
         private readonly IConnectivityNotifyService _connectivityNotifyService;
 
+        private readonly Dictionary<ConnectionStateEnum, string> _icons;
+
+        private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
+
         private bool _canPerformAction = true;
 
         private IOmniService _omniService;
@@ -29,9 +34,6 @@
         private IDisposable _omniServiceStatusObserver;
 
         private ConnectionStateEnum _state;
-
-        private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
-        private readonly Dictionary<ConnectionStateEnum, string> _icons;
 
         #endregion
 
@@ -64,6 +66,22 @@
 
         #region Public Properties
 
+        public ConnectionStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ButtonToolTip);
+                NotifyOfPropertyChange(() => Icon);
+                NotifyOfPropertyChange(() => IsConnected);
+            }
+        }
+
         public string ButtonToolTip
         {
             get
@@ -85,21 +103,6 @@
             }
         }
 
-        public ConnectionStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => ButtonToolTip);
-                NotifyOfPropertyChange(() => Icon);
-            }
-        }
-
         public IEventAggregator EventAggregator { get; set; }
 
         public string Icon
@@ -114,7 +117,7 @@
         {
             get
             {
-                return OmniService.Status == ServiceStatusEnum.Started;
+                return State == ConnectionStateEnum.Connected;
             }
         }
 
@@ -135,9 +138,9 @@
 
                 _omniServiceStatusObserver =
                     _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                        x =>
+                        newState =>
                         State =
-                        _omniService.Status == ServiceStatusEnum.Started
+                        newState == ServiceStatusEnum.Started
                             ? ConnectionStateEnum.Connected
                             : ConnectionStateEnum.Disconnected);
             }
@@ -150,17 +153,15 @@
         public void Connect()
         {
             CanPerformAction = false;
-            OmniService.Start()
-                .SubscribeOn(Scheduler.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(device => CanPerformAction = true);
+            OmniService.StartWithDefaultObserver();
+            CanPerformAction = true;
         }
 
         public void Disconnect()
         {
             CanPerformAction = false;
 
-            OmniService.Stop();
+            OmniService.StopWithDefaultObserver();
 
             CanPerformAction = true;
         }
@@ -203,8 +204,6 @@
                 case PowerModes.Suspend:
                     SystemSuspended();
                     break;
-                default:
-                    break;
             }
         }
 
@@ -212,7 +211,6 @@
         {
             if (_connectivityNotifyService.CurrentlyConnected)
             {
-                this.LogToFile("System has internet connectivity");
                 Connect();
             }
         }

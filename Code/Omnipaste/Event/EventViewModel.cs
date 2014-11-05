@@ -6,11 +6,11 @@
     using Events.Models;
     using Ninject;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.MasterEventList.Calling;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel

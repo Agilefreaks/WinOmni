@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
-    using System;
     using System.Windows;
     using Caliburn.Micro;
     using Ninject;
@@ -122,11 +121,11 @@
         {
             if (IsStopped)
             {
-                _omniService.Stop();
+                _omniService.StartWithDefaultObserver();
             }
             else
             {
-                _omniService.Start().SubscribeAndHandleErrors();
+                _omniService.StopWithDefaultObserver();
             }
         }
 

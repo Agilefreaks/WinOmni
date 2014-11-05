@@ -11,8 +11,8 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Event;
-    using Omnipaste.Framework;
     using Omnipaste.MasterEventList.IncomingCallEventList;
 
     [TestFixture]

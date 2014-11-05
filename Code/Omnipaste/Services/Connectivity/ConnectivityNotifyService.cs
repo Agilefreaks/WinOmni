@@ -11,8 +11,6 @@
 
         private readonly IConnectivityHelper _connectivityHelper;
 
-        private readonly TimeSpan _defaultCheckInterval = TimeSpan.FromSeconds(5);
-
         private readonly IObservable<bool> _stateChangedObservable;
 
         private readonly ReplaySubject<bool> _subject;
@@ -23,12 +21,17 @@
 
         #region Constructors and Destructors
 
-        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper, TimeSpan? checkInterval = null)
+        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper)
+            : this(connectivityHelper, TimeSpan.FromSeconds(5))
+        {
+        }
+
+        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper, TimeSpan checkInterval)
         {
             _connectivityHelper = connectivityHelper;
             _subject = new ReplaySubject<bool>(0);
             _stateChangedObservable =
-                Observable.Timer(TimeSpan.Zero, checkInterval ?? _defaultCheckInterval)
+                Observable.Timer(TimeSpan.Zero, checkInterval)
                     .Select(_ => CurrentlyConnected)
                     .DistinctUntilChanged()
                     .Skip(1);

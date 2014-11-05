@@ -85,6 +85,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionManager.cs" />
+    <Compile Include="IConnectionManager.cs" />
     <Compile Include="IOmniService.cs" />
     <Compile Include="OmniModule.cs" />
     <Compile Include="OmniService.cs" />

@@ -10,8 +10,8 @@
     {
         #region Constructors and Destructors
 
-        public PhoneNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
-            : base(omniServiceWrapper, eventsWrapper)
+        public PhoneNotificationViewModel(IConnectionManagerWrapper connectionManagerWrapper, IEventsWrapper eventsWrapper)
+            : base(connectionManagerWrapper, eventsWrapper)
         {
         }
 

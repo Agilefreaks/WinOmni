@@ -7,7 +7,5 @@
         Reconnecting,
 
         Started,
-
-        Stopping
     }
 }

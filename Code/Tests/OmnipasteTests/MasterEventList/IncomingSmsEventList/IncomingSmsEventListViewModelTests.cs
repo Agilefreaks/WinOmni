@@ -9,11 +9,10 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
-    using Ninject.MockingKernel;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Event;
-    using Omnipaste.Framework;
     using Omnipaste.MasterEventList.IncomingSmsEventList;
 
     [TestFixture]

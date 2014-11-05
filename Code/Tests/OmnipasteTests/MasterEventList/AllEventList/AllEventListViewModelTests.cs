@@ -9,8 +9,8 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste;
-    using Omnipaste.Framework;
     using Omnipaste.MasterEventList.AllEventList;
     using System.Reactive;
 

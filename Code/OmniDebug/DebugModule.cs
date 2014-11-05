@@ -41,8 +41,8 @@
 
             Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactoryWrapper>().InSingletonScope();
 
-            Kernel.Bind<IOmniServiceWrapper>().To<OmniServiceWrapper>().InSingletonScope();
-            Kernel.Bind<IOmniService>().ToMethod(context => context.Kernel.Get<IOmniServiceWrapper>());
+            Kernel.Bind<IConnectionManagerWrapper>().To<ConnectionManagerWrapper>();
+            Kernel.Bind<IConnectionManager>().ToMethod(context => context.Kernel.Get<IConnectionManagerWrapper>());
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
@@ -62,7 +62,7 @@
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
         {
-            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(IEvents), typeof(IClippings) };
+            return new[] { typeof(IWebsocketConnectionFactory), typeof(IConnectionManager), typeof(IEvents), typeof(IClippings) };
         }
 
         protected override void RemoveExistingBindings()

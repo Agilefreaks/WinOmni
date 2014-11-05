@@ -14,6 +14,7 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Connectivity;
+    using Omnipaste.Services.SystemService;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
@@ -51,7 +52,7 @@
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
                            typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
-                           typeof(WebProxyFactory)
+                           typeof(WebProxyFactory), typeof(SystemPowerHelper)
                        };
         }
     }

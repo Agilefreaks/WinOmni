@@ -12,8 +12,8 @@
     using Clipboard.Handlers;
     using Events.Handlers;
     using Ninject;
+    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel

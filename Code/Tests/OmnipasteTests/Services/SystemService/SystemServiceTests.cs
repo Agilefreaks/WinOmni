@@ -1,16 +1,13 @@
 ﻿namespace OmnipasteTests.Services.SystemService
 {
     using System;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Threading;
-    using System.Windows.Threading;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Microsoft.Win32;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Services.SystemService;
     using System.Reactive;
 
