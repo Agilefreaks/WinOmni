@@ -6,6 +6,8 @@
     {
         private static IScheduler _dispatcher;
 
+        private static IScheduler _defaultScheduler;
+
         public static IScheduler Dispatcher
         {
             get
@@ -15,6 +17,18 @@
             set
             {
                 _dispatcher = value;
+            }
+        }
+
+        public static IScheduler Default
+        {
+            get
+            {
+                return _defaultScheduler ?? Scheduler.Default;
+            }
+            set
+            {
+                _defaultScheduler = value;
             }
         }
     }

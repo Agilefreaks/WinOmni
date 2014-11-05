@@ -5,7 +5,7 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Ninject;
+    using Microsoft.Win32;
     using Omni;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
@@ -28,8 +28,6 @@
 
         private IDisposable _omniServiceStatusObserver;
 
-        private ISystemService _systemService;
-
         private ConnectionStateEnum _state;
 
         private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
@@ -41,12 +39,14 @@
 
         public ConnectionViewModel(
             IOmniService omniService,
+            ISystemService systemService,
             IConnectivityNotifyService connectivityNotifyService)
         {
             _connectivityNotifyService = connectivityNotifyService;
             connectivityNotifyService.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .SubscribeAndHandleErrors(OnConnectivityChanged);
+            systemService.PowerModesObservable.SubscribeAndHandleErrors(HandleNewPowerMode);
             OmniService = omniService;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
                             {
@@ -143,33 +143,6 @@
             }
         }
 
-        [Inject]
-        public ISystemService SystemService
-        {
-            get
-            {
-                return _systemService;
-            }
-            set
-            {
-                if (Equals(value, _systemService))
-                {
-                    return;
-                }
-
-                if (_systemService != null)
-                {
-                    _systemService.Resumed -= SystemResumed;
-                    _systemService.Suspended -= SystemSuspended;
-                }
-
-                _systemService = value;
-                _systemService.Resumed += SystemResumed;
-                _systemService.Suspended += SystemSuspended;
-                NotifyOfPropertyChange(() => SystemService);
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
@@ -220,15 +193,31 @@
             }
         }
 
-        private void SystemResumed(object sender, EventArgs e)
+        private void HandleNewPowerMode(PowerModes systemPowerMode)
         {
-            if (ConnectivityNotifyService.CurrentlyConnected)
+            switch (systemPowerMode)
             {
+                case PowerModes.Resume:
+                    SystemResumed();
+                    break;
+                case PowerModes.Suspend:
+                    SystemSuspended();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void SystemResumed()
+        {
+            if (_connectivityNotifyService.CurrentlyConnected)
+            {
+                this.LogToFile("System has internet connectivity");
                 Connect();
             }
         }
 
-        private void SystemSuspended(object sender, EventArgs e)
+        private void SystemSuspended()
         {
             Disconnect();
         }

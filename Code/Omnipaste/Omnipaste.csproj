@@ -248,6 +248,8 @@
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
+    <Compile Include="Services\SystemService\ISystemPowerHelper.cs" />
+    <Compile Include="Services\SystemService\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

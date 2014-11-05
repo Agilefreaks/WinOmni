@@ -1,15 +1,46 @@
 ﻿namespace Omnipaste.Services.SystemService
 {
     using System;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using Microsoft.Win32;
+    using OmniCommon.ExtensionMethods;
+    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Framework;
 
     public class SystemService : ISystemService
     {
-        #region Public Events
+        private readonly ISystemPowerHelper _systemPowerHelper;
 
-        public event EventHandler<EventArgs> Resumed;
-        
-        public event EventHandler<EventArgs> Suspended;
+        #region Fields
+
+        private readonly ReplaySubject<PowerModes> _powerModesSubject;
+
+        private IDisposable _eventsThreadObserver;
+
+        private IDisposable _powerModeChangedObserver;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public SystemService(ISystemPowerHelper systemPowerHelper)
+        {
+            _systemPowerHelper = systemPowerHelper;
+            _powerModesSubject = new ReplaySubject<PowerModes>(0);
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public IObservable<PowerModes> PowerModesObservable
+        {
+            get
+            {
+                return _powerModesSubject;
+            }
+        }
 
         #endregion
 
@@ -17,28 +48,46 @@
 
         public void Start()
         {
-            SystemEvents.PowerModeChanged += PowerModeChanged;
+            DisposeObservers();
+            _powerModeChangedObserver =
+                _systemPowerHelper.PowerModeChangedObservable.Select(eventArgs => eventArgs.Mode)
+                    .Where(mode => mode == PowerModes.Resume || mode == PowerModes.Suspend)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .Subscribe(_powerModesSubject);
+            _eventsThreadObserver =
+                _systemPowerHelper.EventsThreadShutdownObservable.SubscribeOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(_ => DisposeObservers());
         }
 
         public void Stop()
         {
-            SystemEvents.PowerModeChanged -= PowerModeChanged;
+            DisposeObservers();
         }
 
         #endregion
 
         #region Methods
 
-        private void PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        private void DisposeObservers()
         {
-            if (e.Mode == PowerModes.Resume)
-            {
-                Resumed(this, new EventArgs());
-            }
+            DisposeEventsThreadObserver();
+            DisposePowerModeChangedObserver();
+        }
 
-            if (e.Mode == PowerModes.Suspend)
+        private void DisposeEventsThreadObserver()
+        {
+            if (_eventsThreadObserver != null)
             {
-                Suspended(this, new EventArgs());
+                _eventsThreadObserver.Dispose();
+            }
+        }
+
+        private void DisposePowerModeChangedObserver()
+        {
+            if (_powerModeChangedObserver != null)
+            {
+                _powerModeChangedObserver.Dispose();
             }
         }
 
