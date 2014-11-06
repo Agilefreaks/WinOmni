@@ -7,6 +7,6 @@
     {
         bool CurrentlyConnected { get; }
 
-        IObservable<bool> ConnectivityChangedObservable { get; }
+        IObservable<InternetConnectivityStatusEnum> ConnectivityChangedObservable { get; }
     }
 }

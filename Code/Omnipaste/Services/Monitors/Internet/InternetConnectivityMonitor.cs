@@ -13,7 +13,7 @@
 
         private readonly IObservable<bool> _stateChangedObservable;
 
-        private readonly ReplaySubject<bool> _subject;
+        private readonly ReplaySubject<InternetConnectivityStatusEnum> _subject;
 
         private IDisposable _stateChangedObserver;
 
@@ -29,7 +29,7 @@
         public InternetConnectivityMonitor(IConnectivityHelper connectivityHelper, TimeSpan checkInterval)
         {
             _connectivityHelper = connectivityHelper;
-            _subject = new ReplaySubject<bool>(0);
+            _subject = new ReplaySubject<InternetConnectivityStatusEnum>(0);
             _stateChangedObservable =
                 Observable.Timer(TimeSpan.Zero, checkInterval)
                     .Select(_ => CurrentlyConnected)
@@ -41,7 +41,7 @@
 
         #region Public Properties
 
-        public IObservable<bool> ConnectivityChangedObservable
+        public IObservable<InternetConnectivityStatusEnum> ConnectivityChangedObservable
         {
             get
             {
@@ -65,7 +65,12 @@
         {
             DisposeStateChangedObserver();
             _stateChangedObserver =
-                _stateChangedObservable.SubscribeOn(Scheduler.Default).ObserveOn(Scheduler.Default).Subscribe(_subject);
+                _stateChangedObservable.Select(
+                    isConnected =>
+                    isConnected ? InternetConnectivityStatusEnum.Connected : InternetConnectivityStatusEnum.Disconnected)
+                    .SubscribeOn(Scheduler.Default)
+                    .ObserveOn(Scheduler.Default)
+                    .Subscribe(_subject);
         }
 
         public void Stop()

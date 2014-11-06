@@ -57,15 +57,16 @@
             _eventObservers.ForEach(observer => observer.Dispose());
         }
 
-        private void OnInternetConnectivityChanged(bool haveInternetConnectivity)
+        private void OnInternetConnectivityChanged(InternetConnectivityStatusEnum newState)
         {
-            if (haveInternetConnectivity)
+            switch (newState)
             {
-                _omniService.Start();
-            }
-            else
-            {
-                _omniService.Stop();
+                case InternetConnectivityStatusEnum.Connected:
+                    _omniService.Start();
+                    break;
+                case InternetConnectivityStatusEnum.Disconnected:
+                    _omniService.Stop();
+                    break;
             }
         }
 
