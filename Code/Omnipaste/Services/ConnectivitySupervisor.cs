@@ -109,11 +109,8 @@
         {
             switch (newState)
             {
-                case InternetConnectivityStatusEnum.Connected:
-                    OnStateChangeRequired(OmniServiceStatusEnum.Started);
-                    break;
                 case InternetConnectivityStatusEnum.Disconnected:
-                    OnStateChangeRequired(OmniServiceStatusEnum.Stopped);
+                    Reconnect();
                     break;
             }
         }
@@ -123,10 +120,7 @@
             switch (newMode)
             {
                 case PowerModes.Resume:
-                    if (InternetConnectivityMonitor.CurrentlyConnected)
-                    {
-                        OnStateChangeRequired(OmniServiceStatusEnum.Started);
-                    }
+                    Reconnect();
                     break;
                 case PowerModes.Suspend:
                     OnStateChangeRequired(OmniServiceStatusEnum.Stopped);
@@ -136,8 +130,8 @@
 
         private void OnStateChangeRequired(OmniServiceStatusEnum newState)
         {
-            var observable = newState == OmniServiceStatusEnum.Started ? _omniService.Start() : _omniService.Stop();
-            observable.SubscribeAndHandleErrors();
+            (newState == OmniServiceStatusEnum.Started ? _omniService.Start() : _omniService.Stop())
+                .SubscribeAndHandleErrors();
         }
 
         private void OnUserEventReceived(UserEventTypeEnum eventType)
@@ -155,6 +149,8 @@
 
         private void Reconnect()
         {
+            if (_omniService.State != OmniServiceStatusEnum.Started || _omniService.InTransition) return;
+
             StopReconnectProcess();
             _reconnectObserver =
                 _reconnectObservable.SubscribeOn(SchedulerProvider.Default)
@@ -175,10 +171,7 @@
             switch (newState)
             {
                 case WebSocketConnectionStatusEnum.Disconnected:
-                    if (_omniService.State == OmniServiceStatusEnum.Started && !_omniService.InTransition)
-                    {
-                        Reconnect();
-                    }
+                    Reconnect();
                     break;
             }
         }
