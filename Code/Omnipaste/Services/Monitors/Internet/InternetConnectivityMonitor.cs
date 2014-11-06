@@ -1,11 +1,11 @@
-﻿namespace Omnipaste.Services.Connectivity
+﻿namespace Omnipaste.Services.Monitors.Internet
 {
     using System;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
 
-    public class ConnectivityNotifyService : IConnectivityNotifyService
+    public class InternetConnectivityMonitor : IInternetConnectivityMonitor
     {
         #region Fields
 
@@ -21,12 +21,12 @@
 
         #region Constructors and Destructors
 
-        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper)
+        public InternetConnectivityMonitor(IConnectivityHelper connectivityHelper)
             : this(connectivityHelper, TimeSpan.FromSeconds(5))
         {
         }
 
-        public ConnectivityNotifyService(IConnectivityHelper connectivityHelper, TimeSpan checkInterval)
+        public InternetConnectivityMonitor(IConnectivityHelper connectivityHelper, TimeSpan checkInterval)
         {
             _connectivityHelper = connectivityHelper;
             _subject = new ReplaySubject<bool>(0);

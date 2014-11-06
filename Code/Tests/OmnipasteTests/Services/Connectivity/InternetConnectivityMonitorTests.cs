@@ -7,12 +7,12 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Services.Connectivity;
+    using Omnipaste.Services.Monitors.Internet;
 
     [TestFixture]
-    public class ConnectivityNotifyServiceTests
+    public class InternetConnectivityMonitorTests
     {
-        private IConnectivityNotifyService _subject;
+        private IInternetConnectivityMonitor _subject;
 
         private Mock<IConnectivityHelper> _mockConnectivityHelper;
 
@@ -23,7 +23,7 @@
         {
             _mockConnectivityHelper = new Mock<IConnectivityHelper>();
             _checkInterval = TimeSpan.FromMilliseconds(100);
-            _subject = new ConnectivityNotifyService(_mockConnectivityHelper.Object, _checkInterval);
+            _subject = new InternetConnectivityMonitor(_mockConnectivityHelper.Object, _checkInterval);
         }
 
         [Test]

@@ -1,9 +1,9 @@
-﻿namespace Omnipaste.Services.Connectivity
+﻿namespace Omnipaste.Services.Monitors.Internet
 {
     using System;
     using Ninject;
 
-    public interface IConnectivityNotifyService : IStartable
+    public interface IInternetConnectivityMonitor : IStartable
     {
         bool CurrentlyConnected { get; }
 
