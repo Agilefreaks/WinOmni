@@ -15,7 +15,7 @@
     using Omnipaste.Services.Monitors.User;
     using OmniSync;
 
-    public class ConnectionEventSupervisor : IConnectionEventSupervisor
+    public class ConnectivitySupervisor : IConnectivitySupervisor
     {
         #region Fields
 
@@ -23,19 +23,34 @@
 
         private readonly IOmniService _omniService;
 
-        private readonly IObservable<long> _retryObservable;
+        private readonly TimeSpan _reconnectInterval = TimeSpan.FromSeconds(5);
 
         private IDisposable _reconnectObserver;
+
+        private readonly IObservable<Unit> _reconnectObservable;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ConnectionEventSupervisor(IOmniService omniService)
+        public ConnectivitySupervisor(IOmniService omniService)
         {
             _eventObservers = new List<IDisposable>();
             _omniService = omniService;
-            _retryObservable = Observable.Timer(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+            _reconnectObservable =
+                Observable.Timer(_reconnectInterval, SchedulerProvider.Default)
+                    .Select(_ => _omniService.Stop())
+                    .Switch()
+                    .Retry()
+                    .Select(_ => _omniService.Start())
+                    .Switch()
+                    .Retry()
+                    .Select(_ => Observable.Start(StopReconnectProcess))
+                    .Switch();
+            _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
+                .SubscribeOn(SchedulerProvider.Default)
+                .ObserveOn(SchedulerProvider.Default)
+                .SubscribeAndHandleErrors(_ => StopReconnectProcess());
         }
 
         #endregion
@@ -119,6 +134,12 @@
             }
         }
 
+        private void OnStateChangeRequired(OmniServiceStatusEnum newState)
+        {
+            var observable = newState == OmniServiceStatusEnum.Started ? _omniService.Start() : _omniService.Stop();
+            observable.SubscribeAndHandleErrors();
+        }
+
         private void OnUserEventReceived(UserEventTypeEnum eventType)
         {
             switch (eventType)
@@ -132,41 +153,34 @@
             }
         }
 
+        private void Reconnect()
+        {
+            StopReconnectProcess();
+            _reconnectObserver =
+                _reconnectObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors();
+        }
+
+        private void StopReconnectProcess()
+        {
+            if (_reconnectObserver != null)
+            {
+                _reconnectObserver.Dispose();
+            }
+        }
+
         private void WebSocketConnectionChanged(WebSocketConnectionStatusEnum newState)
         {
             switch (newState)
             {
                 case WebSocketConnectionStatusEnum.Disconnected:
-                    if(_omniService.State == OmniServiceStatusEnum.Started && !_omniService.InTransition) Reconnect();
+                    if (_omniService.State == OmniServiceStatusEnum.Started && !_omniService.InTransition)
+                    {
+                        Reconnect();
+                    }
                     break;
             }
-        }
-
-        private void OnStateChangeRequired(OmniServiceStatusEnum newState)
-        {
-            var observable = newState == OmniServiceStatusEnum.Started ? _omniService.Start() : _omniService.Stop();
-            observable.SubscribeAndHandleErrors();
-        }
-
-        private void Reconnect()
-        {
-            StopReconnectProcess();
-            _reconnectObserver = _retryObservable
-                .Select(_ => _omniService.Stop())
-                .Switch()
-                .DefaultIfEmpty(new Unit())
-                .Select(_ => _omniService.Start())
-                .Switch()
-                .Select(_ => Observable.Start(StopReconnectProcess))
-                .Switch()
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Default)
-                .SubscribeAndHandleErrors();
-        }
-
-        private void StopReconnectProcess()
-        {
-            if(_reconnectObserver != null) _reconnectObserver.Dispose();
         }
 
         #endregion

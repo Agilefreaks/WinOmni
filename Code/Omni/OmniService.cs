@@ -116,12 +116,10 @@
             return Devices.Activate(WebsocketConnection.SessionId, deviceIdentifier);
         }
 
-        private IObservable<Unit> FinalizeStateChangeComplete(OmniServiceStatusEnum newState)
+        private void FinalizeStateChangeComplete(OmniServiceStatusEnum newState)
         {
             State = newState;
             Interlocked.Decrement(ref _migrationState);
-
-            return Observable.Return(new Unit());
         }
 
                 public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
@@ -154,37 +152,36 @@
                     .Switch()
                     .Select(device => ActivateDevice(device.Identifier))
                     .Switch()
-                    .Select(_ => StartHandlers())
+                    .Select(_ => Observable.Start(StartHandlers))
                     .Switch()
-                    .Select(_ => StartMonitoringWebSocket())
+                    .Select(_ => Observable.Start(StartMonitoringWebSocket))
                     .Switch()
                     .Take(1, SchedulerProvider.Default);
         }
 
-        private IObservable<Unit> StartHandlers()
+        private void StartHandlers()
         {
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
                 handler.Start(WebsocketConnection);
             }
-
-            return Observable.Return(new Unit());
         }
 
-        private IObservable<Unit> StartMonitoringWebSocket()
+        private void StartMonitoringWebSocket()
         {
             WebSocketMonitor.Stop();
             WebSocketMonitor.Start(WebsocketConnection);
-
-            return Observable.Return(new Unit());
         }
 
         private IObservable<Unit> StopCore()
         {
-            StopHandlers();
-            WebsocketConnection.Disconnect();
-
-            return Observable.Return(new Unit());
+            return Observable.Start(
+                () =>
+                    {
+                        StopHandlers();
+                        WebsocketConnection.Disconnect();
+                    },
+                SchedulerProvider.Default);
         }
 
         private void StopHandlers()
@@ -202,11 +199,13 @@
             {
                 Interlocked.Increment(ref _migrationState);
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
-                result = observable.Select(_ => FinalizeStateChangeComplete(newState)).Switch();
+                result = observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState))).Switch();
             }
             else
             {
-                result = newState != State ? Observable.Empty<Unit>() : Observable.Return(new Unit());
+                result = newState != State
+                             ? Observable.Throw<Unit>(new Exception("Transition in progress"))
+                             : Observable.Return(new Unit());
             }
 
             return result;

@@ -55,7 +55,7 @@
                            typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
-                           typeof(ConnectionEventSupervisor)
+                           typeof(ConnectivitySupervisor)
                        };
         }
     }

@@ -118,7 +118,7 @@
 
             DisplayRootViewFor<ShellViewModel>(viewSettings);
 
-            _kernel.Get<IConnectionEventSupervisor>();
+            _kernel.Get<IConnectivitySupervisor>();
         }
 
         private void SetupApplicationVersionLogging()

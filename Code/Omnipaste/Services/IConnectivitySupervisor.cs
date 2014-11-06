@@ -2,7 +2,7 @@
 {
     using Ninject;
 
-    public interface IConnectionEventSupervisor : IStartable
+    public interface IConnectivitySupervisor : IStartable
     {
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Reactive;
     using OmniCommon.Interfaces;
-    using OmniSync;
 
     public interface IOmniService : IProxyConfigurationObserver
     {

@@ -235,8 +235,8 @@
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
-    <Compile Include="Services\ConnectionEventSupervisor.cs" />
-    <Compile Include="Services\IConnectionEventSupervisor.cs" />
+    <Compile Include="Services\ConnectivitySupervisor.cs" />
+    <Compile Include="Services\IConnectivitySupervisor.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IProxyConfigurationDetector.cs" />

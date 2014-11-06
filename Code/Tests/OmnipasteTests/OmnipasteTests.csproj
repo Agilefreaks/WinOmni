@@ -45,6 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BugFreak.WPF.1.0.1.11\lib\net35-Client\BugFreak.WPF.dll</HintPath>
     </Reference>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BugFreak.WPF.1.0.1.11\lib\net35-Client\BugFreak.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
@@ -121,6 +124,7 @@
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
+    <Compile Include="Services\ConnectivitySupervisorTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfigurationTests.cs" />
