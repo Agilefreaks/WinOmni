@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.SystemService
+﻿namespace Omnipaste.Services.Monitors.Power
 {
     using System;
     using System.Reactive.Linq;

@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.SystemService
+﻿namespace Omnipaste.Services.Monitors.Power
 {
     using System;
     using System.Reactive.Linq;
@@ -7,13 +7,13 @@
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
 
-    public class SystemService : ISystemService
+    public class PowerMonitor : IPowerMonitor
     {
-        private readonly ISystemPowerHelper _systemPowerHelper;
-
         #region Fields
 
         private readonly ReplaySubject<PowerModes> _powerModesSubject;
+
+        private readonly ISystemPowerHelper _systemPowerHelper;
 
         private IDisposable _eventsThreadObserver;
 
@@ -23,7 +23,7 @@
 
         #region Constructors and Destructors
 
-        public SystemService(ISystemPowerHelper systemPowerHelper)
+        public PowerMonitor(ISystemPowerHelper systemPowerHelper)
         {
             _systemPowerHelper = systemPowerHelper;
             _powerModesSubject = new ReplaySubject<PowerModes>(0);
@@ -68,18 +68,18 @@
 
         #region Methods
 
-        private void DisposeObservers()
-        {
-            DisposeEventsThreadObserver();
-            DisposePowerModeChangedObserver();
-        }
-
         private void DisposeEventsThreadObserver()
         {
             if (_eventsThreadObserver != null)
             {
                 _eventsThreadObserver.Dispose();
             }
+        }
+
+        private void DisposeObservers()
+        {
+            DisposeEventsThreadObserver();
+            DisposePowerModeChangedObserver();
         }
 
         private void DisposePowerModeChangedObserver()

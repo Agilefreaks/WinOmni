@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Services.Connectivity
+﻿namespace OmnipasteTests.Services.Monitors.Internet
 {
     using System;
     using System.Reactive.Concurrency;

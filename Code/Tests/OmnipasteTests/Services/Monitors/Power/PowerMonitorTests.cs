@@ -1,6 +1,7 @@
-﻿namespace OmnipasteTests.Services.SystemService
+﻿namespace OmnipasteTests.Services.Monitors.Power
 {
     using System;
+    using System.Reactive;
     using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -8,13 +9,12 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.SystemService;
-    using System.Reactive;
+    using Omnipaste.Services.Monitors.Power;
 
     [TestFixture]
-    public class SystemServiceTests
+    public class PowerMonitorTests
     {
-        private SystemService _subject;
+        private PowerMonitor _subject;
 
         private Mock<ISystemPowerHelper> _mockSystemPowerHelper;
 
@@ -22,7 +22,7 @@
         public void Setup()
         {
             _mockSystemPowerHelper = new Mock<ISystemPowerHelper>();
-            _subject = new SystemService(_mockSystemPowerHelper.Object);
+            _subject = new PowerMonitor(_mockSystemPowerHelper.Object);
             _mockSystemPowerHelper.Setup(x => x.EventsThreadShutdownObservable).Returns(Observable.Never<EventArgs>());
         }
 

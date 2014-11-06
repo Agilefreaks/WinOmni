@@ -14,7 +14,7 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
-    using Omnipaste.Services.SystemService;
+    using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
