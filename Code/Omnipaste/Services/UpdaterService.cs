@@ -220,9 +220,7 @@
                         .Select(_ => DownloadUpdates())
                         .Switch()
                         .ObserveOn(SchedulerProvider.Dispatcher)
-                        .SubscribeAndHandleErrors(
-                            _ => InstallNewVersionWhenIdle(_systemIdleThreshold),
-                            ReportingService.Instance.BeginReport);
+                        .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
         }
 
