@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reactive;
-    using System.Reactive.Concurrency;
     using System.Reactive.Subjects;
     using System.Threading;
     using FluentAssertions;
@@ -44,8 +43,9 @@
         }
 
         [Test]
-        public void ConnectWhenSessionIdIsNotNullCallsNextWithTheRegistration()
+        public void ConnectWhenCanOpenChannelAndSessionIdIsNotNullCallsNextWithTheRegistration()
         {
+            _mockChannel.Setup(x => x.Open()).Callback(() => { });
             _mockMonitor.SetupGet(m => m.SessionId).Returns("42");
 
             _subject.Connect().Subscribe(_testObserver);
@@ -55,23 +55,11 @@
         }
 
         [Test]
-        public void OnWebsocketError_TheConnectionObservableReturnsDisconnected()
-        {
-            WebsocketConnectionStatusEnum? messageReceived = null;
-
-            _subject.Subscribe<WebsocketConnectionStatusEnum>(
-                x => messageReceived = x, e => {});
-            _mockMonitor.Raise(m => m.ConnectionError += null, new WampConnectionErrorEventArgs(new Exception()));
-
-            messageReceived.Should().Be(WebsocketConnectionStatusEnum.Disconnected);
-        }
-
-        [Test]
         public void SubscribeOmniMessageObserver_ConnectWasNeverCalled_DoesNotThrowException()
         {	
             var connection = new WebsocketConnection(_mockChannel.Object);
 
-            connection.Subscribe<OmniMessage>(x => {}, e => { });
+            connection.Subscribe(x => {}, e => { });
         }        
         
         [Test]
@@ -81,7 +69,7 @@
             var messageToSimulate = new OmniMessage();
             var replaySubject = new ReplaySubject<OmniMessage>();
             var autoResetEvent = new AutoResetEvent(false);
-            _subject.Subscribe<OmniMessage>(
+            _subject.Subscribe(
                 x =>
                     {
                         receivedMessage = x;

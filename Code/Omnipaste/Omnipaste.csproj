@@ -249,8 +249,12 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
+    <Compile Include="Services\Monitors\Internet\InternetConnectivityStatusEnum.cs" />
     <Compile Include="Services\Monitors\Power\IPowerMonitor.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitor.cs" />
+    <Compile Include="Services\Monitors\User\IUserMonitor.cs" />
+    <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
+    <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />

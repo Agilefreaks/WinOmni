@@ -3,7 +3,7 @@
     using Omni;
     using OmniCommon.Models;
 
-    public class ConnectionManagerWrapper : ConnectionManager, IConnectionManagerWrapper
+    public class OmniServiceWrapper : OmniService, IOmniServiceWrapper
     {
         public void SimulateMessage(OmniMessage omniMessage)
         {

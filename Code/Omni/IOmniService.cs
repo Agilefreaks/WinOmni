@@ -9,9 +9,11 @@
     {
         #region Public Properties
 
-        IObservable<ServiceStatusEnum> StatusChangedObservable { get; }
+        IObservable<OmniServiceStatusEnum> StatusChangedObservable { get; }
 
-        ServiceStatusEnum Status { get; }
+        OmniServiceStatusEnum State { get; }
+
+        bool InTransition { get; }
 
         #endregion
 
@@ -19,11 +21,7 @@
 
         IObservable<Unit> Start();
 
-        void StartWithDefaultObserver();
-
         IObservable<Unit> Stop();
-
-        void StopWithDefaultObserver();
 
         #endregion
     }

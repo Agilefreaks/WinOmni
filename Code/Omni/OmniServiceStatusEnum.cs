@@ -2,9 +2,7 @@
 {
     public enum OmniServiceStatusEnum
     {
-        Online,
-        Offline,
-        Sending,
-        Receiving
+        Started,
+        Stopped
     }
 }

@@ -10,8 +10,8 @@
     {
         #region Constructors and Destructors
 
-        public SMSNotificationViewModel(IConnectionManagerWrapper connectionManagerWrapper, IEventsWrapper eventsWrapper)
-            : base(connectionManagerWrapper, eventsWrapper)
+        public SMSNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
+            : base(omniServiceWrapper, eventsWrapper)
         {
         }
 

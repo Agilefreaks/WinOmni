@@ -2,12 +2,15 @@
 {
     using System;
     using OmniCommon.Models;
+    using WampSharp.Auxiliary.Client;
 
-    public interface IWebsocketConnection : IObservable<WebsocketConnectionStatusEnum>, IObservable<OmniMessage>
+    public interface IWebsocketConnection : IObservable<OmniMessage>
     {
         #region Public Properties
 
-        IObservable<WebsocketConnectionStatusEnum> ConnectionObservable { get; }
+        IWampClientConnectionMonitor Monitor { get; }
+
+        string SessionId { get; }
 
         #endregion
 

@@ -14,7 +14,7 @@
 
         private readonly IEventsWrapper _eventsWrapper;
 
-        private readonly IConnectionManagerWrapper _connectionManagerWrapper;
+        private readonly IOmniServiceWrapper _omniServiceWrapper;
 
         private string _notificationContent;
 
@@ -30,9 +30,9 @@
 
         #region Constructors and Destructors
 
-        protected NotificationPanelBase(IConnectionManagerWrapper connectionManagerWrapper, IEventsWrapper eventsWrapper)
+        protected NotificationPanelBase(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
         {
-            _connectionManagerWrapper = connectionManagerWrapper;
+            _omniServiceWrapper = omniServiceWrapper;
             _eventsWrapper = eventsWrapper;
             _actionNames = new Dictionary<EventTypeEnum, string> {
                                    {
@@ -143,7 +143,7 @@
                         Type = NotificationType,
                         PhoneNumber = NotificationPhoneNumber
                     });
-            _connectionManagerWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }
 
         #endregion

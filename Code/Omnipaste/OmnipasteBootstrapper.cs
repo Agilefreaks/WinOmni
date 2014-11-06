@@ -18,6 +18,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniDebug;
+    using Omnipaste.Services;
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
@@ -116,6 +117,8 @@
             SetupApplicationVersionLogging();
 
             DisplayRootViewFor<ShellViewModel>(viewSettings);
+
+            _kernel.Get<IConnectionEventSupervisor>();
         }
 
         private void SetupApplicationVersionLogging()

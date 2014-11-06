@@ -14,7 +14,7 @@
 
         private readonly IClippingsWrapper _clippingsWrapper;
 
-        private readonly IConnectionManagerWrapper _connectionManagerWrapper;
+        private readonly IOmniServiceWrapper _omniServiceWrapper;
 
         private string _clippingContent;
 
@@ -24,9 +24,9 @@
 
         #region Constructors and Destructors
 
-        public IncomingClippingViewModel(IConnectionManagerWrapper connectionManagerWrapper, IClippingsWrapper clippingsWrapper)
+        public IncomingClippingViewModel(IOmniServiceWrapper omniServiceWrapper, IClippingsWrapper clippingsWrapper)
         {
-            _connectionManagerWrapper = connectionManagerWrapper;
+            _omniServiceWrapper = omniServiceWrapper;
             _clippingsWrapper = clippingsWrapper;
         }
 
@@ -83,7 +83,7 @@
         public void SimulateIncomingClipping()
         {
             _clippingsWrapper.MockLast(new Clipping { Content = ClippingContent, Type = ClippingType });
-            _connectionManagerWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Clipboard));
         }
 
         #endregion

@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebsocketConnectionTests.cs" />
+    <Compile Include="WebSocketMonitorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">

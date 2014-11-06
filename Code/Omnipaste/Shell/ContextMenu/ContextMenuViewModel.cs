@@ -8,27 +8,33 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Behaviours;
-    using OmniSync;
+    using Omnipaste.Services.Monitors.User;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
         #region Fields
 
-        private readonly IOmniService _omniService;
+        private readonly IUserMonitor _userMonitor;
 
         private BalloonNotificationInfo _balloonInfo;
 
         private string _iconSource;
 
+        private bool _isStopped;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public ContextMenuViewModel(IOmniService omniService)
+        public ContextMenuViewModel(IOmniService omniService, IUserMonitor userMonitor)
         {
-            _omniService = omniService;
-            _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                status => { IconSource = status == ServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico"; });
+            _userMonitor = userMonitor;
+            omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+                status =>
+                    {
+                        IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico";
+                        IsStopped = status == OmniServiceStatusEnum.Stopped;
+                    });
 
             IconSource = "/Disconnected.ico";
         }
@@ -86,7 +92,18 @@
             }
         }
 
-        public bool IsStopped { get; set; }
+        public bool IsStopped
+        {
+            get
+            {
+                return _isStopped;
+            }
+            set
+            {
+                _isStopped = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public string TooltipText
         {
@@ -119,14 +136,7 @@
 
         public void ToggleSync()
         {
-            if (IsStopped)
-            {
-                _omniService.StartWithDefaultObserver();
-            }
-            else
-            {
-                _omniService.StopWithDefaultObserver();
-            }
+            _userMonitor.SendEvent(IsStopped ? UserEventTypeEnum.Disconnect : UserEventTypeEnum.Connect);
         }
 
         #endregion

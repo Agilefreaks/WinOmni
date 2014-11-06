@@ -122,8 +122,8 @@
     <Compile Include="Services\EventsWrapper.cs" />
     <Compile Include="Services\IClipboardWrapper.cs" />
     <Compile Include="Services\IEventsWrapper.cs" />
-    <Compile Include="Services\IConnectionManagerWrapper.cs" />
-    <Compile Include="Services\ConnectionManagerWrapper.cs" />
+    <Compile Include="Services\IOmniServiceWrapper.cs" />
+    <Compile Include="Services\OmniServiceWrapper.cs" />
     <Compile Include="Services\ResourceWrapperBase.cs" />
     <Compile Include="WebSocketConnectionFactoryWrapper.cs" />
     <Compile Include="WebsocketConnectionWrapper.cs" />

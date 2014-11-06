@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
-    using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Omni;
@@ -22,17 +21,13 @@
 
         private bool _canPerformAction = true;
 
-        private IOmniService _omniService;
-
-        private IDisposable _omniServiceStatusObserver;
-
         private ConnectionStateEnum _state;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ConnectionViewModel(IUserMonitor userMonitor)
+        public ConnectionViewModel(IUserMonitor userMonitor, IOmniService omniService)
         {
             _userMonitor = userMonitor;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
@@ -45,6 +40,12 @@
                              { ConnectionStateEnum.Connected, Resources.DisconnectIcon },
                              { ConnectionStateEnum.Disconnected, Resources.ConnectIcon }
                          };
+            omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+                newStatus =>
+                State =
+                newStatus == OmniServiceStatusEnum.Started
+                    ? ConnectionStateEnum.Connected
+                    : ConnectionStateEnum.Disconnected);
         }
 
         #endregion
@@ -87,27 +88,6 @@
             get
             {
                 return State == ConnectionStateEnum.Connected;
-            }
-        }
-
-        public IOmniService OmniService
-        {
-            get
-            {
-                return _omniService;
-            }
-            set
-            {
-                if (_omniServiceStatusObserver != null)
-                {
-                    _omniServiceStatusObserver.Dispose();
-                }
-
-                _omniService = value;
-
-                _omniServiceStatusObserver =
-                    _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                        isOn => State = isOn ? ConnectionStateEnum.Connected : ConnectionStateEnum.Disconnected);
             }
         }
 
