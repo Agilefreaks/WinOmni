@@ -31,9 +31,9 @@
 
         private readonly ReplaySubject<OmniServiceStatusEnum> _statusChangedSubject;
 
-        private OmniServiceStatusEnum _state;
-
         private int _migrationState;
+
+        private OmniServiceStatusEnum _state;
 
         #endregion
 
@@ -55,6 +55,17 @@
         [Inject]
         public IDevices Devices { get; set; }
 
+        public bool InTransition
+        {
+            get
+            {
+                return _migrationState != NoSwitchInProgress;
+            }
+        }
+
+        [Inject]
+        public IKernel Kernel { get; set; }
+
         public OmniServiceStatusEnum State
         {
             get
@@ -67,9 +78,6 @@
                 _statusChangedSubject.OnNext(value);
             }
         }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
 
         public IObservable<OmniServiceStatusEnum> StatusChangedObservable
         {
@@ -84,14 +92,6 @@
 
         [Inject]
         public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
-
-        public bool InTransition
-        {
-            get
-            {
-                return _migrationState != NoSwitchInProgress;
-            }
-        }
 
         #endregion
 
@@ -119,7 +119,19 @@
         private void FinalizeStateChangeComplete(OmniServiceStatusEnum newState)
         {
             State = newState;
-            Interlocked.Decrement(ref _migrationState);
+            ReleaseApplicationStateLock();
+        }
+
+        private void LockApplicationState()
+        {
+            Interlocked.Increment(ref _migrationState);
+        }
+
+        private IObservable<Unit> OnStateTransitionException(Exception exception)
+        {
+            ReleaseApplicationStateLock();
+
+            return Observable.Throw<Unit>(exception);
         }
 
                 public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
@@ -144,6 +156,11 @@
             return Devices.Create(deviceIdentifier, machineName);
         }
 
+        private void ReleaseApplicationStateLock()
+        {
+            Interlocked.Decrement(ref _migrationState);
+        }
+
         private IObservable<Unit> StartCore()
         {
             return
@@ -155,8 +172,7 @@
                     .Select(_ => Observable.Start(StartHandlers))
                     .Switch()
                     .Select(_ => Observable.Start(StartMonitoringWebSocket))
-                    .Switch()
-                    .Take(1, SchedulerProvider.Default);
+                    .Switch();
         }
 
         private void StartHandlers()
@@ -197,9 +213,12 @@
             IObservable<Unit> result;
             if (_migrationState == NoSwitchInProgress)
             {
-                Interlocked.Increment(ref _migrationState);
+                LockApplicationState();
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
-                result = observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState))).Switch();
+                result =
+                    observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState)))
+                        .Switch()
+                        .Catch<Unit, Exception>(OnStateTransitionException);
             }
             else
             {
