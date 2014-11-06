@@ -14,7 +14,6 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
-    using WampSharp.Auxiliary.Client;
 
     [TestFixture]
     public class OmniServiceTests

@@ -252,6 +252,8 @@
     <Compile Include="Services\Monitors\Internet\InternetConnectivityStatusEnum.cs" />
     <Compile Include="Services\Monitors\Power\IPowerMonitor.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitor.cs" />
+    <Compile Include="Services\Monitors\ProxyConfiguration\IProxyConfigurationMonitor.cs" />
+    <Compile Include="Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitor.cs" />
     <Compile Include="Services\Monitors\User\IUserMonitor.cs" />
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />

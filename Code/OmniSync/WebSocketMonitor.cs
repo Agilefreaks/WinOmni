@@ -3,7 +3,8 @@
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using WampSharp.Auxiliary.Client;
+    using WampSharp.Core.Listener;
+    using WampSharp.V1.Auxiliary.Client;
 
     public class WebSocketMonitor : IWebSocketMonitor
     {

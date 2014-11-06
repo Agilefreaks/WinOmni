@@ -8,10 +8,12 @@
     using Microsoft.Win32;
     using Ninject;
     using Omni;
+    using OmniCommon;
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
+    using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
     using OmniSync;
 
@@ -69,6 +71,9 @@
         [Inject]
         public IWebSocketMonitor WebSocketMonitor { get; set; }
 
+        [Inject]
+        public IProxyConfigurationMonitor ProxyConfigurationMonitor { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -94,6 +99,11 @@
                 WebSocketMonitor.ConnectionObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(WebSocketConnectionChanged));
+
+            _eventObservers.Add(
+                ProxyConfigurationMonitor.ProxyConfigurationObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(OnProxyConfigurationChanged));
         }
 
         public void Stop()
@@ -126,6 +136,11 @@
                     OnStateChangeRequired(OmniServiceStatusEnum.Stopped);
                     break;
             }
+        }
+
+        private void OnProxyConfigurationChanged(ProxyConfiguration newProxyConfiguration)
+        {
+            Reconnect();
         }
 
         private void OnStateChangeRequired(OmniServiceStatusEnum newState)

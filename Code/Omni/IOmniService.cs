@@ -2,9 +2,8 @@
 {
     using System;
     using System.Reactive;
-    using OmniCommon.Interfaces;
 
-    public interface IOmniService : IProxyConfigurationObserver
+    public interface IOmniService
     {
         #region Public Properties
 

@@ -2,7 +2,7 @@
 {
     using System;
     using OmniCommon.Models;
-    using WampSharp.Auxiliary.Client;
+    using WampSharp.V1.Auxiliary.Client;
 
     public interface IWebsocketConnection : IObservable<OmniMessage>
     {

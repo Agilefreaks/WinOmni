@@ -4,10 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using OmniCommon;
     using System.Threading;
     using BugFreak;
     using Ninject;
@@ -134,12 +132,6 @@
             return Observable.Throw<Unit>(exception);
         }
 
-                public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
-        {
-            RestartIfStarted();
-        }
-
-        
         private IObservable<string> OpenWebsocketConnection()
         {
             WebsocketConnection = WebsocketConnectionFactory.Create();
@@ -169,9 +161,9 @@
                     .Switch()
                     .Select(device => ActivateDevice(device.Identifier))
                     .Switch()
-                    .Select(_ => Observable.Start(StartHandlers))
+                    .Select(_ => Observable.Start(StartHandlers, SchedulerProvider.Default))
                     .Switch()
-                    .Select(_ => Observable.Start(StartMonitoringWebSocket))
+                    .Select(_ => Observable.Start(StartMonitoringWebSocket, SchedulerProvider.Default))
                     .Switch();
         }
 
@@ -216,15 +208,15 @@
                 LockApplicationState();
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
                 result =
-                    observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState)))
+                    observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState), SchedulerProvider.Default))
                         .Switch()
                         .Catch<Unit, Exception>(OnStateTransitionException);
             }
             else
             {
                 result = newState != State
-                             ? Observable.Throw<Unit>(new Exception("Transition in progress"))
-                             : Observable.Return(new Unit());
+                             ? Observable.Throw<Unit>(new Exception("Transition in progress"), SchedulerProvider.Default)
+                             : Observable.Return(new Unit(), SchedulerProvider.Default);
             }
 
             return result;

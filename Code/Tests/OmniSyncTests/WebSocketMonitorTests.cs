@@ -5,7 +5,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniSync;
-    using WampSharp.Auxiliary.Client;
+    using WampSharp.Core.Listener;
+    using WampSharp.V1.Auxiliary.Client;
 
     [TestFixture]
     public class WebSocketMonitorTests

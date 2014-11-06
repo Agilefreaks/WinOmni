@@ -13,6 +13,7 @@
     using Omnipaste.Services;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
+    using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
     using OmniSync;
 
@@ -33,6 +34,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<IProxyConfigurationMonitor> _mockProxyConfigurationMonitor;
+
         [SetUp]
         public void Setup()
         {
@@ -44,12 +47,14 @@
             _mockUserMonitor = new Mock<IUserMonitor> { DefaultValue = DefaultValue.Mock };
             _mockPowerMonitor = new Mock<IPowerMonitor> { DefaultValue = DefaultValue.Mock };
             _mockInternetConnectivityMonitor = new Mock<IInternetConnectivityMonitor> { DefaultValue = DefaultValue.Mock };
+            _mockProxyConfigurationMonitor = new Mock<IProxyConfigurationMonitor> { DefaultValue = DefaultValue.Mock };
 
             _mockingKernel.Bind<IOmniService>().ToConstant(_mockOmniService.Object);
             _mockingKernel.Bind<IWebSocketMonitor>().ToConstant(_mockWebSocketMonitor.Object);
             _mockingKernel.Bind<IUserMonitor>().ToConstant(_mockUserMonitor.Object);
             _mockingKernel.Bind<IPowerMonitor>().ToConstant(_mockPowerMonitor.Object);
             _mockingKernel.Bind<IInternetConnectivityMonitor>().ToConstant(_mockInternetConnectivityMonitor.Object);
+            _mockingKernel.Bind<IProxyConfigurationMonitor>().ToConstant(_mockProxyConfigurationMonitor.Object);
 
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
