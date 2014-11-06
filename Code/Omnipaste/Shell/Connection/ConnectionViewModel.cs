@@ -2,18 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Reactive.Concurrency;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Microsoft.Win32;
     using Omni;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Properties;
-    using Omnipaste.Services.Connectivity;
-    using Omnipaste.Services.SystemService;
-    using OmniSync;
+    using Omnipaste.Services.Monitors.User;
     using OmniUI.Attributes;
 
     [UseView("OmniUI.HeaderButton.HeaderButtonView", IsFullyQualifiedName = true)]
@@ -21,11 +14,11 @@
     {
         #region Fields
 
-        private readonly IConnectivityNotifyService _connectivityNotifyService;
-
         private readonly Dictionary<ConnectionStateEnum, string> _icons;
 
         private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
+
+        private readonly IUserMonitor _userMonitor;
 
         private bool _canPerformAction = true;
 
@@ -39,17 +32,9 @@
 
         #region Constructors and Destructors
 
-        public ConnectionViewModel(
-            IOmniService omniService,
-            ISystemService systemService,
-            IConnectivityNotifyService connectivityNotifyService)
+        public ConnectionViewModel(IUserMonitor userMonitor)
         {
-            _connectivityNotifyService = connectivityNotifyService;
-            connectivityNotifyService.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(OnConnectivityChanged);
-            systemService.PowerModesObservable.SubscribeAndHandleErrors(HandleNewPowerMode);
-            OmniService = omniService;
+            _userMonitor = userMonitor;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
                             {
                                 { ConnectionStateEnum.Connected, Resources.ConnectionDisconnect },
@@ -65,22 +50,6 @@
         #endregion
 
         #region Public Properties
-
-        public ConnectionStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => ButtonToolTip);
-                NotifyOfPropertyChange(() => Icon);
-                NotifyOfPropertyChange(() => IsConnected);
-            }
-        }
 
         public string ButtonToolTip
         {
@@ -138,11 +107,23 @@
 
                 _omniServiceStatusObserver =
                     _omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                        newState =>
-                        State =
-                        newState == ServiceStatusEnum.Started
-                            ? ConnectionStateEnum.Connected
-                            : ConnectionStateEnum.Disconnected);
+                        isOn => State = isOn ? ConnectionStateEnum.Connected : ConnectionStateEnum.Disconnected);
+            }
+        }
+
+        public ConnectionStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ButtonToolTip);
+                NotifyOfPropertyChange(() => Icon);
+                NotifyOfPropertyChange(() => IsConnected);
             }
         }
 
@@ -153,7 +134,9 @@
         public void Connect()
         {
             CanPerformAction = false;
-            OmniService.StartWithDefaultObserver();
+
+            _userMonitor.SendEvent(UserEventTypeEnum.Connect);
+
             CanPerformAction = true;
         }
 
@@ -161,7 +144,7 @@
         {
             CanPerformAction = false;
 
-            OmniService.StopWithDefaultObserver();
+            _userMonitor.SendEvent(UserEventTypeEnum.Disconnect);
 
             CanPerformAction = true;
         }
@@ -176,48 +159,6 @@
             {
                 Connect();
             }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void OnConnectivityChanged(bool currentlyConnected)
-        {
-            if (currentlyConnected)
-            {
-                Connect();
-            }
-            else
-            {
-                Disconnect();
-            }
-        }
-
-        private void HandleNewPowerMode(PowerModes systemPowerMode)
-        {
-            switch (systemPowerMode)
-            {
-                case PowerModes.Resume:
-                    SystemResumed();
-                    break;
-                case PowerModes.Suspend:
-                    SystemSuspended();
-                    break;
-            }
-        }
-
-        private void SystemResumed()
-        {
-            if (_connectivityNotifyService.CurrentlyConnected)
-            {
-                Connect();
-            }
-        }
-
-        private void SystemSuspended()
-        {
-            Disconnect();
         }
 
         #endregion

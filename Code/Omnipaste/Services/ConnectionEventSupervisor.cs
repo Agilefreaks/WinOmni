@@ -11,6 +11,7 @@
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
+    using Omnipaste.Services.Monitors.User;
 
     public class ConnectionEventSupervisor : IConnectionEventSupervisor
     {
@@ -30,6 +31,9 @@
         [Inject]
         public IPowerMonitor PowerMonitor { get; set; }
 
+        [Inject]
+        public IUserMonitor UserMonitor { get; set; }
+
         public void Start()
         {
             _eventObservers.Add(
@@ -41,6 +45,11 @@
                 PowerMonitor.PowerModesObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(OnPowerModeChanged));
+
+            _eventObservers.Add(
+                UserMonitor.UserEventObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(OnUserEventReceived));
         }
 
         public void Stop()
@@ -65,9 +74,25 @@
             switch (newMode)
             {
                 case PowerModes.Resume:
-                    _omniService.Start();
+                    if (InternetConnectivityMonitor.CurrentlyConnected)
+                    {
+                        _omniService.Start();
+                    }
                     break;
                 case PowerModes.Suspend:
+                    _omniService.Stop();
+                    break;
+            }
+        }
+
+        private void OnUserEventReceived(UserEventTypeEnum eventType)
+        {
+            switch (eventType)
+            {
+                case UserEventTypeEnum.Connect:
+                    _omniService.Start();
+                    break;
+                case UserEventTypeEnum.Disconnect:
                     _omniService.Stop();
                     break;
             }
