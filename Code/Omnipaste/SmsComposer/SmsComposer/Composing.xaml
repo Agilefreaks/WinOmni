@@ -22,7 +22,7 @@
                  Style="{StaticResource SpacedTextBoxStyle}"
                  controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelRecepients}" />
 
-        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="1"
+        <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="1" AcceptsReturn="True"
                  Style="{StaticResource SpacedTextBoxStyle}" 
                  controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelMessage}" 
                  controls:TextboxHelper.IsWaitingForData="True"/>
