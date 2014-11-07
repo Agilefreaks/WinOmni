@@ -5,6 +5,10 @@ using Caliburn.Micro;
 
 namespace Omnipaste.Framework
 {
+    using System.Linq;
+    using System.Windows.Controls;
+    using OmniUI.Attributes;
+
     public static class ViewLocator
     {
         public static Func<Type, Type> GetViewTypeFromViewModelType;
@@ -21,7 +25,7 @@ namespace Omnipaste.Framework
                 return viewType;
             };
         }
-        
+
         public static object GetViewForViewModel(object viewModel)
         {
             var viewType = GetViewTypeFromViewModelType(viewModel.GetType());
@@ -51,6 +55,50 @@ namespace Omnipaste.Framework
                 return;
             }
             method.Invoke(element, null);
+        }
+
+        public static UIElement LocateForModelType(Type modelType, DependencyObject displayLocation, object context)
+        {
+            var useViewAttributes =
+                modelType.GetCustomAttributes(typeof(UseViewAttribute), true).Cast<UseViewAttribute>().ToArray();
+
+            string viewTypeName;
+
+            if (useViewAttributes.Count() == 1)
+            {
+                var attribute = useViewAttributes.First();
+                viewTypeName = attribute.IsFullyQualifiedName
+                                   ? attribute.ViewName
+                                   : GetFullyQualifiedViewName(modelType, attribute);
+            }
+            else
+            {
+                viewTypeName = modelType.FullName.Replace("Model", string.Empty);
+            }
+
+            if (context != null)
+            {
+                viewTypeName = viewTypeName.Remove(viewTypeName.Length - 4, 4);
+                viewTypeName = viewTypeName + "." + context;
+            }
+
+            var viewType = (from assembly in AssemblySource.Instance
+                            from type in assembly.GetExportedTypes()
+                            where type.FullName == viewTypeName
+                            select type).FirstOrDefault();
+
+            return viewType == null
+                       ? new TextBlock { Text = string.Format("{0} not found.", viewTypeName) }
+                       : Caliburn.Micro.ViewLocator.GetOrCreateViewType(viewType);
+
+        }
+
+        private static string GetFullyQualifiedViewName(Type modelType, UseViewAttribute attribute)
+        {
+            return string.Concat(
+                (modelType.Namespace ?? string.Empty).Replace("Model", string.Empty),
+                ".",
+                attribute.ViewName);
         }
     }
 }

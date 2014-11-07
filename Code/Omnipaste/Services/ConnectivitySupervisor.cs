@@ -81,6 +81,7 @@
 
         public void Start()
         {
+            Stop();
             _eventObservers.Add(
                 InternetConnectivityMonitor.ConnectivityChangedObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
