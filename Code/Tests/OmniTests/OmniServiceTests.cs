@@ -30,7 +30,7 @@
 
         private Mock<IDevices> _mockDevices;
 
-        private Mock<IConfigurationService> _configurationServiceMock;
+        private Mock<IConfigurationService> _mockConfigurationService;
 
         private Mock<IWebsocketConnection> _mockWebsocketConnection;
 
@@ -49,18 +49,20 @@
             _kernel.Bind<IntPtr>().ToConstant(IntPtr.Zero);
 
             _mockDevices = _kernel.GetMock<IDevices>();
-            _configurationServiceMock = _kernel.GetMock<IConfigurationService>();
+            _mockConfigurationService = _kernel.GetMock<IConfigurationService>();
             _someHandler = _kernel.GetMock<IHandler>();
 
             _kernel.Bind<IHandler>().ToConstant(_someHandler.Object);
 
-            _configurationServiceMock
+            _mockConfigurationService
                 .SetupGet(cs => cs.MachineName)
                 .Returns(DeviceName);
 
-            _configurationServiceMock
+            _mockConfigurationService
                 .SetupGet(cs => cs.DeviceIdentifier)
                 .Returns(DeviceIdentifier);
+
+            _mockConfigurationService.SetupGet(cs => cs.AccessToken).Returns("SomeToken");
 
             _mockWebsocketConnection = _kernel.GetMock<IWebsocketConnection>();
 
@@ -101,6 +103,19 @@
             testableObserver.Messages.Should().HaveCount(2);
             _subject.State.Should().Be(OmniServiceStatusEnum.Started);
             _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once());
+        }
+
+        [Test]
+        public void Start_WhennoAccessTokenIsGiven_ReturnsError()
+        {
+            _mockConfigurationService.SetupGet(x => x.AccessToken).Returns(string.Empty);
+            var testableObserver = _scheduler.CreateObserver<Unit>();
+            
+            _subject.Start().Subscribe(testableObserver);
+            _scheduler.Start();
+
+            testableObserver.Messages.Should().HaveCount(1);
+            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnError);
         }
     }
 }
