@@ -142,12 +142,12 @@
                                              Notification.CreateOnError<Unit>(new Exception("some exception")))),
                                          _testScheduler.CreateColdObservable(
                                              new Recorded<Notification<Unit>>(
-                                             TimeSpan.FromSeconds(6).Ticks,
+                                             100,
                                              Notification.CreateOnNext(new Unit())))
                                      };
             var startObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Unit>>(
-                    TimeSpan.FromSeconds(7).Ticks,
+                    200,
                     Notification.CreateOnNext(new Unit())));
 
             var counter = 0;
