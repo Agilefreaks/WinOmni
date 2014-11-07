@@ -259,6 +259,8 @@
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="SmsComposer\ISMSFactory.cs" />
+    <Compile Include="SmsComposer\SMSFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />

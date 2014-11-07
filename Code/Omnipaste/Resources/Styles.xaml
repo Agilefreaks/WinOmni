@@ -187,4 +187,10 @@
     <Style x:Key="ListItem" TargetType="Grid">
         <Setter Property="Height" Value="62"></Setter>
     </Style>
+    
+    <!--ToggleSwitch-->
+    <Style TargetType="controls:ToggleSwitch" x:Key="SettingsToggleStyle">
+        <Setter Property="Margin" Value="14,0,10.4,5"/>
+        <Setter Property="FontSize"  Value="14"/>
+    </Style>
 </ResourceDictionary>

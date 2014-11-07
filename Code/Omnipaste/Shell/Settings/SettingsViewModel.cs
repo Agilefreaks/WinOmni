@@ -7,10 +7,13 @@
 
     public class SettingsViewModel : FlyoutBaseViewModel, ISettingsViewModel
     {
+        private readonly IConfigurationService _configurationService;
+
         #region Constructors and Destructors
 
-        public SettingsViewModel()
+        public SettingsViewModel(IConfigurationService configurationService)
         {
+            _configurationService = configurationService;
             Position = Position.Right;
         }
 
@@ -23,6 +26,24 @@
 
         [Inject]
         public IApplicationService ApplicationService { get; set; }
+
+        public bool IsSMSSuffixEnabled
+        {
+            get
+            {
+                return _configurationService.IsSMSSuffixEnabled;
+            }
+            set
+            {
+                if (value == _configurationService.IsSMSSuffixEnabled)
+                {
+                    return;
+                }
+
+                _configurationService.IsSMSSuffixEnabled = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         #endregion
 

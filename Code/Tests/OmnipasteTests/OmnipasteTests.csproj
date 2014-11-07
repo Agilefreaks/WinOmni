@@ -145,6 +145,7 @@
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
+    <Compile Include="SmsComposer\SMSFactoryTests.cs" />
     <Compile Include="SmsComposer\SmsMessageTests.cs" />
   </ItemGroup>
   <ItemGroup>
