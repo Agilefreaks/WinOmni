@@ -16,15 +16,15 @@
 
         private readonly IObservable<ClipboardEventArgs> _clippingEventsStream;
 
+        private readonly IWindowHandleProvider _windowHandleProvider;
+
         private IntPtr _clipboardViewerNext;
 
-        private readonly IWindowHandleProvider _windowHandleProvider;
+        private IDisposable _getHandleObserver;
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
             Justification = "Reviewed. Suppression is OK here.")]
         private HwndSource _hWndSource;
-
-        private IDisposable _getHandleObserver;
 
         #endregion
 
@@ -35,7 +35,7 @@
             _windowHandleProvider = windowHandleProvider;
             _clippingEventsStream =
                 Observable.FromEventPattern<ClipboardEventArgs>(x => DataReceived += x, x => DataReceived -= x)
-                    .DistinctUntilChanged(ep => ep.EventArgs.Data) 
+                    .DistinctUntilChanged(ep => ep.EventArgs.Data)
                     .Select(x => x.EventArgs);
         }
 
@@ -55,19 +55,7 @@
 
         #region Public Methods and Operators
 
-        public void SetData(string data)
-        {
-            IDataObject dataObject = new DataObject(DataFormats.Text, data);
-            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 10, 100));
-        }
-
-        public void StartWatchingClipboard()
-        {
-            DisposeGetHandleObserver();
-            _getHandleObserver = _windowHandleProvider.Subscribe(OnHandleObtained, _ => {});
-        }
-
-        public void StopWatchingClipboard()
+        public void Dispose()
         {
             DisposeGetHandleObserver();
             if (IsWatchingClippings)
@@ -80,47 +68,31 @@
             }
         }
 
-        public IDisposable Subscribe(IObserver<ClipboardEventArgs> observer)
+        public void SetData(string data)
         {
-            StartWatchingClipboard();
-
-            return _clippingEventsStream.Subscribe(observer);
+            IDataObject dataObject = new DataObject(DataFormats.Text, data);
+            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 10, 100));
         }
 
-        public void Dispose()
+        public void Start()
         {
-            StopWatchingClipboard();
+            Stop();
+            _getHandleObserver = _windowHandleProvider.Subscribe(OnHandleObtained, _ => { });
+        }
+
+        public void Stop()
+        {
+            Dispose();
+        }
+
+        public IDisposable Subscribe(IObserver<ClipboardEventArgs> observer)
+        {
+            return _clippingEventsStream.Subscribe(observer);
         }
 
         #endregion
 
         #region Methods
-
-        private void OnHandleObtained(IntPtr windowHandle)
-        {
-            DisposeGetHandleObserver();
-            if (windowHandle != IntPtr.Zero && !IsWatchingClippings)
-            {
-                _hWndSource = HwndSource.FromHwnd(windowHandle);
-
-                if (_hWndSource != null)
-                {
-                    _hWndSource.AddHook(HandleClipboardMessage);
-                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
-
-                    IsWatchingClippings = true;
-                }
-            }
-        }
-
-        private void DisposeGetHandleObserver()
-        {
-            if (_getHandleObserver != null)
-            {
-                _getHandleObserver.Dispose();
-                _getHandleObserver = null;
-            }
-        }
 
         private static IDataObject GetClipboardData()
         {
@@ -145,7 +117,7 @@
             string text = null;
 
             var dataObject = GetClipboardData();
-            
+
             if (dataObject != null)
             {
                 if (dataObject.GetDataPresent(DataFormats.UnicodeText))
@@ -162,10 +134,10 @@
             var @event = new AutoResetEvent(false);
             var thread = new Thread(
                 () =>
-                {
-                    action();
-                    @event.Set();
-                });
+                    {
+                        action();
+                        @event.Set();
+                    });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             @event.WaitOne();
@@ -176,6 +148,15 @@
             if (DataReceived != null && !string.IsNullOrWhiteSpace(data))
             {
                 DataReceived(this, new ClipboardEventArgs(data));
+            }
+        }
+
+        private void DisposeGetHandleObserver()
+        {
+            if (_getHandleObserver != null)
+            {
+                _getHandleObserver.Dispose();
+                _getHandleObserver = null;
             }
         }
 
@@ -245,6 +226,23 @@
             //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
 
             return data;
+        }
+
+        private void OnHandleObtained(IntPtr windowHandle)
+        {
+            DisposeGetHandleObserver();
+            if (windowHandle != IntPtr.Zero && !IsWatchingClippings)
+            {
+                _hWndSource = HwndSource.FromHwnd(windowHandle);
+
+                if (_hWndSource != null)
+                {
+                    _hWndSource.AddHook(HandleClipboardMessage);
+                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+
+                    IsWatchingClippings = true;
+                }
+            }
         }
 
         #endregion

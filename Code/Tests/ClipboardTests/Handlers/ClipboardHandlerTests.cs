@@ -65,7 +65,7 @@
 
             _subject.Start(omniMessageObservable);
 
-            _mockOmniClipboardHandler.Verify(m => m.SubscribeTo(omniMessageObservable), Times.Once);
+            _mockOmniClipboardHandler.Verify(m => m.Start(omniMessageObservable), Times.Once);
         }
     }
 }
