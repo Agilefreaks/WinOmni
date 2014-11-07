@@ -5,7 +5,6 @@
     using System.Reactive.Subjects;
     using Microsoft.Win32;
     using OmniCommon.Helpers;
-    using Omnipaste.ExtensionMethods;
 
     public class PowerMonitor : IPowerMonitor
     {
@@ -14,8 +13,6 @@
         private readonly ReplaySubject<PowerModes> _powerModesSubject;
 
         private readonly ISystemPowerHelper _systemPowerHelper;
-
-        private IDisposable _eventsThreadObserver;
 
         private IDisposable _powerModeChangedObserver;
 
@@ -54,9 +51,6 @@
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .Subscribe(_powerModesSubject);
-            _eventsThreadObserver =
-                _systemPowerHelper.EventsThreadShutdownObservable.SubscribeOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(_ => DisposeObservers());
         }
 
         public void Stop()
@@ -68,17 +62,8 @@
 
         #region Methods
 
-        private void DisposeEventsThreadObserver()
-        {
-            if (_eventsThreadObserver != null)
-            {
-                _eventsThreadObserver.Dispose();
-            }
-        }
-
         private void DisposeObservers()
         {
-            DisposeEventsThreadObserver();
             DisposePowerModeChangedObserver();
         }
 

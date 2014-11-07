@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.ExtensionMethods
 {
     using System;
+    using System.Diagnostics;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using BugFreak;
@@ -12,12 +13,21 @@
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable)
         {
-            return observable.Subscribe(_ => { }, exception => ReportingService.Instance.BeginReport(exception));
+            return observable.Subscribe(_ => { },
+                exception =>
+                    {
+                        Debugger.Break();
+                        ReportingService.Instance.BeginReport(exception);
+                    });
         }
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
         {
-            return observable.Subscribe(onNext, exception => ReportingService.Instance.BeginReport(exception));
+            return observable.Subscribe(onNext, exception =>
+                {
+                    Debugger.Break();
+                    ReportingService.Instance.BeginReport(exception);
+                });
         }
 
         public static IObservable<T> RetryAfter<T>(
@@ -39,7 +49,7 @@
             strategy = strategy ?? ExponentialBackoff;
             scheduler = scheduler ?? SchedulerProvider.Default;
 
-            if (retryOnError == null) retryOnError = e => true;            
+            if (retryOnError == null) retryOnError = e => true;
 
             var attempt = 0;
 
