@@ -13,6 +13,8 @@
         [Inject]
         IApplicationService ApplicationService { get; set; }
 
+        bool IsSMSSuffixEnabled { get; set; }
+
         #endregion
 
         #region Public Methods and Operators

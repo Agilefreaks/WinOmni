@@ -16,13 +16,16 @@
 
         private Mock<IApplicationService> _mockApplicationWrapper;
 
+        private Mock<IConfigurationService> _mockConfigurationService;
+
         [SetUp]
         public void SetUp()
         {
             _mockSessionManager = new Mock<ISessionManager>();
             _mockApplicationWrapper = new Mock<IApplicationService>();
 
-            _subject = new SettingsViewModel
+            _mockConfigurationService = new Mock<IConfigurationService>();
+            _subject = new SettingsViewModel(_mockConfigurationService.Object)
                        {
                            SessionManager = _mockSessionManager.Object,
                            ApplicationService = _mockApplicationWrapper.Object
@@ -65,6 +68,24 @@
             _subject.Exit();
 
             _mockApplicationWrapper.Verify(aw => aw.ShutDown(), Times.Once);
+        }
+
+        [Test]
+        public void IsSMSSuffixEnabled_Always_ReturnsConfigurationServiceIsSMSSuffixEnabled()
+        {
+            _mockConfigurationService.SetupGet(x => x.IsSMSSuffixEnabled).Returns(true);
+
+            _subject.IsSMSSuffixEnabled.Should().BeTrue();
+        }
+
+        [Test]
+        public void SetIsSMSSuffixEnabled_ValueDifferentThenConfigurationService_UpdatesTheSettingInTheConfigurationService()
+        {
+            _mockConfigurationService.Setup(x => x.IsSMSSuffixEnabled).Returns(true);
+
+            _subject.IsSMSSuffixEnabled = false;
+
+            _mockConfigurationService.VerifySet(x => x.IsSMSSuffixEnabled = false, Times.Once());
         }
     }
 }

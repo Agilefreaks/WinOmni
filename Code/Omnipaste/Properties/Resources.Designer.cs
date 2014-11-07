@@ -331,6 +331,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add &quot;Sent Via Omnipaste&quot; to SMS.
+        /// </summary>
+        public static string EnableSMSBranding {
+            get {
+                return ResourceManager.GetString("EnableSMSBranding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no events to display..
         /// </summary>
         public static string EventListEmpty {
