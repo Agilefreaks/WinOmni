@@ -21,6 +21,7 @@
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SettingsHeader;
+    using Omnipaste.SmsComposer;
     using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
@@ -56,7 +57,7 @@
                            typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
-                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor)
+                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory)
                        };
         }
     }
