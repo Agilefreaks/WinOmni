@@ -31,5 +31,7 @@
         public static string ProxyConfiguration = "ProxyConfiguration";
 
         public static string PingEndpoint = "PingEndpoint";
+
+        public static string SMSSuffixEnabled = "SMSSuffixEnabled";
     }
 }

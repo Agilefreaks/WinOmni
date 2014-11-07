@@ -57,7 +57,19 @@
             }
         }
 
-        public bool IsSMSSuffixEnabled { get; set; }
+        public bool IsSMSSuffixEnabled
+        {
+            get
+            {
+                bool result;
+                result = !bool.TryParse(_configurationProvider[ConfigurationProperties.SMSSuffixEnabled], out result) || result;
+                return result;
+            }
+            set
+            {
+                _configurationProvider[ConfigurationProperties.SMSSuffixEnabled] = value.ToString();
+            }
+        }
 
         public string ClientId
         {
