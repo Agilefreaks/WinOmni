@@ -5,6 +5,8 @@
 
     public interface IOmniClipboardHandler : IClipboard, IObserver<OmniMessage>
     {
-        void SubscribeTo(IObservable<OmniMessage> observable);
+        void Start(IObservable<OmniMessage> observable);
+
+        void Stop();
     }
 }

@@ -10,8 +10,8 @@
 
         void SetData(string data);
 
-        void StartWatchingClipboard();
+        void Start();
 
-        void StopWatchingClipboard();
+        void Stop();
     }
 }

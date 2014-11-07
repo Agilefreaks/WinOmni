@@ -67,11 +67,10 @@
         {
             Clippings.Last().Subscribe(
                 // OnNext
-                c => 
+                c =>
                     {
                         c.Source = Clipping.ClippingSourceEnum.Cloud;
                         _subject.OnNext(c);
-                      
                     },
                 // OnError
                 e => Debugger.Break());
@@ -79,17 +78,23 @@
 
         public void PostClipping(Clipping clipping)
         {
-            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => {}, _ => {});
+            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => { }, _ => { });
+        }
+
+        public void Start(IObservable<OmniMessage> observable)
+        {
+            Stop();
+            _subscription = observable.Where(m => m.Provider == OmniMessageTypeEnum.Clipboard).Subscribe(this);
+        }
+
+        public void Stop()
+        {
+            Dispose();
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
         {
             return _subject.Subscribe(observer);
-        }
-
-        public void SubscribeTo(IObservable<OmniMessage> observable)
-        {
-            _subscription = observable.Where(m => m.Provider == OmniMessageTypeEnum.Clipboard).Subscribe(this);
         }
 
         #endregion

@@ -46,7 +46,7 @@
         }
 
         [Test]
-        public void Stop_Always_DisposesHandlers()
+        public void Stop_Always_StopsHandlers()
         {
             _mockLocalClipboardHandler.Setup(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>())).Returns(new Mock<IDisposable>().Object);
             _mockOmniClipboardHandler.Setup(ch => ch.Subscribe(It.IsAny<IObserver<Clipping>>())).Returns(new Mock<IDisposable>().Object);
@@ -54,8 +54,8 @@
             _subject.Start(Observable.Empty<OmniMessage>());
             _subject.Stop();
 
-            _mockLocalClipboardHandler.Verify(ch => ch.Dispose());
-            _mockOmniClipboardHandler.Verify(ch => ch.Dispose());
+            _mockLocalClipboardHandler.Verify(ch => ch.Stop());
+            _mockOmniClipboardHandler.Verify(ch => ch.Stop());
         }
 
         [Test]
@@ -65,7 +65,7 @@
 
             _subject.Start(omniMessageObservable);
 
-            _mockOmniClipboardHandler.Verify(m => m.SubscribeTo(omniMessageObservable), Times.Once);
+            _mockOmniClipboardHandler.Verify(m => m.Start(omniMessageObservable), Times.Once);
         }
     }
 }

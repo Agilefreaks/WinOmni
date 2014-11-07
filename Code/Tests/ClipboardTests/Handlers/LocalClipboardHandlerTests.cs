@@ -48,20 +48,21 @@
         }
 
         [Test]
-        public void Subscribe_Always_StartsSubscribesToTheClipboardWrapper()
+        public void Start_Always_SubscribesToTheClipboardWrapper()
         {
-            _subject.Subscribe(new Mock<IObserver<Clipping>>().Object);
+            _subject.Start();
 
             _mockWindowsClipboardWrapper.Verify(wc => wc.Subscribe(_subject), Times.Once);
         }
 
         [Test]
-        public void Subscribe_CreatesClippingsFromTheClipboardEventsAndPassesThemToSubscribers()
+        public void Subscribe_AfterStart_CreatesClippingsFromTheClipboardEventsAndPassesThemToSubscribers()
         {
             _mockWindowsClipboardWrapper
                 .Setup(wcw => wcw.Subscribe((_subject)))
                 .Callback<IObserver<ClipboardEventArgs>>(o => _clipboardEventsStream.Subscribe(o));
             Clipping clipping = null;
+            _subject.Start();
             _subject.Subscribe(c => clipping = c);
 
             _testScheduler.Start();

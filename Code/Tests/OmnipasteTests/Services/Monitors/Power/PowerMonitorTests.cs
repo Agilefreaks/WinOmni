@@ -23,7 +23,6 @@
         {
             _mockSystemPowerHelper = new Mock<ISystemPowerHelper>();
             _subject = new PowerMonitor(_mockSystemPowerHelper.Object);
-            _mockSystemPowerHelper.Setup(x => x.EventsThreadShutdownObservable).Returns(Observable.Never<EventArgs>());
         }
 
         [Test]

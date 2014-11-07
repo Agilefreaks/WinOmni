@@ -11,9 +11,11 @@ namespace Clipboard.Handlers
 
         private readonly Subject<Clipping> _subject;
 
+        private readonly IWindowsClipboardWrapper _windowsClipboardWrapper;
+
         private string _lastClippingContent = string.Empty;
 
-        private IDisposable _windowsClipboardSubscription;
+        private IDisposable _windowsClipboardObserver;
 
         #endregion
 
@@ -22,14 +24,8 @@ namespace Clipboard.Handlers
         public LocalClipboardHandler(IWindowsClipboardWrapper windowsClipboardWrapper)
         {
             _subject = new Subject<Clipping>();
-            WindowsClipboardWrapper = windowsClipboardWrapper;
+            _windowsClipboardWrapper = windowsClipboardWrapper;
         }
-
-        #endregion
-
-        #region Public Properties
-
-        public IWindowsClipboardWrapper WindowsClipboardWrapper { get; private set; }
 
         #endregion
 
@@ -37,34 +33,58 @@ namespace Clipboard.Handlers
 
         public void Dispose()
         {
-            if (_windowsClipboardSubscription != null)
-            {
-                _windowsClipboardSubscription.Dispose();
-                _windowsClipboardSubscription = null;
-            }
+            DisposeWindowsClipboardObserver();
+            _windowsClipboardWrapper.Stop();
+        }
 
-            WindowsClipboardWrapper.Dispose();
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(ClipboardEventArgs value)
+        {
+            WindowsClipboardWrapperDataReceived(value);
         }
 
         public void PostClipping(Clipping clipping)
         {
             _lastClippingContent = clipping.Content;
-            WindowsClipboardWrapper.SetData(clipping.Content);
+            _windowsClipboardWrapper.SetData(clipping.Content);
+        }
+
+        public void Start()
+        {
+            Stop();
+            _windowsClipboardWrapper.Start();
+            _windowsClipboardObserver = _windowsClipboardWrapper.Subscribe(this);
+        }
+
+        public void Stop()
+        {
+            Dispose();
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
         {
-            if (_windowsClipboardSubscription == null)
-            {
-                _windowsClipboardSubscription = WindowsClipboardWrapper.Subscribe(this);
-            }
-
             return _subject.Subscribe(observer);
         }
 
         #endregion
 
         #region Methods
+
+        private void DisposeWindowsClipboardObserver()
+        {
+            if (_windowsClipboardObserver != null)
+            {
+                _windowsClipboardObserver.Dispose();
+                _windowsClipboardObserver = null;
+            }
+        }
 
         private void WindowsClipboardWrapperDataReceived(ClipboardEventArgs args)
         {
@@ -73,22 +93,9 @@ namespace Clipboard.Handlers
                 return;
             }
 
-            _subject.OnNext(new Clipping(args.Data) { Source = Clipping.ClippingSourceEnum.Local} );
+            _subject.OnNext(new Clipping(args.Data) { Source = Clipping.ClippingSourceEnum.Local });
         }
 
         #endregion
-
-        public void OnNext(ClipboardEventArgs value)
-        {
-            WindowsClipboardWrapperDataReceived(value);
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnCompleted()
-        {
-        }
     }
 }

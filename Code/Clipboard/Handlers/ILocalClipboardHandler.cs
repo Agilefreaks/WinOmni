@@ -5,5 +5,8 @@ namespace Clipboard.Handlers
 
     public interface ILocalClipboardHandler : IClipboard, IObserver<ClipboardEventArgs>
     {
+        void Start();
+
+        void Stop();
     }
 }

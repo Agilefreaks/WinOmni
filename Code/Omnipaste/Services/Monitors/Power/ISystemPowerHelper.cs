@@ -2,11 +2,10 @@
 {
     using System;
     using Microsoft.Win32;
+    using Ninject;
 
-    public interface ISystemPowerHelper
+    public interface ISystemPowerHelper : IStartable
     {
-        IObservable<EventArgs> EventsThreadShutdownObservable { get; }
-
         IObservable<PowerModeChangedEventArgs> PowerModeChangedObservable { get; }
     }
 }

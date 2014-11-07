@@ -49,7 +49,7 @@
                 .Setup(c => c.Last())
                 .Returns(Observable.Return(clipping));
 
-            _omniClipboardHandler.SubscribeTo(observable);
+            _omniClipboardHandler.Start(observable);
             _omniClipboardHandler.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));

@@ -114,6 +114,14 @@
             return Devices.Activate(WebsocketConnection.SessionId, deviceIdentifier);
         }
 
+        private void AssureAuthenticationCredentialsExist()
+        {
+            if (string.IsNullOrWhiteSpace(ConfigurationService.AccessToken))
+            {
+                throw new Exception("No authentication credentials exist");
+            }
+        }
+
         private void FinalizeStateChangeComplete(OmniServiceStatusEnum newState)
         {
             State = newState;
@@ -156,7 +164,9 @@
         private IObservable<Unit> StartCore()
         {
             return
-                OpenWebsocketConnection()
+                Observable.Start(AssureAuthenticationCredentialsExist, SchedulerProvider.Default)
+                    .Select(_ => OpenWebsocketConnection())
+                    .Switch()
                     .Select(_ => RegisterDevice())
                     .Switch()
                     .Select(device => ActivateDevice(device.Identifier))
@@ -203,7 +213,11 @@
         private IObservable<Unit> SwitchToState(OmniServiceStatusEnum newState)
         {
             IObservable<Unit> result;
-            if (_migrationState == NoSwitchInProgress)
+            if (newState == State)
+            {
+                result = Observable.Return(new Unit(), SchedulerProvider.Default);
+            }
+            else if (_migrationState == NoSwitchInProgress)
             {
                 LockApplicationState();
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
@@ -214,9 +228,7 @@
             }
             else
             {
-                result = newState != State
-                             ? Observable.Throw<Unit>(new Exception("Transition in progress"), SchedulerProvider.Default)
-                             : Observable.Return(new Unit(), SchedulerProvider.Default);
+                result = Observable.Throw<Unit>(new Exception("Transition in progress"), SchedulerProvider.Default);
             }
 
             return result;

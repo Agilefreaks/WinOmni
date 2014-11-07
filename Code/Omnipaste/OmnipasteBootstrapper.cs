@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
-    using System.Windows.Controls;
     using BugFreak;
     using Caliburn.Micro;
     using Castle.Core.Internal;
@@ -22,7 +20,6 @@
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
-    using OmniUI.Attributes;
     using ViewLocator = Caliburn.Micro.ViewLocator;
 
     public class OmnipasteBootstrapper : BootstrapperBase
@@ -64,9 +61,6 @@
         protected override void Configure()
         {
             _kernel = new StandardKernel();
-
-            SetupViewLocator();
-
             _kernel.Load(
                 new OmniApiModule(),
                 new OmniSyncModule(),
@@ -75,6 +69,7 @@
                 new ClipboardModule(),
                 new EventsModule(),
                 new OmnipasteModule());
+            ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)
@@ -115,10 +110,9 @@
             }
 
             SetupApplicationVersionLogging();
+            StartBackgroundServices();
 
             DisplayRootViewFor<ShellViewModel>(viewSettings);
-
-            _kernel.Get<IConnectivitySupervisor>();
         }
 
         private void SetupApplicationVersionLogging()
@@ -127,51 +121,10 @@
             GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", applicationService.Version.ToString()));
         }
 
-        protected override IEnumerable<Assembly> SelectAssemblies()
+        private void StartBackgroundServices()
         {
-            return new[] { Assembly.GetExecutingAssembly() };
-        }
-
-        public static void SetupViewLocator()
-        {
-            ViewLocator.LocateForModelType = (modelType, displayLocation, context) =>
-            {
-                var useViewAttributes =
-                    modelType.GetCustomAttributes(typeof(UseViewAttribute), true)
-                        .Cast<UseViewAttribute>().ToArray();
-
-                string viewTypeName;
-
-                if (useViewAttributes.Count() == 1)
-                {
-                    var attribute = useViewAttributes.First();
-                    viewTypeName = attribute.IsFullyQualifiedName
-                                       ? attribute.ViewName
-                                       : string.Concat(
-                                           modelType.Namespace.Replace("Model",
-                                                                       string.Empty), ".",
-                                           attribute.ViewName);
-                }
-                else
-                {
-                    viewTypeName = modelType.FullName.Replace("Model", string.Empty);
-                }
-
-                if (context != null)
-                {
-                    viewTypeName = viewTypeName.Remove(viewTypeName.Length - 4, 4);
-                    viewTypeName = viewTypeName + "." + context;
-                }
-
-                var viewType = (from assembly in AssemblySource.Instance
-                                from type in assembly.GetExportedTypes()
-                                where type.FullName == viewTypeName
-                                select type).FirstOrDefault();
-
-                return viewType == null
-                           ? new TextBlock { Text = string.Format("{0} not found.", viewTypeName) }
-                           : ViewLocator.GetOrCreateViewType(viewType);
-            };
+            //Since the service implements IStartable it will be started as soon as it's activated
+            _kernel.Get<IConnectivitySupervisor>();
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Linq;
     using Clipboard.Models;
     using OmniCommon.Models;
@@ -9,11 +10,9 @@
     {
         #region Fields
 
-        private IDisposable _localClipboardSubscriber;
+        private readonly IObservable<Clipping> _clippingsObservable;
 
-        private IDisposable _omniClipboardSubscription;
-
-        private readonly IObservable<Clipping> _clippingsObservable; 
+        private readonly List<IDisposable> _observers = new List<IDisposable>();
 
         #endregion
 
@@ -43,26 +42,28 @@
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
         {
-            OmniClipboardHandler.SubscribeTo(omniMessageObservable);
+            Stop();
+            OmniClipboardHandler.Start(omniMessageObservable);
+            LocalClipboardHandler.Start();
 
-            _omniClipboardSubscription = OmniClipboardHandler.Subscribe(
-                // OnNext
-                clipping => LocalClipboardHandler.PostClipping(clipping),
-                _ => {});
+            _observers.Add(
+                OmniClipboardHandler.Subscribe(
+                    // OnNext
+                    clipping => LocalClipboardHandler.PostClipping(clipping),
+                    _ => { }));
 
-            _localClipboardSubscriber = LocalClipboardHandler.Subscribe(
-                // OnNext
-                clipping => OmniClipboardHandler.PostClipping(clipping),
-                _ => {});
+            _observers.Add(
+                LocalClipboardHandler.Subscribe(
+                    // OnNext
+                    clipping => OmniClipboardHandler.PostClipping(clipping),
+                    _ => { }));
         }
 
         public void Stop()
         {
-            _omniClipboardSubscription.Dispose();
-            OmniClipboardHandler.Dispose();
-
-            _localClipboardSubscriber.Dispose();
-            LocalClipboardHandler.Dispose();
+            OmniClipboardHandler.Stop();
+            LocalClipboardHandler.Stop();
+            _observers.ForEach(observer => observer.Dispose());
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)
