@@ -12,6 +12,14 @@
 
     public class WindowsClipboardWrapper : IWindowsClipboardWrapper
     {
+        #region Constants
+
+        private const int SetDataRetryTimes = 20;
+
+        private const int SetDataRetryIntervalInMilliseconds = 100;
+
+        #endregion
+
         #region Fields
 
         private readonly IObservable<ClipboardEventArgs> _clippingEventsStream;
@@ -71,7 +79,16 @@
         public void SetData(string data)
         {
             IDataObject dataObject = new DataObject(DataFormats.Text, data);
-            RunOnAnStaThread(() => Clipboard.SetDataObject(dataObject, true, 10, 100));
+            var @event = new AutoResetEvent(false);
+            var thread = new Thread(
+                () =>
+                {
+                    SetClipboardData(dataObject);
+                    @event.Set();
+                });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            @event.WaitOne();
         }
 
         public void Start()
@@ -129,18 +146,15 @@
             return text;
         }
 
-        private static void RunOnAnStaThread(Action action)
+        private static void SetClipboardData(IDataObject dataObject)
         {
-            var @event = new AutoResetEvent(false);
-            var thread = new Thread(
-                () =>
-                    {
-                        action();
-                        @event.Set();
-                    });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            @event.WaitOne();
+            try
+            {
+                Clipboard.SetDataObject(dataObject, true, SetDataRetryTimes, SetDataRetryIntervalInMilliseconds);
+            }
+            catch (ExternalException)
+            {
+            }
         }
 
         private void CallDataReceived(string data)
@@ -161,9 +175,7 @@
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification =
-                "Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code"
-            )]
+            Justification ="Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code")]
         private void HandleClipboardChainChanged(int msg, IntPtr wParam, IntPtr lParam)
         {
             // When a clipboard viewer window receives the WM_CHANGECBCHAIN message, 

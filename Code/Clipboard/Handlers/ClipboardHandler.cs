@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using Clipboard.Models;
     using OmniCommon.Models;
@@ -47,13 +48,17 @@
             LocalClipboardHandler.Start();
 
             _observers.Add(
-                OmniClipboardHandler.Subscribe(
+                OmniClipboardHandler
+                .SubscribeOn(Scheduler.Default)
+                .Subscribe(
                     // OnNext
                     clipping => LocalClipboardHandler.PostClipping(clipping),
                     _ => { }));
 
             _observers.Add(
-                LocalClipboardHandler.Subscribe(
+                LocalClipboardHandler
+                .SubscribeOn(Scheduler.Default)
+                .Subscribe(
                     // OnNext
                     clipping => OmniClipboardHandler.PostClipping(clipping),
                     _ => { }));

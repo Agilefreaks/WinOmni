@@ -23,6 +23,7 @@ namespace OmniCommon.Helpers
         {
             get
             {
+                //ToDO: might want to replace this with TaskScheduler.FromCurrentSynchronizationContext() which is the WPF dispatcher when you're running a WPF application
                 return _dispatcherScheduler ?? DispatcherScheduler.Current;
             }
             set
