@@ -574,6 +574,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sent via Omnipaste.
+        /// </summary>
+        public static string SentFromOmnipaste {
+            get {
+                return ResourceManager.GetString("SentFromOmnipaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open settings.
         /// </summary>
         public static string SettingsHeader {

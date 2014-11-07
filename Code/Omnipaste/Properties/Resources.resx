@@ -327,4 +327,7 @@
   <data name="NoProxyUsed" xml:space="preserve">
     <value>No proxy server is used. A direct connection is made to the Omnipaste server.</value>
   </data>
+  <data name="SentFromOmnipaste" xml:space="preserve">
+    <value>Sent via Omnipaste</value>
+  </data>
 </root>

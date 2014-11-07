@@ -57,6 +57,8 @@
             }
         }
 
+        public bool IsSMSSuffixEnabled { get; set; }
+
         public string ClientId
         {
             get
