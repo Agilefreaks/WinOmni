@@ -114,5 +114,37 @@
             
             _subject.ProxyConfiguration.Should().Be(proxyConfiguration);
         }
+
+        [Test]
+        public void IsSMSSuffixEnabled_ConfigurationProviderHasAInvalidEntry_ReturnsTrue()
+        {
+            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("test");
+
+            _subject.IsSMSSuffixEnabled.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsSMSSuffixEnabled_ConfigurationProviderHasAFalseEntryStored_ReturnsFalse()
+        {
+            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("false");
+
+            _subject.IsSMSSuffixEnabled.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsSMSSuffixEnabled_ConfigurationProviderHasATrueEntryStored_ReturnsTrue()
+        {
+            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("true");
+
+            _subject.IsSMSSuffixEnabled.Should().BeTrue();
+        }
+
+        [Test]
+        public void SetIsSMSSuffixEnabled_Always_SetsItAsTextOnTheConfigurationProvider()
+        {
+            _subject.IsSMSSuffixEnabled = true;
+
+            _mockConfigurationProvider.VerifySet(x => x[ConfigurationProperties.SMSSuffixEnabled] = "True");
+        }
     }
 }

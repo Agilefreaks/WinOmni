@@ -20,6 +20,8 @@
 
         string RefreshToken { get; }
 
+        bool IsSMSSuffixEnabled { get; set; }
+
         #endregion
 
         #region Public Indexers

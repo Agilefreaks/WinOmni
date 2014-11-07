@@ -24,6 +24,8 @@
 
         private Mock<IDialogViewModel> _mockDialogViewModel;
 
+        private Mock<ISMSFactory> _mockSMSFactory;
+
         [SetUp]
         public void SetUp()
         {
@@ -38,9 +40,12 @@
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object).InSingletonScope();
 
             _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
+
+            _mockSMSFactory = new Mock<ISMSFactory> { DefaultValue = DefaultValue.Mock };
+            _kernel.Bind<ISMSFactory>().ToConstant(_mockSMSFactory.Object);
+
             _subject = _kernel.Get<SmsComposerViewModel>();
             _subject.Model = new SmsMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
-
         }
 
         [Test]
@@ -60,12 +65,13 @@
         }
 
         [Test]
-        public void Handle_SendSms_WillSetPropertiesOnTheViewModel()
+        public void Handle_SendSms_WillCreateASMSInstanceWithTheReceivedMessage()
         {
-            _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi" });
+            var message = new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi" };
 
-            _subject.Model.Recipient.Should().Be("1234567");
-            _subject.Model.Message.Should().Be("save me Obi Wan Kenobi");
+            _eventAggregator.PublishOnCurrentThread(message);
+
+            _mockSMSFactory.Verify(x => x.Create(message), Times.Once());
         }
 
         [Test]
