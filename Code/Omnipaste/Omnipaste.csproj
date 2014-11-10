@@ -230,6 +230,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />

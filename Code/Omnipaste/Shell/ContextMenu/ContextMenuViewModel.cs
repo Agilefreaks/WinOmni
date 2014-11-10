@@ -109,7 +109,7 @@
         {
             get
             {
-                return "Omnipaste " + ApplicationService.Version;
+                return string.Format("{0} {1}", Constants.AppName, ApplicationService.Version);
             }
         }
 
