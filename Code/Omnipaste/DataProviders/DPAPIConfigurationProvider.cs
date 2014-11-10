@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.DataProviders
 {
     using System;
-    using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -22,7 +21,6 @@
 
         private const string NameElement = "Name";
 
-        public const string PublisherName = "Omnipaste";
 
         #endregion
 
@@ -37,8 +35,6 @@
         private string _settingsfileName;
 
         private readonly Object _writeLock = new Object();
-
-        private static string _applicationName;
 
         #endregion
 
@@ -75,14 +71,6 @@
             set
             {
                 _settingsFolder = value;
-            }
-        }
-
-        private static string ApplicationName
-        {
-            get
-            {
-                return _applicationName ?? (_applicationName = ConfigurationManager.AppSettings["AppName"]);
             }
         }
 
@@ -181,8 +169,8 @@
                 Path.Combine(
                     Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        PublisherName),
-                    ApplicationName);
+                        Constants.PublisherName),
+                    Constants.AppName);
         }
 
         private static XDocument InitializeNewSettingsDocument(string key, string value)

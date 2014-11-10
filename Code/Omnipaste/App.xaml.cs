@@ -7,7 +7,7 @@
     {
         private static SingleInstanceApp _singleInstance;
 
-        private const string Unique = "Omnipaste";
+        private static readonly string UniqueAppId = Constants.AppName;
 
         [STAThread]
         public static void Main()
@@ -20,7 +20,7 @@
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (SingleInstanceApp.InitializeAsFirstInstance(Unique, out _singleInstance))
+            if (SingleInstanceApp.InitializeAsFirstInstance(UniqueAppId, out _singleInstance))
             {
                 base.OnStartup(e);
             }

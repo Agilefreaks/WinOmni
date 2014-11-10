@@ -79,14 +79,6 @@
 
         #region Properties
 
-        protected string AppName
-        {
-            get
-            {
-                return ConfigurationService[ConfigurationProperties.AppName];
-            }
-        }
-
         protected string FeedUrl
         {
             get
@@ -102,7 +94,7 @@
         {
             get
             {
-                return Path.Combine(Path.GetTempPath(), AppName);
+                return Path.Combine(Path.GetTempPath(), Constants.AppName);
             }
         }
 

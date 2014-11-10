@@ -8,7 +8,6 @@
     using System.Windows.Threading;
     using BugFreak;
     using Microsoft.Win32;
-    using OmniCommon;
     using OmniCommon.Interfaces;
 
     public class ApplicationService : IApplicationService
@@ -16,21 +15,6 @@
         #region Constants
 
         private const string AutoStartArguments = "-minimized";
-
-        #endregion
-
-        #region Fields
-
-        private readonly string _appName;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public ApplicationService(IConfigurationService configurationService)
-        {
-            _appName = configurationService[ConfigurationProperties.AppName];
-        }
 
         #endregion
 
@@ -106,7 +90,7 @@
         {
             try
             {
-                GetStartupRegistryKey().DeleteValue(_appName, false);
+                GetStartupRegistryKey().DeleteValue(Constants.AppName, false);
             }
             catch (Exception exception)
             {
@@ -120,7 +104,7 @@
             {
                 var subKey = GetStartupRegistryKey();
                 subKey.SetValue(
-                    _appName,
+                    Constants.AppName,
                     string.Format("\"{0}\" {1}", GetExecutableLocation(), AutoStartArguments),
                     RegistryValueKind.String);
             }
@@ -135,7 +119,7 @@
             var result = false;
             try
             {
-                result = GetStartupRegistryKey().GetValueNames().Contains(_appName);
+                result = GetStartupRegistryKey().GetValueNames().Contains(Constants.AppName);
             }
             catch (Exception exception)
             {
