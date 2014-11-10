@@ -65,7 +65,8 @@
                     {
                         { "Placement", PlacementMode.Absolute },
                         { "HorizontalOffset", SystemParameters.WorkArea.Right },
-                        { "VerticalOffset", SystemParameters.WorkArea.Top }
+                        { "VerticalOffset", SystemParameters.WorkArea.Top },
+                        { "TopMost", true }
                     });
         }
 
