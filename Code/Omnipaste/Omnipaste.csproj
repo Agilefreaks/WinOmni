@@ -3,13 +3,16 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-debug</AssemblyName>
+    <AssemblyName>Omnipaste</AssemblyName>
+    <AssemblyName Condition=" '$(Configuration)' == 'Staging' ">$(AssemblyName)-staging</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A5370D41-9479-46AA-B2FB-5CD4467379A1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Omnipaste</RootNamespace>
-    <AssemblyName>Omnipaste</AssemblyName>
-    <AssemblyName Condition=" '$(PublishAssemblyName)' != '' ">$(PublishAssemblyName)</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -682,18 +685,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(build_configuration)' == 'Debug' ">
-    <PublishAssemblyName>Omnipaste-debug</PublishAssemblyName>
-    <Configuration>Debug</Configuration>
-    <PublishUrl>http://localhost/</PublishUrl>
-    <InstallUrl>http://localhost/</InstallUrl>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(build_configuration)' == 'Staging' ">
-    <PublishAssemblyName>Omnipaste-staging</PublishAssemblyName>
-    <Configuration>Staging</Configuration>
-    <PublishUrl>..\deploy</PublishUrl>
-    <InstallUrl>http://cdn.omnipasteapp.com/staging/win/</InstallUrl>
   </PropertyGroup>
   <PropertyGroup Label="SlowCheetah">
     <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.14\tools\))</SlowCheetahToolsPath>
