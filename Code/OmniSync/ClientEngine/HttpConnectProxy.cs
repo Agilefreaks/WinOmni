@@ -17,7 +17,7 @@
         }
 
         private const string m_RequestTemplate = "CONNECT {0}:{1} HTTP/1.1\r\nHost: {0}:{1}\r\nProxy-Connection: Keep-Alive\r\n\r\n";
-        private const string m_RequestTemplateWithAuth = "CONNECT {0}:{1} HTTP/1.1\r\nHOST {0}:{1}\r\nProxy-Connection: Keep-Alive\r\nProxy-Authorization: Basic {2}\r\n\r\n";
+        private const string m_RequestTemplateWithAuth = "CONNECT {0}:{1} HTTP/1.1\r\nHOST: {0}:{1}\r\nProxy-Connection: Keep-Alive\r\nProxy-Authorization: Basic {2}\r\n\r\n";
 
         private const string m_ResponsePrefix = "HTTP/1.1";
         private const char m_Space = ' ';
