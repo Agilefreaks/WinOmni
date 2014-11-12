@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
@@ -19,8 +20,9 @@
         private const string m_RequestTemplate = "CONNECT {0}:{1} HTTP/1.1\r\nHost: {0}:{1}\r\nProxy-Connection: Keep-Alive\r\n\r\n";
         private const string m_RequestTemplateWithAuth = "CONNECT {0}:{1} HTTP/1.1\r\nHOST: {0}:{1}\r\nProxy-Connection: Keep-Alive\r\nProxy-Authorization: Basic {2}\r\n\r\n";
 
-        private const string m_ResponsePrefix = "HTTP/1.1";
         private const char m_Space = ' ';
+        
+        private static readonly string[] m_ResponsePrefixes = new[] { "HTTP/1.1", "HTTP/1.0" };
 
         private static byte[] m_LineSeparator;
 
@@ -215,7 +217,7 @@
 
             var httpProtocol = line.Substring(0, pos);
 
-            if (!m_ResponsePrefix.Equals(httpProtocol))
+            if (!m_ResponsePrefixes.Contains(httpProtocol))
             {
                 OnException("protocol error: invalid protocol");
                 return;
