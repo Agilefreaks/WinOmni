@@ -277,6 +277,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection Error.
+        /// </summary>
+        public static string ConnectionError {
+            get {
+                return ResourceManager.GetString("ConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not reach the Omnipaste server. Please try again or check the connection settings bellow..
         /// </summary>
         public static string ConnectionFailed {

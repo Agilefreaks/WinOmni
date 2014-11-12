@@ -121,6 +121,7 @@
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivityTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
@@ -137,7 +138,7 @@
     <Compile Include="Services\ActivationServiceTests.cs" />
     <Compile Include="Services\ConfigurationServiceTests.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitorTests.cs" />
-    <Compile Include="Services\FixProxyConfigurationTests.cs" />
+    <Compile Include="Services\ProxyConfigurationTests.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />
     <Compile Include="Services\UpdaterServiceTests.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />

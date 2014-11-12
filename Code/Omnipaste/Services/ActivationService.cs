@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using BugFreak;
+    using OmniCommon;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -60,10 +61,13 @@
             {
                 try
                 {
+                    SimpleLogger.Log("Starting step: " + CurrentStep.GetType());
                     result = CurrentStep.Execute().Wait();
+                    SimpleLogger.Log("Finished step: " + CurrentStep.GetType());
                 }
                 catch (Exception exception)
                 {
+                    SimpleLogger.Log("Step finished with exception: " + exception);
                     ReportingService.Instance.BeginReport(exception);
                     result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
                 }

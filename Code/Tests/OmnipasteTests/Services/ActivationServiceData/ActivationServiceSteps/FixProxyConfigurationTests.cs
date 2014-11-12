@@ -7,6 +7,7 @@
     using NUnit.Framework;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -18,27 +19,33 @@
 
         private List<IProxyConfigurationDetector> _proxyConfigurationDetectors;
 
+        private Mock<INetworkService> _mockNetworkService;
+
         [SetUp]
         public void Setup()
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
             _proxyConfigurationDetectors = new List<IProxyConfigurationDetector>();
-            _subject = new FixProxyConfiguration(_mockConfigurationService.Object, _proxyConfigurationDetectors);
+            _mockNetworkService = new Mock<INetworkService>();
+            _subject = new FixProxyConfiguration(
+                _mockConfigurationService.Object,
+                _proxyConfigurationDetectors,
+                _mockNetworkService.Object);
         }
 
         [Test]
-        public void Execute_NoProxyConfigurationDetectorsAreGivenAndExistingConfigurationIsEmpty_ReturnsAFailedResult()
+        public void Execute_NoProxyConfigurationDetectorsAreGivenAndPingFailsWithEmptyConfiguration_ReturnsAFailedResult()
         {
-            _mockConfigurationService.Setup(x => x.ProxyConfiguration).Returns(ProxyConfiguration.Empty());
-
+            _mockNetworkService.Setup(x => x.CanPingHome(ProxyConfiguration.Empty())).Returns(false);
             var executeResult = _subject.Execute().Wait();
 
             executeResult.State.Should().Be(SimpleStepStateEnum.Failed);
         }
 
         [Test]
-        public void Execute_NoProxyConfigurationDetectorsAreGivenAndExistingConfigurationIsNotEmpty_SavesAnEmptyConfiguration()
+        public void Execute_NoProxyConfigurationDetectorsAreGivenAndExistingConfigurationIsNotEmptyAndCanPingWithEmptyConfiguration_SavesAnEmptyConfiguration()
         {
+            _mockNetworkService.Setup(x => x.CanPingHome(ProxyConfiguration.Empty())).Returns(true);
             _mockConfigurationService.Setup(x => x.ProxyConfiguration).Returns(new ProxyConfiguration { Address = "test" });
 
             _subject.Execute().Wait();
@@ -47,8 +54,9 @@
         }
 
         [Test]
-        public void Execute_NoProxyConfigurationDetectorsAreGivenAndExistingConfigurationIsNotEmpty_ReturnsASuccessResult()
+        public void Execute_NoProxyConfigurationDetectorsAreGivenAndExistingConfigurationIsNotEmptyAndCanPingWithEmptyConfiguration_ReturnsASuccessResult()
         {
+            _mockNetworkService.Setup(x => x.CanPingHome(ProxyConfiguration.Empty())).Returns(true);
             _mockConfigurationService.Setup(x => x.ProxyConfiguration).Returns(new ProxyConfiguration { Address = "test" });
 
             var executeResult = _subject.Execute().Wait();
@@ -57,7 +65,7 @@
         }
 
         [Test]
-        public void Execute_AProxyConfigurationDetectorReturnsADifferentConfigurationThanTheExistingOne_SavesTheNewConfiguration()
+        public void Execute_AProxyConfigurationDetectorReturnsADifferentConfigurationThanTheExistingOneAndCanPingWithIt_SavesTheNewConfiguration()
         {
             var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
             var proxyConfiguration = new ProxyConfiguration { Address = "testB" };
@@ -65,6 +73,7 @@
             _mockConfigurationService.Setup(x => x.ProxyConfiguration)
                 .Returns(new ProxyConfiguration { Address = "testA" });
             _proxyConfigurationDetectors.Add(mockProxyConfigurationDetector.Object);
+            _mockNetworkService.Setup(x => x.CanPingHome(proxyConfiguration)).Returns(true);
 
             _subject.Execute().Wait();
 
@@ -72,13 +81,14 @@
         }
 
         [Test]
-        public void Execute_AProxyConfigurationDetectorReturnsADifferentConfigurationThanTheExistingOne_ReturnsASuccessResult()
+        public void Execute_AProxyConfigurationDetectorReturnsADifferentConfigurationThanTheExistingOneAndCanPingWithIt_ReturnsASuccessResult()
         {
             var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
             mockProxyConfigurationDetector.Setup(x => x.Detect()).Returns(new ProxyConfiguration { Address = "testB" });
             _mockConfigurationService.Setup(x => x.ProxyConfiguration)
                 .Returns(new ProxyConfiguration { Address = "testA" });
             _proxyConfigurationDetectors.Add(mockProxyConfigurationDetector.Object);
+            _mockNetworkService.Setup(x => x.CanPingHome(It.IsAny<ProxyConfiguration>())).Returns(true);
 
             var executeResult = _subject.Execute().Wait();
 
@@ -100,12 +110,26 @@
         }
 
         [Test]
-        public void Execute_AllProxyConfigurationDetectorsReturnNullAndProxyConfigurationIsNotEmpty_ReturnsASuccessResult()
+        public void Execute_AllProxyConfigurationDetectorsReturnConfigurationsForWhichPingFails_ReturnsAFailedResult()
+        {
+            var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
+            mockProxyConfigurationDetector.Setup(x => x.Detect()).Returns(new ProxyConfiguration());
+            _proxyConfigurationDetectors.Add(mockProxyConfigurationDetector.Object);
+            _mockNetworkService.Setup(x => x.CanPingHome(It.IsAny<ProxyConfiguration?>())).Returns(false);
+
+            var executeResult = _subject.Execute().Wait();
+
+            executeResult.State.Should().Be(SimpleStepStateEnum.Failed);
+        }
+
+        [Test]
+        public void Execute_AllProxyConfigurationDetectorsReturnNullAndProxyConfigurationIsNotEmptyAndCanPingWithEmptyConfiguration_ReturnsASuccessResult()
         {
             var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
             mockProxyConfigurationDetector.Setup(x => x.Detect()).Returns((ProxyConfiguration?)null);
             var existingConfiguration = new ProxyConfiguration { Address = "test" };
             _mockConfigurationService.Setup(x => x.ProxyConfiguration).Returns(existingConfiguration);
+            _mockNetworkService.Setup(x => x.CanPingHome(ProxyConfiguration.Empty())).Returns(true);
 
             var executeResult = _subject.Execute().Wait();
 
@@ -113,12 +137,13 @@
         }
 
         [Test]
-        public void Execute_AllProxyConfigurationDetectorsReturnNullAndProxyConfigurationIsNotEmpty_SavesAnEmptyConfiguration()
+        public void Execute_AllProxyConfigurationDetectorsReturnNullAndProxyConfigurationIsNotEmptyAndCanPingWithEmptyConfiguration_SavesAnEmptyConfiguration()
         {
             var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
             mockProxyConfigurationDetector.Setup(x => x.Detect()).Returns((ProxyConfiguration?)null);
             var existingConfiguration = new ProxyConfiguration { Address = "test" };
             _mockConfigurationService.Setup(x => x.ProxyConfiguration).Returns(existingConfiguration);
+            _mockNetworkService.Setup(x => x.CanPingHome(ProxyConfiguration.Empty())).Returns(true);
 
             _subject.Execute().Wait();
 

@@ -5,6 +5,7 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using BugFreak;
+    using OmniCommon;
     using OmniCommon.Helpers;
 
     public static class ObservableExtensionMethods
@@ -17,6 +18,7 @@
                 exception =>
                     {
                         Debugger.Break();
+                        SimpleLogger.Log("Exception encountered: " + exception);
                         ReportingService.Instance.BeginReport(exception);
                     });
         }

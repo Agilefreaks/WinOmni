@@ -34,10 +34,13 @@
         {
             ProxyConfiguration? result = null;
             var pingEndpoint = GetPingEndpoint();
+            SimpleLogger.Log("Checking for proxy type: " + ProxyType);
             var systemWebProxy = WebRequest.GetSystemWebProxy();
             var proxy = systemWebProxy.GetProxy(new Uri(pingEndpoint));
+            SimpleLogger.Log("Obtained proxy address: " + proxy);
             if (proxy.ToString() != pingEndpoint)
             {
+                SimpleLogger.Log("Looks like we found a new proxy server");
                 var proxyConfiguration = new ProxyConfiguration
                                              {
                                                  Address = proxy.DnsSafeHost,
