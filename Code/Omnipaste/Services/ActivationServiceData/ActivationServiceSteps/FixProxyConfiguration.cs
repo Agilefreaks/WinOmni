@@ -28,25 +28,33 @@
             ExecuteResult executeResult;
             var existingConfiguration = _configurationService.ProxyConfiguration;
             SimpleLogger.Log("Trying to detect proxy configuration");
-            var newConfiguration =
+            var newConfigurations =
                 _proxyConfigurationDetectors.Select(detector => detector.Detect())
                     .Where(configuration => configuration.HasValue)
                     .DefaultIfEmpty(ProxyConfiguration.Empty())
                     .Where(configuration => !Equals(existingConfiguration, configuration))
-                    .FirstOrDefault(configuration => _networkService.CanPingHome(configuration));
-            
-            if (newConfiguration.HasValue)
+                    .ToList();
+            var workingConfiguration =
+                newConfigurations.FirstOrDefault(configuration => _networkService.CanPingHome(configuration));
+            var newConfiguration = workingConfiguration ?? newConfigurations.FirstOrDefault();
+
+            if (newConfiguration != null)
             {
                 SimpleLogger.Log("Detected new proxy configuration");
                 SimpleLogger.Log("New proxy type: " + newConfiguration.Value.Type);
                 SimpleLogger.Log("New proxy address: " + newConfiguration.Value.Address);
                 SimpleLogger.Log("New proxy port: " + newConfiguration.Value.Port);
                 _configurationService.SaveProxyConfiguration(newConfiguration.Value);
+            }
+
+            if(workingConfiguration != null)
+            {
+                SimpleLogger.Log("Found working proxy configuration");
                 executeResult = new ExecuteResult(SimpleStepStateEnum.Successful);
             }
             else
             {
-                SimpleLogger.Log("Could not find any new proxy configuration");
+                SimpleLogger.Log("Could not find working proxy configuration");
                 executeResult = new ExecuteResult(SimpleStepStateEnum.Failed);
             }
 

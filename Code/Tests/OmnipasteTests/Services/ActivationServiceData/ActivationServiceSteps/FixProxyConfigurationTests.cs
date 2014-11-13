@@ -123,6 +123,21 @@
         }
 
         [Test]
+        public void Execute_AllProxyConfigurationDetectorsReturnConfigurationsForWhichPingFails_SavesTheFirstNewConfiguration()
+        {
+            var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
+            var newProxyConfiguration = new ProxyConfiguration { Address = "testA" };
+            mockProxyConfigurationDetector.Setup(x => x.Detect()).Returns(newProxyConfiguration);
+            _proxyConfigurationDetectors.Add(mockProxyConfigurationDetector.Object);
+            _mockNetworkService.Setup(x => x.CanPingHome(It.IsAny<ProxyConfiguration?>())).Returns(false);
+            _mockConfigurationService.SetupGet(x => x.ProxyConfiguration).Returns(new ProxyConfiguration { Address = "testB" });
+
+            _subject.Execute().Wait();
+
+            _mockConfigurationService.Verify(x => x.SaveProxyConfiguration(newProxyConfiguration));
+        }
+
+        [Test]
         public void Execute_AllProxyConfigurationDetectorsReturnNullAndProxyConfigurationIsNotEmptyAndCanPingWithEmptyConfiguration_ReturnsASuccessResult()
         {
             var mockProxyConfigurationDetector = new Mock<IProxyConfigurationDetector>();
