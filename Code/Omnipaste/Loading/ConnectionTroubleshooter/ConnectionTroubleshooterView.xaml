@@ -18,7 +18,7 @@
 
         <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
             <StackPanel Orientation="Vertical">
-                <Label Content="{x:Static p:Resources.ProxyType}"/>
+                <Label Content="{x:Static p:Resources.Proxy}"/>
                 <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes" Style="{StaticResource SpacedComboBoxStyle}"/>
                 <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
             </StackPanel>

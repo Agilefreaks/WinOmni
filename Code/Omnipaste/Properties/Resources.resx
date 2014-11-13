@@ -336,4 +336,7 @@
   <data name="AuthorizationCode" xml:space="preserve">
     <value>Authorization code</value>
   </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
 </root>
