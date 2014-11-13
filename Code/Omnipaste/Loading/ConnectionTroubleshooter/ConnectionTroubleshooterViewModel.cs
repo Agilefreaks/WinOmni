@@ -230,6 +230,14 @@
             }
         }
 
+        public bool ShowProxySettings
+        {
+            get
+            {
+                return ProxyType != ProxyTypeEnum.None;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

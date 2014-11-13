@@ -16,7 +16,7 @@
 
         <TextBlock TextWrapping="WrapWithOverflow" Margin="10" Text="{x:Static p:Resources.ConnectionFailed}"/>
 
-        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
+        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="{Binding Path=ShowProxySettings, Mode=OneTime}">
             <StackPanel Orientation="Vertical">
                 <Label Content="{x:Static p:Resources.Proxy}"/>
                 <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes" Style="{StaticResource SpacedComboBoxStyle}"/>
