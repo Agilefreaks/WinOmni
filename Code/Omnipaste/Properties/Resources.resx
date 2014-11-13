@@ -327,8 +327,8 @@
   <data name="NoProxyUsed" xml:space="preserve">
     <value>No proxy server is used. A direct connection is made to the Omnipaste server.</value>
   </data>
-  <data name="ConnectionError" xml:space="preserve">
-    <value>Connection Error</value>
+  <data name="ConnectionTroubleshooter" xml:space="preserve">
+    <value>Connection Troubleshooter</value>
   </data>
   <data name="AuthenticationRequired" xml:space="preserve">
     <value>Authentication Required</value>
@@ -338,5 +338,8 @@
   </data>
   <data name="Proxy" xml:space="preserve">
     <value>Proxy</value>
+  </data>
+  <data name="PingingHome" xml:space="preserve">
+    <value>Trying to contact Omnipaste server.</value>
   </data>
 </root>
