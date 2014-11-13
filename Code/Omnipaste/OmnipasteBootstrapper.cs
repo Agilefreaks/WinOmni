@@ -109,6 +109,8 @@
                 _kernel.Load(new DebugModule());
             }
 
+            SimpleLogger.EnableLog = argumentsDataProvider.EnableLog;
+
             SetupApplicationVersionLogging();
             StartBackgroundServices();
 
