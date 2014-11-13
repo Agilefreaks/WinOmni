@@ -222,6 +222,14 @@
             }
         }
 
+        public int MaxPortNumber
+        {
+            get
+            {
+                return 65535;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

@@ -330,4 +330,10 @@
   <data name="ConnectionError" xml:space="preserve">
     <value>Connection Error</value>
   </data>
+  <data name="AuthenticationRequired" xml:space="preserve">
+    <value>Authentication Required</value>
+  </data>
+  <data name="AuthorizationCode" xml:space="preserve">
+    <value>Authorization code</value>
+  </data>
 </root>

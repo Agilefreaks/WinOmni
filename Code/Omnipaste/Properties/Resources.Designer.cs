@@ -133,6 +133,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication Required.
+        /// </summary>
+        public static string AuthenticationRequired {
+            get {
+                return ResourceManager.GetString("AuthenticationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorization code.
+        /// </summary>
+        public static string AuthorizationCode {
+            get {
+                return ResourceManager.GetString("AuthorizationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Communication with the server is broken. Please try again later..
         /// </summary>
         public static string BrokenCommunicationError {

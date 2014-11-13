@@ -22,7 +22,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Authentication required" Style="{DynamicResource DescriptionHeaderStyle}" />
+        <Label Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="{x:Static p:Resources.AuthenticationRequired}" Style="{DynamicResource DescriptionHeaderStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="10">
             <Run Text="{x:Static p:Resources.UserTokenLabel1}" />
             <Hyperlink NavigateUri="{Binding Path=AuthorizationCodeUrl}">
@@ -35,7 +35,7 @@
         </TextBlock>
         <TextBox x:Name="ActivationCode" Grid.Row="3" Grid.Column="0" 
                  Grid.ColumnSpan="3" Style="{StaticResource SpacedTextBoxStyle}" TabIndex="1"
-                 controls:TextboxHelper.Watermark="Authorization code"
+                 controls:TextboxHelper.Watermark="{x:Static p:Resources.AuthorizationCode}"
                  controls:TextboxHelper.IsWaitingForData="True"/>
 
         <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="{x:Static p:Resources.ButtonAuthenticate}" Style="{StaticResource PrimaryDialogButton}"/>

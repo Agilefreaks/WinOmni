@@ -12,20 +12,22 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock Style="{StaticResource DescriptionHeaderStyleTextBlock}" Text="{x:Static p:Resources.ConnectionFailed}"  />
+        <TextBlock Style="{StaticResource DescriptionHeaderStyleTextBlock}" Text="{x:Static p:Resources.ConnectionError}"  />
+
+        <TextBlock TextWrapping="WrapWithOverflow" Margin="10" Text="{x:Static p:Resources.ConnectionFailed}"/>
+
+        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
+            <StackPanel Orientation="Vertical">
+                <Label Content="{x:Static p:Resources.ProxyType}"/>
+                <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes" Style="{StaticResource SpacedComboBoxStyle}"/>
+                <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
+            </StackPanel>
+        </Expander>
 
         <StackPanel Style="{StaticResource ButtonsPanel}" FocusManager.FocusedElement="{Binding ElementName=Retry}" FocusManager.IsFocusScope="True">
             <Button TabIndex="0" Name="Retry" Content="{x:Static p:Resources.ButtonRetry}" Style="{StaticResource PrimaryDialogButton}" />
             <Button TabIndex="1" Name="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
-
-        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
-            <StackPanel Orientation="Vertical">
-                <Label Content="{x:Static p:Resources.ProxyType}"/>
-                <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes"/>
-                <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
-            </StackPanel>
-        </Expander>
 
         <Expander Header="{x:Static p:Resources.ConnectionError}" IsExpanded="False" MaxHeight="100"
                           Visibility="{Binding Path=ShowPingExceptionMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
