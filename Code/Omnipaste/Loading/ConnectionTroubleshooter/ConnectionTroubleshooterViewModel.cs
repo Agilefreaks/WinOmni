@@ -8,6 +8,7 @@
     using OmniCommon;
     using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
 
     public class ConnectionTroubleshooterViewModel : Screen, IConnectionTroubleshooterViewModel
@@ -36,6 +37,8 @@
 
         private string _proxyUsername;
 
+        private string _statusMessage;
+
         #endregion
 
         #region Constructors and Destructors
@@ -56,6 +59,7 @@
             ProxyPort = existingProxyConfiguration.Port;
             ProxyUsername = existingProxyConfiguration.Username;
             ProxyPassword = existingProxyConfiguration.Password;
+            StatusMessage = Resources.ConnectionFailed;
         }
 
         #endregion
@@ -77,6 +81,15 @@
                 _isBusy = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CanRetry);
+                NotifyOfPropertyChange(() => IsBusy);
+            }
+        }
+
+        public bool CanEdit
+        {
+            get
+            {
+                return !IsBusy;
             }
         }
 
@@ -222,6 +235,39 @@
             }
         }
 
+        public int MaxPortNumber
+        {
+            get
+            {
+                return 65535;
+            }
+        }
+
+        public bool ShowProxySettings
+        {
+            get
+            {
+                return ProxyType != ProxyTypeEnum.None;
+            }
+        }
+
+        public string StatusMessage
+        {
+            get
+            {
+                return _statusMessage;
+            }
+            private set
+            {
+                if (value == _statusMessage)
+                {
+                    return;
+                }
+                _statusMessage = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -234,6 +280,8 @@
         public void Retry()
         {
             IsBusy = true;
+            PingExceptionMessage = string.Empty;
+            StatusMessage = Resources.PingingHome;
             Task.Factory.StartNew(PingWithCurrentConfiguration).ContinueWith(OnPingFinished);
         }
 
@@ -250,7 +298,10 @@
         {
             if (pingTask.Exception != null)
             {
-                PingExceptionMessage = pingTask.Exception.ToString();
+                StatusMessage = Resources.ConnectionFailed;
+                SimpleLogger.Log(pingTask.Exception.ToString());
+                PingExceptionMessage = pingTask.Exception.InnerExceptions.Select(exception => exception.Message)
+                    .Aggregate((workingResult, currentValue) => workingResult + currentValue);
             }
             else
             {

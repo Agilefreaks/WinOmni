@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:p="clr-namespace:Omnipaste.Properties"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              KeyboardNavigation.TabNavigation="Local">
@@ -12,26 +13,36 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock Style="{StaticResource DescriptionHeaderStyleTextBlock}" Text="{x:Static p:Resources.ConnectionFailed}"  />
+        <TextBlock Style="{StaticResource DescriptionHeaderStyleTextBlock}" Text="{x:Static p:Resources.ConnectionTroubleshooter}"  />
+
+        <TextBlock TextWrapping="WrapWithOverflow" Margin="10" Text="{Binding Path=StatusMessage}"/>        
+
+        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="{Binding Path=ShowProxySettings, Mode=OneTime}"
+                  IsEnabled="{Binding Path=CanEdit}">
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{x:Static p:Resources.Proxy}"/>
+                    <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes" Style="{StaticResource SpacedComboBoxStyle}"/>
+                    <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
+                </StackPanel>
+                <controls:MetroProgressBar IsIndeterminate="True" Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Margin="0,0,0,20"/>
+            </Grid>
+        </Expander>
 
         <StackPanel Style="{StaticResource ButtonsPanel}" FocusManager.FocusedElement="{Binding ElementName=Retry}" FocusManager.IsFocusScope="True">
             <Button TabIndex="0" Name="Retry" Content="{x:Static p:Resources.ButtonRetry}" Style="{StaticResource PrimaryDialogButton}" />
             <Button TabIndex="1" Name="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
         </StackPanel>
 
-        <Expander Header="{x:Static p:Resources.ConnectionSettingsHeader}" IsExpanded="True">
-            <StackPanel Orientation="Vertical">
-                <Label Content="{x:Static p:Resources.ProxyType}"/>
-                <ComboBox SelectedItem="{Binding Path=ProxyType, Mode=TwoWay}" x:Name="ProxyTypes"/>
-                <ContentControl cal:View.Context="{Binding Path=ProxyType}" cal:View.Model="{Binding}"/>
-            </StackPanel>
-        </Expander>
-
-        <Expander Header="{x:Static p:Resources.ConnectionError}" IsExpanded="False" MaxHeight="100"
-                          Visibility="{Binding Path=ShowPingExceptionMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <ScrollViewer>
-                <TextBox Text="{Binding Path=PingExceptionMessage}"/>
-            </ScrollViewer>
-        </Expander>
+        <StackPanel Orientation="Horizontal" Visibility="{Binding Path=ShowPingExceptionMessage, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,0,10">
+            <Rectangle Width="24" Height="24" Fill="{StaticResource AccentColorBrush}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_information_circle}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="10" Text="{Binding Path=PingExceptionMessage}"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

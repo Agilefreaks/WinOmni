@@ -115,7 +115,7 @@
   <ItemGroup>
     <Reference Include="BugFreak.WPF, Version=1.0.1.11, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BugFreak.WPF.1.0.1.11\lib\net35-Client\BugFreak.WPF.dll</HintPath>
+      <HintPath>..\packages\BugFreak.WPF.1.0.1.13\lib\net35-Client\BugFreak.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

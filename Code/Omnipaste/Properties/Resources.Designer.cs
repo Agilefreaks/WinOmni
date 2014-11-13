@@ -133,6 +133,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication Required.
+        /// </summary>
+        public static string AuthenticationRequired {
+            get {
+                return ResourceManager.GetString("AuthenticationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorization code.
+        /// </summary>
+        public static string AuthorizationCode {
+            get {
+                return ResourceManager.GetString("AuthorizationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Communication with the server is broken. Please try again later..
         /// </summary>
         public static string BrokenCommunicationError {
@@ -277,15 +295,6 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connection Error.
-        /// </summary>
-        public static string ConnectionError {
-            get {
-                return ResourceManager.GetString("ConnectionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not reach the Omnipaste server. Please try again or check the connection settings bellow..
         /// </summary>
         public static string ConnectionFailed {
@@ -300,6 +309,15 @@ namespace Omnipaste.Properties {
         public static string ConnectionSettingsHeader {
             get {
                 return ResourceManager.GetString("ConnectionSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Troubleshooter.
+        /// </summary>
+        public static string ConnectionTroubleshooter {
+            get {
+                return ResourceManager.GetString("ConnectionTroubleshooter", resourceCulture);
             }
         }
         
@@ -543,6 +561,24 @@ namespace Omnipaste.Properties {
         public static string OtherInstanceRunning {
             get {
                 return ResourceManager.GetString("OtherInstanceRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trying to contact Omnipaste server..
+        /// </summary>
+        public static string PingingHome {
+            get {
+                return ResourceManager.GetString("PingingHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy.
+        /// </summary>
+        public static string Proxy {
+            get {
+                return ResourceManager.GetString("Proxy", resourceCulture);
             }
         }
         
