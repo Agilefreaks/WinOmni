@@ -9,11 +9,7 @@
   <?else?>
     <?define VersionNumber="1.0.0.0" ?>
   <?endif?>
-  <!--
-    Upgrade code HAS to be the same for all updates.
-    Once you've chosen it don't change it.
-    -->
-  <?define UpgradeCode="b09a7654-afb6-49ac-b306-6478945e6dfb" ?>
+  
   <!--
     Path to the resources directory.
     -->
@@ -21,18 +17,20 @@
   <!--
     The name of your application exe file. This will be used to kill the process when updating
     and creating the desktop shortcut
-    -->  
-  <?define RegistryRootKey="SOFTWARE\Omnipaste" ?>
-  
+    -->   
   <?if $(var.Configuration) = Debug ?>
     <?define ProductName="Omnipaste-debug" ?>
+    <?define UpgradeCode="d626cbbe-61e3-4d43-9ccd-028351b3b31d" ?>
   <?elseif $(var.Configuration) = Staging ?>
     <?define ProductName="Omnipaste-staging" ?>
+    <?define UpgradeCode="54074354-619f-48e7-bd0b-2d41e8c214e4" ?>
   <?else ?>
     <?define ProductName="Omnipaste" ?>
+    <?define UpgradeCode="b09a7654-afb6-49ac-b306-6478945e6dfb" ?>
   <?endif ?>
   
   <?define ExeProcessName="$(var.ProductName).exe"?>
-
   <?define ManufacturerName="Omnipaste"?>
+  
+  <?define RegistryRootKey="SOFTWARE\$(var.ManufacturerName)\$(var.ProductName)" ?>
 </Include>
