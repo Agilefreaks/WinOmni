@@ -303,4 +303,43 @@
   <data name="SettingsLogOut" xml:space="preserve">
     <value>Deconectare</value>
   </data>
+  <data name="AuthenticationRequired" xml:space="preserve">
+    <value>Autentificare</value>
+  </data>
+  <data name="AuthorizationCode" xml:space="preserve">
+    <value>Cod de autorizare</value>
+  </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Nu am putut ajunge la serverul Omnipaste. Vă rugăm să verificați setările de conectare de mai jos și să încercați din nou.</value>
+  </data>
+  <data name="ConnectionSettingsHeader" xml:space="preserve">
+    <value>Setări de conexiune</value>
+  </data>
+  <data name="ConnectionTroubleshooter" xml:space="preserve">
+    <value>Depanarea conexiunii</value>
+  </data>
+  <data name="NoProxyUsed" xml:space="preserve">
+    <value>Nu se folosește niciun proxy. Conexiunea se va efectua direct către serverul Omnipaste.</value>
+  </data>
+  <data name="PingingHome" xml:space="preserve">
+    <value>Se încearcă conectarea cu serverul Omnipaste.</value>
+  </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="ProxyHost" xml:space="preserve">
+    <value>Host:</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Parolă:</value>
+  </data>
+  <data name="ProxyPort" xml:space="preserve">
+    <value>Număr port:</value>
+  </data>
+  <data name="ProxyType" xml:space="preserve">
+    <value>Tip proxy</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>Utilizator:</value>
+  </data>
 </root>

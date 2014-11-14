@@ -303,4 +303,43 @@
   <data name="DisconnectIcon" xml:space="preserve">
     <value>appbar_disconnect</value>
   </data>
+  <data name="AuthenticationRequired" xml:space="preserve">
+    <value>Autenticação necessária</value>
+  </data>
+  <data name="AuthorizationCode" xml:space="preserve">
+    <value>Código de autorização</value>
+  </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Não foi possível alcançar o servidor Omnipaste. Por favor, tente novamente ou verifique a conexão valores abaixo.</value>
+  </data>
+  <data name="ConnectionSettingsHeader" xml:space="preserve">
+    <value>Configurações de conexão</value>
+  </data>
+  <data name="ConnectionTroubleshooter" xml:space="preserve">
+    <value>Solução de problemas de conexão</value>
+  </data>
+  <data name="NoProxyUsed" xml:space="preserve">
+    <value>Nenhum servidor proxy é usado. Uma conexão direta é feita para o servidor Omnipaste.</value>
+  </data>
+  <data name="PingingHome" xml:space="preserve">
+    <value>Tentando se conectar servidor Omnipaste.</value>
+  </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="ProxyHost" xml:space="preserve">
+    <value>Host:</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Senha:</value>
+  </data>
+  <data name="ProxyPort" xml:space="preserve">
+    <value>Número da porta:</value>
+  </data>
+  <data name="ProxyType" xml:space="preserve">
+    <value>Tipo de proxy</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>Nome de usuário:</value>
+  </data>
 </root>
