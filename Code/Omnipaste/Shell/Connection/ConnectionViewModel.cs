@@ -46,6 +46,8 @@
                 newStatus == OmniServiceStatusEnum.Started
                     ? ConnectionStateEnum.Connected
                     : ConnectionStateEnum.Disconnected);
+            omniService.InTransitionObservable.SubscribeAndHandleErrors(
+                isInTransition => CanPerformAction = !isInTransition);
         }
 
         #endregion
@@ -104,6 +106,7 @@
                 NotifyOfPropertyChange(() => ButtonToolTip);
                 NotifyOfPropertyChange(() => Icon);
                 NotifyOfPropertyChange(() => IsConnected);
+                NotifyOfPropertyChange(() => CanPerformAction);
             }
         }
 
@@ -111,34 +114,10 @@
 
         #region Public Methods and Operators
 
-        public void Connect()
-        {
-            CanPerformAction = false;
-
-            _userMonitor.SendEvent(UserEventTypeEnum.Connect);
-
-            CanPerformAction = true;
-        }
-
-        public void Disconnect()
-        {
-            CanPerformAction = false;
-
-            _userMonitor.SendEvent(UserEventTypeEnum.Disconnect);
-
-            CanPerformAction = true;
-        }
-
         public void PerformAction()
         {
-            if (State == ConnectionStateEnum.Connected)
-            {
-                Disconnect();
-            }
-            else
-            {
-                Connect();
-            }
+            _userMonitor.SendEvent(
+                State == ConnectionStateEnum.Connected ? UserEventTypeEnum.Disconnect : UserEventTypeEnum.Connect);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
     using System;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Caliburn.Micro;
     using FluentAssertions;
@@ -43,6 +44,7 @@
             _mockingKernel = new MoqMockingKernel();
 
             _mockOmniService = _mockingKernel.GetMock<IOmniService>();
+            _mockOmniService.Setup(x => x.InTransitionObservable).Returns(Observable.Empty<bool>());
             _statusChangedSubject = new Subject<OmniServiceStatusEnum>();
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
@@ -50,7 +52,7 @@
             _mockUserMonitor = _mockingKernel.GetMock<IUserMonitor>();
 
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
-            _mockingKernel.Bind<IUserMonitor>().ToConstant(_mockUserMonitor.Object);
+            _mockingKernel.Bind<IUserMonitor>().ToConstant(_mockUserMonitor.Object);           
 
             _subject = _mockingKernel.Get<IContextMenuViewModel>();
         }

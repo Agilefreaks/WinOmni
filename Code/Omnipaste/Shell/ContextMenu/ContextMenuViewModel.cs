@@ -22,6 +22,8 @@
 
         private bool _isStopped;
 
+        private bool _canToggleSync;
+
         #endregion
 
         #region Constructors and Destructors
@@ -35,7 +37,8 @@
                         IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico";
                         IsStopped = status == OmniServiceStatusEnum.Stopped;
                     });
-
+            omniService.InTransitionObservable.SubscribeAndHandleErrors(
+                isInTransition => CanToggleSync = !isInTransition);
             IconSource = "/Disconnected.ico";
         }
 
@@ -114,6 +117,23 @@
         }
 
         public Visibility Visibility { get; set; }
+
+        public bool CanToggleSync
+        {
+            get
+            {
+                return _canToggleSync;
+            }
+            set
+            {
+                if (value.Equals(_canToggleSync))
+                {
+                    return;
+                }
+                _canToggleSync = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         #endregion
 

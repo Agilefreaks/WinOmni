@@ -13,6 +13,8 @@
 
         bool InTransition { get; }
 
+        IObservable<bool> InTransitionObservable { get; }
+
         #endregion
 
         #region Public Methods and Operators

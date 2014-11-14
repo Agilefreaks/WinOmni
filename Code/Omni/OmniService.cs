@@ -27,6 +27,8 @@
 
         protected IWebsocketConnection WebsocketConnection;
 
+        private readonly ReplaySubject<bool> _inTransitionChangedSubject;
+
         private readonly ReplaySubject<OmniServiceStatusEnum> _statusChangedSubject;
 
         private int _migrationState;
@@ -40,6 +42,7 @@
         public OmniService()
         {
             _statusChangedSubject = new ReplaySubject<OmniServiceStatusEnum>(1);
+            _inTransitionChangedSubject = new ReplaySubject<bool>(1);
             State = OmniServiceStatusEnum.Stopped;
         }
 
@@ -58,6 +61,14 @@
             get
             {
                 return _migrationState != NoSwitchInProgress;
+            }
+        }
+
+        public IObservable<bool> InTransitionObservable
+        {
+            get
+            {
+                return _inTransitionChangedSubject;
             }
         }
 
@@ -131,6 +142,7 @@
         private void LockApplicationState()
         {
             Interlocked.Increment(ref _migrationState);
+            _inTransitionChangedSubject.OnNext(InTransition);
         }
 
         private IObservable<Unit> OnStateTransitionException(Exception exception)
@@ -159,6 +171,7 @@
         private void ReleaseApplicationStateLock()
         {
             Interlocked.Decrement(ref _migrationState);
+            _inTransitionChangedSubject.OnNext(InTransition);
         }
 
         private IObservable<Unit> StartCore()
@@ -222,7 +235,8 @@
                 LockApplicationState();
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
                 result =
-                    observable.Select(_ => Observable.Start(() => FinalizeStateChangeComplete(newState), SchedulerProvider.Default))
+                    observable.Select(
+                        _ => Observable.Start(() => FinalizeStateChangeComplete(newState), SchedulerProvider.Default))
                         .Switch()
                         .Catch<Unit, Exception>(OnStateTransitionException);
             }

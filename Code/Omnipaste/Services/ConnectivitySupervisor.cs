@@ -27,8 +27,6 @@
 
         #region Fields
 
-        private readonly IObservable<Unit> _connectObservable;
-
         private readonly IList<IDisposable> _eventObservers;
 
         private readonly IOmniService _omniService;
@@ -43,13 +41,6 @@
         {
             _eventObservers = new List<IDisposable>();
             _omniService = omniService;
-            _connectObservable =
-                Observable.Defer(() => _omniService.Stop())
-                    .Select(_ => _omniService.Start())
-                    .Switch()
-                    .Select(_ => Observable.Start(StopConnectProcess))
-                    .Switch()
-                    .RetryAfter(DefaultReconnectInterval);
             _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
@@ -171,8 +162,7 @@
         private void StartOmniService()
         {
             StopConnectProcess();
-            _connectObserver =
-                _connectObservable.SubscribeOn(SchedulerProvider.Default)
+            _connectObserver = GetConnectObservable().SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors();
         }
@@ -198,6 +188,16 @@
                     OnConnectionLost();
                     break;
             }
+        }
+
+        private IObservable<Unit> GetConnectObservable()
+        {
+            return Observable.Defer(() => _omniService.Stop())
+                .Select(_ => _omniService.Start())
+                .Switch()
+                .Select(_ => Observable.Start(StopConnectProcess))
+                .Switch()
+                .RetryAfter(DefaultReconnectInterval);
         }
 
         #endregion
