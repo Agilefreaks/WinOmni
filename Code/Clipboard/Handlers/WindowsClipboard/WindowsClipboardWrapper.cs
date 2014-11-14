@@ -26,8 +26,6 @@
 
         private readonly IWindowHandleProvider _windowHandleProvider;
 
-        private IntPtr _clipboardViewerNext;
-
         private IDisposable _getHandleObserver;
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
@@ -68,10 +66,8 @@
             DisposeGetHandleObserver();
             if (IsWatchingClippings)
             {
-                User32.ChangeClipboardChain(_hWndSource.Handle, _clipboardViewerNext);
-                _clipboardViewerNext = IntPtr.Zero;
+                User32.RemoveClipboardFormatListener(_hWndSource.Handle);
                 _hWndSource.RemoveHook(HandleClipboardMessage);
-
                 IsWatchingClippings = false;
             }
         }
@@ -175,69 +171,17 @@
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification ="Reviewed. Suppression is OK here. Check http://code.msdn.microsoft.com/CSWPFClipboardViewer-f601b815 for the full code")]
-        private void HandleClipboardChainChanged(int msg, IntPtr wParam, IntPtr lParam)
-        {
-            // When a clipboard viewer window receives the WM_CHANGECBCHAIN message, 
-            // it should call the SendMessage function to pass the message to the 
-            // next window in the chain, unless the next window is the window 
-            // being removed. In this case, the clipboard viewer should save 
-            // the handle specified by the lParam parameter as the next window in the chain. 
-
-            // wParam is the Handle to the window being removed from 
-            // the clipboard viewer chain 
-            // lParam is the Handle to the next window in the chain 
-            // following the window being removed. 
-            if (wParam == _clipboardViewerNext)
-            {
-                // If wParam is the next clipboard viewer then it
-                // is being removed so update pointer to the next
-                // window in the clipboard chain
-                _clipboardViewerNext = lParam;
-            }
-            else
-            {
-                User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
-            }
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
             Justification = "Reviewed. Suppression is OK here.")]
-        private IntPtr HandleClipboardMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private IntPtr HandleClipboardMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch ((Msgs)msg)
             {
-                    // The WM_DRAWCLIPBOARD message is sent to the first window 
-                    // in the clipboard viewer chain when the content of the 
-                    // clipboard changes. This enables a clipboard viewer 
-                    // window to display the new content of the clipboard. 
-                case Msgs.WM_DRAWCLIPBOARD:
-                    CallDataReceived(HandleDrawClipboard(msg, wParam, lParam));
-                    break;
-
-                    // The WM_CHANGECBCHAIN message is sent to the first window 
-                    // in the clipboard viewer chain when a window is being 
-                    // removed from the chain. 
-                case Msgs.WM_CHANGECBCHAIN:
-                    HandleClipboardChainChanged(msg, wParam, lParam);
+                case Msgs.WM_CLIPBOARDUPDATE:
+                    CallDataReceived(GetClipboardText());
                     break;
             }
 
             return IntPtr.Zero;
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
-        private string HandleDrawClipboard(int msg, IntPtr wParam, IntPtr lParam)
-        {
-            var data = GetClipboardText();
-
-            // Each window that receives the WM_DRAWCLIPBOARD message 
-            // must call the SendMessage function to pass the message 
-            // on to the next window in the clipboard viewer chain.
-            //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
-
-            return data;
         }
 
         private void OnHandleObtained(IntPtr windowHandle)
@@ -246,12 +190,10 @@
             if (windowHandle != IntPtr.Zero && !IsWatchingClippings)
             {
                 _hWndSource = HwndSource.FromHwnd(windowHandle);
-
                 if (_hWndSource != null)
                 {
-                    _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
                     _hWndSource.AddHook(HandleClipboardMessage);
-
+                    User32.AddClipboardFormatListener(_hWndSource.Handle);
                     IsWatchingClippings = true;
                 }
             }

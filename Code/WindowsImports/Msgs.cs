@@ -200,6 +200,7 @@ namespace WindowsImports
         WM_HOTKEY                 = 0x0312,
         WM_PRINT                  = 0x0317,
         WM_PRINTCLIENT            = 0x0318,
+        WM_CLIPBOARDUPDATE        = 0x031D,
         WM_HANDHELDFIRST          = 0x0358,
         WM_HANDHELDLAST           = 0x035F,
         WM_AFXFIRST               = 0x0360,
