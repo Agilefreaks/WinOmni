@@ -235,7 +235,7 @@
             // Each window that receives the WM_DRAWCLIPBOARD message 
             // must call the SendMessage function to pass the message 
             // on to the next window in the clipboard viewer chain.
-            //User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
+            User32.SendMessage(_clipboardViewerNext, msg, wParam, lParam);
 
             return data;
         }
@@ -249,8 +249,8 @@
 
                 if (_hWndSource != null)
                 {
-                    _hWndSource.AddHook(HandleClipboardMessage);
                     _clipboardViewerNext = User32.SetClipboardViewer(_hWndSource.Handle);
+                    _hWndSource.AddHook(HandleClipboardMessage);
 
                     IsWatchingClippings = true;
                 }
