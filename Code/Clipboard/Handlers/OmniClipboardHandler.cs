@@ -73,7 +73,7 @@
                         _subject.OnNext(c);
                     },
                 // OnError
-                e => Debugger.Break());
+                e => {});
         }
 
         public void PostClipping(Clipping clipping)

@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.ExtensionMethods
 {
     using System;
-    using System.Diagnostics;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using BugFreak;
@@ -17,7 +16,6 @@
             return observable.Subscribe(_ => { },
                 exception =>
                     {
-                        Debugger.Break();
                         SimpleLogger.Log("Exception encountered: " + exception);
                         ReportingService.Instance.BeginReport(exception);
                     });
@@ -25,11 +23,7 @@
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
         {
-            return observable.Subscribe(onNext, exception =>
-                {
-                    Debugger.Break();
-                    ReportingService.Instance.BeginReport(exception);
-                });
+            return observable.Subscribe(onNext, exception => ReportingService.Instance.BeginReport(exception));
         }
 
         public static IObservable<T> RetryAfter<T>(

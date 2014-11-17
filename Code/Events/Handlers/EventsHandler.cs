@@ -50,7 +50,7 @@
                 // OnNext
                 n => _subject.OnNext(n),
                 // onError
-                e => Debugger.Break());
+                e => {});
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
