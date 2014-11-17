@@ -133,7 +133,7 @@
             switch (newMode)
             {
                 case PowerModes.Resume:
-                    OnConnectionLost();
+                    StartOmniService();
                     break;
                 case PowerModes.Suspend:
                     StopOmniService();
