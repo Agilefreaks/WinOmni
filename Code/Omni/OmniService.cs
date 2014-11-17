@@ -11,6 +11,7 @@
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
@@ -20,6 +21,7 @@
         #region Constants
 
         private const int NoSwitchInProgress = 0;
+        private const int SwitchInProgress = 1;
 
         #endregion
 
@@ -27,11 +29,11 @@
 
         protected IWebsocketConnection WebsocketConnection;
 
+        private static int _migrationState = NoSwitchInProgress;
+
         private readonly ReplaySubject<bool> _inTransitionChangedSubject;
 
         private readonly ReplaySubject<OmniServiceStatusEnum> _statusChangedSubject;
-
-        private int _migrationState;
 
         private OmniServiceStatusEnum _state;
 
@@ -122,11 +124,13 @@
 
         private IObservable<Device> ActivateDevice(string deviceIdentifier)
         {
+            SimpleLogger.Log("Activating device");
             return Devices.Activate(WebsocketConnection.SessionId, deviceIdentifier);
         }
 
         private void AssureAuthenticationCredentialsExist()
         {
+            SimpleLogger.Log("Checking for credentials");
             if (string.IsNullOrWhiteSpace(ConfigurationService.AccessToken))
             {
                 throw new Exception("No authentication credentials exist");
@@ -135,31 +139,48 @@
 
         private void FinalizeStateChangeComplete(OmniServiceStatusEnum newState)
         {
+            SimpleLogger.Log("Finalizing state change");
             State = newState;
-            ReleaseApplicationStateLock();
+            ReleaseServiceState();
         }
 
-        private void LockApplicationState()
+        private bool LockServiceState()
         {
-            Interlocked.Increment(ref _migrationState);
-            _inTransitionChangedSubject.OnNext(InTransition);
+            var result = false;
+            SimpleLogger.Log("Trying to lock service state");
+            var previousValue = Interlocked.Exchange(ref _migrationState, SwitchInProgress);
+            if (previousValue == NoSwitchInProgress)
+            {
+                SimpleLogger.Log("No lock already in place; returning true");
+                result = true;
+                _inTransitionChangedSubject.OnNext(InTransition);
+            }
+            else
+            {
+                SimpleLogger.Log("Lock already in place; returning false");
+            }
+
+            return result;
         }
 
         private IObservable<Unit> OnStateTransitionException(Exception exception)
         {
-            ReleaseApplicationStateLock();
+            SimpleLogger.Log("State transition exception: " + exception);
+            ReleaseServiceState();
 
             return Observable.Throw<Unit>(exception);
         }
 
         private IObservable<string> OpenWebsocketConnection()
         {
+            SimpleLogger.Log("Opening websocket connection");
             WebsocketConnection = WebsocketConnectionFactory.Create();
             return WebsocketConnection.Connect();
         }
 
         private IObservable<Device> RegisterDevice()
         {
+            SimpleLogger.Log("Registering Device");
             var deviceIdentifier = ConfigurationService.DeviceIdentifier;
             var machineName = ConfigurationService.MachineName;
 
@@ -168,14 +189,16 @@
             return Devices.Create(deviceIdentifier, machineName);
         }
 
-        private void ReleaseApplicationStateLock()
+        private void ReleaseServiceState()
         {
-            Interlocked.Decrement(ref _migrationState);
+            SimpleLogger.Log("Release service state");
+            Interlocked.Exchange(ref _migrationState, NoSwitchInProgress);
             _inTransitionChangedSubject.OnNext(InTransition);
         }
 
         private IObservable<Unit> StartCore()
         {
+            SimpleLogger.Log("Call to start core");
             return
                 Observable.Start(AssureAuthenticationCredentialsExist, SchedulerProvider.Default)
                     .Select(_ => OpenWebsocketConnection())
@@ -187,11 +210,14 @@
                     .Select(_ => Observable.Start(StartHandlers, SchedulerProvider.Default))
                     .Switch()
                     .Select(_ => Observable.Start(StartMonitoringWebSocket, SchedulerProvider.Default))
+                    .Switch()
+                    .Select(_ => Observable.Start(() => FinalizeStateChangeComplete(OmniServiceStatusEnum.Started), SchedulerProvider.Default))
                     .Switch();
         }
 
         private void StartHandlers()
         {
+            SimpleLogger.Log("Starting handlers");
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
                 handler.Start(WebsocketConnection);
@@ -200,6 +226,7 @@
 
         private void StartMonitoringWebSocket()
         {
+            SimpleLogger.Log("Starting websocket monitor");
             WebSocketMonitor.Stop();
             WebSocketMonitor.Start(WebsocketConnection);
         }
@@ -209,39 +236,43 @@
             return Observable.Start(
                 () =>
                     {
+                        SimpleLogger.Log("Stopping OmniService");
                         StopHandlers();
                         WebsocketConnection.Disconnect();
+                        SimpleLogger.Log("Stopped OmniService");
+                        FinalizeStateChangeComplete(OmniServiceStatusEnum.Stopped);
                     },
                 SchedulerProvider.Default);
         }
 
         private void StopHandlers()
         {
+            SimpleLogger.Log("Stopping handlers");
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
                 handler.Stop();
             }
+            SimpleLogger.Log("Stopped handlers");
         }
 
         private IObservable<Unit> SwitchToState(OmniServiceStatusEnum newState)
         {
+            SimpleLogger.Log("Call to switch state with: " + newState);
             IObservable<Unit> result;
             if (newState == State)
             {
+                SimpleLogger.Log("Same state found; doing nothing");
                 result = Observable.Return(new Unit(), SchedulerProvider.Default);
             }
-            else if (_migrationState == NoSwitchInProgress)
+            else if (LockServiceState())
             {
-                LockApplicationState();
+                SimpleLogger.Log("Acquired lock, switchhing state");
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
-                result =
-                    observable.Select(
-                        _ => Observable.Start(() => FinalizeStateChangeComplete(newState), SchedulerProvider.Default))
-                        .Switch()
-                        .Catch<Unit, Exception>(OnStateTransitionException);
+                result = observable.Catch<Unit, Exception>(OnStateTransitionException);
             }
             else
             {
+                SimpleLogger.Log("Could not acquire lock, returning failed result");
                 result = Observable.Throw<Unit>(new Exception("Transition in progress"), SchedulerProvider.Default);
             }
 
