@@ -11,14 +11,14 @@
     [TestFixture]
     public class ConfigurationServiceTests
     {
-        private Mock<IConfigurationProvider> _mockConfigurationProvider;
+        private Mock<IConfigurationContainer> _mockConfigurationProvider;
 
         private IConfigurationService _subject;
 
         [SetUp]
         public void SetUp()
         {
-            _mockConfigurationProvider = new Mock<IConfigurationProvider>();
+            _mockConfigurationProvider = new Mock<IConfigurationContainer>();
             _subject = new ConfigurationService(_mockConfigurationProvider.Object);
         }
 

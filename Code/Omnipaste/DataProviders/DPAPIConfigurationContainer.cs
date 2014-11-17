@@ -11,7 +11,7 @@
     using BugFreak;
     using OmniCommon.DataProviders;
 
-    public class DPAPIConfigurationProvider : IConfigurationProvider
+    public class DPAPIConfigurationContainer : IConfigurationContainer
     {
         #region Constants
 

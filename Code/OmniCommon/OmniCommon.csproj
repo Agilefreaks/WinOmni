@@ -103,7 +103,7 @@
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
-    <Compile Include="DataProviders\IConfigurationProvider.cs" />
+    <Compile Include="DataProviders\IConfigurationContainer.cs" />
     <Compile Include="ProxyConfiguration.cs" />
     <Compile Include="ProxyTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

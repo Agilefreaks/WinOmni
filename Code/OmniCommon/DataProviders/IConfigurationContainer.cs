@@ -1,6 +1,6 @@
 ﻿namespace OmniCommon.DataProviders
 {
-    public interface IConfigurationProvider
+    public interface IConfigurationContainer
     {
         #region Public Indexers
 

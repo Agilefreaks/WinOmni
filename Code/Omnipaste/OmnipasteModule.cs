@@ -35,7 +35,7 @@
             Kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
 
-            Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
+            Kernel.Bind<IConfigurationContainer>().To<DPAPIConfigurationContainer>().InSingletonScope();
             Kernel.Bind<IWindowHandleProvider>().To<WindowHandleProvider>().InSingletonScope();
             Kernel.Bind<IArgumentsProvider>().To<EnvironmentArgumentsProvider>();
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();

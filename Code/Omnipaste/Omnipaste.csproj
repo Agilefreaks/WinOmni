@@ -352,7 +352,7 @@
     <Compile Include="Services\SessionManager.cs" />
     <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
     <Compile Include="Shell\Connection\IConnectionViewModel.cs" />
-    <Compile Include="DataProviders\DPAPIConfigurationProvider.cs" />
+    <Compile Include="DataProviders\DPAPIConfigurationContainer.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
     <Compile Include="Dialog\IDialogViewModel.cs" />
     <Compile Include="EventAggregatorMessages\ShowShellMessage.cs" />

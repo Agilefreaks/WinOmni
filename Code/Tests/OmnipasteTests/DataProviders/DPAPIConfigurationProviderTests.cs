@@ -9,7 +9,7 @@
     {
         #region Fields
 
-        private DPAPIConfigurationProvider _subject;
+        private DPAPIConfigurationContainer _subject;
 
         #endregion
 
@@ -18,7 +18,7 @@
         [SetUp]
         public void Setup()
         {
-            _subject = new DPAPIConfigurationProvider
+            _subject = new DPAPIConfigurationContainer
                            {
                                SettingsFolder = Path.GetTempPath(),
                                SettingsFileName = Path.GetRandomFileName()
