@@ -8,14 +8,14 @@
     using System.Xml.Serialization;
     using BugFreak;
     using OmniCommon;
-    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
 
     public class ConfigurationService : IConfigurationService
     {
         #region Fields
 
-        private readonly IConfigurationProvider _configurationProvider;
+        private readonly IConfigurationContainer _configurationContainer;
 
         private readonly List<IProxyConfigurationObserver> _proxyConfigurationObservers;
 
@@ -23,10 +23,10 @@
 
         #region Constructors and Destructors
 
-        public ConfigurationService(IConfigurationProvider configurationProvider)
+        public ConfigurationService(IConfigurationContainer configurationContainer)
         {
-            _configurationProvider = configurationProvider;
             _proxyConfigurationObservers = new List<IProxyConfigurationObserver>();
+            _configurationContainer = configurationContainer;
         }
 
         #endregion
@@ -37,7 +37,7 @@
         {
             get
             {
-                return _configurationProvider.GetValue(ConfigurationProperties.AccessToken);
+                return _configurationContainer.GetValue(ConfigurationProperties.AccessToken);
             }
         }
 
@@ -53,7 +53,7 @@
         {
             get
             {
-                return _configurationProvider.GetValue(ConfigurationProperties.RefreshToken);
+                return _configurationContainer.GetValue(ConfigurationProperties.RefreshToken);
             }
         }
 
@@ -62,12 +62,12 @@
             get
             {
                 bool result;
-                result = !bool.TryParse(_configurationProvider[ConfigurationProperties.SMSSuffixEnabled], out result) || result;
+                result = !bool.TryParse(_configurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled), out result) || result;
                 return result;
             }
             set
             {
-                _configurationProvider[ConfigurationProperties.SMSSuffixEnabled] = value.ToString();
+                _configurationContainer.SetValue(ConfigurationProperties.SMSSuffixEnabled, value.ToString());
             }
         }
 
@@ -83,11 +83,11 @@
         {
             get
             {
-                var deviceIdentifier = _configurationProvider.GetValue(ConfigurationProperties.DeviceIdentifier);
+                var deviceIdentifier = _configurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
                 if (string.Equals("", deviceIdentifier))
                 {
                     deviceIdentifier = Guid.NewGuid().ToString();
-                    _configurationProvider.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
+                    _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
                 }
 
                 return deviceIdentifier;
@@ -99,19 +99,6 @@
             get
             {
                 return Environment.MachineName;
-            }
-        }
-
-        public bool AutoStart
-        {
-            get
-            {
-                return _configurationProvider.GetValue(ConfigurationProperties.AutoStart, true);
-            }
-
-            set
-            {
-                _configurationProvider.SetValue(ConfigurationProperties.AutoStart, value.ToString());
             }
         }
 
@@ -142,8 +129,8 @@
 
         public void SaveAuthSettings(string accessToken, string refreshToken)
         {
-            _configurationProvider.SetValue(ConfigurationProperties.AccessToken, accessToken);
-            _configurationProvider.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
+            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, accessToken);
+            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
         }
 
         public void ResetAuthSettings()
@@ -159,7 +146,7 @@
                 var stringWriter = new StringWriter();
                 xmlSerializer.Serialize(stringWriter, value);
 
-                _configurationProvider.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
+                _configurationContainer.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
                 _proxyConfigurationObservers.ForEach(observer => observer.OnConfigurationChanged(ProxyConfiguration));
             }
             catch (Exception exception)
@@ -188,7 +175,7 @@
 
             try
             {
-                var serializedConfiguration = _configurationProvider.GetValue(ConfigurationProperties.ProxyConfiguration);
+                var serializedConfiguration = _configurationContainer.GetValue(ConfigurationProperties.ProxyConfiguration);
                 if (!string.IsNullOrWhiteSpace(serializedConfiguration))
                 {
                     var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));

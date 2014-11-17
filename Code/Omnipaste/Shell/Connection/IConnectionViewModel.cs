@@ -3,7 +3,7 @@
     using System;
     using OmniUI.HeaderButton;
 
-    public interface IConnectionViewModel : IHeaderButtonViewModel, IDisposable
+    public interface IConnectionViewModel : IHeaderItemViewModel, IDisposable
     {
     }
 }

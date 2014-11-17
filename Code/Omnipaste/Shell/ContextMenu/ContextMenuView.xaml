@@ -19,8 +19,6 @@
             <ContextMenu>
                 <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" IsCheckable="True" IsChecked="{Binding Path=AutoStart, Mode=TwoWay}" />
                 <Separator />
-                <MenuItem Header="{x:Static p:Resources.ContextMenuStopSync}" IsEnabled="{Binding Path=CanToggleSync}" 
-                          cal:Message.Attach="ToggleSync" IsCheckable="True" ToolTip="Temporarily stop clipboard synchronization" IsChecked="{Binding Path=IsStopped}" />
                 <MenuItem Header="{x:Static p:Resources.ButtonExit}" cal:Message.Attach="Exit" />
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>

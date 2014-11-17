@@ -9,9 +9,9 @@
     using System.Xml.Linq;
     using System.Xml.XPath;
     using BugFreak;
-    using OmniCommon.DataProviders;
+    using OmniCommon.Settings;
 
-    public class DPAPIConfigurationProvider : IConfigurationProvider
+    public class DPAPIConfigurationContainer : IConfigurationContainer
     {
         #region Constants
 
@@ -100,30 +100,6 @@
             var element = GetElementForKey(xDocument, key);
 
             return element.Descendants("Value").First().Value;
-        }
-
-        public T GetValue<T>(string key, T defaultValue)
-        {
-            var value = GetValue(key);
-            T result;
-
-            if (String.IsNullOrEmpty(value))
-            {
-                result = defaultValue;
-            }
-            else
-            {
-                try
-                {
-                    result = (T)Convert.ChangeType(value, typeof(T));
-                }
-                catch (FormatException)
-                {
-                    result = defaultValue;
-                }
-            }
-
-            return result;
         }
 
         public bool SetValue(string key, string value)

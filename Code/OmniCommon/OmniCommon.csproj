@@ -96,6 +96,7 @@
     <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Helpers\SchedulerProvider.cs" />
+    <Compile Include="Settings\IConfigurationProvider.cs" />
     <Compile Include="Models\OmniMessage.cs" />
     <Compile Include="Models\OmniMessageTypeEnum.cs" />
     <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
-    <Compile Include="DataProviders\IConfigurationProvider.cs" />
+    <Compile Include="Settings\IConfigurationContainer.cs" />
     <Compile Include="ProxyConfiguration.cs" />
     <Compile Include="ProxyTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

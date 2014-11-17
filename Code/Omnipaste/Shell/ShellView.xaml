@@ -283,7 +283,7 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands ItemsSource="{Binding Path=HeaderButtonViewModels}" Template="{StaticResource WindowCommandsTemplate}">
+        <controls:WindowCommands ItemsSource="{Binding Path=AllHeaderItems}" Template="{StaticResource WindowCommandsTemplate}">
             <controls:WindowCommands.ItemTemplate>
                 <DataTemplate>
                     <ContentControl cal:View.Model="{Binding}" />

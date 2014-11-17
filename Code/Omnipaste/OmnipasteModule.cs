@@ -7,6 +7,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.NotificationList;
@@ -35,14 +36,14 @@
             Kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
 
-            Kernel.Bind<IConfigurationProvider>().To<DPAPIConfigurationProvider>().InSingletonScope();
+            Kernel.Bind<IConfigurationContainer>().To<DPAPIConfigurationContainer>().InSingletonScope();
             Kernel.Bind<IWindowHandleProvider>().To<WindowHandleProvider>().InSingletonScope();
             Kernel.Bind<IArgumentsProvider>().To<EnvironmentArgumentsProvider>();
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
-            Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
+            Kernel.Bind<IHeaderItemViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();

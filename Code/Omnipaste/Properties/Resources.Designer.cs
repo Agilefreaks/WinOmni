@@ -268,6 +268,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string Connected {
+            get {
+                return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to appbar_connect.
         /// </summary>
         public static string ConnectIcon {
@@ -291,6 +300,15 @@ namespace Omnipaste.Properties {
         public static string ConnectionDisconnect {
             get {
                 return ResourceManager.GetString("ConnectionDisconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Error.
+        /// </summary>
+        public static string ConnectionError {
+            get {
+                return ResourceManager.GetString("ConnectionError", resourceCulture);
             }
         }
         
@@ -340,6 +358,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disconnected.
+        /// </summary>
+        public static string Disconnected {
+            get {
+                return ResourceManager.GetString("Disconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to appbar_disconnect.
         /// </summary>
         public static string DisconnectIcon {
@@ -358,7 +385,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add &quot;Sent Via Omnipaste&quot; to SMS.
+        ///   Looks up a localized string similar to Add &quot;via Omnipaste&quot; to SMS.
         /// </summary>
         public static string EnableSMSBranding {
             get {
@@ -628,7 +655,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sent via Omnipaste.
+        ///   Looks up a localized string similar to via Omnipaste.
         /// </summary>
         public static string SentFromOmnipaste {
             get {

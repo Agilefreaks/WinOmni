@@ -6,10 +6,9 @@
     using Omni;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Properties;
-    using Omnipaste.Services.Monitors.User;
     using OmniUI.Attributes;
 
-    [UseView("OmniUI.HeaderButton.HeaderButtonView", IsFullyQualifiedName = true)]
+    [UseView("OmniUI.HeaderButton.HeaderItemView", IsFullyQualifiedName = true)]
     public class ConnectionViewModel : Screen, IConnectionViewModel
     {
         #region Fields
@@ -18,13 +17,7 @@
 
         private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
 
-        private readonly IUserMonitor _userMonitor;
-
         private readonly IDisposable _statusObserver;
-
-        private readonly IDisposable _inTransitionObserver;
-
-        private bool _canPerformAction = true;
 
         private ConnectionStateEnum _state;
 
@@ -32,13 +25,12 @@
 
         #region Constructors and Destructors
 
-        public ConnectionViewModel(IUserMonitor userMonitor, IOmniService omniService)
+        public ConnectionViewModel(IOmniService omniService)
         {
-            _userMonitor = userMonitor;
             _toolTips = new Dictionary<ConnectionStateEnum, string>
                             {
-                                { ConnectionStateEnum.Connected, Resources.ConnectionDisconnect },
-                                { ConnectionStateEnum.Disconnected, Resources.ConnectionConnect }
+                                { ConnectionStateEnum.Connected, Resources.Connected },
+                                { ConnectionStateEnum.Disconnected, Resources.Disconnected }
                             };
             _icons = new Dictionary<ConnectionStateEnum, string>
                          {
@@ -51,8 +43,6 @@
                 newStatus == OmniServiceStatusEnum.Started
                     ? ConnectionStateEnum.Connected
                     : ConnectionStateEnum.Disconnected);
-            _inTransitionObserver = omniService.InTransitionObservable.SubscribeAndHandleErrors(
-                isInTransition => CanPerformAction = !isInTransition);
         }
 
         #endregion
@@ -67,34 +57,11 @@
             }
         }
 
-        public bool CanPerformAction
-        {
-            get
-            {
-                return _canPerformAction;
-            }
-            set
-            {
-                _canPerformAction = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public IEventAggregator EventAggregator { get; set; }
-
         public string Icon
         {
             get
             {
                 return _icons[State];
-            }
-        }
-
-        public bool IsConnected
-        {
-            get
-            {
-                return State == ConnectionStateEnum.Connected;
             }
         }
 
@@ -110,8 +77,6 @@
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => ButtonToolTip);
                 NotifyOfPropertyChange(() => Icon);
-                NotifyOfPropertyChange(() => IsConnected);
-                NotifyOfPropertyChange(() => CanPerformAction);
             }
         }
 
@@ -122,13 +87,6 @@
         public void Dispose()
         {
             _statusObserver.Dispose();
-            _inTransitionObserver.Dispose();
-        }
-
-        public void PerformAction()
-        {
-            _userMonitor.SendEvent(
-                State == ConnectionStateEnum.Connected ? UserEventTypeEnum.Disconnect : UserEventTypeEnum.Connect);
         }
 
         #endregion
