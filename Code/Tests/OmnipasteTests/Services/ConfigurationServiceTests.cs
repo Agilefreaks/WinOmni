@@ -6,6 +6,7 @@
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.Services;
 
     [TestFixture]

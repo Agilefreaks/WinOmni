@@ -10,6 +10,7 @@
     using System.Xml.XPath;
     using BugFreak;
     using OmniCommon.DataProviders;
+    using OmniCommon.Settings;
 
     public class DPAPIConfigurationContainer : IConfigurationContainer
     {

@@ -10,6 +10,7 @@
     using OmniCommon;
     using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
 
     public class ConfigurationService : IConfigurationService
     {

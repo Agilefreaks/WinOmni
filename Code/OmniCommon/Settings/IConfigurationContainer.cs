@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.DataProviders
+﻿namespace OmniCommon.Settings
 {
     public interface IConfigurationContainer
     {

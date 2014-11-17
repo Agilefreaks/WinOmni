@@ -7,6 +7,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.NotificationList;
