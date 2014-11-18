@@ -210,8 +210,6 @@
                     .Select(_ => Observable.Start(StartHandlers, SchedulerProvider.Default))
                     .Switch()
                     .Select(_ => Observable.Start(StartMonitoringWebSocket, SchedulerProvider.Default))
-                    .Switch()
-                    .Select(_ => Observable.Start(() => FinalizeStateChangeComplete(OmniServiceStatusEnum.Started), SchedulerProvider.Default))
                     .Switch();
         }
 
@@ -240,7 +238,6 @@
                         StopHandlers();
                         WebsocketConnection.Disconnect();
                         SimpleLogger.Log("Stopped OmniService");
-                        FinalizeStateChangeComplete(OmniServiceStatusEnum.Stopped);
                     },
                 SchedulerProvider.Default);
         }
@@ -268,7 +265,11 @@
             {
                 SimpleLogger.Log("Acquired lock, switchhing state");
                 var observable = newState == OmniServiceStatusEnum.Started ? StartCore() : StopCore();
-                result = observable.Catch<Unit, Exception>(OnStateTransitionException);
+                result =
+                    observable.Select(
+                        _ => Observable.Start(() => FinalizeStateChangeComplete(newState), SchedulerProvider.Default))
+                        .Switch()
+                        .Catch<Unit, Exception>(OnStateTransitionException);
             }
             else
             {
