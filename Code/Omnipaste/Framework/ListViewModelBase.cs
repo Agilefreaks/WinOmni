@@ -2,15 +2,13 @@ namespace Omnipaste.Framework
 {
     using System;
     using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.MasterClippingList;
     using OmniCommon.ExtensionMethods;
 
-    public abstract class ListViewModelBase<TEntity, TViewModel> : Screen
+    public abstract class ListViewModelBase<TEntity, TViewModel> : Screen, IDisposable
     {
         #region Constants
 
@@ -19,6 +17,8 @@ namespace Omnipaste.Framework
         #endregion
 
         #region Fields
+
+        private readonly IDisposable _entityObserver;
 
         private ListViewModelStatusEnum _status;
 
@@ -31,17 +31,15 @@ namespace Omnipaste.Framework
             Items = new LimitableBindableCollection<TViewModel>(ListLimit);
             Items.CollectionChanged += OnViewModelsCollectionChanged;
 
-            EntityObservable = entityObservable;
-            EntityObservable.Where(entity => Filter(entity))
-                .Select(CreateViewModel)
-                .SubscribeAndHandleErrors(clippingViewModel => Items.Insert(0, clippingViewModel));
+            _entityObserver =
+                entityObservable.Where(entity => Filter(entity))
+                    .Select(CreateViewModel)
+                    .SubscribeAndHandleErrors(clippingViewModel => Items.Insert(0, clippingViewModel));
         }
 
         #endregion
 
         #region Public Properties
-
-        public IObservable<TEntity> EntityObservable { get; set; }
 
         public virtual Func<TEntity, bool> Filter
         {
@@ -50,6 +48,8 @@ namespace Omnipaste.Framework
                 return @event => true;
             }
         }
+
+        public IObservableCollection<TViewModel> Items { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -67,7 +67,14 @@ namespace Omnipaste.Framework
             }
         }
 
-        public IObservableCollection<TViewModel> Items { get; set; }
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Dispose()
+        {
+            _entityObserver.Dispose();
+        }
 
         #endregion
 
