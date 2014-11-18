@@ -12,8 +12,8 @@
     using Clipboard.Handlers;
     using Events.Handlers;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
@@ -102,11 +102,13 @@
             if (_notificationsSubscription != null)
             {
                 _notificationsSubscription.Dispose();
+                _notificationsSubscription = null;
             }
 
             if (_clippingsSubscription != null)
             {
                 _clippingsSubscription.Dispose();
+                _clippingsSubscription = null;
             }
         }
 

@@ -1,8 +1,9 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
+    using System;
     using Caliburn.Micro;
 
-    public interface IContextMenuViewModel : IScreen
+    public interface IContextMenuViewModel : IScreen, IDisposable
     {
         #region Public Properties
 

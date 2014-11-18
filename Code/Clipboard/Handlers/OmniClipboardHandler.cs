@@ -5,6 +5,7 @@
     using System.Reactive.Subjects;
     using Clipboard.API.Resources.v1;
     using Clipboard.Models;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
@@ -64,20 +65,17 @@
 
         public void OnNext(OmniMessage value)
         {
-            _clippingsResource.Last().Subscribe(
-                // OnNext
+            _clippingsResource.Last().RunToCompletion(
                 c =>
                     {
                         c.Source = Clipping.ClippingSourceEnum.Cloud;
                         _subject.OnNext(c);
-                    },
-                // OnError
-                e => {});
+                    });
         }
 
         public void PostClipping(Clipping clipping)
         {
-            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => { }, _ => { });
+            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content).RunToCompletion();
         }
 
         public IObservable<Clipping> Clippings

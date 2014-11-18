@@ -1,16 +1,14 @@
 ﻿namespace Omnipaste.Event
 {
     using System;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Events.Models;
     using Ninject;
     using OmniApi.Resources.v1;
-    using OmniCommon.Helpers;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterEventList.Calling;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
@@ -75,9 +73,7 @@
 
         public void CallBack()
         {
-            Devices.Call(Model.PhoneNumber)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(m => ShowCallingNotification());
+            Devices.Call(Model.PhoneNumber).RunToCompletion(_ => ShowCallingNotification());
         }
 
         public void SendSms()

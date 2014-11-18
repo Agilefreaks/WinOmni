@@ -1,11 +1,11 @@
 ﻿namespace Events.Handlers
 {
     using System;
-    using System.Diagnostics;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Events.Api.Resources.v1;
     using Events.Models;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Models;
 
     public class EventsHandler : IEventsHandler
@@ -46,11 +46,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Events.Last().Subscribe(
-                // OnNext
-                n => _subject.OnNext(n),
-                // onError
-                e => {});
+            Events.Last().RunToCompletion(n => _subject.OnNext(n));
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)

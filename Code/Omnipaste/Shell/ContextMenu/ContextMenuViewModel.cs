@@ -1,12 +1,13 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
+    using System;
     using System.Windows;
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Behaviours;
     using Omnipaste.Services.Monitors.User;
 
@@ -24,6 +25,10 @@
 
         private bool _canToggleSync;
 
+        private IDisposable _statusChangedObserver;
+
+        private IDisposable _inTransitionChangedObserver;
+
         #endregion
 
         #region Constructors and Destructors
@@ -31,13 +36,13 @@
         public ContextMenuViewModel(IOmniService omniService, IUserMonitor userMonitor)
         {
             _userMonitor = userMonitor;
-            omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+            _statusChangedObserver = omniService.StatusChangedObservable.SubscribeAndHandleErrors(
                 status =>
-                    {
-                        IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico";
-                        IsStopped = status == OmniServiceStatusEnum.Stopped;
-                    });
-            omniService.InTransitionObservable.SubscribeAndHandleErrors(
+                {
+                    IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico";
+                    IsStopped = status == OmniServiceStatusEnum.Stopped;
+                });
+            _inTransitionChangedObserver = omniService.InTransitionObservable.SubscribeAndHandleErrors(
                 isInTransition => CanToggleSync = !isInTransition);
             IconSource = "/Disconnected.ico";
         }
@@ -138,6 +143,12 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public void Dispose()
+        {
+            _statusChangedObserver.Dispose();
+            _inTransitionChangedObserver.Dispose();
+        }
 
         public void Exit()
         {

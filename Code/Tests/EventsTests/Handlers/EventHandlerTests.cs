@@ -1,6 +1,7 @@
 ﻿namespace EventsTests.Handlers
 {
     using System;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Events.Api.Resources.v1;
     using Events.Handlers;
@@ -16,7 +17,7 @@
     {
         #region Fields
 
-        private Mock<IEvents> _mockNotifications;
+        private Mock<IEvents> _mockEvents;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -31,7 +32,7 @@
         {
             _mockingKernel = new MoqMockingKernel();
 
-            _mockNotifications = _mockingKernel.GetMock<IEvents>();
+            _mockEvents = _mockingKernel.GetMock<IEvents>();
             _mockingKernel.Bind<IEventsHandler>().To<EventsHandler>().InSingletonScope();
 
             _eventsHandler = _mockingKernel.Get<IEventsHandler>();
@@ -41,19 +42,18 @@
         public void WhenANotificationMessageArrives_SubscriberOnNextIsCalled()
         {
             var observer = new Mock<IObserver<Event>>();
-            var observable = new Subject<OmniMessage>();
-            var notificationObserver = new Subject<Event>();
-            var notification = new Event();
+            var omniMessageObservable = new Subject<OmniMessage>();
+            var @event = new Event();
+            var eventObservable = Observable.Return(@event);
 
-            _mockNotifications.Setup(m => m.Last()).Returns(notificationObserver);
+            _mockEvents.Setup(m => m.Last()).Returns(eventObservable);
 
-            _eventsHandler.Start(observable);
+            _eventsHandler.Start(omniMessageObservable);
             _eventsHandler.Subscribe(observer.Object);
 
-            observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
-            notificationObserver.OnNext(notification);
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
 
-            observer.Verify(o => o.OnNext(notification), Times.Once);
+            observer.Verify(o => o.OnNext(@event), Times.Once);
         }
 
         [Test]
