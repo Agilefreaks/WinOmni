@@ -3,8 +3,8 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-debug</AssemblyName>
     <AssemblyName>Omnipaste</AssemblyName>
+    <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-debug</AssemblyName>
     <AssemblyName Condition=" '$(Configuration)' == 'Staging' ">$(AssemblyName)-staging</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
