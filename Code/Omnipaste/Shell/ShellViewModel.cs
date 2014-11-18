@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
@@ -202,10 +201,7 @@
         {
             DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
-            ActivationService.Run()
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(OnActivationFinished, OnActivationFailed);
+            ActivationService.Run().RunToCompletion(OnActivationFinished, OnActivationFailed);
         }
 
         private void OnActivationFailed(Exception exception)

@@ -46,11 +46,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Events.Last().Subscribe(
-                // OnNext
-                n => _subject.OnNext(n),
-                // onError
-                e => {});
+            Events.Last().SubscribeAndHandleErrors(n => _subject.OnNext(n));
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)

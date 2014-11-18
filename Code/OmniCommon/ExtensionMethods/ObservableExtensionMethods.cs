@@ -4,7 +4,6 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Threading.Tasks;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Threading;
     using OmniCommon;
@@ -31,6 +30,33 @@
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
         {
             return observable.Subscribe(onNext, OnExceptionEncountered);
+        }
+
+        public static void RunToCompletion<T>(this IObservable<T> observable, Action<T> onCompletion = null, Action<Exception> onError = null)
+        {
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            Task.Factory.StartNew(
+                () =>
+                {
+                    var task =
+                        observable.ToTask();
+                    task.Wait();
+                    if (task.IsFaulted)
+                    {
+                        OnExceptionEncountered(task.Exception);
+                        if (onError != null)
+                        {
+                            onError(task.Exception);
+                        }
+                    }
+                    else
+                    {
+                        if (onCompletion != null)
+                        {
+                            dispatcher.Invoke(() => onCompletion(task.Result));
+                        }
+                    }
+                });
         }
 
         public static IObservable<T> RetryAfter<T>(

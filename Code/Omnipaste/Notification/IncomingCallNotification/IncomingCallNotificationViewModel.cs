@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Notification.IncomingCallNotification
 {
-    using System;
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Resources.v1;
@@ -103,9 +102,8 @@
         {
             CanEndCall = false;
 
-            Devices.EndCall()
-                .SubscribeAndHandleErrors(
-                    p =>
+            Devices.EndCall().SubscribeAndHandleErrors(
+                _ =>
                     {
                         EndCallButtonText = Resources.IncommingCallNotificationCallEnded;
                         Dismiss();

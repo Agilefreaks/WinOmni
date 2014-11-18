@@ -77,7 +77,7 @@
         {
             Devices.Call(Model.PhoneNumber)
                 .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(m => ShowCallingNotification());
+                .SubscribeAndHandleErrors(_ => ShowCallingNotification());
         }
 
         public void SendSms()

@@ -46,7 +46,7 @@
 
         public void LogOut()
         {
-            OmniService.Stop();
+            OmniService.Stop().RunToCompletion();
             ConfigurationService.ResetAuthSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
         }

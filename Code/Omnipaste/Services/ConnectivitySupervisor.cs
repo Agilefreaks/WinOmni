@@ -177,7 +177,7 @@
 
         private void StopOmniService()
         {
-            _omniService.Stop().SubscribeAndHandleErrors();
+            _omniService.Stop().RunToCompletion();
         }
 
         private void WebSocketConnectionChanged(WebSocketConnectionStatusEnum newState)

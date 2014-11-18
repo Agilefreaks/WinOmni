@@ -65,20 +65,18 @@
 
         public void OnNext(OmniMessage value)
         {
-            _clippingsResource.Last().Subscribe(
-                // OnNext
+            _clippingsResource.Last().SubscribeAndHandleErrors(
                 c =>
                     {
                         c.Source = Clipping.ClippingSourceEnum.Cloud;
                         _subject.OnNext(c);
-                    },
-                // OnError
-                e => {});
+                    });
         }
 
         public void PostClipping(Clipping clipping)
         {
-            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => { }, _ => { });
+            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content)
+                .SubscribeAndHandleErrors();
         }
 
         public IObservable<Clipping> Clippings
