@@ -4,6 +4,7 @@
     using System.Reactive.Subjects;
     using Ninject;
     using Omni;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
     public class SessionManager : ISessionManager
@@ -31,6 +32,14 @@
         [Inject]
         public IOmniService OmniService { get; set; }
 
+        public IObservable<EventArgs> SessionDestroyedObservable
+        {
+            get
+            {
+                return _sessionDestroyedObservable;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -40,11 +49,6 @@
             OmniService.Stop();
             ConfigurationService.ResetAuthSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
-        }
-
-        public IObservable<EventArgs> SessionDestroyedObservable()
-        {
-            return _sessionDestroyedObservable;
         }
 
         #endregion

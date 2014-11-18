@@ -13,6 +13,7 @@
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.ExtensionMethods;

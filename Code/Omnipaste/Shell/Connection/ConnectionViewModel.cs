@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Omni;
-    using Omnipaste.ExtensionMethods;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Properties;
     using Omnipaste.Services.Monitors.User;
     using OmniUI.Attributes;

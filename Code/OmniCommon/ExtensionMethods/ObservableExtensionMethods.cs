@@ -1,29 +1,36 @@
-﻿namespace Omnipaste.ExtensionMethods
+﻿namespace OmniCommon.ExtensionMethods
 {
     using System;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using BugFreak;
+    using System.Reactive.Threading.Tasks;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Threading;
     using OmniCommon;
     using OmniCommon.Helpers;
 
     public static class ObservableExtensionMethods
     {
+        public static IExceptionReporter ExceptionReporter { get; set; }
+
+        private static void OnExceptionEncountered(Exception exception)
+        {
+            var reporter = ExceptionReporter ?? NullExceptionReporter.Instance;
+            SimpleLogger.Log("Exception encountered: " + exception);
+            reporter.Report(exception);
+        }
+
         public static readonly Func<int, TimeSpan> ExponentialBackoff = n => TimeSpan.FromSeconds(Math.Pow(n, 2));
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable)
         {
-            return observable.Subscribe(_ => { },
-                exception =>
-                    {
-                        SimpleLogger.Log("Exception encountered: " + exception);
-                        ReportingService.Instance.BeginReport(exception);
-                    });
+            return observable.Subscribe(_ => { }, OnExceptionEncountered);
         }
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
         {
-            return observable.Subscribe(onNext, exception => ReportingService.Instance.BeginReport(exception));
+            return observable.Subscribe(onNext, OnExceptionEncountered);
         }
 
         public static IObservable<T> RetryAfter<T>(

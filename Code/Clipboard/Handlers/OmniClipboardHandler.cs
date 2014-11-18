@@ -5,6 +5,7 @@
     using System.Reactive.Subjects;
     using Clipboard.API.Resources.v1;
     using Clipboard.Models;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 

@@ -4,9 +4,9 @@
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Behaviours;
     using Omnipaste.Services.Monitors.User;
 

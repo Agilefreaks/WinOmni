@@ -4,9 +4,9 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Resources.v1;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
 
     public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {

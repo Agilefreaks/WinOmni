@@ -14,6 +14,7 @@
     using OmniApi;
     using OmniCommon;
     using OmniCommon.DataProviders;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using OmniDebug;
     using Omnipaste.Services;
@@ -103,6 +104,7 @@
                 configurationService[ConfigurationProperties.BugFreakApiKey],
                 configurationService[ConfigurationProperties.BugFreakToken],
                 Application.Current);
+            ObservableExtensionMethods.ExceptionReporter = _kernel.Get<IExceptionReporter>();
 
             if (configurationService.DebugMode)
             {

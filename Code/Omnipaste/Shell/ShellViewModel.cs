@@ -3,16 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -51,7 +51,7 @@
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
 
-            sessionManager.SessionDestroyedObservable()
+            sessionManager.SessionDestroyedObservable
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .SubscribeAndHandleErrors(eventArgs => Configure());
 
@@ -203,7 +203,7 @@
             DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
             ActivationService.Run()
-                .SubscribeOn(Scheduler.Default)
+                .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .Subscribe(OnActivationFinished, OnActivationFailed);
         }

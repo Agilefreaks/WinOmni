@@ -9,8 +9,8 @@
     using Ninject;
     using Omni;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;

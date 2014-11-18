@@ -5,6 +5,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.DataProviders;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
@@ -46,6 +47,8 @@
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
+
+            Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
