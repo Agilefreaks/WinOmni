@@ -63,7 +63,7 @@
                 .Callback<IObserver<ClipboardEventArgs>>(o => _clipboardEventsStream.Subscribe(o));
             Clipping clipping = null;
             _subject.Start();
-            _subject.Subscribe(c => clipping = c);
+            _subject.Clippings.Subscribe(c => clipping = c);
 
             _testScheduler.Start();
 
@@ -82,7 +82,7 @@
         public void PostClipping_DoesNotCallOnNext()
         {
             var observer = new Mock<IObserver<Clipping>>();
-            _subject.Subscribe(observer.Object);
+            _subject.Clippings.Subscribe(observer.Object);
 
             _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
                 .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs() { Data = "42" }));

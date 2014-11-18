@@ -113,7 +113,7 @@
         private void CreateNotificationsFromIncomingClippings()
         {
             _clippingsSubscription =
-                _omniClipboardHandler.ObserveOn(SchedulerProvider.Dispatcher)
+                _omniClipboardHandler.Clippings.ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(
                         clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
         }

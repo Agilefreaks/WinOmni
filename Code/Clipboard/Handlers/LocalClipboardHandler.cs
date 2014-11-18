@@ -56,6 +56,14 @@ namespace Clipboard.Handlers
             _windowsClipboardWrapper.SetData(clipping.Content);
         }
 
+        public IObservable<Clipping> Clippings
+        {
+            get
+            {
+                return _subject;
+            }
+        }
+
         public void Start()
         {
             Stop();
@@ -66,11 +74,6 @@ namespace Clipboard.Handlers
         public void Stop()
         {
             Dispose();
-        }
-
-        public IDisposable Subscribe(IObserver<Clipping> observer)
-        {
-            return _subject.Subscribe(observer);
         }
 
         #endregion

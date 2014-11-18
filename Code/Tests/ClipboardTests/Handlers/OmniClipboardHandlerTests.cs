@@ -50,7 +50,7 @@
                 .Returns(Observable.Return(clipping));
 
             _omniClipboardHandler.Start(observable);
-            _omniClipboardHandler.Subscribe(observer.Object);
+            _omniClipboardHandler.Clippings.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
 
@@ -63,7 +63,7 @@
             var observer = new Mock<IObserver<Clipping>>();
             var observable = new Subject<OmniMessage>();
 
-            _omniClipboardHandler.Subscribe(observer.Object);
+            _omniClipboardHandler.Clippings.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
 

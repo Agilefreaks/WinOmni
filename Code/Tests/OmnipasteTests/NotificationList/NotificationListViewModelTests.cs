@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive;
-    using Caliburn.Micro;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -40,11 +39,7 @@
 
         private ITestableObservable<Event> _testableEventsObservable;
 
-        private ITestableObservable<Event> _testableIncomingCallObservable;
-
         private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
-
-        private Mock<IEventAggregator> _eventAggregator;
 
         private Mock<IApplicationService> _mockApplicationService;
 
@@ -70,7 +65,6 @@
             _mockingKernel.Bind<IApplicationService>().ToConstant(_mockApplicationService.Object);
             _mockNotificationViewModelFactory = _mockingKernel.GetMock<INotificationViewModelFactory>();
             _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
-            _eventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             
             _subject = _mockingKernel.Get<INotificationListViewModel>();
         }
@@ -86,8 +80,7 @@
         {
             _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Clipping>()))
                 .Returns(new Mock<IClippingNotificationViewModel>().Object);
-            _mockOmniClipboardHandler.Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
-                .Callback<IObserver<Clipping>>(o => _testableClippingsObservable.Subscribe(o));
+            _mockOmniClipboardHandler.Setup(h => h.Clippings).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -101,8 +94,7 @@
             var mockClippingNotificationViewModel = new Mock<IClippingNotificationViewModel>();
             _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Clipping>()))
                 .Returns(mockClippingNotificationViewModel.Object);
-            _mockOmniClipboardHandler.Setup(h => h.Subscribe(It.IsAny<IObserver<Clipping>>()))
-                .Callback<IObserver<Clipping>>(o => _testableClippingsObservable.Subscribe(o));
+            _mockOmniClipboardHandler.Setup(h => h.Clippings).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -149,7 +141,10 @@
                 _testScheduler.CreateHotObservable(
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnNext(new Clipping())));
 
-            _testableIncomingCallObservable = _testScheduler.CreateHotObservable(new Recorded<Notification<Event>>(300, Notification.CreateOnNext(new Event { PhoneNumber = "phone number"})));
+            _testScheduler.CreateHotObservable(
+                new Recorded<Notification<Event>>(
+                    300,
+                    Notification.CreateOnNext(new Event { PhoneNumber = "phone number" })));
             _testableEventsObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event {PhoneNumber = "your number"})));

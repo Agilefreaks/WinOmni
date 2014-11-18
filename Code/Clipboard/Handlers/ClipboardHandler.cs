@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using Clipboard.Models;
+    using OmniCommon.Helpers;
     using OmniCommon.Models;
 
     public class ClipboardHandler : IClipboardHandler
@@ -26,7 +26,7 @@
             OmniClipboardHandler = omniClipboardHandler;
             LocalClipboardHandler = localClipboardHandler;
 
-            _clippingsObservable = OmniClipboardHandler.Merge(LocalClipboardHandler);
+            _clippingsObservable = OmniClipboardHandler.Clippings.Merge(LocalClipboardHandler.Clippings);
         }
 
         #endregion
@@ -48,16 +48,16 @@
             LocalClipboardHandler.Start();
 
             _observers.Add(
-                OmniClipboardHandler
-                .SubscribeOn(Scheduler.Default)
+                OmniClipboardHandler.Clippings
+                .SubscribeOn(SchedulerProvider.Default)
                 .Subscribe(
                     // OnNext
                     clipping => LocalClipboardHandler.PostClipping(clipping),
                     _ => { }));
 
             _observers.Add(
-                LocalClipboardHandler
-                .SubscribeOn(Scheduler.Default)
+                LocalClipboardHandler.Clippings
+                .SubscribeOn(SchedulerProvider.Default)
                 .Subscribe(
                     // OnNext
                     clipping => OmniClipboardHandler.PostClipping(clipping),

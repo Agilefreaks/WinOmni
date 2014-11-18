@@ -8,7 +8,7 @@ namespace Omnipaste.MasterClippingList.LocalClippingList
     public class LocalClippingListViewModel : ClippingListViewModelBase, ILocalClippingListViewModel
     {
         public LocalClippingListViewModel(ILocalClipboardHandler localClipboardHandler)
-            : base(localClipboardHandler)
+            : base(localClipboardHandler.Clippings)
         {
         }
     }

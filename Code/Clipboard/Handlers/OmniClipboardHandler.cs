@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using System.Diagnostics;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Clipboard.API.Resources.v1;
@@ -11,6 +10,8 @@
 
     public class OmniClipboardHandler : IOmniClipboardHandler
     {
+        private readonly IClippings _clippingsResource;
+
         #region Fields
 
         private readonly Subject<Clipping> _subject;
@@ -21,18 +22,16 @@
 
         #region Constructors and Destructors
 
-        public OmniClipboardHandler(IClippings clippings, IConfigurationService configurationService)
+        public OmniClipboardHandler(IClippings clippingsResource, IConfigurationService configurationService)
         {
+            _clippingsResource = clippingsResource;
             _subject = new Subject<Clipping>();
-            Clippings = clippings;
             ConfigurationService = configurationService;
         }
 
         #endregion
 
         #region Public Properties
-
-        public IClippings Clippings { get; private set; }
 
         public IConfigurationService ConfigurationService { get; set; }
 
@@ -65,7 +64,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Clippings.Last().Subscribe(
+            _clippingsResource.Last().Subscribe(
                 // OnNext
                 c =>
                     {
@@ -78,7 +77,15 @@
 
         public void PostClipping(Clipping clipping)
         {
-            Clippings.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => { }, _ => { });
+            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content).Subscribe(_ => { }, _ => { });
+        }
+
+        public IObservable<Clipping> Clippings
+        {
+            get
+            {
+                return _subject;
+            }
         }
 
         public void Start(IObservable<OmniMessage> observable)

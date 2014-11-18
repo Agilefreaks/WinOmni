@@ -8,7 +8,7 @@ namespace Omnipaste.MasterClippingList.CloudClippingList
     public class CloudClippingListViewModel : ClippingListViewModelBase, ICloudClippingListViewModel
     {
         public CloudClippingListViewModel(IOmniClipboardHandler entityObservable)
-            : base(entityObservable)
+            : base(entityObservable.Clippings)
         {
         }
     }

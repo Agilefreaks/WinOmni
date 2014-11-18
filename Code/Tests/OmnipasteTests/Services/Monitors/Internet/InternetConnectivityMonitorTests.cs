@@ -29,9 +29,9 @@
         [Test]
         public void ConnectivityChangedObservable_AfterCallingStart_GeneratesANewValueForEachTimeTheInternetConnectedPropertyChanges()
         {
-            var values = new [] { false, true, true, true, false };
-            var index = 0;
-            _mockConnectivityHelper.SetupGet(x => x.InternetConnected).Returns(() => values[index++]);
+            var values = new[] { false, true, true, true, false, false };
+            var checkCount = 0;
+            _mockConnectivityHelper.SetupGet(x => x.InternetConnected).Returns(() => values[checkCount++]);
 
             var detectedChangeCount = 0;
             _subject.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
@@ -40,6 +40,7 @@
             _subject.Start();
 
             Thread.Sleep(TimeSpan.FromMilliseconds(_checkInterval.TotalMilliseconds * values.Length));
+
             detectedChangeCount.Should().Be(2);
         }
     }

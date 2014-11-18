@@ -3,8 +3,10 @@
     using System;
     using Clipboard.Models;
 
-    public interface IClipboard : IObservable<Clipping>, IDisposable
+    public interface IClipboard
     {
         void PostClipping(Clipping clipping);
+
+        IObservable<Clipping> Clippings { get; }
     }
 }
