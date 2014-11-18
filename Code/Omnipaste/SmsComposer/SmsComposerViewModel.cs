@@ -105,7 +105,7 @@
         {
             State = SmsComposerStatusEnum.Sending;
             Devices.SendSms(Model.Recipient, Model.Message)
-                .SubscribeAndHandleErrors(m => { State = SmsComposerStatusEnum.Sent; });
+                .RunToCompletion(m => { State = SmsComposerStatusEnum.Sent; });
         }
 
         #endregion

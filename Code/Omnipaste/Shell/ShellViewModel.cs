@@ -41,6 +41,8 @@
 
         private INotificationListViewModel _notificationListViewModel;
 
+        private IDisposable _sessionObserver;
+
         #endregion
 
         #region Constructors and Destructors
@@ -50,7 +52,7 @@
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
 
-            sessionManager.SessionDestroyedObservable
+            _sessionObserver = sessionManager.SessionDestroyedObservable
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .SubscribeAndHandleErrors(eventArgs => Configure());
 
@@ -156,6 +158,11 @@
         {
             e.Cancel = true;
             Close();
+        }
+
+        public void Dispose()
+        {
+            _sessionObserver.Dispose();
         }
 
         public void Handle(ShowShellMessage message)

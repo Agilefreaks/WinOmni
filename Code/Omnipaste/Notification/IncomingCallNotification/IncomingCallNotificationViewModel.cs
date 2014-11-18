@@ -102,7 +102,7 @@
         {
             CanEndCall = false;
 
-            Devices.EndCall().SubscribeAndHandleErrors(
+            Devices.EndCall().RunToCompletion(
                 _ =>
                     {
                         EndCallButtonText = Resources.IncommingCallNotificationCallEnded;

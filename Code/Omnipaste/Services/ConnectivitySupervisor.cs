@@ -41,10 +41,6 @@
         {
             _eventObservers = new List<IDisposable>();
             _omniService = omniService;
-            _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Default)
-                .SubscribeAndHandleErrors(_ => StopConnectProcess());
         }
 
         #endregion
@@ -74,6 +70,12 @@
         {
             Stop();
             _eventObservers.Add(
+                _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(_ => StopConnectProcess()));
+
+            _eventObservers.Add(
                 InternetConnectivityMonitor.ConnectivityChangedObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(OnInternetConnectivityChanged));
@@ -102,6 +104,7 @@
         public void Stop()
         {
             _eventObservers.ForEach(observer => observer.Dispose());
+            _eventObservers.Clear();
         }
 
         #endregion
