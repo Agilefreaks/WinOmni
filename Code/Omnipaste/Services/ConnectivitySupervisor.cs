@@ -9,8 +9,8 @@
     using Ninject;
     using Omni;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
@@ -41,10 +41,6 @@
         {
             _eventObservers = new List<IDisposable>();
             _omniService = omniService;
-            _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Default)
-                .SubscribeAndHandleErrors(_ => StopConnectProcess());
         }
 
         #endregion
@@ -74,6 +70,12 @@
         {
             Stop();
             _eventObservers.Add(
+                _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(_ => StopConnectProcess()));
+
+            _eventObservers.Add(
                 InternetConnectivityMonitor.ConnectivityChangedObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(OnInternetConnectivityChanged));
@@ -102,6 +104,7 @@
         public void Stop()
         {
             _eventObservers.ForEach(observer => observer.Dispose());
+            _eventObservers.Clear();
         }
 
         #endregion
@@ -177,7 +180,7 @@
 
         private void StopOmniService()
         {
-            _omniService.Stop().SubscribeAndHandleErrors();
+            _omniService.Stop().RunToCompletion();
         }
 
         private void WebSocketConnectionChanged(WebSocketConnectionStatusEnum newState)

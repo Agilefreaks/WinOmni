@@ -1,5 +1,7 @@
 ﻿namespace OmnipasteTests.Event
 {
+    using System.Reactive.Linq;
+    using System.Threading;
     using Caliburn.Micro;
     using Events.Models;
     using Microsoft.Reactive.Testing;
@@ -29,8 +31,6 @@
         private TestScheduler _testScheduler;
 
         private Mock<IDialogViewModel> _mockDialogViewModel;
-
-        private ITestableObservable<EmptyModel> _testableObservable;
 
         [SetUp]
         public void SetUp()
@@ -71,11 +71,15 @@
         [Test]
         public void CallBack_ShowsTheCallingScreenInTheDialogViewModel()
         {
-            _mockDevices.Setup(d => d.Call(It.IsAny<string>())).Returns(_testableObservable);
-            
-            _subject.CallBack();
-            _testScheduler.Start();
+            _mockDevices.Setup(d => d.Call(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
+            DispatcherProvider.Current = new ImmediateDispatcher();
+            var autoResetEvent = new AutoResetEvent(false);
+            _mockDialogViewModel.Setup(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()))
+                .Callback(() => autoResetEvent.Set());
 
+            _subject.CallBack();
+
+            autoResetEvent.WaitOne();
             _mockDialogViewModel.Verify(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()));
         }
 
@@ -83,7 +87,7 @@
         {
             _testScheduler = new TestScheduler();
 
-            _testableObservable = _testScheduler.CreateHotObservable(
+            _testScheduler.CreateHotObservable(
                 new Recorded<System.Reactive.Notification<EmptyModel>>(
                     0,
                     System.Reactive.Notification.CreateOnNext(new EmptyModel())));

@@ -1,7 +1,9 @@
 ﻿namespace EventsTests.Handlers
 {
     using System;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Threading;
     using Events.Api.Resources.v1;
     using Events.Handlers;
     using Events.Models;
@@ -9,6 +11,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using OmniCommon.Models;
 
     [TestFixture]
@@ -16,7 +19,7 @@
     {
         #region Fields
 
-        private Mock<IEvents> _mockNotifications;
+        private Mock<IEvents> _mockEvents;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -31,7 +34,7 @@
         {
             _mockingKernel = new MoqMockingKernel();
 
-            _mockNotifications = _mockingKernel.GetMock<IEvents>();
+            _mockEvents = _mockingKernel.GetMock<IEvents>();
             _mockingKernel.Bind<IEventsHandler>().To<EventsHandler>().InSingletonScope();
 
             _eventsHandler = _mockingKernel.Get<IEventsHandler>();
@@ -41,19 +44,19 @@
         public void WhenANotificationMessageArrives_SubscriberOnNextIsCalled()
         {
             var observer = new Mock<IObserver<Event>>();
-            var observable = new Subject<OmniMessage>();
-            var notificationObserver = new Subject<Event>();
-            var notification = new Event();
-
-            _mockNotifications.Setup(m => m.Last()).Returns(notificationObserver);
-
-            _eventsHandler.Start(observable);
+            var omniMessageObservable = new Subject<OmniMessage>();
+            var @event = new Event();
+            _mockEvents.Setup(m => m.Last()).Returns(Observable.Return(@event));
+            _eventsHandler.Start(omniMessageObservable);
             _eventsHandler.Subscribe(observer.Object);
+            DispatcherProvider.Current = new ImmediateDispatcher();
+            var autoResetEvent = new AutoResetEvent(false);
+            observer.Setup(o => o.OnNext(@event)).Callback(() => autoResetEvent.Set());
 
-            observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
-            notificationObserver.OnNext(notification);
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
 
-            observer.Verify(o => o.OnNext(notification), Times.Once);
+            autoResetEvent.WaitOne(1000);
+            observer.Verify(o => o.OnNext(@event), Times.Once);
         }
 
         [Test]

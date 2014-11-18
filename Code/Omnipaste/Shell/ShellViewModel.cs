@@ -3,16 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Windows;
     using System.Windows.Interop;
+    using System.Windows.Threading;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -42,6 +42,8 @@
 
         private INotificationListViewModel _notificationListViewModel;
 
+        private IDisposable _sessionObserver;
+
         #endregion
 
         #region Constructors and Destructors
@@ -51,7 +53,7 @@
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
 
-            sessionManager.SessionDestroyedObservable()
+            _sessionObserver = sessionManager.SessionDestroyedObservable
                 .ObserveOn(SchedulerProvider.Dispatcher)
                 .SubscribeAndHandleErrors(eventArgs => Configure());
 
@@ -159,6 +161,11 @@
             Close();
         }
 
+        public void Dispose()
+        {
+            _sessionObserver.Dispose();
+        }
+
         public void Handle(ShowShellMessage message)
         {
             Show();
@@ -203,9 +210,7 @@
             DialogViewModel.ActivateItem(LoadingViewModel.Loading());
 
             ActivationService.Run()
-                .SubscribeOn(Scheduler.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .Subscribe(OnActivationFinished, OnActivationFailed);
+                .RunToCompletion(OnActivationFinished, OnActivationFailed, DispatcherProvider.Current);
         }
 
         private void OnActivationFailed(Exception exception)

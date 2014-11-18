@@ -69,6 +69,7 @@
             OmniClipboardHandler.Stop();
             LocalClipboardHandler.Stop();
             _observers.ForEach(observer => observer.Dispose());
+            _observers.Clear();
         }
 
         public IDisposable Subscribe(IObserver<Clipping> observer)

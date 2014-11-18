@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Threading;
     using Clipboard.API.Resources.v1;
     using Clipboard.Handlers;
     using Clipboard.Models;
@@ -10,6 +11,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
@@ -42,18 +44,18 @@
         public void WhenAClippingMessageArrives_SubscriberOnNextIsCalled()
         {
             var observer = new Mock<IObserver<Clipping>>();
-            var observable = new Subject<OmniMessage>();
+            var omniMessageObservable = new Subject<OmniMessage>();
             var clipping = new Clipping();
-
-            _mockClippings
-                .Setup(c => c.Last())
-                .Returns(Observable.Return(clipping));
-
-            _omniClipboardHandler.Start(observable);
+            _mockClippings.Setup(c => c.Last()).Returns(Observable.Return(clipping));
+            _omniClipboardHandler.Start(omniMessageObservable);
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
+            DispatcherProvider.Current = new ImmediateDispatcher();
+            var autoResetEvent = new AutoResetEvent(false);
+            observer.Setup(o => o.OnNext(clipping)).Callback(() => autoResetEvent.Set());
 
-            observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
 
+            autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(clipping), Times.Once);
         }
 

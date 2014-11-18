@@ -82,6 +82,13 @@
     <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="Helpers\DispatcherProvider.cs" />
+    <Compile Include="ExtensionMethods\IExceptionReporter.cs" />
+    <Compile Include="ExtensionMethods\NullExceptionReporter.cs" />
+    <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
+    <Compile Include="Helpers\DispatcherWrapper.cs" />
+    <Compile Include="Helpers\IDispatcher.cs" />
+    <Compile Include="Helpers\ImmediateDispatcher.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Interfaces\IProxyConfigurationObserver.cs" />

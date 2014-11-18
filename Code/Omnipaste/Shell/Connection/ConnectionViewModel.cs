@@ -1,9 +1,10 @@
 ﻿namespace Omnipaste.Shell.Connection
 {
+    using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Omni;
-    using Omnipaste.ExtensionMethods;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Properties;
     using Omnipaste.Services.Monitors.User;
     using OmniUI.Attributes;
@@ -18,6 +19,10 @@
         private readonly Dictionary<ConnectionStateEnum, string> _toolTips;
 
         private readonly IUserMonitor _userMonitor;
+
+        private readonly IDisposable _statusObserver;
+
+        private readonly IDisposable _inTransitionObserver;
 
         private bool _canPerformAction = true;
 
@@ -40,13 +45,13 @@
                              { ConnectionStateEnum.Connected, Resources.DisconnectIcon },
                              { ConnectionStateEnum.Disconnected, Resources.ConnectIcon }
                          };
-            omniService.StatusChangedObservable.SubscribeAndHandleErrors(
+            _statusObserver = omniService.StatusChangedObservable.SubscribeAndHandleErrors(
                 newStatus =>
                 State =
                 newStatus == OmniServiceStatusEnum.Started
                     ? ConnectionStateEnum.Connected
                     : ConnectionStateEnum.Disconnected);
-            omniService.InTransitionObservable.SubscribeAndHandleErrors(
+            _inTransitionObserver = omniService.InTransitionObservable.SubscribeAndHandleErrors(
                 isInTransition => CanPerformAction = !isInTransition);
         }
 
@@ -113,6 +118,12 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public void Dispose()
+        {
+            _statusObserver.Dispose();
+            _inTransitionObserver.Dispose();
+        }
 
         public void PerformAction()
         {

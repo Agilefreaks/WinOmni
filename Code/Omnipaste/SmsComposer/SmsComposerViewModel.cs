@@ -4,9 +4,9 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Resources.v1;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
 
     public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {
@@ -105,7 +105,7 @@
         {
             State = SmsComposerStatusEnum.Sending;
             Devices.SendSms(Model.Recipient, Model.Message)
-                .SubscribeAndHandleErrors(m => { State = SmsComposerStatusEnum.Sent; });
+                .RunToCompletion(m => { State = SmsComposerStatusEnum.Sent; });
         }
 
         #endregion

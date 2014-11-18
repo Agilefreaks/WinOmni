@@ -36,7 +36,7 @@
         {
             _subject.LogOut();
 
-            //_mockOmniService.Verify(os => os.StopWithDefaultObserver(), Times.Once());
+            _mockOmniService.Verify(os => os.Stop(), Times.Once());
         }
 
         [Test]
@@ -51,7 +51,7 @@
         public void LogOut_TriggersOnNextOnSessionDestroyObserver()
         {
             var testableObserver = new TestScheduler().CreateObserver<EventArgs>();
-            _subject.SessionDestroyedObservable().Subscribe(testableObserver);
+            _subject.SessionDestroyedObservable.Subscribe(testableObserver);
 
             _subject.LogOut();
 

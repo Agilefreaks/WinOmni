@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Shell
 {
+    using System;
     using Caliburn.Micro;
     using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
@@ -7,7 +8,7 @@
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
 
-    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>
+    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
     {
         ILoadingViewModel LoadingViewModel { get; set; }
 
