@@ -2,7 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:Clipboard.Models;assembly=Clipboard"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:models1="clr-namespace:Events.Models;assembly=Events">
+                    xmlns:models1="clr-namespace:Events.Models;assembly=Events"
+                    xmlns:notification="clr-namespace:Omnipaste.Notification"
+                    xmlns:cal="http://www.caliburnproject.org"
+                    xmlns:p="clr-namespace:Omnipaste.Properties">
 
     <!-- Colors -->
     <Color x:Key="MainColor">#FF4E5CA9</Color>
@@ -19,6 +22,19 @@
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
     <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />
     <VisualBrush x:Key="CallVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_phone}" />
+
+    <!-- Effects -->
+    <DropShadowEffect x:Key="NotificationDropShadowEffect" ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
+
+    <Storyboard x:Key="NotificationFadeOutStoryboard">
+        <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Container"
+                                         Duration="0:0:0.5" />
+    </Storyboard>
+
+    <Storyboard x:Key="NotificationFadeInStoryboard">
+        <DoubleAnimation From="0.1" To="1" Storyboard.TargetProperty="Opacity" 
+                                             Duration="0:0:0.5"/>
+    </Storyboard>
 
     <!-- TextBlock -->
     <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -70,6 +86,16 @@
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
     </Style>
+    
+    <Style x:Key="NotificationTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
+        <Setter Property="Text" Value="{Binding Path=Title}"/>
+        <Setter Property="Margin" Value="2,4,4,2"/>
+    </Style>
+
+    <Style x:Key="NotificationContentTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
+        <Setter Property="Text" Value="{Binding Path=Message}"/>
+        <Setter Property="Margin" Value="2,2,4,4"/>
+    </Style>
 
     <!-- Label -->
     <Style x:Key="HeaderStyle" TargetType="Label">
@@ -112,6 +138,11 @@
                 <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibility}}" />
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="NotificationCloseButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="ToolTip" Value="{x:Static p:Resources.Dismiss}"/>
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 
     <!-- Shapes -->
@@ -435,5 +466,60 @@
     <!--ComboBox-->
     <Style x:Key="SpacedComboBoxStyle" BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
         <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <!--Border-->
+    <Style x:Key="NotificationBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="Effect" Value="{DynamicResource NotificationDropShadowEffect}"/>
+        <Setter Property="Height" Value="90"/>
+        <Setter Property="Width" Value="380"/>
+    </Style>
+
+    <!--ItemsControl-->
+    <Style x:Key="NotificationContainerStyle" BasedOn="{StaticResource {x:Type ItemsControl}}" TargetType="ItemsControl">
+        <Style.Resources>
+            <DataTemplate x:Key="NotificationDataTemplate">
+                <DataTemplate.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource NotificationFadeInStoryboard}"/>
+                    </EventTrigger>
+                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Closed}">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource NotificationFadeOutStoryboard}" />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+                <Grid x:Name="Container" HorizontalAlignment="Right">
+                    <Border Name="Border" Style="{DynamicResource NotificationBorderStyle}">
+                        <DockPanel LastChildFill="True">
+                            <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel LastChildFill="True">
+                                    <Button Style="{DynamicResource NotificationCloseButton}" DockPanel.Dock="Right"
+                                            cal:Message.Attach="Close">
+                                        <Rectangle Width="12" Height="12" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </Button>
+                                    <TextBlock Style="{DynamicResource NotificationTitleTextBlockStyle}" />
+                                </DockPanel>
+                                <TextBlock Grid.Row="1" Style="{DynamicResource NotificationContentTextBlockStyle}" />
+                            </Grid>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+        </Style.Resources>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="ItemTemplate" Value="{DynamicResource NotificationDataTemplate}"/>
     </Style>
 </ResourceDictionary>

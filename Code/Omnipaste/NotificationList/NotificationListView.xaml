@@ -3,71 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:cal="http://www.caliburnproject.org"
-        xmlns:notification="clr-namespace:Omnipaste.Notification"
-        mc:Ignorable="d" 
-        d:DesignHeight="300" d:DesignWidth="300"
+        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
         HorizontalContentAlignment="Right">
     <UserControl.Resources>
-        <DataTemplate x:Key="MessageTemplate">
-            <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation From="0.1" To="1" Storyboard.TargetProperty="Opacity" 
-                                             Duration="0:0:0.5"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Closed}">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Container"
-                                         Duration="0:0:0.5" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                </DataTrigger>
-            </DataTemplate.Triggers>
-            <Grid x:Name="Container" HorizontalAlignment="Right">
-                <Border Name="Border" Background="{StaticResource NotificationBackgroundBrush}" BorderThickness="0" Margin="10">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
-                    </Border.Effect>
-                    <DockPanel Height="100" Width="280" LastChildFill="True">
-                        <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <DockPanel LastChildFill="True">
-                                <Button cal:Message.Attach="Close" ToolTip="Dismiss" DockPanel.Dock="Right"
-                                        Background="Transparent" x:Name="CloseButton">
-                                    <Rectangle Width="12" Height="12"
-                                       Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_close}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                </Button>
-                                <TextBlock Text="{Binding Path=Title}"
-                                   Margin="2,4,4,2"
-                                   Style="{StaticResource LightTitleTextBlock}" />
-                            </DockPanel>
-                            <TextBlock Grid.Row="1" Margin="2,2,4,4" 
-                                       Text="{Binding Path=Message}"
-                                       Style="{StaticResource LightTextBlock}" />
-                        </Grid>
-                    </DockPanel>
-                </Border>
-            </Grid>
-        </DataTemplate>
+        
     </UserControl.Resources>
     <Grid>
         <ItemsControl x:Name="Notifications" 
-                      ItemTemplate="{StaticResource MessageTemplate}" 
-                      ItemsSource="{Binding Path=Notifications}"/>
+                      Style="{DynamicResource NotificationContainerStyle}"
+                      ItemsSource="{Binding Path=Notifications}" />
     </Grid>
 </UserControl>
