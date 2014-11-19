@@ -1,10 +1,10 @@
 ﻿namespace OmnipasteTests.Services
 {
+    using BugFreak;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniCommon;
-    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
     using Omnipaste.Services;
@@ -21,6 +21,7 @@
         {
             _mockConfigurationProvider = new Mock<IConfigurationContainer>();
             _subject = new ConfigurationService(_mockConfigurationProvider.Object);
+            SetupBugFreak();
         }
 
         [Test]
@@ -74,7 +75,7 @@
         [Test]
         public void GetProxyConfiguration_ConfigurationProviderDoesNotContainAProxyConfiguration_ReturnsEmptyProxyConfiguration()
         {
-            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.ProxyConfiguration])
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
                 .Returns((string)null);
 
             var proxyConfiguration = _subject.ProxyConfiguration;
@@ -85,7 +86,7 @@
         [Test]
         public void GetProxyConfiguration_ConfigurationProviderHasInvalidData_ReturnsEmptyProxyConfiguration()
         {
-            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.ProxyConfiguration])
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
                 .Returns("some-garbled-data");
 
             var proxyConfiguration = _subject.ProxyConfiguration;
@@ -112,14 +113,14 @@
             _subject.SaveProxyConfiguration(proxyConfiguration);
             valueSet.Should().NotBeNull();
             _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
-            
+
             _subject.ProxyConfiguration.Should().Be(proxyConfiguration);
         }
 
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasAInvalidEntry_ReturnsTrue()
         {
-            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("test");
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("test");
 
             _subject.IsSMSSuffixEnabled.Should().BeTrue();
         }
@@ -127,7 +128,7 @@
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasAFalseEntryStored_ReturnsFalse()
         {
-            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("false");
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("false");
 
             _subject.IsSMSSuffixEnabled.Should().BeFalse();
         }
@@ -135,7 +136,7 @@
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasATrueEntryStored_ReturnsTrue()
         {
-            _mockConfigurationProvider.SetupGet(x => x[ConfigurationProperties.SMSSuffixEnabled]).Returns("true");
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("true");
 
             _subject.IsSMSSuffixEnabled.Should().BeTrue();
         }
@@ -145,7 +146,15 @@
         {
             _subject.IsSMSSuffixEnabled = true;
 
-            _mockConfigurationProvider.VerifySet(x => x[ConfigurationProperties.SMSSuffixEnabled] = "True");
+            _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
+        }
+
+        private static void SetupBugFreak()
+        {
+            GlobalConfig.ApiKey = "someKey";
+            GlobalConfig.Token = "someToken";
+            GlobalConfig.ServiceEndPoint = "http://some.com";
+            ReportingService.Init();
         }
     }
 }

@@ -6,8 +6,6 @@
 
         string AccessToken { get; }
 
-        bool AutoStart { get; set; }
-
         string ClientId { get; }
 
         bool DebugMode { get; }

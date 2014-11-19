@@ -45,18 +45,6 @@
         }
 
         [Test]
-        public void GenericGetValue_WhenNoValueWasSet_WillReturnDefault()
-        {
-            _subject.GetValue("someFlag", true).Should().BeTrue();
-        }
-
-        [Test]
-        public void GenericGetValue_WhenNoValueWasSet_WillReturnDefaultForString()
-        {
-            _subject.GetValue("someString", "default value").Should().Be("default value");
-        }
-
-        [Test]
         public void SetValue_WillSetValues()
         {
             _subject.SetValue("token", "token value");

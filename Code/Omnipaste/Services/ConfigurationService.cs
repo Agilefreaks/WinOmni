@@ -8,7 +8,6 @@
     using System.Xml.Serialization;
     using BugFreak;
     using OmniCommon;
-    using OmniCommon.DataProviders;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
 
@@ -63,12 +62,12 @@
             get
             {
                 bool result;
-                result = !bool.TryParse(_persistentConfigurationContainer[ConfigurationProperties.SMSSuffixEnabled], out result) || result;
+                result = !bool.TryParse(_persistentConfigurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled), out result) || result;
                 return result;
             }
             set
             {
-                _persistentConfigurationContainer[ConfigurationProperties.SMSSuffixEnabled] = value.ToString();
+                _persistentConfigurationContainer.SetValue(ConfigurationProperties.SMSSuffixEnabled, value.ToString());
             }
         }
 
@@ -100,19 +99,6 @@
             get
             {
                 return Environment.MachineName;
-            }
-        }
-
-        public bool AutoStart
-        {
-            get
-            {
-                return _persistentConfigurationContainer.GetValue(ConfigurationProperties.AutoStart, true);
-            }
-
-            set
-            {
-                _persistentConfigurationContainer.SetValue(ConfigurationProperties.AutoStart, value.ToString());
             }
         }
 
