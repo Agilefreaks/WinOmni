@@ -1,6 +1,5 @@
 ﻿namespace OmnipasteTests.Services
 {
-    using BugFreak;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
@@ -21,7 +20,6 @@
         {
             _mockConfigurationProvider = new Mock<IConfigurationContainer>();
             _subject = new ConfigurationService(_mockConfigurationProvider.Object);
-            SetupBugFreak();
         }
 
         [Test]
@@ -147,14 +145,6 @@
             _subject.IsSMSSuffixEnabled = true;
 
             _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
-        }
-
-        private static void SetupBugFreak()
-        {
-            GlobalConfig.ApiKey = "someKey";
-            GlobalConfig.Token = "someToken";
-            GlobalConfig.ServiceEndPoint = "http://some.com";
-            ReportingService.Init();
         }
     }
 }

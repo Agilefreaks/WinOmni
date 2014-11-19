@@ -43,7 +43,7 @@
                        ? Observable.Return(new ExecuteResult(SimpleStepStateEnum.Failed, Resources.MissingUserTokenError))
                        : _oauth2.Create(givenToken)
                              .Select(GetExecuteResult)
-                             .Catch((Func<Exception, IObservable<IExecuteResult>>)CreateErrorHandler);
+                             .Catch<IExecuteResult, Exception>(CreateErrorHandler);
         }
 
         protected IObservable<IExecuteResult> CreateErrorHandler(Exception exception)
@@ -51,7 +51,7 @@
             ExceptionReporter.Instance.Report(new Exception(Resources.ExceptionDuringAuthentication, exception));
             var executeResult = new ExecuteResult(SimpleStepStateEnum.Failed, Resources.BrokenCommunicationError);
 
-            return Observable.Return(executeResult);
+            return Observable.Return(executeResult, SchedulerProvider.Default);
         }
 
         #endregion

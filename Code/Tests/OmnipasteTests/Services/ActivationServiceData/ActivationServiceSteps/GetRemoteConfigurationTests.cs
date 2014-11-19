@@ -8,6 +8,7 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -20,50 +21,52 @@
 
         private ITestableObserver<IExecuteResult> _observer;
 
+        private readonly TestScheduler _testScheduler = new TestScheduler();
+
         [SetUp]
         public void Setup()
         {
-            _observer = new TestScheduler().CreateObserver<IExecuteResult>();
+            SchedulerProvider.Default = _testScheduler;
+            _observer = _testScheduler.CreateObserver<IExecuteResult>();
             _mockOAuth2 = new Mock<IOAuth2>();
 
             _subject = new GetRemoteConfiguration(_mockOAuth2.Object);
         }
 
         [Test]
-        public void Execute_WhenAuthorizationCodeIsEmpty_WillReturnFail()
+        public void Execute_WhenAuthorizationCodeIsEmpty_WillCompleteWithAFailedResult()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, string.Empty);
 
             _subject.Execute().Subscribe(_observer);
 
-            _observer.Messages.Should()
-                .Contain(
-                    m => m.Value.Kind == NotificationKind.OnNext
-                        && m.Value.Value.State == SimpleStepStateEnum.Failed);
+            _observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            _observer.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Failed);
+            _observer.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
 
         [Test]
-        public void Execute_WhenCreateError_WillCompleteWithOnError()
+        public void Execute_WhenCreateError_WillCompleteWithAFailedResult()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
-            var testScheduler = new TestScheduler();
             var createObservable =
-                testScheduler.CreateColdObservable(
+                _testScheduler.CreateColdObservable(
                     new Recorded<Notification<Token>>(0, Notification.CreateOnError<Token>(new Exception())));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
             _subject.Execute().Subscribe(_observer);
-            testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start();
 
-             _observer.Messages.Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnError);
+            _observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            _observer.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Failed);
+            _observer.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
 
         [Test]
-        public void Execute_WhenCreateSuccess_WillReturnSucccess()
+        public void Execute_WhenCreateSuccess_WillCompleteWithASuccessResult()
         {
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
-            var testScheduler = new TestScheduler();
+            var testScheduler = _testScheduler;
             var createObservable =
                 testScheduler.CreateColdObservable(
                     new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("acccess token", "refresh token"))),
@@ -73,11 +76,9 @@
             _subject.Execute().Subscribe(_observer);
             testScheduler.Start(() => createObservable, 0, 0, TimeSpan.FromSeconds(1).Ticks);
 
-            _observer.Messages.Should()
-               .Contain(
-                   m => m.Value.Kind == NotificationKind.OnNext
-                       && m.Value.Value.State == SimpleStepStateEnum.Successful);
-            _observer.Messages.Should().HaveCount(2);
+            _observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            _observer.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
+            _observer.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
     }
 }
