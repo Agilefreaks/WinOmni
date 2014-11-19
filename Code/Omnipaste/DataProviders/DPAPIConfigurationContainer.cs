@@ -8,8 +8,8 @@
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
-    using BugFreak;
     using OmniCommon.Settings;
+    using OmniCommon.Helpers;
 
     public class DPAPIConfigurationContainer : IConfigurationContainer
     {
@@ -119,7 +119,7 @@
             catch (Exception exception)
             {
                 saved = false;
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
 
             return saved;

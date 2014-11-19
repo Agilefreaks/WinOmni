@@ -6,8 +6,8 @@
     using System.Reflection;
     using System.Windows;
     using System.Windows.Threading;
-    using BugFreak;
     using Microsoft.Win32;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
 
     public class ApplicationService : IApplicationService
@@ -94,7 +94,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 
@@ -110,7 +110,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 
@@ -123,7 +123,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
 
             return result;

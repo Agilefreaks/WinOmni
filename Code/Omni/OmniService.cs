@@ -1,18 +1,15 @@
 ﻿namespace Omni
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Threading;
-    using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
@@ -182,12 +179,7 @@
         private IObservable<Device> RegisterDevice()
         {
             SimpleLogger.Log("Registering Device");
-            var deviceIdentifier = ConfigurationService.DeviceIdentifier;
-            var machineName = ConfigurationService.MachineName;
-
-            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
-
-            return Devices.Create(deviceIdentifier, machineName);
+            return Devices.Create(ConfigurationService.DeviceIdentifier, ConfigurationService.MachineName);
         }
 
         private void ReleaseServiceState()

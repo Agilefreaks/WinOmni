@@ -7,7 +7,6 @@
     using System.Reactive.Linq;
     using System.Windows;
     using System.Windows.Interop;
-    using System.Windows.Threading;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.EventAggregatorMessages;
@@ -132,9 +131,6 @@
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
-
-        [Inject]
-        public IUpdaterService UpdaterService { get; set; }
 
         [Inject]
         public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }

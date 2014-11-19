@@ -14,7 +14,7 @@
     using OmniApi;
     using OmniCommon;
     using OmniCommon.DataProviders;
-    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
     using Omnipaste.Services;
@@ -32,12 +32,14 @@
                 { "ShowInTaskbar", true },
                 { "Visibility", Visibility.Visible }
             };
-        
+
         private readonly Dictionary<string, object> _minimizedViewStartOptions = new Dictionary<string, object>
             {
                 { "ShowInTaskbar", false },
                 { "Visibility", Visibility.Hidden }
             };
+
+        private readonly List<IStartable> _backgroundServices = new List<IStartable>();
 
         private IKernel _kernel;
 
@@ -85,7 +87,8 @@
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>();
+            var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>()
+                .Concat(_backgroundServices).Distinct();
             allStartedServices.ForEach(s => s.Stop());
 
             base.OnExit(sender, e);
@@ -113,22 +116,25 @@
 
             SimpleLogger.EnableLog = argumentsDataProvider.EnableLog;
 
-            SetupApplicationVersionLogging();
+            SetupBugFreakAdditionalData();
             StartBackgroundServices();
 
             DisplayRootViewFor<ShellViewModel>(viewSettings);
         }
 
-        private void SetupApplicationVersionLogging()
+        private void SetupBugFreakAdditionalData()
         {
             var applicationService = _kernel.Get<IApplicationService>();
+            var configurationService = _kernel.Get<IConfigurationService>();
             GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", applicationService.Version.ToString()));
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", configurationService.DeviceIdentifier));
         }
 
         private void StartBackgroundServices()
         {
             //Since the service implements IStartable it will be started as soon as it's activated
-            _kernel.Get<IConnectivitySupervisor>();
+            _backgroundServices.Add(_kernel.Get<IConnectivitySupervisor>());
+            _backgroundServices.Add(_kernel.Get<IUpdaterService>());
         }
 
         #endregion

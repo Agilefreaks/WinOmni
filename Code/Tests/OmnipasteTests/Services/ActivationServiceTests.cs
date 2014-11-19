@@ -1,9 +1,7 @@
 ﻿namespace OmnipasteTests.Services
 {
     using System;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
-    using BugFreak;
     using FluentAssertions;
     using Moq;
     using Ninject;
@@ -18,8 +16,6 @@
     public class ActivationServiceTests
     {
         private MoqMockingKernel _mockingKernel;
-
-        private IStepFactory _stepFactory;
 
         private IActivationService _subject;
 
@@ -36,12 +32,9 @@
         [SetUp]
         public void Setup()
         {
-            SetupBugfreak();
-
             _mockingKernel = new MoqMockingKernel();
 
             _mockingKernel.Bind<IStepFactory>().To<StepFactory>();
-            _stepFactory = _mockingKernel.Get<IStepFactory>();
 
             _mockActivationSequenceProvider = new Mock<IActivationSequenceProvider>();
             _mockingKernel.Bind<IActivationSequenceProvider>().ToConstant(_mockActivationSequenceProvider.Object);
@@ -128,14 +121,6 @@
 
         public interface IStep3 : IActivationStep
         {
-        }
-
-        private static void SetupBugfreak()
-        {
-            GlobalConfig.ServiceEndPoint = "http://127.0.0.1";
-            GlobalConfig.Token = "test";
-            GlobalConfig.ApiKey = "test";
-            ReportingService.Init();
         }
     }
 }

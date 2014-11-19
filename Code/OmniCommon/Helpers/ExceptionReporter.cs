@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.ExtensionMethods
+﻿namespace OmniCommon.Helpers
 {
     public class ExceptionReporter
     {

@@ -6,8 +6,8 @@
     using System.IO;
     using System.Xml;
     using System.Xml.Serialization;
-    using BugFreak;
     using OmniCommon;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
 
@@ -151,7 +151,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 
@@ -189,7 +189,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
 
             savedConfiguration = savedConfiguration ?? ProxyConfiguration.Empty();

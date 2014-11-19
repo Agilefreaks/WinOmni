@@ -231,7 +231,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="ExtensionMethods\AsyncResultExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />

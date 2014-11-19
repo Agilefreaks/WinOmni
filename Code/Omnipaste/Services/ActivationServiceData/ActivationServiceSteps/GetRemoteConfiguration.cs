@@ -2,10 +2,10 @@
 {
     using System;
     using System.Reactive.Linq;
-    using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using Omnipaste.Properties;
 
     public class GetRemoteConfiguration : ActivationStepBase
@@ -48,7 +48,7 @@
 
         protected IObservable<IExecuteResult> CreateErrorHandler(Exception exception)
         {
-            ReportingService.Instance.BeginReport(new Exception(Resources.ExceptionDuringAuthentication, exception));
+            ExceptionReporter.Instance.Report(new Exception(Resources.ExceptionDuringAuthentication, exception));
             var executeResult = new ExecuteResult(SimpleStepStateEnum.Failed, Resources.BrokenCommunicationError);
 
             return Observable.Return(executeResult);
@@ -62,7 +62,7 @@
         {
             if (string.IsNullOrEmpty(token.AccessToken))
             {
-                ReportingService.Instance.BeginReport(new Exception(Resources.EmptyTokenFromServer));
+                ExceptionReporter.Instance.Report(new Exception(Resources.EmptyTokenFromServer));
             }
 
             return new ExecuteResult(SimpleStepStateEnum.Successful, token);
