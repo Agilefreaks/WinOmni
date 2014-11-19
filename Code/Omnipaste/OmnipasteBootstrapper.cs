@@ -104,7 +104,7 @@
                 configurationService[ConfigurationProperties.BugFreakApiKey],
                 configurationService[ConfigurationProperties.BugFreakToken],
                 Application.Current);
-            ObservableExtensionMethods.ExceptionReporter = _kernel.Get<IExceptionReporter>();
+            ExceptionReporter.Instance = _kernel.Get<IExceptionReporter>();
 
             if (configurationService.DebugMode)
             {

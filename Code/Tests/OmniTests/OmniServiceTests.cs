@@ -79,34 +79,57 @@
         }
 
         [Test]
-        public void Start_WhenSuccess_ReturnsAUnit()
+        public void Start_WhenAllTasksSucceed_CompletesAfterSendingAUnit()
         {
-            var device = new Device { Identifier = DeviceIdentifier };
+            SetupOmniServiceForStart();
             var testableObserver = _scheduler.CreateObserver<Unit>();
-            var openWebsocketConnection = _scheduler.CreateColdObservable(
-                new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
-                new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
-            _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
-            _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
-            var registerDevice = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
-                new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(m => m.Create(DeviceIdentifier, DeviceName)).Returns(registerDevice);
-            var activateDevice = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
-                new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(m => m.Activate(_registrationId, DeviceIdentifier)).Returns(activateDevice);
 
             _subject.Start().Subscribe(testableObserver);
             _scheduler.Start();
 
             testableObserver.Messages.Should().HaveCount(2);
-            _subject.State.Should().Be(OmniServiceStatusEnum.Started);
+            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
+        }
+        
+        [Test]
+        public void Start_CanActivateDevice_StartsHandlers()
+        {
+            SetupOmniServiceForStart();
+            var testableObserver = _scheduler.CreateObserver<Unit>();
+
+            _subject.Start().Subscribe(testableObserver);
+            _scheduler.Start();
+            
             _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once());
+        }
+        
+        [Test]
+        public void Start_WhenAllTasksSucceed_SetsStateToStarted()
+        {
+            SetupOmniServiceForStart();
+            var testableObserver = _scheduler.CreateObserver<Unit>();
+
+            _subject.Start().Subscribe(testableObserver);
+            _scheduler.Start();
+
+            _subject.State.Should().Be(OmniServiceStatusEnum.Started);
         }
 
         [Test]
-        public void Start_WhennoAccessTokenIsGiven_ReturnsError()
+        public void Start_WhenAllTasksSucceed_IsNotInTransition()
+        {
+            SetupOmniServiceForStart();
+            var testableObserver = _scheduler.CreateObserver<Unit>();
+
+            _subject.Start().Subscribe(testableObserver);
+            _scheduler.Start();
+
+            _subject.InTransition.Should().Be(false);
+        }
+
+        [Test]
+        public void Start_WhenNoAccessTokenIsGiven_ReturnsError()
         {
             _mockConfigurationService.SetupGet(x => x.AccessToken).Returns(string.Empty);
             var testableObserver = _scheduler.CreateObserver<Unit>();
@@ -116,6 +139,74 @@
 
             testableObserver.Messages.Should().HaveCount(1);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnError);
+        }
+
+        [Test]
+        public void Stop_AfterBeingStarted_CallsDeactivateDeviceWithTheDeviceId()
+        {
+            SetupOmniServiceForStart();
+            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
+            _scheduler.Start();
+
+            var testScheduler = new TestScheduler();
+            SchedulerProvider.Default = testScheduler;
+            var deactivateObservable = testScheduler.CreateColdObservable(
+                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
+                new Recorded<Notification<Device>>(120, Notification.CreateOnCompleted<Device>()));
+            var deviceId = Guid.NewGuid().ToString();
+            _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns(deviceId);
+            _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
+            var testableObserver = testScheduler.CreateObserver<Unit>();
+
+            _subject.Stop().Subscribe(testableObserver);
+            testScheduler.Start();
+
+            _mockDevices.Verify(x => x.Deactivate(deviceId), Times.Once());
+        }
+
+        [Test]
+        public void Stop_WhenDeactivateFails_IgnoresErrorAndSwitchesToStoppedState()
+        {
+            SetupOmniServiceForStart();
+            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
+            _scheduler.Start();
+
+            var testScheduler = new TestScheduler();
+            SchedulerProvider.Default = testScheduler;
+            var deactivateObservable = testScheduler.CreateColdObservable(
+                new Recorded<Notification<Device>>(100, Notification.CreateOnError<Device>(new Exception("test"))),
+                new Recorded<Notification<Device>>(120, Notification.CreateOnCompleted<Device>()));
+            var deviceId = Guid.NewGuid().ToString();
+            _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns(deviceId);
+            _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
+            var testableObserver = testScheduler.CreateObserver<Unit>();
+
+            _subject.Stop().Subscribe(testableObserver);
+            testScheduler.Start();
+
+            _subject.State.Should().Be(OmniServiceStatusEnum.Stopped);
+            _subject.InTransition.Should().BeFalse();
+        }
+
+        private void SetupOmniServiceForStart()
+        {
+            var device = new Device { Identifier = DeviceIdentifier };
+            var openWebsocketConnection =
+                _scheduler.CreateColdObservable(
+                    new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
+                    new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
+            _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
+            _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
+            var registerDevice =
+                _scheduler.CreateColdObservable(
+                    new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
+                    new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
+            _mockDevices.Setup(m => m.Create(DeviceIdentifier, DeviceName)).Returns(registerDevice);
+            var activateDevice =
+                _scheduler.CreateColdObservable(
+                    new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
+                    new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
+            _mockDevices.Setup(m => m.Activate(_registrationId, DeviceIdentifier)).Returns(activateDevice);
         }
     }
 }

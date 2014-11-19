@@ -15,12 +15,6 @@
 
         #endregion
 
-        #region Public Properties
-
-        public static IExceptionReporter ExceptionReporter { get; set; }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public static void RunToCompletion<T>(this IObservable<T> observable, Action<T> onCompletion = null, Action<Exception> onError = null, IDispatcher dispatcher = null)
@@ -81,9 +75,8 @@
 
         private static void OnExceptionEncountered(Exception exception)
         {
-            var reporter = ExceptionReporter ?? NullExceptionReporter.Instance;
             SimpleLogger.Log("Exception encountered: " + exception);
-            reporter.Report(exception);
+            ExceptionReporter.Instance.Report(exception);
         }
 
         private static void RunToCompletionSynchronous<T>(

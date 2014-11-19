@@ -12,6 +12,7 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
@@ -231,15 +232,28 @@
 
         private IObservable<Unit> StopCore()
         {
-            return Observable.Start(
-                () =>
-                    {
-                        SimpleLogger.Log("Stopping OmniService");
-                        StopHandlers();
-                        WebsocketConnection.Disconnect();
-                        SimpleLogger.Log("Stopped OmniService");
-                    },
-                SchedulerProvider.Default);
+            return
+                Observable.Start(StopHandlers, SchedulerProvider.Default)
+                    .Select(_ => Observable.Start(WebsocketConnection.Disconnect, SchedulerProvider.Default))
+                    .Switch()
+                    .Select(_ => DeactivateDevice())
+                    .Switch();
+        }
+
+        private IObservable<Unit> DeactivateDevice()
+        {
+            SimpleLogger.Log("Deactivating device");
+            return
+                Devices.Deactivate(ConfigurationService.DeviceIdentifier)
+                    .Select(_ => new Unit())
+                    .Catch<Unit, Exception>(OnDeactivateDeviceException);
+        }
+
+        private IObservable<Unit> OnDeactivateDeviceException(Exception exception)
+        {
+            SimpleLogger.Log("Could not deactivate device: " + exception);
+            ExceptionReporter.Instance.Report(exception);
+            return Observable.Return(new Unit(), SchedulerProvider.Default);
         }
 
         private void StopHandlers()
