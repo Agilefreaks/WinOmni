@@ -24,7 +24,7 @@
   <Fragment>
     <DirectoryRef Id="ApplicationStartMenuFolder">
       <Component Id="ApplicationStartupEntry">
-        <Condition>SHOULDADDSTARTUP</Condition>
+        <Condition>IS_CLEAN_INSTALL OR EXISTING_STARTUP_SHORTCUT</Condition>
         <RegistryValue Root="HKCU"
                        Key="Software\Microsoft\Windows\CurrentVersion\Run"
                        Name="$(var.ProductName)"

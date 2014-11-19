@@ -30,7 +30,7 @@
       <InstallUISequence>
         <Show Dialog="NetFRWDlg" After="AppSearch">(NOT Installed) AND (NOT DOTNETVERSION45FULL)</Show>
         <Custom Action="setUI_RAN" Before="ProgressDlg"/>
-        <Custom Action="SetShouldAddStartup" Before="ProgressDlg">(NOT Installed) AND (NOT WIX_UPGRADE_DETECTED)</Custom>
+        <Custom Action="SetIsCleanInstall" Before="ProgressDlg">(NOT Installed) AND (NOT WIX_UPGRADE_DETECTED)</Custom>
         <Show Dialog="ProgressDlg" After="NetFRWDlg"/>
       </InstallUISequence>
 
