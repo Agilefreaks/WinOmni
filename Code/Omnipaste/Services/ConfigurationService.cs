@@ -15,7 +15,7 @@
     {
         #region Fields
 
-        private readonly IConfigurationContainer _persistentConfigurationContainer;
+        private readonly IConfigurationContainer _configurationContainer;
 
         private readonly List<IProxyConfigurationObserver> _proxyConfigurationObservers;
 
@@ -26,7 +26,7 @@
         public ConfigurationService(IConfigurationContainer configurationContainer)
         {
             _proxyConfigurationObservers = new List<IProxyConfigurationObserver>();
-            _persistentConfigurationContainer = configurationContainer;
+            _configurationContainer = configurationContainer;
         }
 
         #endregion
@@ -37,7 +37,7 @@
         {
             get
             {
-                return _persistentConfigurationContainer.GetValue(ConfigurationProperties.AccessToken);
+                return _configurationContainer.GetValue(ConfigurationProperties.AccessToken);
             }
         }
 
@@ -53,7 +53,7 @@
         {
             get
             {
-                return _persistentConfigurationContainer.GetValue(ConfigurationProperties.RefreshToken);
+                return _configurationContainer.GetValue(ConfigurationProperties.RefreshToken);
             }
         }
 
@@ -62,12 +62,12 @@
             get
             {
                 bool result;
-                result = !bool.TryParse(_persistentConfigurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled), out result) || result;
+                result = !bool.TryParse(_configurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled), out result) || result;
                 return result;
             }
             set
             {
-                _persistentConfigurationContainer.SetValue(ConfigurationProperties.SMSSuffixEnabled, value.ToString());
+                _configurationContainer.SetValue(ConfigurationProperties.SMSSuffixEnabled, value.ToString());
             }
         }
 
@@ -83,11 +83,11 @@
         {
             get
             {
-                var deviceIdentifier = _persistentConfigurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
+                var deviceIdentifier = _configurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
                 if (string.Equals("", deviceIdentifier))
                 {
                     deviceIdentifier = Guid.NewGuid().ToString();
-                    _persistentConfigurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
+                    _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
                 }
 
                 return deviceIdentifier;
@@ -129,8 +129,8 @@
 
         public void SaveAuthSettings(string accessToken, string refreshToken)
         {
-            _persistentConfigurationContainer.SetValue(ConfigurationProperties.AccessToken, accessToken);
-            _persistentConfigurationContainer.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
+            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, accessToken);
+            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
         }
 
         public void ResetAuthSettings()
@@ -146,7 +146,7 @@
                 var stringWriter = new StringWriter();
                 xmlSerializer.Serialize(stringWriter, value);
 
-                _persistentConfigurationContainer.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
+                _configurationContainer.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
                 _proxyConfigurationObservers.ForEach(observer => observer.OnConfigurationChanged(ProxyConfiguration));
             }
             catch (Exception exception)
@@ -175,7 +175,7 @@
 
             try
             {
-                var serializedConfiguration = _persistentConfigurationContainer.GetValue(ConfigurationProperties.ProxyConfiguration);
+                var serializedConfiguration = _configurationContainer.GetValue(ConfigurationProperties.ProxyConfiguration);
                 if (!string.IsNullOrWhiteSpace(serializedConfiguration))
                 {
                     var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));

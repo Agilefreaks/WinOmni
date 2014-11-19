@@ -351,4 +351,10 @@
   <data name="PingingHome" xml:space="preserve">
     <value>Trying to contact Omnipaste server.</value>
   </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
 </root>

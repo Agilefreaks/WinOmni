@@ -1,11 +1,7 @@
 ﻿namespace OmniUI.HeaderButton
 {
-    public interface IHeaderButtonViewModel
+    public interface IHeaderButtonViewModel : IHeaderItemViewModel
     {
-        string ButtonToolTip { get; }
-
-        string Icon { get; }
-
         void PerformAction();
     }
 }

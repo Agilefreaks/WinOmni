@@ -12,13 +12,13 @@
 
         string DeviceIdentifier { get; }
 
+        bool IsSMSSuffixEnabled { get; set; }
+
         string MachineName { get; }
 
         ProxyConfiguration ProxyConfiguration { get; }
 
         string RefreshToken { get; }
-
-        bool IsSMSSuffixEnabled { get; set; }
 
         #endregion
 

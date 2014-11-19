@@ -9,8 +9,6 @@
 
         bool AutoStart { get; set; }
         
-        bool IsStopped { get; set; }
-
         string IconSource { get; set; }
 
         string TooltipText { get; }
@@ -22,8 +20,6 @@
         void Show();
 
         void ShowBalloon(string balloonTitle, string balloonMessage);
-
-        void ToggleSync();
 
         #endregion
     }

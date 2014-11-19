@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
     using System.Windows.Interop;
@@ -42,7 +43,7 @@
 
         private INotificationListViewModel _notificationListViewModel;
 
-        private IDisposable _sessionObserver;
+        private readonly IDisposable _sessionObserver;
 
         #endregion
 
@@ -139,7 +140,18 @@
         public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }
 
         [Inject]
+        public IEnumerable<IHeaderItemViewModel> HeaderItemViewModels { get; set; }
+
+        [Inject]
         public IWindowHandleProvider WindowHandleProvider { get; set; }
+
+        public IEnumerable<IHeaderItemViewModel> AllHeaderItems
+        {
+            get
+            {
+                return HeaderItemViewModels.Concat(HeaderButtonViewModels);
+            }
+        }
 
         #endregion
 

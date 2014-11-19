@@ -43,7 +43,7 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
-            Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
+            Kernel.Bind<IHeaderItemViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
