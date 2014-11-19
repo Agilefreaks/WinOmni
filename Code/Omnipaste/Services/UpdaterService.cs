@@ -7,7 +7,6 @@
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection;
-    using BugFreak;
     using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
@@ -140,7 +139,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 
@@ -162,7 +161,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 
@@ -191,7 +190,7 @@
             catch (Exception exception)
             {
                 result = false;
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
             }
 
             return result;
@@ -299,7 +298,7 @@
             }
             catch (Exception exception)
             {
-                ReportingService.Instance.BeginReport(exception);
+                ExceptionReporter.Instance.Report(exception);
                 throw;
             }
         }

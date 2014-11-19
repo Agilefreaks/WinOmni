@@ -1,13 +1,11 @@
 ﻿namespace Omni
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Threading;
-    using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -181,12 +179,7 @@
         private IObservable<Device> RegisterDevice()
         {
             SimpleLogger.Log("Registering Device");
-            var deviceIdentifier = ConfigurationService.DeviceIdentifier;
-            var machineName = ConfigurationService.MachineName;
-
-            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", deviceIdentifier));
-
-            return Devices.Create(deviceIdentifier, machineName);
+            return Devices.Create(ConfigurationService.DeviceIdentifier, ConfigurationService.MachineName);
         }
 
         private void ReleaseServiceState()
@@ -231,15 +224,28 @@
 
         private IObservable<Unit> StopCore()
         {
-            return Observable.Start(
-                () =>
-                    {
-                        SimpleLogger.Log("Stopping OmniService");
-                        StopHandlers();
-                        WebsocketConnection.Disconnect();
-                        SimpleLogger.Log("Stopped OmniService");
-                    },
-                SchedulerProvider.Default);
+            return
+                Observable.Start(StopHandlers, SchedulerProvider.Default)
+                    .Select(_ => Observable.Start(WebsocketConnection.Disconnect, SchedulerProvider.Default))
+                    .Switch()
+                    .Select(_ => DeactivateDevice())
+                    .Switch();
+        }
+
+        private IObservable<Unit> DeactivateDevice()
+        {
+            SimpleLogger.Log("Deactivating device");
+            return
+                Devices.Deactivate(ConfigurationService.DeviceIdentifier)
+                    .Select(_ => new Unit())
+                    .Catch<Unit, Exception>(OnDeactivateDeviceException);
+        }
+
+        private IObservable<Unit> OnDeactivateDeviceException(Exception exception)
+        {
+            SimpleLogger.Log("Could not deactivate device: " + exception);
+            ExceptionReporter.Instance.Report(exception);
+            return Observable.Return(new Unit(), SchedulerProvider.Default);
         }
 
         private void StopHandlers()

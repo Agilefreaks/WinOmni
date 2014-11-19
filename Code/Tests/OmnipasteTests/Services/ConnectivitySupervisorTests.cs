@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reactive;
-    using BugFreak;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
@@ -39,7 +38,6 @@
         [SetUp]
         public void Setup()
         {
-            SetupBugFreak();
             _mockingKernel = new MockingKernel();
 
             _mockOmniService = new Mock<IOmniService> { DefaultValue = DefaultValue.Mock };
@@ -160,15 +158,5 @@
             _mockOmniService.Verify(x => x.Stop(), Times.Exactly(2));
             _mockOmniService.Verify(x => x.Start(), Times.Exactly(1));
         }
-
-        private static void SetupBugFreak()
-        {
-            GlobalConfig.ServiceEndPoint = "http://test.com";
-            GlobalConfig.ApiKey = "someKey";
-            GlobalConfig.Token = "someToken";
-
-            ReportingService.Init();
-        }
-
     }
 }

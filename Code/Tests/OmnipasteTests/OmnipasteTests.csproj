@@ -41,10 +41,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BugFreak.WPF, Version=1.0.1.13, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\BugFreak.WPF.1.0.1.13\lib\net35-Client\BugFreak.WPF.dll</HintPath>
-    </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>

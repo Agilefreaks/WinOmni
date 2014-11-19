@@ -2,7 +2,7 @@
 {
     using System;
     using BugFreak;
-    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
 
     public class BugFreakExceptionReporter : IExceptionReporter
     {

@@ -2,10 +2,10 @@
 {
     using System;
     using System.Diagnostics;
-    using BugFreak;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
 
     public abstract class ResourceWithAuthorization<T> : Resource<T>
@@ -28,7 +28,7 @@
                 if (string.IsNullOrEmpty(Token.AccessToken))
                 {
                     var callingMethodName = new StackFrame(1).GetMethod().Name;
-                    ReportingService.Instance.BeginReport(
+                    ExceptionReporter.Instance.Report(
                         new Exception(string.Format("AccessToken is empty when calling {0}", callingMethodName)));
                 }
                 return string.Concat("bearer ", Token.AccessToken);

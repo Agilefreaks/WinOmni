@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using BugFreak;
     using OmniApi.Models;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
 
     public class SaveConfiguration : SynchronousStepBase
@@ -20,7 +20,7 @@
             _configurationService.SaveAuthSettings(token.AccessToken, token.RefreshToken);
             if (string.IsNullOrEmpty(_configurationService.AccessToken))
             {
-                ReportingService.Instance.BeginReport(new Exception("Access token empty in SaveConfiguration - Problem with writing the file"));
+                ExceptionReporter.Instance.Report(new Exception("Access token empty in SaveConfiguration - Problem with writing the file"));
             }
 
             return new ExecuteResult { State = SimpleStepStateEnum.Successful, Data = token.AccessToken };

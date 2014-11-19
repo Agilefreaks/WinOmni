@@ -5,7 +5,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.DataProviders;
-    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
     using Omnipaste.DataProviders;

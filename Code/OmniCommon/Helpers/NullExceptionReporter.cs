@@ -1,4 +1,4 @@
-﻿namespace OmniCommon.ExtensionMethods
+﻿namespace OmniCommon.Helpers
 {
     using System;
 

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Reactive.Linq;
-    using BugFreak;
     using OmniCommon;
+    using OmniCommon.Helpers;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.Transitions;
@@ -68,7 +68,7 @@
                 catch (Exception exception)
                 {
                     SimpleLogger.Log("Step finished with exception: " + exception);
-                    ReportingService.Instance.BeginReport(exception);
+                    ExceptionReporter.Instance.Report(exception);
                     result = new ExecuteResult(SimpleStepStateEnum.Failed, exception);
                 }
             }
