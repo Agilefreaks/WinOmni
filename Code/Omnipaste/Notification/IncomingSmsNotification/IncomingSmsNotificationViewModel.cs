@@ -19,13 +19,19 @@
 
         public IEventAggregator EventAggregator { get; set; }
 
-        public string PhoneNumber { get; set; }
-
         public override string Title
         {
             get
             {
-                return string.Concat(Resources.IncommingSmsNotificationTitle, PhoneNumber);
+                return Resources.IncommingSmsNotificationTitle;
+            }
+        }
+
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.IncomingSMS;
             }
         }
 
@@ -35,7 +41,7 @@
 
         public void Reply()
         {
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Line1, Message = "" });
             Dismiss();
         }
 

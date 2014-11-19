@@ -74,9 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
+    <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Behaviors\MultipleContentButton.cs" />
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
+    <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderButtonViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderItemViewModel.cs" />
@@ -114,6 +116,7 @@
       <Name>OmniCommon</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

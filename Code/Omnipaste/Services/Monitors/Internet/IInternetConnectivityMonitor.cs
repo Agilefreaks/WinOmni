@@ -5,8 +5,6 @@
 
     public interface IInternetConnectivityMonitor : IStartable
     {
-        bool CurrentlyConnected { get; }
-
         IObservable<InternetConnectivityStatusEnum> ConnectivityChangedObservable { get; }
     }
 }

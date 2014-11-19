@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Services.Monitors.Internet
 {
     using System;
-    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using OmniCommon.Helpers;
 
     public class InternetConnectivityMonitor : IInternetConnectivityMonitor
     {
@@ -11,9 +11,7 @@
 
         private readonly IConnectivityHelper _connectivityHelper;
 
-        private readonly IObservable<bool> _stateChangedObservable;
-
-        private readonly ReplaySubject<InternetConnectivityStatusEnum> _subject;
+        private readonly Subject<InternetConnectivityStatusEnum> _subject;
 
         private IDisposable _stateChangedObserver;
 
@@ -22,19 +20,9 @@
         #region Constructors and Destructors
 
         public InternetConnectivityMonitor(IConnectivityHelper connectivityHelper)
-            : this(connectivityHelper, TimeSpan.FromSeconds(5))
-        {
-        }
-
-        public InternetConnectivityMonitor(IConnectivityHelper connectivityHelper, TimeSpan checkInterval)
         {
             _connectivityHelper = connectivityHelper;
-            _subject = new ReplaySubject<InternetConnectivityStatusEnum>(0);
-            _stateChangedObservable =
-                Observable.Timer(TimeSpan.Zero, checkInterval)
-                    .Select(_ => CurrentlyConnected)
-                    .DistinctUntilChanged()
-                    .Skip(1);
+            _subject = new Subject<InternetConnectivityStatusEnum>();
         }
 
         #endregion
@@ -49,14 +37,6 @@
             }
         }
 
-        public bool CurrentlyConnected
-        {
-            get
-            {
-                return _connectivityHelper.InternetConnected;
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
@@ -65,11 +45,15 @@
         {
             DisposeStateChangedObserver();
             _stateChangedObserver =
-                _stateChangedObservable.Select(
-                    isConnected =>
-                    isConnected ? InternetConnectivityStatusEnum.Connected : InternetConnectivityStatusEnum.Disconnected)
-                    .SubscribeOn(Scheduler.Default)
-                    .ObserveOn(Scheduler.Default)
+                _connectivityHelper.InternetConnectivityObservable.DistinctUntilChanged()
+                    .Skip(1)
+                    .Select(
+                        isConnected =>
+                        isConnected
+                            ? InternetConnectivityStatusEnum.Connected
+                            : InternetConnectivityStatusEnum.Disconnected)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
                     .Subscribe(_subject);
         }
 

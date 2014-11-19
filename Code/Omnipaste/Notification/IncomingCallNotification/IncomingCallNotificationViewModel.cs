@@ -4,7 +4,6 @@
     using Ninject;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
 
@@ -30,8 +29,6 @@
         #region Public Properties
 
         public IEventAggregator EventAggregator { get; set; }
-
-        public string PhoneNumber { get; set; }
 
         public bool CanEndCall
         {
@@ -91,7 +88,15 @@
         {
             get
             {
-                return string.Concat(Resources.IncommingCallNotificationTitle, PhoneNumber);
+                return Resources.IncommingCallNotificationTitle;
+            }
+        }
+
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.IncomingCall;
             }
         }
 
@@ -114,7 +119,7 @@
         public void ReplyWithSms()
         {
             CanReplyWithSms = false;
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Line1, Message = "" });
             Dismiss();
         }
 

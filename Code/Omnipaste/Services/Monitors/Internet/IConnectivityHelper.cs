@@ -1,7 +1,9 @@
 ﻿namespace Omnipaste.Services.Monitors.Internet
 {
+    using System;
+
     public interface IConnectivityHelper
     {
-        bool InternetConnected { get; }
+        IObservable<bool> InternetConnectivityObservable { get; }
     }
 }

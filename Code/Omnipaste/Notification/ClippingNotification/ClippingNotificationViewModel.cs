@@ -14,6 +14,14 @@
             }
         }
 
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.Clipping;
+            }
+        }
+
         #endregion
     }
 }

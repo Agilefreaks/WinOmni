@@ -11,6 +11,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:StringToResourceConverter x:Key="StringToResourceConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -19,9 +20,9 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0">
             <Label Content="{x:Static properties:Resources.NotificationContent}" 
-                   Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibility}}"/>
+                   Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBox x:Name="NotificationContent" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100"
-                     Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibility}}"/>
+                     Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Label Content="{x:Static properties:Resources.NotificationPhoneNumber}"/>
             <TextBox x:Name="NotificationPhoneNumber"/>
             <Label Content="{x:Static properties:Resources.NotificationContactName}"/>

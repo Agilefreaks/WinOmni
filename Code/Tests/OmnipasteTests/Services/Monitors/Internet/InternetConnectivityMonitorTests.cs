@@ -1,12 +1,11 @@
 ﻿namespace OmnipasteTests.Services.Monitors.Internet
 {
-    using System;
-    using System.Reactive.Concurrency;
-    using System.Reactive.Linq;
-    using System.Threading;
+    using System.Reactive;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Services.Monitors.Internet;
 
     [TestFixture]
@@ -16,32 +15,35 @@
 
         private Mock<IConnectivityHelper> _mockConnectivityHelper;
 
-        private TimeSpan _checkInterval;
-
         [SetUp]
         public void SetUp()
         {
             _mockConnectivityHelper = new Mock<IConnectivityHelper>();
-            _checkInterval = TimeSpan.FromMilliseconds(100);
-            _subject = new InternetConnectivityMonitor(_mockConnectivityHelper.Object, _checkInterval);
+            _subject = new InternetConnectivityMonitor(_mockConnectivityHelper.Object);
         }
 
         [Test]
-        public void ConnectivityChangedObservable_AfterCallingStart_GeneratesANewValueForEachTimeTheInternetConnectedPropertyChanges()
+        public void ConnectivityChangedObservable_AfterCallingStart_GeneratesANewValueForEachTimeTheInternetConnectedValueChanges()
         {
-            var values = new[] { false, true, true, true, false, false };
-            var checkCount = 0;
-            _mockConnectivityHelper.SetupGet(x => x.InternetConnected).Returns(() => values[checkCount++]);
+            var testScheduler = new TestScheduler();
+            SchedulerProvider.Default = testScheduler;
+            var testableObservable =
+                testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(false)),
+                    new Recorded<Notification<bool>>(200, Notification.CreateOnNext(false)),
+                    new Recorded<Notification<bool>>(300, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(400, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(500, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(600, Notification.CreateOnNext(false)),
+                    new Recorded<Notification<bool>>(700, Notification.CreateOnNext(false)),
+                    new Recorded<Notification<bool>>(800, Notification.CreateOnNext(false)));
+            _mockConnectivityHelper.SetupGet(x => x.InternetConnectivityObservable)
+                .Returns(testableObservable);
 
-            var detectedChangeCount = 0;
-            _subject.ConnectivityChangedObservable.SubscribeOn(Scheduler.Default)
-                .ObserveOn(Scheduler.Default)
-                .Subscribe(_ => detectedChangeCount++);
             _subject.Start();
+            var testableObserver = testScheduler.Start(() => _subject.ConnectivityChangedObservable, 0, 50, 900);
 
-            Thread.Sleep(TimeSpan.FromMilliseconds(_checkInterval.TotalMilliseconds * values.Length));
-
-            detectedChangeCount.Should().Be(2);
+            testableObserver.Messages.Count.Should().Be(2);
         }
     }
 }

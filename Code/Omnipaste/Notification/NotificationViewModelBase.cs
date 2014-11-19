@@ -5,7 +5,6 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
 
     public abstract class NotificationViewModelBase : Screen, INotificationViewModel
     {
@@ -28,7 +27,9 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
-        public string Message { get; set; }
+        public virtual string Line1 { get; set; }
+
+        public virtual string Line2 { get; set; }
 
         public ViewModelStatusEnum State
         {
@@ -44,10 +45,16 @@
                 }
                 _state = value;
                 NotifyOfPropertyChange(() => State);
+                if (State == ViewModelStatusEnum.Open)
+                {
+                    InitializeTimers();
+                }
             }
         }
 
         public abstract string Title { get; }
+
+        public abstract NotificationTypeEnum Type { get; }
 
         #endregion
 
@@ -123,28 +130,13 @@
         {
             _deactivationTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
                                  {
-                                     Interval
-                                         =
-                                         _halfSecondInterval
+                                     Interval = _halfSecondInterval
                                  };
             _deactivationTimer.Tick += (sender, args) =>
             {
                 _deactivationTimer.Stop();
                 Deactivate();
             };
-        }
-
-        public override void NotifyOfPropertyChange(string propertyName)
-        {
-            base.NotifyOfPropertyChange(propertyName);
-
-            if (propertyName == "State")
-            {
-                if (State == ViewModelStatusEnum.Open)
-                {
-                    InitializeTimers();
-                }
-            }
         }
 
         #endregion

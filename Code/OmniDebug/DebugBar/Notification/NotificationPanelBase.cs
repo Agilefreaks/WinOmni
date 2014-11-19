@@ -27,7 +27,6 @@
         private string _notificationPhoneNumber;
 
         private DateTime _notificationTime;
-
         #endregion
 
         #region Constructors and Destructors
@@ -38,14 +37,8 @@
             _eventsWrapper = eventsWrapper;
             _actionNames = new Dictionary<EventTypeEnum, string>
                                {
-                                   {
-                                       EventTypeEnum.IncomingCallEvent,
-                                       Resources.SimulateCallNotification
-                                   },
-                                   {
-                                       EventTypeEnum.IncomingSmsEvent,
-                                       Resources.SimulateSMSNotification
-                                   },
+                                   { EventTypeEnum.IncomingCallEvent, Resources.SimulateCallNotification },
+                                   { EventTypeEnum.IncomingSmsEvent, Resources.SimulateSMSNotification },
                                };
             _icons = new Dictionary<EventTypeEnum, string>
                          {

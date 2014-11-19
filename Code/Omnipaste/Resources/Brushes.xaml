@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource MainColor}" />
+    <SolidColorBrush x:Key="MainColoBrush" Color="{DynamicResource MainColor}" />
+    <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{DynamicResource NotificationBackgroundColor}" />
+    <SolidColorBrush x:Key="LightTextForegroundBrush" Color="{DynamicResource WhiteColor}" />
+    <SolidColorBrush x:Key="DarkTextForegroundBrush" Color="{DynamicResource BlackColor}" />
+
+    <SolidColorBrush x:Key="CallNotificationBrush" Color="{DynamicResource CallNotificationColor}" />
+    <SolidColorBrush x:Key="SMSNotificationBrush" Color="{DynamicResource SMSNotificationColor}" />
+    <SolidColorBrush x:Key="LinkNotificationBrush" Color="{DynamicResource LinkNotificationColor}" />
+    <SolidColorBrush x:Key="ClippingNotificationBrush" Color="{DynamicResource ClippingNotificationColor}" />
+    <SolidColorBrush x:Key="NotificationContentBrush" Color="{DynamicResource NotificationContentColor}" />
+    <SolidColorBrush x:Key="NotificationPrimaryButtonBrush" Color="{DynamicResource NotificationPrimaryButtonColor}" />
+    <SolidColorBrush x:Key="NotificationSecondaryButtonBrush" Color="{DynamicResource NotificationSecondaryButtonColor}" />
+    <SolidColorBrush x:Key="NotificationHyperlinkBrush" Color="{DynamicResource NotificationHyperlinkColor}" />
+    <SolidColorBrush x:Key="NotificationHelperButtonBrush" Color="{DynamicResource NotificationHelperButtonColor}" />
+    
+    <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
+    <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
+    <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />
+    <VisualBrush x:Key="CallVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_phone}" />
+</ResourceDictionary>
