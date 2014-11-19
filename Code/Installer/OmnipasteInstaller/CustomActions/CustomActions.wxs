@@ -26,6 +26,6 @@
 
     <CustomAction Id="setUI_RAN" Property="UI_RAN" Value="1" />
 
-    <CustomAction Id="SetShouldAddStartup" Property="SHOULDADDSTARTUP" Value="1"/>
+    <CustomAction Id="SetIsCleanInstall" Property="IS_CLEAN_INSTALL" Value="1"/>
   </Fragment>
 </Wix>
