@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters">
+                    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
+                    xmlns:uiConverters="clr-namespace:OmniUI.Converters;assembly=OmniUI">
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+    <uiConverters:UppercaseConverter x:Key="UppercaseConverter"/>
 </ResourceDictionary>

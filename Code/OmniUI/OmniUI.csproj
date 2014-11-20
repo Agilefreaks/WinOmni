@@ -77,6 +77,7 @@
     <Compile Include="Behaviors\MultipleContentButton.cs" />
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
+    <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderButtonViewModel.cs" />
     <Compile Include="HeaderButton\IHeaderItemViewModel.cs" />
