@@ -9,7 +9,7 @@
         <Setter Property="Effect" Value="{DynamicResource NotificationDropShadowEffect}"/>
         <Setter Property="Height" Value="90"/>
         <Setter Property="Width" Value="380"/>
-        <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
     </Style>
 
     <Style x:Key="NotificationIconContainerStyle" TargetType="Border">
@@ -17,16 +17,16 @@
         <Setter Property="Height" Value="90"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
-                <Setter Property="Background" Value="{DynamicResource ClippingNotificationBrush}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource ClippingNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingCall}">
-                <Setter Property="Background" Value="{DynamicResource CallNotificationBrush}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource CallNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingSMS}">
-                <Setter Property="Background" Value="{DynamicResource SMSNotificationBrush}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource SMSNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Link}">
-                <Setter Property="Background" Value="{DynamicResource LinkNotificationBrush}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource LinkNotificationBrush}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

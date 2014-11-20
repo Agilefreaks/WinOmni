@@ -20,7 +20,9 @@
                 <Grid x:Name="Container" HorizontalAlignment="Right">
                     <Border Name="Border" Style="{DynamicResource NotificationBorderStyle}">
                         <DockPanel LastChildFill="True">
-                            <Border DockPanel.Dock="Left" Style="{DynamicResource NotificationIconContainerStyle}"/>
+                            <Border DockPanel.Dock="Left" Style="{DynamicResource NotificationIconContainerStyle}">
+                                <Rectangle Style="{DynamicResource NotificationIconStyle}"/>
+                            </Border>
                             <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
                             <StackPanel Margin="11,0,0,0">
                                 <Grid>

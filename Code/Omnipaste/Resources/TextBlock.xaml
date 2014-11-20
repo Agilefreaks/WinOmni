@@ -39,7 +39,7 @@
     <Style TargetType="TextBlock" x:Key="InfoTextStyle">
         <Setter Property="FontFamily" Value="{DynamicResource HeaderFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource SubHeaderFontSize}" />
-        <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="InfoTextStyleCenter" BasedOn="{StaticResource InfoTextStyle}">
@@ -49,27 +49,27 @@
 
     <Style x:Key="DescriptionHeaderStyleTextBlock" TargetType="TextBlock">
         <Setter Property="FontSize" Value="22" />
-        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-        <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
     <Style x:Key="NotificationTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
         <Setter Property="Text" Value="{Binding Path=Title}"/>
         <Setter Property="Margin" Value="0,7,0,0"/>
-        <Setter Property="FontFamily" Value="{DynamicResource NotificationHeaderFont}"></Setter>
-        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationHeaderFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
-                <Setter Property="Foreground" Value="{DynamicResource ClippingNotificationBrush}"></Setter>
+                <Setter Property="Foreground" Value="{DynamicResource ClippingNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingCall}">
-                <Setter Property="Foreground" Value="{DynamicResource CallNotificationBrush}"></Setter>
+                <Setter Property="Foreground" Value="{DynamicResource CallNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingSMS}">
-                <Setter Property="Foreground" Value="{DynamicResource SMSNotificationBrush}"></Setter>
+                <Setter Property="Foreground" Value="{DynamicResource SMSNotificationBrush}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Link}">
-                <Setter Property="Foreground" Value="{DynamicResource LinkNotificationBrush}"></Setter>
+                <Setter Property="Foreground" Value="{DynamicResource LinkNotificationBrush}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -78,9 +78,9 @@
         <Setter Property="Text" Value="{Binding Path=Message}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
-        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
-        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"></Setter>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
     </Style>
 
 </ResourceDictionary>

@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models1="clr-namespace:Events.Models;assembly=Events"
-                    xmlns:models="clr-namespace:Clipboard.Models;assembly=Clipboard">
+                    xmlns:models="clr-namespace:Clipboard.Models;assembly=Clipboard"
+                    xmlns:notification="clr-namespace:Omnipaste.Notification">
 
     <!-- Shapes -->
     <Style x:Key="ItemIcon" TargetType="Rectangle">
@@ -56,5 +57,41 @@
                 <VisualBrush Stretch="Uniform" Visual="{DynamicResource notification_close}" />
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style x:Key="NotificationIconStyle" TargetType="Rectangle">
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Fill" Value="{DynamicResource NotificationBackgroundBrush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
+                <Setter Property="OpacityMask">
+                    <Setter.Value>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource clipping_icon}" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingCall}">
+                <Setter Property="OpacityMask">
+                    <Setter.Value>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource phone_icon}" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingSMS}">
+                <Setter Property="OpacityMask">
+                    <Setter.Value>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource sms_icon}" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Link}">
+                <Setter Property="OpacityMask">
+                    <Setter.Value>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource link_icon}" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
