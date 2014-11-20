@@ -10,19 +10,11 @@
         <converters:StringToResourceConverter x:Key="StringToVisualBrushConverter"/>
     </UserControl.Resources>
     <Grid>
-        <Rectangle Width="22" Height="22" Opacity="0.5" Margin="9,1,9,1" Fill="{DynamicResource IdealForegroundColorBrush}" ToolTip="{Binding Path=ButtonToolTip}">
+        <Rectangle Style="{DynamicResource HeaderItemContainerStyle}" ToolTip="{Binding Path=ButtonToolTip}">
             <Rectangle.OpacityMask>
                 <VisualBrush Stretch="Uniform" Visual="{Binding Path=Icon, Converter={StaticResource StringToVisualBrushConverter}}" />
             </Rectangle.OpacityMask>
         </Rectangle>
-        <Rectangle SnapsToDevicePixels="True"
-                   IsHitTestVisible="False"
-                   Opacity="0.25"
-                   Width="1"
-                   Height="15"
-                   VerticalAlignment="Stretch"
-                   HorizontalAlignment="Right"
-                   Fill="{DynamicResource IdealForegroundColorBrush}"
-                   Margin="8,0,0,0" />
+        <Rectangle Style="{DynamicResource HeaderItemSeparatorStyle}" />
     </Grid>
 </UserControl>
