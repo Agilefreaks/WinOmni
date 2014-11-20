@@ -4,4 +4,8 @@
     <!-- Colors -->
     <Color x:Key="MainColor">#FF4E5CA9</Color>
     <Color x:Key="NotificationBackgroundColor">#4E5CA9</Color>
+    <Color x:Key="CallNotificationColor">#2673ec</Color>
+    <Color x:Key="SMSNotificationColor">#34b746</Color>
+    <Color x:Key="LinkNotificationColor">#7c49ce</Color>
+    <Color x:Key="ClippingNotificationColor">#e56e1f</Color>
 </ResourceDictionary>

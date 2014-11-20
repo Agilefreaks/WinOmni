@@ -5,7 +5,6 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework;
 
     public abstract class NotificationViewModelBase : Screen, INotificationViewModel
     {
@@ -48,6 +47,8 @@
         }
 
         public abstract string Title { get; }
+
+        public abstract NotificationTypeEnum Type { get; }
 
         #endregion
 

@@ -29,6 +29,14 @@
             }
         }
 
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.IncomingSMS;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

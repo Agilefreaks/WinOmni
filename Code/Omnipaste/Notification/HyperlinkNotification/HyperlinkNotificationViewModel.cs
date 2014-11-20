@@ -39,6 +39,14 @@
             }
         }
 
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.Link;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

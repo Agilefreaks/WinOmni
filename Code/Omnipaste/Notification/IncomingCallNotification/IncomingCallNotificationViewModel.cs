@@ -4,7 +4,6 @@
     using Ninject;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
 
@@ -92,6 +91,14 @@
             get
             {
                 return string.Concat(Resources.IncommingCallNotificationTitle, PhoneNumber);
+            }
+        }
+
+        public override NotificationTypeEnum Type
+        {
+            get
+            {
+                return NotificationTypeEnum.IncomingCall;
             }
         }
 

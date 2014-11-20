@@ -8,6 +8,11 @@
     <SolidColorBrush x:Key="LightTextForegroundBrush" Color="{DynamicResource WhiteColor}" />
     <SolidColorBrush x:Key="DarkTextForegroundBrush" Color="{DynamicResource BlackColor}" />
 
+    <SolidColorBrush x:Key="CallNotificationBrush" Color="{DynamicResource CallNotificationColor}" />
+    <SolidColorBrush x:Key="SMSNotificationBrush" Color="{DynamicResource SMSNotificationColor}" />
+    <SolidColorBrush x:Key="LinkNotificationBrush" Color="{DynamicResource LinkNotificationColor}" />
+    <SolidColorBrush x:Key="ClippingNotificationBrush" Color="{DynamicResource ClippingNotificationColor}" />
+    
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
     <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />
