@@ -4,6 +4,6 @@
 
     <FontFamily x:Key="NotificationContentFont">Segoe UI Semibold 8</FontFamily>
     
-    <System:Double x:Key="NotificationContentFontSize">17.5</System:Double>
-    <System:Double x:Key="NotificationButtonFontSize">13.5</System:Double>
+    <System:Double x:Key="NotificationContentFontSize">14</System:Double>
+    <System:Double x:Key="NotificationButtonFontSize">10.8</System:Double>
 </ResourceDictionary>

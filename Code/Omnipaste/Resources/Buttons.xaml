@@ -39,6 +39,7 @@
     <Style x:Key="NotificationCloseButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="ToolTip" Value="{x:Static p:Resources.Dismiss}"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="5"/>
     </Style>
 
 </ResourceDictionary>

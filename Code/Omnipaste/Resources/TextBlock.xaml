@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:notification="clr-namespace:Omnipaste.Notification">
 
     <!-- TextBlock -->
     <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -57,6 +58,20 @@
         <Setter Property="Margin" Value="2,4,4,2"/>
         <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
+                <Setter Property="Foreground" Value="{DynamicResource ClippingNotificationBrush}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingCall}">
+                <Setter Property="Foreground" Value="{DynamicResource CallNotificationBrush}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingSMS}">
+                <Setter Property="Foreground" Value="{DynamicResource SMSNotificationBrush}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Link}">
+                <Setter Property="Foreground" Value="{DynamicResource LinkNotificationBrush}"></Setter>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="NotificationContentTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
