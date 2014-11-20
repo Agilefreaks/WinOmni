@@ -87,6 +87,11 @@
     <Style x:Key="NotificationLine2TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource NotificationLine1TextBlockStyle}">
         <Setter Property="Text" Value="{Binding Path=Line2}"/>
         <Setter Property="Height" Value="Auto"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Line2}" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
