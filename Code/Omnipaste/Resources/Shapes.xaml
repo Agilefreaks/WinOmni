@@ -53,7 +53,7 @@
         <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
         <Setter Property="OpacityMask">
             <Setter.Value>
-                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
+                <VisualBrush Stretch="Uniform" Visual="{DynamicResource notification_close}" />
             </Setter.Value>
         </Setter>
     </Style>
