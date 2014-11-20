@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
-    <FontFamily x:Key="NotificationContentFont">Segoe UI Semibold 8</FontFamily>
+    <FontFamily x:Key="NotificationHeaderFont">Segoe UI Semibold 8</FontFamily>
+    <FontFamily x:Key="NotificationContentFont">Segoe UI Semilight 8</FontFamily>
     
     <System:Double x:Key="NotificationContentFontSize">14</System:Double>
     <System:Double x:Key="NotificationButtonFontSize">10.8</System:Double>

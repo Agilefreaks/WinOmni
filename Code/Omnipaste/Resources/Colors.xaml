@@ -8,4 +8,5 @@
     <Color x:Key="SMSNotificationColor">#34b746</Color>
     <Color x:Key="LinkNotificationColor">#7c49ce</Color>
     <Color x:Key="ClippingNotificationColor">#e56e1f</Color>
+    <Color x:Key="NotificationContentColor">#9a9a9a</Color>
 </ResourceDictionary>

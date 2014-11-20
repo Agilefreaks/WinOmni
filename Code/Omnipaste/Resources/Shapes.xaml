@@ -46,5 +46,15 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
+    <Style x:Key="CloseNotificationIconStyle" TargetType="Rectangle">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+        <Setter Property="OpacityMask">
+            <Setter.Value>
+                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

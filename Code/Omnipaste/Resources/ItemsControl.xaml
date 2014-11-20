@@ -22,24 +22,25 @@
                         <DockPanel LastChildFill="True">
                             <Border DockPanel.Dock="Left" Style="{DynamicResource NotificationIconContainerStyle}"/>
                             <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <DockPanel LastChildFill="True">
-                                    <Button Style="{DynamicResource NotificationCloseButton}" DockPanel.Dock="Right"
-                                            cal:Message.Attach="Close">
-                                        <Rectangle Width="12" Height="12" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                            <Rectangle.OpacityMask>
-                                                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
+                            <StackPanel Margin="11,0,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.RowSpan="2" Style="{DynamicResource NotificationTitleTextBlockStyle}"/>
+                                    <Button Grid.Column="1" Grid.Row="0" Style="{DynamicResource NotificationCloseButton}" cal:Message.Attach="Close">
+                                        <Rectangle Style="{DynamicResource CloseNotificationIconStyle}"/>
                                     </Button>
-                                    <TextBlock Style="{DynamicResource NotificationTitleTextBlockStyle}" />
-                                </DockPanel>
-                                <TextBlock Grid.Row="1" Style="{DynamicResource NotificationContentTextBlockStyle}" />
-                            </Grid>
+                                </Grid>
+                                <Border Padding="0,0,6,0">
+                                    <TextBlock Style="{DynamicResource NotificationContentTextBlockStyle}" />
+                                </Border>
+                            </StackPanel>
                         </DockPanel>
                     </Border>
                 </Grid>

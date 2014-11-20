@@ -55,8 +55,8 @@
 
     <Style x:Key="NotificationTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
         <Setter Property="Text" Value="{Binding Path=Title}"/>
-        <Setter Property="Margin" Value="2,4,4,2"/>
-        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
+        <Setter Property="Margin" Value="0,7,0,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationHeaderFont}"></Setter>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
@@ -76,9 +76,11 @@
 
     <Style x:Key="NotificationContentTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
         <Setter Property="Text" Value="{Binding Path=Message}"/>
-        <Setter Property="Margin" Value="2,2,4,4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
         <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"></Setter>
     </Style>
 
 </ResourceDictionary>
