@@ -55,12 +55,15 @@
     <Style x:Key="NotificationTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
         <Setter Property="Text" Value="{Binding Path=Title}"/>
         <Setter Property="Margin" Value="2,4,4,2"/>
-        <Setter Property="FontFamily" Value="./#Segoe UI Semibold 8"></Setter>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
     </Style>
 
     <Style x:Key="NotificationContentTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
         <Setter Property="Text" Value="{Binding Path=Message}"/>
         <Setter Property="Margin" Value="2,2,4,4"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"></Setter>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"></Setter>
     </Style>
 
 </ResourceDictionary>

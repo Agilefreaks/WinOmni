@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="NotificationContentFont">Segoe UI Semibold 8</FontFamily>
+    
+    <System:Double x:Key="NotificationContentFontSize">17.5</System:Double>
+    <System:Double x:Key="NotificationButtonFontSize">13.5</System:Double>
+</ResourceDictionary>
