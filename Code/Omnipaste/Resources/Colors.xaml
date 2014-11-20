@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Colors -->
+    <Color x:Key="MainColor">#FF4E5CA9</Color>
+    <Color x:Key="NotificationBackgroundColor">#4E5CA9</Color>
+</ResourceDictionary>

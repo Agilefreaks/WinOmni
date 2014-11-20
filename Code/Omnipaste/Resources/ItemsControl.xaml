@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cal="http://www.caliburnproject.org"
+                    xmlns:notification="clr-namespace:Omnipaste.Notification">
+
+    <!--ItemsControl-->
+    <Style x:Key="NotificationContainerStyle" BasedOn="{StaticResource {x:Type ItemsControl}}" TargetType="ItemsControl">
+        <Style.Resources>
+            <DataTemplate x:Key="NotificationDataTemplate">
+                <DataTemplate.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{DynamicResource NotificationFadeInStoryboard}"/>
+                    </EventTrigger>
+                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Closed}">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{DynamicResource NotificationFadeOutStoryboard}" />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+                <Grid x:Name="Container" HorizontalAlignment="Right">
+                    <Border Name="Border" Style="{DynamicResource NotificationBorderStyle}">
+                        <DockPanel LastChildFill="True">
+                            <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel LastChildFill="True">
+                                    <Button Style="{DynamicResource NotificationCloseButton}" DockPanel.Dock="Right"
+                                            cal:Message.Attach="Close">
+                                        <Rectangle Width="12" Height="12" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </Button>
+                                    <TextBlock Style="{DynamicResource NotificationTitleTextBlockStyle}" />
+                                </DockPanel>
+                                <TextBlock Grid.Row="1" Style="{DynamicResource NotificationContentTextBlockStyle}" />
+                            </Grid>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+        </Style.Resources>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="ItemTemplate" Value="{DynamicResource NotificationDataTemplate}"/>
+    </Style>
+</ResourceDictionary>

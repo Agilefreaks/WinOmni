@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Effects -->
+    <DropShadowEffect x:Key="NotificationDropShadowEffect" ShadowDepth="0" Opacity="0.8" BlurRadius="10"/>
+
+    <Storyboard x:Key="NotificationFadeOutStoryboard">
+        <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Container"
+                                         Duration="0:0:0.5" />
+    </Storyboard>
+
+    <Storyboard x:Key="NotificationFadeInStoryboard">
+        <DoubleAnimation From="0.1" To="1" Storyboard.TargetProperty="Opacity" 
+                                             Duration="0:0:0.5"/>
+    </Storyboard>
+</ResourceDictionary>
