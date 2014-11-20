@@ -8,10 +8,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Content="{Binding Path=EndCallButtonText}" x:Name="EndCall" />
-        <Button Grid.Column="1" Content="{x:Static p:Resources.IncommingCallNotificationSendSms}" x:Name="ReplyWithSms"/>
+        <Button Grid.Column="0" Content="{Binding Path=EndCallButtonText}" Style="{DynamicResource NotificationPrimaryButtonStyle}" x:Name="EndCall" />
+        <Button Grid.Column="1" Content="{x:Static p:Resources.IncommingCallNotificationSendSms}" Style="{DynamicResource NotificationSecondaryButtonStyle}" x:Name="ReplyWithSms"/>
     </Grid>
 </UserControl>

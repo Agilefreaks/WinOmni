@@ -9,4 +9,7 @@
     <Color x:Key="LinkNotificationColor">#7c49ce</Color>
     <Color x:Key="ClippingNotificationColor">#e56e1f</Color>
     <Color x:Key="NotificationContentColor">#9a9a9a</Color>
+    <Color x:Key="NotificationPrimaryButtonColor">#34b746</Color>
+    <Color x:Key="NotificationSecondaryButtonColor">#db2a4c</Color>
+    <Color x:Key="NotificationHyperlinkColor">#7c49ce</Color>
 </ResourceDictionary>

@@ -6,5 +6,5 @@
     <FontFamily x:Key="NotificationContentFont">Segoe UI Semilight 8</FontFamily>
     
     <System:Double x:Key="NotificationContentFontSize">14</System:Double>
-    <System:Double x:Key="NotificationButtonFontSize">10.8</System:Double>
+    <System:Double x:Key="NotificationButtonFontSize">12</System:Double>
 </ResourceDictionary>

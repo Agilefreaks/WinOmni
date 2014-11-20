@@ -47,6 +47,21 @@
             }
         }
 
+        public override string Line2
+        {
+            get
+            {
+                return string.Empty;
+            }
+            set
+            {
+                Uri = value;
+                NotifyOfPropertyChange(() => Uri);
+            }
+        }
+
+        public string Uri { get; private set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -56,7 +71,7 @@
             CanOpenLink = false;
             try
             {
-                Process.Start(Line2);
+                Process.Start(Uri);
                 Dismiss();
             }
             catch (Win32Exception)

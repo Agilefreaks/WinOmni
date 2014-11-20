@@ -13,6 +13,9 @@
     <SolidColorBrush x:Key="LinkNotificationBrush" Color="{DynamicResource LinkNotificationColor}" />
     <SolidColorBrush x:Key="ClippingNotificationBrush" Color="{DynamicResource ClippingNotificationColor}" />
     <SolidColorBrush x:Key="NotificationContentBrush" Color="{DynamicResource NotificationContentColor}" />
+    <SolidColorBrush x:Key="NotificationPrimaryButtonBrush" Color="{DynamicResource NotificationPrimaryButtonColor}" />
+    <SolidColorBrush x:Key="NotificationSecondaryButtonBrush" Color="{DynamicResource NotificationSecondaryButtonColor}" />
+    <SolidColorBrush x:Key="NotificationHyperlinkBrush" Color="{DynamicResource NotificationHyperlinkColor}" />    
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />

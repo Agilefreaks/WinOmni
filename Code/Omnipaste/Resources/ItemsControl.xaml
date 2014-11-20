@@ -27,7 +27,6 @@
                                 </Grid.RowDefinitions>
                                 <Rectangle Grid.Row="0" Style="{DynamicResource NotificationIconStyle}"/>
                             </Grid>
-                            <ContentControl cal:View.Model="{Binding}" DockPanel.Dock="Bottom" />
                             <StackPanel Margin="11,0,0,0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -47,6 +46,7 @@
                                     <TextBlock Style="{DynamicResource NotificationLine1TextBlockStyle}" />
                                     <TextBlock Style="{DynamicResource NotificationLine2TextBlockStyle}"  />
                                 </StackPanel>
+                                <ContentControl cal:View.Model="{Binding}"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>

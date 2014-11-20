@@ -7,6 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button x:Name="OpenLink" Grid.Column="0" Content="{x:Static p:Resources.ButtonBrowse}" />
+        <Button Style="{DynamicResource HyperlinkButtonStyle}" ToolTip="{x:Static p:Resources.ButtonBrowse}" x:Name="OpenLink">
+            <TextBlock Style="{DynamicResource NotificationHyperlinkStyle}">
+                <Hyperlink NavigateUri="{Binding Path=Uri}">
+                    <Run Text="{Binding Path=Uri}" />
+                </Hyperlink>
+            </TextBlock>
+        </Button>
     </Grid>
 </UserControl>
