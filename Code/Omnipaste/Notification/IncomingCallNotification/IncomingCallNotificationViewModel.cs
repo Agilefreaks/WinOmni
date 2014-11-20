@@ -30,8 +30,6 @@
 
         public IEventAggregator EventAggregator { get; set; }
 
-        public string PhoneNumber { get; set; }
-
         public bool CanEndCall
         {
             get
@@ -90,7 +88,7 @@
         {
             get
             {
-                return string.Concat(Resources.IncommingCallNotificationTitle, PhoneNumber);
+                return Resources.IncommingCallNotificationTitle;
             }
         }
 
@@ -121,7 +119,7 @@
         public void ReplyWithSms()
         {
             CanReplyWithSms = false;
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = PhoneNumber, Message = "" });
+            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Line1, Message = "" });
             Dismiss();
         }
 

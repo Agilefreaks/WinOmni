@@ -31,7 +31,7 @@
         {
             var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent});
 
-            notificationViewModel.PhoneNumber.Should().Be("your number");
+            notificationViewModel.Line1.Should().Be("your number");
         }
 
         [Test]
@@ -40,8 +40,8 @@
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
                 new Event { PhoneNumber = "1234567", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
 
-            notificationViewModel.PhoneNumber.Should().Be("1234567");
-            notificationViewModel.Message.Should().Be("SmsContent");
+            notificationViewModel.Line1.Should().Be("1234567");
+            notificationViewModel.Line2.Should().Be("SmsContent");
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Clipboard.Handlers
 
         private void WindowsClipboardWrapperDataReceived(ClipboardEventArgs args)
         {
-            if (_lastClippingContent.Equals(args.Data))
+            if (Equals(_lastClippingContent, args.Data))
             {
                 return;
             }

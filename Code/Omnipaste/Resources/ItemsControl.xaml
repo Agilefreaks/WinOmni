@@ -39,9 +39,10 @@
                                         <Rectangle Style="{DynamicResource CloseNotificationIconStyle}"/>
                                     </Button>
                                 </Grid>
-                                <Border Padding="0,0,6,0">
-                                    <TextBlock Style="{DynamicResource NotificationContentTextBlockStyle}" />
-                                </Border>
+                                <StackPanel Margin="0,0,6,0">
+                                    <TextBlock Style="{DynamicResource NotificationLine1TextBlockStyle}" />
+                                    <TextBlock Style="{DynamicResource NotificationLine2TextBlockStyle}"  />
+                                </StackPanel>
                             </StackPanel>
                         </DockPanel>
                     </Border>

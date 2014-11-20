@@ -38,7 +38,7 @@
         public INotificationViewModel Create(Clipping clipping)
         {
             INotificationViewModel result = _clippingNotificationConstructors[clipping.Type]();
-            result.Message = clipping.Content;
+            result.Line2 = clipping.Content;
 
             return result;
         }
@@ -46,8 +46,8 @@
         public INotificationViewModel Create(Event @event)
         {
             IEventNotificationViewModel result = _eventNotificationConstructors[@event.Type]();
-            result.PhoneNumber = @event.PhoneNumber;
-            result.Message = @event.Content;
+            result.Line1 = @event.PhoneNumber;
+            result.Line2 = @event.Content;
 
             return result;
         }

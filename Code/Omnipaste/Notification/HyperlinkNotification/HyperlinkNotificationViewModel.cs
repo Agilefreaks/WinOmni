@@ -56,7 +56,7 @@
             CanOpenLink = false;
             try
             {
-                Process.Start(Message);
+                Process.Start(Line2);
                 Dismiss();
             }
             catch (Win32Exception)

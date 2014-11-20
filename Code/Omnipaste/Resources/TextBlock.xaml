@@ -74,13 +74,19 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="NotificationContentTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
-        <Setter Property="Text" Value="{Binding Path=Message}"/>
+    <Style x:Key="NotificationLine1TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
+        <Setter Property="Text" Value="{Binding Path=Line1}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
         <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+    </Style>
+
+    <Style x:Key="NotificationLine2TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource NotificationLine1TextBlockStyle}">
+        <Setter Property="Text" Value="{Binding Path=Line2}"/>
+        <Setter Property="Height" Value="Auto"/>
     </Style>
 
 </ResourceDictionary>

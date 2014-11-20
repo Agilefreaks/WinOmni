@@ -27,7 +27,9 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
-        public string Message { get; set; }
+        public string Line1 { get; set; }
+
+        public string Line2 { get; set; }
 
         public ViewModelStatusEnum State
         {
@@ -43,6 +45,10 @@
                 }
                 _state = value;
                 NotifyOfPropertyChange(() => State);
+                if (State == ViewModelStatusEnum.Open)
+                {
+                    InitializeTimers();
+                }
             }
         }
 
@@ -124,28 +130,13 @@
         {
             _deactivationTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
                                  {
-                                     Interval
-                                         =
-                                         _halfSecondInterval
+                                     Interval = _halfSecondInterval
                                  };
             _deactivationTimer.Tick += (sender, args) =>
             {
                 _deactivationTimer.Stop();
                 Deactivate();
             };
-        }
-
-        public override void NotifyOfPropertyChange(string propertyName)
-        {
-            base.NotifyOfPropertyChange(propertyName);
-
-            if (propertyName == "State")
-            {
-                if (State == ViewModelStatusEnum.Open)
-                {
-                    InitializeTimers();
-                }
-            }
         }
 
         #endregion

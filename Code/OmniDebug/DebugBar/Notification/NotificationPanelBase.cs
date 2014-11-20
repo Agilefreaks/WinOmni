@@ -24,7 +24,7 @@
 
         private readonly Dictionary<EventTypeEnum, string> _actionNames;
 
-        private Dictionary<EventTypeEnum, string> _icons;
+        private readonly Dictionary<EventTypeEnum, string> _icons;
 
         #endregion
 
@@ -34,15 +34,10 @@
         {
             _omniServiceWrapper = omniServiceWrapper;
             _eventsWrapper = eventsWrapper;
-            _actionNames = new Dictionary<EventTypeEnum, string> {
-                                   {
-                                       EventTypeEnum.IncomingCallEvent,
-                                       Resources.SimulateCallNotification
-                                   },
-                                   {
-                                       EventTypeEnum.IncomingSmsEvent,
-                                       Resources.SimulateSMSNotification
-                                   },
+            _actionNames = new Dictionary<EventTypeEnum, string>
+                               {
+                                   { EventTypeEnum.IncomingCallEvent, Resources.SimulateCallNotification },
+                                   { EventTypeEnum.IncomingSmsEvent, Resources.SimulateSMSNotification },
                                };
             _icons = new Dictionary<EventTypeEnum, string>
                          {
