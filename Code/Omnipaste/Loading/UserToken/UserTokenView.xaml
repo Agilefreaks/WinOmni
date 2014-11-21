@@ -41,7 +41,7 @@
         <Button Grid.Row="4" TabIndex="2" Grid.Column="1" x:Name="Authenticate" Content="{x:Static p:Resources.ButtonAuthenticate}" Style="{StaticResource PrimaryDialogButton}"/>
         <Button Grid.Row="4" TabIndex="3" Grid.Column="2" cal:Message.Attach="Exit" Content="{x:Static p:Resources.ButtonExit}" IsCancel="True" Style="{StaticResource DialogButton}"/>
         
-        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding Path=HasMessage, Converter={StaticResource BooleanToVisibility}}">
+        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding Path=HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
