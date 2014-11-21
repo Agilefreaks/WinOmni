@@ -20,6 +20,7 @@
         <ResourceDictionary Source="Submenu.xaml"/>
         <ResourceDictionary Source="ToggleSwitch.xaml"/>
         <ResourceDictionary Source="ItemsControl.xaml"/>
+        <ResourceDictionary Source="../Themes/ExpandableTextBlock.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="HeaderItemContainerStyle" TargetType="Rectangle">
         <Setter Property="Width" Value="22"/>

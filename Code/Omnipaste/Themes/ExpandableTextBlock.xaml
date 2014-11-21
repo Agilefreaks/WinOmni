@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:controls="clr-namespace:Omnipaste.Controls"
+                    xmlns:behaviors1="clr-namespace:OmniUI.Behaviors;assembly=OmniUI">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Resources/Colors.xaml" />
+        <ResourceDictionary Source="../Resources/Brushes.xaml" />
+        <ResourceDictionary Source="../Resources/Fonts.xaml" />
+        <ResourceDictionary Source="../Resources/Icons.xaml" />
+        <ResourceDictionary Source="../Resources/Shapes.xaml" />
+        <ResourceDictionary Source="../Resources/TextBlock.xaml" />
+        <ResourceDictionary Source="../Resources/Buttons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="ExpandableTextBlockTemplate" TargetType="controls:ExpandableTextBlock">
+        <DockPanel LastChildFill="True">
+            <!--<Rectangle Style="{DynamicResource NotificationContentSeparatorStyle }" Margin="0,0,0,5" DockPanel.Dock="Top"/>
+                        <Rectangle Style="{DynamicResource NotificationContentSeparatorStyle }" Margin="0,5,0,0" DockPanel.Dock="Bottom"/>-->
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Right">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="1" Style="{DynamicResource NotificationExpandButton}" x:Name="ToggleExpandButton">
+                        <i:Interaction.Behaviors>
+                            <behaviors1:VisibleOnTruncationBehavior TextBlockControl="{Binding Path=., ElementName=CotentTextBlock}"/>
+                        </i:Interaction.Behaviors>
+                        <Rectangle Style="{DynamicResource NotificationExpandContentIconStyle }"/>
+                    </Button>
+                </Grid>
+                <TextBlock x:Name="CotentTextBlock" Style="{DynamicResource WrappingTextBlockStyle}" 
+                           Text="{TemplateBinding Text}" />
+            </DockPanel>
+        </DockPanel>
+    </ControlTemplate>
+
+    <Style TargetType="controls:ExpandableTextBlock">
+        <Setter Property="MaxHeight" Value="50"/>
+        <Setter Property="Template"  Value="{StaticResource ExpandableTextBlockTemplate}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Content, RelativeSource={RelativeSource Self}}" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
