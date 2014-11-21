@@ -81,6 +81,11 @@
         <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
         <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="NotificationHyperlinkStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
