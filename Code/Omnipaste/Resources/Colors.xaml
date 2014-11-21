@@ -12,4 +12,5 @@
     <Color x:Key="NotificationPrimaryButtonColor">#34b746</Color>
     <Color x:Key="NotificationSecondaryButtonColor">#db2a4c</Color>
     <Color x:Key="NotificationHyperlinkColor">#7c49ce</Color>
+    <Color x:Key="NotificationHelperButtonColor">#EAEAEA</Color>
 </ResourceDictionary>

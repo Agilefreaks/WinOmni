@@ -74,25 +74,13 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="NotificationLine1TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
-        <Setter Property="Text" Value="{Binding Path=Line1}"/>
+    <Style x:Key="NotificationLine1TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">        
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
         <Setter Property="Height" Value="24"/>
         <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
         <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
         <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
-    </Style>
-
-    <Style x:Key="NotificationLine2TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource NotificationLine1TextBlockStyle}">
-        <Setter Property="Text" Value="{Binding Path=Line2}"/>
-        <Setter Property="Height" Value="Auto"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="">
-                <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="NotificationHyperlinkStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -113,5 +101,15 @@
             </Style>
         </Style.Resources>
     </Style>
-    
+
+    <Style TargetType="TextBlock" x:Key="WrappingTextBlockStyle">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
 </ResourceDictionary>

@@ -5150,4 +5150,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             <Path Fill="{DynamicResource BlackBrush}" Data="F1 M 6.361,29.481 L 6.826,28.969 C 7.053,28.719 7.033,28.340 6.791,28.104 C 3.795,25.177 1.922,21.106 1.922,16.596 C 1.922,12.521 3.451,8.803 5.955,5.963 C 6.179,5.709 6.170,5.328 5.925,5.095 L 5.431,4.626 C 5.176,4.385 4.766,4.395 4.533,4.658 C 1.716,7.841 -0.000,12.020 0.000,16.596 C 0.000,21.657 2.096,26.238 5.464,29.517 C 5.716,29.762 6.126,29.741 6.361,29.481 Z"/>
         </Canvas>
     </Canvas>
+    
+    <Canvas x:Key="collapse_icon" Height="9" Width="14">
+        <Path Fill="{DynamicResource BlackBrush}" Data="M 0 0 5.614 -5.614 11.228 0 9.635 1.592 5.614 -2.429 1.593 1.592 0 0 z"/>
+    </Canvas>
+
+    <Canvas x:Key="expand_icon" Height="9" Width="14">
+        <Path Fill="{DynamicResource BlackBrush}" Data="M 0 0 -5.614 5.614 -11.228 0 -9.635 -1.592 -5.614 2.429 -1.593 -1.592 0 0 z"/>
+    </Canvas>
 </ResourceDictionary>

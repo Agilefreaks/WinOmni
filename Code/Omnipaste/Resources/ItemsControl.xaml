@@ -42,10 +42,8 @@
                                         <Rectangle Style="{DynamicResource CloseNotificationIconStyle}"/>
                                     </Button>
                                 </Grid>
-                                <StackPanel Margin="0,0,6,0">
-                                    <TextBlock Style="{DynamicResource NotificationLine1TextBlockStyle}" />
-                                    <TextBlock Style="{DynamicResource NotificationLine2TextBlockStyle}"  />
-                                </StackPanel>
+                                <TextBlock Style="{DynamicResource NotificationLine1TextBlockStyle}" Text="{Binding Path=Line1}"/>
+                                <Label Style="{DynamicResource NotificationLine2LabelStyle}" Content="{Binding Path=Line2}"/>
                                 <ContentControl cal:View.Model="{Binding}"/>
                             </StackPanel>
                         </DockPanel>
