@@ -90,6 +90,7 @@
             var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>()
                 .Concat(_backgroundServices).Distinct();
             allStartedServices.ForEach(s => s.Stop());
+            _kernel.Get<IOmniService>().Dispose();
 
             base.OnExit(sender, e);
         }

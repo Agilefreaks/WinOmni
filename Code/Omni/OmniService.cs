@@ -10,6 +10,7 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniSync;
@@ -29,9 +30,9 @@
 
         private static int _migrationState = NoSwitchInProgress;
 
-        private readonly ReplaySubject<bool> _inTransitionChangedSubject;
+        private ISubject<bool> _inTransitionChangedSubject;
 
-        private readonly ReplaySubject<OmniServiceStatusEnum> _statusChangedSubject;
+        private ISubject<OmniServiceStatusEnum> _statusChangedSubject;
 
         private OmniServiceStatusEnum _state;
 
@@ -287,5 +288,12 @@
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            _statusChangedSubject = new NullSubject<OmniServiceStatusEnum>();
+            _inTransitionChangedSubject = new NullSubject<bool>();
+            Stop().RunToCompletionSynchronous();
+        }
     }
 }

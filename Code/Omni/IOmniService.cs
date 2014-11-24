@@ -3,7 +3,7 @@
     using System;
     using System.Reactive;
 
-    public interface IOmniService
+    public interface IOmniService : IDisposable
     {
         #region Public Properties
 

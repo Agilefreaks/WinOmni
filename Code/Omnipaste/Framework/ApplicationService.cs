@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Framework
 {
     using System;
-    using System.Deployment.Application;
     using System.Linq;
     using System.Reflection;
     using System.Windows;

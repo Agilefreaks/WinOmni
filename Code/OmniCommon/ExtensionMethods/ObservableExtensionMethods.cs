@@ -17,11 +17,6 @@
 
         #region Public Methods and Operators
 
-        public static void RunToCompletion<T>(this IObservable<T> observable, Action<T> onCompletion = null, Action<Exception> onError = null, IDispatcher dispatcher = null)
-        {
-            Task.Factory.StartNew(() => observable.RunToCompletionSynchronous(onCompletion, onError, dispatcher));
-        }
-
         public static IObservable<T> RetryAfter<T>(
             this IObservable<T> source,
             TimeSpan interval,
@@ -58,6 +53,36 @@
             return retryObservable.SelectMany(t => t.Item1 ? Observable.Return(t.Item2) : Observable.Throw<T>(t.Item3));
         }
 
+        public static void RunToCompletion<T>(
+            this IObservable<T> observable,
+            Action<T> onCompletion = null,
+            Action<Exception> onError = null,
+            IDispatcher dispatcher = null)
+        {
+            Task.Factory.StartNew(() => observable.RunToCompletionSynchronous(onCompletion, onError, dispatcher));
+        }
+
+        public static void RunToCompletionSynchronous<T>(
+            this IObservable<T> observable,
+            Action<T> onCompletion = null,
+            Action<Exception> onError = null,
+            IDispatcher dispatcher = null)
+        {
+            onCompletion = onCompletion ?? (_ => { });
+            onError = onError ?? (_ => { });
+            dispatcher = dispatcher ?? new ImmediateDispatcher();
+            var task = observable.ToTask();
+            task.Wait();
+            if (task.IsFaulted)
+            {
+                OnExceptionEncountered(task.Exception);
+                dispatcher.Dispatch(onError, task.Exception);
+            }
+            else
+            {
+                dispatcher.Dispatch(onCompletion, task.Result);
+            }
+        }
 
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable)
         {
@@ -77,28 +102,6 @@
         {
             SimpleLogger.Log("Exception encountered: " + exception);
             ExceptionReporter.Instance.Report(exception);
-        }
-
-        private static void RunToCompletionSynchronous<T>(
-            this IObservable<T> observable,
-            Action<T> onCompletion,
-            Action<Exception> onError,
-            IDispatcher dispatcher)
-        {
-            onCompletion = onCompletion ?? (_ => { });
-            onError = onError ?? (_ => { });
-            dispatcher = dispatcher ?? new ImmediateDispatcher();
-            var task = observable.ToTask();
-            task.Wait();
-            if (task.IsFaulted)
-            {
-                OnExceptionEncountered(task.Exception);
-                dispatcher.Dispatch(onError, task.Exception);
-            }
-            else
-            {
-                dispatcher.Dispatch(onCompletion, task.Result);
-            }
         }
 
         #endregion

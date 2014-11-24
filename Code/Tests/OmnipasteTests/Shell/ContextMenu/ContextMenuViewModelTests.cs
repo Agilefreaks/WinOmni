@@ -1,15 +1,19 @@
 ﻿namespace OmnipasteTests.Shell.ContextMenu
 {
     using System;
+    using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Threading;
     using Caliburn.Micro;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
@@ -27,11 +31,11 @@
 
         private IContextMenuViewModel _subject;
 
-        private Subject<OmniServiceStatusEnum> _statusChangedSubject;
-
         private Mock<IApplicationService> _mockApplicationService;
 
         private Mock<IConfigurationService> _mockConfigurationService;
+
+        private TestScheduler _testScheduler;
 
         #endregion
 
@@ -41,11 +45,12 @@
         public void Setup()
         {
             _mockingKernel = new MoqMockingKernel();
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
 
             _mockOmniService = _mockingKernel.GetMock<IOmniService>();
             _mockOmniService.Setup(x => x.InTransitionObservable).Returns(Observable.Empty<bool>());
-            _statusChangedSubject = new Subject<OmniServiceStatusEnum>();
-            _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
+            _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(Observable.Empty<OmniServiceStatusEnum>());
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
             _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
@@ -71,17 +76,33 @@
         [Test]
         public void OmniService_StatusChangedToStarted_SetsTheIconSourceToConnected()
         {
-            _statusChangedSubject.OnNext(OmniServiceStatusEnum.Started);
+            var testableObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<OmniServiceStatusEnum>>(
+                    100,
+                    Notification.CreateOnNext(OmniServiceStatusEnum.Started)));
+            _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(testableObservable);
 
-            _subject.IconSource.Should().Be("/Connected.ico");
+            var viewModel = _mockingKernel.Get<IContextMenuViewModel>();
+            viewModel.IconSource = "test";
+            _testScheduler.Start();
+
+            viewModel.IconSource.Should().Be("/Connected.ico");
         }
 
         [Test]
         public void OmniService_StatusChangedToStopped_SetsTheIconSourceToDisconnected()
         {
-            _statusChangedSubject.OnNext(OmniServiceStatusEnum.Stopped);
+            var testableObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<OmniServiceStatusEnum>>(
+                    100,
+                    Notification.CreateOnNext(OmniServiceStatusEnum.Stopped)));
+            _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(testableObservable);
+            
+            var viewModel = _mockingKernel.Get<IContextMenuViewModel>();
+            viewModel.IconSource = "test";
+            _testScheduler.Start();
 
-            _subject.IconSource.Should().Be("/Disconnected.ico");
+            viewModel.IconSource.Should().Be("/Disconnected.ico");
         }
 
         [Test]
