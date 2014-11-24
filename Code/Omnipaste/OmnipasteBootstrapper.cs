@@ -14,6 +14,7 @@
     using OmniApi;
     using OmniCommon;
     using OmniCommon.DataProviders;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
@@ -90,6 +91,7 @@
             var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>()
                 .Concat(_backgroundServices).Distinct();
             allStartedServices.ForEach(s => s.Stop());
+            _kernel.Get<IOmniService>().Stop().RunToCompletion();
 
             base.OnExit(sender, e);
         }
