@@ -54,6 +54,14 @@
             }
         }
 
+        public override string Line2
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
         public override NotificationTypeEnum Type
         {
             get

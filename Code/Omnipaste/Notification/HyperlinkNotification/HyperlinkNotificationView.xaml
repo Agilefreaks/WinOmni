@@ -9,8 +9,8 @@
     <Grid>
         <Button Style="{DynamicResource HyperlinkButtonStyle}" ToolTip="{x:Static p:Resources.ButtonBrowse}" x:Name="OpenLink">
             <TextBlock Style="{DynamicResource NotificationHyperlinkStyle}">
-                <Hyperlink NavigateUri="{Binding Path=Uri}">
-                    <Run Text="{Binding Path=Uri}" />
+                <Hyperlink NavigateUri="{Binding Path=Uri, Mode=OneWay}">
+                    <Run Text="{Binding Path=Uri, Mode=OneWay}" />
                 </Hyperlink>
             </TextBlock>
         </Button>
