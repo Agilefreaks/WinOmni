@@ -2,8 +2,9 @@
 {
     using System;
     using Caliburn.Micro;
+    using Omnipaste.EventAggregatorMessages;
 
-    public interface IContextMenuViewModel : IScreen, IDisposable
+    public interface IContextMenuViewModel : IScreen, IDisposable, IHandle<ApplicationClosingMessage>
     {
         #region Public Properties
 

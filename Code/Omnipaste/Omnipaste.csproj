@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <AssemblyName>Omnipaste</AssemblyName>
-    <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-debug</AssemblyName>
+    <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-staging</AssemblyName>
     <AssemblyName Condition=" '$(Configuration)' == 'Staging' ">$(AssemblyName)-staging</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
@@ -233,6 +233,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
+    <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />

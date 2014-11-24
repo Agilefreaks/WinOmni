@@ -5,17 +5,26 @@
     using System.Reflection;
     using System.Windows;
     using System.Windows.Threading;
+    using Caliburn.Micro;
     using Microsoft.Win32;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
 
     public class ApplicationService : IApplicationService
     {
+        private readonly IEventAggregator _eventAggregator;
+
         #region Constants
 
         private const string AutoStartArguments = "-minimized";
 
         #endregion
+
+        public ApplicationService(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
 
         #region Public Properties
 
@@ -52,6 +61,8 @@
 
         public void ShutDown()
         {
+            _eventAggregator.PublishOnUIThread(new ApplicationClosingMessage());
+
             Application.Current.Shutdown();
         }
 

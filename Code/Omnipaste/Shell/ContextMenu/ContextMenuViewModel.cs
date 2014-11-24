@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using Caliburn.Micro;
     using Ninject;
@@ -14,6 +15,8 @@
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
+        private readonly IEventAggregator _eventAggregator;
+
         #region Fields
 
         private readonly IDisposable _statusChangedObserver;
@@ -26,8 +29,10 @@
 
         #region Constructors and Destructors
 
-        public ContextMenuViewModel(IOmniService omniService)
+        public ContextMenuViewModel(IOmniService omniService, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
             IconSource = "/Disconnected.ico";
             _statusChangedObserver =
                 omniService.StatusChangedObservable.SubscribeOn(SchedulerProvider.Default)
@@ -77,9 +82,6 @@
             }
         }
 
-        [Inject]
-        public IEventAggregator EventAggregator { get; set; }
-
         public string IconSource
         {
             get
@@ -114,19 +116,29 @@
 
         public void Exit()
         {
-            ApplicationService.ShutDown();
+            System.Action closeApp = () => ApplicationService.ShutDown();
+            var dispatcher = DispatcherProvider.Current;
+            Task.Delay(TimeSpan.FromMilliseconds(500)).ContinueWith(_ => dispatcher.Dispatch(closeApp));
         }
 
         public void Show()
         {
-            EventAggregator.PublishOnUIThread(new ShowShellMessage());
+            _eventAggregator.PublishOnUIThread(new ShowShellMessage());
         }
 
         public void ShowBalloon(string balloonTitle, string balloonMessage)
         {
-            BalloonInfo = new BalloonNotificationInfo { Title = balloonTitle, Message = balloonMessage };
+            if (Visibility == Visibility.Visible)
+            {
+                BalloonInfo = new BalloonNotificationInfo { Title = balloonTitle, Message = balloonMessage };
+            }
         }
 
         #endregion
+
+        public void Handle(ApplicationClosingMessage message)
+        {
+            Visibility = Visibility.Hidden;
+        }
     }
 }
