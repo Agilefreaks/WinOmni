@@ -55,6 +55,7 @@
             <converters:WhiteSpaceToBooleanConverter x:Key="WhiteSpaceToBooleanConverter"/>
         </Style.Resources>
         <Setter Property="MaxCollapsedHeight" Value="50"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
         <Setter Property="Template"  Value="{StaticResource ExpandableTextBlockTemplate}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}, Converter={StaticResource WhiteSpaceToBooleanConverter}}" Value="True">
