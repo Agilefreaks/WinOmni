@@ -1,11 +1,13 @@
 ﻿namespace Omnipaste.Shell.ContextMenu
 {
     using System;
+    using System.Reactive.Linq;
     using System.Windows;
     using Caliburn.Micro;
     using Ninject;
     using Omni;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Behaviours;
@@ -28,9 +30,11 @@
         {
             IconSource = "/Disconnected.ico";
             _statusChangedObserver =
-                omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                    status =>
-                    IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico");
+                omniService.StatusChangedObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(
+                        status =>
+                        IconSource = status == OmniServiceStatusEnum.Started ? "/Connected.ico" : "/Disconnected.ico");
         }
 
         #endregion

@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Omni;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
 
@@ -37,12 +39,15 @@
                              { ConnectionStateEnum.Connected, Resources.DisconnectIcon },
                              { ConnectionStateEnum.Disconnected, Resources.ConnectIcon }
                          };
-            _statusObserver = omniService.StatusChangedObservable.SubscribeAndHandleErrors(
-                newStatus =>
-                State =
-                newStatus == OmniServiceStatusEnum.Started
-                    ? ConnectionStateEnum.Connected
-                    : ConnectionStateEnum.Disconnected);
+            _statusObserver =
+                omniService.StatusChangedObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(
+                        newStatus =>
+                        State =
+                        newStatus == OmniServiceStatusEnum.Started
+                            ? ConnectionStateEnum.Connected
+                            : ConnectionStateEnum.Disconnected);
         }
 
         #endregion
