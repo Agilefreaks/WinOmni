@@ -357,4 +357,7 @@
   <data name="Disconnected" xml:space="preserve">
     <value>Deconectat</value>
   </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>Îndepărtează</value>
+  </data>
 </root>

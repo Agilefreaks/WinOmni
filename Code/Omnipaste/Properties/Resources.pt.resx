@@ -357,4 +357,7 @@
   <data name="Disconnected" xml:space="preserve">
     <value>Desconectado</value>
   </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>Demitir</value>
+  </data>
 </root>
