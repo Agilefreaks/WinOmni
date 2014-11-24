@@ -12,19 +12,21 @@
     {
         #region Fields
 
+        private readonly Dictionary<EventTypeEnum, string> _actionNames;
+
         private readonly IEventsWrapper _eventsWrapper;
 
+        private readonly Dictionary<EventTypeEnum, string> _icons;
+
         private readonly IOmniServiceWrapper _omniServiceWrapper;
+
+        private string _notificationContactName;
 
         private string _notificationContent;
 
         private string _notificationPhoneNumber;
 
         private DateTime _notificationTime;
-
-        private readonly Dictionary<EventTypeEnum, string> _actionNames;
-
-        private Dictionary<EventTypeEnum, string> _icons;
 
         #endregion
 
@@ -34,7 +36,8 @@
         {
             _omniServiceWrapper = omniServiceWrapper;
             _eventsWrapper = eventsWrapper;
-            _actionNames = new Dictionary<EventTypeEnum, string> {
+            _actionNames = new Dictionary<EventTypeEnum, string>
+                               {
                                    {
                                        EventTypeEnum.IncomingCallEvent,
                                        Resources.SimulateCallNotification
@@ -55,6 +58,39 @@
         #endregion
 
         #region Public Properties
+
+        public virtual bool CanAddContent
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public string Icon
+        {
+            get
+            {
+                return _icons[NotificationType];
+            }
+        }
+
+        public string NotificationContactName
+        {
+            get
+            {
+                return _notificationContactName;
+            }
+            set
+            {
+                if (value == _notificationContactName)
+                {
+                    return;
+                }
+                _notificationContactName = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public string NotificationContent
         {
@@ -115,14 +151,6 @@
             }
         }
 
-        public string Icon
-        {
-            get
-            {
-                return _icons[NotificationType];
-            }
-        }
-
         #endregion
 
         #region Properties
@@ -141,7 +169,8 @@
                         Content = NotificationContent,
                         Time = NotificationTime,
                         Type = NotificationType,
-                        PhoneNumber = NotificationPhoneNumber
+                        PhoneNumber = NotificationPhoneNumber,
+                        ContactName = NotificationContactName
                     });
             _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
         }

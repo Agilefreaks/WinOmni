@@ -45,8 +45,8 @@
 
         public INotificationViewModel Create(Event @event)
         {
-            IEventNotificationViewModel result = _eventNotificationConstructors[@event.Type]();
-            result.PhoneNumber = @event.PhoneNumber;
+            var result = _eventNotificationConstructors[@event.Type]();
+            result.PhoneNumber = string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber : @event.ContactName;
             result.Message = @event.Content;
 
             return result;

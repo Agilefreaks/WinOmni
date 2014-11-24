@@ -130,10 +130,10 @@
     <value>appbar_futurama_bender</value>
   </data>
   <data name="NotificationContent" xml:space="preserve">
-    <value>Notification Content</value>
+    <value>Content</value>
   </data>
   <data name="NotificationPhoneNumber" xml:space="preserve">
-    <value>Notification Phone Number</value>
+    <value>Phone Number</value>
   </data>
   <data name="NotificationTime" xml:space="preserve">
     <value>Notification Time</value>
@@ -152,5 +152,8 @@
   </data>
   <data name="SMSIcon" xml:space="preserve">
     <value>appbar_email_minimal</value>
+  </data>
+  <data name="NotificationContactName" xml:space="preserve">
+    <value>Contact Name</value>
   </data>
 </root>

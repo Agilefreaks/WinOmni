@@ -35,12 +35,22 @@
         }
 
         [Test]
-        public void Create_WithEventOfTypeIncomingSms_SetsThePhoneAndContentProperties()
+        public void Create_WithEventOfTypeIncomingSmsAndNoContactNamePresent_SetsThePhoneAndContentProperties()
         {
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
                 new Event { PhoneNumber = "1234567", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
 
             notificationViewModel.PhoneNumber.Should().Be("1234567");
+            notificationViewModel.Message.Should().Be("SmsContent");
+        }
+
+        [Test]
+        public void Create_WithEventOfTypeIncomingSmsAndContactNamePresent_SetsTheContactNameAndContentProperties()
+        {
+            var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
+                new Event { PhoneNumber = "1234567", ContactName = "Test Contact", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
+
+            notificationViewModel.PhoneNumber.Should().Be("Test Contact");
             notificationViewModel.Message.Should().Be("SmsContent");
         }
     }
