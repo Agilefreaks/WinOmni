@@ -47,22 +47,6 @@
             }
         }
 
-        public Version Version
-        {
-            get
-            {
-                Version version = Assembly.GetExecutingAssembly().GetName().Version;
-
-                if (ApplicationDeploymentHelper.IsClickOnceApplication)
-                {
-                    ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
-                    version = ad.CurrentVersion;
-                }
-
-                return version;
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators

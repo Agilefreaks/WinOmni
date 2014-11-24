@@ -31,6 +31,8 @@
 
         private Mock<IApplicationService> _mockApplicationService;
 
+        private Mock<IConfigurationService> _mockConfigurationService;
+
         #endregion
 
         #region Public Methods and Operators
@@ -46,7 +48,9 @@
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(_statusChangedSubject);
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
+            _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
 
+            _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
             _mockingKernel.Bind<IContextMenuViewModel>().To<ContextMenuViewModel>();
 
             _subject = _mockingKernel.Get<IContextMenuViewModel>();
@@ -111,7 +115,7 @@
         [Test]
         public void TooltipText_HasVersion()
         {
-            _mockApplicationService.SetupGet(s => s.Version).Returns(new Version("1.0.1.10"));
+            _mockConfigurationService.SetupGet(s => s.Version).Returns(new Version("1.0.1.10"));
 
             _subject.TooltipText.Should().Be("Omnipaste 1.0.1.10");
         }

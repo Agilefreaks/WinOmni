@@ -38,6 +38,9 @@
         #region Public Properties
 
         [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+        
+        [Inject]
         public IApplicationService ApplicationService { get; set; }
 
         public bool AutoStart
@@ -90,7 +93,7 @@
         {
             get
             {
-                return string.Format("{0} {1}", Constants.AppName, ApplicationService.Version);
+                return string.Format("{0} {1}", Constants.AppName, ConfigurationService.Version);
             }
         }
 

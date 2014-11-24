@@ -1,5 +1,7 @@
 ﻿namespace OmniCommon.Interfaces
 {
+    using System;
+
     public interface IConfigurationService
     {
         #region Public Properties
@@ -19,6 +21,8 @@
         ProxyConfiguration ProxyConfiguration { get; }
 
         string RefreshToken { get; }
+
+        Version Version { get; }
 
         #endregion
 

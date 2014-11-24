@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
-    using Ninject;
     using OmniApi.Models;
     using OmniCommon.Interfaces;
     using Refit;
@@ -25,20 +24,13 @@
 
         #endregion
 
-        #region Public Properties
-
-        [Inject]
-        public IApplicationService ApplicationService { get; set; }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public IObservable<Device> Activate(string registrationId, string identifier)
         {
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
 
-            return Authorize(ResourceApi.Activate(device, AccessToken, ApplicationService.Version.ToString()));
+            return Authorize(ResourceApi.Activate(device, AccessToken, ConfigurationService.Version.ToString()));
         }
 
         public IObservable<EmptyModel> Call(string phoneNumber)

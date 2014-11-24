@@ -14,7 +14,6 @@
     using OmniApi;
     using OmniCommon;
     using OmniCommon.DataProviders;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
@@ -91,7 +90,6 @@
             var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>()
                 .Concat(_backgroundServices).Distinct();
             allStartedServices.ForEach(s => s.Stop());
-            _kernel.Get<IOmniService>().Stop().RunToCompletion();
 
             base.OnExit(sender, e);
         }
@@ -126,9 +124,8 @@
 
         private void SetupBugFreakAdditionalData()
         {
-            var applicationService = _kernel.Get<IApplicationService>();
             var configurationService = _kernel.Get<IConfigurationService>();
-            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", applicationService.Version.ToString()));
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", configurationService.Version.ToString()));
             GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", configurationService.DeviceIdentifier));
         }
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
+    using System.Reflection;
     using System.Xml;
     using System.Xml.Serialization;
     using OmniCommon;
@@ -108,6 +109,14 @@
             {
                 bool value;
                 return bool.TryParse(this[ConfigurationProperties.ShowDebugBar], out value) && value;
+            }
+        }
+
+        public Version Version
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
 
