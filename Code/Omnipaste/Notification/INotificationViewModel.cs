@@ -6,9 +6,9 @@
     {
         #region Public Properties
 
-        string Line1 { get; set; }
+        string Line1 { get; }
 
-        string Line2 { get; set; }
+        string Line2 { get; }
 
         string Title { get; }
 

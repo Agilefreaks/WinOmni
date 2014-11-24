@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Notification.ClippingNotification
 {
-    public interface IClippingNotificationViewModel : INotificationViewModel
+    using Clipboard.Models;
+
+    public interface IClippingNotificationViewModel : IResourceBasedNotificationViewModel<Clipping>
     {
     }
 }

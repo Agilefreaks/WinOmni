@@ -13,6 +13,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="{Binding Path=EndCallButtonText}" Style="{DynamicResource NotificationPrimaryButtonStyle}" x:Name="EndCall" />
-        <Button Grid.Column="1" Content="{x:Static p:Resources.IncommingCallNotificationSendSms}" Style="{DynamicResource NotificationSecondaryButtonStyle}" x:Name="ReplyWithSms"/>
+        <Button Grid.Column="1" Content="{x:Static p:Resources.IncommingCallNotificationSendSms}" Style="{DynamicResource NotificationSecondaryButtonStyle}" x:Name="ReplyWithSMS"/>
     </Grid>
 </UserControl>

@@ -11,6 +11,6 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Content="{x:Static p:Resources.ButtonReply}" Style="{DynamicResource NotificationPrimaryButtonStyle}" x:Name="Reply" />
+        <Button Grid.Column="0" Content="{x:Static p:Resources.ButtonReply}" Style="{DynamicResource NotificationPrimaryButtonStyle}" x:Name="ReplyWithSMS" />
     </Grid>
 </UserControl>

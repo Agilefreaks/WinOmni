@@ -16,15 +16,15 @@
         [Inject]
         public IKernel Kernel { get; set; }
 
-        private readonly IDictionary<Clipping.ClippingTypeEnum, Func<INotificationViewModel>> _clippingNotificationConstructors;
+        private readonly IDictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
 
-        private readonly IDictionary<EventTypeEnum, Func<IEventNotificationViewModel>> _eventNotificationConstructors; 
+        private readonly IDictionary<EventTypeEnum, Func<IEventNotificationViewModel>> _eventNotificationConstructors;
 
         public NotificationViewModelFactory(IKernel kernel)
         {
             Kernel = kernel;
 
-            _clippingNotificationConstructors = new Dictionary<Clipping.ClippingTypeEnum, Func<INotificationViewModel>>();
+            _clippingNotificationConstructors = new Dictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>>();
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>());
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>());
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>());
@@ -37,8 +37,8 @@
 
         public INotificationViewModel Create(Clipping clipping)
         {
-            INotificationViewModel result = _clippingNotificationConstructors[clipping.Type]();
-            result.Line2 = clipping.Content;
+            var result = _clippingNotificationConstructors[clipping.Type]();
+            result.Resource = clipping;
 
             return result;
         }
@@ -46,8 +46,7 @@
         public INotificationViewModel Create(Event @event)
         {
             var result = _eventNotificationConstructors[@event.Type]();
-            result.Line1 = string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber : @event.ContactName;
-            result.Line2 = @event.Content;
+            result.Resource = @event;
 
             return result;
         }

@@ -1,6 +1,8 @@
 namespace Omnipaste.Notification
 {
-    public interface IEventNotificationViewModel : INotificationViewModel
+    using Events.Models;
+
+    public interface IEventNotificationViewModel : IResourceBasedNotificationViewModel<Event>
     {
     }
 }

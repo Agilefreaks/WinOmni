@@ -27,9 +27,9 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
-        public virtual string Line1 { get; set; }
+        public abstract string Line1 { get; }
 
-        public virtual string Line2 { get; set; }
+        public abstract string Line2 { get; }
 
         public ViewModelStatusEnum State
         {
@@ -117,7 +117,7 @@
                                   Interval = _oneMinuteInterval
                               };
 
-            _autoCloseTimer.Tick += (sender, args) =>
+            _autoCloseTimer.Tick += (sender, arguments) =>
             {
                 _autoCloseTimer.Stop();
                 Close();
@@ -132,7 +132,7 @@
                                  {
                                      Interval = _halfSecondInterval
                                  };
-            _deactivationTimer.Tick += (sender, args) =>
+            _deactivationTimer.Tick += (sender, arguments) =>
             {
                 _deactivationTimer.Stop();
                 Deactivate();

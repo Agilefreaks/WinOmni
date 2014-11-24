@@ -1,9 +1,12 @@
 ﻿namespace OmnipasteTests.NotificationList
 {
+    using Clipboard.Models;
     using Events.Models;
     using FluentAssertions;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omnipaste.Notification;
+    using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
@@ -21,8 +24,18 @@
             _kernel = new MoqMockingKernel();
             _kernel.Bind<IIncomingCallNotificationViewModel>().To<IncomingCallNotificationViewModel>();
             _kernel.Bind<IIncomingSmsNotificationViewModel>().To<IncomingSmsNotificationViewModel>();
+            _kernel.Bind<IClippingNotificationViewModel>().To<ClippingNotificationViewModel>();
 
             _subject = new NotificationViewModelFactory(_kernel);
+        }
+
+        [Test]
+        public void Create_WithClipping_SetsTheClippingOnTheViewModel()
+        {
+            var clipping = new Clipping();
+            var viewModel = (IClippingNotificationViewModel)_subject.Create(clipping);
+
+            viewModel.Resource.Should().Be(clipping);
         }
 
         [Test]
@@ -31,6 +44,15 @@
             var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent});
 
             notificationViewModel.Line1.Should().Be("your number");
+        }
+
+        [Test]
+        public void Create_WithEvent_SetsTheEventOnTheViewModelAsTheResource()
+        {
+            var @event = new Event();
+            var viewModel = (IEventNotificationViewModel)_subject.Create(@event);
+
+            viewModel.Resource.Should().Be(@event);
         }
 
         [Test]

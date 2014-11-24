@@ -4,22 +4,23 @@
     using Ninject;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
 
-    public class IncomingCallNotificationViewModel : NotificationViewModelBase, IIncomingCallNotificationViewModel
+    public class IncomingCallNotificationViewModel : EventNotificationViewModelBase, IIncomingCallNotificationViewModel
     {
-        private string _endCallButtonText;
+        #region Fields
 
         private bool _canEndCall;
 
-        private bool _canReplyWithSms = true;
+        private string _endCallButtonText;
+
+        #endregion
 
         #region Constructors and Destructors
 
         public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
-            EventAggregator = eventAggregator;
             EndCallButtonText = Resources.IncommingCallNotificationEndCall;
             CanEndCall = true;
         }
@@ -27,8 +28,6 @@
         #endregion
 
         #region Public Properties
-
-        public IEventAggregator EventAggregator { get; set; }
 
         public bool CanEndCall
         {
@@ -47,22 +46,8 @@
             }
         }
 
-        public bool CanReplyWithSms
-        {
-            get
-            {
-                return _canReplyWithSms;
-            }
-            set
-            {
-                if (value.Equals(_canReplyWithSms))
-                {
-                    return;
-                }
-                _canReplyWithSms = value;
-                NotifyOfPropertyChange(() => CanReplyWithSms);
-            }
-        }
+        [Inject]
+        public IDevices Devices { get; set; }
 
         public string EndCallButtonText
         {
@@ -80,9 +65,6 @@
                 NotifyOfPropertyChange(() => EndCallButtonText);
             }
         }
-
-        [Inject]
-        public IDevices Devices { get; set; }
 
         public override string Title
         {
@@ -114,13 +96,6 @@
                         EndCallButtonText = Resources.IncommingCallNotificationCallEnded;
                         Dismiss();
                     });
-        }
-
-        public void ReplyWithSms()
-        {
-            CanReplyWithSms = false;
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Line1, Message = "" });
-            Dismiss();
         }
 
         #endregion

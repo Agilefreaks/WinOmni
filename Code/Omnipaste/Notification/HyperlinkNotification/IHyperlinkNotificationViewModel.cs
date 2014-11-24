@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Notification.HyperlinkNotification
 {
-    public interface IHyperlinkNotificationViewModel : INotificationViewModel
+    using Omnipaste.Notification.ClippingNotification;
+
+    public interface IHyperlinkNotificationViewModel : IClippingNotificationViewModel
     {
         void OpenLink();
     }

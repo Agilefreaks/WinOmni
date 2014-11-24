@@ -2,6 +2,7 @@
 {
     using System.Windows.Threading;
     using Caliburn.Micro;
+    using Events.Models;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
@@ -9,7 +10,6 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
 
@@ -55,8 +55,8 @@
         [Test]
         public void ReplyWithSms_CallsPhonesSendSms()
         {
-            _subject.Line1 = "1234567";
-            _subject.ReplyWithSms();
+            _subject.Resource = new Event { PhoneNumber = "1234567" };
+            _subject.ReplyWithSMS();
 
             _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "1234567" && m.Message == ""), It.IsAny<System.Action<System.Action>>()));
         }

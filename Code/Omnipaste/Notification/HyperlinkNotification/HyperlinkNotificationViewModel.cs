@@ -2,9 +2,11 @@
 {
     using System.ComponentModel;
     using System.Diagnostics;
+    using Clipboard.Models;
+    using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Properties;
 
-    public class HyperlinkNotificationViewModel : NotificationViewModelBase, IHyperlinkNotificationViewModel
+    public class HyperlinkNotificationViewModel : ClippingNotificationViewModel, IHyperlinkNotificationViewModel
     {
         #region Fields
 
@@ -31,6 +33,19 @@
             }
         }
 
+        public override Clipping Resource
+        {
+            get
+            {
+                return base.Resource;
+            }
+            set
+            {
+                base.Resource = value;
+                NotifyOfPropertyChange(() => Uri);
+            }
+        }
+
         public override string Title
         {
             get
@@ -47,20 +62,13 @@
             }
         }
 
-        public override string Line2
+        public string Uri
         {
             get
             {
-                return string.Empty;
-            }
-            set
-            {
-                Uri = value;
-                NotifyOfPropertyChange(() => Uri);
+                return Resource.Content;
             }
         }
-
-        public string Uri { get; private set; }
 
         #endregion
 
