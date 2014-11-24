@@ -97,7 +97,16 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notification Content.
+        ///   Looks up a localized string similar to Contact Name.
+        /// </summary>
+        public static string NotificationContactName {
+            get {
+                return ResourceManager.GetString("NotificationContactName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content.
         /// </summary>
         public static string NotificationContent {
             get {
@@ -106,7 +115,7 @@ namespace OmniDebug.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notification Phone Number.
+        ///   Looks up a localized string similar to Phone Number.
         /// </summary>
         public static string NotificationPhoneNumber {
             get {

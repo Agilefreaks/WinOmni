@@ -27,6 +27,14 @@
             }
         }
 
+        public override bool CanAddContent
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         #endregion
     }
 }

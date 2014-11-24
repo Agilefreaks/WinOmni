@@ -18,10 +18,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0">
-            <Label Content="{x:Static properties:Resources.NotificationContent}"/>
-            <TextBox x:Name="NotificationContent" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100"/>
+            <Label Content="{x:Static properties:Resources.NotificationContent}" 
+                   Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibility}}"/>
+            <TextBox x:Name="NotificationContent" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100"
+                     Visibility="{Binding Path=CanAddContent, Converter={StaticResource BooleanToVisibility}}"/>
             <Label Content="{x:Static properties:Resources.NotificationPhoneNumber}"/>
             <TextBox x:Name="NotificationPhoneNumber"/>
+            <Label Content="{x:Static properties:Resources.NotificationContactName}"/>
+            <TextBox x:Name="NotificationContactName"/>
             <Label Content="{x:Static properties:Resources.NotificationTime}"/>
             <DatePicker x:Name="NotificationTime" SelectedDate="{x:Static sys:DateTime.Now}"/>
         </StackPanel>
