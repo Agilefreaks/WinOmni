@@ -24,6 +24,8 @@
 
         Version Version { get; }
 
+        string WebBaseUrl { get; }
+
         #endregion
 
         #region Public Indexers

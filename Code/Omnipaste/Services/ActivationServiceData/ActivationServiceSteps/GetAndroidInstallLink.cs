@@ -1,22 +1,38 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
+    using System.Reactive.Linq;
+    using System.Reactive.Threading.Tasks;
     using System.Web;
     using OmniApi.Models;
+    using OmniCommon.Interfaces;
 
-    public class GetAndroidInstallLink : SynchronousStepBase
+    public class GetAndroidInstallLink : ActivationStepBase
     {
-        private const string UrlFormat = "{0}?email={1}";
+        private readonly IUrlShortenerService _urlShortenerService;
 
-        private const string BaseUrl = "https://www.omnipasteapp.com/downloads/android_client";
+        private readonly IConfigurationService _configurationService;
 
-        protected override IExecuteResult ExecuteSynchronously()
+        private const string UrlFormat = "{0}/downloads/android_client?email={1}";
+
+        public GetAndroidInstallLink(IUrlShortenerService urlShortenerService, IConfigurationService configurationService)
+        {
+            _urlShortenerService = urlShortenerService;
+            _configurationService = configurationService;
+        }
+
+        public override IObservable<IExecuteResult> Execute()
         {
             var userInfo = Parameter.Value as UserInfo ?? new UserInfo();
             var safeEmailString = HttpUtility.UrlEncode(userInfo.Email);
-            return new ExecuteResult(
-                SimpleStepStateEnum.Successful,
-                new Uri(string.Format(UrlFormat, BaseUrl, safeEmailString)));
+            var uri = new Uri(string.Format(UrlFormat, _configurationService.WebBaseUrl, safeEmailString));
+
+            return
+                _urlShortenerService.Shorten(uri)
+                    .ToObservable()
+                    .Select(shortUrl => new ExecuteResult { Data = shortUrl, State = SimpleStepStateEnum.Successful })
+                    .Catch<IExecuteResult, Exception>(
+                        _ => Observable.Return(new ExecuteResult(SimpleStepStateEnum.Successful, uri)));
         }
     }
 }

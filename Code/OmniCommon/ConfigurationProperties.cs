@@ -6,7 +6,9 @@
 
         public static string OmniSyncUrl = "OmniSyncUrl";
 
-        public static string BaseUrl = "BaseUrl";
+        public static string BaseUrl = "ApiBaseUrl";
+
+        public static string WebBaseUrl = "WebBaseUrl";
 
         public static string BugFreakApiKey = "BugFreakApiKey";
 

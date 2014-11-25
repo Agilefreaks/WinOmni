@@ -120,6 +120,14 @@
             }
         }
 
+        public string WebBaseUrl
+        {
+            get
+            {
+                return this[ConfigurationProperties.WebBaseUrl];
+            }
+        }
+
         #endregion
 
         #region Public Indexers
