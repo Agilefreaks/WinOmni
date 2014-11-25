@@ -26,6 +26,29 @@
             return source.RetryWithBackoffStrategy(null, constantBackoff, null, scheduler);
         }
 
+        public static IObservable<T> RetryUntil<T>(
+            this IObservable<T> source,
+            Func<T, bool> predicate,
+            TimeSpan? interval = null,
+            int? retryCount = null,
+            Func<Exception, bool> retryOnError = null,
+            IScheduler scheduler = null)
+        {
+            var retryStrategy = interval.HasValue ? (_ => interval.Value) : ((Func<int, TimeSpan>)null);
+            scheduler = scheduler ?? SchedulerProvider.Default;
+            Func<Exception, bool> wrappedRetryOnError =
+                exception => (exception is RetryException) || (retryOnError == null || retryOnError(exception));
+
+            return
+                source.Select(
+                    newValue =>
+                    predicate(newValue)
+                        ? Observable.Return(newValue, scheduler)
+                        : Observable.Throw<T>(new RetryException()))
+                    .Switch()
+                    .RetryWithBackoffStrategy(retryCount, retryStrategy, wrappedRetryOnError, scheduler);
+        }
+
         public static IObservable<T> RetryWithBackoffStrategy<T>(
             this IObservable<T> source,
             int? retryCount = null,
@@ -84,6 +107,16 @@
             }
         }
 
+        public static IObservable<T> ReportErrors<T>(this IObservable<T> source)
+        {
+            return source.Catch<T, Exception>(
+                exception =>
+                {
+                    ExceptionReporter.Instance.Report(exception);
+                    return Observable.Throw<T>(exception, SchedulerProvider.Default);
+                });
+        }
+
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable)
         {
             return observable.Subscribe(_ => { }, OnExceptionEncountered);
@@ -102,6 +135,18 @@
         {
             SimpleLogger.Log("Exception encountered: " + exception);
             ExceptionReporter.Instance.Report(exception);
+        }
+
+        #endregion
+
+        #region Classes
+
+        private sealed class RetryException : Exception
+        {
+            public RetryException()
+                : base("Predicate did not match")
+            {
+            }
         }
 
         #endregion

@@ -2,17 +2,33 @@ namespace OmniCommon.Helpers
 {
     public class DispatcherProvider
     {
-        private static IDispatcher _currentDispatcher;
+        private static IDispatcherProvider _instance;
+
+        public static IDispatcherProvider Instance
+        {
+            get
+            {
+                return _instance ?? (_instance = new ImmediateDispatcherProvider());
+            }
+            set
+            {
+                _instance = value;
+            }
+        }
 
         public static IDispatcher Current
         {
             get
             {
-                return _currentDispatcher ?? DispatcherWrapper.FromCurrent();
+                return Instance.Current;
             }
-            set
+        }
+
+        public static IDispatcher Application
+        {
+            get
             {
-                _currentDispatcher = value;
+                return Instance.Application;
             }
         }
     }

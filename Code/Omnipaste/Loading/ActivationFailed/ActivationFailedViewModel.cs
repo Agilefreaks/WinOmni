@@ -3,8 +3,8 @@
     using System;
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
 
     public class ActivationFailedViewModel : Screen, IActivationFailedViewModel
     {

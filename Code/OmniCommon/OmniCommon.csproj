@@ -77,13 +77,10 @@
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
     <Compile Include="DataProviders\IArgumentsDataProvider.cs" />
-    <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
-    <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
-    <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="Helpers\ImmediateDispatcherProvider.cs" />
     <Compile Include="Helpers\ExceptionReporter.cs" />
     <Compile Include="Helpers\DispatcherProvider.cs" />
+    <Compile Include="Helpers\IDispatcherProvider.cs" />
     <Compile Include="Helpers\IExceptionReporter.cs" />
     <Compile Include="Helpers\NullExceptionReporter.cs" />
     <Compile Include="ExtensionMethods\ObservableExtensionMethods.cs" />
@@ -101,9 +98,6 @@
     <Compile Include="Settings\IConfigurationProvider.cs" />
     <Compile Include="Models\OmniMessage.cs" />
     <Compile Include="Models\OmniMessageTypeEnum.cs" />
-    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
-    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
-    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
     <Compile Include="Settings\IConfigurationContainer.cs" />

@@ -6,7 +6,6 @@
     using System.Reactive.Subjects;
     using Newtonsoft.Json.Linq;
     using OmniCommon.Models;
-    using WampSharp.Core.Listener;
     using WampSharp.V1;
     using WampSharp.V1.Auxiliary.Client;
 

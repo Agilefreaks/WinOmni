@@ -22,9 +22,9 @@
         public override IObservable<IExecuteResult> Execute()
         {
             return Devices.GetAll().Select(
-                deviceCount => deviceCount.Count <= 1 
-                    ? new ExecuteResult(SimpleStepStateEnum.Successful, null) 
-                    : new ExecuteResult(SimpleStepStateEnum.Failed, null));
+                deviceCount => deviceCount.Count <= 1
+                    ? new ExecuteResult(SimpleStepStateEnum.Failed, null)
+                    : new ExecuteResult(SimpleStepStateEnum.Successful, null));
         }
 
         #endregion

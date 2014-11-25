@@ -1,12 +1,12 @@
 ﻿namespace Omnipaste.Loading
 {
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading.UserToken;
 
     public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>,
         IHandle<ActivationFailedMessage>, IHandle<ShowAndroidInstallGuideMessage>, IHandle<AndroidInstallationCompleteMessage>,
-        IHandle<ShowConnectionTroubleshooterMessage>
+        IHandle<ShowConnectionTroubleshooterMessage>, IHandle<ShowCongratulationsMessage>
     {
         LoadingViewModelStateEnum State { get; set; }
 

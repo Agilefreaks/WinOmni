@@ -31,8 +31,13 @@
                     .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
                     .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
                     .RegisterTransition<StartOmniService, VerifyNumberOfDevices, Failed>()
-                    .RegisterTransition<VerifyNumberOfDevices, AndroidInstallGuide, Finished>()
-                    .RegisterTransition<AndroidInstallGuide, Finished, Finished>()
+                    .RegisterTransition<VerifyNumberOfDevices, Finished, GetUserInfo>()
+                    .RegisterTransition<GetUserInfo, GetAndroidInstallLink, Failed>()
+                    .RegisterTransition<GetAndroidInstallLink, AndroidInstallGuide, Failed>()
+                    .RegisterTransition<AndroidInstallGuide, WaitForSecondDevice, Failed>()
+                    .RegisterTransition<WaitForSecondDevice, ShowCongratulations, Failed>()
+                    .RegisterTransition<ShowCongratulations, WaitForCloudClipping, Failed>()
+                    .RegisterTransition<WaitForCloudClipping, Finished, Failed>()
                     .Build();
 
             _activationSequence = new ActivationSequence

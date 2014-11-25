@@ -2,8 +2,12 @@
 {
     public class SendSmsMessage
     {
-        public string Recipient { get; set; }
+        #region Public Properties
 
         public string Message { get; set; }
+
+        public string Recipient { get; set; }
+
+        #endregion
     }
 }

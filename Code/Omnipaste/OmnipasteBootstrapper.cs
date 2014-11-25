@@ -97,6 +97,8 @@
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            DispatcherProvider.Instance = new WpfDispatcherProvider();
+
             base.OnStartup(sender, e);
 
             var argumentsDataProvider = _kernel.Get<IArgumentsDataProvider>();

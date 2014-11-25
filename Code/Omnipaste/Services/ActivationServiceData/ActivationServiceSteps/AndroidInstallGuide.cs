@@ -1,15 +1,14 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using System.Reactive.Subjects;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
 
-    public class AndroidInstallGuide : ActivationStepBase, IHandle<AndroidInstallationCompleteMessage>
+    public class AndroidInstallGuide : SynchronousStepBase
     {
         #region Fields
 
-        private readonly Subject<IExecuteResult> _synchronizationSubject;
+        private readonly IEventAggregator _eventAggregator;
 
         #endregion
 
@@ -17,34 +16,20 @@
 
         public AndroidInstallGuide(IEventAggregator eventAggregator)
         {
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
-            _synchronizationSubject = new Subject<IExecuteResult>();
+            _eventAggregator = eventAggregator;
         }
 
         #endregion
 
-        #region Public Properties
+        #region Methods
 
-        public IEventAggregator EventAggregator { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public override IObservable<IExecuteResult> Execute()
+        protected override IExecuteResult ExecuteSynchronously()
         {
-            EventAggregator.PublishOnCurrentThread(new ShowAndroidInstallGuideMessage());
-
-            return _synchronizationSubject;
+            _eventAggregator.PublishOnUIThread(
+                new ShowAndroidInstallGuideMessage { AndroidInstallLink = (Uri)Parameter.Value });
+            return new ExecuteResult(SimpleStepStateEnum.Successful);
         }
 
         #endregion
-
-        public void Handle(AndroidInstallationCompleteMessage message)
-        {
-            _synchronizationSubject.OnNext(new ExecuteResult(SimpleStepStateEnum.Successful));
-            _synchronizationSubject.OnCompleted();
-        }
     }
 }

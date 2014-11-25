@@ -132,6 +132,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Fleck.0.11.1.32\lib\net40\Fleck.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
@@ -201,6 +204,7 @@
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -232,17 +236,38 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
+    <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
+    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
+    <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowCongratulationsMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
+    <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
+    <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
@@ -259,6 +284,7 @@
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
+    <Compile Include="Services\IUrlShortenerService.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityStatusEnum.cs" />
     <Compile Include="Services\Monitors\Power\IPowerMonitor.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitor.cs" />
@@ -268,6 +294,8 @@
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\UrlShortenerService.cs" />
+    <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="SmsComposer\ISMSFactory.cs" />
     <Compile Include="SmsComposer\SMSFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
@@ -407,6 +435,10 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
+    <Page Include="Loading\Congratulations\CongratulationsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -649,16 +681,16 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx" />
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
     <Resource Include="Resources\segoeuil.ttf" />
@@ -673,10 +705,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>

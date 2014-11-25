@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
 
     public class ShowConnectionTroubleshooter : ActivationStepBase
     {

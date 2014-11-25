@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Subjects;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
 
     public class GetActivationCodeFromUser : ActivationStepBase, IHandle<TokenRequestResultMessage>
     {

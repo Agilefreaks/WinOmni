@@ -2,7 +2,6 @@
 {
     using System;
     using Caliburn.Micro;
-    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;

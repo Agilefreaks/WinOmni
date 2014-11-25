@@ -2,10 +2,10 @@
 {
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
+    using Omnipaste.Loading.Congratulations;
     using Omnipaste.Loading.ConnectionTroubleshooter;
     using Omnipaste.Loading.UserToken;
 
@@ -59,6 +59,9 @@
         [Inject]
         public IConnectionTroubleshooterViewModel ConnectionTroubleshooterViewModel { get; set; }
 
+        [Inject]
+        public ICongratulationsViewModel CongratulationsViewModel { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -94,6 +97,7 @@
 
         public void Handle(ShowAndroidInstallGuideMessage message)
         {
+            AndroidInstallGuideViewModel.AndroidInstallLink = message.AndroidInstallLink;
             ActiveItem = AndroidInstallGuideViewModel;
             State = LoadingViewModelStateEnum.Other;
             EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
@@ -105,13 +109,18 @@
             State = LoadingViewModelStateEnum.Loading;
         }
 
-        #endregion
-
         public void Handle(ShowConnectionTroubleshooterMessage message)
         {
             ActiveItem = ConnectionTroubleshooterViewModel;
             State = LoadingViewModelStateEnum.Other;
             EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
         }
+
+        public void Handle(ShowCongratulationsMessage message)
+        {
+            ActiveItem = CongratulationsViewModel;
+            State = LoadingViewModelStateEnum.Other;
+        }
+        #endregion
     }
 }

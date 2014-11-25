@@ -114,17 +114,113 @@
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeAndroidInstallGuide()
+        public void VerifyNumberOfDevices_OnFailed_ShouldBeGetUserInfo()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<AndroidInstallGuide>();
+                .Be<GetUserInfo>();
         }
 
         [Test]
         public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
+        }
+
+        [Test]
+        public void GetUserInfo_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void GetUserInfo_OnSuccess_ShouldBeGetAndroidInstallLink()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetAndroidInstallLink>();
+        }
+
+        [Test]
+        public void GetAndroidInstallLink_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void GetAndroidInstallLink_OnSuccessful_ShouldBeAndroidInstallGuide()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<AndroidInstallGuide>();
+        }
+
+        [Test]
+        public void AndroidInstallGuide_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void AndroidInstallGuide_OnSuccess_ShouldBeWaitForSecondDevice()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForSecondDevice>();
+        }
+
+        [Test]
+        public void WaitForSecondDevice_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForSecondDevice>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void WaitForSecondDevice_OnSuccess_ShouldBeShowCongratulations()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForSecondDevice>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<ShowCongratulations>();
+        }
+
+        [Test]
+        public void ShowCongratulations_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCongratulations>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void ShowCongratulations_OnSuccess_ShouldBeWaitForCloudClipping()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCongratulations>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForCloudClipping>();
+        }
+        
+        [Test]
+        public void WaitForCloudClipping_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForCloudClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void WaitForCloudClipping_OnSuccess_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForCloudClipping>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<Finished>();
         }

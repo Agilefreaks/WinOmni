@@ -144,20 +144,14 @@
   <data name="ActivationFailedLabel" xml:space="preserve">
     <value>Îmi pare rău stăpâne, am dat greș, te rog să nu mă omori!</value>
   </data>
-  <data name="AndroidInstallGuideButton" xml:space="preserve">
-    <value>Okay, am înțeles</value>
-  </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
-    <value>Bravo! Ai instalat Omnipaste cu succes.</value>
+    <value>Felicitări, Omnipaste s-a instalat cu succes pe PC-ul tău</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Acum, instalează Omnipaste și pe celelalte dispozitive.</value>
-  </data>
-  <data name="AndroidInstallGuideLabel3" xml:space="preserve">
-    <value>Ți-am trimis un email de instalare.</value>
+    <value>În continuare trebuie să instalăm Omnipaste pe dispozitivul tău Android. Pentru a face asta te rog folosește acest link de pe Google Play:</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Deschide email-ul de pe dispozitivul pe care vrei să instalezi și urmărește instrucțiunile.</value>
+    <value>O să așteptăm să faci asta și odată ce ai terminat de instalat aplicația, dispozitivele tale vor fi automat conectate împreună, permițându-ți să faci copy-paste și să primești notificări între ele.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>Încărcare ...</value>

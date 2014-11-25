@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive;
+    using OmniCommon.Models;
 
     public interface IOmniService : IDisposable
     {
@@ -14,6 +15,8 @@
         bool InTransition { get; }
 
         IObservable<bool> InTransitionObservable { get; }
+
+        IObservable<OmniMessage> OmniMessageObservable { get; }
 
         #endregion
 
