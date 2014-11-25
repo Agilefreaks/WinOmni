@@ -20,6 +20,7 @@
                     <TextBlock Style="{DynamicResource DescriptionHeaderTextBlockStyle}" Text="{x:Static p:Resources.AndroidInstallGuideLabel2}"/>
                     <Button x:Name="OpenAndroidLink" Style="{DynamicResource HyperlinkButtonStyle}" Content="{Binding Path=AndroidInstallLink}"
                             HorizontalContentAlignment="Center"/>
+                    <Image Source="{Binding Path=QRCodeImageData}" Stretch="None"/>
                 </StackPanel>
             </Label>
             <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel4}"/>
