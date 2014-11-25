@@ -49,7 +49,7 @@
             _mockClippings.Setup(c => c.Last()).Returns(Observable.Return(clipping));
             _omniClipboardHandler.Start(omniMessageObservable);
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
-            DispatcherProvider.Current = new ImmediateDispatcher();
+            DispatcherProvider.Instance = new ImmediateDispatcherProvider();
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(clipping)).Callback(() => autoResetEvent.Set());
 

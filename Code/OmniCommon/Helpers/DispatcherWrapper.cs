@@ -14,12 +14,17 @@
 
         public static DispatcherWrapper FromCurrent()
         {
-            return new DispatcherWrapper(Dispatcher.CurrentDispatcher);
+            return FromGiven(Dispatcher.CurrentDispatcher);
         }
 
         public void Dispatch(Delegate method, params object[] arguments)
         {
             _dispatcher.BeginInvoke(method, arguments);
+        }
+
+        public static DispatcherWrapper FromGiven(Dispatcher dispatcher)
+        {
+            return new DispatcherWrapper(dispatcher);
         }
     }
 }

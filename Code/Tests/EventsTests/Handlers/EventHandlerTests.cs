@@ -49,7 +49,7 @@
             _mockEvents.Setup(m => m.Last()).Returns(Observable.Return(@event));
             _eventsHandler.Start(omniMessageObservable);
             _eventsHandler.Subscribe(observer.Object);
-            DispatcherProvider.Current = new ImmediateDispatcher();
+            DispatcherProvider.Instance = new ImmediateDispatcherProvider();
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(@event)).Callback(() => autoResetEvent.Set());
 

@@ -73,7 +73,7 @@
         public void CallBack_ShowsTheCallingScreenInTheDialogViewModel()
         {
             _mockDevices.Setup(d => d.Call(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
-            DispatcherProvider.Current = new ImmediateDispatcher();
+            DispatcherProvider.Instance = new ImmediateDispatcherProvider();
             var autoResetEvent = new AutoResetEvent(false);
             _mockDialogViewModel.Setup(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()))
                 .Callback(() => autoResetEvent.Set());
