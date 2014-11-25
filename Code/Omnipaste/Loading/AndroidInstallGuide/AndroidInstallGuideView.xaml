@@ -15,7 +15,6 @@
         <StackPanel>
             <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel1}"/>
             <Label Style="{StaticResource DescriptionHeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel2}"/>
-            <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel3}"/>
             <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel4}"/>
         </StackPanel>
     </Grid>

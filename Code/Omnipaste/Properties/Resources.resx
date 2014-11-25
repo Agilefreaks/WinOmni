@@ -151,13 +151,10 @@
     <value>Omnipaste was installed successfully on your PC.</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Now, get Omnipaste for your other devices.</value>
-  </data>
-  <data name="AndroidInstallGuideLabel3" xml:space="preserve">
-    <value>We've sent you an installation email.</value>
+    <value>Next, we need to get Omnipaste setup on your Android device. We prepared a link to help you with this.</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Open the email from the devices you want and follow instructions.</value>
+    <value>Once you install the app, your devices will be automatically linked together (and you will be able to copy-paste and receive notifications between them).</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>Loading ...</value>

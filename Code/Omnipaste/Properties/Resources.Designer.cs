@@ -88,7 +88,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Now, get Omnipaste for your other devices..
+        ///   Looks up a localized string similar to Next, we need to get Omnipaste setup on your Android device. We prepared a link to help you with this..
         /// </summary>
         public static string AndroidInstallGuideLabel2 {
             get {
@@ -97,16 +97,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We&apos;ve sent you an installation email..
-        /// </summary>
-        public static string AndroidInstallGuideLabel3 {
-            get {
-                return ResourceManager.GetString("AndroidInstallGuideLabel3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open the email from the devices you want and follow instructions..
+        ///   Looks up a localized string similar to Once you install the app, your devices will be automatically linked together (and you will be able to copy-paste and receive notifications between them)..
         /// </summary>
         public static string AndroidInstallGuideLabel4 {
             get {

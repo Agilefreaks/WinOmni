@@ -1,12 +1,17 @@
 ﻿<ResourceDictionary x:Class="Omnipaste.Resources.Labels"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-      xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Label -->
     <Style x:Key="HeaderStyle" TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" TextAlignment="Center"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="DescriptionHeaderStyle" BasedOn="{StaticResource HeaderStyle}" TargetType="Label">
