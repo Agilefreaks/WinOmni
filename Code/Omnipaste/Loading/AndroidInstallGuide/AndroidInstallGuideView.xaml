@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:p="clr-namespace:Omnipaste.Properties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -22,6 +23,8 @@
                 </StackPanel>
             </Label>
             <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel4}"/>
+            <controls:MetroProgressBar IsIndeterminate="True"
+                                Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </UserControl>
