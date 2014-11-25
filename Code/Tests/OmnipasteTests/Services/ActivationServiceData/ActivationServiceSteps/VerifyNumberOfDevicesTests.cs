@@ -43,7 +43,7 @@
         }
 
         [Test]
-        public void Execute_WhenRegisteredDeviceIsNotTheOnlyDevice_ReturnsFailed()
+        public void Execute_WhenRegisteredDeviceIsNotTheOnlyDevice_ReturnsSuccessful()
         {
             _devices.Add(new Device());
             
@@ -52,18 +52,18 @@
 
             _testObserver.Messages
                 .Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Successful);
         }
 
         [Test]
-        public void Execute_WhenRegisteredDeviceIsTheOnlyDeviceIsSuccessful()
+        public void Execute_WhenRegisteredDeviceIsTheOnlyDeviceIsFailed()
         {
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();
 
             _testObserver.Messages
                 .Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Successful);
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Failed);
         }
     }
 }

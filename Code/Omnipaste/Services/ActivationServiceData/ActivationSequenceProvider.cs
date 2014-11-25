@@ -31,7 +31,7 @@
                     .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
                     .RegisterTransition<SaveConfiguration, StartOmniService, Failed>()
                     .RegisterTransition<StartOmniService, VerifyNumberOfDevices, Failed>()
-                    .RegisterTransition<VerifyNumberOfDevices, AndroidInstallGuide, Finished>()
+                    .RegisterTransition<VerifyNumberOfDevices, Finished, AndroidInstallGuide>()
                     .RegisterTransition<AndroidInstallGuide, Finished, Finished>()
                     .Build();
 

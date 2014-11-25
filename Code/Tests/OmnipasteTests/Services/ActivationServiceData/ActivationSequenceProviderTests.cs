@@ -114,9 +114,9 @@
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeAndroidInstallGuide()
+        public void VerifyNumberOfDevices_OnFailed_ShouldBeAndroidInstallGuide()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<AndroidInstallGuide>();
         }
@@ -124,7 +124,7 @@
         [Test]
         public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<Finished>();
         }
