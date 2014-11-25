@@ -79,16 +79,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Okay, got it.
-        /// </summary>
-        public static string AndroidInstallGuideButton {
-            get {
-                return ResourceManager.GetString("AndroidInstallGuideButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Great! Omnipaste installed successfully..
+        ///   Looks up a localized string similar to Omnipaste was installed successfully on your PC..
         /// </summary>
         public static string AndroidInstallGuideLabel1 {
             get {

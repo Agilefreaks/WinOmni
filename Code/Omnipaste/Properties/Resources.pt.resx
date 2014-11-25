@@ -147,9 +147,6 @@
   <data name="ActivationFailedLabel" xml:space="preserve">
     <value>Desculpe mestre, nós falhámos! Por favor não nos mate!</value>
   </data>
-  <data name="AndroidInstallGuideButton" xml:space="preserve">
-    <value>Ok, já está</value>
-  </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
     <value>Boa! O Omnipaste foi instalado com sucesso.</value>
   </data>

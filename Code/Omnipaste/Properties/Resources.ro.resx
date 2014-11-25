@@ -144,9 +144,6 @@
   <data name="ActivationFailedLabel" xml:space="preserve">
     <value>Îmi pare rău stăpâne, am dat greș, te rog să nu mă omori!</value>
   </data>
-  <data name="AndroidInstallGuideButton" xml:space="preserve">
-    <value>Okay, am înțeles</value>
-  </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
     <value>Bravo! Ai instalat Omnipaste cu succes.</value>
   </data>
