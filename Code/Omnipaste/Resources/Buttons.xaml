@@ -74,10 +74,31 @@
 
     <Style x:Key="HyperlinkButtonStyle"  TargetType="Button">
         <Setter Property="Margin" Value="0,5,5,10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <ContentPresenter/>
+                    <ControlTemplate.Resources>
+                        <Style TargetType="TextBlock" x:Key="HyperlinkTextBlocStyle">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+                            <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+                            <Setter Property="TextDecorations" Value="None"/>
+                        </Style>
+                        <Style TargetType="Hyperlink" x:Key="HyperlinkStyle">
+
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <TextBlock Style="{StaticResource HyperlinkTextBlocStyle}" x:Name="TextBlock" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                        <Run Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+                    </TextBlock>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" Value="{x:Static TextDecorations.Underline}" TargetName="TextBlock"/>
+                            <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}" TargetName="TextBlock"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

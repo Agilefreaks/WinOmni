@@ -34,7 +34,10 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            EventAggregator.PublishOnCurrentThread(new ShowAndroidInstallGuideMessage());
+            EventAggregator.PublishOnCurrentThread(new ShowAndroidInstallGuideMessage
+                                                       {
+                                                           AndroidInstallLink = (Uri)Parameter.Value
+                                                       });
 
             return _synchronizationSubject;
         }

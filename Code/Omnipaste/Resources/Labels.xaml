@@ -1,20 +1,30 @@
 ﻿<ResourceDictionary x:Class="Omnipaste.Resources.Labels"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+    
     <!-- Label -->
-    <Style x:Key="HeaderStyle" TargetType="Label">
+    <Style x:Key="CenteredLabelStyle" TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="HeaderStyle" TargetType="Label" BasedOn="{StaticResource CenteredLabelStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Label">
-                    <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" TextAlignment="Center"/>
+                    <TextBlock Text="{TemplateBinding Content}" Style="{DynamicResource HeaderTextBlockStyle}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="DescriptionHeaderStyle" BasedOn="{StaticResource HeaderStyle}" TargetType="Label">
-        <Setter Property="FontSize" Value="22" />
+    <Style x:Key="DescriptionHeaderStyle" BasedOn="{StaticResource CenteredLabelStyle}" TargetType="Label">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <TextBlock Text="{TemplateBinding Content}" Style="{DynamicResource DescriptionHeaderTextBlockStyle}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

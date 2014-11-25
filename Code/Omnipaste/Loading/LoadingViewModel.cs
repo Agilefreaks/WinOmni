@@ -94,6 +94,7 @@
 
         public void Handle(ShowAndroidInstallGuideMessage message)
         {
+            AndroidInstallGuideViewModel.AndroidInstallLink = message.AndroidInstallLink;
             ActiveItem = AndroidInstallGuideViewModel;
             State = LoadingViewModelStateEnum.Other;
             EventAggregator.PublishOnCurrentThread(new ShowShellMessage());

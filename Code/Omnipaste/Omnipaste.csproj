@@ -201,6 +201,7 @@
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -243,6 +244,8 @@
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfo.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
@@ -677,6 +680,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>

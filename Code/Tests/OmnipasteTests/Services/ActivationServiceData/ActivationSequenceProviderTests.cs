@@ -114,11 +114,11 @@
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnFailed_ShouldBeAndroidInstallGuide()
+        public void VerifyNumberOfDevices_OnFailed_ShouldBeGetUserInfo()
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<AndroidInstallGuide>();
+                .Be<GetUserInfo>();
         }
 
         [Test]
@@ -127,6 +127,38 @@
             _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<Finished>();
+        }
+
+        [Test]
+        public void GetUserInfo_OnFailed_ShouldBeShowConnectionTroubleshooter()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<ShowConnectionTroubleshooter>();
+        }
+
+        [Test]
+        public void GetUserInfo_OnSuccess_ShouldBeGetAndroidInstallLink()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetAndroidInstallLink>();
+        }
+
+        [Test]
+        public void GetAndroidInstallLink_OnFail_ShouldBeShowConnectionTroubleshooter()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<ShowConnectionTroubleshooter>();
+        }
+
+        [Test]
+        public void GetAndroidInstallLink_OnSuccessful_ShouldBeAndroidInstallGuide()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<AndroidInstallGuide>();
         }
 
         [Test]

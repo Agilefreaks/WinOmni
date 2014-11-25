@@ -88,25 +88,6 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="NotificationHyperlinkStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
-        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
-        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="TextDecorations" Value="{x:Static TextDecorations.Underline}"/>
-                <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}"/>
-            </Trigger>
-        </Style.Triggers>
-        <Style.Resources>
-            <Style TargetType="Hyperlink">
-                <Setter Property="TextDecorations" Value="None"/>
-                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=TextBlock}}"/>
-            </Style>
-        </Style.Resources>
-    </Style>
-
     <Style TargetType="TextBlock" x:Key="WrappingTextBlockStyle">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0,0,6,0"/>
@@ -116,5 +97,15 @@
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="DescriptionHeaderTextBlockStyle" BasedOn="{StaticResource HeaderTextBlockStyle}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22" />
     </Style>
 </ResourceDictionary>
