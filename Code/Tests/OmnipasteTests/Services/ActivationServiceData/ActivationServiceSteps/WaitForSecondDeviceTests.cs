@@ -1,91 +1,135 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using System.Collections.Generic;
     using System.Reactive;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using Omni;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
-    using OmniCommon.Models;
+    using OmniCommon.Helpers;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class WaitForSecondDeviceTests
     {
+        const int ObservableYieldTime = 100;
+        const int ObservableCompletionTime = 200;
+
         private WaitForSecondDevice _subject;
 
-        private Mock<IOmniService> _mockOmniService;
-
         private Mock<IDevices> _mockDevices;
+
+        private TimeSpan _checkInterval;
+
+        private TestScheduler _testScheduler;
 
         [SetUp]
         public void Setup()
         {
-            _mockOmniService = new Mock<IOmniService>();
             _mockDevices = new Mock<IDevices>();
-            _subject = new WaitForSecondDevice(_mockOmniService.Object, _mockDevices.Object);
+            _checkInterval = TimeSpan.FromTicks(200);
+            _subject = new WaitForSecondDevice(_mockDevices.Object, _checkInterval);
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
         }
 
         [Test]
-        public void Execute_WhenSubscribedTo_WillReturnAValueAfterADeviceMessageIsReceivedAndTheGetDevicesMethodReturns2Devices()
+        public void Execute_WhenSubscribedTo_WillReturnAValueAfterACallToGetDevicesReturnsAtLeast2Devices()
         {
-            var testScheduler = new TestScheduler();
-            var omniMessageObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<OmniMessage>>(
-                    100,
-                    Notification.CreateOnNext(new OmniMessage(OmniMessageTypeEnum.Device))));
-            _mockOmniService.SetupGet(x => x.OmniMessageObservable).Returns(omniMessageObservable);
+            var devicesObservable1 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device>())),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            var devicesObservable2 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device> { new Device() })),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
             var devices = new List<Device> { new Device(), new Device() };
-            var devicesObservable =
-                testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(200, Notification.CreateOnNext(devices)),
-                    new Recorded<Notification<List<Device>>>(300, Notification.CreateOnCompleted<List<Device>>()));
-            _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
+            var devicesObservable3 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(devices)),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            var deviceObservables = new[] { devicesObservable1, devicesObservable2, devicesObservable3 };
+            var callCount = 0;
+            _mockDevices.Setup(x => x.GetAll()).Returns(() => deviceObservables[callCount++]);
 
-            var testableObserver = testScheduler.Start(_subject.Execute);
+            var testableObserver = _testScheduler.Start(
+                _subject.Execute,
+                (ObservableCompletionTime + _checkInterval.Ticks) * deviceObservables.Length);
 
             testableObserver.Messages.Count.Should().Be(2);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
             testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
+            _mockDevices.Verify(x => x.GetAll(), Times.Exactly(deviceObservables.Length));
         }
 
         [Test]
-        public void Execute_WhenSubscribedTo_WillNotReturnAValueIfADeviceMessageIsReceivedButCallToGetDevicesMethodNeverReturnsMoreThan1Device()
+        public void Execute_WhenSubscribedTo_WillIgnoreErrorsUntilAtLeast2DevicesAreObtained()
+        {
+            var devicesObservable1 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime,
+                        Notification.CreateOnError<List<Device>>(new Exception())),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            var devicesObservable2 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime,
+                        Notification.CreateOnError<List<Device>>(new Exception())),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            var devices = new List<Device> { new Device(), new Device() };
+            var devicesObservable3 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(devices)),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            var deviceObservables = new[] { devicesObservable1, devicesObservable2, devicesObservable3 };
+            var callCount = 0;
+            _mockDevices.Setup(x => x.GetAll()).Returns(() => deviceObservables[callCount++]);
+
+            var testableObserver = _testScheduler.Start(
+                _subject.Execute,
+                (ObservableCompletionTime + _checkInterval.Ticks) * deviceObservables.Length);
+
+            testableObserver.Messages.Count.Should().Be(2);
+            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
+            testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
+            _mockDevices.Verify(x => x.GetAll(), Times.Exactly(deviceObservables.Length));
+        }
+
+        [Test]
+        public void Execute_WhenSubscribedTo_WillReportErrorsEncounteredWhileGettingDevices()
+        {
+            var exception = new Exception();
+            var devicesObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<List<Device>>>(ObservableYieldTime,
+                    Notification.CreateOnError<List<Device>>(exception)),
+                new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+            _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
+            var mockExceptionReporter = new Mock<IExceptionReporter>();
+            ExceptionReporter.Instance = mockExceptionReporter.Object;
+
+            _testScheduler.Start(_subject.Execute, 2 * ObservableCompletionTime);
+
+            mockExceptionReporter.Verify(x => x.Report(exception), Times.Once());
+        }
+
+        [Test]
+        public void Execute_WhenSubscribedTo_WillNotReturnAValueIfAllCallsToGetDevicesReturnLessThan2Devices()
         {
             var testScheduler = new TestScheduler();
-            var omniMessageObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<OmniMessage>>(
-                    100,
-                    Notification.CreateOnNext(new OmniMessage(OmniMessageTypeEnum.Device))));
-            _mockOmniService.SetupGet(x => x.OmniMessageObservable).Returns(omniMessageObservable);
             var devicesObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(200, Notification.CreateOnNext(new List<Device>())),
-                    new Recorded<Notification<List<Device>>>(300, Notification.CreateOnCompleted<List<Device>>()));
+                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device>())),
+                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
             _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
 
-            var testableObserver = testScheduler.Start(_subject.Execute);
+            var testableObserver = testScheduler.Start(_subject.Execute, 5 * _checkInterval.Ticks);
 
             testableObserver.Messages.Count.Should().Be(0);
-        }
-
-        [Test]
-        public void Execute_WhenSubscribedTo_WillNotReturnAValueIfADeviceMessageIsNeverReceived()
-        {
-            var testScheduler = new TestScheduler();
-            var omniMessageObservable =
-                testScheduler.CreateColdObservable(
-                    new Recorded<Notification<OmniMessage>>(100, Notification.CreateOnCompleted<OmniMessage>()));
-            _mockOmniService.SetupGet(x => x.OmniMessageObservable).Returns(omniMessageObservable);
-
-            var testableObserver = testScheduler.Start(_subject.Execute);
-
-            testableObserver.Messages.Count.Should().Be(1);
-            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
     }
 }
