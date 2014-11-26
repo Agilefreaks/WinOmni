@@ -121,6 +121,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLinkTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfoTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivityTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDeviceTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
@@ -185,9 +186,7 @@
       <Name>Omni</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Connectivity\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

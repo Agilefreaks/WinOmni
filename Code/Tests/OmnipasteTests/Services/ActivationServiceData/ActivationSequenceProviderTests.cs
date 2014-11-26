@@ -162,6 +162,70 @@
         }
 
         [Test]
+        public void AndroidInstallGuide_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void AndroidInstallGuide_OnSuccess_ShouldBeWaitForSecondDevice()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForSecondDevice>();
+        }
+
+        [Test]
+        public void WaitForSecondDevice_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForSecondDevice>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void WaitForSecondDevice_OnSuccess_ShouldBeShowCongratulations()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForSecondDevice>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<ShowCongratulations>();
+        }
+
+        [Test]
+        public void ShowCongratulations_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCongratulations>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void ShowCongratulations_OnSuccess_ShouldBeWaitForCloudClipping()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCongratulations>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForCloudClipping>();
+        }
+        
+        [Test]
+        public void WaitForCloudClipping_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForCloudClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void WaitForCloudClipping_OnSuccess_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForCloudClipping>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
+        }
+
+        [Test]
         public void VerifyConnectivity_OnSuccess_ShouldTransitionToGetLocalActivationCode()
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyConnectivity>(SimpleStepStateEnum.Successful)

@@ -34,7 +34,10 @@
                     .RegisterTransition<VerifyNumberOfDevices, Finished, GetUserInfo>()
                     .RegisterTransition<GetUserInfo, GetAndroidInstallLink, ShowConnectionTroubleshooter>()
                     .RegisterTransition<GetAndroidInstallLink, AndroidInstallGuide, ShowConnectionTroubleshooter>()
-                    .RegisterTransition<AndroidInstallGuide, Finished, Finished>()
+                    .RegisterTransition<AndroidInstallGuide, WaitForSecondDevice, Failed>()
+                    .RegisterTransition<WaitForSecondDevice, ShowCongratulations, Failed>()
+                    .RegisterTransition<ShowCongratulations, WaitForCloudClipping, Failed>()
+                    .RegisterTransition<WaitForCloudClipping, Finished, Failed>()
                     .Build();
 
             _activationSequence = new ActivationSequence
