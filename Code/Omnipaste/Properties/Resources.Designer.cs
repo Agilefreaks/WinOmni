@@ -250,6 +250,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Waiting for you to create your first clipping from your Android device..
+        /// </summary>
+        public static string CongratulationsContent {
+            get {
+                return ResourceManager.GetString("CongratulationsContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations, your devices are now linked..
+        /// </summary>
+        public static string CongratulationsHeader {
+            get {
+                return ResourceManager.GetString("CongratulationsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connected.
         /// </summary>
         public static string Connected {
@@ -642,6 +660,15 @@ namespace Omnipaste.Properties {
         public static string ProxyUsername {
             get {
                 return ResourceManager.GetString("ProxyUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is how a local clipping looks like.
+        /// </summary>
+        public static string SampleLocalClipping {
+            get {
+                return ResourceManager.GetString("SampleLocalClipping", resourceCulture);
             }
         }
         

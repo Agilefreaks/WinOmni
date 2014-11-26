@@ -354,4 +354,10 @@
   <data name="Dismiss" xml:space="preserve">
     <value>Îndepărtează</value>
   </data>
+  <data name="CongratulationsContent" xml:space="preserve">
+    <value>Așteptăm să creezi primul tău clipping de pe dispozitivul tău Android.</value>
+  </data>
+  <data name="CongratulationsHeader" xml:space="preserve">
+    <value>Felicitări, dispozitivele tale sunt acum conectate.</value>
+  </data>
 </root>

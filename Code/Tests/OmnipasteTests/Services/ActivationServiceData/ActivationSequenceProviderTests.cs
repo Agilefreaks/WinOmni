@@ -114,19 +114,35 @@
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnFailed_ShouldBeGetUserInfo()
-        {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<GetUserInfo>();
-        }
-
-        [Test]
         public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<Finished>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnFailed_ShouldBeAddSampleClippings()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<AddSampleClippings>();
+        }
+
+        [Test]
+        public void AddSampleClippings_OnFail_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AddSampleClippings>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void AddSampleClippings_OnSuccess_ShouldBeGetUserInfo()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AddSampleClippings>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetUserInfo>();
         }
 
         [Test]

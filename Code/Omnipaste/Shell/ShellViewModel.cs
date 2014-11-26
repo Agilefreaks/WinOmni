@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
@@ -39,8 +40,6 @@
 
         private IMasterEventListViewModel _masterEventListViewModel;
 
-        private INotificationListViewModel _notificationListViewModel;
-
         private readonly IDisposable _sessionObserver;
 
         #endregion
@@ -63,6 +62,7 @@
 
         #region Public Properties
 
+        [Inject]
         public IMasterClippingListViewModel ClippingListViewModel
         {
             get
@@ -76,6 +76,7 @@
             }
         }
 
+        [Inject]
         public IMasterEventListViewModel MasterEventListViewModel
         {
             get
@@ -88,6 +89,9 @@
                 NotifyOfPropertyChange(() => MasterEventListViewModel);
             }
         }
+
+        [Inject]
+        public INotificationListViewModel NotificationListViewModel { get; set; }
 
         public int SelectedViewIndex
         {
@@ -121,9 +125,6 @@
 
         [Inject]
         public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
 
         [Inject]
         public ILoadingViewModel LoadingViewModel { get; set; }
@@ -208,6 +209,7 @@
             _view.Closing += Closing;
 
             WindowHandleProvider.SetHandle(GetHandle());
+            ShowNotificationsWindow();
 
             Configure();
         }
@@ -233,13 +235,22 @@
             }
             else
             {
-                ClippingListViewModel = Kernel.Get<IMasterClippingListViewModel>();
-                MasterEventListViewModel = Kernel.Get<IMasterEventListViewModel>();
-
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
-                _notificationListViewModel = Kernel.Get<INotificationListViewModel>();
-                NotificationListViewModel.ShowWindow(WindowManager, _notificationListViewModel);
             }
+        }
+
+        private void ShowNotificationsWindow()
+        {
+            WindowManager.ShowPopup(
+                NotificationListViewModel,
+                null,
+                new Dictionary<string, object>
+                    {
+                        { "Placement", PlacementMode.Absolute },
+                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
+                        { "VerticalOffset", SystemParameters.WorkArea.Top },
+                        { "TopMost", true }
+                    });
         }
 
         private IntPtr GetHandle()

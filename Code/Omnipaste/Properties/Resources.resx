@@ -354,4 +354,13 @@
   <data name="Disconnected" xml:space="preserve">
     <value>Disconnected</value>
   </data>
+  <data name="CongratulationsContent" xml:space="preserve">
+    <value>Waiting for you to create your first clipping from your Android device.</value>
+  </data>
+  <data name="CongratulationsHeader" xml:space="preserve">
+    <value>Congratulations, your devices are now linked.</value>
+  </data>
+  <data name="SampleLocalClipping" xml:space="preserve">
+    <value>This is how a local clipping looks like</value>
+  </data>
 </root>
