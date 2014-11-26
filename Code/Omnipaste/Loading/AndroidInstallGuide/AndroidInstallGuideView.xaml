@@ -14,15 +14,23 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel1}"/>
-            <Label Style="{StaticResource CenteredLabelStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource DescriptionHeaderTextBlockStyle}" Text="{x:Static p:Resources.AndroidInstallGuideLabel2}"/>
-                    <Button x:Name="OpenAndroidLink" Style="{DynamicResource HyperlinkButtonStyle}" Content="{Binding Path=AndroidInstallLink}"
-                            HorizontalContentAlignment="Center"/>
-                    <Image Source="{Binding Path=QRCodeImageData}" Stretch="None"/>
-                </StackPanel>
-            </Label>
+            <Label Style="{StaticResource DescriptionHeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel1}"/>
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5.5*"/>
+                    <ColumnDefinition Width="4.5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Center">
+                    <TextBlock Style="{DynamicResource HeaderTextBlockStyle}" Text="{x:Static p:Resources.AndroidInstallGuideLabel2}"
+                           TextAlignment="Right"/>
+                </Grid>
+                <Label Grid.Column="1" Style="{StaticResource CenteredLabelStyle}" HorizontalAlignment="Left">
+                    <StackPanel HorizontalAlignment="Left">
+                        <Image Source="{Binding Path=QRCodeImageData}" Stretch="None"/>
+                        <Button x:Name="OpenAndroidLink" Style="{DynamicResource ActiveHyperlinkButtonStyle}" Content="{Binding Path=AndroidInstallLink}"/>
+                    </StackPanel>
+                </Label>
+            </Grid>
             <Label Style="{StaticResource HeaderStyle}" Content="{x:Static p:Resources.AndroidInstallGuideLabel4}"/>
             <controls:MetroProgressBar IsIndeterminate="True"
                                 Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

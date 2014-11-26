@@ -75,6 +75,7 @@
     <Style x:Key="HyperlinkButtonStyle"  TargetType="Button">
         <Setter Property="Margin" Value="0,5,5,10"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -83,14 +84,15 @@
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
                             <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+                            <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
                             <Setter Property="TextDecorations" Value="None"/>
                         </Style>
                         <Style TargetType="Hyperlink" x:Key="HyperlinkStyle">
 
                         </Style>
                     </ControlTemplate.Resources>
-                    <TextBlock Style="{StaticResource HyperlinkTextBlocStyle}" x:Name="TextBlock" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                    <TextBlock Style="{StaticResource HyperlinkTextBlocStyle}" x:Name="TextBlock">
                         <Run Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
                     </TextBlock>
                     <ControlTemplate.Triggers>
@@ -102,5 +104,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style x:Key="ActiveHyperlinkButtonStyle" TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}"/>
     </Style>
 </ResourceDictionary>

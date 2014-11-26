@@ -148,13 +148,13 @@
     <value>Sorry master we failed, please don't kill us!</value>
   </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
-    <value>Omnipaste was installed successfully on your PC.</value>
+    <value>Congratulations Omnipaste was installed successfully on your PC.</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Next, we need to get Omnipaste setup on your Android device. We prepared a link to help you with this.</value>
+    <value>Next, we need to install Omnipaste on your Android device. Please use this link to install the application from Google Play:</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Once you install the app, your devices will be automatically linked together (and you will be able to copy-paste and receive notifications between them).</value>
+    <value>We'll wait for you to do that and once you install the app, your devices will be automatically linked together, allowing you to copy-paste and receive notifications between them.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>Loading ...</value>

@@ -79,7 +79,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Omnipaste was installed successfully on your PC..
+        ///   Looks up a localized string similar to Congratulations Omnipaste was installed successfully on your PC..
         /// </summary>
         public static string AndroidInstallGuideLabel1 {
             get {
@@ -88,7 +88,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next, we need to get Omnipaste setup on your Android device. We prepared a link to help you with this..
+        ///   Looks up a localized string similar to Next, we need to install Omnipaste on your Android device. Please use this link to install the application from Google Play:.
         /// </summary>
         public static string AndroidInstallGuideLabel2 {
             get {
@@ -97,7 +97,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once you install the app, your devices will be automatically linked together (and you will be able to copy-paste and receive notifications between them)..
+        ///   Looks up a localized string similar to We&apos;ll wait for you to do that and once you install the app, your devices will be automatically linked together, allowing you to copy-paste and receive notifications between them..
         /// </summary>
         public static string AndroidInstallGuideLabel4 {
             get {
