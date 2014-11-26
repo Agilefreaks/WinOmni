@@ -1,13 +1,10 @@
 ﻿namespace Omnipaste.NotificationList
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
-    using System.Windows;
-    using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
@@ -53,22 +50,6 @@
         #endregion
 
         #region Public Methods and Operators
-
-        public static void ShowWindow(
-            IWindowManager windowManager,
-            INotificationListViewModel notificationListViewModel)
-        {
-            windowManager.ShowPopup(
-                notificationListViewModel,
-                null,
-                new Dictionary<string, object>
-                    {
-                        { "Placement", PlacementMode.Absolute },
-                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
-                        { "VerticalOffset", SystemParameters.WorkArea.Top },
-                        { "TopMost", true }
-                    });
-        }
 
         public void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
