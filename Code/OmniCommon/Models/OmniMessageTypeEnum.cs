@@ -4,6 +4,7 @@
     {
         Clipboard,
         Phone,
-        Notification
+        Notification,
+        Device
     }
 }
