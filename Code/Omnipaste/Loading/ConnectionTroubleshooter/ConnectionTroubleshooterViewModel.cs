@@ -6,8 +6,8 @@
     using System.Threading.Tasks;
     using Caliburn.Micro;
     using OmniCommon;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
     using Omnipaste.Services;
 

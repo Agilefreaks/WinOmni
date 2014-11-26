@@ -1,12 +1,10 @@
 ﻿namespace Omnipaste.EventAggregatorMessages
 {
-    public class SendSmsMessage
+    public class GetTokenFromUserMessage
     {
         #region Public Properties
 
         public string Message { get; set; }
-
-        public string Recipient { get; set; }
 
         #endregion
     }

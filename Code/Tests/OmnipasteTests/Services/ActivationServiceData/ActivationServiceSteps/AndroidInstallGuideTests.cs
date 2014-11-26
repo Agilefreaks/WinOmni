@@ -9,7 +9,7 @@
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniCommon.EventAggregatorMessages;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]

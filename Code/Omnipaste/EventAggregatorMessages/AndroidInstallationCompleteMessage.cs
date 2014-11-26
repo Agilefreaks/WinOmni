@@ -1,7 +1,6 @@
-﻿namespace OmniCommon.EventAggregatorMessages
+﻿namespace Omnipaste.EventAggregatorMessages
 {
     public class AndroidInstallationCompleteMessage
     {
-         
     }
 }

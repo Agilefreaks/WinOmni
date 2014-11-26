@@ -1,9 +1,13 @@
-﻿namespace OmniCommon.EventAggregatorMessages
+﻿namespace Omnipaste.EventAggregatorMessages
 {
     using System;
 
     public class ActivationFailedMessage
     {
+        #region Public Properties
+
         public Exception Exception { get; set; }
+
+        #endregion
     }
 }

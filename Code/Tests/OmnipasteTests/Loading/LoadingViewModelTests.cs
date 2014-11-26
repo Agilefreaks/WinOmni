@@ -4,7 +4,6 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniCommon.EventAggregatorMessages;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;

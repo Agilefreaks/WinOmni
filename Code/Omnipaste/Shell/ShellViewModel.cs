@@ -9,7 +9,6 @@
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
-    using OmniCommon.EventAggregatorMessages;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;

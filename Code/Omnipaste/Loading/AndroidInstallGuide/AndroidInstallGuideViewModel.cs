@@ -22,11 +22,6 @@
 
         #region Constructors and Destructors
 
-        public AndroidInstallGuideViewModel(IEventAggregator eventAggregator)
-        {
-            EventAggregator = eventAggregator;
-        }
-
         #endregion
 
         #region Public Properties
@@ -48,8 +43,6 @@
                 UpdateQRCodeImageData();
             }
         }
-
-        public IEventAggregator EventAggregator { get; set; }
 
         public ImageSource QRCodeImageData
         {

@@ -236,6 +236,14 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
+    <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
+    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
+    <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
+    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
