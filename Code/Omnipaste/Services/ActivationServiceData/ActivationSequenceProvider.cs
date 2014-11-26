@@ -37,7 +37,8 @@
                     .RegisterTransition<AndroidInstallGuide, WaitForSecondDevice, Failed>()
                     .RegisterTransition<WaitForSecondDevice, ShowCongratulations, Failed>()
                     .RegisterTransition<ShowCongratulations, WaitForCloudClipping, Failed>()
-                    .RegisterTransition<WaitForCloudClipping, Finished, Failed>()
+                    .RegisterTransition<WaitForCloudClipping, AddSampleClippings, Failed>()
+                    .RegisterTransition<AddSampleClippings, Finished, Failed>()
                     .Build();
 
             _activationSequence = new ActivationSequence

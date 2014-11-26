@@ -664,6 +664,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is how a local clipping looks like.
+        /// </summary>
+        public static string SampleLocalClipping {
+            get {
+                return ResourceManager.GetString("SampleLocalClipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to via Omnipaste.
         /// </summary>
         public static string SentFromOmnipaste {

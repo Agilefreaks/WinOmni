@@ -263,6 +263,7 @@
     <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippings.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />

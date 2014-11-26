@@ -222,6 +222,22 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<WaitForCloudClipping>(SimpleStepStateEnum.Successful)
                 .Should()
+                .Be<AddSampleClippings>();
+        }
+        
+        [Test]
+        public void AddSampleClippings_OnFail_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AddSampleClippings>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+        
+        [Test]
+        public void AddSampleClippings_OnSuccess_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<AddSampleClippings>(SimpleStepStateEnum.Successful)
+                .Should()
                 .Be<Finished>();
         }
 

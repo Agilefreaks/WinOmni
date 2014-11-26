@@ -360,4 +360,7 @@
   <data name="CongratulationsHeader" xml:space="preserve">
     <value>Congratulations, your devices are now linked.</value>
   </data>
+  <data name="SampleLocalClipping" xml:space="preserve">
+    <value>This is how a local clipping looks like</value>
+  </data>
 </root>
