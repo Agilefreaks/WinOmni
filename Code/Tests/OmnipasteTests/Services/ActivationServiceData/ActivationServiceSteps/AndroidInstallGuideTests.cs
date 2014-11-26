@@ -1,15 +1,13 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using System.Reactive;
-    using System.Reactive.Subjects;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
-    using FluentAssertions;
-    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -17,49 +15,34 @@
     {
         private AndroidInstallGuide _subject;
 
-        private ITestableObserver<IExecuteResult> _testableObserver;
-
-        private TestScheduler _testScheduler;
-
         private Mock<IEventAggregator> _mockEventAggregator;
 
         private MoqMockingKernel _kernel;
 
-        private IObservable<IExecuteResult> executeObservable;
+        private Uri _givenUri;
 
         [SetUp]
         public void SetUp()
         {
             _kernel = new MoqMockingKernel();
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
-            _testScheduler = new TestScheduler();
-            _testableObserver = _testScheduler.CreateObserver<IExecuteResult>();
-            _subject = new AndroidInstallGuide(_mockEventAggregator.Object);
+            _givenUri = new Uri("http://someUri.com");
+            _subject = new AndroidInstallGuide(_mockEventAggregator.Object)
+                           {
+                               Parameter = new DependencyParameter("test", _givenUri)
+                           };
         }
 
         [Test]
-        public void Excute_Always_PublishesShowAndroidInstallGuideMessage()
+        public void Excute_Always_PublishesShowAndroidInstallGuideMessageWithTheGivenUriAsTheAndroidInstallLink()
         {
-            _subject.Execute().Subscribe(_testableObserver);
-
+            _subject.Execute().Wait();
+            
             _mockEventAggregator
                 .Verify(ea => ea.Publish(
-                    It.IsAny<ShowAndroidInstallGuideMessage>(),
-                    It.IsAny<System.Action<System.Action>>()), 
+                    It.Is<ShowAndroidInstallGuideMessage>(message => message.AndroidInstallLink == _givenUri),
+                    It.IsAny<Action<Action>>()), 
                 Times.Once);
-        }
-
-        [Test]
-        public void Handle_AndroidInstallationComplete_IsSuccessful()
-        {
-            _subject.Execute().Subscribe(_testableObserver);
-
-            _subject.Handle(new AndroidInstallationCompleteMessage());
-
-            _testableObserver.Messages.Should()
-                .Contain(
-                    m =>
-                        m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Successful);
         }
     }
 }
