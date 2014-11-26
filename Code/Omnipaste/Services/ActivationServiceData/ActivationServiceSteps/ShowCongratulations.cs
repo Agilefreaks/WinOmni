@@ -1,12 +1,21 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
+    using Caliburn.Micro;
+    using Omnipaste.EventAggregatorMessages;
 
-    public class ShowCongratulations : ActivationStepBase
+    public class ShowCongratulations : SynchronousStepBase
     {
-        public override IObservable<IExecuteResult> Execute()
+        private readonly IEventAggregator _eventAggregator;
+
+        public ShowCongratulations(IEventAggregator eventAggregator)
         {
-            throw new NotImplementedException();
+            _eventAggregator = eventAggregator;
+        }
+
+        protected override IExecuteResult ExecuteSynchronously()
+        {
+            _eventAggregator.PublishOnUIThread(new ShowCongratulationsMessage());
+            return new ExecuteResult(SimpleStepStateEnum.Successful);
         }
     }
 }

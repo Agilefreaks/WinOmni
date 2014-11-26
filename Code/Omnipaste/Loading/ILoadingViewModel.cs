@@ -6,7 +6,7 @@
 
     public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>,
         IHandle<ActivationFailedMessage>, IHandle<ShowAndroidInstallGuideMessage>, IHandle<AndroidInstallationCompleteMessage>,
-        IHandle<ShowConnectionTroubleshooterMessage>
+        IHandle<ShowConnectionTroubleshooterMessage>, IHandle<ShowCongratulationsMessage>
     {
         LoadingViewModelStateEnum State { get; set; }
 
