@@ -4,6 +4,7 @@
     using System.Threading;
     using Caliburn.Micro;
     using Events.Models;
+    using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
@@ -36,7 +37,7 @@
         public void SetUp()
         {
             SetupTestScheduler();
-            
+
             _kernel = new MoqMockingKernel();
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
@@ -81,6 +82,23 @@
 
             autoResetEvent.WaitOne();
             _mockDialogViewModel.Verify(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()));
+        }
+
+        [Test]
+        public void Title_EventHasNonEmptyContactName_IsContactName()
+        {
+            _subject.Model.ContactName = "testName";
+
+            _subject.Title.Should().Be("testName");
+        }
+
+        [Test]
+        public void Title_EventHasEmptyContactName_IsPhoneNumber()
+        {
+            _subject.Model.PhoneNumber = "1231321";
+            _subject.Model.ContactName = string.Empty;
+
+            _subject.Title.Should().Be("1231321");
         }
 
         public void SetupTestScheduler()

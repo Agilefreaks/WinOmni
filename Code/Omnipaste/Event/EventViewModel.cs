@@ -56,7 +56,7 @@
         {
             get
             {
-                return Model.PhoneNumber;
+                return string.IsNullOrWhiteSpace(Model.ContactName) ? Model.PhoneNumber : Model.ContactName;
             }
         }
 

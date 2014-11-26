@@ -9,6 +9,8 @@
 
         EventTypeEnum Type { get; }
 
+        string Title { get; }
+
         #endregion
 
         #region Public Methods and Operators
