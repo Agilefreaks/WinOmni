@@ -76,6 +76,7 @@
     <Compile Include="Attributes\UseViewAttribute.cs" />
     <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Behaviors\MultipleContentButton.cs" />
+    <Compile Include="Converters\NullableToBooleanConverter.cs" />
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
