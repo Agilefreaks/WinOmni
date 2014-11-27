@@ -33,7 +33,7 @@
         [Test]
         public void Execute_UrlShortenerServiceFails_SetsANormalUriOnTheResult()
         {
-            var userInfo = new UserInfo { Email = "test@email.com" };
+            var userInfo = new User { Email = "test@email.com" };
             _subject.Parameter = new DependencyParameter("test", userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             taskCompletionSource.SetException(new Exception("test"));
@@ -48,7 +48,7 @@
         [Test]
         public void Execute_UrlShortenerSucceeds_SetsTheObtainedUriOnTheResult()
         {
-            var userInfo = new UserInfo { Email = "test@email.com" };
+            var userInfo = new User { Email = "test@email.com" };
             _subject.Parameter = new DependencyParameter("test", userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             var shortUrl = new Uri("http://google.com");

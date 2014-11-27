@@ -1,10 +1,10 @@
 ﻿namespace OmniApi.Models
 {
-    public class UserInfo
+    public class User
     {
         public string Email { get; set; }
 
-        public UserInfo()
+        public User()
         {
             Email = string.Empty;
         }
