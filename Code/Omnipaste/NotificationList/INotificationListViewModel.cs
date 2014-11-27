@@ -7,5 +7,9 @@
     public interface INotificationListViewModel : IScreen
     {
         ObservableCollection<INotificationViewModel> Notifications { get; set; }
+
+        double Height { get; set; }
+
+        void Show();
     }
 }

@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
-    using System.Windows.Controls.Primitives;
     using System.Windows.Interop;
     using Caliburn.Micro;
     using Ninject;
@@ -16,7 +15,6 @@
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Framework;
     using Omnipaste.Loading;
     using Omnipaste.MasterEventList;
     using Omnipaste.NotificationList;
@@ -127,9 +125,6 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
-        public IWindowManager WindowManager { get; set; }
-
-        [Inject]
         public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }
 
         [Inject]
@@ -206,7 +201,7 @@
             _view.Closing += Closing;
 
             WindowHandleProvider.SetHandle(GetHandle());
-            ShowNotificationsWindow();
+            NotificationListViewModel.Show();
 
             Configure();
         }
@@ -234,20 +229,6 @@
             {
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
             }
-        }
-
-        private void ShowNotificationsWindow()
-        {
-            WindowManager.ShowPopup(
-                NotificationListViewModel,
-                null,
-                new Dictionary<string, object>
-                    {
-                        { "Placement", PlacementMode.Absolute },
-                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
-                        { "VerticalOffset", SystemParameters.WorkArea.Top },
-                        { "TopMost", true }
-                    });
         }
 
         private IntPtr GetHandle()

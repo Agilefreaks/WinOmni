@@ -1,24 +1,29 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cal="http://www.caliburnproject.org"
-                    xmlns:notification="clr-namespace:Omnipaste.Notification"
-                    xmlns:controls="clr-namespace:Omnipaste.Controls">
+                    xmlns:controls="clr-namespace:Omnipaste.Controls"
+                    xmlns:notification="clr-namespace:Omnipaste.Notification">
 
     <!--ItemsControl-->
     <Style x:Key="NotificationContainerStyle" BasedOn="{StaticResource {x:Type ItemsControl}}" TargetType="ItemsControl">
         <Style.Resources>
             <DataTemplate x:Key="NotificationDataTemplate">
                 <DataTemplate.Triggers>
-                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                        <BeginStoryboard Storyboard="{DynamicResource NotificationFadeInStoryboard}"/>
-                    </EventTrigger>
+                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Open}">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{DynamicResource NotificationOpenStoryboard}" />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
                     <DataTrigger Binding="{Binding Path=State}" Value="{x:Static notification:ViewModelStatusEnum.Closed}">
                         <DataTrigger.EnterActions>
-                            <BeginStoryboard Storyboard="{DynamicResource NotificationFadeOutStoryboard}" />
+                            <BeginStoryboard Storyboard="{DynamicResource NotificationCloseStoryboard}" />
                         </DataTrigger.EnterActions>
                     </DataTrigger>
                 </DataTemplate.Triggers>
-                <Grid x:Name="Container" HorizontalAlignment="Right">
+                <Grid x:Name="NotificationContainer" HorizontalAlignment="Right">
+                    <Grid.RenderTransform>
+                        <TranslateTransform/>
+                    </Grid.RenderTransform>
                     <Border Name="Border" Style="{DynamicResource NotificationBorderStyle}">
                         <DockPanel LastChildFill="True">
                             <Grid DockPanel.Dock="Left" Style="{DynamicResource NotificationIconContainerStyle}">
@@ -39,7 +44,7 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Column="0" Grid.RowSpan="2" Style="{DynamicResource NotificationTitleTextBlockStyle}"/>
-                                    <Button Grid.Column="1" Grid.Row="0" Style="{DynamicResource NotificationCloseButton}" cal:Message.Attach="Close">
+                                    <Button Grid.Column="1" Grid.Row="0" Style="{DynamicResource NotificationCloseButton}" cal:Message.Attach="Close" x:Name="CloseButton">
                                         <Rectangle Style="{DynamicResource CloseNotificationIconStyle}"/>
                                     </Button>
                                 </Grid>

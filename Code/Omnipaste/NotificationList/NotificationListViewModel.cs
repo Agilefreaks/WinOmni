@@ -1,10 +1,13 @@
 ﻿namespace Omnipaste.NotificationList
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
+    using System.Windows;
+    using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
@@ -15,6 +18,12 @@
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
     {
+        #region Constants
+
+        private const int NotificationWindowWidth = 385;
+
+        #endregion
+
         #region Fields
 
         private readonly IEventsHandler _eventsHandler;
@@ -22,6 +31,8 @@
         private readonly IOmniClipboardHandler _omniClipboardHandler;
 
         private IDisposable _clippingsSubscription;
+
+        private double _height;
 
         private IDisposable _notificationsSubscription;
 
@@ -36,32 +47,56 @@
 
             _eventsHandler = eventsHandler;
             _omniClipboardHandler = omniClipboardHandler;
+
+            Height = double.NaN;
         }
 
         #endregion
 
         #region Public Properties
 
+        public double Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value.Equals(_height))
+                {
+                    return;
+                }
+                _height = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         [Inject]
         public INotificationViewModelFactory NotificationViewModelFactory { get; set; }
 
         public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
+        [Inject]
+        public IWindowManager WindowManager { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
 
-        public void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void Show()
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                e.NewItems.Cast<IScreen>().ToList<IScreen>().ForEach(
-                    i =>
+            Height = SystemParameters.WorkArea.Height;
+            WindowManager.ShowPopup(
+                this,
+                null,
+                new Dictionary<string, object>
                     {
-                        ActivateItem(i);
-                        i.Deactivated += OnNotificationDeactivated;
+                        { "Placement", PlacementMode.Absolute },
+                        { "HorizontalOffset", SystemParameters.WorkArea.Right - NotificationWindowWidth },
+                        { "VerticalOffset", SystemParameters.WorkArea.Top },
+                        { "TopMost", true }
                     });
-            }
         }
 
         #endregion
@@ -105,8 +140,20 @@
         {
             _notificationsSubscription =
                 _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(
-                        @event => Notifications.Add(NotificationViewModelFactory.Create(@event)));
+                    .SubscribeAndHandleErrors(@event => Notifications.Add(NotificationViewModelFactory.Create(@event)));
+        }
+
+        private void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                e.NewItems.Cast<IScreen>().ToList<IScreen>().ForEach(
+                    i =>
+                        {
+                            ActivateItem(i);
+                            i.Deactivated += OnNotificationDeactivated;
+                        });
+            }
         }
 
         private void OnNotificationDeactivated(object sender, DeactivationEventArgs e)
