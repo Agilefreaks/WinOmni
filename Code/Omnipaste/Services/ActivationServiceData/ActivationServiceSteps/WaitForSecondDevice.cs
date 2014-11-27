@@ -4,6 +4,7 @@
     using System.Reactive.Linq;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
 
     public class WaitForSecondDevice : ActivationStepBase
     {
@@ -40,10 +41,16 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
+            Func<Exception, bool> retryOnError = exception => false;
             return
-                Observable.Defer(() => _devices.GetAll().ReportErrors())
-                    .RetryUntil(devices => devices.Count > 1, _checkInterval)
+                Observable.Defer(_devices.GetAll)
+                    .RetryUntil(devices => devices.Count > 1, _checkInterval, retryOnError: retryOnError)
                     .Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful))
+                    .Catch<IExecuteResult, Exception>(
+                        exception =>
+                        Observable.Return(
+                            new ExecuteResult(SimpleStepStateEnum.Failed, exception),
+                            SchedulerProvider.Default))
                     .Take(1);
         }
 

@@ -68,53 +68,23 @@
         }
 
         [Test]
-        public void Execute_WhenSubscribedTo_WillIgnoreErrorsUntilAtLeast2DevicesAreObtained()
+        public void Execute_WhenSubscribedTo_WillFailOnErrors()
         {
-            var devicesObservable1 =
+            var exception = new Exception();
+            var devicesObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<List<Device>>>(ObservableYieldTime,
-                        Notification.CreateOnError<List<Device>>(new Exception())),
+                        Notification.CreateOnError<List<Device>>(exception)),
                     new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
-            var devicesObservable2 =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime,
-                        Notification.CreateOnError<List<Device>>(new Exception())),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
-            var devices = new List<Device> { new Device(), new Device() };
-            var devicesObservable3 =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(devices)),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
-            var deviceObservables = new[] { devicesObservable1, devicesObservable2, devicesObservable3 };
-            var callCount = 0;
-            _mockDevices.Setup(x => x.GetAll()).Returns(() => deviceObservables[callCount++]);
+            _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
 
-            var testableObserver = _testScheduler.Start(
-                _subject.Execute,
-                (ObservableCompletionTime + _checkInterval.Ticks) * deviceObservables.Length);
+            var testableObserver = _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);
 
             testableObserver.Messages.Count.Should().Be(2);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
+            testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Failed);
+            testableObserver.Messages[0].Value.Value.Data.Should().Be(exception);
             testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
-            _mockDevices.Verify(x => x.GetAll(), Times.Exactly(deviceObservables.Length));
-        }
-
-        [Test]
-        public void Execute_WhenSubscribedTo_WillReportErrorsEncounteredWhileGettingDevices()
-        {
-            var exception = new Exception();
-            var devicesObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<List<Device>>>(ObservableYieldTime,
-                    Notification.CreateOnError<List<Device>>(exception)),
-                new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
-            _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
-            var mockExceptionReporter = new Mock<IExceptionReporter>();
-            ExceptionReporter.Instance = mockExceptionReporter.Object;
-
-            _testScheduler.Start(_subject.Execute, 2 * ObservableCompletionTime);
-
-            mockExceptionReporter.Verify(x => x.Report(exception), Times.Once());
         }
 
         [Test]

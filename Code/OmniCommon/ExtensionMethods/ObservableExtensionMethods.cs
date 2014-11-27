@@ -31,10 +31,13 @@
             Func<T, bool> predicate,
             TimeSpan? interval = null,
             int? retryCount = null,
+            Func<Exception, bool> retryOnError = null,
             IScheduler scheduler = null)
         {
             var retryStrategy = interval.HasValue ? (_ => interval.Value) : ((Func<int, TimeSpan>)null);
             scheduler = scheduler ?? SchedulerProvider.Default;
+            Func<Exception, bool> wrappedRetryOnError =
+                exception => (exception is RetryException) || (retryOnError == null || retryOnError(exception));
 
             return
                 source.Select(
@@ -43,7 +46,7 @@
                         ? Observable.Return(newValue, scheduler)
                         : Observable.Throw<T>(new RetryException()))
                     .Switch()
-                    .RetryWithBackoffStrategy(retryCount, retryStrategy, null, scheduler);
+                    .RetryWithBackoffStrategy(retryCount, retryStrategy, wrappedRetryOnError, scheduler);
         }
 
         public static IObservable<T> RetryWithBackoffStrategy<T>(
