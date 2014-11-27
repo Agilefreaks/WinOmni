@@ -301,5 +301,6 @@
                 <ContentControl cal:View.Model="{Binding Path=MasterEventListViewModel}" />
             </TabItem>
         </controls:MetroAnimatedSingleRowTabControl>
+        <ContentControl x:Name="DialogViewModel"/>
     </Grid>
 </controls:MetroWindow>
