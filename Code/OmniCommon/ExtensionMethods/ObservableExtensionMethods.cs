@@ -20,10 +20,11 @@
         public static IObservable<T> RetryAfter<T>(
             this IObservable<T> source,
             TimeSpan interval,
+            int? retryCount = null,
             IScheduler scheduler = null)
         {
             Func<int, TimeSpan> constantBackoff = _ => interval;
-            return source.RetryWithBackoffStrategy(null, constantBackoff, null, scheduler);
+            return source.RetryWithBackoffStrategy(retryCount, constantBackoff, null, scheduler);
         }
 
         public static IObservable<T> RetryUntil<T>(
@@ -107,13 +108,14 @@
             }
         }
 
-        public static IObservable<T> ReportErrors<T>(this IObservable<T> source)
+        public static IObservable<T> ReportErrors<T>(this IObservable<T> source, IScheduler scheduler = null)
         {
+            scheduler = scheduler ?? SchedulerProvider.Default;
             return source.Catch<T, Exception>(
                 exception =>
                 {
                     ExceptionReporter.Instance.Report(exception);
-                    return Observable.Throw<T>(exception, SchedulerProvider.Default);
+                    return Observable.Throw<T>(exception, scheduler);
                 });
         }
 

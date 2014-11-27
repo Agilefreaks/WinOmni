@@ -106,7 +106,10 @@
     <Compile Include="Resources\v1\IDevicesApi.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />
     <Compile Include="Resources\v1\IOAuth2Api.cs" />
+    <Compile Include="Resources\v1\IUserInfo.cs" />
+    <Compile Include="Resources\v1\IUserInfoApi.cs" />
     <Compile Include="Resources\v1\OAuth2.cs" />
+    <Compile Include="Resources\v1\UserInfo.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
     <Compile Include="Support\Serialization\DeliminatorSeparatedPropertyNamesContractResolver.cs" />
     <Compile Include="Support\Serialization\SnakeCasePropertyNamesContractResolver.cs" />
