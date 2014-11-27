@@ -114,11 +114,11 @@
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnFailed_ShouldBeGetUserInfo()
+        public void VerifyNumberOfDevices_OnFailed_ShouldBeGetUser()
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<GetUserInfo>();
+                .Be<GetUser>();
         }
 
         [Test]
@@ -130,17 +130,17 @@
         }
 
         [Test]
-        public void GetUserInfo_OnFailed_ShouldBeFailed()
+        public void GetUser_OnFailed_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }
 
         [Test]
-        public void GetUserInfo_OnSuccess_ShouldBeGetAndroidInstallLink()
+        public void GetUser_OnSuccess_ShouldBeGetAndroidInstallLink()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<GetAndroidInstallLink>();
         }

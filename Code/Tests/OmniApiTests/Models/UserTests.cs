@@ -5,14 +5,14 @@
     using OmniApi.Models;
 
     [TestFixture]
-    public class UserInfoTests
+    public class UserTests
     {
-        private UserInfo _subject;
+        private User _subject;
 
         [SetUp]
         public void Setup()
         {
-            _subject = new UserInfo();
+            _subject = new User();
         }
 
         [Test]

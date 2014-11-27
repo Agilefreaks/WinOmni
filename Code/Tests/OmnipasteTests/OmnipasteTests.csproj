@@ -119,7 +119,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLinkTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfoTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivityTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDeviceTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />

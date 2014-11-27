@@ -5,19 +5,19 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
 
-    public class GetUserInfo : ActivationStepBase
+    public class GetUser : ActivationStepBase
     {
         #region Fields
 
-        private readonly IUserInfo _userInfo;
+        private readonly IUsers _users;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public GetUserInfo(IUserInfo userInfo)
+        public GetUser(IUsers users)
         {
-            _userInfo = userInfo;
+            _users = users;
         }
 
         #endregion
@@ -27,8 +27,8 @@
         public override IObservable<IExecuteResult> Execute()
         {
             return
-                _userInfo.Get()
-                    .Select(userInfo => new ExecuteResult { State = SimpleStepStateEnum.Successful, Data = userInfo })
+                _users.Get()
+                    .Select(user => new ExecuteResult { State = SimpleStepStateEnum.Successful, Data = user })
                     .Catch<IExecuteResult, Exception>(
                         exception =>
                         Observable.Return(

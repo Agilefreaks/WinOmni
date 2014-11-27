@@ -264,7 +264,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserInfo.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />

@@ -9,7 +9,7 @@
         {
             Kernel.Bind<IOAuth2>().To<OAuth2>();
             Kernel.Bind<IDevices>().To<Devices>();
-            Kernel.Bind<IUserInfo>().To<UserInfo>();
+            Kernel.Bind<IUsers>().To<Users>();
         }
     }
 }

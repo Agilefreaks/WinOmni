@@ -23,8 +23,8 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            var userInfo = Parameter.Value as UserInfo ?? new UserInfo();
-            var safeEmailString = HttpUtility.UrlEncode(userInfo.Email);
+            var user = Parameter.Value as User ?? new User();
+            var safeEmailString = HttpUtility.UrlEncode(user.Email);
             var uri = new Uri(string.Format(UrlFormat, _configurationService.WebBaseUrl, safeEmailString));
 
             return
