@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Clipboard.Handlers;
@@ -18,6 +19,8 @@
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
     {
+        private const int NotificationWindowWidth = 385;
+
         #region Fields
 
         private readonly IEventsHandler _eventsHandler;
@@ -64,7 +67,7 @@
                 new Dictionary<string, object>
                     {
                         { "Placement", PlacementMode.Absolute },
-                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
+                        { "HorizontalOffset", SystemParameters.WorkArea.Right - NotificationWindowWidth },
                         { "VerticalOffset", SystemParameters.WorkArea.Top },
                         { "TopMost", true }
                     });
