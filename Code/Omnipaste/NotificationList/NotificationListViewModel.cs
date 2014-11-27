@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Clipboard.Handlers;
@@ -31,6 +30,8 @@
 
         private IDisposable _notificationsSubscription;
 
+        private double _height;
+
         #endregion
 
         #region Constructors and Destructors
@@ -42,6 +43,8 @@
 
             _eventsHandler = eventsHandler;
             _omniClipboardHandler = omniClipboardHandler;
+            
+            Height = double.NaN;
         }
 
         #endregion
@@ -53,6 +56,23 @@
 
         public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
+        public double Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value.Equals(_height))
+                {
+                    return;
+                }
+                _height = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -61,6 +81,7 @@
             IWindowManager windowManager,
             INotificationListViewModel notificationListViewModel)
         {
+            notificationListViewModel.Height = SystemParameters.WorkArea.Height;
             windowManager.ShowPopup(
                 notificationListViewModel,
                 null,

@@ -11,6 +11,7 @@
     <Grid>
         <ItemsControl x:Name="Notifications" 
                       Style="{DynamicResource NotificationContainerStyle}"
-                      ItemsSource="{Binding Path=Notifications}" />
+                      ItemsSource="{Binding Path=Notifications}"
+                      Height="{Binding Path=Height}"/>
     </Grid>
 </UserControl>
