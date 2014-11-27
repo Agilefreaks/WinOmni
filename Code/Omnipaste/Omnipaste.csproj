@@ -364,8 +364,6 @@
     <Compile Include="Framework\ApplicationService.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
-    <Compile Include="Framework\IDialogService.cs" />
-    <Compile Include="Framework\DialogService.cs" />
     <Compile Include="Framework\ViewLocator.cs" />
     <Compile Include="Loading\ILoadingViewModel.cs" />
     <Compile Include="Loading\LoadingViewModel.cs" />

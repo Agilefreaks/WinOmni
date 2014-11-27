@@ -115,9 +115,6 @@
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         [Inject]
-        public IDialogService DialogService { get; set; }
-
-        [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
         [Inject]
