@@ -357,4 +357,10 @@
   <data name="Dismiss" xml:space="preserve">
     <value>Demitir</value>
   </data>
+  <data name="CongratulationsContent" xml:space="preserve">
+    <value>Esperando por você para criar seu primeiro recorte do seu dispositivo Android.</value>
+  </data>
+  <data name="CongratulationsHeader" xml:space="preserve">
+    <value>Parabéns, seus dispositivos estão agora ligados.</value>
+  </data>
 </root>
