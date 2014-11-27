@@ -130,11 +130,11 @@
         }
 
         [Test]
-        public void GetUserInfo_OnFailed_ShouldBeShowConnectionTroubleshooter()
+        public void GetUserInfo_OnFailed_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetUserInfo>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<ShowConnectionTroubleshooter>();
+                .Be<Failed>();
         }
 
         [Test]
@@ -146,11 +146,11 @@
         }
 
         [Test]
-        public void GetAndroidInstallLink_OnFail_ShouldBeShowConnectionTroubleshooter()
+        public void GetAndroidInstallLink_OnFail_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<ShowConnectionTroubleshooter>();
+                .Be<Failed>();
         }
 
         [Test]
