@@ -8,7 +8,7 @@
         <DoubleAnimation Storyboard.TargetName="NotificationContainer" Storyboard.TargetProperty="(Grid.RenderTransform).(TranslateTransform.X)" 
                          From="0" To="{StaticResource NotificationWindowWidth}" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
-                <ExponentialEase Exponent="2" EasingMode="EaseIn"/>
+                <QuinticEase EasingMode="EaseIn"></QuinticEase>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
@@ -17,7 +17,7 @@
         <DoubleAnimation Storyboard.TargetName="NotificationContainer" Storyboard.TargetProperty="(Grid.RenderTransform).(TranslateTransform.X)" 
                          From="{StaticResource NotificationWindowWidth}" To="0" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
-                <ExponentialEase Exponent="2" EasingMode="EaseIn"/>
+                <QuinticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
