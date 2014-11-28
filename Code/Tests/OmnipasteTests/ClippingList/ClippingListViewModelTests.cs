@@ -1,6 +1,8 @@
 ﻿namespace OmnipasteTests.ClippingList
 {
     using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reactive.Subjects;
     using Clipboard.Models;
@@ -8,6 +10,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Interfaces;
     using Omnipaste;
     using Omnipaste.Clipping;
     using Omnipaste.Framework;

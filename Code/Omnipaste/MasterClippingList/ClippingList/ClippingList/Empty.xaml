@@ -11,6 +11,7 @@
             <Rectangle Style="{DynamicResource EmptyListIconStyle}" />
             <TextBlock Text="{x:Static p:Resources.ClippingListEmptyLabel}" Style="{StaticResource InfoTextStyleCenter}" />
             <TextBlock Text="{x:Static p:Resources.ClippingListEmptyContent}" Style="{StaticResource PlaceholderContentStyle}" />
+            <Button Style="{DynamicResource ShapeHyperlinkButtonStyle}" Content="{DynamicResource play_icon}" x:Name="ShowVideoTutorial"/>
         </StackPanel>
     </Grid>
 </UserControl>

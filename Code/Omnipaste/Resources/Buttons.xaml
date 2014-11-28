@@ -88,9 +88,6 @@
                             <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
                             <Setter Property="TextDecorations" Value="None"/>
                         </Style>
-                        <Style TargetType="Hyperlink" x:Key="HyperlinkStyle">
-
-                        </Style>
                     </ControlTemplate.Resources>
                     <TextBlock Style="{StaticResource HyperlinkTextBlocStyle}" x:Name="TextBlock">
                         <Run Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
@@ -108,5 +105,35 @@
     
     <Style x:Key="ActiveHyperlinkButtonStyle" TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
         <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}"/>
+    </Style>
+
+    <Style x:Key="ShapeHyperlinkButtonStyle" TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="Visibility" Value="Visible"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid HorizontalAlignment="Center">
+                        <Rectangle  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                                   HorizontalAlignment="Center" >
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
