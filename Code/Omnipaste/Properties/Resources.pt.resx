@@ -166,7 +166,7 @@
     <value>Tentar novamente</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>Não existem cortes para mostrar.</value>
+    <value>Atualmente você não tem recortes. Para adicionar um pouco, basta copiar um texto do jeito que você costuma fazer. Ele aparecerá automaticamente aqui para que você possa paste em seus outros dispositivos que estão conectados em Omnipaste.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>Todos</value>

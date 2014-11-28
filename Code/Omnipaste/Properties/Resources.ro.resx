@@ -163,7 +163,7 @@
     <value>Încearcă din nou</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>Nu sunt clipping-uri de arătat. </value>
+    <value>În prezent nu aveți niciun clipping. Pentru a adăuga unul, pur și simplu copiați un text așa cum faceți de obicei. Acesta va apărea în mod automat aici, astfel încât să puteți face paste pe alte dispozitive conectate prin Omnipaste.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>Toate</value>

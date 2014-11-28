@@ -232,7 +232,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are no clippings to display..
+        ///   Looks up a localized string similar to You currently have no clippings. To add some, simply copy a text the way you usually do. It will automatically appear here so that you can paste it on your other devices that are connected on Omnipaste..
         /// </summary>
         public static string ClippingListEmptyLabel {
             get {

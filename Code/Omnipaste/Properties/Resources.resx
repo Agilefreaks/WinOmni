@@ -166,7 +166,7 @@
     <value>Retry</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>There are no clippings to display.</value>
+    <value>You currently have no clippings. To add some, simply copy a text the way you usually do. It will automatically appear here so that you can paste it on your other devices that are connected on Omnipaste.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>All</value>
