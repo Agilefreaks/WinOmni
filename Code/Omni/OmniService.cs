@@ -13,7 +13,6 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using OmniCommon.Models;
     using OmniSync;
 
     public class OmniService : IOmniService
@@ -27,19 +26,15 @@
 
         #region Fields
 
-        private IWebsocketConnection _websocketConnection;
+        protected IWebsocketConnection WebsocketConnection;
 
         private static int _migrationState = NoSwitchInProgress;
 
         private ISubject<bool> _inTransitionChangedSubject;
 
-        private ISubject<OmniMessage> _omniMessageSubject;
-
         private ISubject<OmniServiceStatusEnum> _statusChangedSubject;
 
         private OmniServiceStatusEnum _state;
-
-        private IDisposable _omniMessageObserver;
 
         #endregion
 
@@ -49,7 +44,6 @@
         {
             _statusChangedSubject = new ReplaySubject<OmniServiceStatusEnum>(1);
             _inTransitionChangedSubject = new ReplaySubject<bool>(1);
-            _omniMessageSubject = new Subject<OmniMessage>();
             State = OmniServiceStatusEnum.Stopped;
         }
 
@@ -82,14 +76,6 @@
         [Inject]
         public IKernel Kernel { get; set; }
 
-        public IObservable<OmniMessage> OmniMessageObservable
-        {
-            get
-            {
-                return _omniMessageSubject;
-            }
-        }
-
         public OmniServiceStatusEnum State
         {
             get
@@ -117,19 +103,6 @@
         [Inject]
         public IWebsocketConnectionFactory WebsocketConnectionFactory { get; set; }
 
-        public IWebsocketConnection WebsocketConnection
-        {
-            get
-            {
-                return _websocketConnection;
-            }
-            set
-            {
-                _websocketConnection = value;
-                UpdateOmniMessageObserver();
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
@@ -148,7 +121,6 @@
         {
             _statusChangedSubject = new NullSubject<OmniServiceStatusEnum>();
             _inTransitionChangedSubject = new NullSubject<bool>();
-            _omniMessageSubject = new NullSubject<OmniMessage>();
             Stop().RunToCompletionSynchronous();
         }
 
@@ -166,7 +138,7 @@
         private IObservable<Device> ActivateDevice(string deviceIdentifier)
         {
             SimpleLogger.Log("Activating device");
-            return Devices.Activate(_websocketConnection.SessionId, deviceIdentifier);
+            return Devices.Activate(WebsocketConnection.SessionId, deviceIdentifier);
         }
 
         private void AssureAuthenticationCredentialsExist()
@@ -215,8 +187,8 @@
         private IObservable<string> OpenWebsocketConnection()
         {
             SimpleLogger.Log("Opening websocket connection");
-            _websocketConnection = WebsocketConnectionFactory.Create();
-            return _websocketConnection.Connect();
+            WebsocketConnection = WebsocketConnectionFactory.Create();
+            return WebsocketConnection.Connect();
         }
 
         private IObservable<Device> RegisterDevice()
@@ -254,7 +226,7 @@
             SimpleLogger.Log("Starting handlers");
             foreach (var handler in Kernel.GetAll<IHandler>() ?? Enumerable.Empty<IHandler>())
             {
-                handler.Start(_websocketConnection);
+                handler.Start(WebsocketConnection);
             }
         }
 
@@ -262,14 +234,14 @@
         {
             SimpleLogger.Log("Starting websocket monitor");
             WebSocketMonitor.Stop();
-            WebSocketMonitor.Start(_websocketConnection);
+            WebSocketMonitor.Start(WebsocketConnection);
         }
 
         private IObservable<Unit> StopCore()
         {
             return
                 Observable.Start(StopHandlers, SchedulerProvider.Default)
-                    .Select(_ => Observable.Start(_websocketConnection.Disconnect, SchedulerProvider.Default))
+                    .Select(_ => Observable.Start(WebsocketConnection.Disconnect, SchedulerProvider.Default))
                     .Switch()
                     .Select(_ => DeactivateDevice())
                     .Switch();
@@ -320,21 +292,6 @@
             }
 
             return result;
-        }
-
-        private void UpdateOmniMessageObserver()
-        {
-            if (_omniMessageObserver != null)
-            {
-                _omniMessageObserver.Dispose();
-            }
-            if (_websocketConnection != null)
-            {
-                _omniMessageObserver =
-                    _websocketConnection.SubscribeOn(SchedulerProvider.Default)
-                        .ObserveOn(SchedulerProvider.Default)
-                        .Subscribe(_omniMessageSubject);
-            }
         }
 
         #endregion

@@ -74,11 +74,6 @@
             }
         }
 
-        public IDisposable Subscribe(IObserver<OmniMessage> observer)
-        {
-            return OmniMessageSubject.Subscribe(observer);
-        }
-
         #endregion
 
         #region Methods
@@ -112,6 +107,10 @@
             _channelObserver = _channel.GetSubject<OmniMessage>(sessionId).Subscribe(OmniMessageSubject);
         }
 
+        public IDisposable Subscribe(IObserver<OmniMessage> observer)
+        {
+            return OmniMessageSubject.Subscribe(observer);
+        }
 
         #endregion
     }

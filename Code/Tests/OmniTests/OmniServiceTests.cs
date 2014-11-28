@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -13,6 +14,7 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniSync;
 
     [TestFixture]
@@ -101,7 +103,7 @@
             _subject.Start().Subscribe(testableObserver);
             _scheduler.Start();
             
-            _someHandler.Verify(m => m.Start(It.IsAny<IWebsocketConnection>()), Times.Once());
+            _someHandler.Verify(m => m.Start(It.IsAny<IObservable<OmniMessage>>()), Times.Once());
         }
         
         [Test]

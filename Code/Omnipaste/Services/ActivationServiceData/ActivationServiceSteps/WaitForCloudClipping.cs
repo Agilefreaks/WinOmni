@@ -2,26 +2,22 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Omni;
+    using Clipboard.Handlers;
     using OmniCommon.Helpers;
-    using OmniCommon.Models;
 
     public class WaitForCloudClipping : ActivationStepBase
     {
-        private readonly IOmniService _omniService;
+        private readonly IOmniClipboardHandler _omniClipboardHandler;
 
-        public WaitForCloudClipping(IOmniService omniService)
+        public WaitForCloudClipping(IOmniClipboardHandler omniClipboardHandler)
         {
-            _omniService = omniService;
+            _omniClipboardHandler = omniClipboardHandler;
         }
 
         public override IObservable<IExecuteResult> Execute()
         {
-            return
-                _omniService.OmniMessageObservable.Where(
-                    message => message.Provider == OmniMessageTypeEnum.Clipboard)
-                    .Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful))
-                    .Take(1, SchedulerProvider.Default);
+            return _omniClipboardHandler.Clippings.Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful))
+                .Take(1, SchedulerProvider.Default);
         }
     }
 }

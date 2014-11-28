@@ -11,7 +11,6 @@
     using NUnit.Framework;
     using OmniCommon.Models;
     using OmniSync;
-    using WampSharp.Core.Listener;
     using WampSharp.V1;
     using WampSharp.V1.Auxiliary.Client;
 

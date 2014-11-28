@@ -1,13 +1,13 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System.Reactive;
+    using Clipboard.Handlers;
+    using Clipboard.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using Omni;
     using OmniCommon.Helpers;
-    using OmniCommon.Models;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -15,29 +15,26 @@
     {
         private WaitForCloudClipping _subject;
 
-        private Mock<IOmniService> _mockOmniService;
+        private Mock<IOmniClipboardHandler> _mockCloudClippingHandler;
 
         [SetUp]
         public void Setup()
         {
-            _mockOmniService = new Mock<IOmniService>();
-            _subject = new WaitForCloudClipping(_mockOmniService.Object);
+            _mockCloudClippingHandler = new Mock<IOmniClipboardHandler>();
+            _subject = new WaitForCloudClipping(_mockCloudClippingHandler.Object);
         }
 
         [Test]
-        public void Execute_WhenSubscribedTo_WaitsForAWebsocketClipboardMessage()
+        public void Execute_WhenSubscribedTo_WaitsForACloudClipping()
         {
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
-            var omniMessageObservable =
+            var cloudClippingObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<OmniMessage>>(
+                    new Recorded<Notification<Clipping>>(
                         100,
-                        Notification.CreateOnNext(new OmniMessage(OmniMessageTypeEnum.Notification))),
-                    new Recorded<Notification<OmniMessage>>(
-                        200,
-                        Notification.CreateOnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard))));
-            _mockOmniService.SetupGet(x => x.OmniMessageObservable).Returns(omniMessageObservable);
+                        Notification.CreateOnNext(new Clipping())));
+            _mockCloudClippingHandler.Setup(x => x.Clippings).Returns(cloudClippingObservable);
 
             var testableObserver = testScheduler.Start(_subject.Execute);
 
