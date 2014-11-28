@@ -262,7 +262,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for you to create your first clipping from your Android device..
+        ///   Looks up a localized string similar to You can now copy and paste text across devices. Try that now by copying some text from your Android device.
         /// </summary>
         public static string CongratulationsContent {
             get {
