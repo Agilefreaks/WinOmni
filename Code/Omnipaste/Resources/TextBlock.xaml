@@ -45,6 +45,8 @@
     <Style TargetType="TextBlock" x:Key="InfoTextStyleCenter" BasedOn="{StaticResource InfoTextStyle}">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style x:Key="DescriptionHeaderStyleTextBlock" TargetType="TextBlock">

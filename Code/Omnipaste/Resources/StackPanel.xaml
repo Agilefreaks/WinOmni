@@ -15,4 +15,11 @@
     <Style x:Key="ButtonsPanel" TargetType="StackPanel" BasedOn="{StaticResource HorizontalPanel}">
         <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
+    
+    <Style x:Key="EmptyClippingsContainer" TargetType="StackPanel">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Margin" Value="50,50"/>
+    </Style>
 </ResourceDictionary>
