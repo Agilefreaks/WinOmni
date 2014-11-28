@@ -3,11 +3,11 @@
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
 
-    public class ShowConnectionTroubleshooter : PublishMessageStepBase<ShowConnectionTroubleshooterMessage>
+    public class ShowCreateClipping : PublishMessageStepBase<ShowCreateClippingMessage>
     {
         #region Constructors and Destructors
 
-        public ShowConnectionTroubleshooter(IEventAggregator eventAggregator)
+        public ShowCreateClipping(IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
         }

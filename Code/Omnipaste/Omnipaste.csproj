@@ -243,14 +243,18 @@
     <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowCongratulationsMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
+    <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
+    <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
+    <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
@@ -265,9 +269,16 @@
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippings.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\PublishMessageStepBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForClippingBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForLocalClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
@@ -377,7 +388,7 @@
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="SmsComposer\SmsMessage.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
     <Compile Include="SmsComposer\ISmsComposerViewModel.cs" />
@@ -465,6 +476,10 @@
     <Page Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooter\Socks4.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading\CreateClipping\CreateClippingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>

@@ -13,7 +13,7 @@
     [TestFixture]
     public class AndroidInstallGuideTests
     {
-        private AndroidInstallGuide _subject;
+        private ShowAndroidInstallGuide _subject;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -27,7 +27,7 @@
             _kernel = new MoqMockingKernel();
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _givenUri = new Uri("http://someUri.com");
-            _subject = new AndroidInstallGuide(_mockEventAggregator.Object)
+            _subject = new ShowAndroidInstallGuide(_mockEventAggregator.Object)
                            {
                                Parameter = new DependencyParameter("test", _givenUri)
                            };

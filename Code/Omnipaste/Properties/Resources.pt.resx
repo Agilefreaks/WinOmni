@@ -369,4 +369,14 @@ Para mais informações, confira nosso vídeo abaixo.</value>
   <data name="SampleLocalClipping" xml:space="preserve">
     <value>Isto é como um recorte local, parece</value>
   </data>
+  <data name="CreateClippingFooter" xml:space="preserve">
+    <value>Uma vez copiado, você terá este texto disponível na área de transferência do computador.
+Você pode até colá-lo no Facebook. As possibilidades são infinitas.</value>
+  </data>
+  <data name="CreateClippingHeader" xml:space="preserve">
+    <value>Vá em frente e copie o seguinte texto (clique com botão direito e selecione copiar):</value>
+  </data>
+  <data name="CreateClippingSample" xml:space="preserve">
+    <value>Acabei de instalar Omnipaste, o serviço que liga os meus dispositivos.</value>
+  </data>
 </root>

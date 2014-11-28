@@ -9,6 +9,7 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -43,27 +44,71 @@
         }
 
         [Test]
-        public void Execute_WhenRegisteredDeviceIsNotTheOnlyDevice_ReturnsSuccessful()
+        public void Execute_WhenASingleDeviceExists_CompletesWithStatusOne()
         {
-            _devices.Add(new Device());
-            
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();
 
             _testObserver.Messages
                 .Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Successful);
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(NumberOfDevicesEnum.One));
         }
 
         [Test]
-        public void Execute_WhenRegisteredDeviceIsTheOnlyDeviceIsFailed()
+        public void Execute_WhenTwoDevicesExistAndParameterIsNotADevice_CompletesWithStatusTwoOrMore()
         {
+            _devices.Add(new Device());
+            _subject.Parameter = null;
+
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();
 
             _testObserver.Messages
                 .Should()
-                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(NumberOfDevicesEnum.TwoOrMore));
+        }
+
+        [Test]
+        public void Execute_WhenTwoDevicesExistAndParameterIsADevice_CompletesWithStatusTwoAndThisOneIsNew()
+        {
+            _devices.Add(new Device());
+            _subject.Parameter = new DependencyParameter { Value = new Device() };
+
+            _subject.Execute().Subscribe(_testObserver);
+            _testScheduler.Start();
+
+            _testObserver.Messages
+                .Should()
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(NumberOfDevicesEnum.TwoAndThisOneIsNew));
+        }
+
+        [Test]
+        public void Execute_WhenMoreThanTwoDevicesExists_CompletesWithStatusTwoOrMore()
+        {
+            _devices.Add(new Device());
+            _devices.Add(new Device());
+            _subject.Parameter = new DependencyParameter { Value = new Device() };
+
+            _subject.Execute().Subscribe(_testObserver);
+            _testScheduler.Start();
+
+            _testObserver.Messages
+                .Should()
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(NumberOfDevicesEnum.TwoOrMore));
+        }
+
+        [Test]
+        public void Execute_WhenNoDevicesExists_CompletesWithStatusZero()
+        {
+            _devices.Clear();
+            _subject.Parameter = new DependencyParameter { Value = new Device() };
+
+            _subject.Execute().Subscribe(_testObserver);
+            _testScheduler.Start();
+
+            _testObserver.Messages
+                .Should()
+                .Contain(m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(NumberOfDevicesEnum.Zero));
         }
     }
 }

@@ -41,7 +41,7 @@
         }
 
         [Test]
-        public void GetDeviceIdetifier_WhenTereIsAnExistingIdentifierSaved_ReturnsTheExistingIdentifier()
+        public void GetDeviceIdentifier_WhenTereIsAnExistingIdentifierSaved_ReturnsTheExistingIdentifier()
         {
             _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns("123456");
 
@@ -51,23 +51,13 @@
         }
 
         [Test]
-        public void GetDeviceIdentifier_WhenThereIsntAnIdentifierSaved_ReturnsNewIdentifier()
+        public void GetDeviceIdentifier_WhenThereIsNoIdentifierSaved_ReturnsNull()
         {
-            _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns("");
+            _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns((string)null);
 
             var deviceIdentifier = _subject.DeviceIdentifier;
 
-            deviceIdentifier.Should().NotBe("");
-        }
-
-        [Test]
-        public void GetDeviceIdentifier_WhenTHereIsntAnIdentifierSaved_SavesTheNewlyGeneratedIdentifier()
-        {
-            _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns("");
-
-            var deviceIdentifier = _subject.DeviceIdentifier;
-
-            _mockConfigurationProvider.Verify(cp => cp.SetValue("DeviceIdentifier", deviceIdentifier), Times.Once);
+            deviceIdentifier.Should().Be(null);
         }
 
         [Test]
@@ -145,6 +135,14 @@
             _subject.IsSMSSuffixEnabled = true;
 
             _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
+        }
+
+        [Test]
+        public void SetDeviceIdentifier_Always_SavesTheGivenValue()
+        {
+            _subject.DeviceIdentifier = "someId";
+
+            _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
         }
     }
 }

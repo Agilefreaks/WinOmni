@@ -370,6 +370,34 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Once copied, you&apos;ll have this text available on your computer&apos;s clipboard. 
+        ///You can even paste it on Facebook. The possibilities are endless..
+        /// </summary>
+        public static string CreateClippingFooter {
+            get {
+                return ResourceManager.GetString("CreateClippingFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go ahead and copy the following text (right click and select copy) :.
+        /// </summary>
+        public static string CreateClippingHeader {
+            get {
+                return ResourceManager.GetString("CreateClippingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I just installed Omnipaste, the service that links my devices..
+        /// </summary>
+        public static string CreateClippingSample {
+            get {
+                return ResourceManager.GetString("CreateClippingSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
         public static string Disconnected {

@@ -369,4 +369,14 @@ Pentru mai multe informații, consultați videoclipul nostru de mai jos.</value>
   <data name="SampleLocalClipping" xml:space="preserve">
     <value>Așa arată un clipping local</value>
   </data>
+  <data name="CreateClippingFooter" xml:space="preserve">
+    <value>Odată ce l-ai copiat, acest text va fi disponibil pe clipboard-ul computer-ului tău.
+Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value>
+  </data>
+  <data name="CreateClippingHeader" xml:space="preserve">
+    <value>Copiază următorul text (click dreapta și selectează copy):</value>
+  </data>
+  <data name="CreateClippingSample" xml:space="preserve">
+    <value>Tocmai am instalat Omnipaste, serviciul care îmi conectează dispozitivele mele.</value>
+  </data>
 </root>

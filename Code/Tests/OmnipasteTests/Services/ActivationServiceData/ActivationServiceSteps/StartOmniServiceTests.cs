@@ -56,7 +56,7 @@
 
             testObserver.Messages.Should()
                 .Contain(
-                    m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State == SimpleStepStateEnum.Successful);
+                    m => m.Value.Kind == NotificationKind.OnNext && m.Value.Value.State.Equals(SimpleStepStateEnum.Successful));
             testObserver.Messages.Should().HaveCount(2);
         }
 
@@ -74,7 +74,7 @@
 
             testObserver.Messages.Should().HaveCount(2);
             testObserver.Messages.Should().Contain(m => m.Value.Kind == NotificationKind.OnNext &&
-                m.Value.Value.State == SimpleStepStateEnum.Failed);
+                m.Value.Value.State.Equals(SimpleStepStateEnum.Failed));
             testObserver.Messages.Should().Contain(m => m.Value.Kind == NotificationKind.OnCompleted);
         }
 

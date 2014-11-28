@@ -13,7 +13,7 @@
 
         bool DebugMode { get; }
 
-        string DeviceIdentifier { get; }
+        string DeviceIdentifier { get; set; }
 
         bool IsSMSSuffixEnabled { get; set; }
 

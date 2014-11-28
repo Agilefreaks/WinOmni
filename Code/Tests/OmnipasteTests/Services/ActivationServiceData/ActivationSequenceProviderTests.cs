@@ -106,27 +106,75 @@
         }
 
         [Test]
-        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
+        public void StartOmniService_Success_ShouldBeGetDeviceId()
         {
             _sequence.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetDeviceId>();
+        }
+
+        [Test]
+        public void GetDeviceId_Failed_ShouldBeRegisterDevice()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<RegisterDevice>();
+        }
+
+        [Test]
+        public void GetDeviceId_Successful_ShouldBeVerifyNumberOfDevices()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<VerifyNumberOfDevices>();
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
+        public void RegisterDevice_Failed_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<Finished>();
+                .Be<Failed>();
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnFailed_ShouldBeAddSampleClippings()
+        public void RegisterDevice_Successful_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifyNumberOfDevices>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnZero_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.Zero)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnOne_ShouldBeGetUser()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.One)
                 .Should()
                 .Be<AddSampleClippings>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnTwoAndThisOneIsNew_ShouldBeShowCongratulations()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.TwoAndThisOneIsNew)
+                .Should()
+                .Be<ShowCreateClipping>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnTwoOrMore_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.TwoOrMore)
+                .Should()
+                .Be<Finished>();
         }
 
         [Test]
@@ -174,21 +222,21 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<AndroidInstallGuide>();
+                .Be<ShowAndroidInstallGuide>();
         }
 
         [Test]
         public void AndroidInstallGuide_OnFail_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<ShowAndroidInstallGuide>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void AndroidInstallGuide_OnSuccess_ShouldBeWaitForSecondDevice()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<ShowAndroidInstallGuide>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<WaitForSecondDevice>();
         }
@@ -216,7 +264,7 @@
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void ShowCongratulations_OnSuccess_ShouldBeWaitForCloudClipping()
         {
@@ -224,7 +272,7 @@
                 .Should()
                 .Be<WaitForCloudClipping>();
         }
-        
+
         [Test]
         public void WaitForCloudClipping_OnFail_ShouldBeFailed()
         {
@@ -232,7 +280,7 @@
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void WaitForCloudClipping_OnSuccess_ShouldBeFinished()
         {
@@ -305,6 +353,38 @@
         public void FinalStepIds_Always_ContainsFailed()
         {
             _sequence.FinalStepIdIds.Should().Contain(typeof(Failed));
+        }
+
+        [Test]
+        public void ShowCreateClipping_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCreateClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void ShowCreateClipping_OnSuccess_ShouldBeWaitForLocalClipping()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCreateClipping>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForLocalClipping>();
+        }
+
+        [Test]
+        public void WaitForLocalClipping_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForLocalClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void WaitForLocalClipping_OnSuccess_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForLocalClipping>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
         }
     }
 }

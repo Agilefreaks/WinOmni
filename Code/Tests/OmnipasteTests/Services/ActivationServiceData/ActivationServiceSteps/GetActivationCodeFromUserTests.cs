@@ -47,7 +47,7 @@
 
             _observer.Messages.Should()
                 .Contain(m => m.Value.Kind == NotificationKind.OnNext
-                    && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                    && m.Value.Value.State.Equals(SimpleStepStateEnum.Failed));
         }
 
         [Test]
@@ -58,7 +58,7 @@
 
             _observer.Messages.Should()
                 .Contain(m => m.Value.Kind == NotificationKind.OnNext
-                    && m.Value.Value.State == SimpleStepStateEnum.Successful);
+                    && m.Value.Value.State.Equals(SimpleStepStateEnum.Successful));
         }
     }
 }
