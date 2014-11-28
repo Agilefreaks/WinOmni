@@ -77,7 +77,7 @@
             set
             {
                 SetValue(IsExpandedProperty, value);
-                UpdateContentContainerMaxHeight();
+                _contentContainer.MaxHeight = value ? double.PositiveInfinity : MaxCollapsedHeight;
             }
         }
 
@@ -141,7 +141,7 @@
             _collapseButton.Click += OnCollapseButtonClick;
 
             _contentContainer = EnforceInstance<Border>("PART_ContentContainer");
-            UpdateContentContainerMaxHeight();
+            IsExpanded = false;
         }
 
         private void DetachFromVisualTree()
@@ -174,11 +174,6 @@
         private void OnExpandButtonClick(object sender, RoutedEventArgs e)
         {
             IsExpanded = true;
-        }
-
-        private void UpdateContentContainerMaxHeight()
-        {
-            _contentContainer.MaxHeight = IsExpanded ? double.MaxValue : MaxCollapsedHeight;
         }
 
         #endregion
