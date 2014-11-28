@@ -360,4 +360,7 @@
   <data name="CongratulationsHeader" xml:space="preserve">
     <value>Felicitări, dispozitivele tale sunt acum conectate.</value>
   </data>
+  <data name="ClippingListEmptyContent" xml:space="preserve">
+    <value>Pentru mai multe informații despre modul în care funcționează Omnipaste, puteți viziona videoclipul nostru de mai jos.</value>
+  </data>
 </root>

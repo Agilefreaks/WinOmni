@@ -363,4 +363,7 @@
   <data name="SampleLocalClipping" xml:space="preserve">
     <value>This is how a local clipping looks like</value>
   </data>
+  <data name="ClippingListEmptyContent" xml:space="preserve">
+    <value>For more information about how Omnipaste works, check out our video below.</value>
+  </data>
 </root>

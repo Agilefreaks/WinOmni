@@ -232,6 +232,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For more information about how Omnipaste works, check out our video below..
+        /// </summary>
+        public static string ClippingListEmptyContent {
+            get {
+                return ResourceManager.GetString("ClippingListEmptyContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You currently have no clippings. To add some, simply copy a text the way you usually do. It will automatically appear here so that you can paste it on your other devices that are connected on Omnipaste..
         /// </summary>
         public static string ClippingListEmptyLabel {
