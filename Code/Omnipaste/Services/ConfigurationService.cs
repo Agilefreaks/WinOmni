@@ -84,14 +84,7 @@
         {
             get
             {
-                var deviceIdentifier = _configurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
-                if (string.Equals("", deviceIdentifier))
-                {
-                    deviceIdentifier = Guid.NewGuid().ToString();
-                    _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, deviceIdentifier);
-                }
-
-                return deviceIdentifier;
+                return _configurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
             }
         }
 
