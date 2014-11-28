@@ -232,7 +232,10 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For more information about how Omnipaste works, check out our video below..
+        ///   Looks up a localized string similar to To add some, copy a text the way you usually do. 
+        ///The text will automatically appear here.
+        ///You will be able to paste it on your other devices that are connected on Omnipaste.
+        ///For more information, check out our video below..
         /// </summary>
         public static string ClippingListEmptyContent {
             get {
@@ -241,7 +244,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You currently have no clippings. To add some, simply copy a text the way you usually do. It will automatically appear here so that you can paste it on your other devices that are connected on Omnipaste..
+        ///   Looks up a localized string similar to You currently have no clippings..
         /// </summary>
         public static string ClippingListEmptyLabel {
             get {

@@ -163,7 +163,7 @@
     <value>Încearcă din nou</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>În prezent nu aveți niciun clipping. Pentru a adăuga unul, pur și simplu copiați un text așa cum faceți de obicei. Acesta va apărea în mod automat aici, astfel încât să puteți face paste pe alte dispozitive conectate prin Omnipaste.</value>
+    <value>În prezent nu aveți niciun clipping.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>Toate</value>
@@ -361,6 +361,9 @@
     <value>Felicitări, dispozitivele tale sunt acum conectate.</value>
   </data>
   <data name="ClippingListEmptyContent" xml:space="preserve">
-    <value>Pentru mai multe informații despre modul în care funcționează Omnipaste, puteți viziona videoclipul nostru de mai jos.</value>
+    <value>Pentru a adăuga unul, copiați un text așa cum faceți de obicei.
+Textul va apărea în mod automat aici.
+Veți fi capabil să-l lipiți pe alte dispozitive care sunt conectate pe Omnipaste.
+Pentru mai multe informații, consultați videoclipul nostru de mai jos.</value>
   </data>
 </root>

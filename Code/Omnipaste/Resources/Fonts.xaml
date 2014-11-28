@@ -7,4 +7,5 @@
     
     <System:Double x:Key="NotificationContentFontSize">14</System:Double>
     <System:Double x:Key="NotificationButtonFontSize">12</System:Double>
+    <System:Double x:Key="LargeFontSize">22</System:Double>
 </ResourceDictionary>

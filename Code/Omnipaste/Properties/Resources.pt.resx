@@ -166,7 +166,7 @@
     <value>Tentar novamente</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>Atualmente você não tem recortes. Para adicionar um pouco, basta copiar um texto do jeito que você costuma fazer. Ele aparecerá automaticamente aqui para que você possa paste em seus outros dispositivos que estão conectados em Omnipaste.</value>
+    <value>Atualmente você não tem recortes.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>Todos</value>
@@ -361,6 +361,9 @@
     <value>Parabéns, seus dispositivos estão agora ligados.</value>
   </data>
   <data name="ClippingListEmptyContent" xml:space="preserve">
-    <value>Para obter mais informações sobre como funciona Omnipaste, confira nosso vídeo abaixo.</value>
+    <value>Para adicionar um pouco, copiar um texto do jeito que você costuma fazer.
+O texto aparecerá automaticamente aqui.
+Você será capaz de colá-lo em seus outros dispositivos que estão conectados em Omnipaste.
+Para mais informações, confira nosso vídeo abaixo.</value>
   </data>
 </root>

@@ -108,7 +108,7 @@
     </Style>
 
     <Style x:Key="DescriptionHeaderTextBlockStyle" BasedOn="{StaticResource HeaderTextBlockStyle}" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontSize" Value="{DynamicResource LargeFontSize}" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="PlaceholderContentStyle" BasedOn="{StaticResource InfoTextStyle}">
@@ -116,7 +116,7 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"></Setter>
+        <Setter Property="FontSize" Value="{DynamicResource LargeFontSize}"></Setter>
         <Setter Property="Margin" Value="0,40,0,0"/>
     </Style>
 </ResourceDictionary>
