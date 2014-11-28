@@ -366,4 +366,7 @@ Textul va apărea în mod automat aici.
 Veți fi capabil să-l lipiți pe alte dispozitive care sunt conectate pe Omnipaste.
 Pentru mai multe informații, consultați videoclipul nostru de mai jos.</value>
   </data>
+  <data name="SampleLocalClipping" xml:space="preserve">
+    <value>Așa arată un clipping local</value>
+  </data>
 </root>

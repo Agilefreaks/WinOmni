@@ -366,4 +366,7 @@ O texto aparecerá automaticamente aqui.
 Você será capaz de colá-lo em seus outros dispositivos que estão conectados em Omnipaste.
 Para mais informações, confira nosso vídeo abaixo.</value>
   </data>
+  <data name="SampleLocalClipping" xml:space="preserve">
+    <value>Isto é como um recorte local, parece</value>
+  </data>
 </root>
