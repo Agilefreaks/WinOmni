@@ -18,6 +18,8 @@
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
     {
+        private const int NotificationWindowWidth = 385;
+
         #region Fields
 
         private readonly IEventsHandler _eventsHandler;
@@ -27,6 +29,8 @@
         private IDisposable _clippingsSubscription;
 
         private IDisposable _notificationsSubscription;
+
+        private double _height;
 
         #endregion
 
@@ -39,6 +43,8 @@
 
             _eventsHandler = eventsHandler;
             _omniClipboardHandler = omniClipboardHandler;
+            
+            Height = double.NaN;
         }
 
         #endregion
@@ -50,6 +56,23 @@
 
         public ObservableCollection<INotificationViewModel> Notifications { get; set; }
 
+        public double Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value.Equals(_height))
+                {
+                    return;
+                }
+                _height = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -58,13 +81,14 @@
             IWindowManager windowManager,
             INotificationListViewModel notificationListViewModel)
         {
+            notificationListViewModel.Height = SystemParameters.WorkArea.Height;
             windowManager.ShowPopup(
                 notificationListViewModel,
                 null,
                 new Dictionary<string, object>
                     {
                         { "Placement", PlacementMode.Absolute },
-                        { "HorizontalOffset", SystemParameters.WorkArea.Right },
+                        { "HorizontalOffset", SystemParameters.WorkArea.Right - NotificationWindowWidth },
                         { "VerticalOffset", SystemParameters.WorkArea.Top },
                         { "TopMost", true }
                     });
