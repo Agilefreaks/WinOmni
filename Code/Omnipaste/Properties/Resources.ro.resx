@@ -163,7 +163,7 @@
     <value>Încearcă din nou</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>Nu sunt clipping-uri de arătat. </value>
+    <value>În prezent nu aveți niciun clipping.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>Toate</value>
@@ -359,5 +359,11 @@
   </data>
   <data name="CongratulationsHeader" xml:space="preserve">
     <value>Felicitări, dispozitivele tale sunt acum conectate.</value>
+  </data>
+  <data name="ClippingListEmptyContent" xml:space="preserve">
+    <value>Pentru a adăuga unul, copiați un text așa cum faceți de obicei.
+Textul va apărea în mod automat aici.
+Veți fi capabil să-l lipiți pe alte dispozitive care sunt conectate pe Omnipaste.
+Pentru mai multe informații, consultați videoclipul nostru de mai jos.</value>
   </data>
 </root>

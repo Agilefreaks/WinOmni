@@ -166,7 +166,7 @@
     <value>Retry</value>
   </data>
   <data name="ClippingListEmptyLabel" xml:space="preserve">
-    <value>There are no clippings to display.</value>
+    <value>You currently have no clippings.</value>
   </data>
   <data name="MasterClippingListHeaderAll" xml:space="preserve">
     <value>All</value>
@@ -362,5 +362,11 @@
   </data>
   <data name="SampleLocalClipping" xml:space="preserve">
     <value>This is how a local clipping looks like</value>
+  </data>
+  <data name="ClippingListEmptyContent" xml:space="preserve">
+    <value>To add some, copy a text the way you usually do. 
+The text will automatically appear here.
+You will be able to paste it on your other devices that are connected on Omnipaste.
+For more information, check out our video below.</value>
   </data>
 </root>
