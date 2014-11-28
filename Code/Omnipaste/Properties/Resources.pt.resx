@@ -148,13 +148,13 @@
     <value>Desculpe mestre, nós falhámos! Por favor não nos mate!</value>
   </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
-    <value>Parabéns Omnipaste foi instalado com êxito no seu PC.</value>
+    <value>Parabéns Omnipaste foi instalado com sucesso em seu PC.</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Em seguida, precisamos instalar o Omnipaste no seu dispositivo Android. Por favor, use este link para instalar o aplicativo do jogo do Google:</value>
+    <value>Em seguida, temos que instalar Omnipaste no seu dispositivo Android. Por favor, use este link para instalar o aplicativo do Google Play:</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Nós vamos esperar por você fazer isso e depois que você instala o app, seus dispositivos serão automaticamente vinculados juntos, permitindo que você copiar-colar e receber notificações entre eles.</value>
+    <value>Vamos esperar por você para fazer isso e uma vez que você instalar o aplicativo, seus dispositivos serão automaticamente ligados entre si, o que lhe permite copiar e colar e receber notificações entre eles.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>A carregar ...</value>
