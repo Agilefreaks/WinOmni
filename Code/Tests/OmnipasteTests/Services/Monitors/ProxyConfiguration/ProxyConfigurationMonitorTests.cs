@@ -43,7 +43,7 @@
             _mockConfigurationService.Setup(x => x.SettingsChangedObservable).Returns(settingsObservable);
 
             _subject.Start();
-            var testableObserver = testScheduler.Start(() => _subject.ProxyConfigurationObservable, TimeSpan.FromSeconds(1).Ticks);
+            var testableObserver = testScheduler.Start(() => _subject.SettingObservable, TimeSpan.FromSeconds(1).Ticks);
 
             testableObserver.Messages.Count.Should().Be(1);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
@@ -68,7 +68,7 @@
 
             _subject.Start();
             _subject.Start();
-            var testableObserver = testScheduler.Start(() => _subject.ProxyConfigurationObservable, TimeSpan.FromSeconds(1).Ticks);
+            var testableObserver = testScheduler.Start(() => _subject.SettingObservable, TimeSpan.FromSeconds(1).Ticks);
 
             testableObserver.Messages.Count.Should().Be(1);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
@@ -90,7 +90,7 @@
             _subject.Start();
 
             _subject.Stop();
-            var testableObserver = testScheduler.Start(() => _subject.ProxyConfigurationObservable, TimeSpan.FromSeconds(1).Ticks);
+            var testableObserver = testScheduler.Start(() => _subject.SettingObservable, TimeSpan.FromSeconds(1).Ticks);
 
             testableObserver.Messages.Count.Should().Be(0);
         }

@@ -156,6 +156,7 @@
         {
             _configurationContainer.SetValue(ConfigurationProperties.AccessToken, omnipasteCredentials.AccessToken);
             _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, omnipasteCredentials.RefreshToken);
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
         }
 
         public void ResetAuthSettings()

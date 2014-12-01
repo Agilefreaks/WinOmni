@@ -14,6 +14,7 @@
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.Monitors.Credentials;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Monitors.Power;
@@ -61,7 +62,8 @@
                            typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
-                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory)
+                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),
+                           typeof(CredentialsMonitor)
                        };
         }
     }

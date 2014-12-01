@@ -1,11 +1,9 @@
 ﻿namespace Omnipaste.Services.Monitors.ProxyConfiguration
 {
-    using System;
-    using Ninject;
     using OmniCommon;
+    using Omnipaste.Services.Monitors.SettingsMonitor;
 
-    public interface IProxyConfigurationMonitor : IStartable
+    public interface IProxyConfigurationMonitor : ISettingsMonitor<ProxyConfiguration>
     {
-        IObservable<ProxyConfiguration> ProxyConfigurationObservable { get; }
     }
 }

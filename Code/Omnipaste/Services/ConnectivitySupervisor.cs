@@ -11,6 +11,8 @@
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using OmniCommon.Settings;
+    using Omnipaste.Services.Monitors.Credentials;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
@@ -62,6 +64,9 @@
         [Inject]
         public IWebSocketMonitor WebSocketMonitor { get; set; }
 
+        [Inject]
+        public ICredentialsMonitor CredentialsMonitor { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -96,9 +101,14 @@
                     .SubscribeAndHandleErrors(WebSocketConnectionChanged));
 
             _eventObservers.Add(
-                ProxyConfigurationMonitor.ProxyConfigurationObservable.SubscribeOn(SchedulerProvider.Default)
+                ProxyConfigurationMonitor.SettingObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(OnProxyConfigurationChanged));
+            
+            _eventObservers.Add(
+                CredentialsMonitor.SettingObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(OnCredentialsChanged));
         }
 
         public void Stop()
@@ -119,6 +129,11 @@
             }
 
             RestartOmniService();
+        }
+
+        private void OnCredentialsChanged(OmnipasteCredentials credentials)
+        {
+            StopOmniService();
         }
 
         private void OnInternetConnectivityChanged(InternetConnectivityStatusEnum newState)
