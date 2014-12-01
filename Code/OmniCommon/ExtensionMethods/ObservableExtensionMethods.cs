@@ -96,8 +96,17 @@
             onError = onError ?? (_ => { });
             dispatcher = dispatcher ?? new ImmediateDispatcher();
             var task = observable.ToTask();
-            task.Wait();
-            if (task.IsFaulted)
+            Exception caughtException;
+            try
+            {
+                task.Wait();
+                caughtException = task.Exception;
+            }
+            catch (Exception exception)
+            {
+                caughtException = exception;
+            }
+            if (task.IsFaulted || caughtException != null)
             {
                 OnExceptionEncountered(task.Exception);
                 dispatcher.Dispatch(onError, task.Exception);

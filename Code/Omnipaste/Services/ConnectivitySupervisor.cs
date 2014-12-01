@@ -118,7 +118,7 @@
                 return;
             }
 
-            StartOmniService();
+            RestartOmniService();
         }
 
         private void OnInternetConnectivityChanged(InternetConnectivityStatusEnum newState)
@@ -136,7 +136,7 @@
             switch (newMode)
             {
                 case PowerModes.Resume:
-                    StartOmniService();
+                    RestartOmniService();
                     break;
                 case PowerModes.Suspend:
                     StopOmniService();
@@ -154,7 +154,7 @@
             switch (eventType)
             {
                 case UserEventTypeEnum.Connect:
-                    StartOmniService();
+                    RestartOmniService();
                     break;
                 case UserEventTypeEnum.Disconnect:
                     StopOmniService();
@@ -162,7 +162,7 @@
             }
         }
 
-        private void StartOmniService()
+        private void RestartOmniService()
         {
             StopConnectProcess();
             _connectObserver = GetConnectObservable().SubscribeOn(SchedulerProvider.Default)
