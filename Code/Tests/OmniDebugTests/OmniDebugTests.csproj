@@ -74,6 +74,10 @@
       <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
       <Name>Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OmniApi\OmniApi.csproj">
+      <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
+      <Name>OmniApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
