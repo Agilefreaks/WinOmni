@@ -20,10 +20,6 @@
 
     public class DebugModule : ModuleBase
     {
-        private IEvents _events;
-
-        private IClippings _clippings;
-
         #region Fields
 
         #endregion
@@ -47,11 +43,11 @@
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
 
-            Kernel.Bind<EventsWrapper>().ToConstant(new EventsWrapper(_events));
+            Kernel.Bind<EventsWrapper>().ToSelf().InSingletonScope();
             Kernel.Bind<IEventsWrapper>().ToMethod(context => context.Kernel.Get<EventsWrapper>());
             Kernel.Bind<IEvents>().ToMethod(context => context.Kernel.Get<IEventsWrapper>());
-            
-            Kernel.Bind<ClippingsWrapper>().ToConstant(new ClippingsWrapper(_clippings));
+
+            Kernel.Bind<ClippingsWrapper>().ToSelf().InSingletonScope();
             Kernel.Bind<IClippingsWrapper>().ToMethod(context => context.Kernel.Get<ClippingsWrapper>());
             Kernel.Bind<IClippings>().ToMethod(context => context.Kernel.Get<IClippingsWrapper>());
 
@@ -63,13 +59,6 @@
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
         {
             return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(IEvents), typeof(IClippings) };
-        }
-
-        protected override void RemoveExistingBindings()
-        {
-            _events = Kernel.Get<IEvents>();
-            _clippings = Kernel.Get<IClippings>();
-            base.RemoveExistingBindings();
         }
 
         #endregion

@@ -8,7 +8,7 @@
     {
         private readonly IClippings _clippings;
 
-        public ClippingsWrapper(IClippings originalResource)
+        public ClippingsWrapper(Clippings originalResource)
             : base(originalResource)
         {
             _clippings = originalResource;

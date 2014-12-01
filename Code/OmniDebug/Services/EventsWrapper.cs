@@ -5,7 +5,7 @@
 
     public class EventsWrapper : ResourceWrapperBase<Event>, IEventsWrapper
     {
-        public EventsWrapper(IEvents originalResource)
+        public EventsWrapper(Events originalResource)
             : base(originalResource)
         {
         }
