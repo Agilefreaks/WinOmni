@@ -10,6 +10,7 @@
     using OmniApi.Models;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -45,7 +46,7 @@
 
             autoResetEvent.WaitOne();
 
-            _configurationService.Verify(m => m.SaveAuthSettings("access token", "refresh token"));
+            _configurationService.Verify(m => m.SaveAuthSettings(new OmnipasteCredentials("access token", "refresh token")));
         }
     }
 }

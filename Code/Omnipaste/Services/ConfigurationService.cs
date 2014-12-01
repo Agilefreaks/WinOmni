@@ -152,15 +152,15 @@
 
         #region Public Methods and Operators
 
-        public void SaveAuthSettings(string accessToken, string refreshToken)
+        public void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials)
         {
-            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, accessToken);
-            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
+            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, omnipasteCredentials.AccessToken);
+            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, omnipasteCredentials.RefreshToken);
         }
 
         public void ResetAuthSettings()
         {
-            SaveAuthSettings(string.Empty, string.Empty);
+            SaveAuthSettings(new OmnipasteCredentials());
         }
 
         public void SaveProxyConfiguration(ProxyConfiguration value)

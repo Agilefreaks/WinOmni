@@ -33,5 +33,7 @@
         public static string PingEndpoint = "PingEndpoint";
 
         public static string SMSSuffixEnabled = "SMSSuffixEnabled";
+
+        public static string OmnipasteCredentials = "OmnipasteCredentials";
     }
 }

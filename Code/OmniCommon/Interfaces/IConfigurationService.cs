@@ -41,7 +41,7 @@
 
         void ResetAuthSettings();
 
-        void SaveAuthSettings(string accessToken, string refreshToken);
+        void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
 
         void SaveProxyConfiguration(ProxyConfiguration proxyConfiguration);
 

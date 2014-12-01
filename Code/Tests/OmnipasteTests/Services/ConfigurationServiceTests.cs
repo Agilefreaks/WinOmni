@@ -25,7 +25,7 @@
         [Test]
         public void SaveAuthSettings_SetsAllSettingsNeededForAuthentication()
         {
-            _subject.SaveAuthSettings("token", "refresh token");
+            _subject.SaveAuthSettings(new OmnipasteCredentials("token", "refresh token"));
 
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
             _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
