@@ -49,7 +49,6 @@
             SchedulerProvider.Default = _testScheduler;
 
             _mockOmniService = _mockingKernel.GetMock<IOmniService>();
-            _mockOmniService.Setup(x => x.InTransitionObservable).Returns(Observable.Empty<bool>());
             _mockOmniService.SetupGet(os => os.StatusChangedObservable).Returns(Observable.Empty<OmniServiceStatusEnum>());
             _mockEventAggregator = _mockingKernel.GetMock<IEventAggregator>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();

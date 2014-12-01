@@ -2,7 +2,9 @@
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -188,6 +190,74 @@
 
             _subject.State.Should().Be(OmniServiceStatusEnum.Stopped);
             _subject.InTransition.Should().BeFalse();
+        }
+
+        [Test]
+        public void Dispose_ServiceStoppedAndATransitionIsNotInProgress_WillReplaceTheStatusChangedObservableWithANullSubject()
+        {
+            SchedulerProvider.Default = Scheduler.Default;
+
+            _subject.Dispose();
+
+            _subject.StatusChangedObservable.Should().BeOfType<NullSubject<OmniServiceStatusEnum>>();
+        }
+
+        [Test]
+        public void Dispose_ServiceNotStoppedAndATransitionIsNotInProgress_WillReplaceTheStatusChangedObservableWithANullSubject()
+        {
+            SetupOmniServiceForStart();
+            _scheduler.Start(_subject.Start);
+
+            SchedulerProvider.Default = Scheduler.Default;
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new Device()));
+
+            _subject.Dispose();
+
+            _someHandler.Verify(x => x.Stop());
+        }
+
+        [Test]
+        public void Dispose_ServiceNotStoppedAndATransitionIsNotInProgress_WillDeactivateTheCurrentDevice()
+        {
+            SetupOmniServiceForStart();
+            _scheduler.Start(_subject.Start);
+
+            SchedulerProvider.Default = Scheduler.Default;
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new Device()));
+
+            _subject.Dispose();
+
+            _mockDevices.Verify(x => x.Deactivate(_mockConfigurationService.Object.DeviceIdentifier));
+        }
+
+        [Test]
+        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotChangeTheStatusChangedObservable()
+        {
+            _subject.Start();
+
+            _subject.Dispose();
+
+            _subject.StatusChangedObservable.Should().BeOfType<ReplaySubject<OmniServiceStatusEnum>>();
+        }
+
+        [Test]
+        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotStopHandlers()
+        {
+            _subject.Start();
+
+            _subject.Dispose();
+
+            _someHandler.Verify(x => x.Stop(), Times.Never());
+        }
+
+        [Test]
+        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotDeactivateTheDevice()
+        {
+            _subject.Start();
+
+            _subject.Dispose();
+
+            _someHandler.Verify(x => x.Stop(), Times.Never());
         }
 
         private void SetupOmniServiceForStart()
