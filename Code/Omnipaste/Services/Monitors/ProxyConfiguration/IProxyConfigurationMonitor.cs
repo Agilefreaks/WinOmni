@@ -3,9 +3,8 @@
     using System;
     using Ninject;
     using OmniCommon;
-    using OmniCommon.Interfaces;
 
-    public interface IProxyConfigurationMonitor : IProxyConfigurationObserver, IStartable
+    public interface IProxyConfigurationMonitor : IStartable
     {
         IObservable<ProxyConfiguration> ProxyConfigurationObservable { get; }
     }

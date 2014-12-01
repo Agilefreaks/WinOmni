@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Subjects;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
     public class ProxyConfigurationMonitor : IProxyConfigurationMonitor
@@ -12,6 +13,8 @@
         private readonly IConfigurationService _configurationService;
 
         private readonly ReplaySubject<ProxyConfiguration> _subject;
+
+        private IDisposable _changeSubscription;
 
         #endregion
 
@@ -46,12 +49,22 @@
 
         public void Start()
         {
-            _configurationService.AddProxyConfigurationObserver(this);
+            Stop();
+            _changeSubscription =
+                _configurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
+                    ConfigurationProperties.ProxyConfiguration,
+                    OnConfigurationChanged);
         }
 
         public void Stop()
         {
-            _configurationService.RemoveProxyConfigurationObserver(this);
+            if (_changeSubscription == null)
+            {
+                return;
+            }
+
+            _changeSubscription.Dispose();
+            _changeSubscription = null;
         }
 
         #endregion

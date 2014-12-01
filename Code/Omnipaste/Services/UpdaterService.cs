@@ -45,6 +45,8 @@
 
         private IDisposable _updateObserver;
 
+        private IDisposable _proxyConfigurationSubscription;
+
         #endregion
 
         #region Constructors and Destructors
@@ -62,7 +64,6 @@
             SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
             UpdateCheckInterval = TimeSpan.FromMinutes(GetUpdateCheckInterval());
-            ConfigurationService.AddProxyConfigurationObserver(this);
         }
 
         #endregion
@@ -198,6 +199,10 @@
 
         public void Start()
         {
+            _proxyConfigurationSubscription =
+                ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
+                    ConfigurationProperties.ProxyConfiguration,
+                    OnConfigurationChanged);
             if (NewLocalInstallerAvailable())
             {
                 InstallNewVersion();
@@ -218,6 +223,12 @@
 
         public void Stop()
         {
+            if (_proxyConfigurationSubscription != null)
+            {
+                _proxyConfigurationSubscription.Dispose();
+                _proxyConfigurationSubscription = null;
+            }
+
             _updateObserver.Dispose();
         }
 

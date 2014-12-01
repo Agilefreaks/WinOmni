@@ -24,7 +24,7 @@
         [SetUp]
         public void SetUp()
         {
-            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService.SetupGet(m => m.AccessToken).Returns("AccessToken");
             _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("RefreshToken");
             _mockConfigurationService.SetupGet(m => m[ConfigurationProperties.BaseUrl]).Returns("http://test.com");
