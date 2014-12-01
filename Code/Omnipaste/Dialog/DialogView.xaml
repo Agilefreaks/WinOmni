@@ -44,14 +44,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="2.5*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource WhiteBrush}" MinHeight="200"/>
-                <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Padding="0,48,0,0" >
-                    <ContentControl cal:View.Model="{Binding ActiveItem}" />
-                </Border>
+                <ContentControl Grid.Row="1" Grid.Column="1" cal:View.Model="{Binding ActiveItem}" Padding="0,48,0,0"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </Grid>
         </Grid>
     </Border>
