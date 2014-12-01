@@ -9,18 +9,16 @@
     using OmniDebug.Services;
 
     [TestFixture]
-    [Ignore("These tests should be rewritten once the circular dependency between OmniService and the authorization observer is resolved, allowing us to inject an "
-            + "IEvents instance here as the dependency")]
     public class EventsWrapperTests
     {
         private EventsWrapper _subject;
 
-        private Mock<Events> _mockEvents;
+        private Mock<IEvents> _mockEvents;
 
         [SetUp]
         public void Setup()
         {
-            _mockEvents = new Mock<Events>();
+            _mockEvents = new Mock<IEvents>();
             _subject = new EventsWrapper(_mockEvents.Object);
         }
 

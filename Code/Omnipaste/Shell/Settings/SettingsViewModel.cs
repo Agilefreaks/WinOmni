@@ -1,7 +1,10 @@
 ﻿namespace Omnipaste.Shell.Settings
 {
+    using System.Threading.Tasks;
     using MahApps.Metro.Controls;
     using Ninject;
+    using Omni;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using OmniUI.Flyout;
 
@@ -27,6 +30,9 @@
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
+        [Inject]
+        public IOmniService OmniService { get; set; }
+
         public bool IsSMSSuffixEnabled
         {
             get
@@ -51,9 +57,13 @@
 
         public void LogOut()
         {
-            SessionManager.LogOut();
-
             Close();
+            Task.Factory.StartNew(
+                () =>
+                    {
+                        OmniService.Stop().RunToCompletionSynchronous();
+                        SessionManager.LogOut();
+                    });
         }
 
         public void Exit()

@@ -6,6 +6,7 @@
     using System.Reactive.Threading.Tasks;
     using System.Threading.Tasks;
     using OmniCommon.Helpers;
+    using OmniCommon.Settings;
 
     public static class ObservableExtensionMethods
     {
@@ -96,8 +97,17 @@
             onError = onError ?? (_ => { });
             dispatcher = dispatcher ?? new ImmediateDispatcher();
             var task = observable.ToTask();
-            task.Wait();
-            if (task.IsFaulted)
+            Exception caughtException;
+            try
+            {
+                task.Wait();
+                caughtException = task.Exception;
+            }
+            catch (Exception exception)
+            {
+                caughtException = exception;
+            }
+            if (task.IsFaulted || caughtException != null)
             {
                 OnExceptionEncountered(task.Exception);
                 dispatcher.Dispatch(onError, task.Exception);
@@ -106,6 +116,19 @@
             {
                 dispatcher.Dispatch(onCompletion, task.Result);
             }
+        }
+
+        public static IDisposable SubscribeToSettingChange<T>(
+            this IObservable<SettingsChangedData> settingsChangedObservable,
+            string propertyName,
+            Action<T> onChangeAction)
+        {
+            return
+                settingsChangedObservable.Where(changeData => changeData.SettingName == propertyName)
+                    .Select(changeData => (T)changeData.NewValue)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(onChangeAction);
         }
 
         public static IObservable<T> ReportErrors<T>(this IObservable<T> source, IScheduler scheduler = null)

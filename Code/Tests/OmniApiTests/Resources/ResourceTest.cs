@@ -1,5 +1,6 @@
 ﻿namespace OmniApiTests.Resources
 {
+    using System;
     using System.Reactive;
     using System.Reactive.Linq;
     using FluentAssertions;
@@ -24,7 +25,7 @@
         [SetUp]
         public void SetUp()
         {
-            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService.SetupGet(m => m.AccessToken).Returns("AccessToken");
             _mockConfigurationService.SetupGet(m => m.RefreshToken).Returns("RefreshToken");
             _mockConfigurationService.SetupGet(m => m[ConfigurationProperties.BaseUrl]).Returns("http://test.com");
@@ -51,9 +52,9 @@
         }
 
         [Test]
-        public void Authorize_Always_WrapsInAAuthorizationObserver()
+        public void Authorize_Always_ReturnsAnObservableOfTheSameType()
         {
-            _subject.Authorize(Observable.Empty<string>()).Should().BeOfType<AnonymousObservable<string>>();
+            _subject.Authorize(Observable.Empty<string>()).Should().BeAssignableTo<IObservable<string>>();
         }
     }
 }

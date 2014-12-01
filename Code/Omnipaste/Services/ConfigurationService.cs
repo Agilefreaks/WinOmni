@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
+    using System.Reactive.Subjects;
     using System.Reflection;
     using System.Xml;
     using System.Xml.Serialization;
@@ -18,7 +18,7 @@
 
         private readonly IConfigurationContainer _configurationContainer;
 
-        private readonly List<IProxyConfigurationObserver> _proxyConfigurationObservers;
+        private readonly Subject<SettingsChangedData> _settingsChangedSubject;
 
         #endregion
 
@@ -26,7 +26,7 @@
 
         public ConfigurationService(IConfigurationContainer configurationContainer)
         {
-            _proxyConfigurationObservers = new List<IProxyConfigurationObserver>();
+            _settingsChangedSubject = new Subject<SettingsChangedData>();
             _configurationContainer = configurationContainer;
         }
 
@@ -128,6 +128,14 @@
             }
         }
 
+        public IObservable<SettingsChangedData> SettingsChangedObservable
+        {
+            get
+            {
+                return _settingsChangedSubject;
+            }
+        }
+
         #endregion
 
         #region Public Indexers
@@ -144,15 +152,16 @@
 
         #region Public Methods and Operators
 
-        public void SaveAuthSettings(string accessToken, string refreshToken)
+        public void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials)
         {
-            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, accessToken);
-            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, refreshToken);
+            _configurationContainer.SetValue(ConfigurationProperties.AccessToken, omnipasteCredentials.AccessToken);
+            _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, omnipasteCredentials.RefreshToken);
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
         }
 
         public void ResetAuthSettings()
         {
-            SaveAuthSettings(string.Empty, string.Empty);
+            SaveAuthSettings(new OmnipasteCredentials());
         }
 
         public void SaveProxyConfiguration(ProxyConfiguration value)
@@ -164,22 +173,12 @@
                 xmlSerializer.Serialize(stringWriter, value);
 
                 _configurationContainer.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
-                _proxyConfigurationObservers.ForEach(observer => observer.OnConfigurationChanged(ProxyConfiguration));
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
             }
             catch (Exception exception)
             {
                 ExceptionReporter.Instance.Report(exception);
             }
-        }
-
-        public void AddProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver)
-        {
-            _proxyConfigurationObservers.Add(proxyConfigurationObserver);
-        }
-
-        public void RemoveProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver)
-        {
-            _proxyConfigurationObservers.Remove(proxyConfigurationObserver);
         }
 
         #endregion

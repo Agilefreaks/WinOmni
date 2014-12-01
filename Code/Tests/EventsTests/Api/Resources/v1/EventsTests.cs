@@ -22,7 +22,7 @@
         [SetUp]
         public void SetUp()
         {
-            var mockConfigurationService = new Mock<IConfigurationService>();
+            var mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             mockConfigurationService.SetupGet(cs => cs.AccessToken).Returns("access token");
             mockConfigurationService.SetupGet(cs => cs[ConfigurationProperties.BaseUrl]).Returns("http://test.com");
 

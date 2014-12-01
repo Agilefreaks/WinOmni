@@ -6,11 +6,14 @@
     using OmniApi.Support.Converters;
     using OmniApi.Support.Serialization;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
-    public abstract class Resource<T> : IProxyConfigurationObserver
+    public abstract class Resource<T> : IDisposable
     {
         protected readonly IConfigurationService ConfigurationService;
+
+        private readonly IDisposable _proxyChangeSubscription;
 
         #region Constructors and Destructors
 
@@ -28,7 +31,9 @@
                 };
             WebProxyFactory = webProxyFactory;
             ResourceApi = CreateResourceApi(CreateHttpClient());
-            ConfigurationService.AddProxyConfigurationObserver(this);
+            _proxyChangeSubscription = ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
+                ConfigurationProperties.ProxyConfiguration,
+                OnConfigurationChanged);
         }
 
         #endregion
@@ -62,6 +67,11 @@
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
         {
             ResourceApi = CreateResourceApi(CreateHttpClient());
+        }
+
+        public void Dispose()
+        {
+            _proxyChangeSubscription.Dispose();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace OmniCommon.Interfaces
 {
     using System;
+    using OmniCommon.Settings;
 
     public interface IConfigurationService
     {
@@ -26,6 +27,8 @@
 
         string WebBaseUrl { get; }
 
+        IObservable<SettingsChangedData> SettingsChangedObservable { get; }
+
         #endregion
 
         #region Public Indexers
@@ -36,13 +39,9 @@
 
         #region Public Methods and Operators
 
-        void AddProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver);
-
-        void RemoveProxyConfigurationObserver(IProxyConfigurationObserver proxyConfigurationObserver);
-
         void ResetAuthSettings();
 
-        void SaveAuthSettings(string accessToken, string refreshToken);
+        void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
 
         void SaveProxyConfiguration(ProxyConfiguration proxyConfiguration);
 

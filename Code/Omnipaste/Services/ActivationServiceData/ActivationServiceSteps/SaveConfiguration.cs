@@ -4,6 +4,7 @@
     using OmniApi.Models;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
 
     public class SaveConfiguration : SynchronousStepBase
     {
@@ -17,7 +18,7 @@
         protected override IExecuteResult ExecuteSynchronously()
         {
             var token = (Token)Parameter.Value;
-            _configurationService.SaveAuthSettings(token.AccessToken, token.RefreshToken);
+            _configurationService.SaveAuthSettings(new OmnipasteCredentials(token.AccessToken, token.RefreshToken));
             if (string.IsNullOrEmpty(_configurationService.AccessToken))
             {
                 ExceptionReporter.Instance.Report(new Exception("Access token empty in SaveConfiguration - Problem with writing the file"));

@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net;
-    using System.Reactive.Disposables;
+    using System.Reactive;
     using System.Reactive.Linq;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -45,43 +45,24 @@
 
         private IObservable<T> Authorize<T>(IObservable<T> observable)
         {
-            return Observable.Create<T>(
-                observer =>
-                    {
-                        observable.Subscribe(
-                            // OnNext
-                            observer.OnNext,
-                            // OnError
-                            e =>
-                                {
-                                    if (IsUnauthorized(e))
-                                    {
-                                        _oAuth2.Refresh(_token.RefreshToken)
-                                            .Concat((IObservable<object>)observable)
-                                            .Where(o => o is T)
-                                            .Cast<T>()
-                                            .Catch<T, Exception>(
-                                                error =>
-                                                    {
-                                                        if (IsBadRequest(error))
-                                                        {
-                                                            _sessionManager.LogOut();
-                                                        }
+            return
+                observable.Catch<T, Exception>(
+                    exception =>
+                    IsUnauthorized(exception)
+                        ? _oAuth2.Refresh(_token.RefreshToken)
+                              .Select(_ => observable)
+                              .Switch()
+                              .Catch<T, Exception>(
+                                  error =>
+                                  HandleBadRequestError(error).Select(_ => Observable.Throw<T>(error)).Switch())
+                        : Observable.Throw<T>(exception));
+        }
 
-                                                        return Observable.Empty<T>();
-                                                    })
-                                            .Subscribe(observer);
-                                    }
-                                    else
-                                    {
-                                        observer.OnError(e);
-                                    }
-                                },
-                            // OnComplete
-                            observer.OnCompleted);
-
-                        return Disposable.Create(() => { });
-                    });
+        private IObservable<Unit> HandleBadRequestError(Exception error)
+        {
+            return (IsBadRequest(error)
+                        ? Observable.Start(_sessionManager.LogOut)
+                        : Observable.Return(new Unit()));
         }
 
         private ApiException GetApiException(Exception exception)

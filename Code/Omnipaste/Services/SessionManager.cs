@@ -3,8 +3,6 @@
     using System;
     using System.Reactive.Subjects;
     using Ninject;
-    using Omni;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
     public class SessionManager : ISessionManager
@@ -29,9 +27,6 @@
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
-        [Inject]
-        public IOmniService OmniService { get; set; }
-
         public IObservable<EventArgs> SessionDestroyedObservable
         {
             get
@@ -46,7 +41,6 @@
 
         public void LogOut()
         {
-            OmniService.Stop().RunToCompletion();
             ConfigurationService.ResetAuthSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
         }
