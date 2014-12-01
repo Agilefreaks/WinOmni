@@ -14,6 +14,7 @@
     using Omni;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -233,7 +234,7 @@
         [Test]
         public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotChangeTheStatusChangedObservable()
         {
-            _subject.Start();
+            _subject.Start().SubscribeAndHandleErrors();
 
             _subject.Dispose();
 
@@ -243,7 +244,7 @@
         [Test]
         public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotStopHandlers()
         {
-            _subject.Start();
+            _subject.Start().SubscribeAndHandleErrors();
 
             _subject.Dispose();
 
@@ -253,7 +254,7 @@
         [Test]
         public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotDeactivateTheDevice()
         {
-            _subject.Start();
+            _subject.Start().SubscribeAndHandleErrors();
 
             _subject.Dispose();
 

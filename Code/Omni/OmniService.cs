@@ -28,7 +28,7 @@
 
         protected IWebsocketConnection WebsocketConnection;
 
-        private static int _migrationState = NoSwitchInProgress;
+        private int _migrationState = NoSwitchInProgress;
 
         private ISubject<OmniServiceStatusEnum> _statusChangedSubject;
 
@@ -119,43 +119,11 @@
 
         #region Methods
 
-        private static bool LockServiceState()
-        {
-            var result = false;
-            SimpleLogger.Log("Trying to lock service state");
-            var previousValue = Interlocked.Exchange(ref _migrationState, SwitchInProgress);
-            if (previousValue == NoSwitchInProgress)
-            {
-                SimpleLogger.Log("No lock already in place; returning true");
-                result = true;
-            }
-            else
-            {
-                SimpleLogger.Log("Lock already in place; returning false");
-            }
-
-            return result;
-        }
-
         private static IObservable<Unit> OnDeactivateDeviceException(Exception exception)
         {
             SimpleLogger.Log("Could not deactivate device: " + exception);
             ExceptionReporter.Instance.Report(exception);
             return Observable.Return(new Unit(), SchedulerProvider.Default);
-        }
-
-        private static IObservable<Unit> OnStateTransitionException(Exception exception)
-        {
-            SimpleLogger.Log("State transition exception: " + exception);
-            ReleaseServiceState();
-
-            return Observable.Throw<Unit>(exception);
-        }
-
-        private static void ReleaseServiceState()
-        {
-            SimpleLogger.Log("Release service state");
-            Interlocked.Exchange(ref _migrationState, NoSwitchInProgress);
         }
 
         private IObservable<Device> ActivateDevice(string deviceIdentifier)
@@ -180,11 +148,43 @@
             ReleaseServiceState();
         }
 
+        private bool LockServiceState()
+        {
+            var result = false;
+            SimpleLogger.Log("Trying to lock service state");
+            var previousValue = Interlocked.Exchange(ref _migrationState, SwitchInProgress);
+            if (previousValue == NoSwitchInProgress)
+            {
+                SimpleLogger.Log("No lock already in place; returning true");
+                result = true;
+            }
+            else
+            {
+                SimpleLogger.Log("Lock already in place; returning false");
+            }
+
+            return result;
+        }
+
+        private IObservable<Unit> OnStateTransitionException(Exception exception)
+        {
+            SimpleLogger.Log("State transition exception: " + exception);
+            ReleaseServiceState();
+
+            return Observable.Throw<Unit>(exception);
+        }
+
         private IObservable<string> OpenWebsocketConnection()
         {
             SimpleLogger.Log("Opening websocket connection");
             WebsocketConnection = WebsocketConnectionFactory.Create();
             return WebsocketConnection.Connect();
+        }
+
+        private void ReleaseServiceState()
+        {
+            SimpleLogger.Log("Release service state");
+            Interlocked.Exchange(ref _migrationState, NoSwitchInProgress);
         }
 
         private IObservable<Device> RegisterDevice()
