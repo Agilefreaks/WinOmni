@@ -2,12 +2,12 @@
 {
     using Clipboard.Handlers;
 
-    public class WaitForCloudClipping : WaitForClippingBase
+    public class WaitForLocalClipping : WaitForClippingBase
     {
         #region Constructors and Destructors
 
-        public WaitForCloudClipping(IOmniClipboardHandler omniClipboardHandler)
-            : base(omniClipboardHandler)
+        public WaitForLocalClipping(ILocalClipboardHandler clippingSource)
+            : base(clippingSource)
         {
         }
 

@@ -273,7 +273,9 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\PublishMessageStepBase.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForClippingBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForLocalClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
