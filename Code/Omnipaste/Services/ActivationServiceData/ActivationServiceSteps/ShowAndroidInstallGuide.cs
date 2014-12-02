@@ -4,30 +4,22 @@
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
 
-    public class ShowAndroidInstallGuide : SynchronousStepBase
+    public class ShowAndroidInstallGuide : PublishMessageStepBase<ShowAndroidInstallGuideMessage>
     {
-        #region Fields
-
-        private readonly IEventAggregator _eventAggregator;
-
-        #endregion
-
         #region Constructors and Destructors
 
         public ShowAndroidInstallGuide(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
-            _eventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Methods
 
-        protected override IExecuteResult ExecuteSynchronously()
+        protected override ShowAndroidInstallGuideMessage GetMessageToSend()
         {
-            _eventAggregator.PublishOnUIThread(
-                new ShowAndroidInstallGuideMessage { AndroidInstallLink = (Uri)Parameter.Value });
-            return new ExecuteResult(SimpleStepStateEnum.Successful);
+            return new ShowAndroidInstallGuideMessage { AndroidInstallLink = (Uri)Parameter.Value };
         }
 
         #endregion

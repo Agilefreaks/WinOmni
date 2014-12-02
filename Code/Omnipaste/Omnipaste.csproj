@@ -243,6 +243,7 @@
     <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowCongratulationsMessage.cs" />
     <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
@@ -270,6 +271,8 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\PublishMessageStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />

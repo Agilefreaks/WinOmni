@@ -3,19 +3,15 @@
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
 
-    public class ShowCongratulations : SynchronousStepBase
+    public class ShowCongratulations : PublishMessageStepBase<ShowCongratulationsMessage>
     {
-        private readonly IEventAggregator _eventAggregator;
+        #region Constructors and Destructors
 
         public ShowCongratulations(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
-            _eventAggregator = eventAggregator;
         }
 
-        protected override IExecuteResult ExecuteSynchronously()
-        {
-            _eventAggregator.PublishOnUIThread(new ShowCongratulationsMessage());
-            return new ExecuteResult(SimpleStepStateEnum.Successful);
-        }
+        #endregion
     }
 }
