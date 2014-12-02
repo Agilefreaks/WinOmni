@@ -8,12 +8,13 @@
         {
         }
 
-        public ExecuteResult(SimpleStepStateEnum state)
+        public ExecuteResult(object state)
         {
             State = state;
         }
 
-        public ExecuteResult(SimpleStepStateEnum state, object data) : this(state)
+        public ExecuteResult(object state, object data)
+            : this(state)
         {
             Data = data;
         }
@@ -24,7 +25,7 @@
 
         public object Data { get; set; }
 
-        public SimpleStepStateEnum State { get; set; }
+        public object State { get; set; }
 
         #endregion
     }

@@ -40,7 +40,7 @@
                 .Contain(
                     m =>
                     m.Value.Kind == NotificationKind.OnNext
-                    && m.Value.Value.State == SimpleStepStateEnum.Successful
+                    && m.Value.Value.State.Equals(SimpleStepStateEnum.Successful)
                     && m.Value.Value.Data.GetType() == typeof(Token));
         }
 
@@ -58,7 +58,7 @@
                 .Contain(
                     m =>
                     m.Value.Kind == NotificationKind.OnNext
-                    && m.Value.Value.State == SimpleStepStateEnum.Failed);
+                    && m.Value.Value.State.Equals(SimpleStepStateEnum.Failed));
         }
     }
 };
