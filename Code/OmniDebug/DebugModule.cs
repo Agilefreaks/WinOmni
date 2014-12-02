@@ -43,12 +43,16 @@
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
 
-            Kernel.Bind<EventsWrapper>().ToSelf().InSingletonScope();
+            Kernel.Bind<EventsWrapper>()
+                .ToConstructor(syntax => new EventsWrapper(syntax.Context.Kernel.Get<Events>()))
+                .InSingletonScope();
             Kernel.Bind<IEventsWrapper>().ToMethod(context => context.Kernel.Get<EventsWrapper>());
             Kernel.Bind<IEvents>().ToMethod(context => context.Kernel.Get<IEventsWrapper>());
 
-            Kernel.Bind<ClippingsWrapper>().ToSelf().InSingletonScope();
-            Kernel.Bind<IClippingsWrapper>().ToMethod(context => context.Kernel.Get<ClippingsWrapper>());
+            Kernel.Bind<ClippingsWrapper>()
+                .ToConstructor(syntax => new ClippingsWrapper(syntax.Context.Kernel.Get<Clippings>()))
+                .InSingletonScope();
+            Kernel.Bind<IClippingsWrapper>().ToMethod(context => context.Kernel.Get<ClippingsWrapper>()).InSingletonScope();
             Kernel.Bind<IClippings>().ToMethod(context => context.Kernel.Get<IClippingsWrapper>());
 
             Kernel.Bind<IDebugBarPanel>().To<SMSNotificationViewModel>();
