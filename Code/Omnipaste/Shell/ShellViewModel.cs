@@ -12,6 +12,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.ActivityList;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -59,6 +60,9 @@
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IActivityListViewModel ActivityListViewModel { get; set; }
 
         [Inject]
         public IMasterClippingListViewModel ClippingListViewModel

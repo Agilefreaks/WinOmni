@@ -234,6 +234,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -312,12 +313,17 @@
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
+    <Compile Include="ActivityList\IActivityListViewModel.cs" />
     <Compile Include="SmsComposer\ISMSFactory.cs" />
     <Compile Include="SmsComposer\SMSFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
+    <Page Include="ActivityList\ActivityListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
