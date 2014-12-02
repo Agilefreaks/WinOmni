@@ -248,10 +248,13 @@
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
+    <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
+    <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
+    <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
@@ -469,6 +472,10 @@
     <Page Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooter\Socks4.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading\CreateClipping\CreateClippingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>

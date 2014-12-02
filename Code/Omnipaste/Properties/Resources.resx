@@ -369,4 +369,14 @@ The text will automatically appear here.
 You will be able to paste it on your other devices that are connected on Omnipaste.
 For more information, check out our video below.</value>
   </data>
+  <data name="CreateClippingFooter" xml:space="preserve">
+    <value>Once copied, you'll have this text available on your computer's clipboard. 
+You can even paste it on Facebook. The possibilities are endless.</value>
+  </data>
+  <data name="CreateClippingHeader" xml:space="preserve">
+    <value>Go ahead and copy the following text (right click and select copy) :</value>
+  </data>
+  <data name="CreateClippingSample" xml:space="preserve">
+    <value>I just installed Omnipaste, the service that links my devices.</value>
+  </data>
 </root>

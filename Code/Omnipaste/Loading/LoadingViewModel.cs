@@ -7,6 +7,7 @@
     using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.Congratulations;
     using Omnipaste.Loading.ConnectionTroubleshooter;
+    using Omnipaste.Loading.CreateClipping;
     using Omnipaste.Loading.UserToken;
 
     public class LoadingViewModel : Conductor<IScreen>.Collection.OneActive, ILoadingViewModel
@@ -61,6 +62,9 @@
 
         [Inject]
         public ICongratulationsViewModel CongratulationsViewModel { get; set; }
+
+        [Inject]
+        public ICreateClippingViewModel CreateClippingViewModel { get; set; }
 
         #endregion
 
@@ -121,6 +125,13 @@
             ActiveItem = CongratulationsViewModel;
             State = LoadingViewModelStateEnum.Other;
         }
+
+        public void Handle(ShowCreateClippingMessage message)
+        {
+            ActiveItem = CreateClippingViewModel;
+            State = LoadingViewModelStateEnum.Other;
+        }
+
         #endregion
     }
 }
