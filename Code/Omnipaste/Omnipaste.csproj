@@ -234,7 +234,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
+    <Compile Include="Activity\ActivityViewModel.cs" />
+    <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -321,6 +324,18 @@
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
     <Page Include="ActivityList\ActivityListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityList\ActivityList\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityList\ActivityList\NotEmpty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activity\ActivityView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
