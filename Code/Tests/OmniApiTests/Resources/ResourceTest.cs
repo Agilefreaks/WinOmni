@@ -1,5 +1,6 @@
 ﻿namespace OmniApiTests.Resources
 {
+    using System;
     using System.Reactive;
     using System.Reactive.Linq;
     using FluentAssertions;
@@ -51,9 +52,9 @@
         }
 
         [Test]
-        public void Authorize_Always_WrapsInAAuthorizationObserver()
+        public void Authorize_Always_ReturnsAnObservableOfTheSameType()
         {
-            _subject.Authorize(Observable.Empty<string>()).Should().BeOfType<AnonymousObservable<string>>();
+            _subject.Authorize(Observable.Empty<string>()).Should().BeAssignableTo<IObservable<string>>();
         }
     }
 }

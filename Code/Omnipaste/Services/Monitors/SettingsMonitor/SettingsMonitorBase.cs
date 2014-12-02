@@ -46,6 +46,7 @@
 
         public void Start()
         {
+            Stop();
             _settingChangeSubscription =
                 _configurationService.SettingsChangedObservable.SubscribeToSettingChange<TSetting>(
                     _settingName,

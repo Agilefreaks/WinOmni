@@ -4,7 +4,6 @@
     using System.Reactive.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
@@ -46,7 +45,8 @@
 
             autoResetEvent.WaitOne();
 
-            _configurationService.Verify(m => m.SaveAuthSettings(new OmnipasteCredentials("access token", "refresh token")));
+            _configurationService.Verify(m => m.SaveAuthSettings(It.Is<OmnipasteCredentials>(credentials =>
+                credentials.AccessToken == "access token" && credentials.RefreshToken == "refresh token")));
         }
     }
 }
