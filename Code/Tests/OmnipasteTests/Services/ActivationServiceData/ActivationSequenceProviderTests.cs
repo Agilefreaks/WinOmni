@@ -174,13 +174,13 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetAndroidInstallLink>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<AndroidInstallGuide>();
+                .Be<ShowAndroidInstallGuide>();
         }
 
         [Test]
         public void AndroidInstallGuide_OnFail_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<ShowAndroidInstallGuide>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }
@@ -188,7 +188,7 @@
         [Test]
         public void AndroidInstallGuide_OnSuccess_ShouldBeWaitForSecondDevice()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<AndroidInstallGuide>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<ShowAndroidInstallGuide>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<WaitForSecondDevice>();
         }

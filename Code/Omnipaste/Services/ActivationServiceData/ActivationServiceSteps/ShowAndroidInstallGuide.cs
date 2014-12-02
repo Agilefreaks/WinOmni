@@ -4,7 +4,7 @@
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
 
-    public class AndroidInstallGuide : SynchronousStepBase
+    public class ShowAndroidInstallGuide : SynchronousStepBase
     {
         #region Fields
 
@@ -14,7 +14,7 @@
 
         #region Constructors and Destructors
 
-        public AndroidInstallGuide(IEventAggregator eventAggregator)
+        public ShowAndroidInstallGuide(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }

@@ -374,7 +374,7 @@
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="SmsComposer\SmsMessage.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuide.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
     <Compile Include="SmsComposer\ISmsComposerViewModel.cs" />
