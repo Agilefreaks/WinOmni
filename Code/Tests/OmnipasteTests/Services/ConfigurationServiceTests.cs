@@ -136,5 +136,13 @@
 
             _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
         }
+
+        [Test]
+        public void SetDeviceIdentifier_Always_SavesTheGivenValue()
+        {
+            _subject.DeviceIdentifier = "someId";
+
+            _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
+        }
     }
 }

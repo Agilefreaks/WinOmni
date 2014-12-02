@@ -86,6 +86,11 @@
             {
                 return _configurationContainer.GetValue(ConfigurationProperties.DeviceIdentifier);
             }
+
+            set
+            {
+                _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, value);
+            }
         }
 
         public string MachineName
