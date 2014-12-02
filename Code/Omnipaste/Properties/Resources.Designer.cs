@@ -79,6 +79,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activity.
+        /// </summary>
+        public static string Activity {
+            get {
+                return ResourceManager.GetString("Activity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Congratulations Omnipaste was installed successfully on your PC..
         /// </summary>
         public static string AndroidInstallGuideLabel1 {
@@ -219,6 +228,15 @@ namespace Omnipaste.Properties {
         public static string CallingLabel {
             get {
                 return ResourceManager.GetString("CallingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calls.
+        /// </summary>
+        public static string Calls {
+            get {
+                return ResourceManager.GetString("Calls", resourceCulture);
             }
         }
         
@@ -479,6 +497,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From Cloud.
+        /// </summary>
+        public static string FromCloud {
+            get {
+                return ResourceManager.GetString("FromCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From Local.
+        /// </summary>
+        public static string FromLocal {
+            get {
+                return ResourceManager.GetString("FromLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incoming Link.
         /// </summary>
         public static string HyperlinkNotificationTitle {
@@ -610,6 +646,24 @@ namespace Omnipaste.Properties {
         public static string MasterEventListHeaderSms {
             get {
                 return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages.
+        /// </summary>
+        public static string Messages {
+            get {
+                return ResourceManager.GetString("Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missed Call: .
+        /// </summary>
+        public static string MissedCall {
+            get {
+                return ResourceManager.GetString("MissedCall", resourceCulture);
             }
         }
         
@@ -808,6 +862,15 @@ namespace Omnipaste.Properties {
         public static string SmsComposerTitle {
             get {
                 return ResourceManager.GetString("SmsComposerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMS: .
+        /// </summary>
+        public static string SMSLabel {
+            get {
+                return ResourceManager.GetString("SMSLabel", resourceCulture);
             }
         }
         

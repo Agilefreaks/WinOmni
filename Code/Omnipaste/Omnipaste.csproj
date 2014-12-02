@@ -139,9 +139,13 @@
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Humanizer">
+      <HintPath>..\..\Libs\Humanizer\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
     <Reference Include="MsgPack">
       <HintPath>..\packages\MsgPack.Cli.0.5.4\lib\net45\MsgPack.dll</HintPath>
@@ -234,6 +238,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ActivityViewModelFactory.cs" />
+    <Compile Include="Activity\ContentTypeEnum.cs" />
+    <Compile Include="Activity\IActivityViewModelFactory.cs" />
+    <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="Activity\Models\Activity.cs" />
+    <Compile Include="ActivityList\ActivityListViewModel.cs" />
+    <Compile Include="Activity\Models\ActivityTypeEnum.cs" />
+    <Compile Include="Activity\ActivityViewModel.cs" />
+    <Compile Include="Activity\IActivityViewModel.cs" />
+    <Compile Include="Activity\Models\ContactInfo.cs" />
+    <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -249,6 +264,8 @@
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
+    <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
+    <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
@@ -295,6 +312,7 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
+    <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
     <Compile Include="Services\IUrlShortenerService.cs" />
     <Compile Include="Services\Monitors\Credentials\CredentialsMonitor.cs" />
@@ -310,14 +328,44 @@
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
+    <Compile Include="ActivityList\IActivityListViewModel.cs" />
     <Compile Include="SmsComposer\ISMSFactory.cs" />
     <Compile Include="SmsComposer\SMSFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
+    <Page Include="ActivityList\ActivityListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityList\ActivityList\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityList\ActivityList\NotEmpty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activity\ActivityView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activity\Activity\Call.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activity\Activity\Message.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activity\Activity\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -549,6 +597,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Dimensions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -574,6 +626,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\PasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ScrollViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -750,6 +806,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
+    <Resource Include="Resources\DefaultUserIcon.png" />
     <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

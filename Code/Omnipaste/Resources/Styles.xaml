@@ -10,10 +10,12 @@
         <ResourceDictionary Source="Grid.xaml"/>
         <ResourceDictionary Source="StackPanel.xaml"/>
         <ResourceDictionary Source="Border.xaml"/>
+        <ResourceDictionary Source="ScrollViewer.xaml"/>
         <ResourceDictionary Source="Labels.xaml"/>
         <ResourceDictionary Source="TextBlock.xaml"/>
         <ResourceDictionary Source="TextBox.xaml"/>
         <ResourceDictionary Source="Buttons.xaml"/>
+        <ResourceDictionary Source="CheckBox.xaml"/>
         <ResourceDictionary Source="ComboBox.xaml"/>
         <ResourceDictionary Source="NumericUpDown.xaml"/>
         <ResourceDictionary Source="PasswordBox.xaml"/>

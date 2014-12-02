@@ -144,4 +144,28 @@
         <Setter Property="Fill" Value="{DynamicResource IdealForegroundColorBrush}"/>
         <Setter Property="Margin" Value="8,0,0,0"/>
     </Style>
+
+    <Style x:Key="ActivityIcon" TargetType="Rectangle">
+        <Setter Property="MinWidth" Value="13" />
+        <Setter Property="MinHeight" Value="13" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="OpacityMask">
+            <Setter.Value>
+                <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ActivityIconBorder" TargetType="Ellipse">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Fill" Value="{DynamicResource ContentBackgroundBrush}"/>
+    </Style>
+    
+    <Style x:Key="UserIconStyle" TargetType="Image">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Margin" Value="0,0,14,0"/>
+    </Style>
 </ResourceDictionary>

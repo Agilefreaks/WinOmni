@@ -379,4 +379,22 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="CreateClippingSample" xml:space="preserve">
     <value>Tocmai am instalat Omnipaste, serviciul care îmi conectează dispozitivele mele.</value>
   </data>
+  <data name="FromCloud" xml:space="preserve">
+    <value>Din Cloud</value>
+  </data>
+  <data name="FromLocal" xml:space="preserve">
+    <value>Din Local</value>
+  </data>
+  <data name="MissedCall" xml:space="preserve">
+    <value>Apel ratat: </value>
+  </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Apeluri</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Mesaje</value>
+  </data>
+  <data name="SMSLabel" xml:space="preserve">
+    <value>SMS: </value>
+  </data>
 </root>

@@ -3,4 +3,6 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:Double x:Key="NotificationWindowWidth">385</system:Double>
+    <system:Double x:Key="ActivityAreaWidth">450</system:Double>
+    <system:Double x:Key="ActivityContentWidth">379</system:Double>
 </ResourceDictionary>

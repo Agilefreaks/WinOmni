@@ -379,4 +379,22 @@ Você pode até colá-lo no Facebook. As possibilidades são infinitas.</value>
   <data name="CreateClippingSample" xml:space="preserve">
     <value>Acabei de instalar Omnipaste, o serviço que liga os meus dispositivos.</value>
   </data>
+  <data name="FromCloud" xml:space="preserve">
+    <value>De Nuvem</value>
+  </data>
+  <data name="FromLocal" xml:space="preserve">
+    <value>Do Local</value>
+  </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Chamadas</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Mensagens</value>
+  </data>
+  <data name="MissedCall" xml:space="preserve">
+    <value>Chamada Perdida: </value>
+  </data>
+  <data name="SMSLabel" xml:space="preserve">
+    <value>SMS: </value>
+  </data>
 </root>

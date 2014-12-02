@@ -294,6 +294,9 @@
     <Grid>
         <ContentControl x:Name="ContextMenuViewModel" />
         <controls:MetroAnimatedSingleRowTabControl SelectedIndex="{Binding Path=SelectedViewIndex, Mode=TwoWay}">
+            <TabItem Header="{Binding Path=ActivityListViewModel.DisplayName}">
+                <ContentControl cal:View.Model="{Binding Path=ActivityListViewModel}" />
+            </TabItem>
             <TabItem Header="{Binding Path=ClippingListViewModel.DisplayName}">
                 <ContentControl cal:View.Model="{Binding Path=ClippingListViewModel}" />
             </TabItem>

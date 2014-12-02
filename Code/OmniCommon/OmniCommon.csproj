@@ -88,6 +88,7 @@
     <Compile Include="Helpers\IDispatcher.cs" />
     <Compile Include="Helpers\ImmediateDispatcher.cs" />
     <Compile Include="Helpers\NullSubject.cs" />
+    <Compile Include="Helpers\TimeHelper.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
     <Compile Include="Interfaces\IResource.cs" />

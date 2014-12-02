@@ -12,6 +12,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.ActivityList;
     using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -59,6 +60,9 @@
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IActivityListViewModel ActivityListViewModel { get; set; }
 
         [Inject]
         public IMasterClippingListViewModel ClippingListViewModel
@@ -133,6 +137,9 @@
         [Inject]
         public IWindowHandleProvider WindowHandleProvider { get; set; }
 
+        [Inject]
+        public IUiRefreshService UiRefreshService { get; set; }
+
         public IEnumerable<IHeaderItemViewModel> AllHeaderItems
         {
             get
@@ -153,6 +160,7 @@
             }
 
             ContextMenuViewModel.ShowBalloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
+            UiRefreshService.Stop();
         }
 
         public void Closing(object sender, CancelEventArgs e)
@@ -187,6 +195,8 @@
                     _view.Visibility = Visibility.Visible;
                 });
             }
+
+            UiRefreshService.Start();
         }
 
         #endregion

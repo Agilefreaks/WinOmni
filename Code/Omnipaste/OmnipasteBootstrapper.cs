@@ -9,6 +9,7 @@
     using Castle.Core.Internal;
     using Clipboard;
     using Events;
+    using Humanizer.DateTimeHumanizeStrategy;
     using Ninject;
     using Omni;
     using OmniApi;
@@ -111,6 +112,8 @@
                 configurationService[ConfigurationProperties.BugFreakToken],
                 Application.Current);
             ExceptionReporter.Instance = _kernel.Get<IExceptionReporter>();
+
+            Humanizer.Configuration.Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy();
 
             if (configurationService.DebugMode)
             {

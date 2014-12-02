@@ -4,13 +4,30 @@
 
     public abstract class DetailsViewModelBase<TEntity> : Screen, IDetailsViewModel<TEntity>
     {
-        #region Constructors and Destructors
+        #region Fields
+
+        private TEntity _model;
 
         #endregion
 
         #region Public Properties
 
-        public TEntity Model { get; set; }
+        public virtual TEntity Model
+        {
+            get
+            {
+                return _model;
+            }
+            set
+            {
+                if (Equals(value, _model))
+                {
+                    return;
+                }
+                _model = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         #endregion
     }

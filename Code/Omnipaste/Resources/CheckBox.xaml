@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--CheckBox-->
+
+    <Style x:Key="FilterActivitiesButtonStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="MinWidth" Value="13"/>
+        <Setter Property="MinHeight" Value="13"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="25,0,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle MinWidth="{Binding Path=MinHeight, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   MinHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                                   HorizontalAlignment="Center" x:Name="NotSelectedIcon">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle MinWidth="{Binding Path=MinHeight, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   MinHeight="{Binding Path=MinHeight, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                                   HorizontalAlignment="Center" x:Name="SelectedIcon">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon_selected}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <TextBlock Grid.Column="1" Margin="5,0,0,0" FontSize="{DynamicResource FilterButtonFontSize}" 
+                                   FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" 
+                                   Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter Property="Opacity" Value="0" TargetName="NotSelectedIcon"/>
+							<Setter Property="Opacity" Value="1" TargetName="SelectedIcon"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="False">
+							<Setter Property="Opacity" Value="1" TargetName="NotSelectedIcon"/>
+							<Setter Property="Opacity" Value="0" TargetName="SelectedIcon"/>
+						</Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ClippingsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource ClippingBrush}"/>
+    </Style>
+
+    <Style x:Key="CallsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource CallBrush}"/>
+    </Style>
+
+    <Style x:Key="MessagesButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource MessageBrush}"/>
+    </Style>
+</ResourceDictionary>

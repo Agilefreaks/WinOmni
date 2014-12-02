@@ -13,4 +13,14 @@
     <Color x:Key="NotificationSecondaryButtonColor">#db2a4c</Color>
     <Color x:Key="NotificationHyperlinkColor">#7c49ce</Color>
     <Color x:Key="NotificationHelperButtonColor">DarkCyan</Color>
+    <Color x:Key="MainWindowBackgroundColor">#F2EFE9</Color>
+    <Color x:Key="ContentBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="ClippingColor">#FFFFAD1D</Color>
+    <Color x:Key="MessageColor">#FF5BC462</Color>
+    <Color x:Key="CallColor">#FF00C7ED</Color>
+    <Color x:Key="LabelColor">#CCCBCB</Color>
+    <Color x:Key="TimeStampColor">#D8D8D8</Color>
+    <Color x:Key="ActivityContentColor">#4E4D4D</Color>
+    <Color x:Key="ActivitySecondaryContentColor">#B3B3B2</Color>
+    <Color x:Key="PassiveUiElementsColor">#f2f1f1</Color>
 </ResourceDictionary>
