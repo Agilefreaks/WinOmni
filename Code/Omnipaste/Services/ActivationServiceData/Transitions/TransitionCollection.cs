@@ -34,7 +34,7 @@
             return _transitionDictionary.ContainsKey(transitionId) ? _transitionDictionary[transitionId] : null;
         }
 
-        public Type GetTargetTypeForTransition<TSource>(SimpleStepStateEnum state)
+        public Type GetTargetTypeForTransition<TSource>(object state)
         {
             var transitionId = GenericTransitionId<TSource>.Create(state);
             return GetTargetTypeForTransition(transitionId);
@@ -76,6 +76,12 @@
             {
                 RegisterTransition<TSource, TSuccess>();
                 _transitionDictionary.Add(GenericTransitionId<TSource>.Create(SimpleStepStateEnum.Failed), typeof(TFailure));
+                return this;
+            }
+
+            public TransitionCollectionBuilder RegisterTransition<TSource, TNext, TStatus>(TStatus status)
+            {
+                _transitionDictionary.Add(GenericTransitionId<TSource>.Create(status), typeof(TNext));
                 return this;
             }
 

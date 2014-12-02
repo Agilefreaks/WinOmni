@@ -106,27 +106,75 @@
         }
 
         [Test]
-        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
+        public void StartOmniService_Success_ShouldBeGetDeviceId()
         {
             _sequence.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetDeviceId>();
+        }
+        
+        [Test]
+        public void GetDeviceId_Failed_ShouldBeRegisterDevice()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<RegisterDevice>();
+        }
+        
+        [Test]
+        public void GetDeviceId_Successful_ShouldBeVerifyNumberOfDevices()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<VerifyNumberOfDevices>();
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnSuccess_ShouldBeFinished()
+        public void RegisterDevice_Failed_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<Finished>();
+                .Be<Failed>();
         }
 
         [Test]
-        public void VerifyNumberOfDevices_OnFailed_ShouldBeAddSampleClippings()
+        public void RegisterDevice_Successful_ShouldBeFailed()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifyNumberOfDevices>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnZero_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.Zero)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnOne_ShouldBeGetUser()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.One)
                 .Should()
                 .Be<AddSampleClippings>();
+        }
+
+        [Test]
+        public void VerifyNumberOfDevices_OnTwoAndThisOneIsNew_ShouldBeShowCongratulations()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.TwoAndThisOneIsNew)
+                .Should()
+                .Be<ShowCongratulations>();
+        }
+        
+        [Test]
+        public void VerifyNumberOfDevices_OnTwoOrMore_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.TwoOrMore)
+                .Should()
+                .Be<Finished>();
         }
 
         [Test]
@@ -224,7 +272,7 @@
                 .Should()
                 .Be<WaitForCloudClipping>();
         }
-        
+
         [Test]
         public void WaitForCloudClipping_OnFail_ShouldBeFailed()
         {
