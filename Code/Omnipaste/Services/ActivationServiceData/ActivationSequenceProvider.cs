@@ -35,7 +35,7 @@
                     .RegisterTransition<RegisterDevice, VerifyNumberOfDevices, Failed>()
                     .RegisterTransition<VerifyNumberOfDevices, Failed, NumberOfDevicesEnum>(NumberOfDevicesEnum.Zero)
                     .RegisterTransition<VerifyNumberOfDevices, AddSampleClippings, NumberOfDevicesEnum>(NumberOfDevicesEnum.One)
-                    .RegisterTransition<VerifyNumberOfDevices, ShowCongratulations, NumberOfDevicesEnum>(NumberOfDevicesEnum.TwoAndThisOneIsNew)
+                    .RegisterTransition<VerifyNumberOfDevices, ShowCreateClipping, NumberOfDevicesEnum>(NumberOfDevicesEnum.TwoAndThisOneIsNew)
                     .RegisterTransition<VerifyNumberOfDevices, Finished, NumberOfDevicesEnum>(NumberOfDevicesEnum.TwoOrMore)
                     .RegisterTransition<AddSampleClippings, GetUser, Failed>()
                     .RegisterTransition<GetUser, GetAndroidInstallLink, Failed>()
@@ -44,6 +44,8 @@
                     .RegisterTransition<WaitForSecondDevice, ShowCongratulations, Failed>()
                     .RegisterTransition<ShowCongratulations, WaitForCloudClipping, Failed>()
                     .RegisterTransition<WaitForCloudClipping, Finished, Failed>()
+                    .RegisterTransition<ShowCreateClipping, WaitForLocalClipping, Failed>()
+                    .RegisterTransition<WaitForLocalClipping, Finished, Failed>()
                     .Build();
 
             _activationSequence = new ActivationSequence

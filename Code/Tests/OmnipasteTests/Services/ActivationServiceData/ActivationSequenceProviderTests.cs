@@ -112,7 +112,7 @@
                 .Should()
                 .Be<GetDeviceId>();
         }
-        
+
         [Test]
         public void GetDeviceId_Failed_ShouldBeRegisterDevice()
         {
@@ -120,7 +120,7 @@
                 .Should()
                 .Be<RegisterDevice>();
         }
-        
+
         [Test]
         public void GetDeviceId_Successful_ShouldBeVerifyNumberOfDevices()
         {
@@ -166,9 +166,9 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyNumberOfDevices>(NumberOfDevicesEnum.TwoAndThisOneIsNew)
                 .Should()
-                .Be<ShowCongratulations>();
+                .Be<ShowCreateClipping>();
         }
-        
+
         [Test]
         public void VerifyNumberOfDevices_OnTwoOrMore_ShouldBeFinished()
         {
@@ -232,7 +232,7 @@
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void AndroidInstallGuide_OnSuccess_ShouldBeWaitForSecondDevice()
         {
@@ -264,7 +264,7 @@
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void ShowCongratulations_OnSuccess_ShouldBeWaitForCloudClipping()
         {
@@ -280,7 +280,7 @@
                 .Should()
                 .Be<Failed>();
         }
-        
+
         [Test]
         public void WaitForCloudClipping_OnSuccess_ShouldBeFinished()
         {
@@ -353,6 +353,38 @@
         public void FinalStepIds_Always_ContainsFailed()
         {
             _sequence.FinalStepIdIds.Should().Contain(typeof(Failed));
+        }
+
+        [Test]
+        public void ShowCreateClipping_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCreateClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void ShowCreateClipping_OnSuccess_ShouldBeWaitForLocalClipping()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<ShowCreateClipping>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<WaitForLocalClipping>();
+        }
+
+        [Test]
+        public void WaitForLocalClipping_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForLocalClipping>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void WaitForLocalClipping_OnSuccess_ShouldBeFinished()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<WaitForLocalClipping>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<Finished>();
         }
     }
 }
