@@ -14,6 +14,7 @@
         <ResourceDictionary Source="TextBlock.xaml"/>
         <ResourceDictionary Source="TextBox.xaml"/>
         <ResourceDictionary Source="Buttons.xaml"/>
+        <ResourceDictionary Source="CheckBox.xaml"/>
         <ResourceDictionary Source="ComboBox.xaml"/>
         <ResourceDictionary Source="NumericUpDown.xaml"/>
         <ResourceDictionary Source="PasswordBox.xaml"/>

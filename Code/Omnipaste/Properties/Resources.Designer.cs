@@ -232,6 +232,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calls.
+        /// </summary>
+        public static string Calls {
+            get {
+                return ResourceManager.GetString("Calls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click Here.
         /// </summary>
         public static string ClickHere {
@@ -619,6 +628,15 @@ namespace Omnipaste.Properties {
         public static string MasterEventListHeaderSms {
             get {
                 return ResourceManager.GetString("MasterEventListHeaderSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages.
+        /// </summary>
+        public static string Messages {
+            get {
+                return ResourceManager.GetString("Messages", resourceCulture);
             }
         }
         

@@ -5171,4 +5171,64 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Path>
         </Canvas>
     </Canvas>
+
+    <Canvas x:Key="circle_icon" Width="19" Height="19">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath2999" Figures="M 0 15 15 15 15 0 0 0 0 15 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas Name="g2993">
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 18.75"/>
+            </Canvas.RenderTransform>
+            <Canvas Name="g2995">
+                <Canvas Name="g2997">
+                    <Canvas Name="g3003">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="7.5" Y="15"/>
+                        </Canvas.RenderTransform>
+                        <Path Name="path3005" Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -4.154 0 -7.5 -3.346 -7.5 -7.5 0 -4.154 3.346 -7.5 7.5 -7.5 4.154 0 7.5 3.346 7.5 7.5 C 7.5 -3.346 4.154 0 0 0 m 0 -3.577 c 2.192 0 3.923 -1.731 3.923 -3.923 0 -2.192 -1.731 -3.923 -3.923 -3.923 -2.192 0 -3.923 1.731 -3.923 3.923 0 2.192 1.731 3.923 3.923 3.923" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="circle_icon_selected" Width="19" Height="19">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath3021" Figures="M 0 15 15 15 15 0 0 0 0 15 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas Name="g3015">
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 18.75"/>
+            </Canvas.RenderTransform>
+            <Canvas Name="g3017">
+                <Canvas Name="g3019">
+                    <Canvas Name="g3025">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="7.5" Y="15"/>
+                        </Canvas.RenderTransform>
+                        <Path Name="path3027" Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -4.154 0 -7.5 -3.346 -7.5 -7.5 0 -4.154 3.346 -7.5 7.5 -7.5 4.154 0 7.5 3.346 7.5 7.5 C 7.5 -3.346 4.154 0 0 0 m 0 -3.577 c 2.192 0 3.923 -1.731 3.923 -3.923 0 -2.192 -1.731 -3.923 -3.923 -3.923 -2.192 0 -3.923 1.731 -3.923 3.923 0 2.192 1.731 3.923 3.923 3.923" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas Name="g3029">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="7.5" Y="10.3846"/>
+                        </Canvas.RenderTransform>
+                        <Path Name="path3031" Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c 1.593 0 2.885 -1.291 2.885 -2.885 0 -1.593 -1.292 -2.884 -2.885 -2.884 -1.593 0 -2.885 1.291 -2.885 2.884 C -2.885 -1.291 -1.593 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
 </ResourceDictionary>

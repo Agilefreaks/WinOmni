@@ -10,4 +10,21 @@
         <Setter Property="Width" Value="{StaticResource NotificationWindowWidth}"/>
         <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
     </Style>
+
+    <Style x:Key="MainContainerStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource MainWindowBackgroundBrush}"/>
+        <Style.Resources>
+            <Style TargetType="ContentControl">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="ActivityContainerStyle" TargetType="Border">
+        <Setter Property="Width" Value="{StaticResource ActivityAreaWidth}"/>
+        <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
+        <Setter Property="Margin" Value="5,0"/>
+        <Setter Property="Padding" Value="18,0"/>
+    </Style>
 </ResourceDictionary>

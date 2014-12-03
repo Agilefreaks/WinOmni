@@ -382,4 +382,10 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="Activity" xml:space="preserve">
     <value>Activity</value>
   </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Calls</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
 </root>
