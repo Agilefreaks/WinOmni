@@ -29,6 +29,8 @@
 
         IObservable<SettingsChangedData> SettingsChangedObservable { get; }
 
+        bool IsNewDevice { get; }
+
         #endregion
 
         #region Public Indexers

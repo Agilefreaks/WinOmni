@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services
 {
+    using System;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
@@ -143,6 +144,34 @@
             _subject.DeviceIdentifier = "someId";
 
             _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
+        }
+
+        [Test]
+        public void IsNewDevice_NoDeviceIdentifierIsStored_ReturnsTrue()
+        {
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+                .Returns(string.Empty);
+
+            _subject.IsNewDevice.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsNewDevice_ADeviceIdentifierIsStoredAndNoDeviceIdentifierChangesHaveOccured_ReturnsFalse()
+        {
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+                .Returns("someId");
+
+            _subject.IsNewDevice.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsNewDevice_ADeviceIdentifierIsStoredButACallToSaveANewDeviceIdentifierHasBeenMade_ReturnsTrue()
+        {
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+                .Returns("someId");
+            _subject.DeviceIdentifier = "someNewId";
+
+            _subject.IsNewDevice.Should().BeTrue();
         }
     }
 }

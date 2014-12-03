@@ -2,13 +2,16 @@
 {
     using System;
     using System.Reactive.Linq;
-    using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Interfaces;
 
     public class VerifyNumberOfDevices : ActivationStepBase
     {
-        public VerifyNumberOfDevices(IDevices devices)
+        private readonly IConfigurationService _configurationService;
+
+        public VerifyNumberOfDevices(IDevices devices, IConfigurationService configurationService)
         {
+            _configurationService = configurationService;
             Devices = devices;
         }
 
@@ -35,7 +38,7 @@
                                 numberOfDevices = NumberOfDevicesEnum.One;
                                 break;
                             case 2:
-                                numberOfDevices = Parameter != null && Parameter.Value is Device
+                                numberOfDevices = _configurationService.IsNewDevice
                                                       ? NumberOfDevicesEnum.TwoAndThisOneIsNew
                                                       : NumberOfDevicesEnum.TwoOrMore;
                                 break;

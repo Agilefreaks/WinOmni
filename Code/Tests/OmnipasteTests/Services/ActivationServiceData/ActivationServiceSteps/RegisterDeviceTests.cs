@@ -65,13 +65,12 @@
         }
 
         [Test]
-        public void Execute_CreateDeviceIsSuccessful_CompletesWithASuccessfulResultWhichHasTheNewDevice()
+        public void Execute_CreateDeviceIsSuccessful_CompletesWithASuccessfulResult()
         {
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
-            var newDevice = new Device();
             var createDeviceObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(newDevice)),
+                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
                 new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
             _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
 
@@ -80,7 +79,6 @@
             testableObserver.Messages.Count.Should().Be(2);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
-            testableObserver.Messages[0].Value.Value.Data.Should().Be(newDevice);
             testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
     }

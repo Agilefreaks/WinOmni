@@ -9,6 +9,7 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Interfaces;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -27,12 +28,15 @@
 
         private List<Device> _devices;
 
+        private Mock<IConfigurationService> _mockConfigurationService;
+
         [SetUp]
         public void SetUp()
         {
             var kernel = new MoqMockingKernel();
             _mockDevices = kernel.GetMock<IDevices>();
-            _subject = new VerifyNumberOfDevices (_mockDevices.Object);
+            _mockConfigurationService = new Mock<IConfigurationService>();
+            _subject = new VerifyNumberOfDevices (_mockDevices.Object, _mockConfigurationService.Object);
             _devices = new List<Device> { new Device() };
 
             _testScheduler = new TestScheduler();
@@ -55,10 +59,10 @@
         }
 
         [Test]
-        public void Execute_WhenTwoDevicesExistAndParameterIsNotADevice_CompletesWithStatusTwoOrMore()
+        public void Execute_WhenTwoDevicesExistAndIsNewDeviceIsFalse_CompletesWithStatusTwoOrMore()
         {
             _devices.Add(new Device());
-            _subject.Parameter = null;
+            _mockConfigurationService.SetupGet(x => x.IsNewDevice).Returns(false);
 
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();
@@ -69,10 +73,10 @@
         }
 
         [Test]
-        public void Execute_WhenTwoDevicesExistAndParameterIsADevice_CompletesWithStatusTwoAndThisOneIsNew()
+        public void Execute_WhenTwoDevicesExistAndIsNewDeviceIsTrue_CompletesWithStatusTwoAndThisOneIsNew()
         {
             _devices.Add(new Device());
-            _subject.Parameter = new DependencyParameter { Value = new Device() };
+            _mockConfigurationService.SetupGet(x => x.IsNewDevice).Returns(true);
 
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();

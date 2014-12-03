@@ -20,15 +20,15 @@
         }
 
         [Test]
-        public void LoadLocalConfiguration_Success_ShouldBeStartOmniService()
+        public void GetLocalActivationCode_Success_ShouldBeGetDeviceId()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<GetDeviceId>();
         }
 
         [Test]
-        public void LoadLocalConfiguration_Failure_ShouldBeGetActivationCodeFromArguments()
+        public void GetLocalActivationCode_Failure_ShouldBeGetActivationCodeFromArguments()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Failed)
                 .Should()
@@ -90,11 +90,11 @@
         }
 
         [Test]
-        public void SaveConfiguration_Success_ShouldBeStartOmniService()
+        public void SaveConfiguration_Success_ShouldBeGetDeviceId()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveConfiguration>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<GetDeviceId>();
         }
 
         [Test]
@@ -106,11 +106,11 @@
         }
 
         [Test]
-        public void StartOmniService_Success_ShouldBeGetDeviceId()
+        public void StartOmniService_Success_ShouldBeVerifyNumberOfDevices()
         {
             _sequence.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<GetDeviceId>();
+                .Be<VerifyNumberOfDevices>();
         }
 
         [Test]
@@ -122,11 +122,11 @@
         }
 
         [Test]
-        public void GetDeviceId_Successful_ShouldBeVerifyNumberOfDevices()
+        public void GetDeviceId_Successful_ShouldBeStartOmniService()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<VerifyNumberOfDevices>();
+                .Be<StartOmniService>();
         }
 
         [Test]
@@ -138,11 +138,11 @@
         }
 
         [Test]
-        public void RegisterDevice_Successful_ShouldBeFailed()
+        public void RegisterDevice_Successful_ShouldBeStartOmniService()
         {
             _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<VerifyNumberOfDevices>();
+                .Be<StartOmniService>();
         }
 
         [Test]

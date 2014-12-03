@@ -20,6 +20,8 @@
 
         private readonly Subject<SettingsChangedData> _settingsChangedSubject;
 
+        private bool _deviceIdentifierChanged;
+
         #endregion
 
         #region Constructors and Destructors
@@ -28,6 +30,7 @@
         {
             _settingsChangedSubject = new Subject<SettingsChangedData>();
             _configurationContainer = configurationContainer;
+            _deviceIdentifierChanged = false;
         }
 
         #endregion
@@ -90,6 +93,15 @@
             set
             {
                 _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, value);
+                _deviceIdentifierChanged = true;
+            }
+        }
+
+        public bool IsNewDevice
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(DeviceIdentifier) || _deviceIdentifierChanged;
             }
         }
 

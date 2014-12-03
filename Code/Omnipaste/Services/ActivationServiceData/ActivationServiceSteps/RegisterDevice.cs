@@ -27,11 +27,8 @@
                     .Select(
                         device =>
                         Observable.Start(
-                            () =>
-                                {
-                                    _configurationService.DeviceIdentifier = device.Identifier;
-                                    return device;
-                                }, SchedulerProvider.Default))
+                            () => _configurationService.DeviceIdentifier = device.Identifier,
+                            SchedulerProvider.Default))
                     .Switch()
                     .Select(device => new ExecuteResult(SimpleStepStateEnum.Successful, device));
         }
