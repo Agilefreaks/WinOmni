@@ -236,6 +236,7 @@
   <ItemGroup>
     <Compile Include="Activity\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
+    <Compile Include="Activity\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Constants.cs" />

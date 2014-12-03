@@ -10,12 +10,12 @@
     <Border Style="{DynamicResource ActivityContainerStyle}">
         <StackPanel>
             <StackPanel Style="{DynamicResource FilterContainer}">
-                <CheckBox Style="{DynamicResource ClippingsButtonStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
-                <CheckBox Style="{DynamicResource CallsButtonStyle}" Content="{x:Static properties:Resources.Calls}"/>
-                <CheckBox Style="{DynamicResource MessagesButtonStyle}" Content="{x:Static properties:Resources.Messages}"/>
+                <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsButtonStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
+                <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsButtonStyle}" Content="{x:Static properties:Resources.Calls}"/>
+                <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesButtonStyle}" Content="{x:Static properties:Resources.Messages}"/>
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="Items">
+                <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <ContentControl cal:View.Model="{Binding}"/>
