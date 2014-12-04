@@ -5,6 +5,7 @@
     using Events.Models;
     using FluentAssertions;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Activity;
 
     [TestFixture]
@@ -28,6 +29,17 @@
         public void Content_ByDefault_IsEmptyString()
         {
             _subject.Content.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void Ctor_Always_SetsTimeToCurrentTime()
+        {
+            var currentTime = DateTime.Now;
+            TimeHelper.UtcNow = currentTime;
+
+            var activity = new Activity();
+
+            activity.Time.Should().Be(currentTime);
         }
 
         [Test]
@@ -63,6 +75,12 @@
                              };
 
             new Activity(@event).Content.Should().Be("IncomingCallEvent at 01.01.2000 0:00:00 from test");
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            TimeHelper.Reset();
         }
     }
 }
