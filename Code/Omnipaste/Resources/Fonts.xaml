@@ -13,4 +13,5 @@
     <System:Double x:Key="NotificationButtonFontSize">12</System:Double>
     <System:Double x:Key="LargeFontSize">22</System:Double>
     <System:Double x:Key="FilterButtonFontSize">10</System:Double>
+    <System:Double x:Key="ActivityTimeStampFontSize">9</System:Double>
 </ResourceDictionary>

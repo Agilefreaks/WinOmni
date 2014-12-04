@@ -23,6 +23,7 @@
     <SolidColorBrush x:Key="MessageIconBrush" Color="{DynamicResource MessageIconColor}"/>
     <SolidColorBrush x:Key="CallIconBrush" Color="{DynamicResource CallIconColor}"/>
     <SolidColorBrush x:Key="LabelBrush" Color="{DynamicResource LabelColor}"/>
+    <SolidColorBrush x:Key="TimeStampBrush" Color="{DynamicResource TimeStampColor}"/>
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
