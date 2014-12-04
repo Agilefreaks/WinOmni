@@ -4,17 +4,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
-        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-        HorizontalContentAlignment="Right">
-    
+        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="23"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="54"/>
+            <ColumnDefinition Width="47"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
+        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
             ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                   Style="{StaticResource NotificationTimeStampStyle}"/>
-        <TextBlock Grid.Column="1" x:Name="Model_Content" />
+                   Style="{StaticResource ActivityTimeStampStyle}"/>
+        <Border Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.ColumnSpan="3"  Style="{DynamicResource ActivityContentBorder}"
+                                                BorderBrush="{Binding Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}">
+                    <TextBlock x:Name="Model_Content" />
+                </Border>
+                <Ellipse Grid.Column="0" Style="{DynamicResource ActivityIconBorder}"/>
+                <Rectangle Grid.Column="0" Style="{DynamicResource ActivityIcon}" 
+                           Fill="{Binding Path=Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}"/>
+            </Grid>
+        </Border>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="SomeDevice" Margin="7,0,0,0"/>
     </Grid>
 </UserControl>

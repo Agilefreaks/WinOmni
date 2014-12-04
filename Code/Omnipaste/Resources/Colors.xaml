@@ -15,9 +15,9 @@
     <Color x:Key="NotificationHelperButtonColor">DarkCyan</Color>
     <Color x:Key="MainWindowBackgroundColor">#F2EFE9</Color>
     <Color x:Key="ContentBackgroundColor">#FFFFFF</Color>
-    <Color x:Key="ClippingIconColor">#FFFFAD1D</Color>
-    <Color x:Key="MessageIconColor">#FF5BC462</Color>
-    <Color x:Key="CallIconColor">#FF00C7ED</Color>
+    <Color x:Key="ClippingColor">#FFFFAD1D</Color>
+    <Color x:Key="MessageColor">#FF5BC462</Color>
+    <Color x:Key="CallColor">#FF00C7ED</Color>
     <Color x:Key="LabelColor">#CCCBCB</Color>
     <Color x:Key="TimeStampColor">#D8D8D8</Color>
 </ResourceDictionary>

@@ -55,14 +55,14 @@
     </Style>
 
     <Style x:Key="ClippingsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
-        <Setter Property="Foreground" Value="{DynamicResource ClippingIconBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ClippingBrush}"/>
     </Style>
 
     <Style x:Key="CallsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
-        <Setter Property="Foreground" Value="{DynamicResource CallIconBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource CallBrush}"/>
     </Style>
 
     <Style x:Key="MessagesButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
-        <Setter Property="Foreground" Value="{DynamicResource MessageIconBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource MessageBrush}"/>
     </Style>
 </ResourceDictionary>

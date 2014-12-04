@@ -121,10 +121,11 @@
         <Setter Property="Margin" Value="0,40,0,0"/>
     </Style>
     
-    <Style TargetType="TextBlock" x:Key="NotificationTimeStampStyle">
+    <Style TargetType="TextBlock" x:Key="ActivityTimeStampStyle">
         <Setter Property="FontFamily" Value="{DynamicResource ContentFont}"/>
         <Setter Property="FontSize" Value="{DynamicResource ActivityTimeStampFontSize}"/>
         <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>

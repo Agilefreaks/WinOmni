@@ -257,6 +257,7 @@
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
+    <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />

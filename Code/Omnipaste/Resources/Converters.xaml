@@ -4,4 +4,5 @@
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
+    <converters:ActivityTypeToBrushConverter x:Key="ActivityTypeToBrushConverter"/>
 </ResourceDictionary>
