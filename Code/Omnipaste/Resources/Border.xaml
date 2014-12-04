@@ -25,7 +25,7 @@
         <Setter Property="Width" Value="{StaticResource ActivityAreaWidth}"/>
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
         <Setter Property="Margin" Value="5,0"/>
-        <Setter Property="Padding" Value="18,0"/>
+        <Setter Property="Padding" Value="10,5,18,5"/>
     </Style>
 
     <Style x:Key="ActivityContentBorder" TargetType="Border">

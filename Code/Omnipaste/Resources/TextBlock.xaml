@@ -132,4 +132,11 @@
     <Style TargetType="TextBlock" x:Key="ActivityDeviceNameStyle" BasedOn="{StaticResource ActivityTimeStampStyle}">
         <Setter Property="Margin" Value="7,0,0,5"/>
     </Style>
+
+    <Style TargetType="TextBlock" x:Key="ActivityContentTextBlockStyle">
+        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
 </ResourceDictionary>

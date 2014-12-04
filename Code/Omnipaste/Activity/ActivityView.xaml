@@ -11,7 +11,7 @@
             <RowDefinition Height="23"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="47"/>
+            <ColumnDefinition Width="37"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
@@ -26,7 +26,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.ColumnSpan="3"  Style="{DynamicResource ActivityContentBorder}"
                                                 BorderBrush="{Binding Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}">
-                    <TextBlock x:Name="Model_Content" />
+                    <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBlockStyle}"/>
                 </Border>
                 <Ellipse Grid.Column="0" Style="{DynamicResource ActivityIconBorder}"/>
                 <Rectangle Grid.Column="0" Style="{DynamicResource ActivityIcon}" 

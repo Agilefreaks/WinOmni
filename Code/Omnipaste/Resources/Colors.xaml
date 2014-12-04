@@ -20,4 +20,5 @@
     <Color x:Key="CallColor">#FF00C7ED</Color>
     <Color x:Key="LabelColor">#CCCBCB</Color>
     <Color x:Key="TimeStampColor">#D8D8D8</Color>
+    <Color x:Key="ActivityContentColor">#4E4D4D</Color>
 </ResourceDictionary>
