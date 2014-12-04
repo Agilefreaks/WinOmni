@@ -51,11 +51,13 @@
 
         #region Public Properties
 
-        public string Content { get; private set; }
+        public string Content { get; set; }
 
         public DateTime Time { get; set; }
 
         public ActivityTypeEnum Type { get; set; }
+
+        public string Device { get; set; }
 
         #endregion
     }

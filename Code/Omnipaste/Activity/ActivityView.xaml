@@ -33,6 +33,6 @@
                            Fill="{Binding Path=Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}"/>
             </Grid>
         </Border>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="SomeDevice" Margin="7,0,0,0"/>
+        <TextBlock x:Name="Model_Device" Grid.Row="1" Grid.Column="1" Style="{DynamicResource ActivityDeviceNameStyle}"/>
     </Grid>
 </UserControl>
