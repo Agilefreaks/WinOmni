@@ -100,6 +100,21 @@
             new Activity(@event).Device.Should().Be(Resources.FromCloud);
         }
 
+        [Test]
+        public void CtorWithEvent_TypeIsCallAndEventHasContactName_SetsContentToContactName()
+        {
+            new Activity(new Event { Type = EventTypeEnum.IncomingCallEvent, ContactName = "Some Contact" }).Content
+                .Should().Be("Some Contact");
+        }
+
+        [Test]
+        public void CtorWithEvent_TypeIsCallAndEventDoesNotHaveContactName_SetsContentToPhoneNumber()
+        {
+            new Activity(
+                new Event { Type = EventTypeEnum.IncomingCallEvent, ContactName = string.Empty, PhoneNumber = "123456" })
+                .Content.Should().Be("123456");
+        }
+
         [TearDown]
         public void Teardown()
         {

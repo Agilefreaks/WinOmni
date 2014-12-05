@@ -7,12 +7,6 @@
 
     public class Activity
     {
-        #region Constants
-
-        private const string EventContentFormat = "{0} at {1} from {2} {3}";
-
-        #endregion
-
         #region Constructors and Destructors
 
         public Activity()
@@ -40,13 +34,7 @@
         public Activity(Event @event)
             : this()
         {
-            Content =
-                string.Format(
-                    EventContentFormat,
-                    @event.Type,
-                    @event.Time,
-                    string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber : @event.ContactName,
-                    @event.Content).Trim();
+            Content = (string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber ?? string.Empty : @event.ContactName).Trim();
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Properties.Resources.FromCloud;
         }

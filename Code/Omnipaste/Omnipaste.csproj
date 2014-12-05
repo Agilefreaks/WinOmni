@@ -794,6 +794,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
+    <Resource Include="Resources\DefaultUserIcon.png" />
     <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
