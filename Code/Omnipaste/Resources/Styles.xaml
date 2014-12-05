@@ -10,6 +10,7 @@
         <ResourceDictionary Source="Grid.xaml"/>
         <ResourceDictionary Source="StackPanel.xaml"/>
         <ResourceDictionary Source="Border.xaml"/>
+        <ResourceDictionary Source="ScrollViewer.xaml"/>
         <ResourceDictionary Source="Labels.xaml"/>
         <ResourceDictionary Source="TextBlock.xaml"/>
         <ResourceDictionary Source="TextBox.xaml"/>

@@ -26,6 +26,6 @@
     <Style x:Key="FilterContainer" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Margin" Value="0,23,0,40"/>
+        <Setter Property="Margin" Value="0,23,18,40"/>
     </Style>
 </ResourceDictionary>

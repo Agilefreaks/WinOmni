@@ -22,4 +22,5 @@
     <Color x:Key="TimeStampColor">#D8D8D8</Color>
     <Color x:Key="ActivityContentColor">#4E4D4D</Color>
     <Color x:Key="ActivitySecondaryContentColor">#B3B3B2</Color>
+    <Color x:Key="PassiveUiElementsColor">#f2f1f1</Color>
 </ResourceDictionary>

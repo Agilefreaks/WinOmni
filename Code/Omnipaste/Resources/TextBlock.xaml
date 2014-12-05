@@ -127,6 +127,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="8,0,0,0"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ActivityDeviceNameStyle" BasedOn="{StaticResource ActivityTimeStampStyle}">

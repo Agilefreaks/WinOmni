@@ -25,13 +25,16 @@
         <Setter Property="Width" Value="{StaticResource ActivityAreaWidth}"/>
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
         <Setter Property="Margin" Value="5,0"/>
-        <Setter Property="Padding" Value="10,5,18,5"/>
     </Style>
 
     <Style x:Key="ActivityContentBorder" TargetType="Border">
-        <Setter Property="Margin" Value="7,0,0,0" />
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="3"/>
-        <Setter Property="Padding" Value="26,7,0,7"/>
+        <Setter Property="Padding" Value="10,7,0,7"/>
+        <Setter Property="Width" Value="{StaticResource ActivityContentWidth}"/>
+    </Style>
+
+    <Style x:Key="TimeStampContainerStyle" TargetType="Border">
+        <Setter Property="Width" Value="47"/>
     </Style>
 </ResourceDictionary>

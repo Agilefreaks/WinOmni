@@ -12,12 +12,13 @@
             <RowDefinition Height="23"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="37"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
-            ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                   Style="{StaticResource ActivityTimeStampStyle}"/>
+        <Border Grid.Row="0" Grid.Column="0" Style="{DynamicResource TimeStampContainerStyle}">
+            <TextBlock x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
+                ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" Style="{StaticResource ActivityTimeStampStyle}"/>
+        </Border>
         <Border Grid.Row="0" Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>

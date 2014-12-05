@@ -26,6 +26,7 @@
     <SolidColorBrush x:Key="TimeStampBrush" Color="{DynamicResource TimeStampColor}"/>
     <SolidColorBrush x:Key="ActivityContentBrush" Color="{DynamicResource ActivityContentColor}"/>
     <SolidColorBrush x:Key="ActivitySecondaryContentBrush" Color="{DynamicResource ActivitySecondaryContentColor}"/>
+    <SolidColorBrush x:Key="PassiveUiElementsBrush" Color="{DynamicResource PassiveUiElementsColor}"/>
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
