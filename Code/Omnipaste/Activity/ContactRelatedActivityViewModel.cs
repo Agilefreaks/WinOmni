@@ -6,6 +6,7 @@
     using System.Windows.Media.Imaging;
     using OmniCommon.Helpers;
     using Omnipaste.Activity.Models;
+    using Omnipaste.Services;
     using OmniUI.Attributes;
 
     [UseView("Omnipaste.Activity.ActivityView", IsFullyQualifiedName = true)]
@@ -31,7 +32,8 @@
 
         #region Constructors and Destructors
 
-        public ContactRelatedActivityViewModel()
+        public ContactRelatedActivityViewModel(IUiRefreshService uiRefreshService)
+            : base(uiRefreshService)
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             _defaultContactImageUri = new Uri(

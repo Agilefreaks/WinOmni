@@ -312,6 +312,7 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
+    <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
     <Compile Include="Services\IUrlShortenerService.cs" />
     <Compile Include="Services\Monitors\Credentials\CredentialsMonitor.cs" />
@@ -327,6 +328,7 @@
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />

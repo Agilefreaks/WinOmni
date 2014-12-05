@@ -1,13 +1,27 @@
 namespace Omnipaste.Activity
 {
+    using System;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity.Models;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Services;
 
     public class ActivityViewModel : DetailsViewModelBase<Models.Activity>, IActivityViewModel
     {
         #region Fields
 
+        private readonly IDisposable _refreshSubscription;
+
         private ActivityViewModelStateEnum _state;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public ActivityViewModel(IUiRefreshService uiRefreshService)
+        {
+            _refreshSubscription = uiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi());
+        }
 
         #endregion
 
@@ -45,7 +59,21 @@ namespace Omnipaste.Activity
 
         #endregion
 
+        #region Public Methods and Operators
+
+        public void Dispose()
+        {
+            _refreshSubscription.Dispose();
+        }
+
+        #endregion
+
         #region Methods
+
+        private void RefreshUi()
+        {
+            NotifyOfPropertyChange(() => Model);
+        }
 
         private void UpdateState()
         {
