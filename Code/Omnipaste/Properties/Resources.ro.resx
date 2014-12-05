@@ -394,4 +394,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="Messages" xml:space="preserve">
     <value>Mesaje</value>
   </data>
+  <data name="SMSLabel" xml:space="preserve">
+    <value>SMS: </value>
+  </data>
 </root>

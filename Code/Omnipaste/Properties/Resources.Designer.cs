@@ -866,6 +866,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SMS: .
+        /// </summary>
+        public static string SMSLabel {
+            get {
+                return ResourceManager.GetString("SMSLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To connect, you need an authorization code. You can get one from the.
         /// </summary>
         public static string UserTokenLabel1 {

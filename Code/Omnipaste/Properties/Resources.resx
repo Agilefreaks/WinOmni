@@ -397,4 +397,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="MissedCall" xml:space="preserve">
     <value>Missed Call: </value>
   </data>
+  <data name="SMSLabel" xml:space="preserve">
+    <value>SMS: </value>
+  </data>
 </root>
