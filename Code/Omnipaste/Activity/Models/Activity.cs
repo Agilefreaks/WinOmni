@@ -1,18 +1,22 @@
 ﻿namespace Omnipaste.Activity.Models
 {
     using System;
+    using System.Dynamic;
     using Clipboard.Models;
     using Events.Models;
     using OmniCommon.Helpers;
 
     public class Activity
     {
+        private readonly dynamic _extraData;
+
         #region Constructors and Destructors
 
         public Activity()
         {
             Content = string.Empty;
             Time = TimeHelper.UtcNow;
+            _extraData = new ExpandoObject();
         }
 
         public Activity(ActivityTypeEnum activityType)
@@ -37,7 +41,7 @@
             Content = @event.Content ?? string.Empty;
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Properties.Resources.FromCloud;
-            ContactInfo = new ContactInfo(@event);
+            _extraData.ContactInfo = new ContactInfo(@event);
         }
 
         #endregion
@@ -52,7 +56,13 @@
 
         public string Device { get; set; }
 
-        public ContactInfo ContactInfo { get; set; }
+        public dynamic ExtraData
+        {
+            get
+            {
+                return _extraData;
+            }
+        }
 
         #endregion
     }

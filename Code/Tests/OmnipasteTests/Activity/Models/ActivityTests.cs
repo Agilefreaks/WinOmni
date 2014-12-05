@@ -72,7 +72,7 @@
         [Test]
         public void CtorWithEvent_EventHasTypeIncomingCall_SetsTypeToCall()
         {
-            var @event = new Event { Type = EventTypeEnum.IncomingCallEvent};
+            var @event = new Event { Type = EventTypeEnum.IncomingCallEvent };
 
             new Activity(@event).Type.Should().Be(ActivityTypeEnum.Call);
         }
@@ -93,9 +93,12 @@
         [Test]
         public void CtorWithEvent_Always_SetsContactInfo()
         {
-            var @event = new Event{ ContactName = "Some Name", PhoneNumber = "07xxxxxx"};
-            new Activity(@event).ContactInfo.Name.Should().Be("Some Name");
-            new Activity(@event).ContactInfo.Phone.Should().Be("07xxxxxx");
+            var @event = new Event { ContactName = "Some Name", PhoneNumber = "07xxxxxx" };
+
+            ContactInfo contactInfo = new Activity(@event).ExtraData.ContactInfo;
+
+            contactInfo.Name.Should().Be("Some Name");
+            contactInfo.Phone.Should().Be("07xxxxxx");
         }
 
         [TearDown]

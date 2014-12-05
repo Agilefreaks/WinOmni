@@ -5,6 +5,7 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using OmniCommon.Helpers;
+    using Omnipaste.Activity.Models;
     using OmniUI.Attributes;
 
     [UseView("Omnipaste.Activity.ActivityView", IsFullyQualifiedName = true)]
@@ -23,6 +24,8 @@
         private string _contactIdentifier;
 
         private ImageSource _contactImage;
+
+        private ContactInfo _contactInfo;
 
         #endregion
 
@@ -83,9 +86,15 @@
             set
             {
                 base.Model = value;
-                UpdateContactImage();
-                UpdateContactIdentifier();
+                UpdateContactDetails();
             }
+        }
+
+        private void UpdateContactDetails()
+        {
+            _contactInfo = Model.ExtraData.ContactInfo;
+            UpdateContactImage();
+            UpdateContactIdentifier();
         }
 
         #endregion
@@ -109,15 +118,7 @@
 
         private void UpdateContactIdentifier()
         {
-            string identifier = null;
-            if (Model.ContactInfo != null)
-            {
-                identifier = string.IsNullOrWhiteSpace(Model.ContactInfo.Name)
-                                 ? Model.ContactInfo.Phone
-                                 : Model.ContactInfo.Name;
-            }
-
-            ContactIdentifier = identifier;
+            ContactIdentifier = string.IsNullOrWhiteSpace(_contactInfo.Name) ? _contactInfo.Phone : _contactInfo.Name;
         }
 
         private void UpdateContactImage()
@@ -126,8 +127,8 @@
                 (Action)
                 (() =>
                     {
-                        ContactImage = Model.ContactInfo.ImageUri != null
-                                           ? GetImageSourceFromUri(Model.ContactInfo.ImageUri)
+                        ContactImage = _contactInfo.ImageUri != null
+                                           ? GetImageSourceFromUri(_contactInfo.ImageUri)
                                            : GetDefaultUserImage();
                     }));
         }
