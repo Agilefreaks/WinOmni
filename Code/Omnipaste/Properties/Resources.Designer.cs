@@ -497,6 +497,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From Cloud.
+        /// </summary>
+        public static string FromCloud {
+            get {
+                return ResourceManager.GetString("FromCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From Local.
+        /// </summary>
+        public static string FromLocal {
+            get {
+                return ResourceManager.GetString("FromLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incoming Link.
         /// </summary>
         public static string HyperlinkNotificationTitle {

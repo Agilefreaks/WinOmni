@@ -7,6 +7,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
+    using Omnipaste.Properties;
 
     [TestFixture]
     public class ActivityTests
@@ -55,6 +56,20 @@
         }
 
         [Test]
+        public void CtorWithClipping_ClippingSourceIsCloud_SetsDeviceToCloud()
+        {
+            new Activity(new Clipping { Source = Clipping.ClippingSourceEnum.Cloud }).Device.Should()
+                .Be(Resources.FromCloud);
+        }
+
+        [Test]
+        public void CtorWithClipping_ClippingSourceIsLocal_SetsDeviceToCloud()
+        {
+            new Activity(new Clipping { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
+                .Be(Resources.FromLocal);
+        }
+
+        [Test]
         public void CtorWithEvent_EventHasTypeIncomingCall_SetsTypeToCall()
         {
             var @event = new Event { Type = EventTypeEnum.IncomingCallEvent};
@@ -63,7 +78,7 @@
         }
 
         [Test]
-        public void CtorWithClipping_EventHasTypeIncomingCall_SetsContentToContactNamePluPhoneNumber()
+        public void CtorWithEvent_EventHasTypeIncomingCall_SetsContentToContactNamePluPhoneNumber()
         {
             var eventTime = new DateTime(2000, 1, 1);
             var @event = new Event
@@ -75,6 +90,14 @@
                              };
 
             new Activity(@event).Content.Should().Be("IncomingCallEvent at 01.01.2000 0:00:00 from test");
+        }
+
+        [Test]
+        public void CtorWithEvent_Always_SetsDeviceToCloud()
+        {
+            var @event = new Event();
+
+            new Activity(@event).Device.Should().Be(Resources.FromCloud);
         }
 
         [TearDown]

@@ -32,6 +32,9 @@
         {
             Content = clipping.Content;
             Type = ActivityTypeEnum.Clipping;
+            Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud
+                         ? Properties.Resources.FromCloud
+                         : Properties.Resources.FromLocal;
         }
 
         public Activity(Event @event)
@@ -45,6 +48,7 @@
                     string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber : @event.ContactName,
                     @event.Content).Trim();
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
+            Device = Properties.Resources.FromCloud;
         }
 
         #endregion

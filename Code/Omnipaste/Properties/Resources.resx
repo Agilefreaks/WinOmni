@@ -388,4 +388,10 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="Messages" xml:space="preserve">
     <value>Messages</value>
   </data>
+  <data name="FromCloud" xml:space="preserve">
+    <value>From Cloud</value>
+  </data>
+  <data name="FromLocal" xml:space="preserve">
+    <value>From Local</value>
+  </data>
 </root>
