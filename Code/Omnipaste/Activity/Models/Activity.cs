@@ -34,9 +34,10 @@
         public Activity(Event @event)
             : this()
         {
-            Content = (string.IsNullOrWhiteSpace(@event.ContactName) ? @event.PhoneNumber ?? string.Empty : @event.ContactName).Trim();
+            Content = @event.Content ?? string.Empty;
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Properties.Resources.FromCloud;
+            ContactInfo = new ContactInfo(@event);
         }
 
         #endregion
@@ -50,6 +51,8 @@
         public ActivityTypeEnum Type { get; set; }
 
         public string Device { get; set; }
+
+        public ContactInfo ContactInfo { get; set; }
 
         #endregion
     }

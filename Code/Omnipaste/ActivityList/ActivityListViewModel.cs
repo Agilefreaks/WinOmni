@@ -11,8 +11,10 @@ namespace Omnipaste.ActivityList
     using Omnipaste.Framework;
     using Omnipaste.Properties;
 
-    public class ActivityListViewModel : ListViewModelBase<Activity, ActivityViewModel>, IActivityListViewModel
+    public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
     {
+        private readonly IActivityViewModelFactory _activityViewModelFactory;
+
         #region Fields
 
         private readonly ICollectionView _filteredItems;
@@ -29,9 +31,10 @@ namespace Omnipaste.ActivityList
 
         #region Constructors and Destructors
 
-        public ActivityListViewModel(IClipboardHandler clipboardHandler, IEventsHandler eventsHandler)
+        public ActivityListViewModel(IClipboardHandler clipboardHandler, IEventsHandler eventsHandler, IActivityViewModelFactory activityViewModelFactory)
             : base(GetActivityObservable(clipboardHandler, eventsHandler))
         {
+            _activityViewModelFactory = activityViewModelFactory;
             _filteredItems = CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = ShouldShowViewModel;
             UpdateFilter();
@@ -115,9 +118,9 @@ namespace Omnipaste.ActivityList
 
         #region Methods
 
-        protected override ActivityViewModel CreateViewModel(Activity entity)
+        protected override IActivityViewModel CreateViewModel(Activity entity)
         {
-            return new ActivityViewModel { Model = entity };
+            return _activityViewModelFactory.Create(entity);
         }
 
         private static IObservable<Activity> GetActivityObservable(

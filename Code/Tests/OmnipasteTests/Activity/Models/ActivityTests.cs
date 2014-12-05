@@ -78,41 +78,24 @@
         }
 
         [Test]
-        public void CtorWithEvent_EventHasTypeIncomingCall_SetsContentToContactNamePluPhoneNumber()
-        {
-            var eventTime = new DateTime(2000, 1, 1);
-            var @event = new Event
-                             {
-                                 Type = EventTypeEnum.IncomingCallEvent,
-                                 ContactName = "test",
-                                 PhoneNumber = "123",
-                                 Time = eventTime
-                             };
-
-            new Activity(@event).Content.Should().Be("IncomingCallEvent at 01.01.2000 0:00:00 from test");
-        }
-
-        [Test]
         public void CtorWithEvent_Always_SetsDeviceToCloud()
         {
-            var @event = new Event();
-
-            new Activity(@event).Device.Should().Be(Resources.FromCloud);
+            new Activity(new Event()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
-        public void CtorWithEvent_TypeIsCallAndEventHasContactName_SetsContentToContactName()
+        public void CtorWithEvent_TypeIsCall_SetsContentAnEmptyString()
         {
             new Activity(new Event { Type = EventTypeEnum.IncomingCallEvent, ContactName = "Some Contact" }).Content
-                .Should().Be("Some Contact");
+                .Should().Be(string.Empty);
         }
 
         [Test]
-        public void CtorWithEvent_TypeIsCallAndEventDoesNotHaveContactName_SetsContentToPhoneNumber()
+        public void CtorWithEvent_Always_SetsContactInfo()
         {
-            new Activity(
-                new Event { Type = EventTypeEnum.IncomingCallEvent, ContactName = string.Empty, PhoneNumber = "123456" })
-                .Content.Should().Be("123456");
+            var @event = new Event{ ContactName = "Some Name", PhoneNumber = "07xxxxxx"};
+            new Activity(@event).ContactInfo.Name.Should().Be("Some Name");
+            new Activity(@event).ContactInfo.Phone.Should().Be("07xxxxxx");
         }
 
         [TearDown]

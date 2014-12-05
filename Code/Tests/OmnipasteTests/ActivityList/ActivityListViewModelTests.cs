@@ -2,12 +2,14 @@
 {
     using System;
     using System.Linq;
+    using System.Reactive;
     using System.Reactive.Linq;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
     using Events.Models;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
@@ -23,36 +25,63 @@
 
         private Mock<IClipboardHandler> _mockClipboardHandler;
 
+        private Mock<IActivityViewModelFactory> _mockActivityViewModelFactory;
+
+        private TestScheduler _testScheduler;
+
         [SetUp]
         public void Setup()
         {
             _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock};
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
-            _subject = new ActivityListViewModel(_mockClipboardHandler.Object, _mockEventsHandler.Object);
+            _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _subject = new ActivityListViewModel(_mockClipboardHandler.Object, _mockEventsHandler.Object, _mockActivityViewModelFactory.Object);
+            _testScheduler = new TestScheduler();
         }
 
         [Test]
-        public void ReceivingAClipping_Always_AddsAnActivityViewModelBasedOnTheClipping()
+        public void ReceivingAClipping_Always_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var clippingObservable = Observable.Return(new Clipping());
+            var clippingObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(new Clipping())),
+                    new Recorded<Notification<Clipping>>(200, Notification.CreateOnCompleted<Clipping>()));
             _mockClipboardHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Callback<IObserver<Clipping>>(observer => clippingObservable.Subscribe(observer));
-            var viewModel = new ActivityListViewModel(_mockClipboardHandler.Object, _mockEventsHandler.Object);
+            var activityViewModel = new ActivityViewModel { Model = new Activity() };
+            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
+            var viewModel = new ActivityListViewModel(
+                _mockClipboardHandler.Object,
+                _mockEventsHandler.Object,
+                _mockActivityViewModelFactory.Object);
+
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
             viewModel.Items.Count.Should().Be(1);
-            viewModel.Items[0].Model.Type.Should().Be(ActivityTypeEnum.Clipping);
+            viewModel.Items[0].Should().Be(activityViewModel);
+            
         }
 
         [Test]
-        public void ReceivingAnEvent_Always_AddsAnActivityViewModelBasedOnTheEvent()
+        public void ReceivingAnEvent_Always_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var eventObservable = Observable.Return(new Event { Type = EventTypeEnum.IncomingCallEvent });
+            var eventObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event())),
+                    new Recorded<Notification<Event>>(200, Notification.CreateOnCompleted<Event>()));
             _mockEventsHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(observer => eventObservable.Subscribe(observer));
-            var viewModel = new ActivityListViewModel(_mockClipboardHandler.Object, _mockEventsHandler.Object);
+            var activityViewModel = new ActivityViewModel { Model = new Activity() };
+            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
+            var viewModel = new ActivityListViewModel(
+                _mockClipboardHandler.Object,
+                _mockEventsHandler.Object,
+                _mockActivityViewModelFactory.Object);
+
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
             viewModel.Items.Count.Should().Be(1);
-            viewModel.Items[0].Model.Type.Should().Be(ActivityTypeEnum.Call);
+            viewModel.Items[0].Should().Be(activityViewModel);
         }
 
         [Test]

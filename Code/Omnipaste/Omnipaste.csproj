@@ -237,12 +237,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityViewModelStateEnum.cs" />
+    <Compile Include="Activity\IActivityViewModelFactory.cs" />
+    <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Activity\Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
+    <Compile Include="Activity\Models\ContactInfo.cs" />
+    <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />

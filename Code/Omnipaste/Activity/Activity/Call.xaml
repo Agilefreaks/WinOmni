@@ -28,10 +28,9 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.ColumnSpan="3"  Style="{DynamicResource ActivityContentBorder}" BorderBrush="{DynamicResource CallBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../../../Resources/DefaultUserIcon.png" Style="{DynamicResource UserIconStyle}"/>
+                        <Image Source="{Binding Path=ContactImage}" Style="{DynamicResource UserIconStyle}"/>
                         <TextBlock Text="{x:Static properties:Resources.MissedCall}" Style="{DynamicResource ActivityContentTextBlockStyle}"/>
-                        <TextBlock x:Name="Model_Content" Text="{Binding Model.Content}" Style="{DynamicResource ActivityContentTextBlockStyle}" 
-                                       FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ContactIdentifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold"/>
                     </StackPanel>
                 </Border>
                 <Ellipse Grid.Column="0" Style="{DynamicResource ActivityIconBorder}"/>

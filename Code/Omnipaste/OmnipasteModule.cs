@@ -8,6 +8,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
+    using Omnipaste.Activity;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.NotificationList;
@@ -63,7 +64,7 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),
-                           typeof(CredentialsMonitor)
+                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory)
                        };
         }
     }
