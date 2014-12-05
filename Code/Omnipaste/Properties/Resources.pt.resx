@@ -385,4 +385,10 @@ Você pode até colá-lo no Facebook. As possibilidades são infinitas.</value>
   <data name="FromLocal" xml:space="preserve">
     <value>Do Local</value>
   </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Chamadas</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Mensagens</value>
+  </data>
 </root>

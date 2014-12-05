@@ -385,4 +385,10 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="FromLocal" xml:space="preserve">
     <value>Din Local</value>
   </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Apeluri</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Mesaje</value>
+  </data>
 </root>
