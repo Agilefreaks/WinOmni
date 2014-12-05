@@ -159,7 +159,7 @@
 
     <Style x:Key="ActivityIconBorder" TargetType="Ellipse">
         <Setter Property="Width" Value="15"/>
-        <Setter Property="Height" Value="15"/>
+        <Setter Property="Height" Value="18"/>
         <Setter Property="Fill" Value="{DynamicResource ContentBackgroundBrush}"/>
     </Style>
 </ResourceDictionary>
