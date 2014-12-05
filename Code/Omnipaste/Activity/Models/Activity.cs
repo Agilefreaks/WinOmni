@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Activity
+﻿namespace Omnipaste.Activity.Models
 {
     using System;
     using Clipboard.Models;

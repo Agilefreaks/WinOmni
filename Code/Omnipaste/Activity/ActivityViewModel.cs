@@ -2,7 +2,7 @@ namespace Omnipaste.Activity
 {
     using Omnipaste.DetailsViewModel;
 
-    public class ActivityViewModel : DetailsViewModelBase<Activity>, IActivityViewModel
+    public class ActivityViewModel : DetailsViewModelBase<Models.Activity>, IActivityViewModel
     {
     }
 }

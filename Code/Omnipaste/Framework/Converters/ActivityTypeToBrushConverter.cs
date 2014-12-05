@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
-    using Omnipaste.Activity;
+    using Omnipaste.Activity.Models;
 
     public class ActivityTypeToBrushConverter : IValueConverter
     {

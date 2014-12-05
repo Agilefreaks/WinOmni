@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Activity
+﻿namespace OmnipasteTests.Activity.Models
 {
     using System;
     using Clipboard.Models;
@@ -6,7 +6,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Activity;
+    using Omnipaste.Activity.Models;
     using Omnipaste.Properties;
 
     [TestFixture]

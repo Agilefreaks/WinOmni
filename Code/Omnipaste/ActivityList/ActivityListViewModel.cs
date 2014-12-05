@@ -7,6 +7,7 @@ namespace Omnipaste.ActivityList
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Activity;
+    using Omnipaste.Activity.Models;
     using Omnipaste.Framework;
     using Omnipaste.Properties;
 
