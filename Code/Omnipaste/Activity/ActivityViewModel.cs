@@ -18,6 +18,10 @@ namespace Omnipaste.Activity
 
         #region Constructors and Destructors
 
+        public ActivityViewModel()
+        {
+        }
+
         public ActivityViewModel(IUiRefreshService uiRefreshService)
         {
             _refreshSubscription = uiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi());
@@ -63,7 +67,10 @@ namespace Omnipaste.Activity
 
         public void Dispose()
         {
-            _refreshSubscription.Dispose();
+            if (_refreshSubscription != null)
+            {
+                _refreshSubscription.Dispose();
+            }
         }
 
         #endregion

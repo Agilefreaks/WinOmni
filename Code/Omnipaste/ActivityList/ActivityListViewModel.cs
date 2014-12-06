@@ -1,9 +1,12 @@
 namespace Omnipaste.ActivityList
 {
     using System;
+    using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reactive.Linq;
     using System.Windows.Data;
+    using Castle.Core.Internal;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Activity;
@@ -13,11 +16,13 @@ namespace Omnipaste.ActivityList
 
     public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
     {
-        private readonly IActivityViewModelFactory _activityViewModelFactory;
-
         #region Fields
 
+        private readonly IActivityViewModelFactory _activityViewModelFactory;
+
         private readonly ICollectionView _filteredItems;
+
+        private readonly IDisposable _itemsChangedObserver;
 
         private ActivityTypeEnum _allowedActivityTypes;
 
@@ -31,12 +36,26 @@ namespace Omnipaste.ActivityList
 
         #region Constructors and Destructors
 
-        public ActivityListViewModel(IClipboardHandler clipboardHandler, IEventsHandler eventsHandler, IActivityViewModelFactory activityViewModelFactory)
+        public ActivityListViewModel(
+            IClipboardHandler clipboardHandler,
+            IEventsHandler eventsHandler,
+            IActivityViewModelFactory activityViewModelFactory)
             : base(GetActivityObservable(clipboardHandler, eventsHandler))
         {
             _activityViewModelFactory = activityViewModelFactory;
             _filteredItems = CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = ShouldShowViewModel;
+            _itemsChangedObserver =
+                Observable.FromEvent<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                    handler => Items.CollectionChanged += handler,
+                    handler => Items.CollectionChanged -= handler)
+                    .Where(
+                        eventArgs =>
+                        eventArgs.Action == NotifyCollectionChangedAction.Remove
+                        || eventArgs.Action == NotifyCollectionChangedAction.Reset
+                        || eventArgs.Action == NotifyCollectionChangedAction.Replace)
+                    .Subscribe(
+                        eventArgs => eventArgs.OldItems.Cast<IActivityViewModel>().ForEach(item => item.Dispose()));
             UpdateFilter();
         }
 
@@ -116,6 +135,16 @@ namespace Omnipaste.ActivityList
 
         #endregion
 
+        #region Public Methods and Operators
+
+        public override void Dispose()
+        {
+            _itemsChangedObserver.Dispose();
+            base.Dispose();
+        }
+
+        #endregion
+
         #region Methods
 
         protected override IActivityViewModel CreateViewModel(Activity entity)
@@ -135,10 +164,9 @@ namespace Omnipaste.ActivityList
         private bool ShouldShowViewModel(object viewModel)
         {
             var activityViewModel = viewModel as IActivityViewModel;
-            return (activityViewModel != null)
-                && _allowedActivityTypes.HasFlag(activityViewModel.Model.Type)
-                && (activityViewModel.Model.Type != ActivityTypeEnum.None)
-                && (activityViewModel.Model.Type != ActivityTypeEnum.All);
+            return (activityViewModel != null) && _allowedActivityTypes.HasFlag(activityViewModel.Model.Type)
+                   && (activityViewModel.Model.Type != ActivityTypeEnum.None)
+                   && (activityViewModel.Model.Type != ActivityTypeEnum.All);
         }
 
         private void UpdateFilter()

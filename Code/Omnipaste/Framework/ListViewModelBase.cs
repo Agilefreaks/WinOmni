@@ -71,7 +71,7 @@ namespace Omnipaste.Framework
 
         #region Public Methods and Operators
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _entityObserver.Dispose();
         }

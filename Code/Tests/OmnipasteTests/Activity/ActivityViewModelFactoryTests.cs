@@ -1,19 +1,24 @@
 ﻿namespace OmnipasteTests.Activity
 {
     using FluentAssertions;
+    using Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.Activity.Models;
+    using Omnipaste.Services;
 
     [TestFixture]
     public class ActivityViewModelFactoryTests
     {
         private ActivityViewModelFactory _subject;
 
+        private Mock<IUiRefreshService> _mockUiRefreshService;
+
         [SetUp]
         public void Setup()
         {
-            _subject = new ActivityViewModelFactory();
+            _mockUiRefreshService = new Mock<IUiRefreshService>();
+            _subject = new ActivityViewModelFactory(_mockUiRefreshService.Object);
         }
 
         [Test]
