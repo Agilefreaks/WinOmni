@@ -92,13 +92,6 @@
             }
         }
 
-        private void UpdateContactDetails()
-        {
-            _contactInfo = Model.ExtraData.ContactInfo;
-            UpdateContactImage();
-            UpdateContactIdentifier();
-        }
-
         #endregion
 
         #region Methods
@@ -116,6 +109,13 @@
         private ImageSource GetDefaultUserImage()
         {
             return GetImageSourceFromUri(_defaultContactImageUri);
+        }
+
+        private void UpdateContactDetails()
+        {
+            _contactInfo = Model.ExtraData.ContactInfo;
+            UpdateContactImage();
+            UpdateContactIdentifier();
         }
 
         private void UpdateContactIdentifier()

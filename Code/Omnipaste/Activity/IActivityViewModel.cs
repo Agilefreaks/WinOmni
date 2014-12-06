@@ -5,5 +5,6 @@ namespace Omnipaste.Activity
 
     public interface IActivityViewModel : IDetailsViewModel<Models.Activity>, IDisposable
     {
+        ContentTypeEnum ContentType { get; set; }
     }
 }

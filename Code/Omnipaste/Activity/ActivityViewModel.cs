@@ -12,7 +12,7 @@ namespace Omnipaste.Activity
 
         private readonly IDisposable _refreshSubscription;
 
-        private ActivityViewModelStateEnum _state;
+        private ContentTypeEnum _contentType;
 
         #endregion
 
@@ -44,19 +44,19 @@ namespace Omnipaste.Activity
             }
         }
 
-        public ActivityViewModelStateEnum State
+        public ContentTypeEnum ContentType
         {
             get
             {
-                return _state;
+                return _contentType;
             }
             set
             {
-                if (value == _state)
+                if (value == _contentType)
                 {
                     return;
                 }
-                _state = value;
+                _contentType = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -86,20 +86,20 @@ namespace Omnipaste.Activity
         {
             if (Model == null)
             {
-                State = ActivityViewModelStateEnum.Clipping;
+                ContentType = ContentTypeEnum.Normal;
             }
             else
             {
                 switch (Model.Type)
                 {
                     case ActivityTypeEnum.Call:
-                        State = ActivityViewModelStateEnum.Call;
+                        ContentType = ContentTypeEnum.Call;
                         break;
                     case ActivityTypeEnum.Message:
-                        State = ActivityViewModelStateEnum.Message;
+                        ContentType = ContentTypeEnum.Message;
                         break;
                     default:
-                        State = ActivityViewModelStateEnum.Clipping;
+                        ContentType = ContentTypeEnum.Normal;
                         break;
                 }
             }

@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.Activity
 {
-    public enum ActivityViewModelStateEnum
+    public enum ContentTypeEnum
     {
-        Clipping,
+        Normal,
 
         Message,
 

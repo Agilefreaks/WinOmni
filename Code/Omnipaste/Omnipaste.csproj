@@ -239,7 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
-    <Compile Include="Activity\ActivityViewModelStateEnum.cs" />
+    <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\Models\Activity.cs" />
@@ -362,7 +362,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Clipping.xaml">
+    <Page Include="Activity\Activity\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
