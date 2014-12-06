@@ -137,6 +137,9 @@
         [Inject]
         public IWindowHandleProvider WindowHandleProvider { get; set; }
 
+        [Inject]
+        public IUiRefreshService UiRefreshService { get; set; }
+
         public IEnumerable<IHeaderItemViewModel> AllHeaderItems
         {
             get
@@ -157,6 +160,7 @@
             }
 
             ContextMenuViewModel.ShowBalloon(Resources.ShellBallonTitle, Resources.ShellBallonContent);
+            UiRefreshService.Stop();
         }
 
         public void Closing(object sender, CancelEventArgs e)
@@ -191,6 +195,8 @@
                     _view.Visibility = Visibility.Visible;
                 });
             }
+
+            UiRefreshService.Start();
         }
 
         #endregion

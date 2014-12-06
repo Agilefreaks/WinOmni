@@ -154,6 +154,7 @@
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
     <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
+    <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
     <Compile Include="SmsComposer\SMSFactoryTests.cs" />
     <Compile Include="SmsComposer\SmsMessageTests.cs" />

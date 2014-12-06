@@ -12,6 +12,8 @@
 
         private readonly Subject<Unit> _refreshSubject;
 
+        private readonly TimeSpan _uiRefreshInterval = TimeSpan.FromSeconds(5);
+
         private IDisposable _disposable;
 
         #endregion
@@ -41,8 +43,9 @@
 
         public void Start()
         {
+            Stop();
             _disposable =
-                Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(5))
+                Observable.Timer(TimeSpan.Zero, _uiRefreshInterval)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .Subscribe(_ => _refreshSubject.OnNext(new Unit()));
