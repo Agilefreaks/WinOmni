@@ -17,7 +17,7 @@
         [SetUp]
         public void Setup()
         {
-            _mockUiRefreshService = new Mock<IUiRefreshService>();
+            _mockUiRefreshService = new Mock<IUiRefreshService> {  DefaultValue = DefaultValue.Mock };
             _subject = new ActivityViewModelFactory(_mockUiRefreshService.Object);
         }
 
@@ -36,6 +36,7 @@
         public void Create_ActivityIsOfTypeCall_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
             var activity = new Activity(ActivityTypeEnum.Call);
+            activity.ExtraData.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activity);
 
@@ -47,6 +48,7 @@
         public void Create_ActivityIsOfTypeMessage_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
             var activity = new Activity(ActivityTypeEnum.Message);
+            activity.ExtraData.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activity);
 

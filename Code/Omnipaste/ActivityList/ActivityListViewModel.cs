@@ -22,8 +22,6 @@ namespace Omnipaste.ActivityList
 
         private readonly ICollectionView _filteredItems;
 
-        private readonly IDisposable _itemsChangedObserver;
-
         private ActivityTypeEnum _allowedActivityTypes;
 
         private bool _showCalls;
@@ -45,17 +43,7 @@ namespace Omnipaste.ActivityList
             _activityViewModelFactory = activityViewModelFactory;
             _filteredItems = CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = ShouldShowViewModel;
-            _itemsChangedObserver =
-                Observable.FromEvent<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
-                    handler => Items.CollectionChanged += handler,
-                    handler => Items.CollectionChanged -= handler)
-                    .Where(
-                        eventArgs =>
-                        eventArgs.Action == NotifyCollectionChangedAction.Remove
-                        || eventArgs.Action == NotifyCollectionChangedAction.Reset
-                        || eventArgs.Action == NotifyCollectionChangedAction.Replace)
-                    .Subscribe(
-                        eventArgs => eventArgs.OldItems.Cast<IActivityViewModel>().ForEach(item => item.Dispose()));
+            Items.CollectionChanged += OnItemsChanged;
             UpdateFilter();
         }
 
@@ -139,7 +127,7 @@ namespace Omnipaste.ActivityList
 
         public override void Dispose()
         {
-            _itemsChangedObserver.Dispose();
+            Items.CollectionChanged -= OnItemsChanged;
             base.Dispose();
         }
 
@@ -193,6 +181,16 @@ namespace Omnipaste.ActivityList
             }
 
             _filteredItems.Refresh();
+        }
+
+        private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
+        {
+            if (eventArgs.Action == NotifyCollectionChangedAction.Remove
+                || eventArgs.Action == NotifyCollectionChangedAction.Reset
+                || eventArgs.Action == NotifyCollectionChangedAction.Replace)
+            {
+                eventArgs.OldItems.Cast<IActivityViewModel>().ForEach(item => item.Dispose());
+            }
         }
 
         #endregion
