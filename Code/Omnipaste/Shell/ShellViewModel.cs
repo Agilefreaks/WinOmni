@@ -193,6 +193,7 @@
                     _view.Show();
                     _view.ShowInTaskbar = true;
                     _view.Visibility = Visibility.Visible;
+                    _view.Activate();
                 });
             }
 
