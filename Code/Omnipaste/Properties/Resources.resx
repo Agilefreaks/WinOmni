@@ -394,8 +394,8 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="FromLocal" xml:space="preserve">
     <value>From Local</value>
   </data>
-  <data name="MissedCall" xml:space="preserve">
-    <value>Missed Call: </value>
+  <data name="CallLabel" xml:space="preserve">
+    <value>Call From: </value>
   </data>
   <data name="SMSLabel" xml:space="preserve">
     <value>SMS: </value>

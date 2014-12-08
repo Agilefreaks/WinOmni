@@ -391,8 +391,8 @@ Você pode até colá-lo no Facebook. As possibilidades são infinitas.</value>
   <data name="Messages" xml:space="preserve">
     <value>Mensagens</value>
   </data>
-  <data name="MissedCall" xml:space="preserve">
-    <value>Chamada Perdida: </value>
+  <data name="CallLabel" xml:space="preserve">
+    <value>Chame a partir de: </value>
   </data>
   <data name="SMSLabel" xml:space="preserve">
     <value>SMS: </value>

@@ -232,6 +232,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call From: .
+        /// </summary>
+        public static string CallLabel {
+            get {
+                return ResourceManager.GetString("CallLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calls.
         /// </summary>
         public static string Calls {
@@ -655,15 +664,6 @@ namespace Omnipaste.Properties {
         public static string Messages {
             get {
                 return ResourceManager.GetString("Messages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Missed Call: .
-        /// </summary>
-        public static string MissedCall {
-            get {
-                return ResourceManager.GetString("MissedCall", resourceCulture);
             }
         }
         
