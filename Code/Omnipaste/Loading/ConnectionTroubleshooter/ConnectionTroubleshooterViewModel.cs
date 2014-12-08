@@ -242,6 +242,14 @@
                 return 65535;
             }
         }
+        
+        public int MinPortNumber
+        {
+            get
+            {
+                return 1;
+            }
+        }
 
         public bool ShowProxySettings
         {

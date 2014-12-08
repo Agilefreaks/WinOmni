@@ -142,8 +142,9 @@
     <Reference Include="Humanizer">
       <HintPath>..\..\Libs\Humanizer\Humanizer.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
@@ -211,7 +212,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.14.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -771,14 +772,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx" />
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
+    <Resource Include="Resources\Entypo.ttf" />
     <Resource Include="Resources\segoeuil.ttf" />
     <Resource Include="Resources\segoeuisl.ttf" />
     <Resource Include="Resources\seguisb.ttf" />
-    <Resource Include="Resources\Entypo.ttf" />
     <Resource Include="Icon.ico" />
     <Resource Include="Connected.ico" />
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-    <Resource Include="Resources\Entypo-license.txt" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
@@ -807,6 +806,8 @@
     <AppDesigner Include="Properties\" />
     <Resource Include="Disconnected.ico" />
     <Resource Include="Resources\DefaultUserIcon.png" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+    <Resource Include="Resources\Entypo-license.txt" />
     <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

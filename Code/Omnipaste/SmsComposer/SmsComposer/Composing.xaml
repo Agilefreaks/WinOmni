@@ -20,13 +20,13 @@
 
         <TextBox Grid.Row="1" x:Name="Model_Recipient" TabIndex="0"
                  Style="{StaticResource SpacedTextBoxStyle}"
-                 controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelRecepients}" 
+                 controls:TextBoxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelRecepients}" 
                  TextWrapping="Wrap"/>
 
         <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="1" AcceptsReturn="True"
                  Style="{StaticResource SpacedTextBoxStyle}" 
-                 controls:TextboxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelMessage}" 
-                 controls:TextboxHelper.IsWaitingForData="True" TextWrapping="Wrap"/>
+                 controls:TextBoxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelMessage}" 
+                 controls:TextBoxHelper.IsWaitingForData="True" TextWrapping="Wrap"/>
 
         <Label Grid.Row="3" Content="{Binding Path=Model.LimitMessage}" HorizontalAlignment="Right"/>
 

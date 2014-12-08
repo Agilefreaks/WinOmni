@@ -17,10 +17,10 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0" x:Name="ProxyHost" Style="{StaticResource SpacedTextBoxStyle}"
-                     controls:TextboxHelper.Watermark="{x:Static p:Resources.ProxyHost}"/>
+                     controls:TextBoxHelper.Watermark="{x:Static p:Resources.ProxyHost}"/>
         <controls:NumericUpDown Grid.Column="1" x:Name="ProxyPort" Style="{StaticResource SpacedNumericUpDownStyle}"
                                     Value="{Binding Path=ProxyPort, Mode=TwoWay, Converter={StaticResource IntegerToNullableConverter}}" 
-                                    Maximum="{Binding Path=MaxPortNumber}"
-                                    controls:TextboxHelper.Watermark="{x:Static p:Resources.ProxyPort}"/>
+                                    Maximum="{Binding Path=MaxPortNumber}" Minimum="{Binding Path=MinPortNumber}"
+                                    controls:TextBoxHelper.Watermark="{x:Static p:Resources.ProxyPort}"/>
     </Grid>
 </UserControl>
