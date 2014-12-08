@@ -12,6 +12,6 @@
             <TextBlock Text="{x:Static properties:Resources.SMSLabel}" Style="{DynamicResource ActivityContentTextBlockStyle}"/>
             <TextBlock x:Name="ContactIdentifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold"/>
         </StackPanel>
-        <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivitySecondaryContentTextBlockStyle}"/>
+        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBoxStyle}"/>
     </StackPanel>
 </UserControl>

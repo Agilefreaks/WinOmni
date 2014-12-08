@@ -5,4 +5,16 @@
     <Style x:Key="SpacedTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="Margin" Value="10" />
     </Style>
+
+    <Style TargetType="TextBox" x:Key="ActivityContentTextBoxStyle">
+        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0,8"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
 </ResourceDictionary>
