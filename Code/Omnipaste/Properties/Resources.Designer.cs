@@ -866,7 +866,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SMS: .
+        ///   Looks up a localized string similar to SMS from: .
         /// </summary>
         public static string SMSLabel {
             get {

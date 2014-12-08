@@ -395,7 +395,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
     <value>Chame a partir de: </value>
   </data>
   <data name="SMSLabel" xml:space="preserve">
-    <value>SMS: </value>
+    <value>SMS a partir de: </value>
   </data>
   <data name="Activity" xml:space="preserve">
     <value>Atividade</value>

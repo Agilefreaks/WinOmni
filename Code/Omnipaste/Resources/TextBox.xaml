@@ -17,4 +17,10 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="IsReadOnly" Value="True"/>
     </Style>
+
+    <Style TargetType="TextBox" x:Key="ActivitySecondaryContentTextBoxStyle" BasedOn="{StaticResource ActivityContentTextBoxStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource ActivitySecondaryContentBrush}"/>
+        <Setter Property="Margin" Value="42,0,0,0"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+    </Style>
 </ResourceDictionary>

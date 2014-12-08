@@ -395,7 +395,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
     <value>Mesaje</value>
   </data>
   <data name="SMSLabel" xml:space="preserve">
-    <value>SMS: </value>
+    <value>SMS de la: </value>
   </data>
   <data name="Activity" xml:space="preserve">
     <value>Activitate</value>

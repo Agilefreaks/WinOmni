@@ -10,8 +10,8 @@
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Path=ContactImage}" Style="{DynamicResource UserIconStyle}"/>
             <TextBlock Text="{x:Static properties:Resources.SMSLabel}" Style="{DynamicResource ActivityContentTextBlockStyle}"/>
-            <TextBlock x:Name="ContactIdentifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold"/>
+            <TextBox x:Name="ContactIdentifier" Style="{DynamicResource ActivityContentTextBoxStyle}" FontWeight="SemiBold"/>
         </StackPanel>
-        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBoxStyle}"/>
+        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivitySecondaryContentTextBoxStyle}"/>
     </StackPanel>
 </UserControl>

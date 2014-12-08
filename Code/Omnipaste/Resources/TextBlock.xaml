@@ -142,10 +142,4 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0,8"/>
     </Style>
-
-    <Style TargetType="TextBlock" x:Key="ActivitySecondaryContentTextBlockStyle" BasedOn="{StaticResource ActivityContentTextBlockStyle}">
-        <Setter Property="Foreground" Value="{DynamicResource ActivitySecondaryContentBrush}"/>
-        <Setter Property="Margin" Value="42,0,0,0"/>
-        <Setter Property="FontStyle" Value="Italic"/>
-    </Style>
 </ResourceDictionary>
