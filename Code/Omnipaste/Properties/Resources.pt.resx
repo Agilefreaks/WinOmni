@@ -148,13 +148,13 @@
     <value>Desculpe mestre, nós falhámos! Por favor não nos mate!</value>
   </data>
   <data name="AndroidInstallGuideLabel1" xml:space="preserve">
-    <value>Parabéns Omnipaste foi instalado com sucesso em seu PC.</value>
+    <value>Parabéns! Omnipaste foi instalado com sucesso no seu PC.</value>
   </data>
   <data name="AndroidInstallGuideLabel2" xml:space="preserve">
-    <value>Em seguida, temos que instalar Omnipaste no seu dispositivo Android. Por favor, use este link para instalar o aplicativo do Google Play:</value>
+    <value>Agora vamos instalar o Omnipaste no seu dispositivo Android. Por favor, use esta ligação para instalar a aplicação no Google Play:</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>Vamos esperar por você para fazer isso e uma vez que você instalar o aplicativo, seus dispositivos serão automaticamente ligados entre si, o que lhe permite copiar e colar e receber notificações entre eles.</value>
+    <value>Vamos esperar para que instale a aplicação. Quando o fizer, os seus dispositivos estarão automaticamente interligados, o que irá permitir que copie e cole, bem como receber notificações entre eles.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>A carregar ...</value>
@@ -358,7 +358,7 @@
     <value>Agora você pode copiar e colar texto entre dispositivos. Tente fazer isso agora, copiando um texto de seu dispositivo Android</value>
   </data>
   <data name="CongratulationsHeader" xml:space="preserve">
-    <value>Parabéns, seus dispositivos estão agora ligados.</value>
+    <value>Parabéns! Os seus dispositivos estão agora interligados.</value>
   </data>
   <data name="ClippingListEmptyContent" xml:space="preserve">
     <value>Para adicionar um pouco, copiar um texto do jeito que você costuma fazer.
@@ -370,14 +370,14 @@ Para mais informações, confira nosso vídeo abaixo.</value>
     <value>Isto é como um recorte local, parece</value>
   </data>
   <data name="CreateClippingFooter" xml:space="preserve">
-    <value>Uma vez copiado, você terá este texto disponível na área de transferência do computador.
-Você pode até colá-lo no Facebook. As possibilidades são infinitas.</value>
+    <value>Uma vez copiado, o texto estará disponível para si na área de transferência do seu computador.
+Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</value>
   </data>
   <data name="CreateClippingHeader" xml:space="preserve">
-    <value>Vá em frente e copie o seguinte texto (clique com botão direito e selecione copiar):</value>
+    <value>Vamos lá! Copie o seguinte texto (clique no botão do lado direito e seleccione copiar) :</value>
   </data>
   <data name="CreateClippingSample" xml:space="preserve">
-    <value>Acabei de instalar Omnipaste, o serviço que liga os meus dispositivos.</value>
+    <value>Acabei de instalar Omnipaste, o serviço que interliga os meus dispositivos.</value>
   </data>
   <data name="FromCloud" xml:space="preserve">
     <value>De Nuvem</value>
