@@ -3,13 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        WindowStyle="SingleBorderWindow"
-        BorderThickness="1"
         BorderBrush="{StaticResource MainColoBrush}"
-        NonActiveBorderBrush="{StaticResource BlackBrush}"
-        Icon="/Icon.ico">
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource ShellWindowStyle}">
+    
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">
             <controls:FlyoutsControl.ItemTemplate>
@@ -37,19 +34,28 @@
             </controls:WindowCommands.ItemTemplate>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
+
     <Grid>
         <ContentControl x:Name="ContextMenuViewModel" />
-        <controls:MetroAnimatedSingleRowTabControl SelectedIndex="{Binding Path=SelectedViewIndex, Mode=TwoWay}">
-            <TabItem Header="{Binding Path=ActivityListViewModel.DisplayName}">
-                <ContentControl cal:View.Model="{Binding Path=ActivityListViewModel}" />
-            </TabItem>
-            <TabItem Header="{Binding Path=ClippingListViewModel.DisplayName}">
-                <ContentControl cal:View.Model="{Binding Path=ClippingListViewModel}" />
-            </TabItem>
-            <TabItem Header="{Binding Path=MasterEventListViewModel.DisplayName}">
-                <ContentControl cal:View.Model="{Binding Path=MasterEventListViewModel}" />
-            </TabItem>
-        </controls:MetroAnimatedSingleRowTabControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ItemsControl ItemsSource="{Binding Path=Workspaces}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Path=DisplayName}" cal:Message.Attach="ActivateItem($dataContext)" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <ContentControl Grid.Row="1" x:Name="ActiveItem" cal:View.Model="{Binding Path=ActiveItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Grid>
         <ContentControl x:Name="DialogViewModel"/>
     </Grid>
 </controls:MetroWindow>

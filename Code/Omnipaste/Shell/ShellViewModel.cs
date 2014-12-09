@@ -12,18 +12,16 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.ActivityList;
-    using Omnipaste.MasterClippingList;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;
-    using Omnipaste.MasterEventList;
     using Omnipaste.NotificationList;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Workspaces;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
 
@@ -31,13 +29,9 @@
     {
         #region Fields
 
-        private IMasterClippingListViewModel _clippingListViewModel;
-
         private Window _view;
 
         private int _selectedViewIndex;
-
-        private IMasterEventListViewModel _masterEventListViewModel;
 
         private readonly IDisposable _sessionObserver;
 
@@ -60,37 +54,6 @@
         #endregion
 
         #region Public Properties
-
-        [Inject]
-        public IActivityListViewModel ActivityListViewModel { get; set; }
-
-        [Inject]
-        public IMasterClippingListViewModel ClippingListViewModel
-        {
-            get
-            {
-                return _clippingListViewModel;
-            }
-            set
-            {
-                _clippingListViewModel = value;
-                NotifyOfPropertyChange(() => ClippingListViewModel);
-            }
-        }
-
-        [Inject]
-        public IMasterEventListViewModel MasterEventListViewModel
-        {
-            get
-            {
-                return _masterEventListViewModel;
-            }
-            set
-            {
-                _masterEventListViewModel = value;
-                NotifyOfPropertyChange(() => MasterEventListViewModel);
-            }
-        }
 
         [Inject]
         public INotificationListViewModel NotificationListViewModel { get; set; }
@@ -139,6 +102,9 @@
 
         [Inject]
         public IUiRefreshService UiRefreshService { get; set; }
+
+        [Inject]
+        public IEnumerable<IWorkspace> Workspaces { get; set; }
 
         public IEnumerable<IHeaderItemViewModel> AllHeaderItems
         {
@@ -207,6 +173,7 @@
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
+            ActivateItem(Workspaces.OfType<ActivityWorkspaceViewModel>().First());
 
             _view = (Window)view;
             _view.Closing += Closing;
