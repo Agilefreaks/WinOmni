@@ -30,11 +30,21 @@
     <Style x:Key="ActivityContentBorder" TargetType="Border">
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="3"/>
-        <Setter Property="Padding" Value="10,7,0,7"/>
+        <Setter Property="Padding" Value="26,10,0,10"/>
         <Setter Property="Width" Value="{StaticResource ActivityContentWidth}"/>
+        <Setter Property="MinHeight" Value="{StaticResource MinimumActivityHeight}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="7,0,0,0"/>
     </Style>
 
     <Style x:Key="TimeStampContainerStyle" TargetType="Border">
         <Setter Property="Width" Value="47"/>
+        <Setter Property="Padding" Value="8,0,0,0"/>
+    </Style>
+
+    <Style x:Key="LiveContentBorderStyle" TargetType="Border">
+        <Setter Property="Width" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Background" Value="{DynamicResource LiveContentBrush}"/>
     </Style>
 </ResourceDictionary>

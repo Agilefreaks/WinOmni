@@ -20,13 +20,16 @@
                     <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesButtonStyle}" Content="{x:Static properties:Resources.Messages}"/>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
-                    <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <Grid>
+                        <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Border Style="{DynamicResource LiveContentBorderStyle}" />
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </Border>

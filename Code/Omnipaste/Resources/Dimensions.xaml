@@ -7,4 +7,6 @@
     <system:Double x:Key="NotificationWindowWidth">385</system:Double>
     <system:Double x:Key="ActivityAreaWidth">450</system:Double>
     <system:Double x:Key="ActivityContentWidth">379</system:Double>
+    <system:Double x:Key="MinimumActivityHeight">50</system:Double>
+    <system:Double x:Key="ClippingMaxHeight">19</system:Double>
 </ResourceDictionary>
