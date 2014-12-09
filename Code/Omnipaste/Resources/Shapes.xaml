@@ -149,18 +149,21 @@
         <Setter Property="MinWidth" Value="13" />
         <Setter Property="MinHeight" Value="13" />
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="1"/>
         <Setter Property="OpacityMask">
             <Setter.Value>
                 <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
             </Setter.Value>
         </Setter>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0,19,0,0"/>
     </Style>
 
     <Style x:Key="ActivityIconBorder" TargetType="Ellipse">
         <Setter Property="Width" Value="15"/>
         <Setter Property="Height" Value="18"/>
         <Setter Property="Fill" Value="{DynamicResource ContentBackgroundBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0,16,0,0"/>
     </Style>
     
     <Style x:Key="UserIconStyle" TargetType="Image">
