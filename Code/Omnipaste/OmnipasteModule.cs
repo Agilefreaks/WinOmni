@@ -26,6 +26,7 @@
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SettingsHeader;
     using Omnipaste.SmsComposer;
+    using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.HeaderButton;
@@ -52,6 +53,9 @@
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<ActivityWorkspaceViewModel>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<ClippingWorkspaceViewModel>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<EventsWorkspaceViewModel>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
