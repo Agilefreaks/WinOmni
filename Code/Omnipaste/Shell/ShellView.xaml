@@ -3,13 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        WindowStyle="SingleBorderWindow"
-        BorderThickness="1"
         BorderBrush="{StaticResource MainColoBrush}"
-        NonActiveBorderBrush="{StaticResource BlackBrush}"
-        Icon="/Icon.ico">
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource ShellWindowStyle}">
+    
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">
             <controls:FlyoutsControl.ItemTemplate>
@@ -37,6 +34,7 @@
             </controls:WindowCommands.ItemTemplate>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
+
     <Grid>
         <ContentControl x:Name="ContextMenuViewModel" />
         <Grid>
