@@ -136,10 +136,10 @@
     <value>Clique Aqui</value>
   </data>
   <data name="UserTokenLabel1" xml:space="preserve">
-    <value>Para se ligar, precisa de um código de autenticação. Poderá obter um a partir do</value>
+    <value>Para poder conectar seus dispositivos você precisa de um código de autorização.</value>
   </data>
   <data name="UserTokenLabel2" xml:space="preserve">
-    <value>website.</value>
+    <value>Clique aqui para obter o seu código de autorização do site da Omnipaste.</value>
   </data>
   <data name="MissingUserTokenError" xml:space="preserve">
     <value>Empty authorization code given. Please use a non empty authorization code.</value>
@@ -300,8 +300,8 @@
   <data name="AuthenticationRequired" xml:space="preserve">
     <value>Autenticação necessária</value>
   </data>
-  <data name="AuthorizationCode" xml:space="preserve">
-    <value>Código de autorização</value>
+  <data name="AuthorizationCodeHelper" xml:space="preserve">
+    <value>Digite o seu código de autorização aqui. Ex: 699885</value>
   </data>
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Não foi possível alcançar o servidor Omnipaste. Por favor, tente novamente ou verifique a conexão valores abaixo.</value>

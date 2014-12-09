@@ -136,10 +136,10 @@
     <value>Click Here</value>
   </data>
   <data name="UserTokenLabel1" xml:space="preserve">
-    <value>To connect, you need an authorization code. You can get one from the</value>
+    <value>To connect your devices, you need an authorization code. </value>
   </data>
   <data name="UserTokenLabel2" xml:space="preserve">
-    <value>website.</value>
+    <value>Click here to get your authorization code from the Omnipaste website.</value>
   </data>
   <data name="MissingUserTokenError" xml:space="preserve">
     <value>Empty authorization code given. Please use a non empty authorization code.</value>
@@ -334,10 +334,10 @@
     <value>Add "via Omnipaste" to SMS</value>
   </data>
   <data name="AuthenticationRequired" xml:space="preserve">
-    <value>Authentication Required</value>
+    <value>Authentication code required</value>
   </data>
-  <data name="AuthorizationCode" xml:space="preserve">
-    <value>Authorization code</value>
+  <data name="AuthorizationCodeHelper" xml:space="preserve">
+    <value>Enter your authorization code here. Ex: 699885</value>
   </data>
   <data name="Proxy" xml:space="preserve">
     <value>Proxy</value>

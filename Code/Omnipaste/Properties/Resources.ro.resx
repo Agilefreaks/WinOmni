@@ -136,10 +136,10 @@
     <value>Apasă aici</value>
   </data>
   <data name="UserTokenLabel1" xml:space="preserve">
-    <value>Pentru a te conecta, ai neovie de un cod de autentificare. Poti să obți unul de pe website-ul </value>
+    <value>Pentru a-ți putea conecta dispozitivele, ai neovie de un cod de autorizare. </value>
   </data>
   <data name="UserTokenLabel2" xml:space="preserve">
-    <value>.</value>
+    <value>Apasă aici pentru a obține un cod de autorizare de pe website-ul Omnipaste.</value>
   </data>
   <data name="ActivationFailedLabel" xml:space="preserve">
     <value>Îmi pare rău stăpâne, am dat greș, te rog să nu mă omori!</value>
@@ -298,10 +298,10 @@
     <value>Deconectare</value>
   </data>
   <data name="AuthenticationRequired" xml:space="preserve">
-    <value>Autentificare</value>
+    <value>Autorizare</value>
   </data>
-  <data name="AuthorizationCode" xml:space="preserve">
-    <value>Cod de autorizare</value>
+  <data name="AuthorizationCodeHelper" xml:space="preserve">
+    <value>Introduceți aici codul de autorizare. Ex: 699885</value>
   </data>
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Nu am putut ajunge la serverul Omnipaste. Vă rugăm să verificați setările de conectare de mai jos și să încercați din nou.</value>
