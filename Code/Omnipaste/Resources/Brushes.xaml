@@ -32,4 +32,26 @@
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
     <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />
     <VisualBrush x:Key="CallVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_phone}" />
+    <DrawingBrush x:Key="LiveContentBrush" Viewport="0,0,5,50" ViewportUnits="Absolute" TileMode="Tile"  Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <MatrixTransform Matrix="1.25,0,0,-1.25,0,50.02725"/>
+                </DrawingGroup.Transform>
+                <GeometryDrawing Brush="#FFE1DDDB" Geometry="F1 M0,0 L4,0 4,2.98 0,2.98 0,0 z"/>
+                <DrawingGroup>
+                    <DrawingGroup.Transform>
+                        <MatrixTransform Matrix="1,0,0,1,0,40.0221"/>
+                    </DrawingGroup.Transform>
+                    <GeometryDrawing Brush="#FFE1DDDB" Geometry="F1 M0,0 L0,-17 4,-20.001 4,0 0,0 z"/>
+                </DrawingGroup>
+                <DrawingGroup>
+                    <DrawingGroup.Transform>
+                        <MatrixTransform Matrix="1,0,0,1,0,3.0006"/>
+                    </DrawingGroup.Transform>
+                    <GeometryDrawing Brush="#FFF4F3F4" Geometry="F1 M0,0 L4,-3.001 4,16.999 0,20 0,0 z"/>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>
