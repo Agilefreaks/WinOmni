@@ -127,19 +127,19 @@
         <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="8,0,0,0"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ActivityDeviceNameStyle" BasedOn="{StaticResource ActivityTimeStampStyle}">
         <Setter Property="Margin" Value="7,0,0,5"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="ActivityContentTextBlockStyle">
+    <Style TargetType="TextBlock" x:Key="ActivityTitleTextBlockStyle">
         <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
         <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="0,8"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
 </ResourceDictionary>
