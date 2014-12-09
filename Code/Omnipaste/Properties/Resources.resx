@@ -391,4 +391,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="SMSLabel" xml:space="preserve">
     <value>SMS from: </value>
   </data>
+  <data name="ClippingDetailsHeaderTitle" xml:space="preserve">
+    <value>Clipping from your </value>
+  </data>
 </root>

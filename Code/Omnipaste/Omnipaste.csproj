@@ -210,8 +210,6 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -240,6 +238,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityDetails\ActivityDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\ActivityDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\ActivityDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\ActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Clipping\IClippingDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\IActivityDetailsViewModelFactory.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
@@ -263,9 +274,13 @@
     <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
+    <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
+    <Compile Include="Framework\Commands\CancelCommandEventArgs.cs" />
+    <Compile Include="Framework\Commands\Command.cs" />
+    <Compile Include="Framework\Commands\CommandEventArgs.cs" />
     <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
@@ -341,17 +356,38 @@
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
-    <Compile Include="Workspaces\ActivityWorkspaceViewModel.cs" />
-    <Compile Include="Workspaces\ClippingWorkspaceViewModel.cs" />
-    <Compile Include="Workspaces\EventsWorkspaceViewModel.cs" />
-    <Compile Include="Workspaces\IActivityWorkspaceViewModel.cs" />
-    <Compile Include="Workspaces\IClippingWorkspaceViewModel.cs" />
-    <Compile Include="Workspaces\IEventsWorkspaceViewModel.cs" />
+    <Compile Include="Workspaces\ActivityWorkspace.cs" />
+    <Compile Include="Workspaces\ClippingWorkspace.cs" />
+    <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
+    <Compile Include="Workspaces\EventsWorkspace.cs" />
+    <Compile Include="Workspaces\IActivityWorkspace.cs" />
+    <Compile Include="Workspaces\IClippingWorkspace.cs" />
+    <Compile Include="Workspaces\IDetailsConductorViewModel.cs" />
+    <Compile Include="Workspaces\IEventsWorkspace.cs" />
+    <Compile Include="Workspaces\IMasterDetailsWorkspace.cs" />
     <Compile Include="Workspaces\IWorkspace.cs" />
+    <Compile Include="Workspaces\MasterDetailsWorkspace.cs" />
+    <Compile Include="Workspaces\SingleItemWorkspace.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceView.xaml.cs">
       <DependentUpon>WorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\ActivityDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityList\ActivityListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -402,7 +438,6 @@
     <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
     <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
-    <Compile Include="Framework\LimitableBindableCollection.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
@@ -792,6 +827,14 @@
     <Page Include="Themes\ExpandableTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Workspaces\DetailsConductorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Workspaces\SingleItemWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Workspaces\WorkspaceView.xaml">
       <SubType>Designer</SubType>

@@ -1,18 +1,28 @@
 namespace Omnipaste.Activity
 {
     using System;
+    using System.Windows.Input;
+    using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity.Models;
+    using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Framework.Commands;
     using Omnipaste.Services;
+    using Omnipaste.Workspaces;
 
     public class ActivityViewModel : DetailsViewModelBase<Models.Activity>, IActivityViewModel
     {
         #region Fields
 
-        private readonly IDisposable _refreshSubscription;
+        private readonly IUiRefreshService _uiRefreshService;
 
         private ContentTypeEnum _contentType;
+
+        private IActivityDetailsViewModel _detailsViewModel;
+
+        private IDisposable _refreshSubscription;
 
         #endregion
 
@@ -20,29 +30,23 @@ namespace Omnipaste.Activity
 
         public ActivityViewModel()
         {
+            ClickCommand = new Command(ShowDetails);
         }
 
         public ActivityViewModel(IUiRefreshService uiRefreshService)
+            : this()
         {
-            _refreshSubscription = uiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi());
+            _uiRefreshService = uiRefreshService;
         }
+
+        [Inject]
+        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         #endregion
 
         #region Public Properties
 
-        public override Models.Activity Model
-        {
-            get
-            {
-                return base.Model;
-            }
-            set
-            {
-                base.Model = value;
-                UpdateState();
-            }
-        }
+        public ICommand ClickCommand { get; set; }
 
         public ContentTypeEnum ContentType
         {
@@ -61,21 +65,68 @@ namespace Omnipaste.Activity
             }
         }
 
+        public override Models.Activity Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                UpdateState();
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
 
         public void Dispose()
         {
-            if (_refreshSubscription != null)
-            {
-                _refreshSubscription.Dispose();
-            }
+            DisposeUiRefreshSubscription();
+        }
+
+        public void ShowDetails()
+        {
+            _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 
         #endregion
 
         #region Methods
+
+        protected override void OnActivate()
+        {
+            AddUiRefreshSubscription();
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            if (close)
+            {
+                Dispose();
+            }
+            base.OnDeactivate(close);
+        }
+
+        private void AddUiRefreshSubscription()
+        {
+            DisposeUiRefreshSubscription();
+            _refreshSubscription = _uiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi());
+        }
+
+        private void DisposeUiRefreshSubscription()
+        {
+            if (_refreshSubscription == null)
+            {
+                return;
+            }
+            _refreshSubscription.Dispose();
+            _refreshSubscription = null;
+        }
 
         private void RefreshUi()
         {

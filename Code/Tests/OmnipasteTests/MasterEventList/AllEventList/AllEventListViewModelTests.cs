@@ -11,6 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste;
+    using Omnipaste.Event;
     using Omnipaste.MasterEventList.AllEventList;
     using System.Reactive;
 
@@ -39,6 +40,7 @@
                 .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(o => _testableIncomingEventsObservable.Subscribe(o));
             _kernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
+            _kernel.Bind<IEventViewModel>().To<EventViewModel>();
 
             _subject = _kernel.Get<AllEventListViewModel>();
         }

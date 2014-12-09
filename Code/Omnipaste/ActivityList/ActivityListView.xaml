@@ -6,7 +6,5 @@
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
-    <Border Style="{DynamicResource MainContainerStyle}">
-        <ContentControl cal:View.Context="{Binding Path=Status}" cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
-    </Border>
+    <ContentControl cal:View.Context="{Binding Path=Status}" cal:View.Model="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 </UserControl>

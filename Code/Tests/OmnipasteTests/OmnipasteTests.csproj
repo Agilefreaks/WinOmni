@@ -108,9 +108,9 @@
   <ItemGroup>
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
+    <Compile Include="Activity\ActivityViewModelTests.cs" />
     <Compile Include="Activity\Models\ActivityTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
-    <Compile Include="ClippingList\LimitableBindableCollectionTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
     <Compile Include="Event\EventViewModelTests.cs" />
@@ -162,6 +162,7 @@
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
     <Compile Include="SmsComposer\SMSFactoryTests.cs" />
     <Compile Include="SmsComposer\SmsMessageTests.cs" />
+    <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

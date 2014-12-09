@@ -5,12 +5,12 @@
     using OmniUI.Attributes;
 
     [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
-    public class ActivityWorkspaceViewModel : Workspace, IActivityWorkspaceViewModel
+    public class ActivityWorkspace : MasterDetailsWorkspace, IActivityWorkspace
     {
         #region Constructors and Destructors
 
-        public ActivityWorkspaceViewModel(IActivityListViewModel activityListViewModel)
-            : base(activityListViewModel)
+        public ActivityWorkspace(IActivityListViewModel activityListViewModel, IDetailsConductorViewModel detailsConductor)
+            : base(activityListViewModel, detailsConductor)
         {
         }
 

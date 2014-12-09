@@ -173,7 +173,7 @@
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            ActivateItem(Workspaces.OfType<ActivityWorkspaceViewModel>().First());
+            ActivateItem(Workspaces.OfType<ActivityWorkspace>().First());
 
             _view = (Window)view;
             _view.Closing += Closing;

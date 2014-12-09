@@ -1,19 +1,16 @@
 ﻿namespace OmnipasteTests.ClippingList
 {
     using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reactive.Subjects;
     using Clipboard.Models;
     using FluentAssertions;
+    using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniCommon.Interfaces;
     using Omnipaste;
     using Omnipaste.Clipping;
-    using Omnipaste.Framework;
     using Omnipaste.MasterClippingList.ClippingList;
 
     [TestFixture]
@@ -45,32 +42,30 @@
         }
 
         [Test]
-        public void Clippings_ShouldBeLimittedToACountOf42()
-        {
-            ((LimitableBindableCollection<IClippingViewModel>)_subject.Items).Limit.Should().Be(42);
-        }
-
-        [Test]
-        public void NewClippingArrives_CreatesClippingViewModelAndInsertsItIntoClippingsCollection()
-        {
-            _fakeClippingSubject.OnNext(new Clipping());
-
-            _subject.Items.Count.Should().Be(1);
-        }
-
-        [Test]
-        public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingAtTheStart()
+        public void NewClippingArrives_CreatesClippingViewModelForItAndActivatesIt()
         {
             var clipping = new Clipping();
-            _subject.Items.Add(new ClippingViewModel());
+            _fakeClippingSubject.OnNext(clipping);
+
+            _subject.Items.Count.Should().Be(1);
+            _subject.Items[0].Model.Should().Be(clipping);
+        }
+
+        [Test]
+        public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingViewModelAtTheStart()
+        {
+            var clipping = new Clipping();
+            var existingViewModel = new ClippingViewModel();
+            _subject.Items.Add(existingViewModel);
 
             _fakeClippingSubject.OnNext(clipping);
 
+            _subject.Items.Count.Should().Be(2);
             _subject.Items.First().Model.Should().Be(clipping);
+            _subject.Items.Last().Should().Be(existingViewModel);
         }
 
         [Test]
-
         public void Clippings_WhenIsEmpty_StatusIsEmpty()
         {
             _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
@@ -94,6 +89,38 @@
             _subject.Items.Clear();
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
+        }
+
+        [Test]
+        public void ActivateItem_Always_AddsItemsToTheBeginningOfTheList()
+        {
+            var clippingViewModel1 = new ClippingViewModel();
+            var clippingViewModel2 = new ClippingViewModel();
+
+            _subject.ActivateItem(clippingViewModel1);
+            _subject.ActivateItem(clippingViewModel2);
+
+            _subject.Items.IndexOf(clippingViewModel2).Should().Be(0);
+            _subject.Items.IndexOf(clippingViewModel1).Should().Be(1);
+        }
+
+        [Test]
+        public void ActivateItem_ItemsContains42ItemsAndTheLastItemCanClose_DeactivatesTheLastItemBeforeActivatingTheNewOne()
+        {
+            //This will be the last item since new items are put at the top
+            var mockClippingViewModel = new Mock<IClippingViewModel>();
+            mockClippingViewModel.Setup(x => x.CanClose(It.IsAny<Action<bool>>()))
+                .Callback<Action<bool>>(action => action(true));
+            _subject.ActivateItem(mockClippingViewModel.Object);
+            Enumerable.Range(0, ClippingListViewModel.MaxItemCount - 1)
+                .Select(_ => new ClippingViewModel())
+                .ToList()
+                .ForEach(child => _subject.ActivateItem(child));
+
+            _subject.ActivateItem(new ClippingViewModel());
+
+            mockClippingViewModel.Verify(x => x.Deactivate(true), Times.Once());
+            _subject.Items.Contains(mockClippingViewModel.Object).Should().BeFalse();
         }
     }
 }

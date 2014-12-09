@@ -5,11 +5,13 @@
     <system:Double x:Key="DefaultWindowWidth">1366</system:Double>
     <system:Double x:Key="DefaultWindowHeight">768</system:Double>
     <system:Double x:Key="NotificationWindowWidth">385</system:Double>
-    <system:Double x:Key="ActivityAreaWidth">450</system:Double>
+    <system:Double x:Key="ActivityListContainerWidth">451</system:Double>
     <system:Double x:Key="ActivityContentWidth">379</system:Double>
     <system:Double x:Key="MinimumActivityHeight">50</system:Double>
     <system:Double x:Key="ClippingMaxHeight">19</system:Double>
     <system:Double x:Key="SideMenuWidth">120</system:Double>
     <system:Double x:Key="SecondaryNavButtonWidth">16</system:Double>
+    <system:Double x:Key="ActivityDetailsContainerWidth">530</system:Double>
+    <system:Double x:Key="ActivityDetailsHeaderHeight">118</system:Double>
     <system:Double x:Key="SecondaryNavButtonHeight">16</system:Double>
 </ResourceDictionary>

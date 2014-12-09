@@ -8,11 +8,12 @@ namespace Omnipaste.Framework
     using Ninject;
     using OmniCommon.ExtensionMethods;
 
-    public abstract class ListViewModelBase<TEntity, TViewModel> : Screen, IDisposable
+    public abstract class ListViewModelBase<TEntity, TViewModel> : Conductor<TViewModel>.Collection.AllActive, IDisposable
+        where TViewModel : class
     {
         #region Constants
 
-        private const int ListLimit = 42;
+        public const int MaxItemCount = 42;
 
         #endregion
 
@@ -28,13 +29,11 @@ namespace Omnipaste.Framework
 
         protected ListViewModelBase(IObservable<TEntity> entityObservable)
         {
-            Items = new LimitableBindableCollection<TViewModel>(ListLimit);
             Items.CollectionChanged += OnViewModelsCollectionChanged;
-
             _entityObserver =
                 entityObservable.Where(entity => Filter(entity))
                     .Select(CreateViewModel)
-                    .SubscribeAndHandleErrors(clippingViewModel => Items.Insert(0, clippingViewModel));
+                    .SubscribeAndHandleErrors(ActivateItem);
         }
 
         #endregion
@@ -48,8 +47,6 @@ namespace Omnipaste.Framework
                 return @event => true;
             }
         }
-
-        public IObservableCollection<TViewModel> Items { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -71,6 +68,16 @@ namespace Omnipaste.Framework
 
         #region Public Methods and Operators
 
+        public override void ActivateItem(TViewModel item)
+        {
+            if (!Items.Contains(item) && Items.Count == MaxItemCount)
+            {
+                DeactivateItem(Items.Last(), true);
+            }
+
+            base.ActivateItem(item);
+        }
+
         public virtual void Dispose()
         {
             _entityObserver.Dispose();
@@ -81,6 +88,22 @@ namespace Omnipaste.Framework
         #region Methods
 
         protected abstract TViewModel CreateViewModel(TEntity entity);
+
+        protected override TViewModel EnsureItem(TViewModel newItem)
+        {
+            var index = Items.IndexOf(newItem);
+
+            if (index == -1)
+            {
+                Items.Insert(0, newItem);
+            }
+            else
+            {
+                newItem = Items[index];
+            }
+
+            return base.EnsureItem(newItem);
+        }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

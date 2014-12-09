@@ -4,4 +4,37 @@
     <Style x:Key="SideUserImageStyle" TargetType="Image">
         <Setter Property="Height" Value="60"/>
     </Style>
+
+
+    <Style x:Key="InCircleImage" TargetType="Control">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Image Source="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Uniform"
+                               Width="{Binding Path=Width, RelativeSource={RelativeSource TemplatedParent}}" 
+                               Height="{Binding Path=Height, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Rectangle Width="{Binding Path=Width, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Height="{Binding Path=Height, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform">
+                                    <VisualBrush.Visual>
+                                        <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}">
+                                            <Path.Data>
+                                                <GeometryGroup FillRule="EvenOdd" >
+                                                    <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
+                                                    <RectangleGeometry Rect="0,0,40,40" />
+                                                </GeometryGroup>
+                                            </Path.Data>
+                                        </Path>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

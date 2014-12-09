@@ -1,15 +1,15 @@
 ﻿namespace Omnipaste.Workspaces
 {
-    using Omnipaste.MasterEventList;
+    using Omnipaste.MasterClippingList;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
-    public class EventsWorkspaceViewModel : Workspace, IEventsWorkspaceViewModel
+    [UseView("Omnipaste.Workspaces.SingleItemWorkspaceView", IsFullyQualifiedName = true)]
+    public class ClippingWorkspace : SingleItemWorkspace, IClippingWorkspace
     {
         #region Constructors and Destructors
 
-        public EventsWorkspaceViewModel(IMasterEventListViewModel defaultScreen)
+        public ClippingWorkspace(IMasterClippingListViewModel defaultScreen)
             : base(defaultScreen)
         {
         }
@@ -22,7 +22,7 @@
         {
             get
             {
-                return Resources.MasterEventListDisplayName;
+                return Resources.MasterClippingListDisplayName;
             }
         }
 
@@ -30,7 +30,7 @@
         {
             get
             {
-                return OmniUI.Resources.IconNames.SideMenuMessages;
+                return OmniUI.Resources.IconNames.SideMenuClippings;
             }
         }
 

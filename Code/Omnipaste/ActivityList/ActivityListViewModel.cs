@@ -1,12 +1,9 @@
 namespace Omnipaste.ActivityList
 {
     using System;
-    using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Linq;
     using System.Reactive.Linq;
     using System.Windows.Data;
-    using Castle.Core.Internal;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Activity;
@@ -43,7 +40,6 @@ namespace Omnipaste.ActivityList
             _activityViewModelFactory = activityViewModelFactory;
             _filteredItems = CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = ShouldShowViewModel;
-            Items.CollectionChanged += OnItemsChanged;
             UpdateFilter();
         }
 
@@ -125,12 +121,6 @@ namespace Omnipaste.ActivityList
 
         #region Public Methods and Operators
 
-        public override void Dispose()
-        {
-            Items.CollectionChanged -= OnItemsChanged;
-            base.Dispose();
-        }
-
         #endregion
 
         #region Methods
@@ -181,16 +171,6 @@ namespace Omnipaste.ActivityList
             }
 
             _filteredItems.Refresh();
-        }
-
-        private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
-        {
-            if (eventArgs.Action == NotifyCollectionChangedAction.Remove
-                || eventArgs.Action == NotifyCollectionChangedAction.Reset
-                || eventArgs.Action == NotifyCollectionChangedAction.Replace)
-            {
-                eventArgs.OldItems.Cast<IActivityViewModel>().ForEach(item => item.Dispose());
-            }
         }
 
         #endregion

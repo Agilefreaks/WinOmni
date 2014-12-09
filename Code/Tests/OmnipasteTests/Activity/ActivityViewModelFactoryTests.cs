@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using Moq;
+    using Ninject;
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.Activity.Models;
@@ -18,7 +19,10 @@
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> {  DefaultValue = DefaultValue.Mock };
-            _subject = new ActivityViewModelFactory(_mockUiRefreshService.Object);
+            _subject = new ActivityViewModelFactory(_mockUiRefreshService.Object)
+                           {
+                               Kernel = new Mock<IKernel>().Object
+                           };
         }
 
         [Test]

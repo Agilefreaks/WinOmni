@@ -2,11 +2,11 @@
 {
     using Caliburn.Micro;
 
-    public class Workspace : Conductor<IScreen>.Collection.AllActive, IWorkspace
+    public abstract class SingleItemWorkspace : Conductor<IScreen>, IWorkspace
     {
         private readonly IScreen _defaultScreen;
 
-        protected Workspace(IScreen defaultScreen)
+        protected SingleItemWorkspace(IScreen defaultScreen)
         {
             _defaultScreen = defaultScreen;
         }

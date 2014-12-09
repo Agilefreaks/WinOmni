@@ -9,6 +9,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
     using Omnipaste.Activity;
+    using Omnipaste.ActivityDetails;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.NotificationList;
@@ -51,9 +52,9 @@
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<ActivityWorkspaceViewModel>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<ClippingWorkspaceViewModel>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<EventsWorkspaceViewModel>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<ActivityWorkspace>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<ClippingWorkspace>().InSingletonScope();
+            Kernel.Bind<IWorkspace>().To<EventsWorkspace>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
@@ -66,7 +67,7 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),
-                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory)
+                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };
         }
     }

@@ -391,4 +391,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="Activity" xml:space="preserve">
     <value>Activitate</value>
   </data>
+  <data name="ClippingDetailsHeaderTitle" xml:space="preserve">
+    <value>Cliping de pe </value>
+  </data>
 </root>

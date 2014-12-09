@@ -27,6 +27,7 @@
     <SolidColorBrush x:Key="ActivityContentBrush" Color="{DynamicResource ActivityContentColor}"/>
     <SolidColorBrush x:Key="ActivitySecondaryContentBrush" Color="{DynamicResource ActivitySecondaryContentColor}"/>
     <SolidColorBrush x:Key="PassiveUiElementsBrush" Color="{DynamicResource PassiveUiElementsColor}"/>
+    <SolidColorBrush x:Key="ScreenBorderBrush" Color="{DynamicResource ScreenBorderColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>

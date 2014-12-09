@@ -8,7 +8,7 @@
 
         public const string SideMenuActivity = "navigation_activity_icon";
 
-        public const string SideMenuClippings = "navigation_clippings_icon";
+        public const string SideMenuClippings = "clippings_icon";
 
         public const string SideMenuSettings = "navigation_settings_icon";
 

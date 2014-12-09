@@ -5342,7 +5342,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         </Canvas>
     </Canvas>
 
-    <Canvas x:Key="navigation_clippings_icon"  Width="29" Height="28">
+    <Canvas x:Key="clippings_icon"  Width="29" Height="28">
         <Canvas.Resources>
             <PathGeometry x:Key="clipPath2999" Figures="M 0 22 23 22 23 0 0 0 0 22 z" FillRule="NonZero"/>
         </Canvas.Resources>
