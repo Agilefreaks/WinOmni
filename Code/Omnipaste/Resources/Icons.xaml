@@ -5406,7 +5406,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="11.0001" Y="5.9998"/>
                         </Canvas.RenderTransform>
-                        <Path Name="path3115" Fill="#FFAAAAAA">
+                        <Path Name="path3115" Fill="{DynamicResource DisconnectedStatusBrush}">
                             <Path.Data>
                                 <PathGeometry Figures="m 0 0 c 0 2.761 -2.239 5 -5 5 -2.761 0 -5 -2.239 -5 -5 0 -2.761 2.239 -5 5 -5 2.761 0 5 2.239 5 5" FillRule="nonzero"/>
                             </Path.Data>
@@ -5416,7 +5416,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="6" Y="10"/>
                         </Canvas.RenderTransform>
-                        <Path Name="path3119" Fill="#FF191A1A">
+                        <Path Name="path3119" Fill="{DynamicResource ConnectionStatusStrokeBrush}">
                             <Path.Data>
                                 <PathGeometry Figures="m 0 0 c -2.206 0 -4 -1.794 -4 -4 0 -2.206 1.794 -4 4 -4 2.206 0 4 1.794 4 4 0 2.206 -1.794 4 -4 4 m 0 -10 c -3.309 0 -6 2.691 -6 6 0 3.309 2.691 6 6 6 3.309 0 6 -2.691 6 -6 0 -3.309 -2.691 -6 -6 -6" FillRule="nonzero"/>
                             </Path.Data>
@@ -5441,7 +5441,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="11.0001" Y="5.9998"/>
                         </Canvas.RenderTransform>
-                        <Path Fill="#FF56B723">
+                        <Path Fill="{DynamicResource ConnectedStatusBrush}">
                             <Path.Data>
                                 <PathGeometry Figures="m 0 0 c 0 2.761 -2.239 5 -5 5 -2.761 0 -5 -2.239 -5 -5 0 -2.761 2.239 -5 5 -5 2.761 0 5 2.239 5 5" FillRule="nonzero"/>
                             </Path.Data>
@@ -5451,7 +5451,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="6" Y="10"/>
                         </Canvas.RenderTransform>
-                        <Path Fill="#FF191A1A">
+                        <Path Fill="{DynamicResource ConnectionStatusStrokeBrush}">
                             <Path.Data>
                                 <PathGeometry Figures="m 0 0 c -2.206 0 -4 -1.794 -4 -4 0 -2.206 1.794 -4 4 -4 2.206 0 4 1.794 4 4 0 2.206 -1.794 4 -4 4 m 0 -10 c -3.309 0 -6 2.691 -6 6 0 3.309 2.691 6 6 6 3.309 0 6 -2.691 6 -6 0 -3.309 -2.691 -6 -6 -6" FillRule="nonzero"/>
                             </Path.Data>
