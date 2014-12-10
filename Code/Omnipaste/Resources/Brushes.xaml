@@ -32,6 +32,10 @@
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
     <SolidColorBrush x:Key="NavigationMenuTextBrush" Color="{DynamicResource SideMenuTextColor}"/>
 
+    <SolidColorBrush x:Key="ConnectedStatusBrush" Color="{DynamicResource ConnectedStatusColor}"/>
+    <SolidColorBrush x:Key="DisconnectedStatusBrush" Color="{DynamicResource DisconnectedStatusColor}"/>
+    <SolidColorBrush x:Key="ConnectionStatusStrokeBrush" Color="{DynamicResource ConnectionStatusStrokeColor}"/>
+    
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
     <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />

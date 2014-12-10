@@ -53,7 +53,7 @@
 
                             <Grid>
                                 <Image Style="{DynamicResource SideUserImageStyle}" Source="/Resources/DefaultUserIcon.png"/>
-                                <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{DynamicResource navigation_connected_icon}"/>
+                                <ContentControl cal:View.Model="{Binding Path=ConnectionViewModel}"/>
                             </Grid>
 
                             <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
