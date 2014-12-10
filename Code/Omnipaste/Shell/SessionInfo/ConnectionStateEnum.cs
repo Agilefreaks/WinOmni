@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Shell.Connection
+﻿namespace Omnipaste.Shell.SessionInfo
 {
     public enum ConnectionStateEnum
     {

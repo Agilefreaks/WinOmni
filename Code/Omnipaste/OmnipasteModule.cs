@@ -23,8 +23,8 @@
     using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
     using Omnipaste.Shell;
-    using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
+    using Omnipaste.Shell.SessionInfo;
     using Omnipaste.SmsComposer;
     using Omnipaste.Workspaces;
     using OmniUI;
@@ -64,7 +64,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
+                           typeof(SessionInfoViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),

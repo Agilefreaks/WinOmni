@@ -44,24 +44,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Style="{DynamicResource SideUserInfoBorderStyle}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid>
-                                <Image Style="{DynamicResource SideUserImageStyle}" Source="/Resources/DefaultUserIcon.png"/>
-                                <ContentControl cal:View.Model="{Binding Path=ConnectionViewModel}"/>
-                            </Grid>
-
-                            <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
-                                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}">User</TextBlock>
-                                <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}">Connected</TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                    <ContentControl cal:View.Model="{Binding Path=SessionInfoViewModel}"/>
 
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=Workspaces}">
                         <ItemsControl.ItemTemplate>
