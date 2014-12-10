@@ -4,5 +4,6 @@
 
     public interface IConnectionViewModel : IDisposable
     {
+        ConnectionStateEnum State { get; }
     }
 }
