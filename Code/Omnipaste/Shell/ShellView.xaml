@@ -5,6 +5,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         BorderBrush="{StaticResource MainColoBrush}"
         WindowStartupLocation="CenterScreen"
+        WindowTransitionsEnabled="False"
         Style="{DynamicResource ShellWindowStyle}">
     
     <controls:MetroWindow.Flyouts>
