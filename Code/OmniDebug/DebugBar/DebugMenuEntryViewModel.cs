@@ -29,7 +29,7 @@
         {
             get
             {
-                return Resources.DebugIconName;
+                return OmniUI.Resources.IconNames.SideMenuDebug;
             }
         }
 

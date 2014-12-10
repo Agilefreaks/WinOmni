@@ -7,12 +7,6 @@
     [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
     public class ActivityWorkspaceViewModel : Workspace, IActivityWorkspaceViewModel
     {
-        #region Private Fields
-
-        private const string ActivityIconName = "navigation_activity_icon";
-
-        #endregion
-
         #region Constructors and Destructors
 
         public ActivityWorkspaceViewModel(IActivityListViewModel activityListViewModel)
@@ -36,7 +30,7 @@
         {
             get
             {
-                return ActivityIconName;
+                return OmniUI.Resources.IconNames.SideMenuActivity;
             }
         }
 

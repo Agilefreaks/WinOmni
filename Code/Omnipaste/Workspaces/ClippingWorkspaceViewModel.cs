@@ -7,12 +7,6 @@
     [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
     public class ClippingWorkspaceViewModel : Workspace, IClippingWorkspaceViewModel
     {
-        #region Private Fields
-
-        private const string ClippingsIconName = "navigation_clippings_icon";
-
-        #endregion
-
         #region Constructors and Destructors
 
         public ClippingWorkspaceViewModel(IMasterClippingListViewModel defaultScreen)
@@ -36,7 +30,7 @@
         {
             get
             {
-                return ClippingsIconName;
+                return OmniUI.Resources.IconNames.SideMenuClippings;
             }
         }
 

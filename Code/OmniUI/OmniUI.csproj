@@ -85,6 +85,7 @@
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Intefaces\IHaveIcon.cs" />
     <Compile Include="Intefaces\IHaveToolTipText.cs" />
+    <Compile Include="Resources\IconNames.cs" />
     <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />

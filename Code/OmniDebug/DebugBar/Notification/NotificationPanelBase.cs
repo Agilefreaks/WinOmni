@@ -42,8 +42,8 @@
                                };
             _icons = new Dictionary<EventTypeEnum, string>
                          {
-                             { EventTypeEnum.IncomingCallEvent, Resources.PhoneIcon },
-                             { EventTypeEnum.IncomingSmsEvent, Resources.SMSIcon }
+                             { EventTypeEnum.IncomingCallEvent, OmniUI.Resources.IconNames.Phone },
+                             { EventTypeEnum.IncomingSmsEvent, OmniUI.Resources.IconNames.SMS }
                          };
             NotificationTime = DateTime.Now;
         }

@@ -36,7 +36,7 @@
         {
             get
             {
-                return Resources.SettingsIconName;
+                return OmniUI.Resources.IconNames.SideMenuSettings;
             }
         }
 
