@@ -7,6 +7,8 @@
         <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Effects.xaml"/>
         <ResourceDictionary Source="Shapes.xaml"/>
+        <ResourceDictionary Source="Image.xaml"/>
+        <ResourceDictionary Source="ContentControl.xaml"/>
         <ResourceDictionary Source="Grid.xaml"/>
         <ResourceDictionary Source="StackPanel.xaml"/>
         <ResourceDictionary Source="Border.xaml"/>

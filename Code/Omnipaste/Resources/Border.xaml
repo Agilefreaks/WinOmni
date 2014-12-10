@@ -47,4 +47,21 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Background" Value="{DynamicResource LiveContentBrush}"/>
     </Style>
+    
+    <Style x:Key="SideSecondaryMenuBorderStyle" TargetType="Border">
+        <Setter Property="Width" Value="{DynamicResource SideMenuWidth}"/>
+        <Setter Property="Margin" Value="10,0,10,20"/>
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+
+    <Style x:Key="SideUserInfoBorderStyle" TargetType="Border">
+        <Setter Property="Height" Value="125"/>
+        <Setter Property="Margin" Value="0,25,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="SideMenuBorderStyle" TargetType="Border">
+        <Setter Property="Width" Value="{DynamicResource SideMenuWidth}"/>
+        <Setter Property="Background" Value="{DynamicResource NavigationMenuBrush}"/>
+    </Style>
 </ResourceDictionary>
