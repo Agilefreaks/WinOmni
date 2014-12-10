@@ -6,6 +6,7 @@
         BorderBrush="{StaticResource MainColoBrush}"
         WindowStartupLocation="CenterScreen"
         WindowTransitionsEnabled="False"
+        ShowTitleBar="False"
         Style="{DynamicResource ShellWindowStyle}">
     
     <controls:MetroWindow.Flyouts>
