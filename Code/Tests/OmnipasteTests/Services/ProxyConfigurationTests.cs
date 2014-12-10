@@ -2,7 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniCommon;
+    using OmniCommon.Models;
 
     [TestFixture]
     public class ProxyConfigurationTests

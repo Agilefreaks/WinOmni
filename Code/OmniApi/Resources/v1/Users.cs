@@ -14,7 +14,7 @@
 
         public IObservable<Models.User> Get()
         {
-            return Authorize(ResourceApi.Get(AccessToken));
+            return ResourceApi.Get(AccessToken);
         }
 
 

@@ -19,8 +19,8 @@
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Workspaces;
     using OmniUI.Flyout;
     using OmniUI.Intefaces;
@@ -88,7 +88,7 @@
         public INotificationListViewModel NotificationListViewModel { get; set; }
 
         [Inject]
-        public IConnectionViewModel ConnectionViewModel { get; set; }
+        public ISessionInfoViewModel SessionInfoViewModel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }

@@ -8,7 +8,7 @@
     using Microsoft.Win32;
     using Ninject;
     using Omni;
-    using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Settings;

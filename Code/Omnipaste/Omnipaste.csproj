@@ -291,6 +291,7 @@
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\ConfigurationContainerExtensions.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
@@ -299,6 +300,8 @@
     <Compile Include="Framework\Commands\CommandEventArgs.cs" />
     <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
+    <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
@@ -324,6 +327,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
@@ -347,6 +351,7 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
+    <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\InMemoryMessageStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
@@ -369,6 +374,10 @@
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />
+    <Compile Include="Shell\SessionInfo\ISessionInfoViewModel.cs" />
+    <Compile Include="Shell\SessionInfo\SessionInfoView.xaml.cs">
+      <DependentUpon>SessionInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
     <Compile Include="Models\ISMSMessageFactory.cs" />
     <Compile Include="Models\SMSMessageFactory.cs" />
@@ -521,7 +530,7 @@
     </Compile>
     <Compile Include="Services\WebProxyFactory.cs" />
     <Compile Include="Services\WindowHandleProvider.cs" />
-    <Compile Include="Shell\Connection\ConnectionStateEnum.cs" />
+    <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SMSComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="Models\SMSMessage.cs" />
@@ -536,8 +545,6 @@
     <Compile Include="Services\Monitors\Internet\IConnectivityHelper.cs" />
     <Compile Include="Services\Monitors\Internet\IInternetConnectivityMonitor.cs" />
     <Compile Include="Services\SessionManager.cs" />
-    <Compile Include="Shell\Connection\ConnectionViewModel.cs" />
-    <Compile Include="Shell\Connection\IConnectionViewModel.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationContainer.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
     <Compile Include="Dialog\IDialogViewModel.cs" />
@@ -792,15 +799,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Connection\ConnectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\Connection\Connection\Connected.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\Connection\Connection\Disconnected.xaml">
+    <Page Include="Shell\SessionInfo\SessionInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -895,6 +894,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Shell\SessionInfo\SessionInfoViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>

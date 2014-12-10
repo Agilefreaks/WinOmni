@@ -50,11 +50,5 @@
         {
             _subject.AccessToken.Should().Be("bearer AccessToken");
         }
-
-        [Test]
-        public void Authorize_Always_ReturnsAnObservableOfTheSameType()
-        {
-            _subject.Authorize(Observable.Empty<string>()).Should().BeAssignableTo<IObservable<string>>();
-        }
     }
 }

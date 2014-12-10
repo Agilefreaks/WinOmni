@@ -5,11 +5,10 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
@@ -33,8 +32,8 @@
         [Test]
         public void Execute_UrlShortenerServiceFails_SetsANormalUriOnTheResult()
         {
-            var userInfo = new User { Email = "test@email.com" };
-            _subject.Parameter = new DependencyParameter("test", userInfo);
+            var userInfo = new UserInfo { Email = "test@email.com" };
+            _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             taskCompletionSource.SetException(new Exception("test"));
             _mockUrlShortenerService.Setup(x => x.Shorten(It.IsAny<Uri>())).Returns(taskCompletionSource.Task);
@@ -48,8 +47,8 @@
         [Test]
         public void Execute_UrlShortenerSucceeds_SetsTheObtainedUriOnTheResult()
         {
-            var userInfo = new User { Email = "test@email.com" };
-            _subject.Parameter = new DependencyParameter("test", userInfo);
+            var userInfo = new UserInfo { Email = "test@email.com" };
+            _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             var shortUrl = new Uri("http://google.com");
             taskCompletionSource.SetResult(shortUrl);

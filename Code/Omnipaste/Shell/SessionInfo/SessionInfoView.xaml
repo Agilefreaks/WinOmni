@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Omnipaste.Shell.SessionInfo.SessionInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Border Style="{DynamicResource SideUserInfoBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=UserImage}"/>
+                <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
+                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" Text="{Binding UserName}"/>
+                <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}" Text="{Binding StatusText}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

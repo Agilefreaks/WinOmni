@@ -3,6 +3,7 @@
     using System;
     using System.Net;
     using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
 
     public abstract class SystemWebProxyConfigurationDetector : IProxyConfigurationDetector
@@ -30,9 +31,9 @@
 
         #region Public Methods and Operators
 
-        public ProxyConfiguration? Detect()
+        public ProxyConfiguration Detect()
         {
-            ProxyConfiguration? result = null;
+            ProxyConfiguration result = null;
             var pingEndpoint = GetPingEndpoint();
             SimpleLogger.Log("Checking for proxy type: " + ProxyType);
             var systemWebProxy = WebRequest.GetSystemWebProxy();

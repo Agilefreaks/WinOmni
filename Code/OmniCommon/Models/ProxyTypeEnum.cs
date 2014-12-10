@@ -1,4 +1,4 @@
-﻿namespace OmniCommon
+﻿namespace OmniCommon.Models
 {
     public enum ProxyTypeEnum
     {

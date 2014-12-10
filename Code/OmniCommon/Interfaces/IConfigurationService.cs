@@ -1,6 +1,7 @@
 ﻿namespace OmniCommon.Interfaces
 {
     using System;
+    using OmniCommon.Models;
     using OmniCommon.Settings;
 
     public interface IConfigurationService
@@ -19,7 +20,9 @@
 
         string MachineName { get; }
 
-        ProxyConfiguration ProxyConfiguration { get; }
+        ProxyConfiguration ProxyConfiguration { get; set; }
+
+        UserInfo UserInfo { get; set; }
 
         string RefreshToken { get; }
 
@@ -46,8 +49,6 @@
         void ResetAuthSettings();
 
         void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
-
-        void SaveProxyConfiguration(ProxyConfiguration proxyConfiguration);
 
         #endregion
     }

@@ -2,15 +2,13 @@
 {
     using System;
     using System.Configuration;
-    using System.IO;
     using System.Reactive.Subjects;
     using System.Reflection;
-    using System.Xml;
-    using System.Xml.Serialization;
     using OmniCommon;
-    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniCommon.Settings;
+    using Omnipaste.ExtensionMethods;
 
     public class ConfigurationService : IConfigurationService
     {
@@ -37,19 +35,39 @@
 
         #region Public Properties
 
+        public ProxyConfiguration ProxyConfiguration
+        {
+            get
+            {
+                return _configurationContainer.GetObject<ProxyConfiguration>(ConfigurationProperties.ProxyConfiguration);
+            }
+
+            set
+            {
+                _configurationContainer.SetObject(ConfigurationProperties.ProxyConfiguration, value);
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
+            }
+        }
+
+        public UserInfo UserInfo
+        {
+            get
+            {
+                return _configurationContainer.GetObject<UserInfo>(ConfigurationProperties.UserInfo);
+            }
+
+            set
+            {
+                _configurationContainer.SetObject(ConfigurationProperties.UserInfo, value);
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.UserInfo, UserInfo));
+            }
+        }
+
         public string AccessToken
         {
             get
             {
                 return _configurationContainer.GetValue(ConfigurationProperties.AccessToken);
-            }
-        }
-
-        public ProxyConfiguration ProxyConfiguration
-        {
-            get
-            {
-                return GetProxyConfiguration();
             }
         }
 
@@ -180,55 +198,6 @@
         public void ResetAuthSettings()
         {
             SaveAuthSettings(new OmnipasteCredentials());
-        }
-
-        public void SaveProxyConfiguration(ProxyConfiguration value)
-        {
-            try
-            {
-                var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));
-                var stringWriter = new StringWriter();
-                xmlSerializer.Serialize(stringWriter, value);
-
-                _configurationContainer.SetValue(ConfigurationProperties.ProxyConfiguration, stringWriter.ToString());
-                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
-            }
-            catch (Exception exception)
-            {
-                ExceptionReporter.Instance.Report(exception);
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private ProxyConfiguration GetProxyConfiguration()
-        {
-            ProxyConfiguration? savedConfiguration = null;
-
-            try
-            {
-                var serializedConfiguration = _configurationContainer.GetValue(ConfigurationProperties.ProxyConfiguration);
-                if (!string.IsNullOrWhiteSpace(serializedConfiguration))
-                {
-                    var xmlSerializer = new XmlSerializer(typeof(ProxyConfiguration));
-                    var stringReader = new StringReader(serializedConfiguration);
-                    var xmlReader = XmlReader.Create(stringReader);
-                    if (xmlSerializer.CanDeserialize(xmlReader))
-                    {
-                        savedConfiguration = (ProxyConfiguration)xmlSerializer.Deserialize(xmlReader);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                ExceptionReporter.Instance.Report(exception);
-            }
-
-            savedConfiguration = savedConfiguration ?? ProxyConfiguration.Empty();
-
-            return savedConfiguration.Value;
         }
 
         #endregion

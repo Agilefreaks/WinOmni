@@ -22,7 +22,7 @@
 
         public IObservable<Event> Last()
         {
-            return Authorize(ResourceApi.Last(AccessToken));
+            return ResourceApi.Last(AccessToken);
         }
 
         #endregion

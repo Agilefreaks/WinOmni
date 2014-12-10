@@ -5,6 +5,7 @@
     using System.Net.Cache;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
 
     public class NetworkService : INetworkService
     {
@@ -20,7 +21,7 @@
             _webProxyFactory = webProxyFactory;
         }
 
-        public bool CanPingHome(ProxyConfiguration? proxyConfiguration = null)
+        public bool CanPingHome(ProxyConfiguration proxyConfiguration = null)
         {
             var result = true;
             try
@@ -35,7 +36,7 @@
             return result;
         }
 
-        public void PingHome(ProxyConfiguration? proxyConfiguration = null)
+        public void PingHome(ProxyConfiguration proxyConfiguration = null)
         {
             proxyConfiguration = proxyConfiguration ?? _configurationService.ProxyConfiguration;
             SimpleLogger.Log("Pinging home");
@@ -47,7 +48,7 @@
             SimpleLogger.Log("Given proxy port is: " + _configurationService.ProxyConfiguration.Port);
             SimpleLogger.Log("Proxy username is empty: " + string.IsNullOrWhiteSpace(_configurationService.ProxyConfiguration.Username));
             SimpleLogger.Log("Proxy password is empty: " + string.IsNullOrWhiteSpace(_configurationService.ProxyConfiguration.Password));
-            webRequest.Proxy = _webProxyFactory.CreateForConfiguration(proxyConfiguration.Value);
+            webRequest.Proxy = _webProxyFactory.CreateForConfiguration(proxyConfiguration);
             var webResponse = (HttpWebResponse)webRequest.GetResponse();
             SimpleLogger.Log("Result of ping is: " + webResponse.StatusCode);
             if (webResponse.StatusCode != HttpStatusCode.OK)

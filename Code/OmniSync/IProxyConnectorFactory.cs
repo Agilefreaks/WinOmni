@@ -1,6 +1,6 @@
 ﻿namespace OmniSync
 {
-    using OmniCommon;
+    using OmniCommon.Models;
     using SuperSocket.ClientEngine;
 
     public interface IProxyConnectorFactory

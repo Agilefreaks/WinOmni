@@ -26,12 +26,12 @@
 
         public IObservable<Clipping> Last()
         {
-            return Authorize(ResourceApi.Last(AccessToken));
+            return ResourceApi.Last(AccessToken);
         }
 
         public IObservable<Clipping> Create(string identifier, string content)
         {
-            return Authorize(ResourceApi.Create(new Clipping(content, identifier), AccessToken));
+            return ResourceApi.Create(new Clipping(content, identifier), AccessToken);
         }
 
         #endregion

@@ -7,6 +7,7 @@
     using Caliburn.Micro;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
     using Omnipaste.Services;
@@ -313,7 +314,7 @@
             }
             else
             {
-                _configurationService.SaveProxyConfiguration(ProxyConfiguration);
+                _configurationService.ProxyConfiguration = ProxyConfiguration;
                 _eventAggregator.PublishOnUIThread(new RetryMessage());
             }
 
