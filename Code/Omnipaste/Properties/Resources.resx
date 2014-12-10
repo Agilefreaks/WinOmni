@@ -288,9 +288,6 @@
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
-  <data name="SettingsIconName" xml:space="preserve">
-    <value>appbar_cogs</value>
-  </data>
   <data name="ConnectIcon" xml:space="preserve">
     <value>appbar_connect</value>
   </data>

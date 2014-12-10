@@ -5,6 +5,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         BorderBrush="{StaticResource MainColoBrush}"
         WindowStartupLocation="CenterScreen"
+        WindowTransitionsEnabled="False"
+        ShowTitleBar="False"
         Style="{DynamicResource ShellWindowStyle}">
     
     <controls:MetroWindow.Flyouts>
@@ -25,37 +27,83 @@
             </controls:FlyoutsControl.ItemContainerStyle>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands ItemsSource="{Binding Path=AllHeaderItems}">
-            <controls:WindowCommands.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl cal:View.Model="{Binding}" />
-                </DataTemplate>
-            </controls:WindowCommands.ItemTemplate>
-        </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
 
     <Grid>
         <ContentControl x:Name="ContextMenuViewModel" />
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <ItemsControl ItemsSource="{Binding Path=Workspaces}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding Path=DisplayName}" cal:Message.Attach="ActivateItem($dataContext)" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-            <ContentControl Grid.Row="1" x:Name="ActiveItem" cal:View.Model="{Binding Path=ActiveItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{DynamicResource SideMenuBorderStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Style="{DynamicResource SideUserInfoBorderStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid>
+                                <Image Style="{DynamicResource SideUserImageStyle}" Source="/Resources/DefaultUserIcon.png"/>
+                                <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{DynamicResource navigation_connected_icon}"/>
+                            </Grid>
+
+                            <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
+                                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}">User</TextBlock>
+                                <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}">Connected</TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=Workspaces}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Style="{DynamicResource SideMainButtonStyle}" IsChecked="{Binding Path=IsActive, Mode=OneWay}" Tag="{Binding Path=DisplayName}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" cal:Message.Attach="ActivateItem($dataContext)"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Style="{DynamicResource SideMainMenuStackPanelStyle}" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <Border Grid.Row="2" Style="{DynamicResource SideSecondaryMenuBorderStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ItemsControl ItemsSource="{Binding Path=SecondaryMenuViewModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl cal:View.Model="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Style="{DynamicResource SideSecondaryStackPanelStyle}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            
+                            <TextBlock Grid.Column="1" Style="{DynamicResource VersionNumberTextBlockStyle}" Text="{Binding Path=AppNameAndVersion}" ToolTip="{Binding Path=AppNameAndVersion}"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <ContentControl Grid.Column="1" x:Name="ActiveItem" cal:View.Model="{Binding Path=ActiveItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Grid>
         <ContentControl x:Name="DialogViewModel"/>
-    </Grid>
+    </Grid>    
 </controls:MetroWindow>

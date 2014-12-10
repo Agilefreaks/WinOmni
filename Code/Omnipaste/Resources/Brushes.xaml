@@ -27,7 +27,11 @@
     <SolidColorBrush x:Key="ActivityContentBrush" Color="{DynamicResource ActivityContentColor}"/>
     <SolidColorBrush x:Key="ActivitySecondaryContentBrush" Color="{DynamicResource ActivitySecondaryContentColor}"/>
     <SolidColorBrush x:Key="PassiveUiElementsBrush" Color="{DynamicResource PassiveUiElementsColor}"/>
-    
+
+    <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
+    <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
+    <SolidColorBrush x:Key="NavigationMenuTextBrush" Color="{DynamicResource SideMenuTextColor}"/>
+
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
     <VisualBrush x:Key="EnvelopeVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_email_minimal}" />

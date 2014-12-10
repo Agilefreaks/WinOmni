@@ -23,6 +23,8 @@
 
         string RefreshToken { get; }
 
+        string AppNameAndVersion { get; }
+
         Version Version { get; }
 
         string WebBaseUrl { get; }

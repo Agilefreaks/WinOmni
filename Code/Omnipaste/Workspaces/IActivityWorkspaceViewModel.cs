@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Workspaces
 {
-    public interface IActivityWorkspaceViewModel
+    public interface IActivityWorkspaceViewModel : IWorkspace
     {
     }
 }

@@ -9,6 +9,8 @@
 
     public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
     {
+        string AppNameAndVersion { get; }
+
         ILoadingViewModel LoadingViewModel { get; set; }
 
         IDialogViewModel DialogViewModel { get; set; }

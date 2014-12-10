@@ -785,15 +785,6 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to appbar_cogs.
-        /// </summary>
-        public static string SettingsIconName {
-            get {
-                return ResourceManager.GetString("SettingsIconName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Log out.
         /// </summary>
         public static string SettingsLogOut {

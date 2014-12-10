@@ -102,8 +102,6 @@
     <Compile Include="DebugBar\Notification\NotificationPanelBase.cs" />
     <Compile Include="DebugBar\PhoneNotification\PhoneNotificationViewModel.cs" />
     <Compile Include="DebugBar\SMSNotification\SMSNotificationViewModel.cs" />
-    <Compile Include="DebugHeader\DebugHeaderViewModel.cs" />
-    <Compile Include="DebugHeader\IDebugHeaderViewModel.cs" />
     <Compile Include="DebugModule.cs" />
     <Compile Include="DebugBar\DebugBarViewModel.cs" />
     <Compile Include="DebugBar\IDebugBarViewModel.cs" />
@@ -193,6 +191,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugBar\DebugMenuEntryViewModel.cs" />
     <Content Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
