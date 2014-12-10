@@ -137,35 +137,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="SideMainButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <StackPanel Name="MenuButtonContainer" Height="70" HorizontalAlignment="Stretch" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Rectangle Height="22" Width="100" Margin="0,12,0,0" HorizontalAlignment="Center"
-                                   Fill="{DynamicResource TimeStampBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-
-                        <TextBlock Foreground="{DynamicResource NavigationMenuTextBrush}" Margin="0,12,0,0" HorizontalAlignment="Center"
-                                   FontWeight="SemiBold" FontSize="14" FontFamily="{DynamicResource ContentFont}"
-                                   Text="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    </StackPanel>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Background" Value="{DynamicResource NavigationMenuActiveItemBrush}" TargetName="MenuButtonContainer" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="SideSecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Margin" Value="0,5,0,0"/>
