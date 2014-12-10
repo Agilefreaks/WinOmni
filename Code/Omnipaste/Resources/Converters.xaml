@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters">
+                    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
+                    xmlns:converters1="clr-namespace:OmniUI.Converters;assembly=OmniUI">
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
     <converters:ActivityTypeToBrushConverter x:Key="ActivityTypeToBrushConverter"/>
+    <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
 </ResourceDictionary>

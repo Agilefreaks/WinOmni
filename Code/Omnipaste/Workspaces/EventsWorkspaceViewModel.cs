@@ -7,6 +7,12 @@
     [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
     public class EventsWorkspaceViewModel : Workspace, IEventsWorkspaceViewModel
     {
+        #region Private Properties
+
+        private const string MessagesIcon = "navigation_messages_icon";
+
+        #endregion
+
         #region Constructors and Destructors
 
         public EventsWorkspaceViewModel(IMasterEventListViewModel defaultScreen)
@@ -23,6 +29,14 @@
             get
             {
                 return Resources.MasterEventListDisplayName;
+            }
+        }
+
+        public override string Icon
+        {
+            get
+            {
+                return MessagesIcon;
             }
         }
 

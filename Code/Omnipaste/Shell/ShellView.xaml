@@ -75,7 +75,7 @@
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=Workspaces}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Style="{DynamicResource SideMainButtonStyle}" Tag="{Binding Path=DisplayName}" Content="{DynamicResource navigation_activity_icon}" cal:Message.Attach="ActivateItem($dataContext)" Background="{DynamicResource NavigationMenuActiveItemBrush}"/>
+                                <Button Style="{DynamicResource SideMainButtonStyle}" Tag="{Binding Path=DisplayName}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" cal:Message.Attach="ActivateItem($dataContext)" Background="{DynamicResource NavigationMenuActiveItemBrush}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>

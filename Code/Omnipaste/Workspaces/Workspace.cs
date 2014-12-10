@@ -2,14 +2,16 @@
 {
     using Caliburn.Micro;
 
-    public class Workspace : Conductor<IScreen>, IWorkspace
+    public abstract class Workspace : Conductor<IScreen>, IWorkspace
     {
         private readonly IScreen _defaultScreen;
 
-        public Workspace(IScreen defaultScreen)
+        protected Workspace(IScreen defaultScreen)
         {
             _defaultScreen = defaultScreen;
         }
+
+        public virtual string Icon { get; protected set; }
 
         protected override void OnActivate()
         {

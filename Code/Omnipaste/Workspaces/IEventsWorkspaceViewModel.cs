@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Workspaces
 {
-    public interface IEventsWorkspaceViewModel
+    public interface IEventsWorkspaceViewModel : IWorkspace
     {
     }
 }
