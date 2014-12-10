@@ -122,6 +122,14 @@
             }
         }
 
+        public string AppNameAndVersion
+        {
+            get
+            {
+                return string.Format("{0} {1}", Constants.AppName, Version);
+            }
+        }
+
         public Version Version
         {
             get

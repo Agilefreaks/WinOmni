@@ -7,6 +7,8 @@
         <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Effects.xaml"/>
         <ResourceDictionary Source="Shapes.xaml"/>
+        <ResourceDictionary Source="Image.xaml"/>
+        <ResourceDictionary Source="ContentControl.xaml"/>
         <ResourceDictionary Source="Grid.xaml"/>
         <ResourceDictionary Source="StackPanel.xaml"/>
         <ResourceDictionary Source="Border.xaml"/>
@@ -15,6 +17,7 @@
         <ResourceDictionary Source="TextBlock.xaml"/>
         <ResourceDictionary Source="TextBox.xaml"/>
         <ResourceDictionary Source="Buttons.xaml"/>
+        <ResourceDictionary Source="RadioButton.xaml"/>
         <ResourceDictionary Source="CheckBox.xaml"/>
         <ResourceDictionary Source="ComboBox.xaml"/>
         <ResourceDictionary Source="NumericUpDown.xaml"/>

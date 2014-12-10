@@ -99,7 +99,7 @@
         {
             get
             {
-                return string.Format("{0} {1}", Constants.AppName, ConfigurationService.Version);
+                return ConfigurationService.AppNameAndVersion;
             }
         }
 

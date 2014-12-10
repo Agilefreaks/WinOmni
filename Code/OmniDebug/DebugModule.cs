@@ -11,12 +11,11 @@
     using OmniDebug.DebugBar.IncomingClipping;
     using OmniDebug.DebugBar.PhoneNotification;
     using OmniDebug.DebugBar.SMSNotification;
-    using OmniDebug.DebugHeader;
     using OmniDebug.Services;
     using OmniSync;
     using OmniUI;
     using OmniUI.Flyout;
-    using OmniUI.HeaderButton;
+    using OmniUI.Intefaces;
 
     public class DebugModule : ModuleBase
     {
@@ -28,7 +27,10 @@
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
         {
-            return new[] { typeof(DebugHeaderViewModel), typeof(DebugBarViewModel) };
+            return new[]
+            {
+                typeof (DebugBarViewModel)
+            };
         }
 
         protected override void LoadCore()
@@ -41,7 +43,7 @@
             Kernel.Bind<IOmniService>().ToMethod(context => context.Kernel.Get<IOmniServiceWrapper>());
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
-            Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<IDebugHeaderViewModel>());
+            Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<DebugMenuEntryViewModel>());
 
             Kernel.Bind<EventsWrapper>()
                 .ToConstructor(syntax => new EventsWrapper(syntax.Context.Kernel.Get<Events>()))

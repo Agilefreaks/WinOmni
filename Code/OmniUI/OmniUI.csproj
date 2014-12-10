@@ -82,9 +82,11 @@
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
-    <Compile Include="HeaderButton\IHeaderButtonViewModel.cs" />
-    <Compile Include="HeaderButton\IHeaderItemViewModel.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
+    <Compile Include="Intefaces\IHaveIcon.cs" />
+    <Compile Include="Intefaces\IHaveToolTipText.cs" />
+    <Compile Include="Resources\IconNames.cs" />
+    <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,17 +97,13 @@
     <None Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="HeaderButton\HeaderItemView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HeaderButton\HeaderButtonView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

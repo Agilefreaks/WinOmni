@@ -132,14 +132,6 @@
             _mockApplicationService.VerifySet(x => x.AutoStart = false, Times.Once);
         }
 
-        [Test]
-        public void TooltipText_HasVersion()
-        {
-            _mockConfigurationService.SetupGet(s => s.Version).Returns(new Version("1.0.1.10"));
-
-            _subject.TooltipText.Should().Be("Omnipaste 1.0.1.10");
-        }
-
         #endregion
     }
 }

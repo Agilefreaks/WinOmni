@@ -24,12 +24,11 @@
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
-    using Omnipaste.Shell.SettingsHeader;
     using Omnipaste.SmsComposer;
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
-    using OmniUI.HeaderButton;
+    using OmniUI.Intefaces;
 
     public class OmnipasteModule : ModuleBase
     {
@@ -45,8 +44,7 @@
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
-            Kernel.Bind<IHeaderButtonViewModel>().ToMethod(context => context.Kernel.Get<ISettingsHeaderViewModel>());
-            Kernel.Bind<IHeaderItemViewModel>().ToMethod(context => context.Kernel.Get<IConnectionViewModel>());
+            Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
@@ -64,7 +62,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(SettingsHeaderViewModel), typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
+                           typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),

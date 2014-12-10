@@ -291,9 +291,6 @@
   <data name="SettingsHeader" xml:space="preserve">
     <value>Deschide setările</value>
   </data>
-  <data name="SettingsIconName" xml:space="preserve">
-    <value>appbar_cogs</value>
-  </data>
   <data name="SettingsLogOut" xml:space="preserve">
     <value>Deconectare</value>
   </data>

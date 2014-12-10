@@ -5251,4 +5251,214 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Canvas>
         </Canvas>
     </Canvas>
+
+    <Canvas x:Key="navigation_activity_icon" Width="16" Height="16">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath2999" Figures="M 0 13 13 13 13 0 0 0 0 13 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 16.25"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="4.4571" Y="13"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 -3.838 0 c -0.31 0 -0.619 -0.31 -0.619 -0.619 l 0 -3.838 c 0 -0.372 0.309 -0.619 0.619 -0.619 l 3.838 0 c 0.371 0 0.619 0.309 0.619 0.619 l 0 3.838 C 0.619 -0.31 0.371 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="12.381" Y="13"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 -3.838 0 C -4.21 0 -4.457 -0.31 -4.457 -0.619 l 0 -3.838 c 0 -0.372 0.309 -0.619 0.619 -0.619 l 3.838 0 c 0.371 0 0.619 0.309 0.619 0.619 l 0 3.838 C 0.619 -0.31 0.31 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="4.4571" Y="5.0762"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 -3.838 0 C -4.21 0 -4.457 -0.31 -4.457 -0.619 l 0 -3.838 c 0 -0.372 0.309 -0.619 0.619 -0.619 l 3.838 0 c 0.371 0 0.619 0.309 0.619 0.619 l 0 3.838 C 0.619 -0.248 0.371 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="12.381" Y="5.0762"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="{DynamicResource BlackBrush}">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 -3.838 0 C -4.21 0 -4.457 -0.31 -4.457 -0.619 l 0 -3.838 c 0 -0.372 0.309 -0.619 0.619 -0.619 l 3.838 0 c 0.371 0 0.619 0.309 0.619 0.619 l 0 3.838 C 0.619 -0.248 0.31 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="navigation_messages_icon" Width="31" Height="25">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath3021" Figures="M 0 20 25 20 25 0 0 0 0 20 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 25"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="4.903" Y="0"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FFD8D8D8">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -0.198 0 -0.406 0.02 -0.623 0.063 -0.264 0.053 -0.481 0.236 -0.575 0.484 -0.095 0.248 -0.053 0.527 0.11 0.738 0.362 0.466 0.823 1.32 0.75 1.714 -0.009 0.049 -0.021 0.071 -0.075 0.103 -2.811 1.72 -4.49 4.494 -4.49 7.42 0 5.226 5.343 9.478 11.91 9.478 6.567 0 11.91 -4.252 11.91 -9.478 0 -0.425 -0.35 -0.769 -0.781 -0.769 -0.432 0 -0.781 0.344 -0.781 0.769 0 4.378 -4.643 7.94 -10.348 7.94 -5.706 0 -10.348 -3.562 -10.348 -7.94 0 -2.391 1.403 -4.676 3.753 -6.113 C 0.838 4.148 1.11 3.756 1.199 3.273 1.281 2.831 1.194 2.361 1.04 1.929 1.213 2.053 1.389 2.201 1.577 2.363 2.027 2.755 2.538 3.199 3.194 3.038 4.209 2.791 5.955 2.582 7.007 2.582 7.619 2.582 8.232 2.624 8.829 2.705 9.256 2.765 9.651 2.47 9.711 2.049 9.77 1.628 9.472 1.24 9.044 1.181 8.376 1.09 7.69 1.044 7.007 1.044 5.883 1.044 4.117 1.249 2.973 1.509 2.875 1.439 2.726 1.31 2.61 1.209 2.07 0.741 1.217 0 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="19.5164" Y="2.5608"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FFD8D8D8">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c 0.353 0 0.63 -0.172 0.871 -0.367 -0.001 0.098 0.007 0.196 0.025 0.292 0.073 0.395 0.295 0.717 0.644 0.93 1.491 0.912 2.381 2.355 2.381 3.862 0 2.78 -2.981 5.042 -6.645 5.042 -3.664 0 -6.645 -2.262 -6.645 -5.042 0 -2.781 2.981 -5.043 6.645 -5.043 0.684 0 1.821 0.136 2.481 0.297 C -0.181 -0.014 -0.063 0 0 0 m 1.952 -2.56 c -0.911 0 -1.539 0.545 -1.914 0.87 -0.047 0.041 -0.091 0.081 -0.132 0.116 -0.786 -0.166 -1.89 -0.29 -2.63 -0.29 -4.526 0 -8.208 2.952 -8.208 6.581 0 3.628 3.682 6.58 8.208 6.58 4.526 0 8.208 -2.952 8.208 -6.58 0 -2.018 -1.138 -3.928 -3.049 -5.125 0.026 -0.194 0.228 -0.597 0.449 -0.884 0.163 -0.211 0.205 -0.49 0.11 -0.738 C 2.9 -2.278 2.683 -2.461 2.419 -2.513 2.256 -2.546 2.101 -2.56 1.952 -2.56" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="navigation_clippings_icon"  Width="29" Height="28">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath2999" Figures="M 0 22 23 22 23 0 0 0 0 22 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 27.5"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="8.7339" Y="1.0359"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FFD8D8D8">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 11.305 8.085 c 3.175 2.282 3.92 6.718 1.633 9.909 -2.274 3.194 -6.71 3.929 -9.901 1.648 l -8.978 -6.424 c -0.27 -0.193 -0.333 -0.569 -0.14 -0.842 l 0.212 -0.296 c 0.193 -0.273 0.572 -0.333 0.842 -0.14 l 8.98 6.43 c 2.494 1.771 5.949 1.199 7.724 -1.278 1.761 -2.48 1.184 -5.941 -1.288 -7.714 l -0.003 0 -11.305 -8.066 0.002 0 C -2.687 0.024 -5.157 0.461 -6.428 2.205 -7.69 3.97 -7.28 6.438 -5.512 7.704 l 0.003 -0.002 9.429 6.746 c 1.063 0.76 2.561 0.517 3.316 -0.547 0.748 -1.062 0.502 -2.54 -0.559 -3.302 L -0.55 5.432 C -0.82 5.239 -0.883 4.863 -0.69 4.59 L -0.473 4.289 C -0.28 4.019 0.096 3.956 0.369 4.149 l 7.229 5.162 c 1.775 1.268 2.183 3.734 0.905 5.506 C 7.251 16.593 4.781 17 3.008 15.732 L -6.423 8.983 C -8.905 7.205 -9.477 3.751 -7.702 1.271 -5.926 -1.213 -2.475 -1.785 0 0" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="navigation_settings_icon" Width="9" Height="9">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath3061" Figures="M 0 7 7 7 7 0 0 0 0 7 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 8.75"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="3.5438" Y="2.1409"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FF4E4D4D">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -0.745 0 -1.359 0.614 -1.359 1.359 0 0.745 0.614 1.359 1.359 1.359 0.745 0 1.359 -0.614 1.359 -1.359 C 1.359 0.614 0.745 0 0 0 M 3.332 0.745 2.806 1.14 C 2.63 1.271 2.63 1.491 2.806 1.622 L 3.332 2.017 C 3.551 2.192 3.463 2.543 3.2 2.543 L 2.587 2.587 c -0.22 0 -0.307 0.219 -0.263 0.438 l 0.263 0.57 C 2.718 3.858 2.455 4.121 2.192 3.99 L 1.622 3.726 C 1.447 3.639 1.228 3.77 1.184 3.99 L 1.14 4.603 C 1.096 4.866 0.745 4.954 0.57 4.735 L 0.219 4.209 c -0.131 -0.176 -0.351 -0.176 -0.482 0 L -0.658 4.735 C -0.833 4.954 -1.184 4.866 -1.184 4.603 L -1.271 3.946 c 0 -0.22 -0.22 -0.307 -0.439 -0.263 L -2.28 3.99 C -2.499 4.077 -2.762 3.814 -2.674 3.595 l 0.263 -0.57 C -2.324 2.85 -2.455 2.63 -2.674 2.587 L -3.288 2.499 c -0.263 0 -0.351 -0.351 -0.132 -0.526 l 0.526 -0.395 c 0.176 -0.131 0.176 -0.35 0 -0.482 L -3.42 0.745 C -3.639 0.57 -3.551 0.219 -3.288 0.219 l 0.614 -0.044 c 0.219 0 0.307 -0.219 0.263 -0.438 l -0.263 -0.614 c -0.132 -0.263 0.131 -0.526 0.394 -0.394 l 0.57 0.263 c 0.176 0.087 0.395 -0.044 0.439 -0.263 l 0.043 -0.614 c 0.044 -0.263 0.395 -0.351 0.527 -0.132 l 0.394 0.526 c 0.132 0.176 0.351 0.176 0.482 0 L 0.57 -2.017 c 0.175 -0.219 0.526 -0.131 0.526 0.132 l 0.044 0.614 c 0 0.219 0.219 0.306 0.438 0.263 l 0.57 -0.263 c 0.263 -0.132 0.526 0.131 0.395 0.394 l -0.263 0.57 c -0.088 0.175 0.044 0.395 0.263 0.439 l 0.614 0.043 c 0.306 0.044 0.394 0.395 0.175 0.57" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="navigation_disconnected_icon" Width="15" Height="15">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath3109" Figures="M 0 12 12 12 12 0 0 0 0 12 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 15"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="11.0001" Y="5.9998"/>
+                        </Canvas.RenderTransform>
+                        <Path Name="path3115" Fill="#FFAAAAAA">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c 0 2.761 -2.239 5 -5 5 -2.761 0 -5 -2.239 -5 -5 0 -2.761 2.239 -5 5 -5 2.761 0 5 2.239 5 5" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="6" Y="10"/>
+                        </Canvas.RenderTransform>
+                        <Path Name="path3119" Fill="#FF191A1A">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -2.206 0 -4 -1.794 -4 -4 0 -2.206 1.794 -4 4 -4 2.206 0 4 1.794 4 4 0 2.206 -1.794 4 -4 4 m 0 -10 c -3.309 0 -6 2.691 -6 6 0 3.309 2.691 6 6 6 3.309 0 6 -2.691 6 -6 0 -3.309 -2.691 -6 -6 -6" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="navigation_connected_icon" Width="15" Height="15">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath3083" Figures="M 0 12 12 12 12 0 0 0 0 12 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas Name="g3077">
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 15"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="11.0001" Y="5.9998"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FF56B723">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c 0 2.761 -2.239 5 -5 5 -2.761 0 -5 -2.239 -5 -5 0 -2.761 2.239 -5 5 -5 2.761 0 5 2.239 5 5" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="6" Y="10"/>
+                        </Canvas.RenderTransform>
+                        <Path Fill="#FF191A1A">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -2.206 0 -4 -1.794 -4 -4 0 -2.206 1.794 -4 4 -4 2.206 0 4 1.794 4 4 0 2.206 -1.794 4 -4 4 m 0 -10 c -3.309 0 -6 2.691 -6 6 0 3.309 2.691 6 6 6 3.309 0 6 -2.691 6 -6 0 -3.309 -2.691 -6 -6 -6" FillRule="nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
 </ResourceDictionary>
