@@ -23,7 +23,7 @@
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Workspaces;
     using OmniUI.Flyout;
-    using OmniUI.HeaderButton;
+    using OmniUI.Intefaces;
 
     public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {
@@ -103,10 +103,7 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
-        public IEnumerable<IHeaderButtonViewModel> HeaderButtonViewModels { get; set; }
-
-        [Inject]
-        public IEnumerable<IHeaderItemViewModel> HeaderItemViewModels { get; set; }
+        public IEnumerable<ISecondaryMenuEntryViewModel> SecondaryMenuViewModels { get; set; }
 
         [Inject]
         public IWindowHandleProvider WindowHandleProvider { get; set; }
@@ -116,14 +113,6 @@
 
         [Inject]
         public IEnumerable<IWorkspace> Workspaces { get; set; }
-
-        public IEnumerable<IHeaderItemViewModel> AllHeaderItems
-        {
-            get
-            {
-                return HeaderItemViewModels.Concat(HeaderButtonViewModels);
-            }
-        }
 
         #endregion
 

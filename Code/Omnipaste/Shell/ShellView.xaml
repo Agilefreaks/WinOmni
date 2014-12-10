@@ -27,15 +27,6 @@
             </controls:FlyoutsControl.ItemContainerStyle>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands ItemsSource="{Binding Path=AllHeaderItems}">
-            <controls:WindowCommands.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl cal:View.Model="{Binding}" />
-                </DataTemplate>
-            </controls:WindowCommands.ItemTemplate>
-        </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
 
     <Grid>
         <ContentControl x:Name="ContextMenuViewModel" />
@@ -92,10 +83,19 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Style="{DynamicResource SideSecondaryStackPanelStyle}">
-                                <Button Style="{DynamicResource SideSecondaryButtonStyle}" Content="{DynamicResource navigation_settings_icon}"/>
-                                <Button Style="{DynamicResource SideSecondaryButtonStyle}" Content="{DynamicResource navigation_settings_icon}"/>
-                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding Path=SecondaryMenuViewModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl cal:View.Model="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Style="{DynamicResource SideSecondaryStackPanelStyle}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            
                             <TextBlock Grid.Column="1" Style="{DynamicResource VersionNumberTextBlockStyle}" Text="{Binding Path=AppNameAndVersion}" ToolTip="{Binding Path=AppNameAndVersion}"/>
                         </Grid>
                     </Border>

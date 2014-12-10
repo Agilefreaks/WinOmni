@@ -334,6 +334,7 @@
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />
+    <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
     <Compile Include="SmsComposer\ISMSFactory.cs" />
     <Compile Include="SmsComposer\SMSFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
@@ -503,8 +504,6 @@
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="Shell\ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
-    <Compile Include="Shell\SettingsHeader\ISettingsHeaderViewModel.cs" />
-    <Compile Include="Shell\SettingsHeader\SettingsHeaderViewModel.cs" />
     <Compile Include="Shell\Settings\ISettingsViewModel.cs" />
     <Compile Include="Shell\Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />

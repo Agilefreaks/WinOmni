@@ -11,7 +11,7 @@
         public DebugBarViewModel(IEnumerable<IDebugBarPanel> debugBarPanels)
         {
             DebugBarPanels = debugBarPanels;
-            Position = Position.Left;
+            Position = Position.Right;
         }
 
         #endregion
