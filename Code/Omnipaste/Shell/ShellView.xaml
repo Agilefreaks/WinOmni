@@ -96,7 +96,7 @@
                                 <Button Style="{DynamicResource SideSecondaryButtonStyle}" Content="{DynamicResource navigation_settings_icon}"/>
                                 <Button Style="{DynamicResource SideSecondaryButtonStyle}" Content="{DynamicResource navigation_settings_icon}"/>
                             </StackPanel>
-                            <TextBlock Grid.Column="1" Style="{DynamicResource VersionNumberTextBlockStyle}" Text="Omnipaste v 1.0.1" />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource VersionNumberTextBlockStyle}" Text="{Binding Path=AppNameAndVersion}" ToolTip="{Binding Path=AppNameAndVersion}"/>
                         </Grid>
                     </Border>
                 </Grid>

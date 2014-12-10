@@ -55,9 +55,6 @@
 
         #region Public Properties
 
-        [Inject]
-        public INotificationListViewModel NotificationListViewModel { get; set; }
-
         public int SelectedViewIndex
         {
             get
@@ -71,10 +68,24 @@
             }
         }
 
+        public string AppNameAndVersion
+        {
+            get
+            {
+                return ConfigurationService.AppNameAndVersion;
+            }
+        }
+
         public IEventAggregator EventAggregator { get; set; }
 
         [Inject]
         public IActivationService ActivationService { get; set; }
+
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
+        [Inject]
+        public INotificationListViewModel NotificationListViewModel { get; set; }
 
         [Inject]
         public IConnectionViewModel ConnectionViewModel { get; set; }
