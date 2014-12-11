@@ -1,26 +1,13 @@
-﻿namespace Omnipaste.Activity
+﻿namespace Omnipaste.ActivityDetails.Message
 {
     using Omnipaste.Activity.Models;
     using Omnipaste.Activity.Presenters;
-    using Omnipaste.Services;
 
-    using OmniUI.Attributes;
-
-    [UseView("Omnipaste.Activity.ActivityView", IsFullyQualifiedName = true)]
-    public class ContactRelatedActivityViewModel : ActivityViewModel, IContactRelatedActivityViewModel
+    public class MessageDetailsHeaderViewModel : ActivityDetailsHeaderViewModel, IMessageDetailsHeaderViewModel
     {
         #region Fields
 
         private IContactInfoPresenter _contactInfo;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public ContactRelatedActivityViewModel(IUiRefreshService uiRefreshService)
-            : base(uiRefreshService)
-        {
-        }
 
         #endregion
 
@@ -43,7 +30,7 @@
             }
         }
 
-        public override Models.Activity Model
+        public override Activity Model
         {
             get
             {
@@ -52,8 +39,7 @@
             set
             {
                 base.Model = value;
-                ContactInfo contactInfo = value.ExtraData.ContactInfo;
-                ContactInfo = new ContactInfoPresenter(contactInfo);
+                ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
             }
         }
 

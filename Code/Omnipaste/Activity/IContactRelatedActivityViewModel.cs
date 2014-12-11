@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Activity
 {
-    using System.Windows.Media;
+    using Omnipaste.Activity.Presenters;
 
     public interface IContactRelatedActivityViewModel : IActivityViewModel
     {
-        ImageSource ContactImage { get; set; }
+        IContactInfoPresenter ContactInfo { get; set; }
     }
 }

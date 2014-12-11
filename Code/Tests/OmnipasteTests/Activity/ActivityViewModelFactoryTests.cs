@@ -3,6 +3,8 @@
     using FluentAssertions;
     using Moq;
     using Ninject;
+    using Ninject.MockingKernel;
+    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.Activity.Models;
@@ -13,16 +15,18 @@
     {
         private ActivityViewModelFactory _subject;
 
-        private Mock<IUiRefreshService> _mockUiRefreshService;
-
         [SetUp]
         public void Setup()
         {
-            _mockUiRefreshService = new Mock<IUiRefreshService> {  DefaultValue = DefaultValue.Mock };
-            _subject = new ActivityViewModelFactory(_mockUiRefreshService.Object)
-                           {
-                               Kernel = new Mock<IKernel>().Object
-                           };
+            var mockingKernel = new MoqMockingKernel();
+            var mockContactRelatedActivityViewModel = mockingKernel.GetMock<IContactRelatedActivityViewModel>();
+            mockContactRelatedActivityViewModel.SetupAllProperties();
+            var mockActivityViewModel = mockingKernel.GetMock<IActivityViewModel>();
+            mockActivityViewModel.SetupAllProperties();
+            mockingKernel.Bind<IContactRelatedActivityViewModel>()
+                .ToConstant(mockContactRelatedActivityViewModel.Object);
+            mockingKernel.Bind<IActivityViewModel>().ToConstant(mockActivityViewModel.Object);
+            _subject = new ActivityViewModelFactory { Kernel = mockingKernel };
         }
 
         [Test]
@@ -32,7 +36,7 @@
 
             var activityViewModel = _subject.Create(activity);
 
-            activityViewModel.Should().BeOfType<ActivityViewModel>();
+            activityViewModel.Should().BeAssignableTo<IActivityViewModel>();
             activityViewModel.Model.Should().Be(activity);
         }
 
@@ -44,7 +48,7 @@
 
             var activityViewModel = _subject.Create(activity);
 
-            activityViewModel.Should().BeOfType<ContactRelatedActivityViewModel>();
+            activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
             activityViewModel.Model.Should().Be(activity);
         }
 
@@ -56,7 +60,7 @@
 
             var activityViewModel = _subject.Create(activity);
 
-            activityViewModel.Should().BeOfType<ContactRelatedActivityViewModel>();
+            activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
             activityViewModel.Model.Should().Be(activity);
         }
     }

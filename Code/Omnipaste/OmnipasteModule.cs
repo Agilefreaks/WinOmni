@@ -55,6 +55,7 @@
             Kernel.Bind<IWorkspace>().To<ActivityWorkspace>().InSingletonScope();
             Kernel.Bind<IWorkspace>().To<ClippingWorkspace>().InSingletonScope();
             Kernel.Bind<IWorkspace>().To<EventsWorkspace>().InSingletonScope();
+            Kernel.Bind<IMessageStore>().To<InMemoryMessageStore>().InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()

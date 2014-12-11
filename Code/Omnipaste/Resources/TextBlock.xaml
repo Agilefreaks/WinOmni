@@ -121,9 +121,15 @@
         <Setter Property="Margin" Value="0,40,0,0"/>
     </Style>
     
+    <Style x:Key="ActivityContentTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+    </Style>
+    
     <Style TargetType="TextBlock" x:Key="ActivityTimeStampStyle">
         <Setter Property="FontFamily" Value="{DynamicResource ContentFont}"/>
-        <Setter Property="FontSize" Value="{DynamicResource ActivityTimeStampFontSize}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ActivityLabelFontSize}"/>
         <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -133,10 +139,7 @@
         <Setter Property="Margin" Value="7,0,0,5"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="ActivityTitleTextBlockStyle">
-        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+    <Style TargetType="TextBlock" x:Key="ActivityTitleTextBlockStyle" BasedOn="{StaticResource ActivityContentTextStyle}">
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0"/>

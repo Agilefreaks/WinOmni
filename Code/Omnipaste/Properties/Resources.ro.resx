@@ -394,4 +394,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="ClippingDetailsHeaderTitle" xml:space="preserve">
     <value>Cliping de pe </value>
   </data>
+  <data name="MessageDetailsHeader" xml:space="preserve">
+    <value>Către: </value>
+  </data>
 </root>

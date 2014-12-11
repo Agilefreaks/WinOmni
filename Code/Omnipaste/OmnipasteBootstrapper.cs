@@ -140,6 +140,7 @@
             //Since the service implements IStartable it will be started as soon as it's activated
             _backgroundServices.Add(_kernel.Get<IConnectivitySupervisor>());
             _backgroundServices.Add(_kernel.Get<IUpdaterService>());
+            _backgroundServices.Add(_kernel.Get<IMessageStore>());
         }
 
         #endregion

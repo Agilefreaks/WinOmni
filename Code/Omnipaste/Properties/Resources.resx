@@ -394,4 +394,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="ClippingDetailsHeaderTitle" xml:space="preserve">
     <value>Clipping from your </value>
   </data>
+  <data name="MessageDetailsHeader" xml:space="preserve">
+    <value>To </value>
+  </data>
 </root>
