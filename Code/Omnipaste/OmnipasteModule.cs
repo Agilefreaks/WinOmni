@@ -8,6 +8,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
+    using OmniApi.Support;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DataProviders;
@@ -37,6 +38,7 @@
         {
             Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             Kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
+            Kernel.Bind<IHttpResponseMessageHandler>().To<SessionManager>().InSingletonScope();
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
 
             Kernel.Bind<IConfigurationContainer>().To<DPAPIConfigurationContainer>().InSingletonScope();

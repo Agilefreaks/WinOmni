@@ -3,6 +3,7 @@
     using Ninject;
     using OmniCommon.Interfaces;
     using OmniUI.Flyout;
+    using Omnipaste.Services;
 
     public interface ISettingsViewModel : IFlyoutViewModel
     {

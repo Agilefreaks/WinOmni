@@ -10,6 +10,7 @@
     using NUnit.Framework;
     using Omni;
     using OmniCommon.Interfaces;
+    using Omnipaste.Services;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]

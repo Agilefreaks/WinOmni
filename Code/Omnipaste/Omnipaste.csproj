@@ -347,6 +347,7 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
+    <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\InMemoryMessageStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />

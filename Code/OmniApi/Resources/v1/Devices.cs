@@ -30,40 +30,39 @@
         {
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
 
-            return Authorize(ResourceApi.Activate(device, AccessToken, ConfigurationService.Version.ToString()));
+            return ResourceApi.Activate(device, AccessToken, ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Call(string phoneNumber)
         {
-            return Authorize(ResourceApi.Call(phoneNumber, AccessToken));
+            return ResourceApi.Call(phoneNumber, AccessToken);
         }
 
         public IObservable<Device> Create(string identifier, string name)
         {
             var device = new Device(identifier) { Name = name };
-            return Authorize(ResourceApi.Create(device, AccessToken));
+            return ResourceApi.Create(device, AccessToken);
         }
 
         public IObservable<Device> Deactivate(string identifier)
         {
             var device = new Device(identifier);
-            return Authorize(ResourceApi.Deactivate(device, AccessToken));
+            return ResourceApi.Deactivate(device, AccessToken);
         }
 
         public IObservable<EmptyModel> EndCall()
         {
-            return Authorize(ResourceApi.EndCall(AccessToken));
+            return ResourceApi.EndCall(AccessToken);
         }
 
         public IObservable<List<Device>> GetAll()
         {
-            var observable = ResourceApi.GetAll(AccessToken);
-            return Authorize(observable);
+            return ResourceApi.GetAll(AccessToken);
         }
 
         public IObservable<EmptyModel> SendSms(string phoneNumber, string content)
         {
-            return Authorize(ResourceApi.SendSms(phoneNumber, content, AccessToken));
+            return ResourceApi.SendSms(phoneNumber, content, AccessToken);
         }
 
         #endregion
