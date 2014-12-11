@@ -251,6 +251,10 @@
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Message\IMessageDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\IMessageDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\MessageDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\MessageDetailsViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
@@ -387,6 +391,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\Clipping\ClippingDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Message\MessageDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

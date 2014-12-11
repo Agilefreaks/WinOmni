@@ -650,6 +650,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To .
+        /// </summary>
+        public static string MessageDetailsHeader {
+            get {
+                return ResourceManager.GetString("MessageDetailsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Messages.
         /// </summary>
         public static string Messages {
