@@ -262,6 +262,8 @@
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Activity\Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
+    <Compile Include="Activity\Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Activity\Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
