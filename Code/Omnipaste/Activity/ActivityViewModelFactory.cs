@@ -2,25 +2,9 @@
 {
     using Ninject;
     using Omnipaste.Activity.Models;
-    using Omnipaste.Services;
 
     public class ActivityViewModelFactory : IActivityViewModelFactory
     {
-        #region Fields
-
-        private readonly IUiRefreshService _uiRefreshService;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public ActivityViewModelFactory(IUiRefreshService uiRefreshService)
-        {
-            _uiRefreshService = uiRefreshService;
-        }
-
-        #endregion
-
         #region Public Properties
 
         [Inject]
@@ -37,15 +21,14 @@
             {
                 case ActivityTypeEnum.Call:
                 case ActivityTypeEnum.Message:
-                    result = new ContactRelatedActivityViewModel(_uiRefreshService);
+                    result = Kernel.Get<IContactRelatedActivityViewModel>();
                     break;
                 default:
-                    result = new ActivityViewModel(_uiRefreshService);
+                    result = Kernel.Get<IActivityViewModel>();
                     break;
             }
 
             result.Model = activity;
-            Kernel.Inject(result);
 
             return result;
         }

@@ -9,7 +9,7 @@
 
         public MessageDetailsViewModel(
             IMessageDetailsHeaderViewModel headerViewModel,
-            IActivityDetailsContentViewModel contentViewModel)
+            IMessageDetailsContentViewModel contentViewModel)
             : base(headerViewModel, contentViewModel)
         {
         }

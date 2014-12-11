@@ -15,14 +15,14 @@
     </Style>
 
     <ControlTemplate x:Key="ThinScrollBarTemplate" TargetType="{x:Type ScrollBar}">
-        <Border x:Name="Bg" Background="Transparent">
+        <Border x:Name="Bg" Background="Transparent" Width="{TemplateBinding Width}">
             <Grid SnapsToDevicePixels="true">
                 <Track 
                     Name="PART_Track"
                     IsEnabled="{TemplateBinding IsMouseOver}"
                     IsDirectionReversed="true">
                     <Track.Thumb>
-                        <Thumb Margin="0,0,4,0" Grid.IsSharedSizeScope="False" Style="{DynamicResource ThinThumbStyle}"/>
+                        <Thumb Margin="0" Grid.IsSharedSizeScope="False" Style="{DynamicResource ThinThumbStyle}"/>
                     </Track.Thumb>
                 </Track>
             </Grid>
@@ -54,7 +54,7 @@
                     <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Row="1"
                            Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" 
                            Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" 
-                           Height="8" Template="{StaticResource ThinScrollBarTemplate}"/>
+                           Height="5" Margin="0,0,0,-2" Template="{StaticResource ThinScrollBarTemplate}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -64,7 +64,7 @@
                     <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1"
                            Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" 
                            Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" 
-                           Width="8" Template="{StaticResource ThinScrollBarTemplate}"/>
+                           Template="{StaticResource ThinScrollBarTemplate}" Width="5" Margin="0,0,-2,0" />
                 </Grid>
             </Grid>
 
@@ -72,7 +72,7 @@
     </ControlTemplate>
 
     <Style TargetType="ScrollViewer" x:Key="ScrollViewerWithSlimBarsStyle">
-        <Setter Property="Padding" Value="0,0,10,0"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Template" Value="{StaticResource ScrollViewerWithSlimBarsTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

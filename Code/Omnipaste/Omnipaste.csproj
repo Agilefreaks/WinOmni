@@ -247,12 +247,15 @@
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Clipping\IClippingDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Message\IMessageDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Message\IMessageDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Message\IMessageDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\MessageDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Message\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Message\MessageDetailsViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
@@ -391,6 +394,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\Clipping\ClippingDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Message\MessageDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
