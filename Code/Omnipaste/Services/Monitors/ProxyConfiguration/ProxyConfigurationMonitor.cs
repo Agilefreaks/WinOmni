@@ -2,6 +2,7 @@
 {
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using Omnipaste.Services.Monitors.SettingsMonitor;
 
     public class ProxyConfigurationMonitor : SettingsMonitorBase<ProxyConfiguration>, IProxyConfigurationMonitor

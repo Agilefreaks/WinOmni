@@ -8,6 +8,7 @@
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
 
     public abstract class Resource<T> : IDisposable
     {

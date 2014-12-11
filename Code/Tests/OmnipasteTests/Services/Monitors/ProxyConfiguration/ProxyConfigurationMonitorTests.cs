@@ -9,6 +9,7 @@
     using OmniCommon;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniCommon.Settings;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
 

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
 
     public class FixProxyConfiguration : SynchronousStepBase

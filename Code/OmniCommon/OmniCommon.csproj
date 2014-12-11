@@ -96,6 +96,7 @@
     <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Helpers\SchedulerProvider.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Settings\OmnipasteCredentials.cs" />
     <Compile Include="Settings\IConfigurationProvider.cs" />
     <Compile Include="Models\OmniMessage.cs" />
@@ -103,8 +104,8 @@
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
     <Compile Include="Settings\IConfigurationContainer.cs" />
-    <Compile Include="ProxyConfiguration.cs" />
-    <Compile Include="ProxyTypeEnum.cs" />
+    <Compile Include="Models\ProxyConfiguration.cs" />
+    <Compile Include="Models\ProxyTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Settings\SettingsChangedData.cs" />

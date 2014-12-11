@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Shell.SessionInfo
 {
-    public interface ISessionInfoViewModel
+    using System;
+
+    public interface ISessionInfoViewModel : IDisposable
     {
     }
 }

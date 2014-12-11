@@ -1,7 +1,7 @@
 ﻿namespace OmniCommon.Interfaces
 {
     using System.Net;
-    using OmniCommon;
+    using OmniCommon.Models;
 
     public interface IWebProxyFactory
     {

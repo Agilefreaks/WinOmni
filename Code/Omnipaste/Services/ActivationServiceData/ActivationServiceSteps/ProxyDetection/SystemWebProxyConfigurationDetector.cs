@@ -3,6 +3,7 @@
     using System;
     using System.Net;
     using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
 
     public abstract class SystemWebProxyConfigurationDetector : IProxyConfigurationDetector

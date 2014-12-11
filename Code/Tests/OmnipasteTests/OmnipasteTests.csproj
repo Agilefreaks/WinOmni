@@ -156,6 +156,7 @@
     <Compile Include="Services\SessionManagerTests.cs" />
     <Compile Include="Services\UpdaterServiceTests.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />
+    <Compile Include="Shell\SessionInfo\SessionInfoViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />

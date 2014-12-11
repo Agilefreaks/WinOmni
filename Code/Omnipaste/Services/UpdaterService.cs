@@ -15,6 +15,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using Omnipaste.ExtensionMethods;
 
     public class UpdaterService : IUpdaterService

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reactive.Subjects;
-    using System.Net.Http;
     using Ninject;
     using OmniApi.Support;
     using OmniCommon.Interfaces;

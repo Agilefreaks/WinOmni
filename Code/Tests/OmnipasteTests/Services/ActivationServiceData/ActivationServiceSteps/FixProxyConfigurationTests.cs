@@ -5,7 +5,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;

@@ -121,13 +121,18 @@
         public static IDisposable SubscribeToSettingChange<T>(
             this IObservable<SettingsChangedData> settingsChangedObservable,
             string propertyName,
-            Action<T> onChangeAction)
+            Action<T> onChangeAction,
+            IScheduler subscribeScheduler = null,
+            IScheduler observeScheduler = null)
         {
+            subscribeScheduler = subscribeScheduler ?? SchedulerProvider.Default;
+            observeScheduler = observeScheduler ?? SchedulerProvider.Default;
+
             return
                 settingsChangedObservable.Where(changeData => changeData.SettingName == propertyName)
                     .Select(changeData => (T)changeData.NewValue)
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeOn(subscribeScheduler)
+                    .ObserveOn(observeScheduler)
                     .SubscribeAndHandleErrors(onChangeAction);
         }
 

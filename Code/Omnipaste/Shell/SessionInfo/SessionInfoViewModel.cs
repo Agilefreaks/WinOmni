@@ -1,20 +1,18 @@
-﻿using Ninject;
-using Omnipaste.Services;
-
-namespace Omnipaste.Shell.SessionInfo
+﻿namespace Omnipaste.Shell.SessionInfo
 {
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Omni;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using OmniCommon.Interfaces;
+    using OmniCommon.Models;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
-        private readonly ISessionManager _sessionManager;
-
         #region Fields
 
         private readonly Dictionary<ConnectionStateEnum, string> _icons;
@@ -23,15 +21,18 @@ namespace Omnipaste.Shell.SessionInfo
 
         private readonly IDisposable _statusObserver;
 
+        private readonly IDisposable _userObserver;
+
         private ConnectionStateEnum _state;
+        
+        private UserInfo _userInfo;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public SessionInfoViewModel(IOmniService omniService, ISessionManager sessionManager)
+        public SessionInfoViewModel(IOmniService omniService, IConfigurationService configurationService)
         {
-            _sessionManager = sessionManager;
             _statusTexts = new Dictionary<ConnectionStateEnum, string>
                             {
                                 { ConnectionStateEnum.Connected, Properties.Resources.Connected },
@@ -51,6 +52,13 @@ namespace Omnipaste.Shell.SessionInfo
                         newStatus == OmniServiceStatusEnum.Started
                             ? ConnectionStateEnum.Connected
                             : ConnectionStateEnum.Disconnected);
+            
+            UserInfo = configurationService.UserInfo;
+            _userObserver =
+                configurationService.SettingsChangedObservable.SubscribeToSettingChange<UserInfo>(
+                    ConfigurationProperties.UserInfo,
+                    userInfo => UserInfo = userInfo,
+                    observeScheduler: SchedulerProvider.Dispatcher);
         }
 
         #endregion
@@ -73,6 +81,22 @@ namespace Omnipaste.Shell.SessionInfo
             }
         }
 
+        public string UserName
+        {
+            get
+            {
+                return UserInfo.FullName();
+            }
+        }
+
+        public string UserImage
+        {
+            get
+            {
+                return UserInfo.ImageUrl;
+            }
+        }
+
         public ConnectionStateEnum State
         {
             get
@@ -87,6 +111,21 @@ namespace Omnipaste.Shell.SessionInfo
                 NotifyOfPropertyChange(() => Icon);
             }
         }
+
+        public UserInfo UserInfo
+        {
+            get
+            {
+                return _userInfo;
+            }
+            set
+            {
+                _userInfo = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => UserName);
+                NotifyOfPropertyChange(() => UserImage);
+            }
+        }
         
         #endregion
 
@@ -95,6 +134,7 @@ namespace Omnipaste.Shell.SessionInfo
         public void Dispose()
         {
             _statusObserver.Dispose();
+            _userObserver.Dispose();
         }
 
         #endregion

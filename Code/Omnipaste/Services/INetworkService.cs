@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Services
 {
-    using OmniCommon;
+    using OmniCommon.Models;
 
     public interface INetworkService
     {

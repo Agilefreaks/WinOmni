@@ -21,21 +21,21 @@
         private HttpClientWithAuthorizationHandler _subject;
         private TestScheduler _scheduler;
         private Token _token;
-        private Mock<IOAuth2> _oAuth2Mock;
-        private Mock<IHttpResponseMessageHandler> _responseMessageHandlerMock;
-        private Mock<HttpMessageHandler> _innerHandlerMock;
+        private Mock<IOAuth2> _mockOAuth2;
+        private Mock<IHttpResponseMessageHandler> _mockResponseMessageHandler;
+        private Mock<HttpMessageHandler> _mockInnerHandler;
 
         [SetUp]
         public void SetUp()
         {
             _scheduler = new TestScheduler();
             _token = new Token();
-            _oAuth2Mock = new Mock<IOAuth2> { DefaultValue = DefaultValue.Mock };
-            _responseMessageHandlerMock = new Mock<IHttpResponseMessageHandler>();
-            _innerHandlerMock = new Mock<HttpMessageHandler>();
-            _subject = new HttpClientWithAuthorizationHandler(_oAuth2Mock.Object, _token, _responseMessageHandlerMock.Object)
+            _mockOAuth2 = new Mock<IOAuth2> { DefaultValue = DefaultValue.Mock };
+            _mockResponseMessageHandler = new Mock<IHttpResponseMessageHandler>();
+            _mockInnerHandler = new Mock<HttpMessageHandler>();
+            _subject = new HttpClientWithAuthorizationHandler(_mockOAuth2.Object, _token, _mockResponseMessageHandler.Object)
             {
-                InnerHandler = _innerHandlerMock.Object
+                InnerHandler = _mockInnerHandler.Object
             };
         }
 
@@ -50,7 +50,7 @@
 
             _scheduler.Start(() => _subject.Handle(observable));
 
-            _oAuth2Mock.Verify(x => x.Refresh(It.IsAny<string>()));
+            _mockOAuth2.Verify(x => x.Refresh(It.IsAny<string>()));
         }
 
         [Test]
@@ -69,7 +69,7 @@
                 new Recorded<Notification<Token>>(100,
                     Notification.CreateOnError<Token>(new Exception())));
             
-            _oAuth2Mock.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
+            _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable));
 
@@ -91,11 +91,11 @@
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
                 new Recorded<Notification<Token>>(100, Notification.CreateOnError<Token>(createBadRequestException.Result)));
             
-            _oAuth2Mock.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
+            _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable));
 
-            _responseMessageHandlerMock.Verify(m => m.OnBadRequest());
+            _mockResponseMessageHandler.Verify(m => m.OnBadRequest());
         }
 
         [Test]
@@ -114,7 +114,7 @@
                 new Recorded<Notification<Token>>(100,
                     Notification.CreateOnError<Token>(createBadRequestException.Result)));
 
-            _oAuth2Mock.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
+            _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable)).Messages.Should()
                 .Contain(
@@ -141,7 +141,7 @@
                 new Recorded<Notification<Token>>(200,
                     Notification.CreateOnCompleted<Token>()));
 
-            _oAuth2Mock.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
+            _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable));
 

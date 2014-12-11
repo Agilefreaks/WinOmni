@@ -5,6 +5,7 @@
     using System.Net.Cache;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
 
     public class NetworkService : INetworkService
     {

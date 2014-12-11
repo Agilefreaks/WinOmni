@@ -1,6 +1,4 @@
-﻿using Omnipaste.ExtensionMethods;
-
-namespace Omnipaste.Services
+﻿namespace Omnipaste.Services
 {
     using System;
     using System.Configuration;
@@ -8,7 +6,9 @@ namespace Omnipaste.Services
     using System.Reflection;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniCommon.Settings;
+    using Omnipaste.ExtensionMethods;
 
     public class ConfigurationService : IConfigurationService
     {
@@ -46,6 +46,20 @@ namespace Omnipaste.Services
             {
                 _configurationContainer.SetObject(ConfigurationProperties.ProxyConfiguration, value);
                 _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
+            }
+        }
+
+        public UserInfo UserInfo
+        {
+            get
+            {
+                return _configurationContainer.GetObject<UserInfo>(ConfigurationProperties.UserInfo);
+            }
+
+            set
+            {
+                _configurationContainer.SetObject(ConfigurationProperties.UserInfo, value);
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.UserInfo, UserInfo));
             }
         }
 
