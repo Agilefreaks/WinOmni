@@ -19,7 +19,7 @@
 
         string MachineName { get; }
 
-        ProxyConfiguration ProxyConfiguration { get; }
+        ProxyConfiguration ProxyConfiguration { get; set; }
 
         string RefreshToken { get; }
 
@@ -46,8 +46,6 @@
         void ResetAuthSettings();
 
         void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
-
-        void SaveProxyConfiguration(ProxyConfiguration proxyConfiguration);
 
         #endregion
     }

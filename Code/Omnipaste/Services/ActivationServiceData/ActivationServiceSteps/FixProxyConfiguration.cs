@@ -30,7 +30,7 @@
             SimpleLogger.Log("Trying to detect proxy configuration");
             var newConfigurations =
                 _proxyConfigurationDetectors.Select(detector => detector.Detect())
-                    .Where(configuration => configuration.HasValue)
+                    .Where(configuration => configuration != null)
                     .DefaultIfEmpty(ProxyConfiguration.Empty())
                     .Where(configuration => !Equals(existingConfiguration, configuration))
                     .ToList();
@@ -41,10 +41,10 @@
             if (newConfiguration != null)
             {
                 SimpleLogger.Log("Detected new proxy configuration");
-                SimpleLogger.Log("New proxy type: " + newConfiguration.Value.Type);
-                SimpleLogger.Log("New proxy address: " + newConfiguration.Value.Address);
-                SimpleLogger.Log("New proxy port: " + newConfiguration.Value.Port);
-                _configurationService.SaveProxyConfiguration(newConfiguration.Value);
+                SimpleLogger.Log("New proxy type: " + newConfiguration.Type);
+                SimpleLogger.Log("New proxy address: " + newConfiguration.Address);
+                SimpleLogger.Log("New proxy port: " + newConfiguration.Port);
+                _configurationService.ProxyConfiguration = newConfiguration;
             }
 
             if(workingConfiguration != null)

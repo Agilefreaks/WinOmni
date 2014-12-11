@@ -98,7 +98,7 @@
                 x => x.SetValue(ConfigurationProperties.ProxyConfiguration, It.IsAny<string>()))
                 .Callback<string, string>((key, value) => valueSet = value);
 
-            _subject.SaveProxyConfiguration(proxyConfiguration);
+            _subject.ProxyConfiguration = proxyConfiguration;
             valueSet.Should().NotBeNull();
             _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
 

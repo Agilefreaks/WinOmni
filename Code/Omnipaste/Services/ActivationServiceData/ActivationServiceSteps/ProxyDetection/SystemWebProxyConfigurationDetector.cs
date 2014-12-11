@@ -30,9 +30,9 @@
 
         #region Public Methods and Operators
 
-        public ProxyConfiguration? Detect()
+        public ProxyConfiguration Detect()
         {
-            ProxyConfiguration? result = null;
+            ProxyConfiguration result = null;
             var pingEndpoint = GetPingEndpoint();
             SimpleLogger.Log("Checking for proxy type: " + ProxyType);
             var systemWebProxy = WebRequest.GetSystemWebProxy();

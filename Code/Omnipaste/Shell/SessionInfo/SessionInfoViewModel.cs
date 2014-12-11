@@ -1,4 +1,7 @@
-﻿namespace Omnipaste.Shell.SessionInfo
+﻿using Ninject;
+using Omnipaste.Services;
+
+namespace Omnipaste.Shell.SessionInfo
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +13,8 @@
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
+        private readonly ISessionManager _sessionManager;
+
         #region Fields
 
         private readonly Dictionary<ConnectionStateEnum, string> _icons;
@@ -24,8 +29,9 @@
 
         #region Constructors and Destructors
 
-        public SessionInfoViewModel(IOmniService omniService)
+        public SessionInfoViewModel(IOmniService omniService, ISessionManager sessionManager)
         {
+            _sessionManager = sessionManager;
             _statusTexts = new Dictionary<ConnectionStateEnum, string>
                             {
                                 { ConnectionStateEnum.Connected, Properties.Resources.Connected },
@@ -81,7 +87,7 @@
                 NotifyOfPropertyChange(() => Icon);
             }
         }
-
+        
         #endregion
 
         #region Public Methods and Operators

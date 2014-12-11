@@ -77,7 +77,7 @@
         }
 
         [Test]
-        public void Hanle_WhenUnauthorizedRequestAndFailedOAuth2Refresh_CallsHandlerOnBadRequest()
+        public void Handle_WhenUnauthorizedRequestAndFailedOAuth2Refresh_CallsHandlerOnBadRequest()
         {
             var resourceRequestObservable = Observable.Create<HttpResponseMessage>(observer =>
             {

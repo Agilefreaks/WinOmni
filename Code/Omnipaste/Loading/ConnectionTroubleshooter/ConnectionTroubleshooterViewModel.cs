@@ -313,7 +313,7 @@
             }
             else
             {
-                _configurationService.SaveProxyConfiguration(ProxyConfiguration);
+                _configurationService.ProxyConfiguration = ProxyConfiguration;
                 _eventAggregator.PublishOnUIThread(new RetryMessage());
             }
 

@@ -4,8 +4,8 @@
 
     public interface INetworkService
     {
-        bool CanPingHome(ProxyConfiguration? proxyConfiguration = null);
+        bool CanPingHome(ProxyConfiguration proxyConfiguration = null);
 
-        void PingHome(ProxyConfiguration? proxyConfiguration = null);
+        void PingHome(ProxyConfiguration proxyConfiguration = null);
     }
 }

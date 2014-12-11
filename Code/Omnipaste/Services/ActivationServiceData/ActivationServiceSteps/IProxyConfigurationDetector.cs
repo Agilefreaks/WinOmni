@@ -4,6 +4,6 @@
 
     public interface IProxyConfigurationDetector
     {
-        ProxyConfiguration? Detect();
+        ProxyConfiguration Detect();
     }
 }
