@@ -252,12 +252,19 @@
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Message\ConversationViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\IConversationViewModel.cs" />
     <Compile Include="ActivityDetails\Message\IMessageDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Message\IMessageDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Message\IMessageDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\IMessageViewModel.cs" />
     <Compile Include="ActivityDetails\Message\MessageDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Message\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Message\MessageDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Message\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDetails\Message\MessageViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
@@ -298,6 +305,8 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageSourceType.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
@@ -336,7 +345,9 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
+    <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
+    <Compile Include="Services\InMemoryMessageStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
@@ -397,11 +408,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ActivityDetails\Message\ConversationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityDetails\Message\MessageDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\Message\MessageDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Message\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,6 +14,20 @@
         {
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            HeaderViewModel.Activate();
+            ContentViewModel.Activate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            HeaderViewModel.Deactivate(close);
+            ContentViewModel.Deactivate(close);
+            base.OnDeactivate(close);
+        }
+
         #endregion
     }
 }

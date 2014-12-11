@@ -1,9 +1,13 @@
 ﻿namespace Omnipaste.ActivityDetails.Message
 {
+    using System;
     using Ninject;
+    using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
+    using Omnipaste.Services;
 
     public class MessageDetailsContentViewModel : ActivityDetailsContentViewModel, IMessageDetailsContentViewModel
     {
@@ -46,10 +50,16 @@
         }
 
         [Inject]
+        public IConversationViewModel ConversationViewModel { get; set; }
+
+        [Inject]
         public IDevices Devices { get; set; }
 
         [Inject]
         public IKernel Kernel { get; set; }
+
+        [Inject]
+        public IMessageStore MessageStore { get; set; }
 
         public override Activity Model
         {
@@ -88,8 +98,30 @@
         public void Reply()
         {
             CanReply = false;
-            Devices.SendSms(_contactInfo.Phone, ReplyContent)
-                .RunToCompletion(model => { CanReply = true; }, error => { CanReply = true; });
+            Devices.SendSms(_contactInfo.Phone, ReplyContent).RunToCompletion(OnSentSMS, OnSendSMSError);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            ConversationViewModel.ContactInfo = Model.ExtraData.ContactInfo;
+            ConversationViewModel.Activate();
+        }
+
+        private void OnSendSMSError(Exception exception)
+        {
+            CanReply = true;
+        }
+
+        private void OnSentSMS(EmptyModel model)
+        {
+            CanReply = true;
+            MessageStore.AddMessage(new Message { ContactInfo = _contactInfo, Content = ReplyContent });
+            ReplyContent = string.Empty;
         }
 
         #endregion

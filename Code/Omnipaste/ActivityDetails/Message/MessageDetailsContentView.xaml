@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True">
@@ -31,31 +32,7 @@
             </DockPanel>
         </Border>
         <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}" Margin="0,0,0,10">
-            <ItemsControl ItemsSource="{Binding Path=RelatedMessages}" AlternationCount="2">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="0,0,0,4" Padding="11,16,11,16" x:Name="ContentBorder">
-                            <DockPanel LastChildFill="True">
-                                <Control Style="{DynamicResource InCircleImage}" Tag="{Binding Path=Image}" Width="28" Height="28" 
-                                     Background="{Binding Path=Background, ElementName=ContentBorder}" DockPanel.Dock="Left" Margin="0,0,18,0"/>
-                                <TextBox Text="an hour ago" DockPanel.Dock="Right" Style="{DynamicResource ActivityContentTextBoxStyle}" Padding="0"
-                                     FontSize="{DynamicResource ActivityLabelFontSize}"
-                                     Foreground="{DynamicResource TimeStampBrush}" Background="{Binding Path=Background, ElementName=ContentBorder}"/>
-                                <TextBox Text="{Binding Path=Content}" Style="{DynamicResource ActivityContentTextBoxStyle}" Padding="0"
-                                     Background="{Binding Path=Background, ElementName=ContentBorder}"/>
-                            </DockPanel>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
-                            </Trigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" TargetName="ContentBorder"/>
-                            </Trigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ContentControl cal:View.Model="{Binding Path=ConversationViewModel}"/>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

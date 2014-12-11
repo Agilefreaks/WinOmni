@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Activity
 {
+    using Omnipaste.Activity.Models;
     using Omnipaste.Activity.Presenters;
     using Omnipaste.Services;
 
@@ -51,7 +52,8 @@
             set
             {
                 base.Model = value;
-                ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
+                ContactInfo contactInfo = value.ExtraData.ContactInfo;
+                ContactInfo = new ContactInfoPresenter(contactInfo);
             }
         }
 
