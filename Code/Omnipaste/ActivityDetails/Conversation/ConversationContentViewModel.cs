@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ActivityDetails.Message
+﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using System;
     using System.Linq;
@@ -6,13 +6,13 @@
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.ActivityDetails.Call;
+    using Omnipaste.ActivityDetails.Conversation.Call;
+    using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
-    using Message = Omnipaste.Models.Message;
 
-    public class ConversationViewModel : Conductor<IScreen>.Collection.AllActive, IConversationViewModel
+    public class ConversationContentViewModel : Conductor<IScreen>.Collection.AllActive, IConversationContentViewModel
     {
         #region Fields
 
@@ -56,6 +56,22 @@
 
         #region Methods
 
+        protected override IScreen EnsureItem(IScreen newItem)
+        {
+            var index = Items.IndexOf(newItem);
+
+            if (index == -1)
+            {
+                Items.Insert(0, newItem);
+            }
+            else
+            {
+                newItem = Items[index];
+            }
+
+            return base.EnsureItem(newItem);
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -65,7 +81,8 @@
             _callSubscription =
                 CallStore.CallObservable.SubscribeAndHandleErrors(message => ActivateItem(CreateCallViewModel(message)));
 
-            MessageStore.GetRelatedMessages(ContactInfo).Select(CreateMessageViewModel)
+            MessageStore.GetRelatedMessages(ContactInfo)
+                .Select(CreateMessageViewModel)
                 .Concat(CallStore.GetRelatedCalls(ContactInfo).Select(CreateCallViewModel).Cast<IDetailsViewModel>())
                 .OrderBy(screen => ((IHaveTimestamp)screen.Model).Time)
                 .ForEach(ActivateItem);
@@ -88,23 +105,7 @@
             base.OnDeactivate(close);
         }
 
-        protected override IScreen EnsureItem(IScreen newItem)
-        {
-            var index = Items.IndexOf(newItem);
-
-            if (index == -1)
-            {
-                Items.Insert(0, newItem);
-            }
-            else
-            {
-                newItem = Items[index];
-            }
-
-            return base.EnsureItem(newItem);
-        }
-
-        private ICallViewModel CreateCallViewModel(Call call)
+        private ICallViewModel CreateCallViewModel(Models.Call call)
         {
             var viewModel = Kernel.Get<ICallViewModel>();
             viewModel.Model = call;
@@ -112,7 +113,7 @@
             return viewModel;
         }
 
-        private IMessageViewModel CreateMessageViewModel(Message message)
+        private IMessageViewModel CreateMessageViewModel(Models.Message message)
         {
             var viewModel = Kernel.Get<IMessageViewModel>();
             viewModel.Model = message;

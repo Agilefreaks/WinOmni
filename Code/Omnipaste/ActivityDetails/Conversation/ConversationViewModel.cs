@@ -1,15 +1,15 @@
-﻿namespace Omnipaste.ActivityDetails.Message
+﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using OmniUI.Attributes;
 
     [UseView("Omnipaste.ActivityDetails.ActivityDetailsView", IsFullyQualifiedName = true)]
-    public class MessageDetailsViewModel : ActivityDetailsViewModel, IMessageDetailsViewModel
+    public class ConversationViewModel : ActivityDetailsViewModel, IConversationViewModel
     {
         #region Constructors and Destructors
 
-        public MessageDetailsViewModel(
-            IMessageDetailsHeaderViewModel headerViewModel,
-            IMessageDetailsContentViewModel contentViewModel)
+        public ConversationViewModel(
+            IConversationHeaderViewModel headerViewModel,
+            IConversationContainerViewModel contentViewModel)
             : base(headerViewModel, contentViewModel)
         {
         }

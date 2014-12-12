@@ -1,4 +1,4 @@
-namespace Omnipaste.ActivityDetails.Call
+namespace Omnipaste.ActivityDetails.Conversation.Call
 {
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;

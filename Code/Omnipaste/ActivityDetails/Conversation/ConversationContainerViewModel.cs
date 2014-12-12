@@ -1,14 +1,14 @@
-﻿namespace Omnipaste.ActivityDetails.Message
+﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using Ninject;
     using Omnipaste.SMSComposer;
 
-    public class MessageDetailsContentViewModel : ActivityDetailsContentViewModel, IMessageDetailsContentViewModel
+    public class ConversationContainerViewModel : ActivityDetailsContentViewModel, IConversationContainerViewModel
     {
         #region Public Properties
 
         [Inject]
-        public IConversationViewModel ConversationViewModel { get; set; }
+        public IConversationContentViewModel ConversationContentViewModel { get; set; }
 
         [Inject]
         public IInlineSMSComposerViewModel SMSComposer { get; set; }
@@ -20,15 +20,15 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            ConversationViewModel.ContactInfo = Model.ExtraData.ContactInfo;
-            ConversationViewModel.Activate();
+            ConversationContentViewModel.ContactInfo = Model.ExtraData.ContactInfo;
+            ConversationContentViewModel.Activate();
             SMSComposer.ContactInfo = Model.ExtraData.ContactInfo;
             SMSComposer.Activate();
         }
 
         protected override void OnDeactivate(bool close)
         {
-            ConversationViewModel.Deactivate(close);
+            ConversationContentViewModel.Deactivate(close);
             SMSComposer.Deactivate(close);
             base.OnDeactivate(close);
         }
