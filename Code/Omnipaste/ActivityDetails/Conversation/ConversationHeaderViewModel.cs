@@ -1,9 +1,9 @@
-﻿namespace Omnipaste.ActivityDetails.Message
+﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using Omnipaste.Models;
     using Omnipaste.Presenters;
 
-    public class MessageDetailsHeaderViewModel : ActivityDetailsHeaderViewModel, IMessageDetailsHeaderViewModel
+    public class ConversationHeaderViewModel : ActivityDetailsHeaderViewModel, IConversationHeaderViewModel
     {
         #region Fields
 

@@ -1,14 +1,24 @@
-﻿namespace Omnipaste.ActivityDetails.Message
+﻿namespace Omnipaste.DetailsViewModel
 {
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services;
 
-    public class MessageViewModel : DetailsViewModelBase<Message>, IMessageViewModel
+    public abstract class DetailsViewModelWithContact<TModel> : DetailsViewModelWithAutoRefresh<TModel>
+        where TModel : class, IHaveContactInfo
     {
         #region Fields
 
         private ContactInfoPresenter _contactInfo;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        protected DetailsViewModelWithContact(IUiRefreshService uiRefreshService)
+            : base(uiRefreshService)
+        {
+        }
 
         #endregion
 
@@ -31,7 +41,7 @@
             }
         }
 
-        public override Message Model
+        public override TModel Model
         {
             get
             {

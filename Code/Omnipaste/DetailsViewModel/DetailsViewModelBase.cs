@@ -3,6 +3,7 @@
     using Caliburn.Micro;
 
     public abstract class DetailsViewModelBase<TEntity> : Screen, IDetailsViewModel<TEntity>
+        where TEntity : class
     {
         #region Fields
 
@@ -26,6 +27,22 @@
                 }
                 _model = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
+
+        #region Explicit Interface Properties
+
+        object IDetailsViewModel.Model
+        {
+            get
+            {
+                return Model;
+            }
+            set
+            {
+                Model = value as TEntity;
             }
         }
 

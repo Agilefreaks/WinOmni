@@ -15,9 +15,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Style="{DynamicResource FilterContainer}">
-                    <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsButtonStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
-                    <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsButtonStyle}" Content="{x:Static properties:Resources.Calls}"/>
-                    <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesButtonStyle}" Content="{x:Static properties:Resources.Messages}"/>
+                    <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
+                    <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsCheckBoxStyle}" Content="{x:Static properties:Resources.Calls}"/>
+                    <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesCheckBoxStyle}" Content="{x:Static properties:Resources.Messages}"/>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
                     <Grid>

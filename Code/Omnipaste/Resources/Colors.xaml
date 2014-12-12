@@ -15,9 +15,9 @@
     <Color x:Key="NotificationHelperButtonColor">DarkCyan</Color>
     <Color x:Key="MainWindowBackgroundColor">#F2EFE9</Color>
     <Color x:Key="ContentBackgroundColor">#FFFFFF</Color>
-    <Color x:Key="ClippingColor">#FFFFAD1D</Color>
-    <Color x:Key="MessageColor">#FF5BC462</Color>
-    <Color x:Key="CallColor">#FF00C7ED</Color>
+    <Color x:Key="ClippingColor">#FFAD1D</Color>
+    <Color x:Key="MessageColor">#5BC462</Color>
+    <Color x:Key="CallColor">#00C7ED</Color>
     <Color x:Key="LabelColor">#CCCBCB</Color>
     <Color x:Key="TimeStampColor">#D8D8D8</Color>
     <Color x:Key="ActivityContentColor">#4E4D4D</Color>
@@ -31,4 +31,6 @@
     <Color x:Key="ConnectionStatusStrokeColor">#FF191A1A</Color>
     <Color x:Key="ScreenBorderColor">#e6e5e5</Color>
     <Color x:Key="AlternativeContentBackgroundColor">#fafcfa</Color>
+    <Color x:Key="CallFadedColor">#EBFDFF</Color>
+    <Color x:Key="CallLabelColor">#69DDED</Color>
 </ResourceDictionary>
