@@ -23,7 +23,7 @@
     using Omnipaste.Workspaces;
     using OmniUI.Flyout;
 
-    public sealed class ShellViewModel : Conductor<IScreen>, IShellViewModel
+    public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {
         #region Fields
 
