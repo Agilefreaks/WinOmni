@@ -4,7 +4,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Threading.Tasks;
     using System.Web;
-    using OmniApi.Models;
     using OmniCommon.Interfaces;
 
     public class GetAndroidInstallLink : ActivationStepBase
@@ -23,8 +22,7 @@
 
         public override IObservable<IExecuteResult> Execute()
         {
-            var user = Parameter.Value as User ?? new User();
-            var safeEmailString = HttpUtility.UrlEncode(user.Email);
+            var safeEmailString = HttpUtility.UrlEncode(_configurationService.UserInfo.Email);
             var uri = new Uri(string.Format(UrlFormat, _configurationService.WebBaseUrl, safeEmailString));
 
             return
