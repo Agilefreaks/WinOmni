@@ -1,18 +1,15 @@
-﻿namespace Omnipaste.SmsComposer
+﻿namespace Omnipaste.SMSComposer
 {
     using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
 
-    public interface ISmsComposerViewModel : IScreen, IHandle<SendSmsMessage>
+    public interface ISMSComposerViewModel : IScreen
     {
         #region Public Properties
 
-        SMSMessage Model { get; set; }
-
-        SmsComposerStatusEnum State { get; set; }
-
         bool CanSend { get; }
+
+        SMSMessage Model { get; set; }
 
         #endregion
 

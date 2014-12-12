@@ -12,7 +12,7 @@
         [SetUp]
         public void SetUp()
         {
-            _subject = new SMSMessage();
+            _subject = new SMSMessage(new Message());
         }
 
         [Test]

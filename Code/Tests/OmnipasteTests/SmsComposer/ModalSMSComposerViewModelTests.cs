@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.SmsComposer
+﻿namespace OmnipasteTests.SMSComposer
 {
     using Caliburn.Micro;
     using FluentAssertions;
@@ -10,12 +10,12 @@
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
-    using Omnipaste.SmsComposer;
+    using Omnipaste.SMSComposer;
 
     [TestFixture]
-    public class SmsComposerViewModelTests
+    public class ModalSMSComposerViewModelTests
     {
-        private ISmsComposerViewModel _subject;
+        private IModalSMSComposerViewModel _subject;
 
         private MoqMockingKernel _kernel;
 
@@ -45,8 +45,14 @@
             _mockSMSFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
             _kernel.Bind<ISMSMessageFactory>().ToConstant(_mockSMSFactory.Object);
 
-            _subject = _kernel.Get<SmsComposerViewModel>();
-            _subject.Model = new SMSMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
+            _subject = _kernel.Get<ModalSMSComposerViewModel>();
+            _subject.Model =
+                new SMSMessage(
+                    new Message
+                        {
+                            Content = "save me Obi-Wan Kenobi",
+                            ContactInfo = new ContactInfo { Phone = "1234567" }
+                        });
         }
 
         [Test]
@@ -62,7 +68,7 @@
         {
             _eventAggregator.PublishOnCurrentThread(new SendSmsMessage());
 
-            _mockDialogViewModel.Verify(vm => vm.ActivateItem(It.IsAny<ISmsComposerViewModel>()));
+            _mockDialogViewModel.Verify(vm => vm.ActivateItem(It.IsAny<ISMSComposerViewModel>()));
         }
 
         [Test]
@@ -80,13 +86,13 @@
         {
             _eventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = "1234567", Message = "save me Obi Wan Kenobi" });
 
-            _subject.State.Should().Be(SmsComposerStatusEnum.Composing);
+            _subject.State.Should().Be(SMSComposerStatusEnum.Composing);
         }
 
         [Test]
         public void CanSend_WhenStatusIsComposingAndThereIsARecipientAndThereIsAMessage_IsTrue()
         {
-            _subject.State = SmsComposerStatusEnum.Composing;
+            _subject.State = SMSComposerStatusEnum.Composing;
 
             _subject.CanSend.Should().Be(true);
         }
@@ -94,7 +100,7 @@
         [Test]
         public void CanSend_WhenStatusIsSending_IsFalse()
         {
-            _subject.State = SmsComposerStatusEnum.Sending;
+            _subject.State = SMSComposerStatusEnum.Sending;
 
             _subject.CanSend.Should().Be(false);
         }
@@ -102,7 +108,7 @@
         [Test]
         public void CanSend_WhenStatusIsSent_IsFalse()
         {
-            _subject.State = SmsComposerStatusEnum.Sent;
+            _subject.State = SMSComposerStatusEnum.Sent;
 
             _subject.CanSend.Should().Be(false);
         }
@@ -110,7 +116,7 @@
         [Test]
         public void CanSend_WhenBodyIsEmpty_IsFalse()
         {
-            _subject.State = SmsComposerStatusEnum.Composing;
+            _subject.State = SMSComposerStatusEnum.Composing;
 
             _subject.Model.Message = string.Empty;
             
@@ -120,7 +126,7 @@
         [Test]
         public void CanSend_WhenRecipientIsEmpty_IsFalse()
         {
-            _subject.State = SmsComposerStatusEnum.Composing;
+            _subject.State = SMSComposerStatusEnum.Composing;
 
             _subject.Model.Recipient = string.Empty;
             
@@ -132,7 +138,7 @@
         {
             _subject.Send();
 
-            _subject.State.Should().Be(SmsComposerStatusEnum.Sending);
+            _subject.State.Should().Be(SMSComposerStatusEnum.Sending);
         }
 
         [Test]

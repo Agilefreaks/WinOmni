@@ -5,42 +5,39 @@
 
     public class SMSMessage : PropertyChangedBase
     {
-        #region Fields
-
-        private string _message = string.Empty;
-
-        private string _recipient = string.Empty;
+        #region Constants
 
         private const int MessageLimit = 160;
 
         #endregion
-        
+
+        #region Fields
+
+        private readonly Message _message;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public SMSMessage()
+        {
+            _message = new Message();
+        }
+
+        public SMSMessage(Message message)
+        {
+            _message = message;
+        }
+
+        #endregion
+
         #region Public Properties
 
-        public string Message
+        public Message BaseModel
         {
             get
             {
                 return _message;
-            }
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-                NotifyOfPropertyChange(() => LimitMessage);
-            }
-        }
-
-        public string Recipient
-        {
-            get
-            {
-                return _recipient;
-            }
-            set
-            {
-                _recipient = value;
-                NotifyOfPropertyChange(() => Recipient);
             }
         }
 
@@ -60,6 +57,14 @@
             }
         }
 
+        public string LimitMessage
+        {
+            get
+            {
+                return string.Format("{0}/{1}", CharactersRemaining, MaxCharacters);
+            }
+        }
+
         public int MaxCharacters
         {
             get
@@ -73,11 +78,30 @@
             }
         }
 
-        public string LimitMessage
+        public string Message
         {
             get
             {
-                return string.Format("{0}/{1}", CharactersRemaining, MaxCharacters);
+                return _message.Content;
+            }
+            set
+            {
+                _message.Content = value;
+                NotifyOfPropertyChange(() => Message);
+                NotifyOfPropertyChange(() => LimitMessage);
+            }
+        }
+
+        public string Recipient
+        {
+            get
+            {
+                return _message.ContactInfo.Phone;
+            }
+            set
+            {
+                _message.ContactInfo.Phone = value;
+                NotifyOfPropertyChange(() => Recipient);
             }
         }
 

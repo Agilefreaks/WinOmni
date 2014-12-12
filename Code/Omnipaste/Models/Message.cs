@@ -10,6 +10,7 @@
         public Message()
         {
             Time = DateTime.UtcNow;
+            ContactInfo = new ContactInfo();
         }
 
         public Message(Event @event)

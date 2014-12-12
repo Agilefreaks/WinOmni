@@ -376,6 +376,10 @@
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
+    <Compile Include="SMSComposer\IInlineSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\IModalSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\InlineSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\ModalSMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
@@ -519,13 +523,13 @@
     <Compile Include="Services\WindowHandleProvider.cs" />
     <Compile Include="Shell\Connection\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
-    <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
+    <Compile Include="SMSComposer\SmsComposerStatusEnum.cs" />
     <Compile Include="Models\SMSMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
-    <Compile Include="SmsComposer\ISmsComposerViewModel.cs" />
-    <Compile Include="SmsComposer\SmsComposerViewModel.cs" />
+    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\Monitors\Internet\ConnectivityHelper.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitor.cs" />
@@ -800,19 +804,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SmsComposer\SmsComposerView.xaml">
+    <Page Include="SMSComposer\InlineSMSComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SmsComposer\SmsComposer\Composing.xaml">
+    <Page Include="SMSComposer\ModalSMSComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SmsComposer\SmsComposer\Sending.xaml">
+    <Page Include="SMSComposer\ModalSMSComposer\Composing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SmsComposer\SmsComposer\Sent.xaml">
+    <Page Include="SMSComposer\ModalSMSComposer\Sending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SMSComposer\ModalSMSComposer\Sent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

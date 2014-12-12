@@ -35,16 +35,29 @@
 
         public SMSMessage Create()
         {
-            return new SMSMessage { Message = GetMessageSuffix() };
+            return new SMSMessage(new Message
+                                      {
+                                          Content = GetMessageSuffix()
+                                      });
         }
 
         public SMSMessage Create(SendSmsMessage sendSmsMessage)
         {
-            return new SMSMessage
-                       {
-                           Message = string.Format("{0}{1}", sendSmsMessage.Message, GetMessageSuffix()),
-                           Recipient = sendSmsMessage.Recipient
-                       };
+            return
+                new SMSMessage(
+                    new Message
+                        {
+                            Content = string.Format("{0}{1}", sendSmsMessage.Message, GetMessageSuffix()),
+                            ContactInfo = new ContactInfo { Phone = sendSmsMessage.Recipient }
+                        });
+        }
+
+        public SMSMessage Create(ContactInfo contactInfo)
+        {
+            var smsMessage = Create();
+            smsMessage.BaseModel.ContactInfo = contactInfo;
+
+            return smsMessage;
         }
 
         #endregion

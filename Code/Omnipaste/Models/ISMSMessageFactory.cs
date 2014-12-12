@@ -7,5 +7,7 @@
         SMSMessage Create();
 
         SMSMessage Create(SendSmsMessage sendSmsMessage);
+
+        SMSMessage Create(ContactInfo contactInfo);
     }
 }
