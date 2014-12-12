@@ -30,7 +30,8 @@
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
-    using OmniUI.Intefaces;
+    using OmniUI.MainMenuEntry;
+    using OmniUI.SecondaryMenuEntry;
 
     public class OmnipasteModule : ModuleBase
     {
@@ -47,6 +48,9 @@
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
+            Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
+            Kernel.Bind<IMainMenuEntryViewModel>().To<EventsMenuEntryViewModel>().InSingletonScope();
+            Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
@@ -54,9 +58,6 @@
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<ActivityWorkspace>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<ClippingWorkspace>().InSingletonScope();
-            Kernel.Bind<IWorkspace>().To<EventsWorkspace>().InSingletonScope();
             Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
             Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
@@ -72,6 +73,7 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSMessageFactory),
+                           typeof(ActivityWorkspace), typeof(EventsWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };
         }

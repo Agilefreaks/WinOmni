@@ -15,7 +15,7 @@
     using OmniSync;
     using OmniUI;
     using OmniUI.Flyout;
-    using OmniUI.Intefaces;
+    using OmniUI.SecondaryMenuEntry;
 
     public class DebugModule : ModuleBase
     {

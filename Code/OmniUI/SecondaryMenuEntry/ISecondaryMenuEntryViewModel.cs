@@ -1,9 +1,9 @@
-﻿namespace OmniUI.Intefaces
+﻿namespace OmniUI.SecondaryMenuEntry
 {
-    public interface ISecondaryMenuEntryViewModel : IHaveIcon, IHaveToolTipText
-    {
-        bool CanPerformAction { get; }
+    using OmniUI.Intefaces;
 
-        void PerformAction();
+    public interface ISecondaryMenuEntryViewModel : IMenuEntryViewModel
+    {
+        string ToolTipText { get; }
     }
 }

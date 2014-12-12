@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Reactive.Linq;
     using System.Windows;
     using System.Windows.Interop;
@@ -20,18 +19,15 @@
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.ContextMenu;
-    using Omnipaste.Shell.SessionInfo;
+    using Omnipaste.Shell.SideMenu;
     using Omnipaste.Workspaces;
     using OmniUI.Flyout;
-    using OmniUI.Intefaces;
 
-    public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
+    public sealed class ShellViewModel : Conductor<IScreen>, IShellViewModel
     {
         #region Fields
 
         private Window _view;
-
-        private int _selectedViewIndex;
 
         private readonly IDisposable _sessionObserver;
 
@@ -55,40 +51,13 @@
 
         #region Public Properties
 
-        public int SelectedViewIndex
-        {
-            get
-            {
-                return _selectedViewIndex;
-            }
-            set
-            {
-                _selectedViewIndex = value;
-                NotifyOfPropertyChange(() => SelectedViewIndex);
-            }
-        }
-
-        public string AppNameAndVersion
-        {
-            get
-            {
-                return ConfigurationService.AppNameAndVersion;
-            }
-        }
-
         public IEventAggregator EventAggregator { get; set; }
 
         [Inject]
         public IActivationService ActivationService { get; set; }
-
-        [Inject]
-        public IConfigurationService ConfigurationService { get; set; }
-
+        
         [Inject]
         public INotificationListViewModel NotificationListViewModel { get; set; }
-
-        [Inject]
-        public ISessionInfoViewModel SessionInfoViewModel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
@@ -103,7 +72,7 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
-        public IEnumerable<ISecondaryMenuEntryViewModel> SecondaryMenuViewModels { get; set; }
+        public ISideMenuViewModel SideMenuViewModel { get; set; }
 
         [Inject]
         public IWindowHandleProvider WindowHandleProvider { get; set; }
@@ -112,7 +81,7 @@
         public IUiRefreshService UiRefreshService { get; set; }
 
         [Inject]
-        public IEnumerable<IWorkspace> Workspaces { get; set; }
+        public IActivityWorkspace DefaultWorkspace { get; set; }
 
         #endregion
 
@@ -137,6 +106,7 @@
 
         public void Dispose()
         {
+            SideMenuViewModel.Dispose();
             _sessionObserver.Dispose();
         }
 
@@ -173,7 +143,7 @@
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            ActivateItem(Workspaces.OfType<ActivityWorkspace>().First());
+            ActivateItem(DefaultWorkspace);
 
             _view = (Window)view;
             _view.Closing += Closing;

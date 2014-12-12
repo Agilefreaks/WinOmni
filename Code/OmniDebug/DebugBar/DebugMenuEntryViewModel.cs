@@ -3,7 +3,7 @@
     using OmniCommon.Interfaces;
     using OmniDebug.Properties;
     using OmniUI.Attributes;
-    using OmniUI.Intefaces;
+    using OmniUI.SecondaryMenuEntry;
 
     [UseView("OmniUI.SecondaryMenuEntry.SecondaryMenuEntryView", IsFullyQualifiedName = true)]
     public class DebugMenuEntryViewModel : ISecondaryMenuEntryViewModel
@@ -61,5 +61,9 @@
         }
 
         #endregion
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -6,16 +6,17 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
+    using Omnipaste.Shell.SideMenu;
 
-    public interface IShellViewModel : IConductor, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
+    public interface IShellViewModel : IConductActiveItem, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
     {
-        string AppNameAndVersion { get; }
-
         ILoadingViewModel LoadingViewModel { get; set; }
 
         IDialogViewModel DialogViewModel { get; set; }
 
         IContextMenuViewModel ContextMenuViewModel { get; set; }
+
+        ISideMenuViewModel SideMenuViewModel { get; set; }
 
         void Show();
 

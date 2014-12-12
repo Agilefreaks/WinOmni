@@ -25,15 +25,7 @@
                 return Resources.Activity;
             }
         }
-
-        public override string Icon
-        {
-            get
-            {
-                return OmniUI.Resources.IconNames.SideMenuActivity;
-            }
-        }
-
+        
         #endregion
     }
 }

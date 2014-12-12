@@ -83,8 +83,8 @@
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
-    <Compile Include="Intefaces\IHaveIcon.cs" />
-    <Compile Include="Intefaces\IHaveToolTipText.cs" />
+    <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
+    <Compile Include="MainMenuEntry\IMainMenuEntryViewModel.cs" />
     <Compile Include="Resources\IconNames.cs" />
     <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
     <Compile Include="ModuleBase.cs" />
@@ -97,6 +97,10 @@
     <None Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MainMenuEntry\MainMenuEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
