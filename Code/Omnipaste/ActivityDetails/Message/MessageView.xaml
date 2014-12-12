@@ -9,10 +9,10 @@
         <Control Style="{DynamicResource InCircleImage}" Tag="{Binding Path=ContactInfo.Image}" Width="28" Height="28" 
                                      Background="{Binding Path=Background, ElementName=ContentBorder}" DockPanel.Dock="Left" Margin="0,0,18,0"/>
         <TextBox Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}}" DockPanel.Dock="Right" 
-                 Style="{DynamicResource ActivityContentTextBoxStyle}" Padding="0"
+                 Style="{DynamicResource ActivityContentTextBoxStyle}"
                  FontSize="{DynamicResource ActivityLabelFontSize}"
                  Foreground="{DynamicResource TimeStampBrush}" Background="{Binding Path=Background, ElementName=ContentBorder}"/>
-        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBoxStyle}" Padding="0"
-                                     Background="{Binding Path=Background, ElementName=ContentBorder}"/>
+        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBoxStyle}"
+                 Background="{Binding Path=Background, ElementName=ContentBorder}"/>
     </DockPanel>
 </UserControl>
