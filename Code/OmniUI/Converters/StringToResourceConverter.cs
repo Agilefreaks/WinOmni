@@ -2,8 +2,8 @@
 {
     using System;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
+    using OmniUI.Helpers;
 
     public class StringToResourceConverter : IValueConverter
     {
@@ -13,7 +13,7 @@
             var iconName = value as string;
             if (!string.IsNullOrWhiteSpace(iconName))
             {
-                result = Application.Current.FindResource(iconName);
+                result = ResourceHelper.GetByKey(iconName);
             }
 
             return result;

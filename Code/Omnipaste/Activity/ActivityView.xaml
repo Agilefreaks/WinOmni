@@ -5,7 +5,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:converters="clr-namespace:Omnipaste.Activity.Converters"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:ActivityBackgroundBrushConverter x:Key="ActivityBackgroundBrushConverter"/>
+        <converters:ActivityBorderBrushConverter x:Key="ActivityBorderBrushConverter"/>
+        <converters:ActivityIconBrushConverter x:Key="ActivityIconBrushConverter"/>
+    </UserControl.Resources>
+    
     <Border Style="{DynamicResource ActivityContainerStyle}">
         <Border.InputBindings>
             <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
@@ -37,17 +44,16 @@
                     
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
                             Style="{DynamicResource ActivityBackgroundBorder}"
-                            Background="{Binding Path=Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}"
-                            Visibility="{Binding Path=IsDetailsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Background="{Binding Path=ContentInfo, Converter={StaticResource ActivityBackgroundBrushConverter}}">
                     </Border>
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
-                            BorderBrush="{Binding Path=Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}"
+                            BorderBrush="{Binding Path=ContentInfo, Converter={StaticResource ActivityBorderBrushConverter}}"
                             Style="{DynamicResource ActivityContentBorder}">
                         <ContentControl cal:View.Context="{Binding Path=ContentType}" cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
                     </Border>
                     <Ellipse Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIconBorder}"/>
                     <Rectangle Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIcon}" 
-                               Fill="{Binding Path=Model.Type, Converter={StaticResource ActivityTypeToBrushConverter}}"/>
+                               Fill="{Binding Path=ContentInfo, Converter={StaticResource ActivityIconBrushConverter}}"/>
                 </Grid>
             </Border>
             <TextBlock x:Name="Model_Device" Grid.Row="1" Grid.Column="1" Style="{DynamicResource ActivityDeviceNameStyle}"/>

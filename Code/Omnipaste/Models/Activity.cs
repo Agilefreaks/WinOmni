@@ -64,6 +64,8 @@
             }
         }
 
+        public bool WasViewed { get; set; }
+
         #endregion
     }
 }

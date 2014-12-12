@@ -83,6 +83,7 @@
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
+    <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
     <Compile Include="MainMenuEntry\IMainMenuEntryViewModel.cs" />
     <Compile Include="Resources\IconNames.cs" />

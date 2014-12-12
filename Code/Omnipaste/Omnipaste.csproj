@@ -268,10 +268,16 @@
     </Compile>
     <Compile Include="ActivityDetails\Conversation\Message\MessageViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
+    <Compile Include="Activity\ActivityContentInfo.cs" />
+    <Compile Include="Activity\ContentStateEnum.cs" />
     <Compile Include="Activity\ContentTypeEnum.cs" />
+    <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
+    <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
+    <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithContact.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Models\IHaveContactInfo.cs" />
@@ -306,7 +312,6 @@
     <Compile Include="Framework\Commands\CancelCommandEventArgs.cs" />
     <Compile Include="Framework\Commands\Command.cs" />
     <Compile Include="Framework\Commands\CommandEventArgs.cs" />
-    <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
     <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\StringNullOrEmptyToVisibilityConverter.cs" />

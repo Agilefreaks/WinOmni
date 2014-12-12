@@ -14,11 +14,13 @@ namespace Omnipaste.Activity
     {
         #region Fields
 
-        private ContentTypeEnum _contentType;
-
         private IActivityDetailsViewModel _detailsViewModel;
 
-        private bool _isDetailsOpen;
+        private ActivityContentInfo _activityContentInfo;
+
+        private ContentTypeEnum _contentType;
+
+        private ActivityContentInfo _contentInfo;
 
         #endregion
 
@@ -36,6 +38,20 @@ namespace Omnipaste.Activity
 
         public ICommand ClickCommand { get; set; }
 
+        public override Models.Activity Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                UpdateState();
+                UpdateContentInfo();
+            }
+        }
+
         public ContentTypeEnum ContentType
         {
             get
@@ -49,42 +65,47 @@ namespace Omnipaste.Activity
                     return;
                 }
                 _contentType = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ContentType);
             }
         }
 
         [Inject]
         public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
-        public override Models.Activity Model
+	public override Models.Activity Model
         {
             get
             {
-                return base.Model;
+                return _contentInfo;
             }
             set
             {
-                base.Model = value;
-                UpdateState();
-            }
-        }
-
-        public bool IsDetailsOpen
-        {
-            get
-            {
-                return _isDetailsOpen;
-            }
-            set
-            {
-                if (value.Equals(_isDetailsOpen))
+                if (Equals(value, _contentInfo))
                 {
                     return;
                 }
-                _isDetailsOpen = value;
-                NotifyOfPropertyChange(() => IsDetailsOpen);
+                _contentInfo = value;
+                NotifyOfPropertyChange(() => ContentInfo);
             }
         }
+
+        public ActivityContentInfo ActivityContentInfo
+        {
+            get
+            {
+                return _activityContentInfo;
+            }
+            set
+            {
+                if (Equals(value, _activityContentInfo))
+                {
+                    return;
+                }
+                _activityContentInfo = value;
+                NotifyOfPropertyChange(() => ActivityContentInfo);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -92,9 +113,9 @@ namespace Omnipaste.Activity
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
-            IsDetailsOpen = true;
             _detailsViewModel.Deactivated += OnDetailsClosed;
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
+            UpdateContentInfo();
         }
 
         #endregion
@@ -103,8 +124,9 @@ namespace Omnipaste.Activity
 
         protected void OnDetailsClosed(object source, EventArgs e)
         {
-            IsDetailsOpen = false;
+            Model.WasViewed = true;
             _detailsViewModel.Deactivated -= OnDetailsClosed;
+            UpdateContentInfo();
         }
 
         private void UpdateState()
@@ -128,6 +150,25 @@ namespace Omnipaste.Activity
                         break;
                 }
             }
+        }
+
+        private void UpdateContentInfo()
+        {
+            var contentInfo = new ActivityContentInfo { ContentType = Model.Type };
+            if (_detailsViewModel != null && _detailsViewModel.IsActive)
+            {
+                contentInfo.ContentState = ContentStateEnum.Viewing;
+            }
+            else if (Model.WasViewed)
+            {
+                contentInfo.ContentState = ContentStateEnum.Viewed;
+            }
+            else
+            {
+                contentInfo.ContentState = ContentStateEnum.NotViewed;
+            }
+
+            ContentInfo = contentInfo;
         }
 
         #endregion
