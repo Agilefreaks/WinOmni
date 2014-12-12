@@ -9,6 +9,6 @@
     <StackPanel Orientation="Horizontal">
         <Image Source="{Binding Path=ContactInfo.Image}" Style="{DynamicResource UserIconStyle}"/>
         <TextBlock Text="{x:Static properties:Resources.CallLabel}" Style="{DynamicResource ActivityTitleTextBlockStyle}"/>
-        <TextBox x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBoxStyle}" FontWeight="SemiBold" Padding="0,8"/>
+        <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold" Padding="0,8/>
     </StackPanel>
 </UserControl>
