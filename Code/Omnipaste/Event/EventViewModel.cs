@@ -4,6 +4,7 @@
     using Caliburn.Micro;
     using Events.Models;
     using Ninject;
+    using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -11,6 +12,8 @@
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.MasterEventList.Calling;
+    using Omnipaste.Models;
+    using Omnipaste.Services;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
     {
@@ -41,6 +44,9 @@
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
+
+        [Inject]
+        public ICallStore CallStore { get; set; }
 
         public IEventAggregator EventAggregator { get; set; }
 
@@ -75,7 +81,13 @@
         public void CallBack()
         {
             Devices.Call(Model.PhoneNumber)
-                .RunToCompletion(_ => ShowCallingNotification(), dispatcher: DispatcherProvider.Current);
+                .RunToCompletion(OnCallStarted, dispatcher: DispatcherProvider.Current);
+        }
+
+        private void OnCallStarted(EmptyModel model)
+        {
+            ShowCallingNotification();
+            CallStore.AddCall(new Call { ContactInfo = new ContactInfo { Phone = Model.PhoneNumber } });
         }
 
         public void SendSms()

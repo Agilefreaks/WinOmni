@@ -397,7 +397,10 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="MessageDetailsHeader" xml:space="preserve">
     <value>To </value>
   </data>
-  <data name="MissedCallLabel" xml:space="preserve">
-    <value>1 New call</value>
+  <data name="IncommingCallLabel" xml:space="preserve">
+    <value>1 Incoming call</value>
+  </data>
+  <data name="OutgoingCallLabel" xml:space="preserve">
+    <value>1 Outgoing call</value>
   </data>
 </root>

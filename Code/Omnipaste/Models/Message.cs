@@ -12,7 +12,7 @@
             Time = DateTime.UtcNow;
             ContactInfo = new ContactInfo();
             Content = string.Empty;
-            Source = MessageSourceType.Local;
+            Source = SourceType.Local;
         }
 
         public Message(Event @event)
@@ -20,10 +20,8 @@
             Time = DateTime.UtcNow;
             ContactInfo = new ContactInfo(@event);
             Content = @event.Content;
-            Source = MessageSourceType.Remote;
+            Source = SourceType.Remote;
         }
-
-        public MessageSourceType Source { get; set; }
 
         #endregion
 
@@ -32,6 +30,8 @@
         public ContactInfo ContactInfo { get; set; }
 
         public string Content { get; set; }
+
+        public SourceType Source { get; set; }
 
         public DateTime Time { get; set; }
 

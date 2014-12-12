@@ -14,5 +14,15 @@
         }
 
         #endregion
+
+        public string Title
+        {
+            get
+            {
+                return Model.Source == SourceType.Remote
+                           ? Properties.Resources.IncommingCallLabel
+                           : Properties.Resources.OutgoingCallLabel;
+            }
+        }
     }
 }

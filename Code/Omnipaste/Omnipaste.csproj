@@ -317,7 +317,7 @@
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\MessageSourceType.cs" />
+    <Compile Include="Models\SourceType.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />

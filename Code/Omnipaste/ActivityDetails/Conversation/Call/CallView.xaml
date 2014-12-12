@@ -19,7 +19,7 @@
                     <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
                 </Rectangle.OpacityMask>
             </Rectangle>
-            <TextBox Text="{x:Static properties:Resources.MissedCallLabel}" Style="{DynamicResource ActivityContentTextBoxStyle}"
+            <TextBox x:Name="Title" Style="{DynamicResource ActivityContentTextBoxStyle}"
                      Background="{Binding Path=Background, ElementName=ContentBorder}" FontWeight="SemiBold" 
                      Foreground="{DynamicResource CallBrush}"/>
         </DockPanel>

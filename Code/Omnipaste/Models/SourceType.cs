@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
-    public enum MessageSourceType
+    public enum SourceType
     {
         Local,
         Remote
