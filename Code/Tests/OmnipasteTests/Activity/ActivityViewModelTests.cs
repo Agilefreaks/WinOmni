@@ -10,6 +10,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
+    using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
 
@@ -100,6 +101,84 @@
             _subject.ShowDetails();
 
             _subject.Model.WasViewed.Should().BeTrue();
+        }
+
+        [Test]
+        public void ShowDetails_WhenDetailsIsActive_SetsContentInfoStateToViewing()
+        {
+            var mockWorkspace = new Mock<IActivityWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+                .Returns(mockActivityDetailsViewModel.Object);
+            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(true);
+
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            _subject.ContentInfo.ContentState.Should().Be(ContentStateEnum.Viewing);
+        }
+
+        [Test]
+        public void ShowDetails_WhenDetailsIsNotActiveAndModelWasViewed_SetsContentInfoStateToViewing()
+        {
+            var activity = new Activity { WasViewed = true };
+            _subject.Model = activity;
+            var mockWorkspace = new Mock<IActivityWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+                .Returns(mockActivityDetailsViewModel.Object);
+            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
+
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            _subject.ContentInfo.ContentState.Should().Be(ContentStateEnum.Viewed);
+        }
+
+        [Test]
+        public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
+        {
+            var activity = new Activity { WasViewed = false };
+            _subject.Model = activity;
+            var mockWorkspace = new Mock<IActivityWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+                .Returns(mockActivityDetailsViewModel.Object);
+            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
+
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            _subject.ContentInfo.ContentState.Should().Be(ContentStateEnum.NotViewed);
+        }
+
+        [Test]
+        public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
+        {
+            var activity = new Activity { WasViewed = false };
+            _subject.Model = activity;
+            var mockWorkspace = new Mock<IActivityWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+                .Returns(mockActivityDetailsViewModel.Object);
+            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
+
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            _subject.ContentInfo.ContentState.Should().Be(ContentStateEnum.NotViewed);
         }
     }
 }

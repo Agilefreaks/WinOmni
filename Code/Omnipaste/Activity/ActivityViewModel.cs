@@ -16,8 +16,6 @@ namespace Omnipaste.Activity
 
         private IActivityDetailsViewModel _detailsViewModel;
 
-        private ActivityContentInfo _activityContentInfo;
-
         private ContentTypeEnum _contentType;
 
         private ActivityContentInfo _contentInfo;
@@ -89,23 +87,6 @@ namespace Omnipaste.Activity
             }
         }
 
-        public ActivityContentInfo ActivityContentInfo
-        {
-            get
-            {
-                return _activityContentInfo;
-            }
-            set
-            {
-                if (Equals(value, _activityContentInfo))
-                {
-                    return;
-                }
-                _activityContentInfo = value;
-                NotifyOfPropertyChange(() => ActivityContentInfo);
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
@@ -154,6 +135,8 @@ namespace Omnipaste.Activity
 
         private void UpdateContentInfo()
         {
+            if (Model == null) return;
+
             var contentInfo = new ActivityContentInfo { ContentType = Model.Type };
             if (_detailsViewModel != null && _detailsViewModel.IsActive)
             {
