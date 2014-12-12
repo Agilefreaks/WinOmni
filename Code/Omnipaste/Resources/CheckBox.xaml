@@ -3,9 +3,9 @@
 
     <!--CheckBox-->
 
-    <Style x:Key="FilterActivitiesButtonStyle" TargetType="{x:Type CheckBox}">
-        <Setter Property="MinWidth" Value="13"/>
-        <Setter Property="MinHeight" Value="13"/>
+    <Style x:Key="FilterActivitiesCheckBoxStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="MinWidth" Value="{StaticResource CircleButtonSize}"/>
+        <Setter Property="MinHeight" Value="{StaticResource CircleButtonSize}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Margin" Value="25,0,0,0"/>
         <Setter Property="Template">
@@ -54,15 +54,15 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ClippingsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+    <Style x:Key="ClippingsCheckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesCheckBoxStyle}">
         <Setter Property="Foreground" Value="{DynamicResource ClippingBrush}"/>
     </Style>
 
-    <Style x:Key="CallsButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+    <Style x:Key="CallsCheckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesCheckBoxStyle}">
         <Setter Property="Foreground" Value="{DynamicResource CallBrush}"/>
     </Style>
 
-    <Style x:Key="MessagesButtonStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesButtonStyle}">
+    <Style x:Key="MessagesCheckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource FilterActivitiesCheckBoxStyle}">
         <Setter Property="Foreground" Value="{DynamicResource MessageBrush}"/>
     </Style>
 </ResourceDictionary>
