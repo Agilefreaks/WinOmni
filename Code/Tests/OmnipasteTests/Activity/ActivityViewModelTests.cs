@@ -90,7 +90,7 @@
         }
 
         [Test]
-        public void ShowDetails_Always_SetsIsDetailsOpenToTrue()
+        public void ShowDetails_Always_SetsModelWasViewedToTrue()
         {
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -99,27 +99,7 @@
 
             _subject.ShowDetails();
 
-            _subject.IsDetailsOpen.Should().BeTrue();
-        }
-
-        [Test]
-        public void IsDetailsOpen_WhenDetailsWasNotShown_ReturnsFalse()
-        {
-            _subject.IsDetailsOpen.Should().BeFalse();
-        }
-
-        [Test]
-        public void IsDetailsOpen_WhenDetailsWasShownAndClosed_ReturnsFalse()
-        {
-            var mockWorkspace = new Mock<IActivityWorkspace>();
-            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
-            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            _subject.Parent = mockWorkspace.Object;
-            _subject.ShowDetails();
-
-            mockDetailsConductor.Raise(model => model.Deactivated += null, new EventArgs());
-
-            _subject.IsDetailsOpen.Should().BeFalse();
+            _subject.Model.WasViewed.Should().BeTrue();
         }
     }
 }

@@ -274,6 +274,7 @@
     <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
+    <Compile Include="Activity\Converters\ViewedSizeConverter.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
