@@ -1,12 +1,10 @@
-﻿namespace Omnipaste.Activity.Presenters
+﻿namespace Omnipaste.Presenters
 {
     using System;
     using System.Reflection;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-
     using Caliburn.Micro;
-
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Action = System.Action;

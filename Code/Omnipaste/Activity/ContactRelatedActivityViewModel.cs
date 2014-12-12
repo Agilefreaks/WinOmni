@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Activity.Presenters;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     using OmniUI.Attributes;

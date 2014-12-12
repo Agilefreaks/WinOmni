@@ -276,8 +276,8 @@
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
-    <Compile Include="Activity\Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Activity\Presenters\IContactInfoPresenter.cs" />
+    <Compile Include="Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -998,9 +998,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activity\Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>

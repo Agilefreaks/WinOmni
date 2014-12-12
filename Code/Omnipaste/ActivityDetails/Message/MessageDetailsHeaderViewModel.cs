@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ActivityDetails.Message
 {
-    using Omnipaste.Activity.Presenters;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public class MessageDetailsHeaderViewModel : ActivityDetailsHeaderViewModel, IMessageDetailsHeaderViewModel
     {
