@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="InCircleImage" TargetType="Control">
+    <Style x:Key="ImageInCircle" TargetType="Control">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -38,7 +38,7 @@
            <Setter.Value>
                 <ControlTemplate>
                     <Grid>
-                        <Control Style="{StaticResource InCircleImage}" Background="{TemplateBinding Background}" Tag="{TemplateBinding Tag}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Visibility="{TemplateBinding Tag, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"/>
+                        <Control Style="{StaticResource ImageInCircle}" Background="{TemplateBinding Background}" Tag="{TemplateBinding Tag}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Visibility="{TemplateBinding Tag, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"/>
                         <ContentControl Content="{DynamicResource user_image_placeholder}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Visibility="{TemplateBinding Tag, Converter={StaticResource InverseStringNullOrEmptyToVisibilityConverter}}"/>
                     </Grid>
                 </ControlTemplate>

@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="18,8,0,18">
-            <Control Style="{DynamicResource InCircleImage}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40" 
+            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40" 
                      Background="{DynamicResource ContentBackgroundBrush}"/>
             <TextBlock Text="{x:Static properties:Resources.MessageDetailsHeader}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center"/>
