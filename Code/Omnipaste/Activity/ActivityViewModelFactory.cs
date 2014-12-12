@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Activity
 {
     using Ninject;
-    using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
 
     public class ActivityViewModelFactory : IActivityViewModelFactory
     {

@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ActivityDetails.Message
 {
     using Caliburn.Micro;
-    using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
 
     public interface IConversationViewModel : IConductor, IParent<IMessageViewModel>, IActivate, IDeactivate
     {

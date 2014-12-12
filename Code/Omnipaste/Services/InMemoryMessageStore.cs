@@ -77,7 +77,7 @@
 
         public void AddMessage(Message message)
         {
-            var phone = message.ContactInfo.Phone;
+            var phone = message.ContactInfo.Phone ?? string.Empty;
             if (!_messages.ContainsKey(phone))
             {
                 _messages.Add(phone, new List<Message>());

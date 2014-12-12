@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.SmsComposer
+﻿namespace OmnipasteTests.Models
 {
     using System;
     using FluentAssertions;
@@ -6,13 +6,13 @@
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Properties;
-    using Omnipaste.SmsComposer;
 
     [TestFixture]
-    public class SMSFactoryTests
+    public class SMSMessageFactoryTests
     {
-        private SMSFactory _subject;
+        private ISMSMessageFactory _subject;
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -20,7 +20,7 @@
         public void Setup()
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _subject = new SMSFactory(_mockConfigurationService.Object);
+            _subject = new SMSMessageFactory(_mockConfigurationService.Object);
         }
 
         [Test]

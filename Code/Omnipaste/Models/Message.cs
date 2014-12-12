@@ -2,7 +2,6 @@
 {
     using System;
     using Events.Models;
-    using Omnipaste.Activity.Models;
 
     public class Message
     {
@@ -11,6 +10,7 @@
         public Message()
         {
             Time = DateTime.UtcNow;
+            ContactInfo = new ContactInfo();
         }
 
         public Message(Event @event)

@@ -1,18 +1,18 @@
-﻿namespace OmnipasteTests.SmsComposer
+﻿namespace OmnipasteTests.Models
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.SmsComposer;
+    using Omnipaste.Models;
 
     [TestFixture]
-    public class SmsMessageTests
+    public class SMSMessageTests
     {
-        private SmsMessage _subject;
+        private SMSMessage _subject;
 
         [SetUp]
         public void SetUp()
         {
-            _subject = new SmsMessage();
+            _subject = new SMSMessage(new Message());
         }
 
         [Test]

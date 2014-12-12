@@ -4,11 +4,11 @@ namespace Omnipaste.Activity
     using System.Windows.Input;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Activity.Models;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
+    using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
 

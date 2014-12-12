@@ -1,6 +1,6 @@
-﻿namespace Omnipaste.SmsComposer
+﻿namespace Omnipaste.SMSComposer
 {
-    public enum SmsComposerStatusEnum
+    public enum SMSComposerStatusEnum
     {
         Composing,
 

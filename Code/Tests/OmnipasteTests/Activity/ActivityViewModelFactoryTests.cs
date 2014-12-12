@@ -7,7 +7,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
-    using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
     using Omnipaste.Services;
 
     [TestFixture]

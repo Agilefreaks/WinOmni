@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.ActivityDetails.Message
 {
-    using Omnipaste.Activity.Presenters;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public class MessageViewModel : DetailsViewModelBase<Message>, IMessageViewModel
     {

@@ -1,56 +1,77 @@
-﻿namespace Omnipaste.SmsComposer
+﻿namespace Omnipaste.SMSComposer
 {
+    using System;
     using System.ComponentModel;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
+    using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
+    using Omnipaste.Services;
 
-    public class SmsComposerViewModel : Screen, ISmsComposerViewModel
+    public abstract class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
-        private readonly ISMSFactory _smsFactory;
-
         #region Fields
 
-        private SmsMessage _model;
+        protected readonly ISMSMessageFactory SMSMessageFactory;
 
-        private SmsComposerStatusEnum _state = SmsComposerStatusEnum.Composing;
+        private readonly IDevices _devices;
+
+        private bool _isSending;
+
+        private SMSMessage _model;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public SmsComposerViewModel(IDevices devices, IEventAggregator eventAggregator, ISMSFactory smsFactory)
+        protected SMSComposerViewModel(IDevices devices, ISMSMessageFactory smsMessageFactory)
         {
-            _smsFactory = smsFactory;
-            Devices = devices;
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
+            SMSMessageFactory = smsMessageFactory;
+            _devices = devices;
         }
 
         #endregion
 
         #region Public Properties
 
-        public bool CanSend
+        public virtual bool CanSend
         {
             get
             {
-                return State == SmsComposerStatusEnum.Composing && !string.IsNullOrEmpty(Model.Recipient)
-                       && !string.IsNullOrEmpty(Model.Message);
+                return !IsSending && !string.IsNullOrEmpty(Model.Recipient) && !string.IsNullOrEmpty(Model.Message);
             }
         }
-
-        public IDevices Devices { get; set; }
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
-        public IEventAggregator EventAggregator { get; set; }
+        public bool IsSending
+        {
+            get
+            {
+                return _isSending;
+            }
+            set
+            {
+                if (value.Equals(_isSending))
+                {
+                    return;
+                }
+                _isSending = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CanSend);
+            }
+        }
 
-        public SmsMessage Model
+        [Inject]
+        public IMessageStore MessageStore { get; set; }
+
+        public SMSMessage Model
         {
             get
             {
@@ -69,48 +90,34 @@
             }
         }
 
-        public SmsComposerStatusEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                if (value == _state)
-                {
-                    return;
-                }
-                _state = value;
-                NotifyOfPropertyChange(() => State);
-                NotifyOfPropertyChange(() => CanSend);
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
-        public void Handle(SendSmsMessage message)
+        public virtual void Send()
         {
-            State = SmsComposerStatusEnum.Composing;
-            Model = _smsFactory.Create(message);
-
-            DialogViewModel.ActivateItem(this);
-
-            EventAggregator.PublishOnCurrentThread(new ShowShellMessage());
-        }
-
-        public void Send()
-        {
-            State = SmsComposerStatusEnum.Sending;
-            Devices.SendSms(Model.Recipient, Model.Message)
-                .RunToCompletion(m => { State = SmsComposerStatusEnum.Sent; });
+            IsSending = true;
+            _devices.SendSms(Model.Recipient, Model.Message)
+                .SubscribeOn(SchedulerProvider.Default)
+                .ObserveOn(SchedulerProvider.Default)
+                .Subscribe(OnSentSMS, OnSendSMSError);
         }
 
         #endregion
 
         #region Methods
+
+        protected virtual void OnSendSMSError(Exception exception)
+        {
+            IsSending = false;
+        }
+
+        protected virtual void OnSentSMS(EmptyModel model)
+        {
+            IsSending = false;
+            MessageStore.AddMessage(Model.BaseModel);
+            NotifyOfPropertyChange(() => CanSend);
+        }
 
         private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
