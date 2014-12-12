@@ -12,5 +12,7 @@
         IDictionary<string, List<Message>> Messages { get; }
 
         IObservable<Message> MessageObservable { get; }
+
+        IEnumerable<Message> GetRelatedMessages(ContactInfo contactInfo);
     }
 }

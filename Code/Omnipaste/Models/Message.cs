@@ -3,7 +3,7 @@
     using System;
     using Events.Models;
 
-    public class Message
+    public class Message : IHaveTimestamp, IHaveContactInfo
     {
         #region Constructors and Destructors
 

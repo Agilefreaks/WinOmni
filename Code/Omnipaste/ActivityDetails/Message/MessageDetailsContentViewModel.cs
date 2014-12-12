@@ -1,8 +1,6 @@
 ﻿namespace Omnipaste.ActivityDetails.Message
 {
     using Ninject;
-    using OmniApi.Resources.v1;
-    using Omnipaste.Services;
     using Omnipaste.SMSComposer;
 
     public class MessageDetailsContentViewModel : ActivityDetailsContentViewModel, IMessageDetailsContentViewModel
@@ -11,15 +9,6 @@
 
         [Inject]
         public IConversationViewModel ConversationViewModel { get; set; }
-
-        [Inject]
-        public IDevices Devices { get; set; }
-
-        [Inject]
-        public IKernel Kernel { get; set; }
-
-        [Inject]
-        public IMessageStore MessageStore { get; set; }
 
         [Inject]
         public IInlineSMSComposerViewModel SMSComposer { get; set; }

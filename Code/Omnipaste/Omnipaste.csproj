@@ -242,6 +242,8 @@
     <Compile Include="ActivityDetails\ActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Call\CallViewModel.cs" />
+    <Compile Include="ActivityDetails\Call\ICallViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModel.cs" />
@@ -269,13 +271,19 @@
     <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="DetailsViewModel\DetailsViewModelWithContact.cs" />
+    <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Models\IHaveContactInfo.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
+    <Compile Include="Models\Call.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
+    <Compile Include="Models\IHaveTimestamp.cs" />
     <Compile Include="Presenters\ContactInfoPresenter.cs" />
     <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />
@@ -338,6 +346,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
+    <Compile Include="Services\ICallStore.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
@@ -352,7 +361,7 @@
     <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
-    <Compile Include="Services\InMemoryMessageStore.cs" />
+    <Compile Include="Services\InMemoryStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
@@ -406,6 +415,10 @@
       <DependentUpon>WorkspaceView.xaml</DependentUpon>
     </Compile>
     <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\ActivityDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

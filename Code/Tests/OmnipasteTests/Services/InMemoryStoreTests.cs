@@ -13,9 +13,9 @@
     using Omnipaste.Services;
 
     [TestFixture]
-    public class InMemoryMessageStoreTests
+    public class InMemoryStoreTests
     {
-        private InMemoryMessageStore _subject;
+        private InMemoryStore _subject;
 
         private Mock<IEventsHandler> _mockEventsHandler;
 
@@ -25,7 +25,7 @@
         public void Setup()
         {
             _mockEventsHandler = new Mock<IEventsHandler>();
-            _subject = new InMemoryMessageStore(_mockEventsHandler.Object);
+            _subject = new InMemoryStore(_mockEventsHandler.Object);
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
         }

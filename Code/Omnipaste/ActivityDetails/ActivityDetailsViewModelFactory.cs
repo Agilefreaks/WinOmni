@@ -19,6 +19,7 @@
                     result = Kernel.Get<IClippingDetailsViewModel>();
                     break;
                 case ActivityTypeEnum.Message:
+                case ActivityTypeEnum.Call:
                     result = Kernel.Get<IMessageDetailsViewModel>();
                     break;
                 default:
