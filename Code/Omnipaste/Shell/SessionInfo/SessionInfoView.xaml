@@ -10,7 +10,7 @@
             </Grid.RowDefinitions>
 
             <Grid>
-                <Image Style="{DynamicResource SideUserImageStyle}" Source="{Binding Path=UserImage, IsAsync=True}"/>
+                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=UserImage}"/>
                 <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
             </Grid>
 
