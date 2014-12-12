@@ -2,7 +2,10 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Net.Http;
     using Ninject;
+    using OmniCommon;
+    using OmniApi.Support;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
@@ -39,7 +42,7 @@
         public IOAuth2 OAuth2 { get; set; }
 
         [Inject]
-        public ISessionManager SessionManager { get; set; }
+        public IHttpResponseMessageHandler ResponseHandler { get; set; }
 
         public Token Token
         {
@@ -51,11 +54,21 @@
 
         #endregion
 
-        #region Public Methods and Operators
-
-        public IObservable<TModel> Authorize<TModel>(IObservable<TModel> observable)
+        #region Protected Methods and Operators
+        
+        protected override HttpClient CreateHttpClient()
         {
-            return AuthorizationObserver.Authorize(observable, OAuth2, SessionManager, Token);
+            var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
+            var handler = new HttpClientWithAuthorizationHandler(OAuth2, Token, ResponseHandler)
+            {
+                InnerHandler = new HttpClientHandler
+                {
+                    Proxy = WebProxyFactory.CreateFromAppConfiguration(),
+                    UseProxy = true,
+                    AllowAutoRedirect = true
+                }
+            };
+            return new HttpClient(handler) { BaseAddress = baseAddress };;
         }
 
         #endregion

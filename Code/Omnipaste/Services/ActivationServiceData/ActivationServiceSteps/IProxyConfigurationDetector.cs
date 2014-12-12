@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using OmniCommon;
+    using OmniCommon.Models;
 
     public interface IProxyConfigurationDetector
     {
-        ProxyConfiguration? Detect();
+        ProxyConfiguration Detect();
     }
 }

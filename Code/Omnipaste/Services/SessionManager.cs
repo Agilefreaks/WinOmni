@@ -3,9 +3,10 @@
     using System;
     using System.Reactive.Subjects;
     using Ninject;
+    using OmniApi.Support;
     using OmniCommon.Interfaces;
 
-    public class SessionManager : ISessionManager
+    public class SessionManager : ISessionManager, IHttpResponseMessageHandler
     {
         #region Fields
 
@@ -43,6 +44,11 @@
         {
             ConfigurationService.ResetAuthSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
+        }
+
+        public void OnBadRequest()
+        {
+            LogOut();
         }
 
         #endregion

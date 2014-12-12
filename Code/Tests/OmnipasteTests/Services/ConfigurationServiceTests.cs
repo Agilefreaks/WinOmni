@@ -1,10 +1,18 @@
-﻿namespace OmnipasteTests.Services
+﻿using System;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using Microsoft.Reactive.Testing;
+
+namespace OmnipasteTests.Services
 {
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniCommon;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniCommon.Settings;
     using Omnipaste.Services;
 
@@ -98,11 +106,38 @@
                 x => x.SetValue(ConfigurationProperties.ProxyConfiguration, It.IsAny<string>()))
                 .Callback<string, string>((key, value) => valueSet = value);
 
-            _subject.SaveProxyConfiguration(proxyConfiguration);
+            _subject.ProxyConfiguration = proxyConfiguration;
             valueSet.Should().NotBeNull();
             _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
 
             _subject.ProxyConfiguration.Should().Be(proxyConfiguration);
+        }
+
+        [Test]
+        public void GetUserInfo_WhenUserInfoWasPreviouslySaved_ReturnsUserInfo()
+        {
+            string valueSet = null;
+            var userInfo = new UserInfo
+            {
+                Email = "test@user.com",
+                FirstName = "First",
+                LastName = "Last",
+                ImageUrl = "http://example.com"
+            };
+
+            _mockConfigurationProvider.Setup(
+                x => x.SetValue(ConfigurationProperties.UserInfo, It.IsAny<string>()))
+                .Callback<string, string>((key, value) => valueSet = value);
+
+            _subject.UserInfo = userInfo;
+            valueSet.Should().NotBeNull();
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.UserInfo)).Returns(valueSet);
+
+            _subject.UserInfo.Should().NotBe(userInfo);
+            _subject.UserInfo.Email.Should().Be(userInfo.Email);
+            _subject.UserInfo.FirstName.Should().Be(userInfo.FirstName);
+            _subject.UserInfo.LastName.Should().Be(userInfo.LastName);
+            _subject.UserInfo.ImageUrl.Should().Be(userInfo.ImageUrl);
         }
 
         [Test]
@@ -143,6 +178,20 @@
             _subject.DeviceIdentifier = "someId";
 
             _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
+        }
+
+        [Test]
+        public void SetUserInfo_Always_TriggersOnNext()
+        {
+            var scheduler = new TestScheduler();
+            var observer = scheduler.CreateObserver<SettingsChangedData>();
+            _subject.SettingsChangedObservable.Subscribe(observer);
+
+            _subject.UserInfo = new UserInfo();
+
+            observer.Messages.Count.Should().Be(1);
+            observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            observer.Messages[0].Value.Value.SettingName.Should().Be(ConfigurationProperties.UserInfo);
         }
 
         [Test]

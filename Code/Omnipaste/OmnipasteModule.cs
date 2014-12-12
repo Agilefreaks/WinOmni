@@ -8,6 +8,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
+    using OmniApi.Support;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DataProviders;
@@ -23,8 +24,8 @@
     using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
     using Omnipaste.Shell;
-    using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
+    using Omnipaste.Shell.SessionInfo;
     using Omnipaste.SmsComposer;
     using Omnipaste.Workspaces;
     using OmniUI;
@@ -37,6 +38,7 @@
         {
             Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             Kernel.Bind<ISessionManager>().To<SessionManager>().InSingletonScope();
+            Kernel.Bind<IHttpResponseMessageHandler>().To<SessionManager>().InSingletonScope();
             Kernel.Bind<IStepFactory>().To<StepFactory>().InSingletonScope();
 
             Kernel.Bind<IConfigurationContainer>().To<DPAPIConfigurationContainer>().InSingletonScope();
@@ -64,7 +66,7 @@
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
+                           typeof(SessionInfoViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
                            typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),

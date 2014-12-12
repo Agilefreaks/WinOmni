@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection
 {
-    using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
 
     public class SocksProxyConfigurationDetector : SystemWebProxyConfigurationDetector

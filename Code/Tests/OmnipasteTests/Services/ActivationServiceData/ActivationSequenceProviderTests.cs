@@ -98,6 +98,38 @@
         }
 
         [Test]
+        public void GetUser_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void GetUser_OnSuccess_ShouldBeSaveUser()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<SaveUser>();
+        }
+
+        [Test]
+        public void SaveUser_OnSuccess_ShouldBeStartOmniService()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<StartOmniService>();
+        }
+
+        [Test]
+        public void SaveUser_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
         public void StartOmniService_Failed_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<StartOmniService>(SimpleStepStateEnum.Failed)
@@ -122,11 +154,11 @@
         }
 
         [Test]
-        public void GetDeviceId_Successful_ShouldBeStartOmniService()
+        public void GetDeviceId_Successful_ShouldBeGetUser()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<GetUser>();
         }
 
         [Test]
@@ -138,11 +170,11 @@
         }
 
         [Test]
-        public void RegisterDevice_Successful_ShouldBeStartOmniService()
+        public void RegisterDevice_Successful_ShouldBeGetUser()
         {
             _sequence.Transitions.GetTargetTypeForTransition<RegisterDevice>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<GetUser>();
         }
 
         [Test]
@@ -186,25 +218,9 @@
         }
 
         [Test]
-        public void AddSampleClippings_OnSuccess_ShouldBeGetUser()
+        public void AddSampleClippings_OnSuccess_ShouldBeGetAndroidInstallLink()
         {
             _sequence.Transitions.GetTargetTypeForTransition<AddSampleClippings>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<GetUser>();
-        }
-
-        [Test]
-        public void GetUser_OnFailed_ShouldBeFailed()
-        {
-            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<Failed>();
-        }
-
-        [Test]
-        public void GetUser_OnSuccess_ShouldBeGetAndroidInstallLink()
-        {
-            _sequence.Transitions.GetTargetTypeForTransition<GetUser>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<GetAndroidInstallLink>();
         }

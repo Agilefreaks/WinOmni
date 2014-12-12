@@ -15,5 +15,9 @@
         public const string SideMenuDebug = "appbar_futurama_bender";
 
         public const string SideMenuMessages = "navigation_messages_icon";
+
+        public const string Connected = "navigation_connected_icon";
+
+        public const string Disconnected = "navigation_disconnected_icon";
     }
 }

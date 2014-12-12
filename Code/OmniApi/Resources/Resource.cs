@@ -8,6 +8,7 @@
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
 
     public abstract class Resource<T> : IDisposable
     {
@@ -50,7 +51,7 @@
 
         protected abstract T CreateResourceApi(HttpClient httpClient);
 
-        protected HttpClient CreateHttpClient()
+        protected virtual HttpClient CreateHttpClient()
         {
             var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
             var handler = new HttpClientHandler

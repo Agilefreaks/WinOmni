@@ -90,7 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizationObserver.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\EmptyModel.cs" />
     <Compile Include="Models\Token.cs" />
@@ -112,6 +111,9 @@
     <Compile Include="Resources\v1\OAuth2.cs" />
     <Compile Include="Resources\v1\Users.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
+    <Compile Include="Support\ExceptionExtensionMethods.cs" />
+    <Compile Include="Support\HttpClientWithAuthorizationHandler.cs" />
+    <Compile Include="Support\IHttpResponseMessageHandler.cs" />
     <Compile Include="Support\Serialization\DeliminatorSeparatedPropertyNamesContractResolver.cs" />
     <Compile Include="Support\Serialization\SnakeCasePropertyNamesContractResolver.cs" />
   </ItemGroup>

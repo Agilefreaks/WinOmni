@@ -2,6 +2,7 @@ namespace OmniSync
 {
     using System.Net;
     using OmniCommon;
+    using OmniCommon.Models;
     using OmniSync.ClientEngine;
     using SuperSocket.ClientEngine;
 

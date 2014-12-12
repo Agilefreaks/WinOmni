@@ -5,7 +5,7 @@
     using System.Net.Sockets;
     using LandonKey.SocksWebProxy;
     using LandonKey.SocksWebProxy.Proxy;
-    using OmniCommon;
+    using OmniCommon.Models;
     using OmniCommon.Interfaces;
 
     public class WebProxyFactory : IWebProxyFactory
