@@ -32,8 +32,21 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="UserImageOrPlaceholderInCircle" TargetType="Control">
+        <Setter Property="Template">
+           <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Control Style="{StaticResource InCircleImage}" Background="{TemplateBinding Background}" Tag="{TemplateBinding Tag}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Visibility="{TemplateBinding Tag, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"/>
+                        <ContentControl Content="{DynamicResource user_image_placeholder}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Visibility="{TemplateBinding Tag, Converter={StaticResource InverseStringNullOrEmptyToVisibilityConverter}}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <Style x:Key="SideUserImageStyle" TargetType="Control" BasedOn="{StaticResource InCircleImage}">
+    <Style x:Key="SideUserImageStyle" TargetType="Control" BasedOn="{StaticResource UserImageOrPlaceholderInCircle}">
         <Setter Property="Height" Value="60"/>
         <Setter Property="Width" Value="60"/>
         <Setter Property="Background" Value="{DynamicResource NavigationMenuBrush}"/>

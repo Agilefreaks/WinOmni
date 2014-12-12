@@ -300,6 +300,8 @@
     <Compile Include="Framework\Commands\CommandEventArgs.cs" />
     <Compile Include="Framework\Converters\ActivityTypeToBrushConverter.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverter.cs" />
+    <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Loading\Congratulations\CongratulationsViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\ConnectionTroubleshooterViewModel.cs" />
     <Compile Include="Loading\ConnectionTroubleshooter\IConnectionTroubleshooterViewModel.cs" />
