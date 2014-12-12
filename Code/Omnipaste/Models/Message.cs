@@ -2,7 +2,6 @@
 {
     using System;
     using Events.Models;
-    using Omnipaste.Activity.Models;
 
     public class Message
     {

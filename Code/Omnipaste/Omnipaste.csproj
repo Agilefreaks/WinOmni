@@ -269,12 +269,12 @@
     <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
-    <Compile Include="Activity\Models\Activity.cs" />
+    <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
-    <Compile Include="Activity\Models\ActivityTypeEnum.cs" />
+    <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
-    <Compile Include="Activity\Models\ContactInfo.cs" />
+    <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\Presenters\ContactInfoPresenter.cs" />
     <Compile Include="Activity\Presenters\IContactInfoPresenter.cs" />
@@ -998,7 +998,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Activity\Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>

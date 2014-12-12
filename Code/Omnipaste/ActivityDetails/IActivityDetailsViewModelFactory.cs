@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
 
     public interface IActivityDetailsViewModelFactory
     {

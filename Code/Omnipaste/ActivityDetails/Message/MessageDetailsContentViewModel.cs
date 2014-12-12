@@ -5,7 +5,6 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Activity.Models;
     using Omnipaste.Models;
     using Omnipaste.Services;
 

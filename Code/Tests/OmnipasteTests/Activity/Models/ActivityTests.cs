@@ -6,7 +6,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Activity.Models;
+    using Omnipaste.Models;
     using Omnipaste.Properties;
 
     [TestFixture]

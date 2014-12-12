@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Activity.Models;
     using Ninject;
     using Omnipaste.ActivityDetails.Clipping;
     using Omnipaste.ActivityDetails.Message;
+    using Omnipaste.Models;
 
     public class ActivityDetailsViewModelFactory : IActivityDetailsViewModelFactory
     {

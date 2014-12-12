@@ -6,7 +6,6 @@
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Activity.Models;
     using Omnipaste.Models;
     using Omnipaste.Services;
 

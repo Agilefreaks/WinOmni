@@ -2,6 +2,6 @@
 {
     public interface IActivityViewModelFactory
     {
-        IActivityViewModel Create(Models.Activity activity);
+        IActivityViewModel Create(Omnipaste.Models.Activity activity);
     }
 }

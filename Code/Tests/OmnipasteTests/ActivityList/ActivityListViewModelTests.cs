@@ -13,8 +13,8 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
-    using Omnipaste.Activity.Models;
     using Omnipaste.ActivityList;
+    using Omnipaste.Models;
 
     [TestFixture]
     public class ActivityListViewModelTests
