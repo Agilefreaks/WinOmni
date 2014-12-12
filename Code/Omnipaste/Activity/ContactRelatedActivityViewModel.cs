@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Activity.Models;
-    using Omnipaste.Activity.Presenters;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     using OmniUI.Attributes;
@@ -52,8 +51,7 @@
             set
             {
                 base.Model = value;
-                ContactInfo contactInfo = value.ExtraData.ContactInfo;
-                ContactInfo = new ContactInfoPresenter(contactInfo);
+                ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
             }
         }
 

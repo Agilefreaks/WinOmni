@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Activity.Models;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
 
     public class ActivityDetailsHeaderViewModel : DetailsViewModelBase<Activity>, IActivityDetailsHeaderViewModel
     {

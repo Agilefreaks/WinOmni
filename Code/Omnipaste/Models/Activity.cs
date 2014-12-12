@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Activity.Models
+﻿namespace Omnipaste.Models
 {
     using System;
     using System.Dynamic;
