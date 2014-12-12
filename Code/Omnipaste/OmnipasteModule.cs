@@ -12,6 +12,7 @@
     using Omnipaste.ActivityDetails;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
+    using Omnipaste.Models;
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
@@ -25,7 +26,6 @@
     using Omnipaste.Shell;
     using Omnipaste.Shell.Connection;
     using Omnipaste.Shell.Settings;
-    using Omnipaste.SmsComposer;
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
@@ -67,7 +67,7 @@
                            typeof(ConnectionViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
-                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSFactory),
+                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSMessageFactory),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };
         }

@@ -160,8 +160,8 @@
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
-    <Compile Include="SmsComposer\SMSFactoryTests.cs" />
-    <Compile Include="SmsComposer\SMSMessageTests.cs" />
+    <Compile Include="Models\SMSMessageFactoryTests.cs" />
+    <Compile Include="Models\SMSMessageTests.cs" />
     <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -202,7 +202,9 @@
       <Name>Omni</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

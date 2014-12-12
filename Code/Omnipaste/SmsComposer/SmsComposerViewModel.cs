@@ -11,7 +11,7 @@
 
     public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {
-        private readonly ISMSFactory _smsFactory;
+        private readonly ISMSMessageFactory _ismsMessageFactory;
 
         #region Fields
 
@@ -23,9 +23,9 @@
 
         #region Constructors and Destructors
 
-        public SmsComposerViewModel(IDevices devices, IEventAggregator eventAggregator, ISMSFactory smsFactory)
+        public SmsComposerViewModel(IDevices devices, IEventAggregator eventAggregator, ISMSMessageFactory ismsMessageFactory)
         {
-            _smsFactory = smsFactory;
+            _ismsMessageFactory = ismsMessageFactory;
             Devices = devices;
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
@@ -95,7 +95,7 @@
         public void Handle(SendSmsMessage message)
         {
             State = SmsComposerStatusEnum.Composing;
-            Model = _smsFactory.Create(message);
+            Model = _ismsMessageFactory.Create(message);
 
             DialogViewModel.ActivateItem(this);
 

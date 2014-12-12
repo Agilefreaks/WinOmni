@@ -25,7 +25,7 @@
 
         private Mock<IDialogViewModel> _mockDialogViewModel;
 
-        private Mock<ISMSFactory> _mockSMSFactory;
+        private Mock<ISMSMessageFactory> _mockSMSFactory;
 
         [SetUp]
         public void SetUp()
@@ -42,8 +42,8 @@
 
             _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
 
-            _mockSMSFactory = new Mock<ISMSFactory> { DefaultValue = DefaultValue.Mock };
-            _kernel.Bind<ISMSFactory>().ToConstant(_mockSMSFactory.Object);
+            _mockSMSFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
+            _kernel.Bind<ISMSMessageFactory>().ToConstant(_mockSMSFactory.Object);
 
             _subject = _kernel.Get<SmsComposerViewModel>();
             _subject.Model = new SMSMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };

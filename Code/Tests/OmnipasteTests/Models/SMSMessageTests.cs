@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.SmsComposer
+﻿namespace OmnipasteTests.Models
 {
     using FluentAssertions;
     using NUnit.Framework;

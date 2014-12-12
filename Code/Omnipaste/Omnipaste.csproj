@@ -370,8 +370,8 @@
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
-    <Compile Include="SmsComposer\ISMSFactory.cs" />
-    <Compile Include="SmsComposer\SMSFactory.cs" />
+    <Compile Include="Models\ISMSMessageFactory.cs" />
+    <Compile Include="Models\SMSMessageFactory.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
@@ -998,7 +998,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>

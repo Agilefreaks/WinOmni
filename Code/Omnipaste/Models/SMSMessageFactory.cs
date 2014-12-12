@@ -1,12 +1,11 @@
-﻿namespace Omnipaste.SmsComposer
+﻿namespace Omnipaste.Models
 {
     using System;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
     using Omnipaste.Properties;
 
-    public class SMSFactory : ISMSFactory
+    public class SMSMessageFactory : ISMSMessageFactory
     {
         #region Static Fields
 
@@ -25,7 +24,7 @@
 
         #region Constructors and Destructors
 
-        public SMSFactory(IConfigurationService configurationService)
+        public SMSMessageFactory(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }
