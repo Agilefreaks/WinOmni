@@ -2,7 +2,7 @@
 {
     using Ninject;
     using Omnipaste.ActivityDetails.Clipping;
-    using Omnipaste.ActivityDetails.Message;
+    using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
 
     public class ActivityDetailsViewModelFactory : IActivityDetailsViewModelFactory
@@ -19,7 +19,8 @@
                     result = Kernel.Get<IClippingDetailsViewModel>();
                     break;
                 case ActivityTypeEnum.Message:
-                    result = Kernel.Get<IMessageDetailsViewModel>();
+                case ActivityTypeEnum.Call:
+                    result = Kernel.Get<IConversationViewModel>();
                     break;
                 default:
                     result = new ActivityDetailsViewModel(

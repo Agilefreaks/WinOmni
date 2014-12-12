@@ -1,9 +1,7 @@
 namespace Omnipaste.Activity
 {
-    using System;
     using System.Windows.Input;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.ExtensionMethods;
@@ -12,35 +10,23 @@ namespace Omnipaste.Activity
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
 
-    public class ActivityViewModel : DetailsViewModelBase<Models.Activity>, IActivityViewModel
+    public class ActivityViewModel : DetailsViewModelWithAutoRefresh<Models.Activity>, IActivityViewModel
     {
         #region Fields
-
-        private readonly IUiRefreshService _uiRefreshService;
 
         private ContentTypeEnum _contentType;
 
         private IActivityDetailsViewModel _detailsViewModel;
 
-        private IDisposable _refreshSubscription;
-
         #endregion
 
         #region Constructors and Destructors
 
-        public ActivityViewModel()
+        public ActivityViewModel(IUiRefreshService uiRefreshService)
+            : base(uiRefreshService)
         {
             ClickCommand = new Command(ShowDetails);
         }
-
-        public ActivityViewModel(IUiRefreshService uiRefreshService)
-            : this()
-        {
-            _uiRefreshService = uiRefreshService;
-        }
-
-        [Inject]
-        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         #endregion
 
@@ -65,6 +51,9 @@ namespace Omnipaste.Activity
             }
         }
 
+        [Inject]
+        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
         public override Models.Activity Model
         {
             get
@@ -82,11 +71,6 @@ namespace Omnipaste.Activity
 
         #region Public Methods and Operators
 
-        public void Dispose()
-        {
-            DisposeUiRefreshSubscription();
-        }
-
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
@@ -96,42 +80,6 @@ namespace Omnipaste.Activity
         #endregion
 
         #region Methods
-
-        protected override void OnActivate()
-        {
-            AddUiRefreshSubscription();
-            base.OnActivate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            if (close)
-            {
-                Dispose();
-            }
-            base.OnDeactivate(close);
-        }
-
-        private void AddUiRefreshSubscription()
-        {
-            DisposeUiRefreshSubscription();
-            _refreshSubscription = _uiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi());
-        }
-
-        private void DisposeUiRefreshSubscription()
-        {
-            if (_refreshSubscription == null)
-            {
-                return;
-            }
-            _refreshSubscription.Dispose();
-            _refreshSubscription = null;
-        }
-
-        private void RefreshUi()
-        {
-            NotifyOfPropertyChange(() => Model);
-        }
 
         private void UpdateState()
         {

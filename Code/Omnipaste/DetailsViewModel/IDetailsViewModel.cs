@@ -2,8 +2,13 @@
 {
     using Caliburn.Micro;
 
-    public interface IDetailsViewModel<TEntity> : IScreen
+    public interface IDetailsViewModel : IScreen
     {
-        TEntity Model { get; set; }
+        object Model { get; set; }
+    }
+
+    public interface IDetailsViewModel<TEntity> : IDetailsViewModel
+    {
+        new TEntity Model { get; set; }
     }
 }

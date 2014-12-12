@@ -3,23 +3,21 @@
     using System;
     using Events.Models;
 
-    public class Message : IHaveTimestamp, IHaveContactInfo
+    public class Call : IHaveTimestamp, IHaveContactInfo
     {
         #region Constructors and Destructors
 
-        public Message()
+        public Call()
         {
             Time = DateTime.UtcNow;
             ContactInfo = new ContactInfo();
-            Content = string.Empty;
             Source = SourceType.Local;
         }
 
-        public Message(Event @event)
+        public Call(Event @event)
         {
             Time = DateTime.UtcNow;
             ContactInfo = new ContactInfo(@event);
-            Content = @event.Content;
             Source = SourceType.Remote;
         }
 
@@ -28,8 +26,6 @@
         #region Public Properties
 
         public ContactInfo ContactInfo { get; set; }
-
-        public string Content { get; set; }
 
         public SourceType Source { get; set; }
 

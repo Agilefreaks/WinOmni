@@ -14,4 +14,5 @@
     <system:Double x:Key="ActivityDetailsContainerWidth">530</system:Double>
     <system:Double x:Key="ActivityDetailsHeaderHeight">118</system:Double>
     <system:Double x:Key="SecondaryNavButtonHeight">16</system:Double>
+    <system:Double x:Key="CircleButtonSize">13</system:Double>
 </ResourceDictionary>

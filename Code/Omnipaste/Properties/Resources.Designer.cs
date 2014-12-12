@@ -524,6 +524,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1 Incoming call.
+        /// </summary>
+        public static string IncommingCallLabel {
+            get {
+                return ResourceManager.GetString("IncommingCallLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Call ended.
         /// </summary>
         public static string IncommingCallNotificationCallEnded {
@@ -691,6 +700,15 @@ namespace Omnipaste.Properties {
         public static string OtherInstanceRunning {
             get {
                 return ResourceManager.GetString("OtherInstanceRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 Outgoing call.
+        /// </summary>
+        public static string OutgoingCallLabel {
+            get {
+                return ResourceManager.GetString("OutgoingCallLabel", resourceCulture);
             }
         }
         

@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Linq;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -15,6 +14,7 @@
     using Omnipaste.Activity;
     using Omnipaste.ActivityList;
     using Omnipaste.Models;
+    using Omnipaste.Services;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -29,13 +29,19 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<IUiRefreshService> _mockUiRefreshService;
+
         [SetUp]
         public void Setup()
         {
             _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock};
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
-            _subject = new ActivityListViewModel(_mockClipboardHandler.Object, _mockEventsHandler.Object, _mockActivityViewModelFactory.Object);
+            _mockUiRefreshService = new Mock<IUiRefreshService>();
+            _subject = new ActivityListViewModel(
+                _mockClipboardHandler.Object,
+                _mockEventsHandler.Object,
+                _mockActivityViewModelFactory.Object);
             _testScheduler = new TestScheduler();
         }
 
@@ -48,7 +54,7 @@
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnCompleted<Clipping>()));
             _mockClipboardHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Callback<IObserver<Clipping>>(observer => clippingObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
@@ -71,7 +77,7 @@
                     new Recorded<Notification<Event>>(200, Notification.CreateOnCompleted<Event>()));
             _mockEventsHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(observer => eventObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
@@ -164,7 +170,9 @@
                 .Cast<ActivityTypeEnum>()
                 .ToList()
                 .ForEach(
-                    activityType => _subject.Items.Add(new ActivityViewModel { Model = new Activity(activityType) }));
+                    activityType =>
+                    _subject.Items.Add(
+                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity(activityType) }));
         }
     }
 }

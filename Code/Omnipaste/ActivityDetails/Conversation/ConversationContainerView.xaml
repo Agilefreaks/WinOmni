@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Omnipaste.ActivityDetails.Message.MessageDetailsContentView"
+﻿<UserControl x:Class="Omnipaste.ActivityDetails.Conversation.ConversationContainerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
     <DockPanel LastChildFill="True">
         <ContentControl cal:View.Model="{Binding Path=SMSComposer}" DockPanel.Dock="Bottom"/>
         <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}" Margin="0,0,0,10">
-            <ContentControl cal:View.Model="{Binding Path=ConversationViewModel}"/>
+            <ContentControl cal:View.Model="{Binding Path=ConversationContentViewModel}"/>
         </ScrollViewer>
     </DockPanel>
 </UserControl>
