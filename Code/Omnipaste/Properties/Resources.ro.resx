@@ -397,4 +397,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="MessageDetailsHeader" xml:space="preserve">
     <value>Către: </value>
   </data>
+  <data name="MissedCallLabel" xml:space="preserve">
+    <value>1 Apel nou</value>
+  </data>
 </root>

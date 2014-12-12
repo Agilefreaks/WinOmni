@@ -668,6 +668,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1 New call.
+        /// </summary>
+        public static string MissedCallLabel {
+            get {
+                return ResourceManager.GetString("MissedCallLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty authorization code given. Please use a non empty authorization code..
         /// </summary>
         public static string MissingUserTokenError {

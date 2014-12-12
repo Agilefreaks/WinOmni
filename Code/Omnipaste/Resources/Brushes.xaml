@@ -29,6 +29,8 @@
     <SolidColorBrush x:Key="PassiveUiElementsBrush" Color="{DynamicResource PassiveUiElementsColor}"/>
     <SolidColorBrush x:Key="ScreenBorderBrush" Color="{DynamicResource ScreenBorderColor}"/>
     <SolidColorBrush x:Key="AlternativeContentBackgroundBrush" Color="{DynamicResource AlternativeContentBackgroundColor}"/>
+    <SolidColorBrush x:Key="CallFadedBrush" Color="{DynamicResource CallFadedColor}"/>
+    <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
     
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
