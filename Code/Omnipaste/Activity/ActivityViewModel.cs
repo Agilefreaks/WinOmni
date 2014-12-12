@@ -18,6 +18,8 @@ namespace Omnipaste.Activity
 
         private IActivityDetailsViewModel _detailsViewModel;
 
+        private bool _isDetailsOpen;
+
         #endregion
 
         #region Constructors and Destructors
@@ -67,6 +69,22 @@ namespace Omnipaste.Activity
             }
         }
 
+        public bool IsDetailsOpen
+        {
+            get
+            {
+                return _isDetailsOpen;
+            }
+            set
+            {
+                if (value.Equals(_isDetailsOpen))
+                {
+                    return;
+                }
+                _isDetailsOpen = value;
+                NotifyOfPropertyChange(() => IsDetailsOpen);
+            }
+        }
         #endregion
 
         #region Public Methods and Operators
@@ -74,12 +92,20 @@ namespace Omnipaste.Activity
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            IsDetailsOpen = true;
+            _detailsViewModel.Deactivated += OnDetailsClosed;
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 
         #endregion
 
         #region Methods
+
+        protected void OnDetailsClosed(object source, EventArgs e)
+        {
+            IsDetailsOpen = false;
+            _detailsViewModel.Deactivated -= OnDetailsClosed;
+        }
 
         private void UpdateState()
         {
