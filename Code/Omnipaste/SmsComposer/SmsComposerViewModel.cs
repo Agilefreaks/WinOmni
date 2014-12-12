@@ -7,6 +7,7 @@
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
 
     public class SmsComposerViewModel : Screen, ISmsComposerViewModel
     {
@@ -14,7 +15,7 @@
 
         #region Fields
 
-        private SmsMessage _model;
+        private SMSMessage _model;
 
         private SmsComposerStatusEnum _state = SmsComposerStatusEnum.Composing;
 
@@ -50,7 +51,7 @@
 
         public IEventAggregator EventAggregator { get; set; }
 
-        public SmsMessage Model
+        public SMSMessage Model
         {
             get
             {

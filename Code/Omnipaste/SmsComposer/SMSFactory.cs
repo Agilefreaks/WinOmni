@@ -3,6 +3,7 @@
     using System;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Properties;
 
     public class SMSFactory : ISMSFactory
@@ -33,14 +34,14 @@
 
         #region Public Methods and Operators
 
-        public SmsMessage Create()
+        public SMSMessage Create()
         {
-            return new SmsMessage { Message = GetMessageSuffix() };
+            return new SMSMessage { Message = GetMessageSuffix() };
         }
 
-        public SmsMessage Create(SendSmsMessage sendSmsMessage)
+        public SMSMessage Create(SendSmsMessage sendSmsMessage)
         {
-            return new SmsMessage
+            return new SMSMessage
                        {
                            Message = string.Format("{0}{1}", sendSmsMessage.Message, GetMessageSuffix()),
                            Recipient = sendSmsMessage.Recipient

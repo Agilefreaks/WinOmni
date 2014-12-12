@@ -161,7 +161,7 @@
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="SmsComposer\SmsComposerViewModelTests.cs" />
     <Compile Include="SmsComposer\SMSFactoryTests.cs" />
-    <Compile Include="SmsComposer\SmsMessageTests.cs" />
+    <Compile Include="SmsComposer\SMSMessageTests.cs" />
     <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
   </ItemGroup>
   <ItemGroup>

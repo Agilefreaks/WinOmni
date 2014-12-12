@@ -2,12 +2,13 @@
 {
     using Caliburn.Micro;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
 
     public interface ISmsComposerViewModel : IScreen, IHandle<SendSmsMessage>
     {
         #region Public Properties
 
-        SmsMessage Model { get; set; }
+        SMSMessage Model { get; set; }
 
         SmsComposerStatusEnum State { get; set; }
 

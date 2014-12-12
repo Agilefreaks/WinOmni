@@ -9,6 +9,7 @@
     using OmniApi.Resources.v1;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.SmsComposer;
 
     [TestFixture]
@@ -45,7 +46,7 @@
             _kernel.Bind<ISMSFactory>().ToConstant(_mockSMSFactory.Object);
 
             _subject = _kernel.Get<SmsComposerViewModel>();
-            _subject.Model = new SmsMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
+            _subject.Model = new SMSMessage { Message = "save me Obi-Wan Kenobi", Recipient = "1234567" };
         }
 
         [Test]

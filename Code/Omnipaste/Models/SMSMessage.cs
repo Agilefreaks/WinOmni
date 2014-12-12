@@ -1,9 +1,9 @@
-﻿namespace Omnipaste.SmsComposer
+﻿namespace Omnipaste.Models
 {
     using System;
     using Caliburn.Micro;
 
-    public class SmsMessage : PropertyChangedBase
+    public class SMSMessage : PropertyChangedBase
     {
         #region Fields
 

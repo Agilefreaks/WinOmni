@@ -520,7 +520,7 @@
     <Compile Include="Shell\Connection\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SmsComposer\SmsComposerStatusEnum.cs" />
-    <Compile Include="SmsComposer\SmsMessage.cs" />
+    <Compile Include="Models\SMSMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />

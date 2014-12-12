@@ -1,11 +1,12 @@
 ﻿namespace Omnipaste.SmsComposer
 {
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
 
     public interface ISMSFactory
     {
-        SmsMessage Create();
+        SMSMessage Create();
 
-        SmsMessage Create(SendSmsMessage sendSmsMessage);
+        SMSMessage Create(SendSmsMessage sendSmsMessage);
     }
 }
