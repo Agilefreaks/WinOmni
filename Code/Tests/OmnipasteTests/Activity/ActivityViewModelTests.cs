@@ -93,6 +93,8 @@
         [Test]
         public void ShowDetails_Always_SetsModelWasViewedToTrue()
         {
+            var activity = new Activity { WasViewed = true };
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -106,6 +108,8 @@
         [Test]
         public void ShowDetails_WhenDetailsIsActive_SetsContentInfoStateToViewing()
         {
+            var activity = new Activity { WasViewed = true };
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
