@@ -5,5 +5,7 @@ namespace Omnipaste.Activity
     public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<Models.Activity>
     {
         ContentTypeEnum ContentType { get; set; }
+
+        ActivityContentInfo ContentInfo { get; set; }
     }
 }

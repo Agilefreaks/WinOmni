@@ -125,7 +125,7 @@
             SetupBugFreakAdditionalData();
             StartBackgroundServices();
 
-            DisplayRootViewFor<ShellViewModel>(viewSettings);
+            DisplayRootViewFor<IShellViewModel>(viewSettings);
         }
 
         private void SetupBugFreakAdditionalData()

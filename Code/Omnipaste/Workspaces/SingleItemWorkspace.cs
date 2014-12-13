@@ -11,8 +11,6 @@
             _defaultScreen = defaultScreen;
         }
 
-        public virtual string Icon { get; protected set; }
-
         protected override void OnActivate()
         {
             base.OnActivate();

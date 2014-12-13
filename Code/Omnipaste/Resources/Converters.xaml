@@ -5,7 +5,6 @@
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
-    <converters:ActivityTypeToBrushConverter x:Key="ActivityTypeToBrushConverter"/>
     <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
     <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>
     <converters:InverseStringNullOrEmptyToVisibilityConverter x:Key="InverseStringNullOrEmptyToVisibilityConverter"/>

@@ -26,14 +26,6 @@
             }
         }
 
-        public override string Icon
-        {
-            get
-            {
-                return OmniUI.Resources.IconNames.SideMenuClippings;
-            }
-        }
-
         #endregion
     }
 }

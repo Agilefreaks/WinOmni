@@ -1,5 +1,6 @@
 namespace Omnipaste.Activity
 {
+    using System;
     using System.Windows.Input;
     using Ninject;
     using Omnipaste.ActivityDetails;
@@ -14,9 +15,11 @@ namespace Omnipaste.Activity
     {
         #region Fields
 
+        private IActivityDetailsViewModel _detailsViewModel;
+
         private ContentTypeEnum _contentType;
 
-        private IActivityDetailsViewModel _detailsViewModel;
+        private ActivityContentInfo _contentInfo;
 
         #endregion
 
@@ -32,7 +35,24 @@ namespace Omnipaste.Activity
 
         #region Public Properties
 
+        [Inject]
+        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
         public ICommand ClickCommand { get; set; }
+
+        public override Models.Activity Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                UpdateState();
+                UpdateContentInfo();
+            }
+        }
 
         public ContentTypeEnum ContentType
         {
@@ -47,23 +67,24 @@ namespace Omnipaste.Activity
                     return;
                 }
                 _contentType = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ContentType);
             }
         }
 
-        [Inject]
-        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
-
-        public override Models.Activity Model
+        public ActivityContentInfo ContentInfo
         {
             get
             {
-                return base.Model;
+                return _contentInfo;
             }
             set
             {
-                base.Model = value;
-                UpdateState();
+                if (Equals(value, _contentInfo))
+                {
+                    return;
+                }
+                _contentInfo = value;
+                NotifyOfPropertyChange(() => ContentInfo);
             }
         }
 
@@ -74,12 +95,21 @@ namespace Omnipaste.Activity
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            _detailsViewModel.Deactivated += OnDetailsClosed;
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
+            UpdateContentInfo();
         }
 
         #endregion
 
         #region Methods
+
+        protected void OnDetailsClosed(object source, EventArgs e)
+        {
+            Model.WasViewed = true;
+            _detailsViewModel.Deactivated -= OnDetailsClosed;
+            UpdateContentInfo();
+        }
 
         private void UpdateState()
         {
@@ -102,6 +132,27 @@ namespace Omnipaste.Activity
                         break;
                 }
             }
+        }
+
+        private void UpdateContentInfo()
+        {
+            if (Model == null) return;
+
+            var contentInfo = new ActivityContentInfo { ContentType = Model.Type };
+            if (_detailsViewModel != null && _detailsViewModel.IsActive)
+            {
+                contentInfo.ContentState = ContentStateEnum.Viewing;
+            }
+            else if (Model.WasViewed)
+            {
+                contentInfo.ContentState = ContentStateEnum.Viewed;
+            }
+            else
+            {
+                contentInfo.ContentState = ContentStateEnum.NotViewed;
+            }
+
+            ContentInfo = contentInfo;
         }
 
         #endregion

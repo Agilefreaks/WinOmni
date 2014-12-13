@@ -4,6 +4,5 @@
 
     public interface IWorkspace : IScreen, IConductor
     {
-        string Icon { get; }
     }
 }

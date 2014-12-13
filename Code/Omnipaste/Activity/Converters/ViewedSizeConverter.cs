@@ -1,22 +1,19 @@
-﻿namespace OmniUI.Converters
+﻿namespace Omnipaste.Activity.Converters
 {
     using System;
     using System.Globalization;
     using System.Windows.Data;
     using OmniUI.Helpers;
 
-    public class StringToResourceConverter : IValueConverter
+    public class ViewedSizeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object result = null;
-            var iconName = value as string;
-            if (!string.IsNullOrWhiteSpace(iconName))
-            {
-                result = ResourceHelper.GetByKey(iconName);
-            }
+            var contentInfo = (ActivityContentInfo)value;
 
-            return result;
+            return contentInfo.ContentState == ContentStateEnum.NotViewed
+                ? Double.MaxValue
+                : ResourceHelper.GetByKey<double>("ClippingMaxHeight");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
