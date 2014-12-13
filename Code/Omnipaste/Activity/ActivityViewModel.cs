@@ -1,5 +1,6 @@
 namespace Omnipaste.Activity
 {
+    using System;
     using System.Windows.Input;
     using Ninject;
     using Omnipaste.ActivityDetails;
@@ -34,6 +35,9 @@ namespace Omnipaste.Activity
 
         #region Public Properties
 
+        [Inject]
+        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
         public ICommand ClickCommand { get; set; }
 
         public override Models.Activity Model
@@ -67,10 +71,7 @@ namespace Omnipaste.Activity
             }
         }
 
-        [Inject]
-        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
-
-	public override Models.Activity Model
+        public ActivityContentInfo ContentInfo
         {
             get
             {
