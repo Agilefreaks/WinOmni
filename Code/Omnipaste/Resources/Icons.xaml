@@ -5477,54 +5477,31 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Path>
         </Canvas>
     </Canvas>
-    
-    <Canvas x:Key="user_image_placeholder" Width="50" Height="54">
-        <Canvas.Resources>
-            <PathGeometry x:Key="clipPath2999" Figures="M 0 43 40 43 40 0 0 0 0 43 z" FillRule="NonZero"/>
-            <PathGeometry x:Key="clipPath3011" Figures="m 0.036 21.621 c 0 -11.571 8.955 -20.95 20.001 -20.95 l 0 0 c 10.635 0 19.331 8.694 19.963 19.668 l 0 0 0 2.563 C 39.368 33.876 30.672 42.571 20.037 42.571 l 0 0 c -11.046 0 -20.001 -9.38 -20.001 -20.95" FillRule="NonZero"/>
-        </Canvas.Resources>
-        <Canvas >
-            <Canvas.RenderTransform>
-                <MatrixTransform Matrix="1.25 0 0 -1.25 0 53.75"/>
-            </Canvas.RenderTransform>
+
+    <Viewbox x:Key="user_image_placeholder">
+        <Canvas Width="70" Height="70">
+            <Canvas.Resources>
+                <PathGeometry x:Key="clipPath2999" Figures="M 0 56 56 56 56 0 0 0 0 56 z" FillRule="NonZero"/>
+            </Canvas.Resources>
             <Canvas>
+                <Canvas.RenderTransform>
+                    <MatrixTransform Matrix="1.25 0 0 -1.25 0 70"/>
+                </Canvas.RenderTransform>
                 <Canvas>
                     <Canvas>
-                        <Canvas.RenderTransform>
-                            <TranslateTransform X="40.0364" Y="21.6206"/>
-                        </Canvas.RenderTransform>
-                        <Path Fill="#FFE6E6E6">
-                            <Path.Data>
-                                <PathGeometry Figures="m 0 0 c 0 11.571 -8.954 20.95 -20 20.95 -11.046 0 -20 -9.379 -20 -20.95 0 -11.571 8.954 -20.95 20 -20.95 11.046 0 20 9.379 20 20.95" FillRule="nonzero"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                </Canvas>
-            </Canvas>
-            <Canvas>
-                <Canvas>
-                    <Canvas>
-                        <Canvas.RenderTransform>
-                            <TranslateTransform X="27.5849" Y="25.8574"/>
-                        </Canvas.RenderTransform>
-                        <Path Fill="#FFFFFFFF">
-                            <Path.Data>
-                                <PathGeometry Figures="m 0 0 c 0 -4.101 -3.324 -7.425 -7.425 -7.425 -4.101 0 -7.425 3.324 -7.425 7.425 0 4.101 3.324 7.425 7.425 7.425 C -3.324 7.425 0 4.101 0 0" FillRule="nonzero"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas>
-                        <Canvas.RenderTransform>
-                            <TranslateTransform X="23.5771" Y="-12.8724"/>
-                        </Canvas.RenderTransform>
-                        <Path Fill="#FFFFFFFF">
-                            <Path.Data>
-                                <PathGeometry Figures="m 0 0 -7 0 c -5.5 0 -10 4.5 -10 10 l 0 9.7 c 0 5.5 4.5 10 10 10 l 7 0 c 5.5 0 10 -4.5 10 -10 L 10 10 C 10 4.5 5.5 0 0 0" FillRule="nonzero"/>
-                            </Path.Data>
-                        </Path>
+                        <Canvas>
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="27.9021" Y="21.35"/>
+                            </Canvas.RenderTransform>
+                            <Path Fill="#FFE6E5E5">
+                                <Path.Data>
+                                    <PathGeometry Figures="m 0 0 c -6.075 0 -11 4.925 -11 11 0 6.075 4.925 11 11 11 C 6.075 22 11 17.075 11 11 11 4.925 6.075 0 0 0 m 0.098 34.65 c -15.464 0 -28 -12.536 -28 -28 0 -8.662 3.935 -16.404 10.113 -21.54 2.703 7.316 9.317 12.513 17.671 12.513 8.457 0 15.124 -5.329 17.762 -12.787 6.373 5.133 10.454 12.995 10.454 21.814 0 15.464 -12.536 28 -28 28" FillRule="nonzero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
                     </Canvas>
                 </Canvas>
             </Canvas>
         </Canvas>
-    </Canvas>
+    </Viewbox>
 </ResourceDictionary>
