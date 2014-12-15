@@ -3,8 +3,9 @@
     using Omnipaste.ActivityList;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
+    using OmniUI.Workspace;
 
-    [UseView("Omnipaste.Workspaces.WorkspaceView", IsFullyQualifiedName = true)]
+    [UseView("OmniUI.Workspace.WorkspaceView", IsFullyQualifiedName = true)]
     public class ActivityWorkspace : MasterDetailsWorkspace, IActivityWorkspace
     {
         #region Constructors and Destructors

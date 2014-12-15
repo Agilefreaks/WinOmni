@@ -18,6 +18,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
+    using OmniHolidays;
     using Omnipaste.Services;
     using Omnipaste.Shell;
     using OmniSync;
@@ -72,7 +73,8 @@
                 new OmniModule(),
                 new ClipboardModule(),
                 new EventsModule(),
-                new OmnipasteModule());
+                new OmnipasteModule(),
+                new HolidaysModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
         }
 

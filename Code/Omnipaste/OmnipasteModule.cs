@@ -32,6 +32,7 @@
     using OmniUI.Flyout;
     using OmniUI.MainMenuEntry;
     using OmniUI.SecondaryMenuEntry;
+    using OmniUI.Workspace;
 
     public class OmnipasteModule : ModuleBase
     {
@@ -56,6 +57,7 @@
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
+            Kernel.Bind<IWorkspaceConductor>().ToMethod(context => context.Kernel.Get<IShellViewModel>());
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
             Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();

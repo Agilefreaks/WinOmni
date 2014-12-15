@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Workspaces
 {
     using Caliburn.Micro;
+    using OmniUI.Intefaces;
+    using OmniUI.Workspace;
 
     public abstract class SingleItemWorkspace : Conductor<IScreen>, IWorkspace
     {
