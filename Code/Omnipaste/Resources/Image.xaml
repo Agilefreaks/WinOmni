@@ -13,7 +13,7 @@
                                    Height="{Binding Path=Height, RelativeSource={RelativeSource TemplatedParent}}" 
                                    Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}">
                             <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Uniform">
+                                <VisualBrush Stretch="UniformToFill">
                                     <VisualBrush.Visual>
                                         <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}">
                                             <Path.Data>

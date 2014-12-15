@@ -71,7 +71,7 @@
             <DrawingGroup>
                 <GeometryDrawing Brush="{DynamicResource WhiteBrush}">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry RadiusY="0" RadiusX="0" Rect="0,0,70,70"/>
+                        <EllipseGeometry Center="35,35" RadiusY="35" RadiusX="35"/>
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <DrawingGroup>
