@@ -112,10 +112,7 @@
                     .SubscribeAndHandleErrors(AddMessage);
             _callsSubscription =
                 _eventsHandler.Where(
-                    @event =>
-                        {
-                            return @event.Type == EventTypeEnum.IncomingCallEvent;
-                        })
+                    @event => @event.Type == EventTypeEnum.IncomingCallEvent)
                     .Select(@event => new Call(@event))
                     .SubscribeAndHandleErrors(AddCall);
         }

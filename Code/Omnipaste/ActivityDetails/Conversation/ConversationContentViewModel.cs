@@ -59,17 +59,17 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            _messageSubscription =
-                MessageStore.MessageObservable.SubscribeAndHandleErrors(
-                    message => ActivateItem(CreateMessageViewModel(message)));
-            _callSubscription =
-                CallStore.CallObservable.SubscribeAndHandleErrors(message => ActivateItem(CreateCallViewModel(message)));
 
             MessageStore.GetRelatedMessages(ContactInfo)
                 .Select(CreateMessageViewModel)
                 .Concat(CallStore.GetRelatedCalls(ContactInfo).Select(CreateCallViewModel).Cast<IDetailsViewModel>())
                 .OrderBy(screen => ((IHaveTimestamp)screen.Model).Time)
                 .ForEach(ActivateItem);
+            _messageSubscription =
+                MessageStore.MessageObservable.SubscribeAndHandleErrors(
+                    message => ActivateItem(CreateMessageViewModel(message)));
+            _callSubscription =
+                CallStore.CallObservable.SubscribeAndHandleErrors(message => ActivateItem(CreateCallViewModel(message)));
         }
 
         protected override void OnDeactivate(bool close)
@@ -86,7 +86,7 @@
                 _callSubscription = null;
             }
 
-            base.OnDeactivate(close);
+            base.OnDeactivate(true);
         }
 
         private ICallViewModel CreateCallViewModel(Models.Call call)

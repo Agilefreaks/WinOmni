@@ -107,6 +107,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityDetails\Conversation\ConversationContentViewModelTests.cs" />
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
