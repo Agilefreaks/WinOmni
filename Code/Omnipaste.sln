@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B427A33-480F-4312-A049-06BFE5C4EBCC}"
 EndProject
@@ -56,6 +56,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmnipasteTests", "Tests\OmnipasteTests\OmnipasteTests.csproj", "{6DABB140-4028-4262-BCFA-12D43916F966}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsTests", "Tests\EventsTests\EventsTests.csproj", "{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniHolidays", "OmniHolidays\OmniHolidays.csproj", "{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniHolidaysTests", "OmniHolidaysTests\OmniHolidaysTests.csproj", "{9F7CC018-B54F-4FF9-9448-2EF089DC5487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -376,6 +380,36 @@ Global
 		{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59}.Staging|Mixed Platforms.ActiveCfg = Staging|Any CPU
 		{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59}.Staging|Mixed Platforms.Build.0 = Staging|Any CPU
 		{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59}.Staging|x86.ActiveCfg = Staging|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Release|x86.ActiveCfg = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{08EE2858-ABD6-4BB3-9C28-65F4DEE0CD67}.Staging|x86.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Release|x86.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487}.Staging|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -391,5 +425,6 @@ Global
 		{99762FDC-7747-41FA-BC9F-B42735F87C04} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{6DABB140-4028-4262-BCFA-12D43916F966} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{9F7CC018-B54F-4FF9-9448-2EF089DC5487} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal
