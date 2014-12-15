@@ -391,4 +391,16 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="Activity" xml:space="preserve">
     <value>Atividade</value>
   </data>
+  <data name="ClippingDetailsHeaderTitle" xml:space="preserve">
+    <value>Recortes de seu</value>
+  </data>
+  <data name="IncommingCallLabel" xml:space="preserve">
+    <value>1 Chamada recebida</value>
+  </data>
+  <data name="MessageDetailsHeader" xml:space="preserve">
+    <value>Para</value>
+  </data>
+  <data name="OutgoingCallLabel" xml:space="preserve">
+    <value>1 Chamada de saída</value>
+  </data>
 </root>
