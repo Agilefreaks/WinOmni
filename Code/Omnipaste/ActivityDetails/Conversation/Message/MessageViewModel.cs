@@ -1,15 +1,16 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation.Message
 {
+    using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
 
-    public class MessageViewModel : DetailsViewModelWithContact<Message>, IMessageViewModel
+    public class MessageViewModel : ConversationItemViewModel<Message>, IMessageViewModel
     {
         #region Constructors and Destructors
 
-        public MessageViewModel(IUiRefreshService uiRefreshService)
-            : base(uiRefreshService)
+        public MessageViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)
+            : base(uiRefreshService, configurationService)
         {
         }
 

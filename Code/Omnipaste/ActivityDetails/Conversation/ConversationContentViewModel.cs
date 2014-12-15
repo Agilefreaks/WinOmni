@@ -63,7 +63,7 @@
             MessageStore.GetRelatedMessages(ContactInfo)
                 .Select(CreateMessageViewModel)
                 .Concat(CallStore.GetRelatedCalls(ContactInfo).Select(CreateCallViewModel).Cast<IDetailsViewModel>())
-                .OrderBy(screen => ((IHaveTimestamp)screen.Model).Time)
+                .OrderBy(screen => ((IConversationItem)screen.Model).Time)
                 .ForEach(ActivateItem);
             _messageSubscription =
                 MessageStore.MessageObservable.SubscribeAndHandleErrors(

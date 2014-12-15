@@ -278,11 +278,11 @@
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="DetailsViewModel\IConversationItem.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
-    <Compile Include="DetailsViewModel\DetailsViewModelWithContact.cs" />
+    <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
-    <Compile Include="Models\IHaveContactInfo.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
@@ -291,7 +291,6 @@
     <Compile Include="Models\Call.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
-    <Compile Include="Models\IHaveTimestamp.cs" />
     <Compile Include="Presenters\ContactInfoPresenter.cs" />
     <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />

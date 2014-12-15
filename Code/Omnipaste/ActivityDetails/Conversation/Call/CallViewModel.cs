@@ -1,15 +1,16 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation.Call
 {
+    using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
 
-    public class CallViewModel : DetailsViewModelWithContact<Call>, ICallViewModel
+    public class CallViewModel : ConversationItemViewModel<Call>, ICallViewModel
     {
         #region Constructors and Destructors
 
-        public CallViewModel(IUiRefreshService uiRefreshService)
-            : base(uiRefreshService)
+        public CallViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)
+            : base(uiRefreshService, configurationService)
         {
         }
 

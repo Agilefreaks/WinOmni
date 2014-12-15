@@ -1,13 +1,16 @@
 ﻿namespace Omnipaste.DetailsViewModel
 {
+    using OmniCommon.Interfaces;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
 
-    public abstract class DetailsViewModelWithContact<TModel> : DetailsViewModelWithAutoRefresh<TModel>
-        where TModel : class, IHaveContactInfo
+    public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>
+        where TModel : class, IConversationItem
     {
         #region Fields
+
+        private readonly ContactInfoPresenter _currentUserInfo;
 
         private ContactInfoPresenter _contactInfo;
 
@@ -15,9 +18,12 @@
 
         #region Constructors and Destructors
 
-        protected DetailsViewModelWithContact(IUiRefreshService uiRefreshService)
+        protected ConversationItemViewModel(
+            IUiRefreshService uiRefreshService,
+            IConfigurationService configurationService)
             : base(uiRefreshService)
         {
+            _currentUserInfo = new ContactInfoPresenter(new ContactInfo(configurationService.UserInfo));
         }
 
         #endregion
@@ -50,7 +56,9 @@
             set
             {
                 base.Model = value;
-                ContactInfo = new ContactInfoPresenter(value.ContactInfo);
+                ContactInfo = value.Source == SourceType.Local
+                                  ? _currentUserInfo
+                                  : new ContactInfoPresenter(value.ContactInfo);
             }
         }
 

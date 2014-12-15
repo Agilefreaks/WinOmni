@@ -2,8 +2,9 @@
 {
     using System;
     using Events.Models;
+    using Omnipaste.DetailsViewModel;
 
-    public class Message : IHaveTimestamp, IHaveContactInfo
+    public class Message : IConversationItem
     {
         #region Constructors and Destructors
 
