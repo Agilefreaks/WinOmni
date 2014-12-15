@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using OmniCommon.Helpers;
+    using OmniUI.Helpers;
 
     public class WpfDispatcherProvider : IDispatcherProvider
     {
@@ -16,7 +17,7 @@
         {
             get
             {
-                return DispatcherWrapper.FromGiven(System.Windows.Application.Current.Dispatcher);
+                return DispatcherWrapper.FromGiven(ApplicationHelper.Instance.Dispatcher);
             }
         }
     }

@@ -3,13 +3,13 @@
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Windows;
     using System.Windows.Threading;
     using Caliburn.Micro;
     using Microsoft.Win32;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using OmniUI.Helpers;
 
     public class ApplicationService : IApplicationService
     {
@@ -51,7 +51,7 @@
         {
             get
             {
-                return Application.Current.Dispatcher;
+                return ApplicationHelper.Instance.Dispatcher;
             }
         }
 
@@ -63,7 +63,7 @@
         {
             _eventAggregator.PublishOnUIThread(new ApplicationClosingMessage());
 
-            Application.Current.Shutdown();
+            ApplicationHelper.Instance.Shutdown();
         }
 
         #endregion

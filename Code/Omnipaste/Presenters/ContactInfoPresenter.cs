@@ -1,27 +1,25 @@
 ﻿namespace Omnipaste.Presenters
 {
     using System;
-    using System.Reflection;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Caliburn.Micro;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using OmniUI.Helpers;
     using Action = System.Action;
 
     public class ContactInfoPresenter : PropertyChangedBase, IContactInfoPresenter
     {
         #region Constants
 
-        private const string DefaultContactImagePathFormat = @"/{0};component/Resources/DefaultUserIcon.png";
+        public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
         #endregion
 
         #region Fields
 
         private readonly ContactInfo _contactInfo;
-
-        private readonly Uri _defaultContactImageUri;
 
         private string _identifier;
 
@@ -33,10 +31,6 @@
 
         public ContactInfoPresenter(ContactInfo contactInfo)
         {
-            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            _defaultContactImageUri = new Uri(
-                string.Format(DefaultContactImagePathFormat, assemblyName),
-                UriKind.Relative);
             _contactInfo = contactInfo;
             UpdateContactDetails();
         }
@@ -83,6 +77,12 @@
 
         #region Methods
 
+        private static ImageSource GetDefaultUserImage()
+        {
+            var resource = ResourceHelper.GetByKey(UserPlaceholderBrush);
+            return new DrawingImage(((DrawingBrush)resource).Drawing);
+        }
+
         private static ImageSource GetImageSourceFromUri(Uri uri)
         {
             var image = new BitmapImage();
@@ -91,11 +91,6 @@
             image.EndInit();
 
             return image;
-        }
-
-        private ImageSource GetDefaultUserImage()
-        {
-            return GetImageSourceFromUri(_defaultContactImageUri);
         }
 
         private void UpdateContactDetails()
@@ -116,8 +111,8 @@
                 (() =>
                     {
                         Image = _contactInfo.ImageUri != null
-                                           ? GetImageSourceFromUri(_contactInfo.ImageUri)
-                                           : GetDefaultUserImage();
+                                    ? GetImageSourceFromUri(_contactInfo.ImageUri)
+                                    : GetDefaultUserImage();
                     }));
         }
 

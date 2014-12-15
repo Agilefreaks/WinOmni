@@ -2,6 +2,7 @@
 {
     using System;
     using System.Windows;
+    using OmniUI.Helpers;
 
     public partial class App
     {
@@ -31,7 +32,7 @@
                     Omnipaste.Properties.Resources.Warning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation);
-                Current.Shutdown();
+                ApplicationHelper.Instance.Shutdown();
             }
         }
 

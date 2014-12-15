@@ -2,6 +2,7 @@
 {
     using System;
     using Events.Models;
+    using OmniCommon.Models;
 
     public class ContactInfo
     {
@@ -17,6 +18,12 @@
         {
             Name = @event.ContactName;
             Phone = @event.PhoneNumber;
+        }
+
+        public ContactInfo(UserInfo userInfo)
+        {
+            Name = userInfo.FullName();
+            ImageUri = string.IsNullOrWhiteSpace(userInfo.ImageUrl) ? null : new Uri(userInfo.ImageUrl);
         }
 
         #endregion

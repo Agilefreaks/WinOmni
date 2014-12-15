@@ -10,6 +10,8 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
@@ -24,8 +26,8 @@
         private readonly IDisposable _userObserver;
 
         private ConnectionStateEnum _state;
-        
-        private UserInfo _userInfo;
+
+        private ContactInfoPresenter _userInfo;
 
         #endregion
 
@@ -52,12 +54,12 @@
                         newStatus == OmniServiceStatusEnum.Started
                             ? ConnectionStateEnum.Connected
                             : ConnectionStateEnum.Disconnected);
-            
-            UserInfo = configurationService.UserInfo;
+
+            UpdateUserInfo(configurationService.UserInfo);
             _userObserver =
                 configurationService.SettingsChangedObservable.SubscribeToSettingChange<UserInfo>(
                     ConfigurationProperties.UserInfo,
-                    userInfo => UserInfo = userInfo,
+                    UpdateUserInfo,
                     observeScheduler: SchedulerProvider.Dispatcher);
         }
 
@@ -81,22 +83,6 @@
             }
         }
 
-        public string UserName
-        {
-            get
-            {
-                return UserInfo.FullName();
-            }
-        }
-
-        public string UserImage
-        {
-            get
-            {
-                return UserInfo.ImageUrl;
-            }
-        }
-
         public ConnectionStateEnum State
         {
             get
@@ -112,7 +98,7 @@
             }
         }
 
-        public UserInfo UserInfo
+        public ContactInfoPresenter UserInfo
         {
             get
             {
@@ -120,10 +106,12 @@
             }
             set
             {
+                if (Equals(value, _userInfo))
+                {
+                    return;
+                }
                 _userInfo = value;
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => UserName);
-                NotifyOfPropertyChange(() => UserImage);
             }
         }
 
@@ -135,6 +123,15 @@
         {
             _statusObserver.Dispose();
             _userObserver.Dispose();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void UpdateUserInfo(UserInfo userInfo)
+        {
+            UserInfo = new ContactInfoPresenter(new ContactInfo(userInfo));
         }
 
         #endregion
