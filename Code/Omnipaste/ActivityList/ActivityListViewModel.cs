@@ -8,6 +8,7 @@ namespace Omnipaste.ActivityList
     using Events.Handlers;
     using Omnipaste.Activity;
     using Omnipaste.Framework;
+    using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
 
@@ -120,6 +121,11 @@ namespace Omnipaste.ActivityList
         #endregion
 
         #region Public Methods and Operators
+
+        public void ShowVideoTutorial()
+        {
+            ExternalProcessHelper.ShowVideoTutorial();
+        }
 
         #endregion
 

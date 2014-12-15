@@ -6,7 +6,7 @@
              xmlns:p="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Width="{StaticResource DefaultWorkspaceWidth}">
         <StackPanel Style="{DynamicResource EmptyClippingsContainer}">
             <Rectangle Style="{DynamicResource EmptyListIconStyle}" />
             <TextBlock Text="{x:Static p:Resources.ClippingListEmptyLabel}" Style="{StaticResource InfoTextStyleCenter}" />

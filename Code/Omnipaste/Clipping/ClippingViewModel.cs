@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.Clipping
 {
-    using System.Diagnostics;
     using Clipboard.Models;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Helpers;
 
     public class ClippingViewModel : DetailsViewModelBase<Clipping>, IClippingViewModel
     {
@@ -38,7 +38,7 @@
 
         public void OpenLink()
         {
-            Process.Start(Model.Content);
+            ExternalProcessHelper.Start(Model.Content);
         }
 
         #endregion

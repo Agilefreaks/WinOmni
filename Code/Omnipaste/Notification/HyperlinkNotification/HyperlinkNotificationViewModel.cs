@@ -1,8 +1,7 @@
 ﻿namespace Omnipaste.Notification.HyperlinkNotification
 {
-    using System.ComponentModel;
-    using System.Diagnostics;
     using Clipboard.Models;
+    using Omnipaste.Helpers;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Properties;
 
@@ -85,15 +84,8 @@
         public void OpenLink()
         {
             CanOpenLink = false;
-            try
-            {
-                Process.Start(Uri);
-                Dismiss();
-            }
-            catch (Win32Exception)
-            {
-                // Looks like there is no way for us to act on this
-            }
+            ExternalProcessHelper.Start(Uri);
+            Dismiss();
         }
 
         #endregion

@@ -281,6 +281,7 @@
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithContact.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Models\IHaveContactInfo.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />

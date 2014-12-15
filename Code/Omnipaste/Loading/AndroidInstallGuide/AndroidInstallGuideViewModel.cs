@@ -1,14 +1,13 @@
 ﻿namespace Omnipaste.Loading.AndroidInstallGuide
 {
     using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Caliburn.Micro;
     using Gma.QrCodeNet.Encoding;
     using Gma.QrCodeNet.Encoding.Windows.Render;
     using OmniCommon.Helpers;
+    using Omnipaste.Helpers;
 
     public class AndroidInstallGuideViewModel : Screen, IAndroidInstallGuideViewModel
     {
@@ -67,14 +66,7 @@
 
         public void OpenAndroidLink()
         {
-            try
-            {
-                Process.Start(AndroidInstallLink.ToString());
-            }
-            catch (Win32Exception)
-            {
-                // Looks like there is no way for us to act on this
-            }
+            ExternalProcessHelper.Start(AndroidInstallLink.ToString());
         }
 
         #endregion

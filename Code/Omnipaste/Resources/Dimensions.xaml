@@ -15,4 +15,5 @@
     <system:Double x:Key="ActivityDetailsHeaderHeight">118</system:Double>
     <system:Double x:Key="SecondaryNavButtonHeight">16</system:Double>
     <system:Double x:Key="CircleButtonSize">13</system:Double>
+    <system:Double x:Key="DefaultWorkspaceWidth">1246</system:Double>
 </ResourceDictionary>

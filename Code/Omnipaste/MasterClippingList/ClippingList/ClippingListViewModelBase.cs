@@ -1,13 +1,12 @@
 namespace Omnipaste.MasterClippingList.ClippingList
 {
     using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
     using Clipboard.Models;
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Clipping;
     using Omnipaste.Framework;
+    using Omnipaste.Helpers;
 
     public abstract class ClippingListViewModelBase : ListViewModelBase<Clipping, IClippingViewModel>,
                                                       IClippingListViewModel
@@ -37,14 +36,7 @@ namespace Omnipaste.MasterClippingList.ClippingList
 
         public void ShowVideoTutorial()
         {
-            try
-            {
-                Process.Start(new Uri(ConfigurationService.WebBaseUrl + "/#video").ToString());
-            }
-            catch (Win32Exception)
-            {
-                // Looks like there is no way for us to act on this
-            }
+            ExternalProcessHelper.ShowVideoTutorial();
         }
 
         #endregion
