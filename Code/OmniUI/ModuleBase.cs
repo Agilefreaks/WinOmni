@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Caliburn.Micro;
     using Ninject.Extensions.Conventions;
     using Ninject.Modules;
 
@@ -30,6 +31,8 @@
 
         public override void Load()
         {
+            AddModuleToViewSources();
+
             RemoveExistingBindings();
 
             BindSingletons();
@@ -44,6 +47,15 @@
         #endregion
 
         #region Methods
+
+        protected virtual void AddModuleToViewSources()
+        {
+            var currentAssemblyName = GetType().Assembly;
+            if (!AssemblySource.Instance.Contains(currentAssemblyName))
+            {
+                AssemblySource.Instance.Add(currentAssemblyName);
+            }
+        }
 
         protected virtual void BindServices()
         {

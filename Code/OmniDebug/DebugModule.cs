@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Caliburn.Micro;
     using Clipboard.API.Resources.v1;
     using Events.Api.Resources.v1;
     using Ninject;
@@ -35,8 +34,6 @@
 
         protected override void LoadCore()
         {
-            AssemblySource.Instance.Add(GetType().Assembly);
-
             Kernel.Bind<IWebsocketConnectionFactory>().To<WebsocketConnectionFactoryWrapper>().InSingletonScope();
 
             Kernel.Bind<IOmniServiceWrapper>().To<OmniServiceWrapper>().InSingletonScope();

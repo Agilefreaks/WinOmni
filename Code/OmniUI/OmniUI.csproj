@@ -87,6 +87,10 @@
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
+    <Compile Include="Workspace\IWorkspaceConductor.cs" />
+    <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
+    <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
+    <Compile Include="Workspace\IWorkspace.cs" />
     <Compile Include="MainMenuEntry\IMainMenuEntryViewModel.cs" />
     <Compile Include="Resources\IconNames.cs" />
     <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
@@ -94,6 +98,9 @@
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Flyout\FlyoutBaseViewModel.cs" />
+    <Compile Include="Workspace\IMasterDetailsWorkspace.cs" />
+    <Compile Include="Workspace\MasterDetailsWorkspace.cs" />
+    <Compile Include="Workspace\Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -111,6 +118,10 @@
     <Page Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Workspace\WorkspaceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

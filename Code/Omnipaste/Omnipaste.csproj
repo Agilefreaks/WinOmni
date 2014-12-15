@@ -399,7 +399,6 @@
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
     <Compile Include="Workspaces\EventsMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\WorkspaceMainMenuEntry.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
@@ -416,16 +415,8 @@
     <Compile Include="Workspaces\EventsWorkspace.cs" />
     <Compile Include="Workspaces\IActivityWorkspace.cs" />
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IDetailsConductorViewModel.cs" />
     <Compile Include="Workspaces\IEventsWorkspace.cs" />
-    <Compile Include="Workspaces\IMasterDetailsWorkspace.cs" />
-    <Compile Include="Workspaces\IWorkspace.cs" />
-    <Compile Include="Workspaces\MasterDetailsWorkspace.cs" />
     <Compile Include="Workspaces\SingleItemWorkspace.cs" />
-    <Compile Include="Workspaces\Workspace.cs" />
-    <Compile Include="Workspaces\WorkspaceView.xaml.cs">
-      <DependentUpon>WorkspaceView.xaml</DependentUpon>
-    </Compile>
     <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -912,10 +903,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Workspaces\WorkspaceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OmnipasteBootstrapper.cs" />
@@ -1003,6 +990,10 @@
     <ProjectReference Include="..\OmniDebug\OmniDebug.csproj">
       <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
       <Name>OmniDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniHolidays\OmniHolidays.csproj">
+      <Project>{08ee2858-abd6-4bb3-9c28-65f4dee0cd67}</Project>
+      <Name>OmniHolidays</Name>
     </ProjectReference>
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>

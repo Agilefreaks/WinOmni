@@ -2,6 +2,7 @@
 {
     using OmniUI.Attributes;
     using OmniUI.MainMenuEntry;
+    using OmniUI.Workspace;
 
     [UseView("OmniUI.MainMenuEntry.MainMenuEntryView", IsFullyQualifiedName = true)]
     public class ActivityMenuEntryViewModel : WorkspaceMainMenuEntry<IActivityWorkspace>, IMainMenuEntryViewModel

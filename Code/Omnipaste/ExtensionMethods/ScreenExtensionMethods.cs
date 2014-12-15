@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ExtensionMethods
 {
     using Caliburn.Micro;
-    using Omnipaste.Workspaces;
+    using OmniUI.Workspace;
 
     public static class ScreenExtensionMethods
     {

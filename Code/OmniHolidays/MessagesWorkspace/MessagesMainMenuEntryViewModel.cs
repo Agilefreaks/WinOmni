@@ -1,17 +1,16 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace OmniHolidays.MessagesWorkspace
 {
     using OmniUI.Attributes;
-    using OmniUI.MainMenuEntry;
     using OmniUI.Workspace;
 
     [UseView("OmniUI.MainMenuEntry.MainMenuEntryView", IsFullyQualifiedName = true)]
-    public class ClippingsMenuEntryViewModel : WorkspaceMainMenuEntry<IClippingWorkspace>, IMainMenuEntryViewModel
+    public class MessagesMainMenuEntryViewModel :  WorkspaceMainMenuEntry<IMessagesWorkspace>, IMessagesMainMenuEntryViewModel
     {
         public override string Icon
         {
             get
             {
-                return OmniUI.Resources.IconNames.SideMenuClippings;
+                return "airplane_icon";
             }
         }
     }

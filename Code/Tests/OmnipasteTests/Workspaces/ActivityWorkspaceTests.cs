@@ -5,6 +5,7 @@
     using NUnit.Framework;
     using Omnipaste.ActivityList;
     using Omnipaste.Workspaces;
+    using OmniUI.Workspace;
 
     [TestFixture]
     public class ActivityWorkspaceTests

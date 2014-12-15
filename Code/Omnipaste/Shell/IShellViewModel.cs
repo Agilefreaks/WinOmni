@@ -7,8 +7,9 @@
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.SideMenu;
+    using OmniUI.Workspace;
 
-    public interface IShellViewModel : IConductActiveItem, IScreen, IViewAware, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
+    public interface IShellViewModel : IConductActiveItem, IScreen, IViewAware, IWorkspaceConductor, IHandle<ShowShellMessage>, IHandle<RetryMessage>, IDisposable
     {
         ILoadingViewModel LoadingViewModel { get; set; }
 
