@@ -13,6 +13,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
+    using OmniUI.Workspace;
 
     [TestFixture]
     public class ActivityViewModelTests

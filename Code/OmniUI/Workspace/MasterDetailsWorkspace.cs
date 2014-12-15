@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace OmniUI.Workspace
 {
     using Caliburn.Micro;
 

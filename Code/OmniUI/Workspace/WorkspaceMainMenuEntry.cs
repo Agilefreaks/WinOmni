@@ -1,9 +1,8 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace OmniUI.Workspace
 {
     using System;
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.Shell;
 
     public abstract class WorkspaceMainMenuEntry<TWorkspace> : Screen, IDisposable
         where TWorkspace : class, IWorkspace
@@ -37,7 +36,7 @@
         }
 
         [Inject]
-        public IShellViewModel ShellViewModel { get; set; }
+        public IWorkspaceConductor WorkspaceConductor { get; set; }
 
         [Inject]
         public TWorkspace Workspace
@@ -56,7 +55,7 @@
 
         public virtual void PerformAction()
         {
-            ShellViewModel.ActivateItem(Workspace);
+            WorkspaceConductor.ActivateItem(Workspace);
         }
 
         public void Dispose()
