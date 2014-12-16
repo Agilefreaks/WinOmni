@@ -114,17 +114,33 @@
         }
 
         [Test]
-        public void SaveUser_OnSuccess_ShouldBeStartOmniService()
+        public void SaveUser_OnSuccess_ShouldBeCreateEncryptionKeys()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<CreateEncryptionKeys>();
         }
 
         [Test]
         public void SaveUser_OnFailed_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void CreateEncryptionKeys_OnSuccess_ShouldBeStartOmniService()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<CreateEncryptionKeys>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<StartOmniService>();
+        }
+
+        [Test]
+        public void CreateEncryptionKeys_OnFail_ShouldBeFail()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<CreateEncryptionKeys>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }

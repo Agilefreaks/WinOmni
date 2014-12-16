@@ -141,6 +141,29 @@ namespace OmnipasteTests.Services
         }
 
         [Test]
+        public void GetDeviceKeyPair_WhenDeviceKeyPairWasPreviouslySaved_ReturnsDeviceKeyPair()
+        {
+            string valueSet = null;
+            var keyPair = new KeyPair
+            {
+                Public = "public",
+                Private = "private"
+            };
+
+            _mockConfigurationProvider.Setup(
+                x => x.SetValue(ConfigurationProperties.DeviceKeyPair, It.IsAny<string>()))
+                .Callback<string, string>((key, value) => valueSet = value);
+
+            _subject.DeviceKeyPair = keyPair;
+            valueSet.Should().NotBeNull();
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceKeyPair)).Returns(valueSet);
+
+            _subject.DeviceKeyPair.Should().NotBe(keyPair);
+            _subject.DeviceKeyPair.Public.Should().Be(keyPair.Public);
+            _subject.DeviceKeyPair.Private.Should().Be(keyPair.Private);
+        }
+
+        [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasAInvalidEntry_ReturnsTrue()
         {
             _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("test");
