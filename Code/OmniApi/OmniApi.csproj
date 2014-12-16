@@ -94,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\RsaCryptoService.cs" />
-    <Compile Include="Cryptography\RsaKeyPair.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\EmptyModel.cs" />
     <Compile Include="Models\Token.cs" />

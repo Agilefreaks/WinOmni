@@ -3,11 +3,14 @@
     using System;
     using System.Collections.Generic;
     using OmniCommon.Models;
+    using Org.BouncyCastle.Asn1;
     using Org.BouncyCastle.Crypto.Engines;
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Math;
+    using Org.BouncyCastle.Pkcs;
     using Org.BouncyCastle.Security;
+    using Org.BouncyCastle.X509;
 
     public class RsaCryptoService : ICryptoService
     {
@@ -58,7 +61,28 @@
             var keyGenerator = new RsaKeyPairGenerator();
             var param = new RsaKeyGenerationParameters(BigInteger.ValueOf(3), new SecureRandom(), KeySize, Certainity);
             keyGenerator.Init(param);
-            return new RsaKeyPair(keyGenerator.GenerateKeyPair());
+            var asymmetricCipherKeyPair = keyGenerator.GenerateKeyPair();
+
+            return new KeyPair
+                       {
+                           Private =
+                               ConvertToString(
+                                   PrivateKeyInfoFactory.CreatePrivateKeyInfo(asymmetricCipherKeyPair.Private)
+                               .ToAsn1Object()),
+                           Public =
+                               ConvertToString(
+                                   SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(
+                                       asymmetricCipherKeyPair.Public).ToAsn1Object())
+                       };
+        }
+
+        #endregion
+
+        #region Methods
+
+        private string ConvertToString(Asn1Object createSubjectPublicKeyInfo)
+        {
+            return Convert.ToBase64String(createSubjectPublicKeyInfo.GetDerEncoded());
         }
 
         #endregion
