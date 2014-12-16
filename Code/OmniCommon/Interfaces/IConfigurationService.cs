@@ -16,6 +16,8 @@
 
         string DeviceIdentifier { get; set; }
 
+        KeyPair DeviceKeyPair { get; set; }
+
         bool IsSMSSuffixEnabled { get; set; }
 
         string MachineName { get; }

@@ -1,6 +1,7 @@
 ﻿namespace OmniApi
 {
     using Ninject.Modules;
+    using OmniApi.Cryptography;
     using OmniApi.Resources.v1;
 
     public class OmniApiModule : NinjectModule
@@ -10,6 +11,8 @@
             Kernel.Bind<IOAuth2>().To<OAuth2>();
             Kernel.Bind<IDevices>().To<Devices>();
             Kernel.Bind<IUsers>().To<Users>();
+
+            Kernel.Bind<ICryptoService>().To<RsaCryptoService>();
         }
     }
 }

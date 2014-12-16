@@ -154,11 +154,27 @@
         }
 
         [Test]
-        public void GetDeviceId_Successful_ShouldBeGetUser()
+        public void EnsureEncryptionKeys_OnSuccess_ShouldBeGetUser()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<EnsureEncryptionKeys>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetUser>();
+        }
+
+        [Test]
+        public void EnsureEncryptionKeys_OnFail_ShouldBeFail()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<EnsureEncryptionKeys>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void GetDeviceId_Successful_ShouldBeEnsureEncryptionKeys()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<GetUser>();
+                .Be<EnsureEncryptionKeys>();
         }
 
         [Test]

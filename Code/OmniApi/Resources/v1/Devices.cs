@@ -26,6 +26,11 @@
 
         #region Public Methods and Operators
 
+        public IObservable<EmptyModel> Update(object deviceParams)
+        {
+            return ResourceApi.Update(deviceParams);
+        }
+
         public IObservable<Device> Activate(string registrationId, string identifier)
         {
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
@@ -38,9 +43,9 @@
             return ResourceApi.Call(phoneNumber, AccessToken);
         }
 
-        public IObservable<Device> Create(string identifier, string name)
+        public IObservable<Device> Create(string identifier, string name, string publicKey)
         {
-            var device = new Device(identifier) { Name = name };
+            var device = new Device(identifier) { Name = name, PublicKey = publicKey };
             return ResourceApi.Create(device, AccessToken);
         }
 
