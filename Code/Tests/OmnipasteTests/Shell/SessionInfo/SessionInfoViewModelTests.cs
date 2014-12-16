@@ -12,6 +12,7 @@
     using OmniCommon.Models;
     using OmniCommon.Settings;
     using System.Reactive;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Shell.SessionInfo;
     using OmniUI.Helpers;
@@ -69,7 +70,7 @@
             _scheduler.Start();
 
             _subject.UserInfo.Should().NotBe(oldUserInfo);
-            _subject.UserInfo.Identifier.Should().Be(newUserInfo.FullName());
+            _subject.UserInfo.Identifier.Should().Be("Test Last");
         }
     }
 }

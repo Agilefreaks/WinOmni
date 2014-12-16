@@ -125,6 +125,7 @@
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModelTests.cs" />
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModelTests.cs" />
     <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModelTests.cs" />
+    <Compile Include="Models\ContactInfoTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModelTests.cs" />
