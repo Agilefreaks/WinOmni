@@ -337,6 +337,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippings.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\EnsureEncryptionKeys.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />

@@ -115,6 +115,20 @@
             }
         }
 
+        public KeyPair DeviceKeyPair
+        {
+            get
+            {
+                return _configurationContainer.GetObject<KeyPair>(ConfigurationProperties.DeviceKeyPair);
+            }
+
+            set
+            {
+                _configurationContainer.SetObject(ConfigurationProperties.DeviceKeyPair, value);
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.DeviceKeyPair, DeviceKeyPair));
+            }
+        }
+
         public bool IsNewDevice
         {
             get

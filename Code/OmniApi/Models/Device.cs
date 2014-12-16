@@ -29,6 +29,8 @@
 
         public string Provider { get; set; }
 
+        public string PublicKey { get; set; }
+
         public string RegistrationId { get; set; }
 
         #endregion

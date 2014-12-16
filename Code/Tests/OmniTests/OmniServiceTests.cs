@@ -270,11 +270,6 @@
                     new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
             _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
             _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
-            var registerDevice =
-                _scheduler.CreateColdObservable(
-                    new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
-                    new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(m => m.Create(DeviceIdentifier, DeviceName)).Returns(registerDevice);
             var activateDevice =
                 _scheduler.CreateColdObservable(
                     new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
