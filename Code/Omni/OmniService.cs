@@ -187,12 +187,6 @@
             Interlocked.Exchange(ref _migrationState, NoSwitchInProgress);
         }
 
-        private IObservable<Device> RegisterDevice()
-        {
-            SimpleLogger.Log("Registering Device");
-            return Devices.Create(ConfigurationService.DeviceIdentifier, ConfigurationService.MachineName);
-        }
-
         private IObservable<Unit> StartCore()
         {
             SimpleLogger.Log("Call to start core");

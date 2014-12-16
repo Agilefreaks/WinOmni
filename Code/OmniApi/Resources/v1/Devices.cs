@@ -43,9 +43,9 @@
             return ResourceApi.Call(phoneNumber, AccessToken);
         }
 
-        public IObservable<Device> Create(string identifier, string name)
+        public IObservable<Device> Create(string identifier, string name, string publicKey)
         {
-            var device = new Device(identifier) { Name = name };
+            var device = new Device(identifier) { Name = name, PublicKey = publicKey };
             return ResourceApi.Create(device, AccessToken);
         }
 
