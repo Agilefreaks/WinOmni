@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     using OmniUI.Attributes;
+    using OmniUI.Presenters;
 
     [UseView("Omnipaste.Activity.ActivityView", IsFullyQualifiedName = true)]
     public class ContactRelatedActivityViewModel : ActivityViewModel, IContactRelatedActivityViewModel

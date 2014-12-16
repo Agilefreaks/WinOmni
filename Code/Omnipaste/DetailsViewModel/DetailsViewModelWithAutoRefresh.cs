@@ -3,6 +3,7 @@
     using System;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Services;
+    using OmniUI.Details;
 
     public abstract class DetailsViewModelWithAutoRefresh<TModel> : DetailsViewModelBase<TModel>, IDetailsViewModelWithAutoRefresh<TModel>
         where TModel : class

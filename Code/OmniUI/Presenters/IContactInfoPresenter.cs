@@ -1,4 +1,4 @@
-namespace Omnipaste.Presenters
+namespace OmniUI.Presenters
 {
     using System.Windows.Media;
 
@@ -7,5 +7,7 @@ namespace Omnipaste.Presenters
         string Identifier { get; set; }
 
         ImageSource Image { get; set; }
+
+        bool IsSelected { get; set; }
     }
 }

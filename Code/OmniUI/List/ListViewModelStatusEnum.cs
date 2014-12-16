@@ -1,4 +1,4 @@
-namespace Omnipaste
+namespace OmniUI.List
 {
     public enum ListViewModelStatusEnum
     {

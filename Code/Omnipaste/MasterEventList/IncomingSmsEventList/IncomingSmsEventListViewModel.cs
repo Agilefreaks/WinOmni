@@ -3,6 +3,7 @@ namespace Omnipaste.MasterEventList.IncomingSmsEventList
     using System;
     using Events.Handlers;
     using Events.Models;
+    using Ninject;
     using Omnipaste.MasterEventList.EventList;
     using OmniUI.Attributes;
 
@@ -11,8 +12,8 @@ namespace Omnipaste.MasterEventList.IncomingSmsEventList
     {
         #region Constructors and Destructors
 
-        public IncomingSmsEventListViewModel(IEventsHandler eventsHandler)
-            : base(eventsHandler)
+        public IncomingSmsEventListViewModel(IEventsHandler eventsHandler, IKernel kernel)
+            : base(eventsHandler, kernel)
         {
         }
 
@@ -20,7 +21,7 @@ namespace Omnipaste.MasterEventList.IncomingSmsEventList
 
         #region Public Properties
 
-        public override Func<Event, bool> Filter
+        public override Func<Event, bool> EntityFilter
         {
             get
             {

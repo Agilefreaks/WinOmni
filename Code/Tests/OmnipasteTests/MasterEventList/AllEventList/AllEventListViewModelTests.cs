@@ -10,10 +10,10 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.AllEventList;
     using System.Reactive;
+    using OmniUI.List;
 
     [TestFixture]
     public class AllEventListViewModelTests

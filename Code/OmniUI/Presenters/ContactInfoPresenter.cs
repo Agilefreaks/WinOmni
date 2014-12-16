@@ -1,12 +1,12 @@
-﻿namespace Omnipaste.Presenters
+﻿namespace OmniUI.Presenters
 {
     using System;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Caliburn.Micro;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
     using OmniUI.Helpers;
+    using OmniUI.Models;
     using Action = System.Action;
 
     public class ContactInfoPresenter : PropertyChangedBase, IContactInfoPresenter
@@ -15,21 +15,31 @@
 
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
+        private const string DefaultContactIdentifier = "Unknown Contact";
+
         #endregion
 
         #region Fields
 
-        private readonly ContactInfo _contactInfo;
+        private readonly IContactInfo _contactInfo;
 
         private string _identifier;
 
         private ImageSource _image;
 
+        private bool _isSelected;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public ContactInfoPresenter(ContactInfo contactInfo)
+        public ContactInfoPresenter()
+        {
+            Image = GetDefaultUserImage();
+            Identifier = DefaultContactIdentifier;
+        }
+
+        public ContactInfoPresenter(IContactInfo contactInfo)
         {
             _contactInfo = contactInfo;
             UpdateContactDetails();
@@ -69,6 +79,23 @@
                     return;
                 }
                 _image = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return _isSelected;
+            }
+            set
+            {
+                if (value.Equals(_isSelected))
+                {
+                    return;
+                }
+                _isSelected = value;
                 NotifyOfPropertyChange();
             }
         }

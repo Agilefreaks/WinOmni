@@ -1,24 +1,20 @@
 namespace Omnipaste.ActivityList
 {
     using System;
-    using System.ComponentModel;
     using System.Reactive.Linq;
-    using System.Windows.Data;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Activity;
-    using Omnipaste.Framework;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using OmniUI.List;
 
     public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
     {
         #region Fields
 
         private readonly IActivityViewModelFactory _activityViewModelFactory;
-
-        private readonly ICollectionView _filteredItems;
 
         private ActivityTypeEnum _allowedActivityTypes;
 
@@ -39,9 +35,8 @@ namespace Omnipaste.ActivityList
             : base(GetActivityObservable(clipboardHandler, eventsHandler))
         {
             _activityViewModelFactory = activityViewModelFactory;
-            _filteredItems = CollectionViewSource.GetDefaultView(Items);
-            _filteredItems.Filter = ShouldShowViewModel;
-            UpdateFilter();
+            _allowedActivityTypes = ActivityTypeEnum.All;
+            ViewModelFilter = MatchesActivityType;
         }
 
         #endregion
@@ -53,14 +48,6 @@ namespace Omnipaste.ActivityList
             get
             {
                 return Resources.Activity;
-            }
-        }
-
-        public ICollectionView FilteredItems
-        {
-            get
-            {
-                return _filteredItems;
             }
         }
 
@@ -145,15 +132,7 @@ namespace Omnipaste.ActivityList
                     .Merge(eventsHandler.Select(@event => new Activity(@event)));
         }
 
-        private bool ShouldShowViewModel(object viewModel)
-        {
-            var activityViewModel = viewModel as IActivityViewModel;
-            return (activityViewModel != null) && _allowedActivityTypes.HasFlag(activityViewModel.Model.Type)
-                   && (activityViewModel.Model.Type != ActivityTypeEnum.None)
-                   && (activityViewModel.Model.Type != ActivityTypeEnum.All);
-        }
-
-        private void UpdateFilter()
+        protected void UpdateFilter()
         {
             _allowedActivityTypes = ActivityTypeEnum.None;
             if (ShowClippings)
@@ -176,7 +155,14 @@ namespace Omnipaste.ActivityList
                 _allowedActivityTypes = ActivityTypeEnum.All;
             }
 
-            _filteredItems.Refresh();
+            OnFilterUpdated();
+        }
+
+        protected bool MatchesActivityType(IActivityViewModel viewModel)
+        {
+            return (viewModel != null) && _allowedActivityTypes.HasFlag(viewModel.Model.Type)
+                   && (viewModel.Model.Type != ActivityTypeEnum.None)
+                   && (viewModel.Model.Type != ActivityTypeEnum.All);
         }
 
         #endregion

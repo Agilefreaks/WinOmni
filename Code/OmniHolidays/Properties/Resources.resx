@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ContactListHeader" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="ContactListSubHeader" xml:space="preserve">
+    <value>Select the contacts to whom you want to send the SMS</value>
+  </data>
   <data name="Holidays" xml:space="preserve">
     <value>Holidays</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Selecionar Tudo</value>
   </data>
 </root>

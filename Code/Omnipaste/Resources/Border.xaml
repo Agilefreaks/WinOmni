@@ -15,8 +15,8 @@
         <Setter Property="Background" Value="{DynamicResource MainWindowBackgroundBrush}"/>
     </Style>
 
-    <Style x:Key="ActivityListContainerStyle" TargetType="Border">
-        <Setter Property="Width" Value="{StaticResource ActivityListContainerWidth}"/>
+    <Style x:Key="ListScreenContainerStyle" TargetType="Border">
+        <Setter Property="Width" Value="{StaticResource NarrowContainerWidth}"/>
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
         <Setter Property="Margin" Value="4,0"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -58,14 +58,18 @@
 
 
     <Style x:Key="ActivityDetailsContainerStyle" TargetType="Border">
-        <Setter Property="Width" Value="{StaticResource ActivityDetailsContainerWidth}" />
+        <Setter Property="Width" Value="{StaticResource WideContainerWidth}" />
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ScreenBorderBrush}"/>
     </Style>
 
-    <Style x:Key="ActivityDetailsHeaderStyle" TargetType="Border">
+    <Style x:Key="HeaderContainerStyle" TargetType="Border">
         <Setter Property="Height" Value="{StaticResource ActivityDetailsHeaderHeight}"/>
+    </Style>
+
+    <Style x:Key="ListHeaderContentContainerStyle" TargetType="Border">
+        <Setter Property="Padding" Value="18,0"/>
     </Style>
 
     <Style x:Key="ActivityDetailsContentStyle" TargetType="Border">

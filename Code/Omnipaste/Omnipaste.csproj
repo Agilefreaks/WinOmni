@@ -291,8 +291,6 @@
     <Compile Include="Models\Call.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
-    <Compile Include="Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -495,10 +493,6 @@
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="DetailsViewModel\DetailsViewModelBase.cs" />
-    <Compile Include="DetailsViewModel\IDetailsViewModel.cs" />
-    <Compile Include="Framework\ListViewModelBase.cs" />
-    <Compile Include="ListViewModelStatusEnum.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
     <Compile Include="Event\EventViewModel.cs" />
     <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />

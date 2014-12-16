@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.DetailsViewModel
+﻿namespace OmniUI.Details
 {
     using Caliburn.Micro;
 

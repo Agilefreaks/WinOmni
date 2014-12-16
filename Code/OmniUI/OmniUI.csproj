@@ -62,6 +62,18 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -81,12 +93,19 @@
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
+    <Compile Include="Details\DetailsViewModelBase.cs" />
+    <Compile Include="Details\IDetailsViewModel.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
+    <Compile Include="List\ListViewModelBase.cs" />
+    <Compile Include="List\ListViewModelStatusEnum.cs" />
+    <Compile Include="Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Models\IContactInfo.cs" />
+    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Workspace\IWorkspaceConductor.cs" />
     <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
     <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
