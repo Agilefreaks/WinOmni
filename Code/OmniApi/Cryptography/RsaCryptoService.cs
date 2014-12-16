@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using OmniCommon.Models;
     using Org.BouncyCastle.Crypto.Engines;
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
