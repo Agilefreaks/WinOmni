@@ -156,6 +156,7 @@
         <Setter Property="Margin" Value="42,0,0,0"/>
         <Setter Property="Padding" Value="0,0,0,8"/>
         <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="TextTrimming" Value="WordEllipsis"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="VersionNumberTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">

@@ -11,7 +11,7 @@
             <StackPanel DockPanel.Dock="Top">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Height="82" Margin="11,0,8,0" Padding="0, 11" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
                     <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=CanSend}"/>
+                                 IsEnabled="{Binding Path=CanSend}" Width="480"/>
                 </ScrollViewer>
                 <Border BorderThickness="1,0,0,1" BorderBrush="{DynamicResource ScreenBorderBrush}"/>
             </StackPanel>

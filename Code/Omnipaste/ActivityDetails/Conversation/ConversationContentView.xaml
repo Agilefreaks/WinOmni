@@ -9,8 +9,8 @@
     <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Border Margin="0,0,0,4" Padding="18,16,11,16" x:Name="ContentBorder">
-                    <ContentControl cal:View.Model="{Binding}"/>
+                <Border Margin="0,0,0,4" Padding="18,16" x:Name="ContentBorder" Width="{StaticResource ActivityDetailsContainerWidth}">
+                    <ContentControl cal:View.Model="{Binding}" />
                 </Border>
                 <DataTemplate.Triggers>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
