@@ -132,7 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippingTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\CreateEncryptionKeysTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\EnsureEncryptionKeysTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLinkTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserTests.cs" />

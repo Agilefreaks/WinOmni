@@ -8,6 +8,8 @@
     {
         #region Public Methods and Operators
 
+        IObservable<EmptyModel> Update(object deviceParams);
+
         IObservable<Device> Activate(string registrationId, string identifier);
 
         IObservable<EmptyModel> Call(string phoneNumber);

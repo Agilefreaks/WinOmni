@@ -26,6 +26,11 @@
 
         #region Public Methods and Operators
 
+        public IObservable<EmptyModel> Update(object deviceParams)
+        {
+            return ResourceApi.Update(deviceParams);
+        }
+
         public IObservable<Device> Activate(string registrationId, string identifier)
         {
             var device = new Device(identifier, registrationId) { Provider = NotificationProvider };

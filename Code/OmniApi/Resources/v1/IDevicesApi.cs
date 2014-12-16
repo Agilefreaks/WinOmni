@@ -9,6 +9,9 @@
     {
         #region Public Methods and Operators
 
+        [Put("/devices")]
+        IObservable<EmptyModel> Update([Body] object deviceParams);
+
         [Put("/devices/activate")]
         IObservable<Device> Activate([Body] Device device, [Header("Authorization")] string token, [Header("Client-Version")] string version);
 

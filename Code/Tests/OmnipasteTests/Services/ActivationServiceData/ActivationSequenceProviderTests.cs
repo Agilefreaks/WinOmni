@@ -114,33 +114,17 @@
         }
 
         [Test]
-        public void SaveUser_OnSuccess_ShouldBeCreateEncryptionKeys()
+        public void SaveUser_OnSuccess_ShouldBeStartOmniService()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<CreateEncryptionKeys>();
+                .Be<StartOmniService>();
         }
 
         [Test]
         public void SaveUser_OnFailed_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Failed)
-                .Should()
-                .Be<Failed>();
-        }
-
-        [Test]
-        public void CreateEncryptionKeys_OnSuccess_ShouldBeStartOmniService()
-        {
-            _sequence.Transitions.GetTargetTypeForTransition<CreateEncryptionKeys>(SimpleStepStateEnum.Successful)
-                .Should()
-                .Be<StartOmniService>();
-        }
-
-        [Test]
-        public void CreateEncryptionKeys_OnFail_ShouldBeFail()
-        {
-            _sequence.Transitions.GetTargetTypeForTransition<CreateEncryptionKeys>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }
@@ -170,11 +154,27 @@
         }
 
         [Test]
-        public void GetDeviceId_Successful_ShouldBeGetUser()
+        public void EnsureEncryptionKeys_OnSuccess_ShouldBeGetUser()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<EnsureEncryptionKeys>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<GetUser>();
+        }
+
+        [Test]
+        public void EnsureEncryptionKeys_OnFail_ShouldBeFail()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<EnsureEncryptionKeys>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void GetDeviceId_Successful_ShouldBeEnsureEncryptionKeys()
         {
             _sequence.Transitions.GetTargetTypeForTransition<GetDeviceId>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<GetUser>();
+                .Be<EnsureEncryptionKeys>();
         }
 
         [Test]
