@@ -4,8 +4,10 @@
     using System.Linq;
     using Events.Models;
     using OmniCommon.Models;
+    using OmniUI.Models;
+    using OmniUI.Presenters;
 
-    public class ContactInfo
+    public class ContactInfo : IContactInfo
     {
         #region Constants
 

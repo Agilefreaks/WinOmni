@@ -87,6 +87,9 @@
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
+    <Compile Include="Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Models\IContactInfo.cs" />
+    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Workspace\IWorkspaceConductor.cs" />
     <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
     <Compile Include="Workspace\IDetailsConductorViewModel.cs" />

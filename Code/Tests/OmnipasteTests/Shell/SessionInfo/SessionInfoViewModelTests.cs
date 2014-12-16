@@ -13,9 +13,9 @@
     using OmniCommon.Settings;
     using System.Reactive;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Shell.SessionInfo;
     using OmniUI.Helpers;
+    using OmniUI.Presenters;
 
     [TestFixture]
     public class SessionInfoViewModelTests

@@ -1,4 +1,4 @@
-namespace Omnipaste.Presenters
+namespace OmniUI.Presenters
 {
     using System.Windows.Media;
 

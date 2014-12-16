@@ -291,8 +291,6 @@
     <Compile Include="Models\Call.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
-    <Compile Include="Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />

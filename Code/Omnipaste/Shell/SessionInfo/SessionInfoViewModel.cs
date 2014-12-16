@@ -11,7 +11,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
+    using OmniUI.Presenters;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
