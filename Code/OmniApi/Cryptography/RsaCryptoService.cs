@@ -24,10 +24,10 @@
 
         #region Public Methods and Operators
 
-        public byte[] Decrypt(byte[] input, KeyPair key)
+        public byte[] Decrypt(byte[] input, string privateKey)
         {
             var engine = new RsaEngine();
-            engine.Init(false, PrivateKeyFactory.CreateKey(Convert.FromBase64String(key.Private)));
+            engine.Init(false, PrivateKeyFactory.CreateKey(Convert.FromBase64String(privateKey)));
 
             var blockSize = engine.GetInputBlockSize();
             var output = new List<byte>();
@@ -41,10 +41,10 @@
             return output.ToArray();
         }
 
-        public byte[] Encrypt(byte[] input, KeyPair key)
+        public byte[] Encrypt(byte[] input, string publicKey)
         {
             var engine = new RsaEngine();
-            engine.Init(true, PublicKeyFactory.CreateKey(Convert.FromBase64String(key.Public)));
+            engine.Init(true, PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKey)));
             var blockSize = engine.GetInputBlockSize();
 
             var output = new List<byte>();

@@ -32,9 +32,9 @@
         public void Decrypt_DataSizeIsLessThanKeySize_ReturnsDecryptedItem()
         {
             const string Data = "Data";
-            var key = _subject.GenerateKeyPair();
-            var encryptedData = _subject.Encrypt(Encoding.UTF8.GetBytes(Data), key);
-            var decryptedData = Encoding.UTF8.GetString(_subject.Decrypt(encryptedData, key));
+            var keyPair = _subject.GenerateKeyPair();
+            var encryptedData = _subject.Encrypt(Encoding.UTF8.GetBytes(Data), keyPair.Public);
+            var decryptedData = Encoding.UTF8.GetString(_subject.Decrypt(encryptedData, keyPair.Private));
 
             decryptedData.Should().Be(Data);
         }
@@ -43,9 +43,9 @@
         public void Decrypt_DataSizeIsGreaterThanKeySize_ReturnsDecryptedItem()
         {
             var data = new string('D', 10000);
-            var key = _subject.GenerateKeyPair();
-            var encryptedData = _subject.Encrypt(Encoding.UTF8.GetBytes(data), key);
-            var decryptedData = Encoding.UTF8.GetString(_subject.Decrypt(encryptedData, key));
+            var keyPair = _subject.GenerateKeyPair();
+            var encryptedData = _subject.Encrypt(Encoding.UTF8.GetBytes(data), keyPair.Public);
+            var decryptedData = Encoding.UTF8.GetString(_subject.Decrypt(encryptedData, keyPair.Private));
 
             decryptedData.Should().Be(data);
         }

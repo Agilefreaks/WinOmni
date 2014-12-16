@@ -49,12 +49,10 @@
                             {
                                 Identifier = _configurationService.DeviceIdentifier,
                                 PublicKey = currentEncryptionKey.Public
-                            }).Select(
-                                _ =>
-                                    {
-                                        _configurationService.DeviceKeyPair = currentEncryptionKey;
-                                        return new ExecuteResult { State = SimpleStepStateEnum.Successful };
-                                    });
+                            })
+                        .Select(_ => Observable.Start(() => _configurationService.DeviceKeyPair = currentEncryptionKey))
+                        .Switch()
+                        .Select(_ => new ExecuteResult { State = SimpleStepStateEnum.Successful });
             }
             else
             {
