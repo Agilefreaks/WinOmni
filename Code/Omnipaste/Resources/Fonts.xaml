@@ -6,6 +6,7 @@
     <FontFamily x:Key="NotificationContentFont">Segoe UI Semilight 8</FontFamily>
     <FontFamily x:Key="ContentFont">Segoe UI Semibold</FontFamily>
     <FontFamily x:Key="ActivityContentFont">Segoe UI</FontFamily>
+    <FontFamily x:Key="HeaderTitleFont">Segoe UI Semilight</FontFamily>
 
     <!--Converting from pt to DIP is done using the formula: 1pt=72/96 
     1 DIP = 1/96 inches
@@ -16,4 +17,5 @@
     <System:Double x:Key="FilterButtonFontSize">10</System:Double>
     <System:Double x:Key="ActivityLabelFontSize">9</System:Double>
     <System:Double x:Key="ActivityContentFontSize">14</System:Double>
+    <System:Double x:Key="HeaderTitleFontSize">36</System:Double>
 </ResourceDictionary>

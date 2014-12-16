@@ -67,7 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HolidaysModule.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\IContactListContentViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\IContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesWorkspace.cs" />
@@ -122,6 +126,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MessagesWorkspace\ContactList\ContactListContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\ContactList\ContactListHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MessagesWorkspace\ContactList\ContactListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

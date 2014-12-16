@@ -12,7 +12,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Style="{DynamicResource ActivityDetailsHeaderStyle}">
+            <Border Style="{DynamicResource HeaderContainerStyle}">
                 <ContentControl cal:View.Model="{Binding Path=HeaderViewModel}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </Border>
             <Border Grid.Row="1" Style="{DynamicResource ActivityDetailsContentStyle}">
