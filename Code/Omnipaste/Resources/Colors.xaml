@@ -33,4 +33,5 @@
     <Color x:Key="AlternativeContentBackgroundColor">#fafcfa</Color>
     <Color x:Key="CallFadedColor">#EBFDFF</Color>
     <Color x:Key="CallLabelColor">#69DDED</Color>
+    <Color x:Key="ChristmassColor">#E22D3F</Color>
 </ResourceDictionary>

@@ -5,12 +5,37 @@
     using Ninject;
     using OmniUI.Presenters;
 
-    public class ContactListContentViewModel : Conductor<IContactViewModel>.Collection.AllActive, IContactListContentViewModel
+    public class ContactListContentViewModel : Conductor<IContactViewModel>.Collection.AllActive,
+                                               IContactListContentViewModel
     {
+        #region Fields
+
+        private bool _selectAll;
+
+        #endregion
+
         #region Public Properties
 
         [Inject]
         public IKernel Kernel { get; set; }
+
+        public bool SelectAll
+        {
+            get
+            {
+                return _selectAll;
+            }
+            set
+            {
+                if (value.Equals(_selectAll))
+                {
+                    return;
+                }
+                _selectAll = value;
+                NotifyOfPropertyChange();
+                UpdateContactSelection();
+            }
+        }
 
         #endregion
 
@@ -33,6 +58,15 @@
             contactViewModel.Model = contactInfoPresenter;
 
             return contactViewModel;
+        }
+
+        private void UpdateContactSelection()
+        {
+            var selectAllChecked = SelectAll;
+            foreach (var contactViewModel in Items)
+            {
+                contactViewModel.Model.IsSelected = selectAllChecked;
+            }
         }
 
         #endregion

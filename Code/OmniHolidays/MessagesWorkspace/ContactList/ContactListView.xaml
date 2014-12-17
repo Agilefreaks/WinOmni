@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cal="http://www.caliburnproject.org">
 
-    <Border Style="{DynamicResource ListScreenContainerStyle}">
+    <Border Style="{DynamicResource ListScreenContainerStyle}" Width="{StaticResource ContactListContainerWidth}">
         <DockPanel LastChildFill="True">
             <Border DockPanel.Dock="Top" Style="{DynamicResource HeaderContainerStyle}">
                 <ContentControl cal:View.Model="{Binding Path=HeaderViewModel}"/>
             </Border>
-            <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <ContentControl cal:View.Model="{Binding Path=ContentViewModel}"/>
+            <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="0,0,2,0">
+                <ContentControl cal:View.Model="{Binding Path=ContentViewModel}" HorizontalAlignment="Stretch"/>
             </Border>
         </DockPanel>
     </Border>

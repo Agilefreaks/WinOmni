@@ -86,5 +86,14 @@ namespace OmniHolidays.Properties {
                 return ResourceManager.GetString("Holidays", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selecionar Tudo.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
     }
 }

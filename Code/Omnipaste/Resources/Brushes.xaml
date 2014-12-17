@@ -31,7 +31,8 @@
     <SolidColorBrush x:Key="AlternativeContentBackgroundBrush" Color="{DynamicResource AlternativeContentBackgroundColor}"/>
     <SolidColorBrush x:Key="CallFadedBrush" Color="{DynamicResource CallFadedColor}"/>
     <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
-    
+    <SolidColorBrush x:Key="ChristmassBrush" Color="{DynamicResource ChristmassColor}"/>
+
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
     <SolidColorBrush x:Key="NavigationMenuTextBrush" Color="{DynamicResource SideMenuTextColor}"/>
@@ -83,6 +84,54 @@
                             <MatrixTransform Matrix="1,0,0,1,27.9021,21.35"/>
                         </DrawingGroup.Transform>
                         <GeometryDrawing Brush="#FFE6E5E5" Geometry="F1 M0,0 C-6.075,0 -11,4.925 -11,11 -11,17.075 -6.075,22 0,22 6.075,22 11,17.075 11,11 11,4.925 6.075,0 0,0 M0.098,34.65 C-15.366,34.65 -27.902,22.114 -27.902,6.65 -27.902,-2.012 -23.967,-9.754 -17.789,-14.89 -15.086,-7.574 -8.472,-2.377 -0.118,-2.377 8.339,-2.377 15.006,-7.706 17.644,-15.164 24.017,-10.031 28.098,-2.169 28.098,6.65 28.098,22.114 15.562,34.65 0.098,34.65"/>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="CheckedCheckBoxBrush" Viewbox="0,0,70,70" ViewboxUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <MatrixTransform Matrix="5,0,0,5,0,0"/>
+                </DrawingGroup.Transform>
+                <DrawingGroup>
+                    <DrawingGroup.Transform>
+                        <MatrixTransform Matrix="1.25,0,0,-1.25,0,13.75"/>
+                    </DrawingGroup.Transform>
+                    <DrawingGroup>
+                        <DrawingGroup>
+                            <DrawingGroup.Transform>
+                                <MatrixTransform Matrix="1,0,0,1,10,11"/>
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="#FFE6E6E6" Geometry="F1 M0,0 L-9,0 C-9.552,0 -10,-0.448 -10,-1 L-10,-10 C-10,-10.552 -9.552,-11 -9,-11 L0,-11 C0.552,-11 1,-10.552 1,-10 L1,-1 C1,-0.448 0.552,0 0,0 M0,-10 L-9,-10 -9,-1 0,-1 0,-10 z"/>
+                        </DrawingGroup>
+                        <DrawingGroup>
+                            <DrawingGroup.Transform>
+                                <MatrixTransform Matrix="1,0,0,1,5.6369,3.2412"/>
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="#FFE33F4C" Geometry="F1 M0,0 C-0.158,-0.218 -0.403,-0.352 -0.668,-0.365 -0.933,-0.378 -1.19,-0.27 -1.368,-0.068 L-2.961,1.733 C-3.214,2.019 -3.191,2.46 -2.911,2.718 -2.63,2.976 -2.197,2.953 -1.944,2.667 L-0.817,1.392 C-0.8,1.373 -0.776,1.363 -0.751,1.364 -0.726,1.366 -0.703,1.378 -0.688,1.399 L1.628,4.6 C1.852,4.91 2.28,4.976 2.585,4.748 2.889,4.519 2.954,4.082 2.729,3.772 L0,0 z"/>
+                        </DrawingGroup>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="UncheckedCheckBoxBrush" Viewbox="0,0,70,70" ViewboxUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <MatrixTransform Matrix="5,0,0,5,0,0"/>
+                </DrawingGroup.Transform>
+                <DrawingGroup>
+                    <DrawingGroup.Transform>
+                        <MatrixTransform Matrix="1.25,0,0,-1.25,0,13.75"/>
+                    </DrawingGroup.Transform>
+                    <DrawingGroup>
+                        <DrawingGroup.Transform>
+                            <MatrixTransform Matrix="1,0,0,1,10,11"/>
+                        </DrawingGroup.Transform>
+                        <GeometryDrawing Brush="#FFE6E6E6" Geometry="F1 M0,0 L-9,0 C-9.552,0 -10,-0.448 -10,-1 L-10,-10 C-10,-10.552 -9.552,-11 -9,-11 L0,-11 C0.552,-11 1,-10.552 1,-10 L1,-1 C1,-0.448 0.552,0 0,0 M0,-10 L-9,-10 -9,-1 0,-1 0,-10 z"/>
                     </DrawingGroup>
                 </DrawingGroup>
             </DrawingGroup>

@@ -126,4 +126,7 @@
   <data name="Holidays" xml:space="preserve">
     <value>Sarbatori</value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Selectează tot</value>
+  </data>
 </root>

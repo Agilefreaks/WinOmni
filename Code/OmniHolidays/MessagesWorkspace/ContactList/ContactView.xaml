@@ -7,9 +7,13 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Border DataContext="{Binding}">
         <DockPanel LastChildFill="True">
-            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="28" Height="28" DockPanel.Dock="Left" 
-                     Margin="0,0,24,0" />
-            <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding Path=Model.IsSelected, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <CheckBox x:Name="Model_IsSelected" VerticalAlignment="Center" Margin="0,0,8,0" Style="{DynamicResource SmallCheckBoxStyle}"/>
+                    <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="28" Height="28" 
+                     Margin="0,0,8,0" />
+                </StackPanel>
+            </StackPanel>
             <TextBlock x:Name="Model_Identifier" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
                        Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center"/>
         </DockPanel>
