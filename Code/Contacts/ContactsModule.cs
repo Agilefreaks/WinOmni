@@ -12,6 +12,7 @@
             Kernel.Bind<IContacts>().To<Contacts>().InSingletonScope();
 
             Kernel.Bind<IHandler>().To<ContactsHandler>().InSingletonScope();
+            Kernel.Bind<IContactsHandler>().To<ContactsHandler>().InSingletonScope();
         }
     }
 }
