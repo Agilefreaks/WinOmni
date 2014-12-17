@@ -9,7 +9,7 @@
         <DockPanel LastChildFill="True">
             <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="28" Height="28" DockPanel.Dock="Left" 
                      Margin="0,0,24,0" />
-            <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center"/>
+            <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding Path=Model.IsSelected, Mode=TwoWay}"/>
             <TextBlock x:Name="Model_Identifier" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
                        Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center"/>
         </DockPanel>
