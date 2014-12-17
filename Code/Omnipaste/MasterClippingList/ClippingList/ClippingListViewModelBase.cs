@@ -5,8 +5,8 @@ namespace Omnipaste.MasterClippingList.ClippingList
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Clipping;
-    using Omnipaste.Framework;
     using Omnipaste.Helpers;
+    using OmniUI.List;
 
     public abstract class ClippingListViewModelBase : ListViewModelBase<Clipping, IClippingViewModel>,
                                                       IClippingListViewModel

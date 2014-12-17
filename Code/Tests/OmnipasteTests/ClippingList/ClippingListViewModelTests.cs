@@ -9,9 +9,9 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using Omnipaste;
     using Omnipaste.Clipping;
     using Omnipaste.MasterClippingList.ClippingList;
+    using OmniUI.List;
 
     [TestFixture]
     public class ClippingListViewModelTests

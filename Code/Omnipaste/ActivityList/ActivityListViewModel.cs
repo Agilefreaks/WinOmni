@@ -7,10 +7,10 @@ namespace Omnipaste.ActivityList
     using Clipboard.Handlers;
     using Events.Handlers;
     using Omnipaste.Activity;
-    using Omnipaste.Framework;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using OmniUI.List;
 
     public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
     {

@@ -4,7 +4,7 @@
     using Events.Models;
     using Ninject;
     using Omnipaste.Event;
-    using Omnipaste.Framework;
+    using OmniUI.List;
 
     public abstract class EventListViewModelBase : ListViewModelBase<Event, IEventViewModel>, IEventListViewModel
     {

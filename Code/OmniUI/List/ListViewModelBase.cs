@@ -1,4 +1,4 @@
-namespace Omnipaste.Framework
+namespace OmniUI.List
 {
     using System;
     using System.Collections.Specialized;
