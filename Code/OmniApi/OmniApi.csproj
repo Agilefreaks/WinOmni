@@ -99,6 +99,8 @@
     <Compile Include="Cryptography\RsaCryptoService.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\EmptyModel.cs" />
+    <Compile Include="Models\Sync.cs" />
+    <Compile Include="Models\SyncWhatEnum.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="OmniApiModule.cs" />
@@ -113,9 +115,12 @@
     <Compile Include="Resources\v1\IDevicesApi.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />
     <Compile Include="Resources\v1\IOAuth2Api.cs" />
+    <Compile Include="Resources\v1\ISyncs.cs" />
+    <Compile Include="Resources\v1\ISyncApi.cs" />
     <Compile Include="Resources\v1\IUsers.cs" />
     <Compile Include="Resources\v1\IUsersApi.cs" />
     <Compile Include="Resources\v1\OAuth2.cs" />
+    <Compile Include="Resources\v1\Syncs.cs" />
     <Compile Include="Resources\v1\Users.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverter.cs" />
     <Compile Include="Support\ExceptionExtensionMethods.cs" />

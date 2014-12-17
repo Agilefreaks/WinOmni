@@ -2,15 +2,11 @@
 {
     using System;
     using global::Contacts.Models;
-    using OmniApi.Models;
     using Refit;
 
     public interface IContactsApi
     {
         [Get("/contacts")]
-        IObservable<ContactList> Get([Header("Authorization")] string token);
-
-        [Post("/contacts/sync")]
-        IObservable<EmptyModel> Sync([Header("Authorization")] string token);
+        IObservable<ContactList> Get(string identifier, [Header("Authorization")] string token);
     }
 }
