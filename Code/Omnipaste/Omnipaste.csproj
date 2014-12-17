@@ -970,6 +970,10 @@
       <Project>{c7d3c627-311f-4395-be3c-953f1f715c74}</Project>
       <Name>Clipboard</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contacts\Contacts.csproj">
+      <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
+      <Name>Contacts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Events\Events.csproj">
       <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
       <Name>Events</Name>

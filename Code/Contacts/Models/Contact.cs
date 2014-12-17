@@ -1,4 +1,4 @@
-﻿namespace OmniApi.Models
+﻿namespace Contacts.Models
 {
     public class Contact
     {

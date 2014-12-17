@@ -8,6 +8,7 @@
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Clipboard;
+    using Contacts;
     using Events;
     using Humanizer.DateTimeHumanizeStrategy;
     using Ninject;
@@ -73,6 +74,7 @@
                 new OmniModule(),
                 new ClipboardModule(),
                 new EventsModule(),
+                new ContactsModule(),
                 new OmnipasteModule(),
                 new HolidaysModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;

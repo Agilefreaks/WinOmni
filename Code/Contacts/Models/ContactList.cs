@@ -1,4 +1,4 @@
-﻿namespace OmniApi.Models
+﻿namespace Contacts.Models
 {
     using System.Collections.Generic;
 

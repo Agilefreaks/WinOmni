@@ -94,8 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\RsaCryptoService.cs" />
-    <Compile Include="Models\Contact.cs" />
-    <Compile Include="Models\ContactList.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\EmptyModel.cs" />
     <Compile Include="Models\Token.cs" />
@@ -106,11 +104,8 @@
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\ResourceWithAuthorization.cs" />
     <Compile Include="Resources\v1\AuthorizationRequest.cs" />
-    <Compile Include="Resources\v1\Contacts.cs" />
     <Compile Include="Resources\v1\Devices.cs" />
     <Compile Include="Resources\v1\GrantTypeEnum.cs" />
-    <Compile Include="Resources\v1\IContacts.cs" />
-    <Compile Include="Resources\v1\IContactsApi.cs" />
     <Compile Include="Resources\v1\IDevices.cs" />
     <Compile Include="Resources\v1\IDevicesApi.cs" />
     <Compile Include="Resources\v1\IOAuth2.cs" />

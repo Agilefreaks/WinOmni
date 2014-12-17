@@ -1,8 +1,10 @@
-﻿namespace OmniApi.Resources.v1
+﻿namespace Contacts.Api.Resources.v1
 {
     using System;
     using System.Net.Http;
+    using global::Contacts.Models;
     using OmniApi.Models;
+    using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
 
