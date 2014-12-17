@@ -151,6 +151,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLinkTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\InitDeviceInfosTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDeviceTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivityTests.cs" />

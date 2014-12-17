@@ -34,6 +34,8 @@
 
         public static string UserInfo = "UserInfo";
 
+        public static string DeviceInfos = "DeviceInfos";
+
         public static string PingEndpoint = "PingEndpoint";
 
         public static string SMSSuffixEnabled = "SMSSuffixEnabled";
