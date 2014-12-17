@@ -1,18 +1,18 @@
-﻿namespace Events.Handlers
+﻿namespace Contacts.Handlers
 {
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Events.Api.Resources.v1;
-    using Events.Models;
+    using Contacts.Api.Resources.v1;
+    using Contacts.Models;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Models;
 
-    public class EventsHandler : IEventsHandler
+    public class ContactsHandler : IContactsHandler
     {
         #region Fields
 
-        private readonly Subject<Event> _subject;
+        private readonly Subject<ContactList> _contactListSubject;
 
         private IDisposable _subscription;
 
@@ -20,17 +20,17 @@
 
         #region Constructors and Destructors
 
-        public EventsHandler(IEvents events)
+        public ContactsHandler(IContacts contacts)
         {
-            _subject = new Subject<Event>();
-            Events = events;
+            _contactListSubject = new Subject<ContactList>();
+            Contacts = contacts;
         }
 
         #endregion
 
         #region Public Properties
 
-        public IEvents Events { private get; set; }
+        public IContacts Contacts { get; set; }
 
         #endregion
 
@@ -46,7 +46,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Events.Last().RunToCompletion(n => _subject.OnNext(n));
+            Contacts.Get().RunToCompletion(n => _contactListSubject.OnNext(n));
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
@@ -66,9 +66,9 @@
             }
         }
 
-        public IDisposable Subscribe(IObserver<Event> observer)
+        public IDisposable Subscribe(IObserver<ContactList> observer)
         {
-            return _subject.Subscribe(observer);
+            return _contactListSubject.Subscribe(observer);
         }
 
         #endregion
@@ -77,7 +77,7 @@
 
         private void SubscribeTo(IObservable<OmniMessage> observable)
         {
-            _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Notification).Subscribe(this);
+            _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Contacts).Subscribe(this);
         }
 
         #endregion
