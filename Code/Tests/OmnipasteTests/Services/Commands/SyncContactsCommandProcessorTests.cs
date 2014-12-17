@@ -20,7 +20,7 @@
     [TestFixture]
     public class SyncContactsCommandProcessorTests
     {
-        private SyncContactsCommandProcessor _subject;
+        private SyncContactsCommand _subject;
 
         private Mock<IContacts> _mockContacts;
 
@@ -31,7 +31,7 @@
         {
             _mockContacts = new Mock<IContacts> { DefaultValue = DefaultValue.Mock };
             _mockContactsHandler = new Mock<IContactsHandler> { DefaultValue = DefaultValue.Mock };
-            _subject = new SyncContactsCommandProcessor(_mockContacts.Object, _mockContactsHandler.Object);
+            _subject = new SyncContactsCommand(_mockContacts.Object, _mockContactsHandler.Object);
         }
 
         [Test]
@@ -41,7 +41,7 @@
             var contactList = new ContactList();
             _mockContacts.Setup(m => m.Get()).Returns(Observable.Return(contactList));
 
-            var observer = testScheduler.Start(() => _subject.Process(new SyncContactsCommand()));
+            var observer = testScheduler.Start(() => _subject.Execute(new SyncContactsParams()));
 
             observer.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
             observer.Messages.First().Value.Value.ContactList.Should().Be(contactList);
@@ -58,7 +58,7 @@
                         Notification.CreateOnError<ContactList>(new Exception())));
             _mockContacts.Setup(m => m.Get()).Returns(getObservable);
 
-            testScheduler.Start(() => _subject.Process(new SyncContactsCommand()));
+            testScheduler.Start(() => _subject.Execute(new SyncContactsParams()));
             
             _mockContacts.Verify(m => m.Sync());
         }
@@ -78,7 +78,7 @@
             _mockContactsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<ContactList>>()))
                 .Callback<IObserver<ContactList>>(o => o.OnNext(contactList));
 
-            var observer = testScheduler.Start(() => _subject.Process(new SyncContactsCommand()));
+            var observer = testScheduler.Start(() => _subject.Execute(new SyncContactsParams()));
 
             observer.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
             observer.Messages.First().Value.Value.ContactList.Should().Be(contactList);

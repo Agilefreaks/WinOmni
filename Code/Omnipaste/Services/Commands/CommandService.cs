@@ -23,11 +23,13 @@
 
         #region Public Methods and Operators
 
-        public IObservable<TResult> Execute<TCommand, TResult>(TCommand command)
+        public IObservable<TResult> Execute<TParam, TResult>(TParam param = null)
+            where TParam : class
+            where TResult : class
         {
-            var commandProcessor = _kernel.Get<ICommandProcessor<TCommand, TResult>>();
+            var commandProcessor = _kernel.Get<ICommand<TParam, TResult>>();
 
-            return Observable.Defer(() => commandProcessor.Process(command));
+            return Observable.Defer(() => commandProcessor.Execute(param));
         }
 
         #endregion

@@ -6,11 +6,11 @@
     using Contacts.Handlers;
     using Contacts.Models;
 
-    public class SyncContactsCommand
+    public class SyncContactsParams
     {
     }
 
-    public class SyncContactsCommandResult
+    public class SyncContactsResult
     {
         #region Public Properties
 
@@ -19,7 +19,7 @@
         #endregion
     }
 
-    public class SyncContactsCommandProcessor : ICommandProcessor<SyncContactsCommand, SyncContactsCommandResult>
+    public class SyncContactsCommand : ICommand<SyncContactsParams, SyncContactsResult>
     {
         #region Fields
 
@@ -31,7 +31,7 @@
 
         #region Constructors and Destructors
 
-        public SyncContactsCommandProcessor(IContacts contacts, IContactsHandler contactsHandler)
+        public SyncContactsCommand(IContacts contacts, IContactsHandler contactsHandler)
         {
             _contacts = contacts;
             _contactsHandler = contactsHandler;
@@ -41,7 +41,7 @@
 
         #region Public Methods and Operators
 
-        public IObservable<SyncContactsCommandResult> Process(SyncContactsCommand command)
+        public IObservable<SyncContactsResult> Execute(SyncContactsParams @params = null)
         {
             return
                 _contacts.Get()
@@ -50,7 +50,7 @@
                         _contacts.Sync()
                             .Select(_ => _contactsHandler)
                             .Switch())
-                    .Select(contactList => new SyncContactsCommandResult { ContactList = contactList });
+                    .Select(contactList => new SyncContactsResult { ContactList = contactList });
         }
 
         #endregion

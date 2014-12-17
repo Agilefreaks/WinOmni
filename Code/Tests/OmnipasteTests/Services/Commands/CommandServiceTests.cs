@@ -13,7 +13,7 @@
     public class CommandServiceTests
     {
         private CommandService _subject;
-        private Mock<ICommandProcessor<TestCommand, TestCommandResult>> _mockCommandProcessor;
+        private Mock<ICommand<TestCommand, TestCommandResult>> _mockCommandProcessor;
         private MoqMockingKernel _mockKernel;
 
         public class TestCommand
@@ -28,8 +28,8 @@
         public void SetUp()
         {
             _mockKernel = new MoqMockingKernel();
-            _mockCommandProcessor = new Mock<ICommandProcessor<TestCommand, TestCommandResult>>();
-            _mockKernel.Bind<ICommandProcessor<TestCommand, TestCommandResult>>().ToConstant(_mockCommandProcessor.Object);
+            _mockCommandProcessor = new Mock<ICommand<TestCommand, TestCommandResult>>();
+            _mockKernel.Bind<ICommand<TestCommand, TestCommandResult>>().ToConstant(_mockCommandProcessor.Object);
 
             _subject = new CommandService(_mockKernel);
         }
@@ -46,7 +46,7 @@
                         Notification.CreateOnNext(testCommandResult)),
                     new Recorded<Notification<TestCommandResult>>(200,
                         Notification.CreateOnCompleted<TestCommandResult>()));
-            _mockCommandProcessor.Setup(m => m.Process(It.IsAny<TestCommand>())).Returns(testObservable);
+            _mockCommandProcessor.Setup(m => m.Execute(It.IsAny<TestCommand>())).Returns(testObservable);
             
             var observer = testScheduler.Start(
                 () => _subject.Execute<TestCommand, TestCommandResult>(testCommand));
@@ -59,7 +59,7 @@
         {
             var testScheduler = new TestScheduler();
             var testCommand = new TestCommand();
-            _mockCommandProcessor.Setup(m => m.Process(It.IsAny<TestCommand>())).Throws(new Exception("42"));
+            _mockCommandProcessor.Setup(m => m.Execute(It.IsAny<TestCommand>())).Throws(new Exception("42"));
 
             var observer = testScheduler.Start(
                 () => _subject.Execute<TestCommand, TestCommandResult>(testCommand));

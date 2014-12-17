@@ -68,7 +68,7 @@
 
             Kernel.Bind(x => x.FromThisAssembly()
                   .SelectAllClasses()
-                  .InheritedFrom(typeof(ICommandProcessor<,>))
+                  .InheritedFrom(typeof(ICommand<,>))
                   .BindSingleInterface());
         }
 
