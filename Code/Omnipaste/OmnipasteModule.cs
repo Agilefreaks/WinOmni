@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
+    using Ninject.Extensions.Conventions;
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -18,6 +19,7 @@
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Services.Commands;
     using Omnipaste.Services.Monitors.Credentials;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
@@ -63,6 +65,11 @@
             Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
             Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
+
+            Kernel.Bind(x => x.FromThisAssembly()
+                  .SelectAllClasses()
+                  .InheritedFrom(typeof(ICommandProcessor<,>))
+                  .BindSingleInterface());
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
