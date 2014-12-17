@@ -8,8 +8,11 @@
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Clipboard;
+    using CommonServiceLocator.NinjectAdapter.Unofficial;
+    using Contacts;
     using Events;
     using Humanizer.DateTimeHumanizeStrategy;
+    using Microsoft.Practices.ServiceLocation;
     using Ninject;
     using Omni;
     using OmniApi;
@@ -73,9 +76,13 @@
                 new OmniModule(),
                 new ClipboardModule(),
                 new EventsModule(),
+                new ContactsModule(),
                 new OmnipasteModule(),
                 new HolidaysModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
+            
+            var locator = new NinjectServiceLocator(_kernel);
+            ServiceLocator.SetLocatorProvider(() => locator);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)

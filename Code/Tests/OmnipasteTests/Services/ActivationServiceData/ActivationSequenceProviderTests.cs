@@ -118,13 +118,29 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<StartOmniService>();
+                .Be<InitDeviceInfos>();
         }
 
         [Test]
         public void SaveUser_OnFailed_ShouldBeFailed()
         {
             _sequence.Transitions.GetTargetTypeForTransition<SaveUser>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<Failed>();
+        }
+
+        [Test]
+        public void InitDeviceInfos_OnSuccess_ShouldBeStartOmniService()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<InitDeviceInfos>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<StartOmniService>();
+        }
+
+        [Test]
+        public void InitDeviceInfos_OnFailed_ShouldBeFailed()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<InitDeviceInfos>(SimpleStepStateEnum.Failed)
                 .Should()
                 .Be<Failed>();
         }

@@ -128,6 +128,9 @@
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.3.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CommonServiceLocator.NinjectAdapter.Unofficial">
+      <HintPath>..\packages\CommonServiceLocator.NinjectAdapter.Unofficial.3.2.2.0\lib\Net40\CommonServiceLocator.NinjectAdapter.Unofficial.dll</HintPath>
+    </Reference>
     <Reference Include="Fleck, Version=0.11.1.32, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Fleck.0.11.1.32\lib\net40\Fleck.dll</HintPath>
@@ -148,6 +151,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="MsgPack">
       <HintPath>..\packages\MsgPack.Cli.0.5.4\lib\net45\MsgPack.dll</HintPath>
     </Reference>
@@ -338,6 +344,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\EnsureEncryptionKeys.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\InitDeviceInfos.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveUser.cs" />
@@ -349,6 +356,10 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForLocalClipping.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
+    <Compile Include="Services\Commands\CommandService.cs" />
+    <Compile Include="Services\Commands\ICommand.cs" />
+    <Compile Include="Services\Commands\ICommandService.cs" />
+    <Compile Include="Services\Commands\SyncContactsCommand.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\ICallStore.cs" />
@@ -969,6 +980,10 @@
     <ProjectReference Include="..\Clipboard\Clipboard.csproj">
       <Project>{c7d3c627-311f-4395-be3c-953f1f715c74}</Project>
       <Name>Clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contacts\Contacts.csproj">
+      <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
+      <Name>Contacts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Events\Events.csproj">
       <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>

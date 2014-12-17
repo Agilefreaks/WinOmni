@@ -1,6 +1,7 @@
 ﻿namespace OmniCommon.Interfaces
 {
     using System;
+    using System.Collections.Generic;
     using OmniCommon.Models;
     using OmniCommon.Settings;
 
@@ -25,6 +26,8 @@
         ProxyConfiguration ProxyConfiguration { get; set; }
 
         UserInfo UserInfo { get; set; }
+
+        List<DeviceInfo> DeviceInfos { get; set; }
 
         string RefreshToken { get; }
 

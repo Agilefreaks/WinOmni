@@ -6,6 +6,7 @@ using Microsoft.Reactive.Testing;
 
 namespace OmnipasteTests.Services
 {
+    using System.Collections.Generic;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
@@ -161,6 +162,24 @@ namespace OmnipasteTests.Services
             _subject.DeviceKeyPair.Should().NotBe(keyPair);
             _subject.DeviceKeyPair.Public.Should().Be(keyPair.Public);
             _subject.DeviceKeyPair.Private.Should().Be(keyPair.Private);
+        }
+
+        [Test]
+        public void GetDeviceInfos_WhenDeviceInfosWasPreviouslySaved_ReturnsDeviceInfos()
+        {
+            string valueSet = null;
+            var deviceInfos = new List<DeviceInfo> { new DeviceInfo() };
+
+            _mockConfigurationProvider.Setup(
+                x => x.SetValue(ConfigurationProperties.DeviceInfos, It.IsAny<string>()))
+                .Callback<string, string>((key, value) => valueSet = value);
+
+            _subject.DeviceInfos = deviceInfos;
+            valueSet.Should().NotBeNull();
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceInfos)).Returns(valueSet);
+
+            _subject.DeviceInfos.Should().NotBeSameAs(deviceInfos);
+            _subject.DeviceInfos.Should().NotBeEmpty();
         }
 
         [Test]

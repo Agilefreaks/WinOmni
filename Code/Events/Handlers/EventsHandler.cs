@@ -64,7 +64,6 @@
             {
                 Console.WriteLine(e.Message);
             }
-
         }
 
         public IDisposable Subscribe(IObserver<Event> observer)

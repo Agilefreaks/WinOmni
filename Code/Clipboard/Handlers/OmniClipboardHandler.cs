@@ -42,16 +42,13 @@
 
         public void Dispose()
         {
-            if (_subscription != null)
+            try
             {
-                try
-                {
-                    _subscription.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                _subscription.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
