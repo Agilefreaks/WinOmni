@@ -2,22 +2,15 @@
 {
     using System.Linq;
     using Caliburn.Micro;
+    using Ninject;
     using OmniUI.Presenters;
 
-    public class ContactListContentViewModel : Screen, IContactListContentViewModel
+    public class ContactListContentViewModel : Conductor<IContactViewModel>.Collection.AllActive, IContactListContentViewModel
     {
-        #region Constructors and Destructors
-
-        public ContactListContentViewModel()
-        {
-            Items = new BindableCollection<IContactInfoPresenter>();
-        }
-
-        #endregion
-
         #region Public Properties
 
-        public IObservableCollection<IContactInfoPresenter> Items { get; private set; }
+        [Inject]
+        public IKernel Kernel { get; set; }
 
         #endregion
 
@@ -26,13 +19,20 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            Enumerable.Range(0, 20).ToList().ForEach(_ => Items.Add(new ContactInfoPresenter()));
+            Enumerable.Range(0, 20).ToList().ForEach(_ => ActivateItem(GetContactViewModel(new ContactInfoPresenter())));
         }
 
         protected override void OnDeactivate(bool close)
         {
-            Items.Clear();
-            base.OnDeactivate(close);
+            base.OnDeactivate(true);
+        }
+
+        private IContactViewModel GetContactViewModel(ContactInfoPresenter contactInfoPresenter)
+        {
+            var contactViewModel = Kernel.Get<IContactViewModel>();
+            contactViewModel.Model = contactInfoPresenter;
+
+            return contactViewModel;
         }
 
         #endregion

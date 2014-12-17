@@ -7,10 +7,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Border DataContext="{Binding}">
         <DockPanel LastChildFill="True">
-            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Width="28" Height="28" DockPanel.Dock="Left" 
+            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="28" Height="28" DockPanel.Dock="Left" 
                      Margin="0,0,24,0" />
             <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center"/>
-            <TextBlock x:Name="Identifier" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
+            <TextBlock x:Name="Model_Identifier" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
                        Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center"/>
         </DockPanel>
     </Border>
