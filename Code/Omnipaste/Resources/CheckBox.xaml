@@ -78,6 +78,7 @@
                         </Grid.ColumnDefinitions>
                         <Rectangle Grid.Column="0" Width="10" Height="10" Fill="{DynamicResource CheckedCheckBoxBrush}" HorizontalAlignment="Center" x:Name="SelectedIcon"/>
                         <Rectangle Grid.Column="0"  Width="10" Height="10" Fill="{DynamicResource UncheckedCheckBoxBrush}" HorizontalAlignment="Center" x:Name="NotSelectedIcon"/>
+                        <Rectangle Grid.Column="0"  Width="10" Height="10" Fill="{DynamicResource IndeterminateCheckBoxBrush}" HorizontalAlignment="Center" x:Name="IndeterminateIcon"/>
                         <TextBlock Grid.Column="1" Margin="5,0,0,0" FontSize="{DynamicResource FilterButtonFontSize}" 
                                    FontFamily="{DynamicResource ContentFont}" Foreground="{TemplateBinding Foreground}" 
                                    Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -88,11 +89,18 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Opacity" Value="0" TargetName="NotSelectedIcon"/>
+                            <Setter Property="Opacity" Value="0" TargetName="IndeterminateIcon"/>
                             <Setter Property="Opacity" Value="1" TargetName="SelectedIcon"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
                             <Setter Property="Opacity" Value="0" TargetName="SelectedIcon"/>
+                            <Setter Property="Opacity" Value="0" TargetName="IndeterminateIcon"/>
                             <Setter Property="Opacity" Value="1" TargetName="NotSelectedIcon"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter Property="Opacity" Value="0" TargetName="SelectedIcon"/>
+                            <Setter Property="Opacity" Value="0" TargetName="NotSelectedIcon"/>
+                            <Setter Property="Opacity" Value="1" TargetName="IndeterminateIcon"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

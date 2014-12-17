@@ -3,6 +3,7 @@
     using System;
     using Events.Handlers;
     using Events.Models;
+    using Ninject;
     using Omnipaste.MasterEventList.EventList;
     using OmniUI.Attributes;
 
@@ -11,8 +12,8 @@
     {
         #region Constructors and Destructors
 
-        public IncomingCallEventListViewModel(IEventsHandler eventsHandler)
-            : base(eventsHandler)
+        public IncomingCallEventListViewModel(IEventsHandler eventsHandler, IKernel kernel)
+            : base(eventsHandler, kernel)
         {
         }
 
@@ -20,7 +21,7 @@
 
         #region Public Properties
 
-        public override Func<Event, bool> Filter
+        public override Func<Event, bool> EntityFilter
         {
             get
             {

@@ -46,7 +46,7 @@
         }
 
         [Test]
-        public void ReceivingAClipping_Always_CreatesANewActivityViewModelAndAddsItToItems()
+        public void ReceivingAClipping_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
         {
             var clippingObservable =
                 _testScheduler.CreateColdObservable(
@@ -60,6 +60,7 @@
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
                 _mockActivityViewModelFactory.Object);
+            viewModel.Start();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
@@ -69,7 +70,7 @@
         }
 
         [Test]
-        public void ReceivingAnEvent_Always_CreatesANewActivityViewModelAndAddsItToItems()
+        public void ReceivingAnEvent_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
         {
             var eventObservable =
                 _testScheduler.CreateColdObservable(
@@ -83,6 +84,7 @@
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
                 _mockActivityViewModelFactory.Object);
+            viewModel.Start();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 

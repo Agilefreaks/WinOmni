@@ -8,11 +8,18 @@
 
     public abstract class EventListViewModelBase : ListViewModelBase<Event, IEventViewModel>, IEventListViewModel
     {
+        #region Fields
+
+        protected readonly IKernel Kernel;
+
+        #endregion
+
         #region Constructors and Destructors
 
-        protected EventListViewModelBase(IEventsHandler eventsHandler)
+        protected EventListViewModelBase(IEventsHandler eventsHandler, IKernel kernel)
             : base(eventsHandler)
         {
+            Kernel = kernel;
         }
 
         #endregion

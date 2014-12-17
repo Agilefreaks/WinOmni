@@ -3,7 +3,7 @@
     using OmniUI.Details;
     using OmniUI.Presenters;
 
-    public interface IContactViewModel : IDetailsViewModel<ContactInfoPresenter>
+    public interface IContactViewModel : IDetailsViewModel<IContactInfoPresenter>
     {
     }
 }

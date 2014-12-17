@@ -38,7 +38,7 @@
         <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
             <StackPanel>
                 <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}"/>
-                <ItemsControl ItemsSource="{Binding Path=Items}">
+                <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Height="55" Padding="18,13" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
