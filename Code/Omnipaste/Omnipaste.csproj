@@ -492,8 +492,6 @@
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="DetailsViewModel\DetailsViewModelBase.cs" />
-    <Compile Include="DetailsViewModel\IDetailsViewModel.cs" />
     <Compile Include="Framework\ListViewModelBase.cs" />
     <Compile Include="ListViewModelStatusEnum.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />

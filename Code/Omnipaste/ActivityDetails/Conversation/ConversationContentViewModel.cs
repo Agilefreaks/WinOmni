@@ -11,6 +11,7 @@
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Details;
 
     public class ConversationContentViewModel : Conductor<IScreen>.Collection.AllActive, IConversationContentViewModel
     {

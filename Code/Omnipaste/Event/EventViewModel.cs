@@ -14,6 +14,7 @@
     using Omnipaste.MasterEventList.Calling;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Details;
 
     public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
     {

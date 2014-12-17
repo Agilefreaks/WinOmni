@@ -2,6 +2,7 @@
 {
     using Events.Models;
     using Omnipaste.DetailsViewModel;
+    using OmniUI.Details;
 
     public interface IEventViewModel : IDetailsViewModel<Event>
     {

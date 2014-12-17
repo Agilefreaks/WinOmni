@@ -13,6 +13,7 @@
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Details;
 
     [TestFixture]
     public class ConversationContentViewModelTests
