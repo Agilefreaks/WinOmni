@@ -352,6 +352,7 @@
     <Compile Include="Services\Commands\CommandService.cs" />
     <Compile Include="Services\Commands\ICommandProcessor.cs" />
     <Compile Include="Services\Commands\ICommandService.cs" />
+    <Compile Include="Services\Commands\SyncContactsCommandProcessor.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\ICallStore.cs" />
