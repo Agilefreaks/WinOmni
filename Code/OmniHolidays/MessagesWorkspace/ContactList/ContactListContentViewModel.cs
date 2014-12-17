@@ -1,6 +1,5 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.ContactList
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Caliburn.Micro;
     using OmniUI.Presenters;
@@ -11,14 +10,14 @@
 
         public ContactListContentViewModel()
         {
-            Items = new List<IContactInfoPresenter>();
+            Items = new BindableCollection<IContactInfoPresenter>();
         }
 
         #endregion
 
         #region Public Properties
 
-        public IList<IContactInfoPresenter> Items { get; private set; }
+        public IObservableCollection<IContactInfoPresenter> Items { get; private set; }
 
         #endregion
 
@@ -28,6 +27,12 @@
         {
             base.OnActivate();
             Enumerable.Range(0, 20).ToList().ForEach(_ => Items.Add(new ContactInfoPresenter()));
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            Items.Clear();
+            base.OnDeactivate(close);
         }
 
         #endregion

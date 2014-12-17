@@ -10,5 +10,19 @@
 
         [Inject]
         public IContactListContentViewModel ContentViewModel { get; set; }
+
+        protected override void OnActivate()
+        {
+            HeaderViewModel.Activate();
+            ContentViewModel.Activate();
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            HeaderViewModel.Deactivate(close);
+            ContentViewModel.Deactivate(close);
+            base.OnDeactivate(close);
+        }
     }
 }
