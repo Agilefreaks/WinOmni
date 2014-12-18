@@ -46,7 +46,7 @@
             var observer = new Mock<IObserver<ContactList>>();
             var omniMessageObservable = new Subject<OmniMessage>();
             var contactList = new ContactList();
-            _mockEvents.Setup(m => m.Get()).Returns(Observable.Return(contactList));
+            _mockEvents.Setup(m => m.GetAll()).Returns(Observable.Return(contactList));
             _contactsHandler.Start(omniMessageObservable);
             _contactsHandler.Subscribe(observer.Object);
             DispatcherProvider.Instance = new ImmediateDispatcherProvider();
@@ -65,7 +65,7 @@
             var observer = new Mock<IObserver<ContactList>>();
             var omniMessageObservable = new Subject<OmniMessage>();
             var contactList = new ContactList();
-            _mockEvents.Setup(m => m.Get()).Returns(Observable.Return(contactList));
+            _mockEvents.Setup(m => m.GetAll()).Returns(Observable.Return(contactList));
             _contactsHandler.Start(omniMessageObservable);
             _contactsHandler.Subscribe(observer.Object);
             DispatcherProvider.Instance = new ImmediateDispatcherProvider();

@@ -46,7 +46,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Contacts.Get().RunToCompletion(n => _contactListSubject.OnNext(n));
+            Contacts.GetAll().RunToCompletion(n => _contactListSubject.OnNext(n));
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
