@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModelTests.cs" />
+    <Compile Include="MessagesWorkspace\MessageWorkspaceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

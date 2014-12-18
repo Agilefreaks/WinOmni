@@ -1,6 +1,8 @@
 ﻿namespace OmniHolidays.MessagesWorkspace
 {
+    using Ninject;
     using OmniHolidays.MessagesWorkspace.ContactList;
+    using OmniHolidays.MessagesWorkspace.MessageDetails;
     using OmniHolidays.Properties;
     using OmniUI.Attributes;
     using OmniUI.Workspace;
@@ -25,6 +27,19 @@
             {
                 return Resources.Holidays;
             }
+        }
+
+        [Inject]
+        public IMessageDetailsViewModel MessageDetailsViewModel { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            DetailsConductor.ActivateItem(MessageDetailsViewModel);
         }
 
         #endregion
