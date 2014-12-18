@@ -4,7 +4,7 @@ namespace Omnipaste.MasterClippingList.LocalClippingList
     using Omnipaste.MasterClippingList.ClippingList;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.MasterClippingList.ClippingList.ClippingListView", IsFullyQualifiedName = true)]
+    [UseView(typeof(ClippingListView))]
     public class LocalClippingListViewModel : ClippingListViewModelBase, ILocalClippingListViewModel
     {
         public LocalClippingListViewModel(ILocalClipboardHandler localClipboardHandler)

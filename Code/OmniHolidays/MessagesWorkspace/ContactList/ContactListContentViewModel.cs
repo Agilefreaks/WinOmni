@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Linq;
     using Ninject;
+    using OmniUI.Framework;
     using OmniUI.List;
     using OmniUI.Presenters;
 
@@ -13,6 +14,8 @@
         #region Fields
 
         private readonly IKernel _kernel;
+
+        private readonly IDeepObservableCollectionView _items;
 
         private string _filterText;
 
@@ -29,6 +32,7 @@
             FilterText = string.Empty;
             ViewModelFilter = IdentifierContainsFilterText;
             FilteredItems.CustomSort = new ContactViewModelComparer();
+            _items = new DeepObservableCollectionView<IContactViewModel>(Items) { Filter = ModelIsSelected };
         }
 
         #endregion
@@ -71,6 +75,14 @@
             }
         }
 
+        public IDeepObservableCollectionView Contacts
+        {
+            get
+            {
+                return _items;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -92,8 +104,14 @@
         {
             base.OnFilterUpdated();
             _selectAll = FilteredItems.Count > 0
-                         && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.Model.IsSelected);
+                         && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.IsSelected);
             NotifyOfPropertyChange(() => SelectAll);
+        }
+
+        private static bool ModelIsSelected(object viewModel)
+        {
+            var contactViewModel = viewModel as IContactViewModel;
+            return contactViewModel != null && contactViewModel.IsSelected;
         }
 
         private bool IdentifierContainsFilterText(IContactViewModel viewModel)
@@ -111,7 +129,7 @@
             var selectAllChecked = SelectAll;
             foreach (IContactViewModel contactViewModel in FilteredItems)
             {
-                contactViewModel.Model.IsSelected = selectAllChecked;
+                contactViewModel.IsSelected = selectAllChecked;
             }
         }
 

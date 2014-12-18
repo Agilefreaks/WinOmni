@@ -5,7 +5,7 @@
     using OmniDebug.Services;
     using OmniUI.Attributes;
 
-    [UseView("OmniDebug.DebugBar.SMSNotification.SMSNotificationView", IsFullyQualifiedName = true)]
+    [UseView(typeof(SMSNotificationView))]
     public class SMSNotificationViewModel : NotificationPanelBase, IDebugBarPanel
     {
         #region Constructors and Destructors

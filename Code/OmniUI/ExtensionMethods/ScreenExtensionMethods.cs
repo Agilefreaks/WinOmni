@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ExtensionMethods
+﻿namespace OmniUI.ExtensionMethods
 {
     using Caliburn.Micro;
     using OmniUI.Workspace;

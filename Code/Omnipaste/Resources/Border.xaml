@@ -56,8 +56,7 @@
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
-
-    <Style x:Key="ActivityDetailsContainerStyle" TargetType="Border">
+    <Style x:Key="DetailsScreenContainerStyle" TargetType="Border">
         <Setter Property="Width" Value="{StaticResource WideContainerWidth}" />
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>

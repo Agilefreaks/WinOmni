@@ -309,7 +309,6 @@
     <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
-    <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\ConfigurationContainerExtensions.cs" />
     <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
@@ -432,10 +431,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\ActivityDetailsHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDetails\ActivityDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

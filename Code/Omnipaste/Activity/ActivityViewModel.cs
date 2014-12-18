@@ -10,6 +10,7 @@ namespace Omnipaste.Activity
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
+    using OmniUI.ExtensionMethods;
 
     public class ActivityViewModel : DetailsViewModelWithAutoRefresh<Models.Activity>, IActivityViewModel
     {

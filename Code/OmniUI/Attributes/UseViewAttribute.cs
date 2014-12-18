@@ -5,16 +5,22 @@
     [AttributeUsage(AttributeTargets.Class)]
     public class UseViewAttribute : Attribute
     {
-        private readonly string viewName;
+        private readonly string _viewName;
 
         public UseViewAttribute(string viewName)
         {
-            this.viewName = viewName;
+            _viewName = viewName;
+        }
+
+        public UseViewAttribute(Type viewType)
+        {
+            _viewName = viewType.AssemblyQualifiedName;
+            IsFullyQualifiedName = true;
         }
 
         public string ViewName
         {
-            get { return viewName; }
+            get { return _viewName; }
         }
 
         public bool IsFullyQualifiedName { get; set; }

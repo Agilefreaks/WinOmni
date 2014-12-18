@@ -129,4 +129,7 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Selecionar Tudo</value>
   </data>
+  <data name="To" xml:space="preserve">
+    <value>Para: </value>
+  </data>
 </root>

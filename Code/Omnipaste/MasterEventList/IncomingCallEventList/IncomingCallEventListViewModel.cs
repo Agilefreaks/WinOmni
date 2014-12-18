@@ -7,7 +7,7 @@
     using Omnipaste.MasterEventList.EventList;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.MasterEventList.EventList.EventListView", IsFullyQualifiedName = true)]
+    [UseView(typeof(EventListView))]
     public class IncomingCallEventListViewModel : EventListViewModelBase, IIncomingCallEventListViewModel
     {
         #region Constructors and Destructors

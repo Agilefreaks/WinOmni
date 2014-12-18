@@ -7,7 +7,5 @@ namespace OmniUI.Presenters
         string Identifier { get; set; }
 
         ImageSource Image { get; set; }
-
-        bool IsSelected { get; set; }
     }
 }

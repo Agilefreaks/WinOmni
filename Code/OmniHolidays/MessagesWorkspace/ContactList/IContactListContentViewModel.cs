@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
 
-    public interface IContactListContentViewModel : IScreen
+    public interface IContactListContentViewModel : IScreen, IContactSource
     {
     }
 }

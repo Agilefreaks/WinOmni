@@ -5,7 +5,7 @@
     using OmniUI.Attributes;
     using OmniUI.SecondaryMenuEntry;
 
-    [UseView("OmniUI.SecondaryMenuEntry.SecondaryMenuEntryView", IsFullyQualifiedName = true)]
+    [UseView(typeof(SecondaryMenuEntryView))]
     public class DebugMenuEntryViewModel : ISecondaryMenuEntryViewModel
     {
         #region Fields

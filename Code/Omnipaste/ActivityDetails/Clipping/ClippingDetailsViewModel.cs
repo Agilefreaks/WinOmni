@@ -2,7 +2,7 @@
 {
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.ActivityDetails.ActivityDetailsView", IsFullyQualifiedName = true)]
+    [UseView(typeof(OmniUI.Details.DetailsViewWithHeader))]
     public class ClippingDetailsViewModel : ActivityDetailsViewModel, IClippingDetailsViewModel
     {
         public ClippingDetailsViewModel(IClippingDetailsHeaderViewModel headerViewModel, IClippingDetailsContentViewModel contentViewModel)

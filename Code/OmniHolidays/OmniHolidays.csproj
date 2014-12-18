@@ -84,6 +84,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactInfoSelectionSource.cs" />
     <Compile Include="HolidaysModule.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
@@ -93,9 +94,16 @@
     <Compile Include="MessagesWorkspace\ContactList\IContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\IContactSource.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesWorkspace.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\IMessageDetailsContentViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\IMessageDetailsHeaderViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\IMessageDetailsViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsContentViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -160,6 +168,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessagesWorkspace\ContactList\ContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

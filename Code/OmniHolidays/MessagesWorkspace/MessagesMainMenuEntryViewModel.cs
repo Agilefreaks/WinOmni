@@ -3,7 +3,7 @@
     using OmniUI.Attributes;
     using OmniUI.Workspace;
 
-    [UseView("OmniUI.MainMenuEntry.MainMenuEntryView", IsFullyQualifiedName = true)]
+    [UseView(typeof(OmniUI.MainMenuEntry.MainMenuEntryView))]
     public class MessagesMainMenuEntryViewModel :  WorkspaceMainMenuEntry<IMessagesWorkspace>, IMessagesMainMenuEntryViewModel
     {
         public override string Icon

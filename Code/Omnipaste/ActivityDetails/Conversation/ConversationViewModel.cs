@@ -2,7 +2,7 @@
 {
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.ActivityDetails.ActivityDetailsView", IsFullyQualifiedName = true)]
+    [UseView(typeof(OmniUI.Details.DetailsViewWithHeader))]
     public class ConversationViewModel : ActivityDetailsViewModel, IConversationViewModel
     {
         #region Constructors and Destructors
@@ -12,20 +12,6 @@
             IConversationContainerViewModel contentViewModel)
             : base(headerViewModel, contentViewModel)
         {
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            HeaderViewModel.Activate();
-            ContentViewModel.Activate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            HeaderViewModel.Deactivate(close);
-            ContentViewModel.Deactivate(close);
-            base.OnDeactivate(close);
         }
 
         #endregion

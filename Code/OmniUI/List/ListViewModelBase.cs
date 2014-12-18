@@ -22,7 +22,7 @@ namespace OmniUI.List
 
         #region Fields
 
-        private readonly IObservable<TEntity> _entityObservable;
+        protected readonly IObservable<TEntity> EntityObservable;
 
         private readonly ListCollectionView _filteredItems;
 
@@ -38,7 +38,7 @@ namespace OmniUI.List
 
         protected ListViewModelBase(IObservable<TEntity> entityObservable)
         {
-            _entityObservable = entityObservable;
+            EntityObservable = entityObservable;
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = ShouldShowViewModel;
@@ -122,7 +122,7 @@ namespace OmniUI.List
         {
             Stop();
             _entityObserver =
-                _entityObservable.Where(entity => EntityFilter(entity))
+                EntityObservable.Where(entity => EntityFilter(entity))
                     .Select(CreateViewModel)
                     .SubscribeAndHandleErrors(ActivateItem);
         }

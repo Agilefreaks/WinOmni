@@ -4,7 +4,7 @@ namespace Omnipaste.MasterClippingList.AllClippingList
     using Omnipaste.MasterClippingList.ClippingList;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.MasterClippingList.ClippingList.ClippingListView", IsFullyQualifiedName = true)]
+    [UseView(typeof(ClippingListView))]
     public class AllClippingListViewModel : ClippingListViewModelBase, IAllClippingListViewModel
     {
         public AllClippingListViewModel(IClipboardHandler entityObservable)
