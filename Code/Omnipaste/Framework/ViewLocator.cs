@@ -68,7 +68,7 @@ namespace Omnipaste.Framework
             {
                 var attribute = useViewAttributes.First();
                 viewTypeName = attribute.IsFullyQualifiedName
-                                   ? attribute.ViewName
+                                   ? attribute.ViewName.Split(',').First()
                                    : GetFullyQualifiedViewName(modelType, attribute);
             }
             else

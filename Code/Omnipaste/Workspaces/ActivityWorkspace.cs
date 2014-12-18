@@ -5,7 +5,7 @@
     using OmniUI.Attributes;
     using OmniUI.Workspace;
 
-    [UseView("OmniUI.Workspace.WorkspaceView", IsFullyQualifiedName = true)]
+    [UseView(typeof(WorkspaceView))]
     public class ActivityWorkspace : MasterDetailsWorkspace, IActivityWorkspace
     {
         #region Constructors and Destructors

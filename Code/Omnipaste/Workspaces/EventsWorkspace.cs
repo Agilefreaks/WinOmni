@@ -4,7 +4,7 @@
     using Omnipaste.Properties;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.Workspaces.SingleItemWorkspaceView", IsFullyQualifiedName = true)]
+    [UseView(typeof(SingleItemWorkspaceView))]
     public class EventsWorkspace : SingleItemWorkspace, IEventsWorkspace
     {
         #region Constructors and Destructors

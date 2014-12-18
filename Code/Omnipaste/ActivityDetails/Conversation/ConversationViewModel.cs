@@ -2,7 +2,7 @@
 {
     using OmniUI.Attributes;
 
-    [UseView("OmniUI.Details.DetailsViewWithHeader", IsFullyQualifiedName = true)]
+    [UseView(typeof(OmniUI.Details.DetailsViewWithHeader))]
     public class ConversationViewModel : ActivityDetailsViewModel, IConversationViewModel
     {
         #region Constructors and Destructors

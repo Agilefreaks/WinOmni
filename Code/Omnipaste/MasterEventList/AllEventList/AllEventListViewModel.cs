@@ -5,7 +5,7 @@
     using Omnipaste.MasterEventList.EventList;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.MasterEventList.EventList.EventListView", IsFullyQualifiedName = true)]
+    [UseView(typeof(EventListView))]
     public class AllEventListViewModel : EventListViewModelBase, IAllEventListViewModel
     { 
         public AllEventListViewModel(IEventsHandler eventsHandler, IKernel kernel) : base(eventsHandler, kernel)

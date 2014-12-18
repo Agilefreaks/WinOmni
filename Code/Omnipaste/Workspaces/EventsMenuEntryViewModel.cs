@@ -4,7 +4,7 @@ namespace Omnipaste.Workspaces
     using OmniUI.MainMenuEntry;
     using OmniUI.Workspace;
 
-    [UseView("OmniUI.MainMenuEntry.MainMenuEntryView", IsFullyQualifiedName = true)]
+    [UseView(typeof(MainMenuEntryView))]
     public class EventsMenuEntryViewModel : WorkspaceMainMenuEntry<IEventsWorkspace>, IMainMenuEntryViewModel
     {
         public override string Icon

@@ -5,7 +5,7 @@
     using OmniUI.Attributes;
     using OmniUI.Presenters;
 
-    [UseView("Omnipaste.Activity.ActivityView", IsFullyQualifiedName = true)]
+    [UseView(typeof(ActivityView))]
     public class ContactRelatedActivityViewModel : ActivityViewModel, IContactRelatedActivityViewModel
     {
         #region Fields

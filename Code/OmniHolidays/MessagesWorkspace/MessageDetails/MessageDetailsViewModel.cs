@@ -3,7 +3,7 @@
     using OmniUI.Attributes;
     using OmniUI.Details;
 
-    [UseView("OmniUI.Details.DetailsViewWithHeader", IsFullyQualifiedName = true)]
+    [UseView(typeof(DetailsViewWithHeader))]
     public class MessageDetailsViewModel :
         DetailsViewModelWithHeaderBase<IMessageDetailsHeaderViewModel, IMessageDetailsContentViewModel>,
         IMessageDetailsViewModel

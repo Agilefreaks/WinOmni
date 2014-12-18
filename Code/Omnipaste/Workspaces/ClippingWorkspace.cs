@@ -4,7 +4,7 @@
     using Omnipaste.Properties;
     using OmniUI.Attributes;
 
-    [UseView("Omnipaste.Workspaces.SingleItemWorkspaceView", IsFullyQualifiedName = true)]
+    [UseView(typeof(SingleItemWorkspaceView))]
     public class ClippingWorkspace : SingleItemWorkspace, IClippingWorkspace
     {
         #region Constructors and Destructors
