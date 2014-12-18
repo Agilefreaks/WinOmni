@@ -4,8 +4,7 @@
 
     public interface ICommandService
     {
-        IObservable<TResult> Execute<TParam, TResult>(TParam param = null)
-            where TParam : class
+        IObservable<TResult> Execute<TResult>(ICommand<TResult> command)
             where TResult : class;
     }
 }

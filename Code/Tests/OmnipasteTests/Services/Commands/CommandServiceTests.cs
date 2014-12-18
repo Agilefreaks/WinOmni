@@ -2,9 +2,11 @@
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
+    using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Services.Commands;
@@ -13,23 +15,50 @@
     public class CommandServiceTests
     {
         private CommandService _subject;
-        private Mock<ICommand<TestCommand, TestCommandResult>> _mockCommandProcessor;
+
         private MoqMockingKernel _mockKernel;
 
-        public class TestCommand
+        private TestScheduler _testScheduler;
+
+        private Mock<ICommandDependency> _mockCommandDependency;
+
+        public class TestResult
         {
         }
 
-        public class TestCommandResult
+        public interface ICommandDependency
         {
+        }
+
+        public class TestCommand : ICommand<TestResult>
+        {
+            private readonly IObservable<TestResult> _result;
+
+            [Inject]
+            public ICommandDependency CommandDependency { get; set; }
+
+            public TestCommand()
+            {
+            }
+
+            public TestCommand(IObservable<TestResult> result)
+            {
+                _result = result;
+            }
+
+            public IObservable<TestResult> Execute()
+            {
+                return _result;
+            }
         }
 
         [SetUp]
         public void SetUp()
         {
             _mockKernel = new MoqMockingKernel();
-            _mockCommandProcessor = new Mock<ICommand<TestCommand, TestCommandResult>>();
-            _mockKernel.Bind<ICommand<TestCommand, TestCommandResult>>().ToConstant(_mockCommandProcessor.Object);
+            _mockCommandDependency = new Mock<ICommandDependency>();
+            _mockKernel.Bind<ICommandDependency>().ToConstant(_mockCommandDependency.Object);
+            _testScheduler = new TestScheduler();
 
             _subject = new CommandService(_mockKernel);
         }
@@ -37,34 +66,38 @@
         [Test]
         public void Execute_WhenCommandExecutesSuccessful_CallsOnNext()
         {
-            var testScheduler = new TestScheduler();
-            var testCommand = new TestCommand();
-            var testCommandResult = new TestCommandResult();
+            var testCommandResult = new TestResult();
             var testObservable =
-                testScheduler.CreateColdObservable(
-                    new Recorded<Notification<TestCommandResult>>(100,
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<TestResult>>(100,
                         Notification.CreateOnNext(testCommandResult)),
-                    new Recorded<Notification<TestCommandResult>>(200,
-                        Notification.CreateOnCompleted<TestCommandResult>()));
-            _mockCommandProcessor.Setup(m => m.Execute(It.IsAny<TestCommand>())).Returns(testObservable);
+                    new Recorded<Notification<TestResult>>(200,
+                        Notification.CreateOnCompleted<TestResult>()));
+            var testCommand = new TestCommand(testObservable);
             
-            var observer = testScheduler.Start(
-                () => _subject.Execute<TestCommand, TestCommandResult>(testCommand));
-
+            var observer = _testScheduler.Start(() => _subject.Execute(testCommand));
+            
             observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
         }
 
         [Test]
         public void Execute_WhenCommandThrowsException_CallsOnError()
         {
-            var testScheduler = new TestScheduler();
-            var testCommand = new TestCommand();
-            _mockCommandProcessor.Setup(m => m.Execute(It.IsAny<TestCommand>())).Throws(new Exception("42"));
+            var testCommand = new TestCommand(Observable.Throw<TestResult>(new Exception("42")));
 
-            var observer = testScheduler.Start(
-                () => _subject.Execute<TestCommand, TestCommandResult>(testCommand));
+            var observer = _testScheduler.Start(() => _subject.Execute(testCommand));
 
             observer.Messages[0].Value.Kind.Should().Be(NotificationKind.OnError);
+        }
+
+        [Test]
+        public void Execute_Always_InjectsDependencies()
+        {
+            var testCommand = new TestCommand(Observable.Throw<TestResult>(new Exception("42")));
+
+            _testScheduler.Start(() => _subject.Execute(testCommand));
+
+            testCommand.CommandDependency.Should().Be(_mockCommandDependency.Object);
         }
     }
 }

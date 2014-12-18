@@ -2,10 +2,9 @@
 {
     using System;
 
-    public interface ICommand<in TParam, out TResult>
-        where TParam : class 
+    public interface ICommand<out TResult>
         where TResult : class
     {
-        IObservable<TResult> Execute(TParam param = null);
+        IObservable<TResult> Execute();
     }
 }

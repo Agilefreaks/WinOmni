@@ -6,60 +6,34 @@
     using Contacts.Api.Resources.v1;
     using Contacts.Handlers;
     using Contacts.Models;
+    using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
-
-    public class SyncContactsParam
-    {
-    }
-
-    public class SyncContactsResult
+    
+    public class SyncContactsCommand : ICommand<ContactList>
     {
         #region Public Properties
 
-        public ContactList ContactList { get; set; }
+        [Inject]
+        public IContacts Contacts { get; set; }
 
-        #endregion
-    }
+        [Inject]
+        public ISyncs Syncs { get; set; }
 
-    public class SyncContactsCommand : ICommand<SyncContactsParam, SyncContactsResult>
-    {
-        #region Fields
+        [Inject]
+        public IContactsHandler ContactsHandler { get; set; }
 
-        private readonly IConfigurationService _configurationService;
-
-        private readonly IContacts _contacts;
-
-        private readonly IContactsHandler _contactsHandler;
-
-        private readonly ISyncs _syncs;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public SyncContactsCommand(
-            IContacts contacts,
-            ISyncs syncs,
-            IContactsHandler contactsHandler,
-            IConfigurationService configurationService)
-        {
-            _contacts = contacts;
-            _syncs = syncs;
-            _contactsHandler = contactsHandler;
-            _configurationService = configurationService;
-        }
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public IObservable<SyncContactsResult> Execute(SyncContactsParam param = null)
+        public IObservable<ContactList> Execute()
         {
-            return _contacts.GetAll()
-                    .Catch<ContactList, Exception>(SyncContacts)
-                    .Select(contactList => new SyncContactsResult { ContactList = contactList });
+            return Contacts.GetAll().Catch<ContactList, Exception>(SyncContacts);
         }
 
         #endregion
@@ -68,11 +42,11 @@
 
         private IObservable<ContactList> SyncContacts(Exception e)
         {
-            return _configurationService.DeviceInfos.Select(
+            return ConfigurationService.DeviceInfos.Select(
                 deviceInfo =>
-                _syncs.Post(new Sync { Identifier = deviceInfo.Identifier, What = SyncWhatEnum.Contacts }))
+                Syncs.Post(new Sync { Identifier = deviceInfo.Identifier, What = SyncWhatEnum.Contacts }))
                 .CombineLatest()
-                .Select(_ => _contactsHandler)
+                .Select(_ => ContactsHandler)
                 .Switch();
         }
 

@@ -44,7 +44,13 @@
             _deviceInfo = new DeviceInfo { Identifier = "42" };
             _mockConfigurationService.Setup(m => m.DeviceInfos).Returns(new List<DeviceInfo> { _deviceInfo });
 
-            _subject = new SyncContactsCommand(_mockContacts.Object, _mockSyncs.Object, _mockContactsHandler.Object, _mockConfigurationService.Object);
+            _subject = new SyncContactsCommand
+            {
+                Contacts = _mockContacts.Object,
+                Syncs = _mockSyncs.Object,
+                ContactsHandler = _mockContactsHandler.Object,
+                ConfigurationService = _mockConfigurationService.Object
+            };
         }
 
         [Test]
@@ -57,7 +63,7 @@
             var observer = testScheduler.Start(() => _subject.Execute());
 
             observer.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
-            observer.Messages.First().Value.Value.ContactList.Should().Be(contactList);
+            observer.Messages.First().Value.Value.Should().Be(contactList);
         }
 
         [Test]
@@ -94,7 +100,7 @@
             var observer = testScheduler.Start(() => _subject.Execute());
 
             observer.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
-            observer.Messages.First().Value.Value.ContactList.Should().Be(contactList);
+            observer.Messages.First().Value.Value.Should().Be(contactList);
         }
     }
 }

@@ -4,12 +4,11 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
-    using Ninject.Extensions.Conventions;
+    using OmniApi.Support;
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
-    using OmniApi.Support;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DataProviders;
@@ -19,16 +18,15 @@
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Omnipaste.Services.Commands;
+    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Monitors.Credentials;
     using Omnipaste.Services.Monitors.Internet;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
     using Omnipaste.Shell;
-    using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.SessionInfo;
+    using Omnipaste.Shell.Settings;
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
@@ -65,11 +63,6 @@
             Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
             Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
-
-            Kernel.Bind(x => x.FromThisAssembly()
-                  .SelectAllClasses()
-                  .InheritedFrom(typeof(ICommand<,>))
-                  .BindSingleInterface());
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
