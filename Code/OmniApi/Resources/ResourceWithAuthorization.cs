@@ -12,6 +12,7 @@
     using OmniCommon.Interfaces;
 
     public abstract class ResourceWithAuthorization<T> : Resource<T>
+        where T : class
     {
         #region Constructors and Destructors
 
@@ -58,6 +59,15 @@
         
         protected override HttpClient CreateHttpClient()
         {
+            if (OAuth2 == null)
+            {
+                throw new ArgumentNullException("OAuth2", "Service not present");
+            }
+            if (ResponseHandler == null)
+            {
+                throw new ArgumentNullException("ResponseHandler", "Service not present");
+            }
+
             var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
             var handler = new HttpClientWithAuthorizationHandler(OAuth2, Token, ResponseHandler)
             {
@@ -68,7 +78,7 @@
                     AllowAutoRedirect = true
                 }
             };
-            return new HttpClient(handler) { BaseAddress = baseAddress };;
+            return new HttpClient(handler) { BaseAddress = baseAddress };
         }
 
         #endregion

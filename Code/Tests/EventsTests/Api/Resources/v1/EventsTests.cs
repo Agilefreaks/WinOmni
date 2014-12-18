@@ -7,6 +7,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Resources.v1;
+    using OmniApi.Support;
     using OmniCommon;
     using OmniCommon.Interfaces;
 
@@ -30,7 +31,8 @@
             _mockOAuth2 = new Mock<IOAuth2>();
             _subject = new Events(mockConfigurationService.Object, _mockWebProxyFactory.Object)
                            {
-                               OAuth2 = _mockOAuth2.Object
+                               OAuth2 = _mockOAuth2.Object,
+                               ResponseHandler = new Mock<IHttpResponseMessageHandler>().Object
                            };
         }
 

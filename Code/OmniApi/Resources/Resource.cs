@@ -11,10 +11,13 @@
     using OmniCommon.Models;
 
     public abstract class Resource<T> : IDisposable
+        where T : class
     {
         protected readonly IConfigurationService ConfigurationService;
 
         private readonly IDisposable _proxyChangeSubscription;
+
+        private T _resourceApi;
 
         #region Constructors and Destructors
 
@@ -31,7 +34,6 @@
                     return jsonSerializerSettings;
                 };
             WebProxyFactory = webProxyFactory;
-            ResourceApi = CreateResourceApi(CreateHttpClient());
             _proxyChangeSubscription = ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
                 ConfigurationProperties.ProxyConfiguration,
                 OnConfigurationChanged);
@@ -41,7 +43,17 @@
 
         #region Public Properties
 
-        public T ResourceApi { protected get; set; }
+        public T ResourceApi
+        {
+            get
+            {
+                return _resourceApi ?? (_resourceApi = CreateResourceApi(CreateHttpClient()));
+            }
+            set
+            {
+                _resourceApi = value;
+            }
+        }
 
         public IWebProxyFactory WebProxyFactory { get; set; }
 
