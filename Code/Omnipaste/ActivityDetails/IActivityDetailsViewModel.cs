@@ -1,11 +1,8 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Caliburn.Micro;
+    using OmniUI.Details;
 
-    public interface IActivityDetailsViewModel : IScreen
+    public interface IActivityDetailsViewModel : IDetailsViewModelWithHeader<IActivityDetailsHeaderViewModel, IActivityDetailsContentViewModel>
     {
-        IActivityDetailsContentViewModel ContentViewModel { get; }
-
-        IActivityDetailsHeaderViewModel HeaderViewModel { get; }
     }
 }

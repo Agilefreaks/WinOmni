@@ -1,8 +1,9 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.MessageDetails
 {
-    using Caliburn.Micro;
+    using OmniUI.Details;
 
-    public interface IMessageDetailsViewModel : IScreen
+    public interface IMessageDetailsViewModel :
+        IDetailsViewModelWithHeader<IMessageDetailsHeaderViewModel, IMessageDetailsContentViewModel>
     {
     }
 }

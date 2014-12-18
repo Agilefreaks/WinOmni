@@ -1,8 +1,22 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.MessageDetails
 {
-    using Caliburn.Micro;
+    using OmniUI.Attributes;
+    using OmniUI.Details;
 
-    public class MessageDetailsViewModel : Screen, IMessageDetailsViewModel
+    [UseView("OmniUI.Details.DetailsViewWithHeader", IsFullyQualifiedName = true)]
+    public class MessageDetailsViewModel :
+        DetailsViewModelWithHeaderBase<IMessageDetailsHeaderViewModel, IMessageDetailsContentViewModel>,
+        IMessageDetailsViewModel
     {
+        #region Constructors and Destructors
+
+        public MessageDetailsViewModel(
+            IMessageDetailsHeaderViewModel headerViewModel,
+            IMessageDetailsContentViewModel contentViewModel)
+            : base(headerViewModel, contentViewModel)
+        {
+        }
+
+        #endregion
     }
 }

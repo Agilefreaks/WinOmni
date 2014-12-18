@@ -1,26 +1,21 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Caliburn.Micro;
+    using OmniUI.Attributes;
+    using OmniUI.Details;
 
-    public class ActivityDetailsViewModel : Screen, IActivityDetailsViewModel
+    [UseView("OmniUI.Details.DetailsViewWithHeader", IsFullyQualifiedName = true)]
+    public class ActivityDetailsViewModel :
+        DetailsViewModelWithHeaderBase<IActivityDetailsHeaderViewModel, IActivityDetailsContentViewModel>,
+        IActivityDetailsViewModel
     {
         #region Constructors and Destructors
 
         public ActivityDetailsViewModel(
             IActivityDetailsHeaderViewModel headerViewModel,
             IActivityDetailsContentViewModel contentViewModel)
+            : base(headerViewModel, contentViewModel)
         {
-            HeaderViewModel = headerViewModel;
-            ContentViewModel = contentViewModel;
         }
-
-        #endregion
-
-        #region Public Properties
-
-        public IActivityDetailsContentViewModel ContentViewModel { get; private set; }
-
-        public IActivityDetailsHeaderViewModel HeaderViewModel { get; private set; }
 
         #endregion
     }

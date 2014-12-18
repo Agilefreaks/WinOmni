@@ -97,7 +97,9 @@
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
     <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Details\DetailsViewModelBase.cs" />
+    <Compile Include="Details\DetailsViewModelWithHeaderBase.cs" />
     <Compile Include="Details\IDetailsViewModel.cs" />
+    <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
@@ -129,6 +131,10 @@
     <None Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Details\DetailsViewWithHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainMenuEntry\MainMenuEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
