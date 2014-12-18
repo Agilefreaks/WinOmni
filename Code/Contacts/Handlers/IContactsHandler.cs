@@ -1,11 +1,11 @@
 ﻿namespace Contacts.Handlers
 {
     using System;
-    using Contacts.Models;
+    using System.Reactive;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public interface IContactsHandler : IObservable<ContactList>, IHandler, IObserver<OmniMessage>
+    public interface IContactsHandler : IObservable<Unit>, IHandler, IObserver<OmniMessage>
     {
     }
 }

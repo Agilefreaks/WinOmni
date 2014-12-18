@@ -23,7 +23,7 @@
 
         #region Public Methods and Operators
 
-        public IObservable<TResult> Execute<TResult>(ICommand<TResult> command) where TResult : class
+        public IObservable<TResult> Execute<TResult>(ICommand<TResult> command)
         {
             _kernel.Inject(command);
 

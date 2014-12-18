@@ -1,18 +1,16 @@
 ﻿namespace Contacts.Handlers
 {
     using System;
+    using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Contacts.Api.Resources.v1;
-    using Contacts.Models;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Models;
 
     public class ContactsHandler : IContactsHandler
     {
         #region Fields
 
-        private readonly Subject<ContactList> _contactListSubject;
+        private readonly Subject<Unit> _contactListSubject;
 
         private IDisposable _subscription;
 
@@ -20,17 +18,10 @@
 
         #region Constructors and Destructors
 
-        public ContactsHandler(IContacts contacts)
+        public ContactsHandler()
         {
-            _contactListSubject = new Subject<ContactList>();
-            Contacts = contacts;
+            _contactListSubject = new Subject<Unit>();
         }
-
-        #endregion
-
-        #region Public Properties
-
-        public IContacts Contacts { get; set; }
 
         #endregion
 
@@ -46,7 +37,7 @@
 
         public void OnNext(OmniMessage value)
         {
-            Contacts.GetAll().RunToCompletion(n => _contactListSubject.OnNext(n));
+            _contactListSubject.OnNext(Unit.Default);
         }
 
         public void Start(IObservable<OmniMessage> omniMessageObservable)
@@ -66,7 +57,7 @@
             }
         }
 
-        public IDisposable Subscribe(IObserver<ContactList> observer)
+        public IDisposable Subscribe(IObserver<Unit> observer)
         {
             return _contactListSubject.Subscribe(observer);
         }

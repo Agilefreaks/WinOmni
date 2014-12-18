@@ -1,9 +1,7 @@
 ﻿namespace Contacts.Api.Resources.v1
 {
     using System;
-    using System.Linq;
     using System.Net.Http;
-    using System.Reactive.Linq;
     using global::Contacts.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
@@ -25,15 +23,6 @@
         public IObservable<ContactList> Get(string identifier)
         {
             return ResourceApi.Get(identifier, AccessToken);
-        }
-
-        public IObservable<ContactList> GetAll()
-        {
-            return
-                ConfigurationService.DeviceInfos.Select(deviceInfo => Get(deviceInfo.Identifier))
-                    .CombineLatest()
-                    .Select(
-                        contactLists => new ContactList { Contacts = contactLists.SelectMany(c => c.Contacts).ToList() });
         }
 
         #endregion

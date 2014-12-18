@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
     using Contacts.Api.Resources.v1;
@@ -9,9 +10,10 @@
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    
-    public class SyncContactsCommand : ICommand<ContactList>
+
+    public class SyncContactsCommand : ICommand<IList<ContactList>>
     {
         #region Public Properties
 
@@ -31,23 +33,32 @@
 
         #region Public Methods and Operators
 
-        public IObservable<ContactList> Execute()
+        public IObservable<IList<ContactList>> Execute()
         {
-            return Contacts.GetAll().Catch<ContactList, Exception>(SyncContacts);
+            var deviceInfoList = ConfigurationService.DeviceInfos;
+            return
+                deviceInfoList.Select(
+                    deviceInfo =>
+                    Observable.Defer(
+                        () =>
+                        Contacts.Get(deviceInfo.Identifier)
+                            .Catch<ContactList, Exception>(_ => SyncContacts(deviceInfo.Identifier))))
+                    .Concat()
+                    .Buffer(2);
         }
 
         #endregion
 
         #region Methods
 
-        private IObservable<ContactList> SyncContacts(Exception e)
+        private IObservable<ContactList> SyncContacts(string deviceIdentifier)
         {
-            return ConfigurationService.DeviceInfos.Select(
-                deviceInfo =>
-                Syncs.Post(new Sync { Identifier = deviceInfo.Identifier, What = SyncWhatEnum.Contacts }))
-                .CombineLatest()
-                .Select(_ => ContactsHandler)
-                .Switch();
+            return
+                Syncs.Post(new Sync { Identifier = deviceIdentifier, What = SyncWhatEnum.Contacts })
+                    .Select(_ => ContactsHandler.Take(1))
+                    .Switch()
+                    .Select(_ => Contacts.Get(deviceIdentifier))
+                    .Switch();
         }
 
         #endregion
