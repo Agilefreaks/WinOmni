@@ -127,6 +127,9 @@
     <value>Holidays</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Select all</value>
+    <value>Select All</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To: </value>
   </data>
 </root>

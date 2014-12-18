@@ -88,11 +88,20 @@ namespace OmniHolidays.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select all.
+        ///   Looks up a localized string similar to Select All.
         /// </summary>
         public static string SelectAll {
             get {
                 return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To: .
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
     }

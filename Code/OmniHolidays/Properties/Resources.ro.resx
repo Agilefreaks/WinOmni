@@ -129,4 +129,7 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Selectează tot</value>
   </data>
+  <data name="To" xml:space="preserve">
+    <value>Către: </value>
+  </data>
 </root>

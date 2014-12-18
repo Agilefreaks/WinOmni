@@ -17,6 +17,10 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="EmptyButtonTemplate" TargetType="Button">
+        <Border Background="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+    </ControlTemplate>
+
     <Style x:Key="DialogButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Margin" Value="10" />
     </Style>
@@ -164,5 +168,10 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="EmptyButtonStyle" TargetType="Button">
+        <Setter Property="Template" Value="{StaticResource EmptyButtonTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
     </Style>
 </ResourceDictionary>
