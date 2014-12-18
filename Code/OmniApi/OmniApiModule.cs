@@ -11,6 +11,7 @@
             Kernel.Bind<IOAuth2>().To<OAuth2>();
             Kernel.Bind<IDevices>().To<Devices>();
             Kernel.Bind<IUsers>().To<Users>();
+            Kernel.Bind<ISyncs>().To<Syncs>();
 
             Kernel.Bind<ICryptoService>().To<RsaCryptoService>();
         }
