@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
@@ -67,10 +68,11 @@
                 .OrderBy(screen => ((IConversationItem)screen.Model).Time)
                 .ForEach(ActivateItem);
             _messageSubscription =
-                MessageStore.MessageObservable.SubscribeAndHandleErrors(
-                    message => ActivateItem(CreateMessageViewModel(message)));
+                MessageStore.MessageObservable.Where(message => message.ContactInfo.Phone == ContactInfo.Phone)
+                    .SubscribeAndHandleErrors(message => ActivateItem(CreateMessageViewModel(message)));
             _callSubscription =
-                CallStore.CallObservable.SubscribeAndHandleErrors(message => ActivateItem(CreateCallViewModel(message)));
+                CallStore.CallObservable.Where(call => call.ContactInfo.Phone == ContactInfo.Phone)
+                    .SubscribeAndHandleErrors(call => ActivateItem(CreateCallViewModel(call)));
         }
 
         protected override void OnDeactivate(bool close)

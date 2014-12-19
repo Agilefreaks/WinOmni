@@ -3,14 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reactive;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.ActivityDetails.Conversation.Call;
     using Omnipaste.ActivityDetails.Conversation.Message;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Services;
     using OmniUI.Details;
@@ -58,6 +59,25 @@
         }
 
         [Test]
+        public void ACallAppearsInTheCallStore_TheCallContactInfoHasTheSamePhoneNumberAsTheCurrentContactInfo_AddsACallViewModel()
+        {
+            var testScheduler = new TestScheduler();
+            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.ContactInfo = new ContactInfo { Phone = "123" };
+            var callObservable = testScheduler.CreateColdObservable(
+                new Recorded<Notification<Call>>(100, Notification.CreateOnNext(new Call())),
+                new Recorded<Notification<Call>>(200, Notification.CreateOnNext(callFromContact)));
+            _mockCallStore.Setup(x => x.CallObservable).Returns(callObservable);
+
+            _subject.Activate();
+            testScheduler.Start();
+
+            var children = _subject.GetChildren().ToList();
+            children.Count().Should().Be(1);
+            ((ICallViewModel)children.First()).Model.Should().Be(callFromContact);
+        }
+
+        [Test]
         public void OnActivate_Always_AddsAMessageViewModelForEachMessageInTheStoreForTheCurrentContactInfo()
         {
             var contactInfo = new ContactInfo();
@@ -71,6 +91,25 @@
 
             var children = _subject.GetChildren();
             messages.All(call => children.Any(child => ((IDetailsViewModel)child).Model == call)).Should().BeTrue();
+        }
+
+        [Test]
+        public void AMessageAppearsInTheMessageStore_TheMessageContactInfoHasTheSamePhoneNumberAsTheCurrentContactInfo_AddsAMessageViewModel()
+        {
+            var testScheduler = new TestScheduler();
+            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.ContactInfo = new ContactInfo { Phone = "123" };
+            var messageObservable = testScheduler.CreateColdObservable(
+                new Recorded<Notification<Message>>(100, Notification.CreateOnNext(new Message())),
+                new Recorded<Notification<Message>>(200, Notification.CreateOnNext(messageFromContact)));
+            _mockMessageStore.Setup(x => x.MessageObservable).Returns(messageObservable);
+
+            _subject.Activate();
+            testScheduler.Start();
+
+            var children = _subject.GetChildren().ToList();
+            children.Count().Should().Be(1);
+            ((IMessageViewModel)children.First()).Model.Should().Be(messageFromContact);
         }
 
         [Test]
