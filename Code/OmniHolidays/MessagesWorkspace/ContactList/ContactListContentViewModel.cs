@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Subjects;
@@ -25,9 +26,9 @@
 
         private readonly Subject<IContactInfoPresenter> _contactInfoSubject;
 
-        private readonly IDeepObservableCollectionView _items;
-
         private readonly IKernel _kernel;
+
+        private readonly IDeepObservableCollectionView _selectedContacts;
 
         private string _filterText;
 
@@ -45,11 +46,12 @@
             _commandService = commandService;
             _kernel = kernel;
             _contactInfoSubject = EntityObservable as Subject<IContactInfoPresenter>;
-            IsBusy = true;
+            IsBusy = false;
             FilterText = string.Empty;
             ViewModelFilter = IdentifierContainsFilterText;
             FilteredItems.CustomSort = new ContactViewModelComparer();
-            _items = new DeepObservableCollectionView<IContactViewModel>(Items) { Filter = ModelIsSelected };
+            _selectedContacts = new DeepObservableCollectionView<IContactViewModel>(Items) { Filter = ModelIsSelected };
+            _selectedContacts.CollectionChanged += SelectedContactsOnCollectionChanged;
         }
 
         #endregion
@@ -60,7 +62,7 @@
         {
             get
             {
-                return _items;
+                return _selectedContacts;
             }
         }
 
@@ -147,9 +149,7 @@
         protected override void OnFilterUpdated()
         {
             base.OnFilterUpdated();
-            _selectAll = FilteredItems.Count > 0
-                         && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.IsSelected);
-            NotifyOfPropertyChange(() => SelectAll);
+            UpdateSelectAll();
         }
 
         private static ContactListContactInfoPresenter GetContactInfoPresenter(Contact contact)
@@ -197,6 +197,13 @@
             IsBusy = false;
         }
 
+        private void SelectedContactsOnCollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            UpdateSelectAll();
+        }
+
         private void SyncContacts()
         {
             IsBusy = true;
@@ -210,6 +217,13 @@
             {
                 contactViewModel.IsSelected = selectAllChecked;
             }
+        }
+
+        private void UpdateSelectAll()
+        {
+            _selectAll = FilteredItems.Count > 0
+                         && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.IsSelected);
+            NotifyOfPropertyChange(() => SelectAll);
         }
 
         #endregion

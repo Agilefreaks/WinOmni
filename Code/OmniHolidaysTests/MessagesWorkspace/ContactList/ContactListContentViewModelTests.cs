@@ -127,6 +127,21 @@
             _subject.Items.First().Should().Be(latestViewModel);
         }
 
+        [Test]
+        public void SelectingAllContacts_Always_SetsSelectAllTrue()
+        {
+            var contactViewModel1 = new ContactViewModel { Model = new ContactInfoPresenter() };
+            var contactViewModel2 = new ContactViewModel { Model = new ContactInfoPresenter() };
+            _subject.Items.Add(contactViewModel1);
+            _subject.Items.Add(contactViewModel2);
+
+            _subject.SelectAll.Should().BeFalse();
+            contactViewModel1.IsSelected = true;
+            _subject.SelectAll.Should().BeFalse();
+            contactViewModel2.IsSelected = true;
+            _subject.SelectAll.Should().BeTrue();
+        }
+
         private void AddChildViewModel(ContactInfoPresenter model1)
         {
             _subject.Items.Add(new ContactViewModel { Model = model1 });

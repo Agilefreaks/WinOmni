@@ -1,5 +1,6 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.MessageDetails
 {
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using Caliburn.Micro;
@@ -35,6 +36,16 @@
         }
 
         #endregion
+
+        public void ClearContacts()
+        {
+            //This is done due to the fact that the selected contacts collection will be modified when deselecting items
+            var contacts = new List<IContactViewModel>(ContactsSource.Contacts.Cast<IContactViewModel>());
+            foreach (var contact in contacts)
+            {
+                contact.IsSelected = false;
+            }
+        }
 
         #region Methods
 
