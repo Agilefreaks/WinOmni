@@ -21,6 +21,15 @@
         public MessageCategoryViewModel(IMessageDefinitionProvider messageDefinitionProvider)
         {
             _messageDefinitionProvider = messageDefinitionProvider;
+
+            var knownLanguages = new Dictionary<string, string>
+                                     {
+                                         { "en", "English" },
+                                         { "pt", "Portuguese" },
+                                         { "pl", "Polish" },
+                                         { "ro", "Romanian" }
+                                     };
+            SelectedLanguage = knownLanguages[CultureInfo.CurrentCulture.TwoLetterISOLanguageName];
         }
 
         public IList<object> Languages
