@@ -126,4 +126,7 @@
   <data name="Holidays" xml:space="preserve">
     <value>Feriados</value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Selecionar Tudo</value>
+  </data>
 </root>
