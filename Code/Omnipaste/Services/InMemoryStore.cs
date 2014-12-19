@@ -8,6 +8,7 @@
     using Events.Models;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public class InMemoryStore : IMessageStore, ICallStore
     {

@@ -5,6 +5,7 @@
     using NUnit.Framework;
     using OmniCommon.Models;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ContactInfoTests

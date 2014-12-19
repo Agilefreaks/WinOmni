@@ -3,6 +3,7 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Models;
     using OmniUI.Presenters;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>

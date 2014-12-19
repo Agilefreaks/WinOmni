@@ -5,6 +5,7 @@
     using Clipboard.Models;
     using Events.Models;
     using OmniCommon.Helpers;
+    using OmniUI.Models;
 
     public class Activity
     {

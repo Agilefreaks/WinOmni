@@ -4,6 +4,7 @@
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Properties;
+    using OmniUI.Models;
 
     public class SMSMessageFactory : ISMSMessageFactory
     {

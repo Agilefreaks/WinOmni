@@ -3,6 +3,7 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public class InlineSMSComposerViewModel : SMSComposerViewModel, IInlineSMSComposerViewModel
     {

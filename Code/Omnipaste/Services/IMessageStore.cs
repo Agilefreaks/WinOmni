@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Ninject;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public interface IMessageStore : IStartable
     {

@@ -1,11 +1,9 @@
-﻿namespace Omnipaste.Models
+﻿namespace OmniUI.Models
 {
     using System;
     using System.Linq;
     using Events.Models;
     using OmniCommon.Models;
-    using OmniUI.Models;
-    using OmniUI.Presenters;
 
     public class ContactInfo : IContactInfo
     {

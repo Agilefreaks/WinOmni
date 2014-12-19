@@ -11,6 +11,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Models;
 
     [TestFixture]
     public class InMemoryStoreTests

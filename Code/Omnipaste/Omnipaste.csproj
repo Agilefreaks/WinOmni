@@ -295,7 +295,6 @@
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Models\Call.cs" />
-    <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
