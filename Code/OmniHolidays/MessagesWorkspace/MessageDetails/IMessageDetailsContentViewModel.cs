@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
 
-    public interface IMessageDetailsContentViewModel : IScreen
+    public interface IMessageDetailsContentViewModel : IScreen, IMessageWizardViewModel
     {
     }
 }
