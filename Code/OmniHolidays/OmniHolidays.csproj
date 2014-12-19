@@ -99,6 +99,8 @@
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategoryEnum.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageStepViewModelBase.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageContext.cs" />
     <Compile Include="MessagesWorkspace\IMessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesWorkspace.cs" />
@@ -175,11 +177,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\RadioButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\TextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

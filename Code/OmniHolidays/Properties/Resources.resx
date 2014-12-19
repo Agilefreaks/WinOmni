@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ColleaguesCategory" xml:space="preserve">
+    <value>Colleagues</value>
+  </data>
   <data name="ContactListHeader" xml:space="preserve">
     <value>Contacts</value>
   </data>
   <data name="ContactListSubHeader" xml:space="preserve">
     <value>Select the contacts to whom you want to send the SMS</value>
   </data>
+  <data name="FamilyCategory" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="FriendsCategory" xml:space="preserve">
+    <value>Friends</value>
+  </data>
+  <data name="GreetingHeader" xml:space="preserve">
+    <value>Choose your Greeting for</value>
+  </data>
+  <data name="GreetingLanguageLabel" xml:space="preserve">
+    <value>Greeting Language:</value>
+  </data>
   <data name="Holidays" xml:space="preserve">
     <value>Holidays</value>
+  </data>
+  <data name="SchoolCategory" xml:space="preserve">
+    <value>School</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
