@@ -61,6 +61,15 @@ namespace OmniHolidays.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Colleagues.
+        /// </summary>
+        public static string ColleaguesCategory {
+            get {
+                return ResourceManager.GetString("ColleaguesCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacts.
         /// </summary>
         public static string ContactListHeader {
@@ -79,11 +88,92 @@ namespace OmniHolidays.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Family.
+        /// </summary>
+        public static string FamilyCategory {
+            get {
+                return ResourceManager.GetString("FamilyCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friends.
+        /// </summary>
+        public static string FriendsCategory {
+            get {
+                return ResourceManager.GetString("FriendsCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose your Greeting for.
+        /// </summary>
+        public static string GreetingHeader {
+            get {
+                return ResourceManager.GetString("GreetingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greeting Language:.
+        /// </summary>
+        public static string GreetingLanguageLabel {
+            get {
+                return ResourceManager.GetString("GreetingLanguageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Holidays.
         /// </summary>
         public static string Holidays {
             get {
                 return ResourceManager.GetString("Holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polish.
+        /// </summary>
+        public static string Polish {
+            get {
+                return ResourceManager.GetString("Polish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Portuguese.
+        /// </summary>
+        public static string Portuguese {
+            get {
+                return ResourceManager.GetString("Portuguese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Romanian.
+        /// </summary>
+        public static string Romanian {
+            get {
+                return ResourceManager.GetString("Romanian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to School.
+        /// </summary>
+        public static string SchoolCategory {
+            get {
+                return ResourceManager.GetString("SchoolCategory", resourceCulture);
             }
         }
         
