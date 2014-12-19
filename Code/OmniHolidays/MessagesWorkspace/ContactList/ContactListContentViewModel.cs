@@ -31,7 +31,7 @@
 
         private string _filterText;
 
-        private bool _isEnabled;
+        private bool _isBusy;
 
         private bool _selectAll;
 
@@ -45,7 +45,7 @@
             _commandService = commandService;
             _kernel = kernel;
             _contactInfoSubject = EntityObservable as Subject<IContactInfoPresenter>;
-            IsEnabled = true;
+            IsBusy = true;
             FilterText = string.Empty;
             ViewModelFilter = IdentifierContainsFilterText;
             FilteredItems.CustomSort = new ContactViewModelComparer();
@@ -82,19 +82,19 @@
             }
         }
 
-        public bool IsEnabled
+        public bool IsBusy
         {
             get
             {
-                return _isEnabled;
+                return _isBusy;
             }
             set
             {
-                if (value.Equals(_isEnabled))
+                if (value.Equals(_isBusy))
                 {
                     return;
                 }
-                _isEnabled = value;
+                _isBusy = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -141,8 +141,7 @@
             {
                 return;
             }
-            IsEnabled = false;
-            _commandService.Execute(new SyncContactsCommand()).RunToCompletion(OnGotNewContacts, OnGetContactsError);
+            SyncContacts();
         }
 
         protected override void OnFilterUpdated()
@@ -184,17 +183,24 @@
         private void OnGetContactsError(Exception exception)
         {
             ExceptionReporter.Instance.Report(exception);
-            IsEnabled = true;
+            IsBusy = false;
         }
 
         private void OnGotNewContacts(IEnumerable<ContactList> result)
         {
-            foreach (var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
+            foreach (
+                var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
             {
                 _contactInfoSubject.OnNext(contactInfoPresenter);
             }
 
-            IsEnabled = true;
+            IsBusy = false;
+        }
+
+        private void SyncContacts()
+        {
+            IsBusy = true;
+            _commandService.Execute(new SyncContactsCommand()).RunToCompletion(OnGotNewContacts, OnGetContactsError);
         }
 
         private void UpdateContactSelection()
