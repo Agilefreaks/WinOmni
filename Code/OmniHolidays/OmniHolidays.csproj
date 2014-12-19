@@ -98,8 +98,8 @@
     <Compile Include="MessagesWorkspace\ContactList\IContactViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
-    <Compile Include="MessagesWorkspace\MessageDetails\MessageCategoryEnum.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageList\MessageListViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageStepViewModelBase.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageContext.cs" />
     <Compile Include="MessagesWorkspace\IMessagesMainMenuEntryViewModel.cs" />
@@ -189,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageList\MessageList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

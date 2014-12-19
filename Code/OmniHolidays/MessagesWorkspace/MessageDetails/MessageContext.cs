@@ -2,7 +2,7 @@
 {
     public class MessageContext
     {
-        public MessageCategoryEnum MessageCategory { get; set; }
+        public string MessageCategory { get; set; }
 
         public string Language { get; set; }
 
