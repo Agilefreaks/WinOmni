@@ -8,6 +8,7 @@
     using OmniHolidays.MessagesWorkspace;
     using OmniHolidays.MessagesWorkspace.MessageDetails;
     using OmniHolidays.MessagesWorkspace.MessageDetails.MessageCategory;
+    using OmniHolidays.Providers;
     using OmniUI;
     using OmniUI.MainMenuEntry;
     using OmniUI.Presenters;
@@ -23,6 +24,8 @@
 
         protected override void LoadCore()
         {
+            Kernel.Bind<IMessageDefinitionProvider>().To<GreetingDefinitionProvider>().InSingletonScope();
+
             Kernel.Bind<IMainMenuEntryViewModel>().To<MessagesMainMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMessageStepViewModel>().To<MessageCategoryViewModel>();
             Kernel.Bind<IObservable<IContactInfoPresenter>>()

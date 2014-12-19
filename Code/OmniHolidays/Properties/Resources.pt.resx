@@ -123,6 +123,12 @@
   <data name="ContactListSubHeader" xml:space="preserve">
     <value>Selecione os contatos para quem você deseja enviar o SMS</value>
   </data>
+  <data name="FamilyCategory" xml:space="preserve">
+    <value>Família</value>
+  </data>
+  <data name="FriendsCategory" xml:space="preserve">
+    <value>Amigos</value>
+  </data>
   <data name="Holidays" xml:space="preserve">
     <value>Feriados</value>
   </data>
