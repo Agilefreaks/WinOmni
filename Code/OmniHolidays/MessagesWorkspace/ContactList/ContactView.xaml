@@ -9,7 +9,7 @@
         <DockPanel LastChildFill="True">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                    <CheckBox x:Name="Model_IsSelected" VerticalAlignment="Center" Margin="0,0,8,0" Style="{DynamicResource SmallCheckBoxStyle}"/>
+                    <CheckBox x:Name="IsSelected" VerticalAlignment="Center" Margin="0,0,8,0" Style="{DynamicResource SmallCheckBoxStyle}"/>
                     <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="28" Height="28" 
                      Margin="0,0,8,0" />
                 </StackPanel>

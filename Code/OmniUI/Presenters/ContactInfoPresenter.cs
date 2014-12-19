@@ -83,23 +83,6 @@
             }
         }
 
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-            set
-            {
-                if (value.Equals(_isSelected))
-                {
-                    return;
-                }
-                _isSelected = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         #endregion
 
         #region Methods

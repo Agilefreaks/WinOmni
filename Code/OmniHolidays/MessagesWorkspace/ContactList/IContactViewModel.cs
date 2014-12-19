@@ -5,5 +5,6 @@
 
     public interface IContactViewModel : IDetailsViewModel<IContactInfoPresenter>
     {
+        bool IsSelected { get; set; }
     }
 }

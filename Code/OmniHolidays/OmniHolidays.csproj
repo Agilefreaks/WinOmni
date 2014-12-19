@@ -84,6 +84,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactInfoSelectionSource.cs" />
     <Compile Include="HolidaysModule.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="MessagesWorkspace\ContactList\IContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\IContactSource.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\IMessagesWorkspace.cs" />

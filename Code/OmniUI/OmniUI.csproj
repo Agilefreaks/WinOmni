@@ -100,7 +100,10 @@
     <Compile Include="Details\DetailsViewModelWithHeaderBase.cs" />
     <Compile Include="Details\IDetailsViewModel.cs" />
     <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
+    <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
+    <Compile Include="Framework\DeepObservableCollectionView.cs" />
+    <Compile Include="Framework\IDeepObservableCollectionView.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />

@@ -67,7 +67,7 @@
         }
 
         [Test]
-        public void SetSelectAllTrue_Always_SetsIsSelectedTrueForAllModelsOnAllTheFilteredItems()
+        public void SetSelectAllTrue_Always_SetsIsSelectedTrueForAllTheFilteredItems()
         {
             _subject.Start();
             var identifiers = new[] { "a1b", "a2c", "b3c" };
@@ -78,14 +78,14 @@
             _contactInfoPresenterSource.OnNext(model2);
             var model3 = new ContactInfoPresenter { Identifier = identifiers[counter % identifiers.Length] };
             _contactInfoPresenterSource.OnNext(model3);
-            model1.IsSelected = false;
+            ViewModelWithModel(model1).IsSelected = false;
 
             _subject.FilterText = "c";
             _subject.SelectAll = true;
 
-            model1.IsSelected.Should().BeFalse();
-            model2.IsSelected.Should().BeTrue();
-            model3.IsSelected.Should().BeTrue();
+            ViewModelWithModel(model1).IsSelected.Should().BeFalse();
+            ViewModelWithModel(model2).IsSelected.Should().BeTrue();
+            ViewModelWithModel(model3).IsSelected.Should().BeTrue();
         }
 
         [Test]
@@ -100,16 +100,16 @@
             _contactInfoPresenterSource.OnNext(model2);
             var model3 = new ContactInfoPresenter { Identifier = identifiers[counter % identifiers.Length] };
             _contactInfoPresenterSource.OnNext(model3);
-            model1.IsSelected = true;
-            model2.IsSelected = true;
-            model3.IsSelected = true;
+            ViewModelWithModel(model1).IsSelected = true;
+            ViewModelWithModel(model2).IsSelected = true;
+            ViewModelWithModel(model3).IsSelected = true;
 
             _subject.FilterText = "a";
             _subject.SelectAll = false;
 
-            model1.IsSelected.Should().BeFalse();
-            model2.IsSelected.Should().BeFalse();
-            model3.IsSelected.Should().BeTrue();
+            ViewModelWithModel(model1).IsSelected.Should().BeFalse();
+            ViewModelWithModel(model2).IsSelected.Should().BeFalse();
+            ViewModelWithModel(model3).IsSelected.Should().BeTrue();
         }
 
         [Test]
@@ -126,6 +126,11 @@
 
             _subject.Items.Count.Should().Be(ContactListContentViewModel.MaxItemCount + 1);
             _subject.Items.First().Should().Be(latestViewModel);
+        }
+
+        private IContactViewModel ViewModelWithModel(ContactInfoPresenter model1)
+        {
+            return _subject.Items.Single(item => item.Model == model1);
         }
     }
 }
