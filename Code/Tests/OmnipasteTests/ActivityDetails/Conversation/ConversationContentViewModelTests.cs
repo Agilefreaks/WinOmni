@@ -15,6 +15,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using OmniUI.Details;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ConversationContentViewModelTests

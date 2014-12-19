@@ -45,6 +45,10 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -69,7 +73,7 @@
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -84,8 +88,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SyncContactsCommand.cs" />
     <Compile Include="ContactInfoSelectionSource.cs" />
     <Compile Include="HolidaysModule.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactListContactInfoPresenter.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModel.cs" />
@@ -153,6 +159,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Contacts\Contacts.csproj">
+      <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
+      <Name>Contacts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniApi\OmniApi.csproj">
+      <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
+      <Name>OmniApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniUI\OmniUI.csproj">
       <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
       <Name>OmniUI</Name>

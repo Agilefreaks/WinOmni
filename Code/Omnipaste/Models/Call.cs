@@ -3,6 +3,7 @@
     using System;
     using Events.Models;
     using Omnipaste.DetailsViewModel;
+    using OmniUI.Models;
 
     public class Call : IConversationItem
     {
@@ -18,7 +19,7 @@
         public Call(Event @event)
         {
             Time = DateTime.UtcNow;
-            ContactInfo = new ContactInfo(@event);
+            ContactInfo = new EventContactInfo(@event);
             Source = SourceType.Remote;
         }
 

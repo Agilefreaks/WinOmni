@@ -1,23 +1,37 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.ContactList
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Reactive.Subjects;
+    using Contacts.Models;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
+    using OmniHolidays.Commands;
     using OmniUI.Framework;
     using OmniUI.List;
+    using OmniUI.Models;
     using OmniUI.Presenters;
+    using OmniUI.Services;
 
     public class ContactListContentViewModel : ListViewModelBase<IContactInfoPresenter, IContactViewModel>,
                                                IContactListContentViewModel
     {
         #region Fields
 
-        private readonly IKernel _kernel;
+        private readonly ICommandService _commandService;
+
+        private readonly Subject<IContactInfoPresenter> _contactInfoSubject;
 
         private readonly IDeepObservableCollectionView _items;
 
+        private readonly IKernel _kernel;
+
         private string _filterText;
+
+        private bool _isBusy;
 
         private bool _selectAll;
 
@@ -25,10 +39,13 @@
 
         #region Constructors and Destructors
 
-        public ContactListContentViewModel(IObservable<IContactInfoPresenter> contactObservable, IKernel kernel)
-            : base(contactObservable)
+        public ContactListContentViewModel(ICommandService commandService, IKernel kernel)
+            : base(new Subject<IContactInfoPresenter>())
         {
+            _commandService = commandService;
             _kernel = kernel;
+            _contactInfoSubject = EntityObservable as Subject<IContactInfoPresenter>;
+            IsBusy = true;
             FilterText = string.Empty;
             ViewModelFilter = IdentifierContainsFilterText;
             FilteredItems.CustomSort = new ContactViewModelComparer();
@@ -38,6 +55,14 @@
         #endregion
 
         #region Public Properties
+
+        public IDeepObservableCollectionView Contacts
+        {
+            get
+            {
+                return _items;
+            }
+        }
 
         public string FilterText
         {
@@ -54,6 +79,23 @@
                 _filterText = value;
                 NotifyOfPropertyChange();
                 OnFilterUpdated();
+            }
+        }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                if (value.Equals(_isBusy))
+                {
+                    return;
+                }
+                _isBusy = value;
+                NotifyOfPropertyChange();
             }
         }
 
@@ -75,14 +117,6 @@
             }
         }
 
-        public IDeepObservableCollectionView Contacts
-        {
-            get
-            {
-                return _items;
-            }
-        }
-
         #endregion
 
         #region Methods
@@ -100,12 +134,34 @@
             return false;
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            if (Items.Count != 0)
+            {
+                return;
+            }
+            SyncContacts();
+        }
+
         protected override void OnFilterUpdated()
         {
             base.OnFilterUpdated();
             _selectAll = FilteredItems.Count > 0
                          && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.IsSelected);
             NotifyOfPropertyChange(() => SelectAll);
+        }
+
+        private static ContactListContactInfoPresenter GetContactInfoPresenter(Contact contact)
+        {
+            return
+                new ContactListContactInfoPresenter(
+                    new ContactInfo
+                        {
+                            FirstName = contact.FirstName,
+                            LastName = contact.LastName,
+                            Phone = contact.PhoneNumber,
+                        });
         }
 
         private static bool ModelIsSelected(object viewModel)
@@ -122,6 +178,29 @@
                            viewModel.Model.Identifier,
                            FilterText,
                            CompareOptions.IgnoreCase) > -1));
+        }
+
+        private void OnGetContactsError(Exception exception)
+        {
+            ExceptionReporter.Instance.Report(exception);
+            IsBusy = false;
+        }
+
+        private void OnGotNewContacts(IEnumerable<ContactList> result)
+        {
+            foreach (
+                var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
+            {
+                _contactInfoSubject.OnNext(contactInfoPresenter);
+            }
+
+            IsBusy = false;
+        }
+
+        private void SyncContacts()
+        {
+            IsBusy = true;
+            _commandService.Execute(new SyncContactsCommand()).RunToCompletion(OnGotNewContacts, OnGetContactsError);
         }
 
         private void UpdateContactSelection()

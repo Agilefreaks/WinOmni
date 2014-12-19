@@ -139,6 +139,8 @@
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModelTests.cs" />
     <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModelTests.cs" />
     <Compile Include="Models\ContactInfoTests.cs" />
+    <Compile Include="Models\EventContactInfoTests.cs" />
+    <Compile Include="Models\UserContactInfoTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModelTests.cs" />
@@ -158,7 +160,6 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClippingTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDeviceTests.cs" />
     <Compile Include="Services\Commands\CommandServiceTests.cs" />
-    <Compile Include="Services\Commands\SyncContactsCommandTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />
     <Compile Include="Services\InMemoryStoreTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />

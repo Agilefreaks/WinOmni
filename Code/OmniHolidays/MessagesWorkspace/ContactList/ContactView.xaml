@@ -15,7 +15,7 @@
                 </StackPanel>
             </StackPanel>
             <TextBlock x:Name="Model_Identifier" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
-                       Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center"/>
+                       Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="220"/>
         </DockPanel>
     </Border>
 </UserControl>

@@ -2,6 +2,7 @@
 {
     using System;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public interface IConversationItem
     {

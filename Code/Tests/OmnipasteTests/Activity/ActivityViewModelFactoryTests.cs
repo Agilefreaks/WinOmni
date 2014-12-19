@@ -9,6 +9,7 @@
     using Omnipaste.Activity;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ActivityViewModelFactoryTests

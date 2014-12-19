@@ -11,6 +11,7 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.SMSComposer;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ModalSMSComposerViewModelTests

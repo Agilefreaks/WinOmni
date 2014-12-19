@@ -295,7 +295,6 @@
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Models\Call.cs" />
-    <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
@@ -325,8 +324,10 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
+    <Compile Include="Models\EventContactInfo.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SourceType.cs" />
+    <Compile Include="Models\UserContactInfo.cs" />
     <Compile Include="Notification\EventNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />

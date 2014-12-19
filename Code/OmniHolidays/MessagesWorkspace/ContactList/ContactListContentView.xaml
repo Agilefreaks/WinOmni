@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -41,13 +42,20 @@
                 <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Height="55" Padding="18,13" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
+                            <Border Height="55" Padding="18,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
                                 <ContentControl cal:View.Model="{Binding}"/>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </StackPanel>
         </ScrollViewer>
+        <controls:MetroProgressBar Grid.Row="0" Grid.RowSpan="2" IsIndeterminate="True" Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </UserControl>

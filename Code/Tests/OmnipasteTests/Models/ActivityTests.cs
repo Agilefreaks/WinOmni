@@ -8,6 +8,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ActivityTests

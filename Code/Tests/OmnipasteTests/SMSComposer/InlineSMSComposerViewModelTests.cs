@@ -12,6 +12,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.SMSComposer;
+    using OmniUI.Models;
 
     [TestFixture]
     public class InlineSMSComposerViewModelTests

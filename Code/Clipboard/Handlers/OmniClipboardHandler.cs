@@ -6,6 +6,7 @@
     using Clipboard.API.Resources.v1;
     using Clipboard.Models;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
@@ -44,11 +45,14 @@
         {
             try
             {
-                _subscription.Dispose();
+                if (_subscription != null)
+                {
+                    _subscription.Dispose();
+                }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine(e.Message);
+                ExceptionReporter.Instance.Report(exception);
             }
         }
 

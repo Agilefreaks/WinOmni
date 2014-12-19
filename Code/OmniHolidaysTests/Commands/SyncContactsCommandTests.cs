@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Services.Commands
+﻿namespace OmniHolidaysTests.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using OmniUI.Framework.Commands;
+    using OmniHolidays.Commands;
 
     [TestFixture]
     public class SyncContactsCommandTests
@@ -72,7 +72,7 @@
         [Test]
         public void Process_WhenContactsReturnsContacts_ReturnsCommandResult()
         {
-            var contactList = new ContactList { Contacts = new List<Contact> { new Contact { ContactName = "User" } } };
+            var contactList = new ContactList { Contacts = new List<Contact> { new Contact { FirstName = "User" } } };
             _mockContacts.Setup(m => m.Get(_deviceInfo.Identifier)).Returns(Observable.Return(contactList));
 
             var observer = _testScheduler.Start(() => _subject.Execute());
@@ -159,7 +159,7 @@
         private static List<Contact> CreateContacts()
         {
             //generate a contact list with a random contact name
-            return new List<Contact> { new Contact { ContactName = Path.GetRandomFileName() } };
+            return new List<Contact> { new Contact { FirstName = Path.GetRandomFileName() } };
         }
 
         private IObservable<TResult> CreateFailObservable<TResult>()

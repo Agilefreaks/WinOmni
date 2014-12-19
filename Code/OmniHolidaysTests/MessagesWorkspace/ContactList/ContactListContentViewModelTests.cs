@@ -1,7 +1,6 @@
 ﻿namespace OmniHolidaysTests.MessagesWorkspace.ContactList
 {
     using System.Linq;
-    using System.Reactive.Subjects;
     using System.Windows.Media;
     using Caliburn.Micro;
     using FluentAssertions;
@@ -11,28 +10,28 @@
     using NUnit.Framework;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniUI.Helpers;
-    using OmniUI.List;
     using OmniUI.Presenters;
+    using OmniUI.Services;
 
     [TestFixture]
     public class ContactListContentViewModelTests
     {
         private ContactListContentViewModel _subject;
 
-        private Subject<IContactInfoPresenter> _contactInfoPresenterSource;
-
         private IKernel _mockKernel;
 
         private Mock<IApplicationHelper> _mockApplicationHelper;
 
+        private Mock<ICommandService> _mockCommandService;
+
         [SetUp]
         public void Setup()
         {
-            _contactInfoPresenterSource = new Subject<IContactInfoPresenter>();
             _mockKernel = new MoqMockingKernel();
 
             _mockKernel.Bind<IContactViewModel>().ToMethod(context => new ContactViewModel());
-            _subject = new ContactListContentViewModel(_contactInfoPresenterSource, _mockKernel);
+            _mockCommandService = new Mock<ICommandService>();
+            _subject = new ContactListContentViewModel(_mockCommandService.Object, _mockKernel);
             _mockApplicationHelper = new Mock<IApplicationHelper>();
             _mockApplicationHelper.Setup(x => x.FindResource(ContactInfoPresenter.UserPlaceholderBrush))
                 .Returns(new DrawingBrush { Drawing = new DrawingGroup() });
@@ -52,11 +51,11 @@
             var identifiers = new[] { "a1b", "a2c", "b3c" };
             var counter = 0;
             var model1 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model1);
+            AddChildViewModel(model1);
             var model2 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model2);
+            AddChildViewModel(model2);
             var model3 = new ContactInfoPresenter { Identifier = identifiers[counter % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model3);
+            AddChildViewModel(model3);
 
             _subject.FilterText = "a";
 
@@ -73,11 +72,11 @@
             var identifiers = new[] { "a1b", "a2c", "b3c" };
             var counter = 0;
             var model1 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model1);
+            AddChildViewModel(model1);
             var model2 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model2);
+            AddChildViewModel(model2);
             var model3 = new ContactInfoPresenter { Identifier = identifiers[counter % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model3);
+            AddChildViewModel(model3);
             ViewModelWithModel(model1).IsSelected = false;
 
             _subject.FilterText = "c";
@@ -95,11 +94,11 @@
             var identifiers = new[] { "a1b", "a2c", "b3c" };
             var counter = 0;
             var model1 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model1);
+            AddChildViewModel(model1);
             var model2 = new ContactInfoPresenter { Identifier = identifiers[counter++ % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model2);
+            AddChildViewModel(model2);
             var model3 = new ContactInfoPresenter { Identifier = identifiers[counter % identifiers.Length] };
-            _contactInfoPresenterSource.OnNext(model3);
+            AddChildViewModel(model3);
             ViewModelWithModel(model1).IsSelected = true;
             ViewModelWithModel(model2).IsSelected = true;
             ViewModelWithModel(model3).IsSelected = true;
@@ -126,6 +125,11 @@
 
             _subject.Items.Count.Should().Be(ContactListContentViewModel.MaxItemCount + 1);
             _subject.Items.First().Should().Be(latestViewModel);
+        }
+
+        private void AddChildViewModel(ContactInfoPresenter model1)
+        {
+            _subject.Items.Add(new ContactViewModel { Model = model1 });
         }
 
         private IContactViewModel ViewModelWithModel(ContactInfoPresenter model1)

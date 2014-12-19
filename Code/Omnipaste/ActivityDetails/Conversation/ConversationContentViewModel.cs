@@ -13,6 +13,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using OmniUI.Details;
+    using OmniUI.Models;
 
     public class ConversationContentViewModel : Conductor<IScreen>.Collection.AllActive, IConversationContentViewModel
     {

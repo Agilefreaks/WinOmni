@@ -23,7 +23,7 @@
             IConfigurationService configurationService)
             : base(uiRefreshService)
         {
-            _currentUserInfo = new ContactInfoPresenter(new ContactInfo(configurationService.UserInfo));
+            _currentUserInfo = new ContactInfoPresenter(new UserContactInfo(configurationService.UserInfo));
         }
 
         #endregion
