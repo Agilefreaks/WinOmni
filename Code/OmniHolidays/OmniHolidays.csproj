@@ -84,8 +84,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SyncContactsCommand.cs" />
     <Compile Include="ContactInfoSelectionSource.cs" />
     <Compile Include="HolidaysModule.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactListContactInfoPresenter.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModel.cs" />
@@ -153,6 +155,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Contacts\Contacts.csproj">
+      <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
+      <Name>Contacts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniApi\OmniApi.csproj">
+      <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
+      <Name>OmniApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
+      <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
+      <Name>OmniCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniUI\OmniUI.csproj">
       <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
       <Name>OmniUI</Name>

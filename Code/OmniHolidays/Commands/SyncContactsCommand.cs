@@ -1,4 +1,4 @@
-﻿namespace OmniUI.Framework.Commands
+﻿namespace OmniHolidays.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +11,7 @@
     using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
+    using OmniUI.Framework.Commands;
 
     public class SyncContactsCommand : ICommand<IList<ContactList>>
     {

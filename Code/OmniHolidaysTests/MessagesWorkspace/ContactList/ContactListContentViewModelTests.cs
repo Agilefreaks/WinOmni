@@ -13,6 +13,7 @@
     using OmniUI.Helpers;
     using OmniUI.List;
     using OmniUI.Presenters;
+    using OmniUI.Services;
 
     [TestFixture]
     public class ContactListContentViewModelTests
@@ -25,6 +26,8 @@
 
         private Mock<IApplicationHelper> _mockApplicationHelper;
 
+        private Mock<ICommandService> _mockCommandService;
+
         [SetUp]
         public void Setup()
         {
@@ -32,7 +35,8 @@
             _mockKernel = new MoqMockingKernel();
 
             _mockKernel.Bind<IContactViewModel>().ToMethod(context => new ContactViewModel());
-            _subject = new ContactListContentViewModel(_contactInfoPresenterSource, _mockKernel);
+            _mockCommandService = new Mock<ICommandService>();
+            _subject = new ContactListContentViewModel(_mockCommandService.Object, _mockKernel);
             _mockApplicationHelper = new Mock<IApplicationHelper>();
             _mockApplicationHelper.Setup(x => x.FindResource(ContactInfoPresenter.UserPlaceholderBrush))
                 .Returns(new DrawingBrush { Drawing = new DrawingGroup() });

@@ -7,7 +7,7 @@
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid IsEnabled="{Binding Path=IsEnabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -41,7 +41,7 @@
                 <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Height="55" Padding="18,13" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
+                            <Border Height="55" Padding="18,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
                                 <ContentControl cal:View.Model="{Binding}"/>
                             </Border>
                         </DataTemplate>

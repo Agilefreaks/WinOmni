@@ -21,13 +21,11 @@
 
         #region Fields
 
-        private readonly IContactInfo _contactInfo;
+        protected readonly IContactInfo ContactInfo;
 
         private string _identifier;
 
         private ImageSource _image;
-
-        private bool _isSelected;
 
         #endregion
 
@@ -41,7 +39,7 @@
 
         public ContactInfoPresenter(IContactInfo contactInfo)
         {
-            _contactInfo = contactInfo;
+            ContactInfo = contactInfo;
             UpdateContactDetails();
         }
 
@@ -87,6 +85,11 @@
 
         #region Methods
 
+        protected virtual void UpdateContactIdentifier()
+        {
+            Identifier = string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.Phone : ContactInfo.Name;
+        }
+
         private static ImageSource GetDefaultUserImage()
         {
             var resource = ResourceHelper.GetByKey(UserPlaceholderBrush);
@@ -109,19 +112,14 @@
             UpdateContactIdentifier();
         }
 
-        private void UpdateContactIdentifier()
-        {
-            Identifier = string.IsNullOrWhiteSpace(_contactInfo.Name) ? _contactInfo.Phone : _contactInfo.Name;
-        }
-
         private void UpdateContactImage()
         {
             DispatcherProvider.Application.Dispatch(
                 (Action)
                 (() =>
                     {
-                        Image = _contactInfo.ImageUri != null
-                                    ? GetImageSourceFromUri(_contactInfo.ImageUri)
+                        Image = ContactInfo.ImageUri != null
+                                    ? GetImageSourceFromUri(ContactInfo.ImageUri)
                                     : GetDefaultUserImage();
                     }));
         }
