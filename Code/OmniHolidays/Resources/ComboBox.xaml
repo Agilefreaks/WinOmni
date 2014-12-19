@@ -122,7 +122,7 @@
     </Style>
 
     <Style x:Key="LanguageComboBoxStyle" TargetType="{x:Type ComboBox}">
-        <Setter Property="Width" Value="120"/>
+        <Setter Property="MinWidth" Value="130"/>
         <Setter Property="MinHeight" Value="26"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
