@@ -6,19 +6,46 @@
 
     public class ContactListViewModel : Screen, IContactListViewModel
     {
-        private readonly IContactListHeaderViewModel _header;
+        #region Fields
 
-        private readonly IContactListContentViewModel _content;
+        private readonly IContactListContentViewModel _contentViewModel;
 
         private readonly IMessageDetailsViewModel _details;
 
+        private readonly IContactListHeaderViewModel _headerViewModel;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public ContactListViewModel(
+            IContactListHeaderViewModel headerViewModel,
+            IContactListContentViewModel contentViewModel,
+            IMessageDetailsViewModel details)
+        {
+            _headerViewModel = headerViewModel;
+            _contentViewModel = contentViewModel;
+            _details = details;
+        }
+
+        #endregion
+
         #region Public Properties
 
-        public ContactListViewModel(IContactListHeaderViewModel header, IContactListContentViewModel content, IMessageDetailsViewModel details)
+        public IContactListContentViewModel ContentViewModel
         {
-            _header = header;
-            _content = content;
-            _details = details;
+            get
+            {
+                return _contentViewModel;
+            }
+        }
+
+        public IContactListHeaderViewModel HeaderViewModel
+        {
+            get
+            {
+                return _headerViewModel;
+            }
         }
 
         #endregion
@@ -28,16 +55,16 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            _header.Activate();
-            _content.Activate();
-            _details.ContactsSource = _content;
+            HeaderViewModel.Activate();
+            ContentViewModel.Activate();
+            _details.ContactsSource = ContentViewModel;
             this.GetParentOfType<IMessagesWorkspace>().DetailsConductor.ActivateItem(_details);
         }
 
         protected override void OnDeactivate(bool close)
         {
-            _header.Deactivate(close);
-            _content.Deactivate(close);
+            HeaderViewModel.Deactivate(close);
+            ContentViewModel.Deactivate(close);
             _details.Deactivate(close);
             base.OnDeactivate(close);
         }
