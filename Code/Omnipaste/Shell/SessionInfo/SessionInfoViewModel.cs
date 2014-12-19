@@ -11,7 +11,6 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using Omnipaste.Models;
-    using OmniUI.Models;
     using OmniUI.Presenters;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
@@ -132,7 +131,7 @@
 
         private void UpdateUserInfo(UserInfo userInfo)
         {
-            UserInfo = new ContactInfoPresenter(new ContactInfo(userInfo));
+            UserInfo = new ContactInfoPresenter(new UserContactInfo(userInfo));
         }
 
         #endregion

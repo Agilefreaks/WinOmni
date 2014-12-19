@@ -19,7 +19,7 @@
         public Call(Event @event)
         {
             Time = DateTime.UtcNow;
-            ContactInfo = new ContactInfo(@event);
+            ContactInfo = new EventContactInfo(@event);
             Source = SourceType.Remote;
         }
 

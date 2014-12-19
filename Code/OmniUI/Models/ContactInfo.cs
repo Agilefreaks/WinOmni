@@ -1,15 +1,12 @@
 ﻿namespace OmniUI.Models
 {
     using System;
-    using System.Linq;
-    using Events.Models;
-    using OmniCommon.Models;
 
     public class ContactInfo : IContactInfo
     {
         #region Constants
 
-        private const string NamePartSeparator = " ";
+        public const string NamePartSeparator = " ";
 
         #endregion
 
@@ -20,32 +17,6 @@
             FirstName = string.Empty;
             LastName = string.Empty;
             Phone = string.Empty;
-        }
-
-        public ContactInfo(Event @event)
-            : this()
-        {
-            var nameParts = string.IsNullOrWhiteSpace(@event.ContactName)
-                                ? new string[0]
-                                : @event.ContactName.Split(NamePartSeparator[0]);
-            if (nameParts.Length == 1)
-            {
-                FirstName = nameParts.First();
-            }
-            else if (nameParts.Length > 1)
-            {
-                FirstName = string.Join(NamePartSeparator, nameParts.Take(nameParts.Length - 1));
-                LastName = nameParts.Last();
-            }
-
-            Phone = @event.PhoneNumber;
-        }
-
-        public ContactInfo(UserInfo userInfo)
-        {
-            FirstName = userInfo.FirstName;
-            LastName = userInfo.LastName;
-            ImageUri = string.IsNullOrWhiteSpace(userInfo.ImageUrl) ? null : new Uri(userInfo.ImageUrl);
         }
 
         #endregion
@@ -62,7 +33,7 @@
         {
             get
             {
-                return string.Format("{0} {1}", FirstName, LastName);
+                return string.Join(NamePartSeparator, FirstName, LastName);
             }
         }
 

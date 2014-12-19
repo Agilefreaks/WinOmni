@@ -3,7 +3,6 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Models;
     using Omnipaste.Services;
-    using OmniUI.Models;
     using OmniUI.Presenters;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>
@@ -24,7 +23,7 @@
             IConfigurationService configurationService)
             : base(uiRefreshService)
         {
-            _currentUserInfo = new ContactInfoPresenter(new ContactInfo(configurationService.UserInfo));
+            _currentUserInfo = new ContactInfoPresenter(new UserContactInfo(configurationService.UserInfo));
         }
 
         #endregion

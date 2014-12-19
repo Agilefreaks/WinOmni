@@ -5,7 +5,6 @@
     using Clipboard.Models;
     using Events.Models;
     using OmniCommon.Helpers;
-    using OmniUI.Models;
 
     public class Activity
     {
@@ -42,7 +41,7 @@
             Content = @event.Content ?? string.Empty;
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Properties.Resources.FromCloud;
-            _extraData.ContactInfo = new ContactInfo(@event);
+            _extraData.ContactInfo = new EventContactInfo(@event);
         }
 
         #endregion
