@@ -1010,6 +1010,10 @@
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
       <Name>Omni</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SMS\SMS.csproj">
+      <Project>{6b364690-348d-4354-b12b-64770342ffd0}</Project>
+      <Name>SMS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsImports\WindowsImports.csproj">
       <Project>{a3325236-54ef-462d-9a88-dad57adc8d11}</Project>
       <Name>WindowsImports</Name>

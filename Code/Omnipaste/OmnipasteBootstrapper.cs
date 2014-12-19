@@ -26,6 +26,7 @@
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
+    using SMS;
     using ViewLocator = Caliburn.Micro.ViewLocator;
 
     public class OmnipasteBootstrapper : BootstrapperBase
@@ -77,6 +78,7 @@
                 new ClipboardModule(),
                 new EventsModule(),
                 new ContactsModule(),
+                new SMSModule(),
                 new OmnipasteModule(),
                 new HolidaysModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
