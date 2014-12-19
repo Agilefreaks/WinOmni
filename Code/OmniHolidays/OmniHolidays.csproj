@@ -54,6 +54,9 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Humanizer">
+      <HintPath>..\..\Libs\Humanizer\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -112,6 +115,8 @@
     <Compile Include="MessagesWorkspace\ContactList\IContactListViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactSource.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactViewModel.cs" />
+    <Compile Include="MessagesWorkspace\Converters\MessageDefinitionIconConverter.cs" />
+    <Compile Include="MessagesWorkspace\Converters\TemplateInfoConverter.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
@@ -128,6 +133,7 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />
+    <Compile Include="MessagesWorkspace\Behaviors\FormatPlaceholdersBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -157,6 +163,7 @@
     <EmbeddedResource Include="Properties\Resources.pt.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -165,6 +172,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -225,6 +233,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessagesWorkspace\MessageDetails\MessageList\MessageList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Border.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

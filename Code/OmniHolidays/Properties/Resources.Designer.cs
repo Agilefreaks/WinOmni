@@ -61,11 +61,29 @@ namespace OmniHolidays.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose a different category or language.
+        /// </summary>
+        public static string ChooseOtherTemplateLabel {
+            get {
+                return ResourceManager.GetString("ChooseOtherTemplateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Colleagues.
         /// </summary>
-        public static string ColleaguesCategory {
+        public static string Colleagues {
             get {
-                return ResourceManager.GetString("ColleaguesCategory", resourceCulture);
+                return ResourceManager.GetString("Colleagues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a custom greeting for your work colleagues!.
+        /// </summary>
+        public static string ColleaguesTemplateInfo {
+            get {
+                return ResourceManager.GetString("ColleaguesTemplateInfo", resourceCulture);
             }
         }
         
@@ -99,18 +117,36 @@ namespace OmniHolidays.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Family.
         /// </summary>
-        public static string FamilyCategory {
+        public static string Family {
             get {
-                return ResourceManager.GetString("FamilyCategory", resourceCulture);
+                return ResourceManager.GetString("Family", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a custom greeting for your family!.
+        /// </summary>
+        public static string FamilyTemplateInfo {
+            get {
+                return ResourceManager.GetString("FamilyTemplateInfo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Friends.
         /// </summary>
-        public static string FriendsCategory {
+        public static string Friends {
             get {
-                return ResourceManager.GetString("FriendsCategory", resourceCulture);
+                return ResourceManager.GetString("Friends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a custom greeting for your friends!.
+        /// </summary>
+        public static string FriendsTemplateInfo {
+            get {
+                return ResourceManager.GetString("FriendsTemplateInfo", resourceCulture);
             }
         }
         
@@ -138,6 +174,15 @@ namespace OmniHolidays.Properties {
         public static string Holidays {
             get {
                 return ResourceManager.GetString("Holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Names will be added automatically in the blank space..
+        /// </summary>
+        public static string PlaceholderInfo {
+            get {
+                return ResourceManager.GetString("PlaceholderInfo", resourceCulture);
             }
         }
         
@@ -171,9 +216,18 @@ namespace OmniHolidays.Properties {
         /// <summary>
         ///   Looks up a localized string similar to School.
         /// </summary>
-        public static string SchoolCategory {
+        public static string School {
             get {
-                return ResourceManager.GetString("SchoolCategory", resourceCulture);
+                return ResourceManager.GetString("School", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a custom greeting for your school colleagues!.
+        /// </summary>
+        public static string SchoolTemplateInfo {
+            get {
+                return ResourceManager.GetString("SchoolTemplateInfo", resourceCulture);
             }
         }
         

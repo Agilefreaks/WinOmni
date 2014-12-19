@@ -19,10 +19,10 @@
 
         <Border Grid.Row="1" Width="530">
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <RadioButton cal:Message.Attach="CategorySelected('Family')"  Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_family_icon}" Tag="{x:Static res:Resources.FamilyCategory}" />
-                <RadioButton cal:Message.Attach="CategorySelected('Friends')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_friends_icon}" Tag="{x:Static res:Resources.FriendsCategory}" />
-                <RadioButton cal:Message.Attach="CategorySelected('Colleagues')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_work_icon}" Tag="{x:Static res:Resources.ColleaguesCategory}" />
-                <RadioButton cal:Message.Attach="CategorySelected('School')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_school_icon}" Tag="{x:Static res:Resources.SchoolCategory}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Family')"  Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_family_icon}" Tag="{x:Static res:Resources.Family}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Friends')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_friends_icon}" Tag="{x:Static res:Resources.Friends}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Colleagues')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_work_icon}" Tag="{x:Static res:Resources.Colleagues}" />
+                <RadioButton cal:Message.Attach="CategorySelected('School')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_school_icon}" Tag="{x:Static res:Resources.School}" />
             </WrapPanel>
         </Border>
 

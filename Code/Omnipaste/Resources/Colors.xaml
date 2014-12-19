@@ -34,4 +34,5 @@
     <Color x:Key="CallFadedColor">#EBFDFF</Color>
     <Color x:Key="CallLabelColor">#69DDED</Color>
     <Color x:Key="ChristmassColor">#E22D3F</Color>
+    <Color x:Key="ButtonBorderColor">#FFE6E5E5</Color>
 </ResourceDictionary>

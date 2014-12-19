@@ -16,8 +16,6 @@
 
         private string _selectedLanguage;
 
-        private string _selectedCategory;
-
         public MessageCategoryViewModel(IMessageDefinitionProvider messageDefinitionProvider)
         {
             _messageDefinitionProvider = messageDefinitionProvider;

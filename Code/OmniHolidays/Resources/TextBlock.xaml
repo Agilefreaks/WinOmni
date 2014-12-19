@@ -6,5 +6,16 @@
         <Setter Property="FontSize" Value="36"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0,0,0,32"/>
-    </Style>    
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="NavigateBackButtonStyle">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource LabelBrush}"/>
+    </Style>
+    
+    <Style TargetType="Run" x:Key="TemplatePlaceholderTextBlockStyle">
+        <Setter Property="Foreground" Value="{DynamicResource LabelBrush}"/>
+    </Style>
 </ResourceDictionary>

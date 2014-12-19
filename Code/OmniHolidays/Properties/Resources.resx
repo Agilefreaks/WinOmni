@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ColleaguesCategory" xml:space="preserve">
+  <data name="ChooseOtherTemplateLabel" xml:space="preserve">
+    <value>Choose a different category or language</value>
+  </data>
+  <data name="Colleagues" xml:space="preserve">
     <value>Colleagues</value>
+  </data>
+  <data name="ColleaguesTemplateInfo" xml:space="preserve">
+    <value>Choose a custom greeting for your work colleagues!</value>
   </data>
   <data name="ContactListHeader" xml:space="preserve">
     <value>Contacts</value>
@@ -129,11 +135,17 @@
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
-  <data name="FamilyCategory" xml:space="preserve">
+  <data name="Family" xml:space="preserve">
     <value>Family</value>
   </data>
-  <data name="FriendsCategory" xml:space="preserve">
+  <data name="FamilyTemplateInfo" xml:space="preserve">
+    <value>Choose a custom greeting for your family!</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
     <value>Friends</value>
+  </data>
+  <data name="FriendsTemplateInfo" xml:space="preserve">
+    <value>Choose a custom greeting for your friends!</value>
   </data>
   <data name="GreetingHeader" xml:space="preserve">
     <value>Choose your Greeting for</value>
@@ -144,6 +156,9 @@
   <data name="Holidays" xml:space="preserve">
     <value>Holidays</value>
   </data>
+  <data name="PlaceholderInfo" xml:space="preserve">
+    <value>Names will be added automatically in the blank space.</value>
+  </data>
   <data name="Polish" xml:space="preserve">
     <value>Polish</value>
   </data>
@@ -153,8 +168,11 @@
   <data name="Romanian" xml:space="preserve">
     <value>Romanian</value>
   </data>
-  <data name="SchoolCategory" xml:space="preserve">
+  <data name="School" xml:space="preserve">
     <value>School</value>
+  </data>
+  <data name="SchoolTemplateInfo" xml:space="preserve">
+    <value>Choose a custom greeting for your school colleagues!</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
