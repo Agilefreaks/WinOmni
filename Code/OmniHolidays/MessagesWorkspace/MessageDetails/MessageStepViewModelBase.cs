@@ -28,7 +28,7 @@ namespace OmniHolidays.MessagesWorkspace.MessageDetails
             }
         }
 
-        protected virtual void OnOnNext()
+        protected virtual void NotifyOnNext()
         {
             var handler = OnNext;
             if (handler != null)
@@ -37,7 +37,7 @@ namespace OmniHolidays.MessagesWorkspace.MessageDetails
             }
         }
 
-        protected virtual void OnOnPrevious()
+        protected virtual void NotifyOnPrevious()
         {
             var handler = OnPrevious;
             if (handler != null)
