@@ -43,7 +43,14 @@
                 _contactsSource = value;
                 NotifyOfPropertyChange();
                 HeaderViewModel.ContactsSource = ContactsSource;
+                ContentViewModel.ContactSource = ContactsSource;
             }
+        }
+
+        public void Reset()
+        {
+            HeaderViewModel.Reset();
+            ContentViewModel.Reset();
         }
 
         #endregion

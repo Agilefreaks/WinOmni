@@ -3,15 +3,14 @@
     using System.Collections.Generic;
     using System.Reactive;
     using System.Reactive.Linq;
-    using Contacts.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
-    using OmniCommon.Interfaces;
-    using OmniCommon.Models;
     using OmniHolidays.Commands;
+    using OmniHolidays.Services;
+    using OmniUI.Models;
     using SMS.Resources.v1;
 
     [TestFixture]
@@ -19,33 +18,37 @@
     {
         private SendMassSMSMessageCommand _subject;
 
-        private Mock<IConfigurationService> _mockConfigurationService;
-
         private Mock<ISMSMessages> _mockSMSMessages;
 
         private TestScheduler _testScheduler;
 
+        private Mock<ITemplateProcessingService> _mockTemplateProcessingService;
+
         [SetUp]
         public void Setup()
         {
-            _mockConfigurationService = new Mock<IConfigurationService>();
             _mockSMSMessages = new Mock<ISMSMessages>();
+            _mockTemplateProcessingService = new Mock<ITemplateProcessingService> { DefaultValue = DefaultValue.Mock };
             _testScheduler = new TestScheduler();
+
         }
 
         [Test]
         public void Execute_Always_SendsSMSMessagesToAllTheGivenContactsUsingTheGivenTemplate()
         {
             const string Template = "%Hello %ContactFirstName%, my name is %UserLastName%";
-            var contacts = new List<Contact>
+            var contacts = new List<IContactInfo>
                                {
-                                   new Contact { FirstName = "testA", PhoneNumber = "1234" },
-                                   new Contact { FirstName = "testB", PhoneNumber = "7890" }
+                                   new ContactInfo { FirstName = "testA", Phone = "1234" },
+                                   new ContactInfo { FirstName = "testB", Phone = "7890" }
                                };
-            _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(new UserInfo { LastName = "testC" });
+            var counter = 0;
+            _mockTemplateProcessingService.Setup(
+                x => x.Process(Template, It.Is<ContactInfo>(contactInfo => contacts.Contains(contactInfo))))
+                .Returns(() => "someResult" + counter++);
             _subject = new SendMassSMSMessageCommand(Template, contacts)
             {
-                ConfigurationService = _mockConfigurationService.Object,
+                TemplateProcessingService = _mockTemplateProcessingService.Object,
                 SMSMessages = _mockSMSMessages.Object
             };
             var sendObservable = Observable.Return(new EmptyModel());
@@ -54,7 +57,7 @@
 
             _testScheduler.Start(_subject.Execute);
 
-            var expectedMessages = new[] { "%Hello testA, my name is testC", "%Hello testB, my name is testC" };
+            var expectedMessages = new[] { "someResult0", "someResult1" };
             var expectedPhoneNumbers = new[] { "1234", "7890" };
             _mockSMSMessages.Verify(x => x.Send(expectedMessages, expectedPhoneNumbers));
         }
@@ -63,10 +66,10 @@
         public void Execute_SendIsSuccessful_EmitsAUnit()
         {
             var template = string.Empty;
-            var contacts = new List<Contact>();
+            var contacts = new List<IContactInfo>();
             _subject = new SendMassSMSMessageCommand(template, contacts)
             {
-                ConfigurationService = _mockConfigurationService.Object,
+                TemplateProcessingService = _mockTemplateProcessingService.Object,
                 SMSMessages = _mockSMSMessages.Object
             };
             var sendObservable = Observable.Return(new EmptyModel());

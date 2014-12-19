@@ -7,5 +7,7 @@
         IDetailsViewModelWithHeader<IMessageDetailsHeaderViewModel, IMessageDetailsContentViewModel>
     {
         IContactSource ContactsSource { get; set; }
+
+        void Reset();
     }
 }

@@ -159,6 +159,9 @@
   <data name="PlaceholderInfo" xml:space="preserve">
     <value>Names will be added automatically in the blank space.</value>
   </data>
+  <data name="MessageSent" xml:space="preserve">
+    <value>Message sent successfully!</value>
+  </data>
   <data name="Polish" xml:space="preserve">
     <value>Polish</value>
   </data>
@@ -176,6 +179,15 @@
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
+  </data>
+  <data name="SendingMessageContentHeader" xml:space="preserve">
+    <value>This is how your message will look:</value>
+  </data>
+  <data name="SendingMessagePart1" xml:space="preserve">
+    <value>Sending the message bellow to the</value>
+  </data>
+  <data name="SendingMessagePart2" xml:space="preserve">
+    <value>contacts that you selected</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>To: </value>

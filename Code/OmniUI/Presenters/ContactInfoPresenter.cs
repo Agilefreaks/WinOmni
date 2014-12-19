@@ -21,8 +21,6 @@
 
         #region Fields
 
-        protected readonly IContactInfo ContactInfo;
-
         private string _identifier;
 
         private ImageSource _image;
@@ -46,6 +44,8 @@
         #endregion
 
         #region Public Properties
+
+        public IContactInfo ContactInfo { get; private set; }
 
         public string Identifier
         {

@@ -1,10 +1,15 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.MessageDetails
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using Caliburn.Micro;
+    using Ninject;
+    using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
+    using OmniUI.ExtensionMethods;
+    using OmniUI.Services;
 
     public class MessageDetailsHeaderViewModel : Screen, IMessageDetailsHeaderViewModel
     {
@@ -12,9 +17,16 @@
 
         private IContactSource _contactSource;
 
+        private IDisposable _sendingMessageSubscription;
+
+        private MessageDetailsHeaderState _state;
+
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public ICommandService CommandService { get; set; }
 
         public IContactSource ContactsSource
         {
@@ -35,7 +47,34 @@
             }
         }
 
+        public MessageDetailsHeaderState State
+        {
+            get
+            {
+                return _state;
+            }
+            private set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+                _state = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public int TotalContacts
+        {
+            get
+            {
+                return ContactsSource.Contacts.Count;
+            }
+        }
+
         #endregion
+
+        #region Public Methods and Operators
 
         public void ClearContacts()
         {
@@ -47,10 +86,38 @@
             }
         }
 
+        public void Reset()
+        {
+            CleanUpSendingMessage();
+            State = MessageDetailsHeaderState.Normal;
+        }
+
+        public void StartNewMessage()
+        {
+            this.GetParentOfType<IMessageDetailsViewModel>().Reset();
+        }
+
+        public void SendMessage(string template)
+        {
+            State = MessageDetailsHeaderState.Sending;
+            CleanUpSendingMessage();
+            _sendingMessageSubscription =
+                CommandService.Execute(
+                    new SendMassSMSMessageCommand(
+                        template,
+                        ContactsSource.Contacts.Cast<IContactViewModel>()
+                            .Select(viewModel => viewModel.Model.ContactInfo)
+                            .ToList())).Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
+        }
+
+        #endregion
+
         #region Methods
 
         protected override void OnActivate()
         {
+            State = MessageDetailsHeaderState.Normal;
+            CleanUpSendingMessage();
             UpdateDisplayName();
             UpdateContactSourceHooks(null, ContactsSource);
             base.OnActivate();
@@ -61,6 +128,27 @@
             UpdateContactSourceHooks(ContactsSource, null);
 
             base.OnDeactivate(close);
+        }
+
+        private void CleanUpSendingMessage()
+        {
+            if (_sendingMessageSubscription == null)
+            {
+                return;
+            }
+            _sendingMessageSubscription.Dispose();
+            _sendingMessageSubscription = null;
+        }
+
+        private void OnMessageFailed()
+        {
+            StartNewMessage();
+        }
+
+        private void OnMessageSent()
+        {
+            CleanUpSendingMessage();
+            State = MessageDetailsHeaderState.Sent;
         }
 
         private void SelectedContactsOnCollectionChanged(

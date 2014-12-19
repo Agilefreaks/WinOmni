@@ -68,6 +68,7 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -120,6 +121,7 @@
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderState.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageList\MessageListViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageStepViewModelBase.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageContext.cs" />
@@ -131,6 +133,11 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\ISendingMessageViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageView.xaml.cs">
+      <DependentUpon>SendingMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />
     <Compile Include="MessagesWorkspace\Behaviors\FormatPlaceholdersBehavior.cs" />
@@ -160,6 +167,8 @@
     <Compile Include="Providers\GreetingDefinitionProvider.cs" />
     <Compile Include="Providers\IMessageDefinitionProvider.cs" />
     <Compile Include="Providers\MessageDefinition.cs" />
+    <Compile Include="Services\ITemplateProcessingService.cs" />
+    <Compile Include="Services\TemplateProcessingService.cs" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
@@ -232,11 +241,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeader\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeader\Sending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\MessageDetailsHeader\Sent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MessagesWorkspace\MessageDetails\MessageList\MessageList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Border.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,5 +7,7 @@
     public interface IDeepObservableCollectionView : INotifyCollectionChanged, IEnumerable
     {
         Predicate<object> Filter { get; set; }
+
+        int Count { get; }
     }
 }

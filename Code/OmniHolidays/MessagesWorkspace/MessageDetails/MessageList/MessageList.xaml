@@ -56,7 +56,9 @@
                                             </i:Interaction.Behaviors>
                                             </TextBlock>
 
-                                            <Button Grid.Column="2" x:Name="ActionButton" Visibility="Hidden" Width="35" Height="35" Margin="15,0" Style="{DynamicResource EmptyButtonStyle}" Background="{DynamicResource SendMessageBrush}" cal:Message.Attach="NotifyOnNext()" />
+                                            <Button Grid.Column="2" x:Name="ActionButton" Visibility="Hidden" Width="35" Height="35" Margin="15,0" 
+                                                    Style="{DynamicResource EmptyButtonStyle}" Background="{DynamicResource SendMessageBrush}" 
+                                                    cal:Message.Attach="TemplateSelected($dataContext)" />
                                         </Grid>
                                     </Border>
                                     <ControlTemplate.Triggers>

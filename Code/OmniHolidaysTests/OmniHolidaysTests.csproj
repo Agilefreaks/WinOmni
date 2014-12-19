@@ -113,6 +113,7 @@
     <Compile Include="MessagesWorkspace\MessageDetailsContentViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TemplateProcessingServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

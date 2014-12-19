@@ -50,6 +50,14 @@
             }
         }
 
+        public int Count
+        {
+            get
+            {
+                return ((ListCollectionView)_collectionViewSource.View).Count;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

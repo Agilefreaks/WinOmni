@@ -129,6 +129,9 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Selectează tot</value>
   </data>
+  <data name="SendingMessageContentHeader" xml:space="preserve">
+    <value>Așa va arăta mesajul tău:</value>
+  </data>
   <data name="To" xml:space="preserve">
     <value>Către: </value>
   </data>

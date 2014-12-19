@@ -2,9 +2,8 @@
 {
     using Caliburn.Micro;
 
-    public abstract class DetailsViewModelWithHeaderBase<THeader, TContent> : Screen,
-                                                                              IDetailsViewModelWithHeader
-                                                                                  <THeader, TContent>
+    public abstract class DetailsViewModelWithHeaderBase<THeader, TContent> : Conductor<IScreen>.Collection.AllActive,
+                                                                              IDetailsViewModelWithHeader<THeader, TContent>
         where THeader : IScreen where TContent : IScreen
     {
         #region Constructors and Destructors
@@ -30,15 +29,8 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            HeaderViewModel.Activate();
-            ContentViewModel.Activate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            HeaderViewModel.Deactivate(close);
-            ContentViewModel.Deactivate(close);
-            base.OnDeactivate(close);
+            ActivateItem(HeaderViewModel);
+            ActivateItem(ContentViewModel);
         }
 
         #endregion

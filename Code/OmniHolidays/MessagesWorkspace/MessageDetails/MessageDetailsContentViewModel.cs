@@ -4,18 +4,33 @@
     using System.Collections.Generic;
     using System.Linq;
     using Caliburn.Micro;
+    using OmniHolidays.MessagesWorkspace.ContactList;
+    using OmniHolidays.MessagesWorkspace.MessageDetails.SendingMessage;
+    using OmniUI.ExtensionMethods;
 
     public class MessageDetailsContentViewModel : Conductor<IMessageStepViewModel>, IMessageDetailsContentViewModel
     {
+        private IContactSource _contactSource;
+
+        #region Constructors and Destructors
+
         public MessageDetailsContentViewModel(IEnumerable<IMessageStepViewModel> messageSteps)
         {
             CurrentMessageContext = new MessageContext();
             MessageSteps = messageSteps.ToList();
         }
 
-        public IList<IMessageStepViewModel> MessageSteps { get; set; }
+        #endregion
 
-        public MessageContext CurrentMessageContext { get; set; }
+        #region Public Properties
+
+        public MessageContext CurrentMessageContext { get; private set; }
+
+        public IList<IMessageStepViewModel> MessageSteps { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public void GoToNextStep()
         {
@@ -35,6 +50,33 @@
             }
         }
 
+        public void Reset()
+        {
+            GoToStep(MessageSteps[0]);
+        }
+
+        public IContactSource ContactSource
+        {
+            get
+            {
+                return _contactSource;
+            }
+            set
+            {
+                if (Equals(value, _contactSource))
+                {
+                    return;
+                }
+                _contactSource = value;
+                CurrentMessageContext.Contacts = ContactSource.Contacts;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -50,6 +92,12 @@
             {
                 ActiveItem.OnNext -= OnNext;
                 ActiveItem.OnPrevious -= OnPrevious;
+            }
+
+            if (messageStepViewModel is ISendingMessageViewModel)
+            {
+                this.GetParentOfType<IMessageDetailsViewModel>()
+                    .HeaderViewModel.SendMessage(CurrentMessageContext.Template);
             }
 
             messageStepViewModel.MessageContext = CurrentMessageContext;
@@ -68,5 +116,7 @@
         {
             GoToPreviousStep();
         }
+
+        #endregion
     }
 }

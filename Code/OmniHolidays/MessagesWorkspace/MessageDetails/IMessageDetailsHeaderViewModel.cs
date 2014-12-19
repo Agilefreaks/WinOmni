@@ -6,5 +6,9 @@
     public interface IMessageDetailsHeaderViewModel : IScreen
     {
         IContactSource ContactsSource { get; set; }
+
+        void SendMessage(string template);
+
+        void Reset();
     }
 }
