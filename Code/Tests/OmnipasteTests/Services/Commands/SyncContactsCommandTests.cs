@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
@@ -17,7 +18,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Services.Commands;
+    using OmniUI.Framework.Commands;
 
     [TestFixture]
     public class SyncContactsCommandTests
@@ -36,7 +37,7 @@
 
         private DeviceInfo _deviceInfo;
 
-        private List<DeviceInfo> _deviceInfos;
+        private List<DeviceInfo> _deviceInfoList;
 
         [SetUp]
         public void SetUp()
@@ -48,9 +49,9 @@
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
 
             _deviceInfo = new DeviceInfo { Identifier = "42" };
-            _deviceInfos = new List<DeviceInfo> { _deviceInfo };
-            _mockConfigurationService.Setup(m => m.DeviceInfos).Returns(_deviceInfos);
-            
+            _deviceInfoList = new List<DeviceInfo> { _deviceInfo };
+            _mockConfigurationService.Setup(m => m.DeviceInfos).Returns(_deviceInfoList);
+
             SchedulerProvider.Default = _testScheduler;
 
             _subject = new SyncContactsCommand
@@ -98,7 +99,7 @@
         [Test]
         public void Process_WhenContactGetFailsSyncSucceedsAndHandlerReturnsValue_ReturnsObservable()
         {
-            var contactList = new ContactList { Contacts = new List<Contact> { new Contact { ContactName = "Contact" } } };
+            var contactList = new ContactList { Contacts = CreateContacts() };
             var failingGetObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactList>>(
@@ -108,9 +109,8 @@
             getObservables.Enqueue(failingGetObservable);
             getObservables.Enqueue(Observable.Return(contactList));
             _mockContacts.Setup(m => m.Get(_deviceInfo.Identifier)).Returns(getObservables.Dequeue);
-            _mockSyncs.Setup(m => m.Post(It.Is<Sync>(s => s.Identifier == _deviceInfo.Identifier)))
-                .Returns(Observable.Return(new EmptyModel()));
-            _mockContactsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Unit>>())).Callback<IObserver<Unit>>(o => o.OnNext(Unit.Default));
+            MockSyncResource();
+            MockContactsHandler();
 
             var observer = _testScheduler.Start(() => _subject.Execute());
 
@@ -122,18 +122,10 @@
         [Test]
         public void Process_WhenThereAreMoreDevices_AggregatesResultFromEach()
         {
-            _deviceInfos.Add(new DeviceInfo { Identifier = "other" });
+            _deviceInfoList.Add(new DeviceInfo { Identifier = "other" });
 
-            var contactList1 = new ContactList
-                                   {
-                                       Contacts =
-                                           new List<Contact> { new Contact { ContactName = "Contact1" } }
-                                   };
-            var contactList2 = new ContactList
-                                   {
-                                       Contacts =
-                                           new List<Contact> { new Contact { ContactName = "Contact2" } }
-                                   };
+            var contactList1 = new ContactList { Contacts = CreateContacts() };
+            var contactList2 = new ContactList { Contacts = CreateContacts() };
             var observables =
                 new Queue<IObservable<ContactList>>(
                     new[]
@@ -142,18 +134,32 @@
                             CreateFailObservable<ContactList>(), CreateSuccessObservable(contactList2)
                         });
             _mockContacts.Setup(m => m.Get(It.IsAny<string>())).Returns(observables.Dequeue);
-            _mockSyncs.Setup(m => m.Post(It.IsAny<Sync>()))
-                .Returns(Observable.Return(new EmptyModel(), SchedulerProvider.Default));
-            var unitObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(new Unit())));
-            _mockContactsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Unit>>()))
-                .Returns<IObserver<Unit>>(o => unitObservable.Subscribe(o));
+            MockSyncResource();
+            MockContactsHandler();
 
             var observer = _testScheduler.Start(() => _subject.Execute());
 
             observer.Messages[0].Value.Value[0].Should().Be(contactList1);
             observer.Messages[0].Value.Value[1].Should().Be(contactList2);
+        }
+
+        private void MockSyncResource()
+        {
+            var mockSyncObservable = Observable.Return(new EmptyModel(), SchedulerProvider.Default);
+            _mockSyncs.Setup(m => m.Post(It.IsAny<Sync>())).Returns(mockSyncObservable);
+        }
+
+        private void MockContactsHandler()
+        {
+            var mockUnitObservable = Observable.Return(new Unit(), SchedulerProvider.Default);
+            _mockContactsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Unit>>()))
+                .Returns<IObserver<Unit>>(mockUnitObservable.Subscribe);
+        }
+
+        private static List<Contact> CreateContacts()
+        {
+            //generate a contact list with a random contact name
+            return new List<Contact> { new Contact { ContactName = Path.GetRandomFileName() } };
         }
 
         private IObservable<TResult> CreateFailObservable<TResult>()

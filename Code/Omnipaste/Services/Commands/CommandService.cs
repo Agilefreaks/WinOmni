@@ -3,6 +3,8 @@
     using System;
     using System.Reactive.Linq;
     using Ninject;
+    using OmniUI.Framework.Commands;
+    using OmniUI.Services;
 
     public class CommandService : ICommandService
     {

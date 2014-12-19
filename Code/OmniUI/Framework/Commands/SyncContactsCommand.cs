@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.Commands
+﻿namespace OmniUI.Framework.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,6 @@
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
-    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
 
     public class SyncContactsCommand : ICommand<IList<ContactList>>
@@ -44,7 +43,7 @@
                         Contacts.Get(deviceInfo.Identifier)
                             .Catch<ContactList, Exception>(_ => SyncContacts(deviceInfo.Identifier))))
                     .Concat()
-                    .Buffer(2);
+                    .Buffer(deviceInfoList.Count);
         }
 
         #endregion

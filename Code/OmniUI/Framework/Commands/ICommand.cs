@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services.Commands
+﻿namespace OmniUI.Framework.Commands
 {
     using System;
 

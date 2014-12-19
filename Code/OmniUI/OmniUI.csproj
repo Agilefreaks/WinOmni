@@ -114,6 +114,9 @@
     <Compile Include="Presenters\ContactInfoPresenter.cs" />
     <Compile Include="Models\IContactInfo.cs" />
     <Compile Include="Presenters\IContactInfoPresenter.cs" />
+    <Compile Include="Framework\Commands\ICommand.cs" />
+    <Compile Include="Services\ICommandService.cs" />
+    <Compile Include="Framework\Commands\SyncContactsCommand.cs" />
     <Compile Include="Workspace\IWorkspaceConductor.cs" />
     <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
     <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
@@ -156,6 +159,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Contacts\Contacts.csproj">
+      <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
+      <Name>Contacts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmniApi\OmniApi.csproj">
+      <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
+      <Name>OmniApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OmniCommon\OmniCommon.csproj">
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
@@ -165,6 +176,7 @@
     <Content Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

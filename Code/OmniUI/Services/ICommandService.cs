@@ -1,6 +1,7 @@
-﻿namespace Omnipaste.Services.Commands
+﻿namespace OmniUI.Services
 {
     using System;
+    using OmniUI.Framework.Commands;
 
     public interface ICommandService
     {

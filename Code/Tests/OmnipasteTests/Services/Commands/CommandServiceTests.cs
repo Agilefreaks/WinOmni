@@ -10,6 +10,8 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Services.Commands;
+    using OmniUI.Framework.Commands;
+    using OmniUI.Services;
 
     [TestFixture]
     public class CommandServiceTests
