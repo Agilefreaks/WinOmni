@@ -2,16 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Resources;
+    using OmniHolidays.Properties;
     using OmniHolidays.Providers;
-    using global::OmniHolidays.Properties;
 
     public class MessageCategoryViewModel : MessageStepViewModelBase
     {
         private readonly IMessageDefinitionProvider _messageDefinitionProvider;
 
         private IList<object> _languages;
+
+        private string _selectedLanguage;
+
+        private string _selectedCategory;
 
         public MessageCategoryViewModel(IMessageDefinitionProvider messageDefinitionProvider)
         {
@@ -33,6 +38,31 @@
                 _languages = value;
                 NotifyOfPropertyChange(() => Languages);
             }
+        }
+
+        public string SelectedLanguage
+        {
+            get
+            {
+                return _selectedLanguage;
+            }
+            set
+            {
+                if (value == _selectedLanguage)
+                {
+                    return;
+                }
+                _selectedLanguage = value;
+                NotifyOfPropertyChange(() => SelectedLanguage);
+            }
+        }
+
+        public void CategorySelected(string category)
+        {
+            MessageContext.MessageCategory = category;
+            MessageContext.Language = SelectedLanguage;
+
+            NotifyOnNext();
         }
 
         protected override void OnActivate()

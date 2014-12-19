@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:res="clr-namespace:OmniHolidays.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -18,17 +19,17 @@
 
         <Border Grid.Row="1" Width="530">
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <RadioButton Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_family_icon}" Tag="{x:Static res:Resources.FamilyCategory}" />
-                <RadioButton Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_friends_icon}" Tag="{x:Static res:Resources.FriendsCategory}" />
-                <RadioButton Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_work_icon}" Tag="{x:Static res:Resources.ColleaguesCategory}" />
-                <RadioButton Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_school_icon}" Tag="{x:Static res:Resources.SchoolCategory}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Family')"  Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_family_icon}" Tag="{x:Static res:Resources.FamilyCategory}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Friends')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_friends_icon}" Tag="{x:Static res:Resources.FriendsCategory}" />
+                <RadioButton cal:Message.Attach="CategorySelected('Colleagues')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_work_icon}" Tag="{x:Static res:Resources.ColleaguesCategory}" />
+                <RadioButton cal:Message.Attach="CategorySelected('School')" Style="{DynamicResource HolidayGreetingCategoryButtonStyle}" Content="{DynamicResource holiday_school_icon}" Tag="{x:Static res:Resources.SchoolCategory}" />
             </WrapPanel>
         </Border>
 
         <Border Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock VerticalAlignment="Center" Text="{x:Static res:Resources.GreetingLanguageLabel}" />
-                <ComboBox ItemsSource="{Binding Path=Languages}" Style="{DynamicResource LanguageComboBoxStyle}" />
+                <ComboBox ItemsSource="{Binding Path=Languages}" Style="{DynamicResource LanguageComboBoxStyle}" SelectedValuePath="Value" SelectedValue="{Binding Path=SelectedLanguage, Mode=TwoWay}" />
             </StackPanel>
         </Border>
     </Grid>
