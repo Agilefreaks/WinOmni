@@ -97,6 +97,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SendMassSMSMessageCommand.cs" />
     <Compile Include="Commands\SyncContactsCommand.cs" />
     <Compile Include="ContactInfoSelectionSource.cs" />
     <Compile Include="HolidaysModule.cs" />
@@ -183,6 +184,10 @@
     <ProjectReference Include="..\OmniUI\OmniUI.csproj">
       <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
       <Name>OmniUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SMS\SMS.csproj">
+      <Project>{6b364690-348d-4354-b12b-64770342ffd0}</Project>
+      <Name>SMS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

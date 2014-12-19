@@ -106,6 +106,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SendMassSMSMessageCommandTests.cs" />
     <Compile Include="Commands\SyncContactsCommandTests.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModelTests.cs" />
@@ -137,6 +138,10 @@
     <ProjectReference Include="..\OmniUI\OmniUI.csproj">
       <Project>{6623deb1-69de-47ae-8d15-e56ac9728849}</Project>
       <Name>OmniUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SMS\SMS.csproj">
+      <Project>{6b364690-348d-4354-b12b-64770342ffd0}</Project>
+      <Name>SMS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

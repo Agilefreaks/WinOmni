@@ -1,6 +1,8 @@
 ﻿namespace SMS.Resources.v1
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using OmniApi.Models;
     using OmniApi.Resources;
@@ -20,9 +22,11 @@
 
         #region Public Methods and Operators
 
-        public IObservable<EmptyModel> Send(string[] contentList, string[] phoneNumberList)
+        public IObservable<EmptyModel> Send(IEnumerable<string> messages, IEnumerable<string> phoneNumbers)
         {
-            return ResourceApi.Create(new { ContentList = contentList, PhoneNumberList = phoneNumberList }, AccessToken);
+            var payload = new { ContentList = messages.ToArray(), PhoneNumberList = phoneNumbers.ToArray() };
+
+            return ResourceApi.Create(payload, AccessToken);
         }
 
         #endregion
