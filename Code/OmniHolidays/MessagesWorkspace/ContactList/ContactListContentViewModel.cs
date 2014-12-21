@@ -186,13 +186,13 @@
             IsBusy = false;
         }
 
-        private void OnGotNewContacts(IEnumerable<ContactList> result)
+        private void OnGotNewContacts(ContactList contactList)
         {
-            foreach (
-                var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
-            {
-                _contactInfoSubject.OnNext(contactInfoPresenter);
-            }
+//            foreach (
+//                var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
+//            {
+//                _contactInfoSubject.OnNext(contactInfoPresenter);
+//            }
 
             IsBusy = false;
         }
