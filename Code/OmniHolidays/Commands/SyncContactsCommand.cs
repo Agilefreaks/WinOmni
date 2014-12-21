@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reactive.Linq;
     using Contacts.Api.Resources.v1;
     using Contacts.Handlers;
@@ -13,38 +12,31 @@
     using OmniCommon.Interfaces;
     using OmniUI.Framework.Commands;
 
-    public class SyncContactsCommand : ICommand<IList<ContactList>>
+    public class SyncContactsCommand : ICommand<ContactList>
     {
         #region Public Properties
+
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
 
         [Inject]
         public IContacts Contacts { get; set; }
 
         [Inject]
-        public ISyncs Syncs { get; set; }
-
-        [Inject]
         public IContactsHandler ContactsHandler { get; set; }
 
         [Inject]
-        public IConfigurationService ConfigurationService { get; set; }
+        public ISyncs Syncs { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public IObservable<IList<ContactList>> Execute()
+        public IObservable<ContactList> Execute()
         {
-            var deviceInfoList = ConfigurationService.DeviceInfos;
             return
-                deviceInfoList.Select(
-                    deviceInfo =>
-                    Observable.Defer(
-                        () =>
-                        Contacts.Get(deviceInfo.Identifier)
-                            .Catch<ContactList, Exception>(_ => SyncContacts(deviceInfo.Identifier))))
-                    .Concat()
-                    .Buffer(deviceInfoList.Count);
+                Contacts.Get(ConfigurationService.DeviceIdentifier)
+                    .Catch<ContactList, Exception>(_ => SyncContacts(ConfigurationService.DeviceIdentifier));
         }
 
         #endregion
@@ -54,7 +46,7 @@
         private IObservable<ContactList> SyncContacts(string deviceIdentifier)
         {
             return
-                Syncs.Post(new Sync { Identifier = deviceIdentifier, What = SyncWhatEnum.Contacts })
+                Syncs.Post(new Sync(deviceIdentifier))
                     .Select(_ => ContactsHandler.Take(1))
                     .Switch()
                     .Select(_ => Contacts.Get(deviceIdentifier))
