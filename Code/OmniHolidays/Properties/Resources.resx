@@ -124,7 +124,7 @@
     <value>Colleagues</value>
   </data>
   <data name="ColleaguesTemplateInfo" xml:space="preserve">
-    <value>Choose a custom greeting for your work colleagues!</value>
+    <value>Choose a personalized greeting to your co-workers!</value>
   </data>
   <data name="ContactListHeader" xml:space="preserve">
     <value>Contacts</value>
@@ -175,7 +175,7 @@
     <value>School</value>
   </data>
   <data name="SchoolTemplateInfo" xml:space="preserve">
-    <value>Choose a custom greeting for your school colleagues!</value>
+    <value>Choose a personalized greeting to your classmates!</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
