@@ -11,10 +11,6 @@
         <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
     </Style>
 
-    <Style x:Key="MainContainerStyle" TargetType="Border">
-        <Setter Property="Background" Value="{DynamicResource MainWindowBackgroundBrush}"/>
-    </Style>
-
     <Style x:Key="ListScreenContainerStyle" TargetType="Border">
         <Setter Property="Width" Value="{StaticResource NarrowContainerWidth}"/>
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>

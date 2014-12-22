@@ -99,6 +99,7 @@
     <Compile Include="Framework\IDeepObservableCollectionView.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
+    <Compile Include="Helpers\IResourceHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Intefaces\IMenuEntryViewModel.cs" />

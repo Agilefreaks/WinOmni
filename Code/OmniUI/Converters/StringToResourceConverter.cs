@@ -10,10 +10,16 @@
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object result = null;
-            var iconName = value as string;
-            if (!string.IsNullOrWhiteSpace(iconName))
+            var resourceKey = value as string;
+            var defaultResourceKey = parameter as string;
+
+            if (!string.IsNullOrWhiteSpace(resourceKey))
             {
-                result = ResourceHelper.GetByKey(iconName);
+                result = ResourceHelper.GetByKey(resourceKey);
+            } 
+            else if (!string.IsNullOrEmpty(defaultResourceKey))
+            {
+                result = ResourceHelper.GetByKey(defaultResourceKey);
             }
 
             return result;
