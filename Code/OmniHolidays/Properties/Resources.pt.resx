@@ -141,6 +141,13 @@
   <data name="FamilyTemplateInfo" xml:space="preserve">
     <value>Escolha uma saudação personalizada para a sua família!</value>
   </data>
+  <data name="FetchContactsTakingLong" xml:space="preserve">
+    <value>Parece que está levando mais tempo do que o habitual para buscar seus contatos.
+Verifique se o seu telefone está ligado ou tente novamente.</value>
+  </data>
+  <data name="FetchingContacts" xml:space="preserve">
+    <value>Buscando seus contatos...</value>
+  </data>
   <data name="Friends" xml:space="preserve">
     <value>Amigos</value>
   </data>
@@ -167,6 +174,9 @@
   </data>
   <data name="Portuguese" xml:space="preserve">
     <value>Português</value>
+  </data>
+  <data name="RetryFetchContacts" xml:space="preserve">
+    <value>Tentar novamente</value>
   </data>
   <data name="Romanian" xml:space="preserve">
     <value>Romeno</value>
