@@ -79,6 +79,7 @@
         protected override void OnActivate()
         {
             base.OnActivate();
+            SentMessages.Clear();
 
             DisposeMessageSubscription();
             _messageSubscription =
