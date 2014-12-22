@@ -202,4 +202,7 @@ Please make sure your phone is on or try again.</value>
   <data name="RetryFetchContacts" xml:space="preserve">
     <value>Retry</value>
   </data>
+  <data name="SentFromOmnipaste" xml:space="preserve">
+    <value>via Omnipaste</value>
+  </data>
 </root>

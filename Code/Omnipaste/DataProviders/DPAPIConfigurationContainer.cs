@@ -102,6 +102,14 @@
             return element.Descendants("Value").First().Value;
         }
 
+        public bool HasValue(string key)
+        {
+            var xDocument = LoadData();
+            var element = GetElementForKeyCore(xDocument, key);
+
+            return element != null;
+        }
+
         public bool SetValue(string key, string value)
         {
             bool saved;
@@ -131,7 +139,12 @@
 
         private static XElement GetElementForKey(XNode document, string key)
         {
-            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key)) ?? NewSettingElement(key);
+            return GetElementForKeyCore(document, key) ?? NewSettingElement(key);
+        }
+
+        private static XElement GetElementForKeyCore(XNode document, string key)
+        {
+            return document.XPathSelectElement(string.Format("/Settings/Entry[Name='{0}']", key));
         }
 
         private static XElement NewSettingElement(string key, string value = null)

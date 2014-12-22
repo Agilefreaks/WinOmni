@@ -10,6 +10,8 @@
 
         string AccessToken { get; }
 
+        string AppNameAndVersion { get; }
+
         string ClientId { get; }
 
         bool DebugMode { get; }
@@ -18,25 +20,23 @@
 
         KeyPair DeviceKeyPair { get; set; }
 
+        bool IsNewDevice { get; }
+
         bool IsSMSSuffixEnabled { get; set; }
 
         string MachineName { get; }
 
         ProxyConfiguration ProxyConfiguration { get; set; }
 
-        UserInfo UserInfo { get; set; }
-
         string RefreshToken { get; }
 
-        string AppNameAndVersion { get; }
+        IObservable<SettingsChangedData> SettingsChangedObservable { get; }
+
+        UserInfo UserInfo { get; set; }
 
         Version Version { get; }
 
         string WebBaseUrl { get; }
-
-        IObservable<SettingsChangedData> SettingsChangedObservable { get; }
-
-        bool IsNewDevice { get; }
 
         #endregion
 
@@ -47,6 +47,8 @@
         #endregion
 
         #region Public Methods and Operators
+
+        bool HasSavedValueFor(string propertyName);
 
         void ResetAuthSettings();
 

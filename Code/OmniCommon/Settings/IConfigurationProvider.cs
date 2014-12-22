@@ -6,6 +6,8 @@
 
         string GetValue(string key);
 
+        bool HasValue(string key);
+
         #endregion
     }
 }

@@ -199,6 +199,9 @@ Verifique se o seu telefone está ligado ou tente novamente.</value>
   <data name="SendingMessagePart2" xml:space="preserve">
     <value>contatos que você selecionou</value>
   </data>
+  <data name="SentFromOmnipaste" xml:space="preserve">
+    <value>via Omnipaste</value>
+  </data>
   <data name="To" xml:space="preserve">
     <value>Para: </value>
   </data>

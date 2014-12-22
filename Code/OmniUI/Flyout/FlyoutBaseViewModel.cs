@@ -29,7 +29,7 @@ namespace OmniUI.Flyout
             }
         }
 
-        public bool IsOpen
+        public virtual bool IsOpen
         {
             get
             {
@@ -37,11 +37,12 @@ namespace OmniUI.Flyout
             }
             set
             {
-                if (_isOpen != value)
+                if (_isOpen == value)
                 {
-                    _isOpen = value;
-                    NotifyOfPropertyChange(() => IsOpen);
+                    return;
                 }
+                _isOpen = value;
+                NotifyOfPropertyChange(() => IsOpen);
             }
         }
 

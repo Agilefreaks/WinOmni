@@ -90,6 +90,7 @@
             set
             {
                 _configurationContainer.SetValue(ConfigurationProperties.SMSSuffixEnabled, value.ToString());
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.SMSSuffixEnabled, value));
             }
         }
 
@@ -212,6 +213,11 @@
         public void ResetAuthSettings()
         {
             SaveAuthSettings(new OmnipasteCredentials());
+        }
+
+        public bool HasSavedValueFor(string propertyName)
+        {
+            return _configurationContainer.HasValue(propertyName);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using OmniApi.Models;
+    using OmniCommon;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
@@ -33,6 +34,10 @@
                 LastName = user.LastName,
                 ImageUrl = user.ImageUrl
             };
+            if (!_configurationService.HasSavedValueFor(ConfigurationProperties.SMSSuffixEnabled))
+            {
+                _configurationService.IsSMSSuffixEnabled = user.ViaOmnipaste;
+            }
 
             return new ExecuteResult { State = SimpleStepStateEnum.Successful };
         }

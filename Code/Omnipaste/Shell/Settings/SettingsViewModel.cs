@@ -34,6 +34,19 @@
         [Inject]
         public IOmniService OmniService { get; set; }
 
+        public override bool IsOpen
+        {
+            get
+            {
+                return base.IsOpen;
+            }
+            set
+            {
+                base.IsOpen = value;
+                NotifyOfPropertyChange(() => IsSMSSuffixEnabled);
+            }
+        }
+
         public bool IsSMSSuffixEnabled
         {
             get

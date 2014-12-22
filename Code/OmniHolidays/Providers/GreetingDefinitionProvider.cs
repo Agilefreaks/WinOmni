@@ -3,10 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
+    using OmniCommon.Interfaces;
 
     public class GreetingDefinitionProvider : IMessageDefinitionProvider
     {
-        private IList<MessageDefinition> _messageCache;
+        private readonly IConfigurationService _configurationService;
+
+        private List<MessageDefinition> _messageCache;
+
+        public GreetingDefinitionProvider(IConfigurationService configurationService)
+        {
+            _configurationService = configurationService;
+        }
 
         public IObservable<IList<MessageDefinition>> Get()
         {
@@ -166,6 +174,18 @@
 
                                    #endregion
                                };
+
+            if (_configurationService.IsSMSSuffixEnabled)
+            {                
+                _messageCache.ForEach(
+                    definition =>
+                        {
+                            definition.MessageTemplate = string.Join(
+                                Environment.NewLine,
+                                definition.MessageTemplate,
+                                Properties.Resources.SentFromOmnipaste);
+                        });
+            }
 
             return Observable.Return(_messageCache);
         }

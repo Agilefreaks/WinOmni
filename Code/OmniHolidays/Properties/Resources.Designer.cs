@@ -305,6 +305,15 @@ namespace OmniHolidays.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to via Omnipaste.
+        /// </summary>
+        public static string SentFromOmnipaste {
+            get {
+                return ResourceManager.GetString("SentFromOmnipaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To: .
         /// </summary>
         public static string To {

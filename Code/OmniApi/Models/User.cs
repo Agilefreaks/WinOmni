@@ -24,6 +24,8 @@
 
         public string ImageUrl { get; set; }
 
+        public bool ViaOmnipaste { get; set; }
+
         #endregion
     }
 }
