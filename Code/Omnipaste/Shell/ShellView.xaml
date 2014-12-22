@@ -28,18 +28,20 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-    <Grid>
-        <ContentControl x:Name="ContextMenuViewModel" />
+    <Border BorderBrush="#4185a8" BorderThickness="2">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <ContentControl x:Name="ContextMenuViewModel" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
             
-            <ContentControl Grid.Column="0" cal:View.Model="{Binding Path=SideMenuViewModel}" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" />
+                <ContentControl Grid.Column="0" cal:View.Model="{Binding Path=SideMenuViewModel}" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" />
             
-            <ContentControl Grid.Column="1" cal:View.Model="{Binding Path=ActiveItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <ContentControl Grid.Column="1" cal:View.Model="{Binding Path=ActiveItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+            <ContentControl x:Name="DialogViewModel"/>
         </Grid>
-        <ContentControl x:Name="DialogViewModel"/>
-    </Grid>    
+    </Border>
 </controls:MetroWindow>

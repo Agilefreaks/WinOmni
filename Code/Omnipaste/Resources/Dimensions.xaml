@@ -4,6 +4,8 @@
 
     <system:Double x:Key="DefaultWindowWidth">1366</system:Double>
     <system:Double x:Key="DefaultWindowHeight">768</system:Double>
+    <system:Double x:Key="MinWindowWidth">1110</system:Double>
+    <system:Double x:Key="MinWindowHeight">680</system:Double>
     <system:Double x:Key="NotificationWindowWidth">385</system:Double>
     <system:Double x:Key="NarrowContainerWidth">451</system:Double>
     <system:Double x:Key="ContactListContainerWidth">320</system:Double>
