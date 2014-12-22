@@ -17,6 +17,7 @@
     using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniUI.Helpers;
+    using OmniUI.Models;
     using OmniUI.Presenters;
     using OmniUI.Services;
 

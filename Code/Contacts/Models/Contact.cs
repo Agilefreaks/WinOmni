@@ -8,6 +8,8 @@
 
         public string LastName { get; set; }
 
+        public string Photo { get; set; }
+
         public List<ContactPhoneNumber> Numbers { get; set; }
     }
 }

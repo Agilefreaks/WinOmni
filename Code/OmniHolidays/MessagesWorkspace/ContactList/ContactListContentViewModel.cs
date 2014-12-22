@@ -192,16 +192,7 @@
 
         private static IList<ContactListContactInfoPresenter> GetContactInfoPresenter(Contact contact)
         {
-            return
-                contact.Numbers.Select(
-                    phoneNumber =>
-                    new ContactListContactInfoPresenter(
-                        new ContactInfo
-                            {
-                                FirstName = contact.FirstName,
-                                LastName = contact.LastName,
-                                Phone = phoneNumber.Number
-                            })).ToList();
+            return ContactListContactInfoPresenter.CreateFromContact(contact);
         }
 
         private static bool ModelIsSelected(object contact)

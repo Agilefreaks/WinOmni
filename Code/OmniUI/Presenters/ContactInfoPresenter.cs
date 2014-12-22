@@ -33,14 +33,12 @@
 
         public ContactInfoPresenter()
         {
-            Image = GetDefaultUserImage();
-            Identifier = DefaultContactIdentifier;
+            ContactInfo = new ContactInfo();
         }
 
         public ContactInfoPresenter(IContactInfo contactInfo)
         {
             ContactInfo = contactInfo;
-            UpdateContactDetails();
         }
 
         #endregion
@@ -53,6 +51,11 @@
         {
             get
             {
+                if (_identifier == null)
+                {
+                    UpdateContactIdentifier();
+                }
+
                 return _identifier;
             }
             set
@@ -70,6 +73,11 @@
         {
             get
             {
+                if (_image == null)
+                {
+                    UpdateContactImage();
+                }
+
                 return _image;
             }
             set
@@ -104,9 +112,14 @@
 
         #region Methods
 
-        protected virtual void UpdateContactIdentifier()
+        protected virtual ImageSource GetContactImage()
         {
-            Identifier = string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.Phone : ContactInfo.Name;
+            return ContactInfo.ImageUri != null ? GetImageSourceFromUri(ContactInfo.ImageUri) : GetDefaultUserImage();
+        }
+
+        protected virtual string GetIdentifier()
+        {
+            return string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.Phone : ContactInfo.Name;
         }
 
         private static ImageSource GetDefaultUserImage()
@@ -125,21 +138,20 @@
             return image;
         }
 
-        private void UpdateContactDetails()
+        private void UpdateContactIdentifier()
         {
-            UpdateContactImage();
-            UpdateContactIdentifier();
+            var identifier = GetIdentifier();
+            _identifier = string.IsNullOrWhiteSpace(identifier) ? DefaultContactIdentifier : identifier;
+            NotifyOfPropertyChange(() => Identifier);
         }
 
         private void UpdateContactImage()
         {
             DispatcherProvider.Application.Dispatch(
-                (Action)
-                (() =>
+                (Action)(() =>
                     {
-                        Image = ContactInfo.ImageUri != null
-                                    ? GetImageSourceFromUri(ContactInfo.ImageUri)
-                                    : GetDefaultUserImage();
+                        _image = GetContactImage();
+                        NotifyOfPropertyChange(() => Image);
                     }));
         }
 

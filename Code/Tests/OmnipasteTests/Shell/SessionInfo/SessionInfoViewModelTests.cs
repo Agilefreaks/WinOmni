@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Shell.SessionInfo
 {
+    using System;
     using System.Windows.Media;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -55,7 +56,7 @@
         }
 
         [Test]
-        public void ConfigurationService_WhenSettingsChangedObservablesTriggersOnNext_UpdatesUserInfo()
+        public void WhenSettingsChangedObservablesTriggersOnNext_Always_UpdatesUserInfo()
         {
             var newUserInfo = new UserInfo { FirstName = "Test", LastName = "Last" };
             var settingsChangedObservable = _scheduler.CreateColdObservable(
@@ -67,7 +68,7 @@
             _subject = new SessionInfoViewModel(_mockOmniService.Object, _mockConfigurationService.Object);
             var oldUserInfo = _subject.UserInfo;
 
-            _scheduler.Start();
+            _scheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
             _subject.UserInfo.Should().NotBe(oldUserInfo);
             _subject.UserInfo.Identifier.Should().Be("Test Last");
