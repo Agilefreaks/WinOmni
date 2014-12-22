@@ -2,6 +2,7 @@
 {
     using Contacts.Api.Resources.v1;
     using Contacts.Handlers;
+    using Ninject;
     using Ninject.Modules;
     using OmniCommon.Interfaces;
 
@@ -11,8 +12,8 @@
         {
             Kernel.Bind<IContacts>().To<Contacts>().InSingletonScope();
 
-            Kernel.Bind<IHandler>().To<ContactsHandler>().InSingletonScope();
             Kernel.Bind<IContactsHandler>().To<ContactsHandler>().InSingletonScope();
+            Kernel.Bind<IHandler>().ToMethod(context => context.Kernel.Get<IContactsHandler>());
         }
     }
 }
