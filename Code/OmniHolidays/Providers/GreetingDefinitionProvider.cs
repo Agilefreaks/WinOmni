@@ -123,6 +123,48 @@
                                    new MessageDefinition(English, Friends, "Merry Christmas to you and all your loved ones, %ContactFirstName%! May your holidays be filled with the true blessings of Christmas: peace, joy and hope!"),
 
                                    #endregion
+
+                                   #region Romanian
+
+                                   new MessageDefinition(Romanian, School, "Colegi de clasă: Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Colegi de școală: Crăciun fericit, %ContactFirstName%! Bucură-te de vacanță cât mai mult și încearcă să ignori faptul că școala reîncepe în ianuarie! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Colegi de clasă: Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, domnule %ContactFirstName%! Vă mulțumesc pentru răbdare și determinarea de a ne învăța lecții... de viață! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, doamna %ContactFirstName%! Vă mulțumesc pentru răbdare și determinarea de a ne învăța lecții... de viață! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, doamnă %ContactFirstName%! Vă doresc multe alte generații de elevi pe care să le ajutați. Vă mulțumesc că mi-ați fost profesoară!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, domnule %ContactFirstName%! Vă doresc multe alte generații de elevi pe care să le ajutați. Vă mulțumesc că mi-ați fost profesor!"),
+
+                                   new MessageDefinition(Romanian, Friends, "Sărbători fericite, %ContactFirstName%! Mă bucur mult să am oameni ca tine în viața mea cărora să le transmit gânduri bune de Sărbători. Crăciun fericit!"),
+                                   new MessageDefinition(Romanian, Friends, "Cum să intri în spiritul Sărbătorilor: mulțumește pentru lucrurile bune pe care le ai: cineva așa de minunat ca mine! Crăciun fericit, %ContactFirstName%!"),
+                                   new MessageDefinition(Romanian, Friends, "Insername, mi se pare că a trecut un an întreg de când ți-am urat Crăciun fericit ultima oară. Poate ar trebui să sărbătorim Crăciunul mai des! :)"),
+                                   new MessageDefinition(Romanian, Friends, "Crăciun fericit ție și celor dragi! Sper ca Sărbătorile tale să fie pline de adevăratele binecuvântări ale Crăciunului: pace, bucurii și speranță!"),
+
+                                   new MessageDefinition(Romanian, Colleagues, "Domnule %ContactFirstName%, vă mulțumesc pentru că sunteți un șef extraordinar și că ne-ați ajutat de fiecare dată. Crăciun fericit dvs. și celor dragi!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Doamnă %ContactFirstName%, vă mulțumesc pentru că sunteți un șef extraordinar și că ne-ați ajutat de fiecare dată. Crăciun fericit dvs. și celor dragi!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Domnule %ContactFirstName%, vă doresc un Crăciun fericit alături de familie și prieteni. Vă mulțumesc - mi-ați arătat că munca serioasă e răsplătită."),
+                                   new MessageDefinition(Romanian, Colleagues, "Domnule %ContactFirstName%, vă mulțumesc pentru sprijinul acordat anul acesta în atingerea obiectivelor și depășirea obstacolelor. Crăciun fericit!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Doamnă %ContactFirstName%, vă mulțumesc pentru sprijinul acordat anul acesta în atingerea obiectivelor și depășirea obstacolelor. Crăciun fericit!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, %ContactFirstName%! Mulțumesc pentru seriozitate și toată munca depusă anul acesta. Să lucrăm cel puțin la fel de bine și anul următor!"),
+                                   new MessageDefinition(Romanian, Colleagues, "%ContactFirstName%, mulțumesc că ai contribuit anul acesta la rezultatele grozave ale echipei! Crăciun fericit alături de familie și prieteni!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Insername, mulțumesc pentru felul în care ți-ai făcut treaba și ai ajutat echipa anul acesta. Crăciun fericit alături de familie și cei dragi!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Mulțumesc pentru seriozitate și toată munca depusă anul acesta. Sper să colaborăm la fel de eficient și de acum înainte! Crăciun fericit!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, domnule %ContactFirstName%! Mulțumesc pentru seriozitate și munca depusă. Sper să colaborăm la fel de eficient și de acum înainte!"),
+                                   new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, doamnă %ContactFirstName%! Mulțumesc pentru seriozitate și munca depusă. Sper să colaborăm la fel de eficient și de acum înainte!"),
+
+                                   new MessageDefinition(Romanian, Family, "Crăciun fericit, %ContactFirstName%! Îmi doresc din inimă multă fericire și sănătate pentru tine și mai mult timp pentru mine, ca să-ți spun cât te iubesc!"),
+                                   new MessageDefinition(Romanian, Family, "Crăciun fericit, %ContactFirstName%! Îmi doresc din inimă multă fericire și sănătate pentru tine și mai mult timp pentru mine, ca să-l petrec cu tine!"),
+                                   new MessageDefinition(Romanian, Family, "Draga mea, Crăciunul ăsta nu am nicio dorință specială, în afară de ceea ce am vrut toată viața pentru tine: să fii fericită. Te iubesc."),
+                                   new MessageDefinition(Romanian, Family, "Fiule, Crăciunul acesta îmi doresc să te văd um om împăcat, cu iubire în suflet și copleșit de bucurii! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, Family, "Draga mea, Crăciunul ăsta nu am nicio dorință specială, în afară de ceea ce am vrut toată viața pentru tine: să fii fericită. Mama te iubește."),
+                                   new MessageDefinition(Romanian, Family, "Dragul meu, Crăciunul ăsta nu am nicio dorință specială, în afară de ceea ce vrut toată viața pentru tine: să fii fericit. Mama te iubește."),
+                                   new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscătoare, iar tu ești în fruntea listei! Mulțumesc pentru că ești un frate minunat!"),
+                                   new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscător, iar tu ești în fruntea listei! Mulțumesc pentru că ești un frate minunat!"),
+                                   new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscătoare, iar familia e pe primul loc! Mulțumesc pentru că ești o soră minunată!"),
+                                   new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscător, iar familia e pe primul loc! Mulțumesc pentru că ești o soră minunată!"),
+                                   new MessageDefinition(Romanian, Family, "Să aveți un Crăciun plin de căldura familiei, bucuria prietenilor și gânduri frumoase. Mă bucur să fac parte din familia asta! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, Family, "Crăciun fericit, insername! Vă dorim liniște și pace sufletească, multe bucurii și inimi pline de speranță - de Sărbători și în anul ce urmează!")
+
+                                   #endregion
                                };
 
             return Observable.Return(_messageCache);
