@@ -109,13 +109,11 @@
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModel.cs" />
-    <Compile Include="MessagesWorkspace\ContactList\ContactViewModel.cs" />
-    <Compile Include="MessagesWorkspace\ContactList\ContactViewModelComparer.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactInfoPresenterComparer.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactListViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\IContactSource.cs" />
-    <Compile Include="MessagesWorkspace\ContactList\IContactViewModel.cs" />
     <Compile Include="MessagesWorkspace\Converters\MessageDefinitionIconConverter.cs" />
     <Compile Include="MessagesWorkspace\Converters\TemplateInfoConverter.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
@@ -222,10 +220,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessagesWorkspace\ContactList\ContactListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MessagesWorkspace\ContactList\ContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

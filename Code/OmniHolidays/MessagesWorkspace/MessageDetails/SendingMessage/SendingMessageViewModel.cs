@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using Ninject;
-    using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniHolidays.Services;
     using OmniUI.Models;
+    using OmniUI.Presenters;
 
     public class SendingMessageViewModel : MessageStepViewModelBase, ISendingMessageViewModel
     {
@@ -17,8 +17,8 @@
         {
             base.OnActivate();
             var contactInfo =
-                MessageContext.Contacts.Cast<IContactViewModel>()
-                    .Select(viewModel => viewModel.Model.ContactInfo)
+                MessageContext.Contacts.Cast<IContactInfoPresenter>()
+                    .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
                     .DefaultIfEmpty(new ContactInfo())
                     .First();
             SampleMessage = TemplateProcessingService.Process(MessageContext.Template, contactInfo);

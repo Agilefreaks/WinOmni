@@ -5,30 +5,30 @@
     using System.Collections.Specialized;
     using System.Globalization;
     using System.Linq;
-    using System.Reactive.Subjects;
+    using System.Reactive.Linq;
+    using System.Windows.Data;
+    using Caliburn.Micro;
     using Contacts.Models;
-    using Ninject;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniHolidays.Commands;
     using OmniUI.Framework;
-    using OmniUI.List;
     using OmniUI.Models;
     using OmniUI.Presenters;
     using OmniUI.Services;
 
-    public class ContactListContentViewModel : ListViewModelBase<IContactInfoPresenter, IContactViewModel>,
-                                               IContactListContentViewModel
+    public class ContactListContentViewModel : Screen, IContactListContentViewModel
     {
         #region Fields
 
         private readonly ICommandService _commandService;
 
-        private readonly Subject<IContactInfoPresenter> _contactInfoSubject;
+        private readonly BindableCollection<IContactInfoPresenter> _contactCollection;
 
-        private readonly IKernel _kernel;
+        private readonly ListCollectionView _filteredItems;
 
         private readonly IDeepObservableCollectionView _selectedContacts;
+
+        private IDisposable _contactsSubscription;
 
         private string _filterText;
 
@@ -40,17 +40,19 @@
 
         #region Constructors and Destructors
 
-        public ContactListContentViewModel(ICommandService commandService, IKernel kernel)
-            : base(new Subject<IContactInfoPresenter>())
+        public ContactListContentViewModel(ICommandService commandService)
         {
             _commandService = commandService;
-            _kernel = kernel;
-            _contactInfoSubject = EntityObservable as Subject<IContactInfoPresenter>;
+            _contactCollection = new BindableCollection<IContactInfoPresenter>();
+            _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(_contactCollection);
+            _filteredItems.Filter = IdentifierContainsFilterText;
             IsBusy = false;
             FilterText = string.Empty;
-            ViewModelFilter = IdentifierContainsFilterText;
-            FilteredItems.CustomSort = new ContactViewModelComparer();
-            _selectedContacts = new DeepObservableCollectionView<IContactViewModel>(Items) { Filter = ModelIsSelected };
+            FilteredItems.CustomSort = new ContactInfoPresenterComparer();
+            _selectedContacts = new DeepObservableCollectionView<IContactInfoPresenter>(_contactCollection)
+                                    {
+                                        Filter = ModelIsSelected
+                                    };
             _selectedContacts.CollectionChanged += SelectedContactsOnCollectionChanged;
         }
 
@@ -84,6 +86,14 @@
             }
         }
 
+        public ListCollectionView FilteredItems
+        {
+            get
+            {
+                return _filteredItems;
+            }
+        }
+
         public bool IsBusy
         {
             get
@@ -98,6 +108,14 @@
                 }
                 _isBusy = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public IObservableCollection<IContactInfoPresenter> Items
+        {
+            get
+            {
+                return _contactCollection;
             }
         }
 
@@ -123,32 +141,29 @@
 
         #region Methods
 
-        protected override IContactViewModel CreateViewModel(IContactInfoPresenter entity)
-        {
-            var contactViewModel = _kernel.Get<IContactViewModel>();
-            contactViewModel.Model = entity;
-
-            return contactViewModel;
-        }
-
-        protected override bool MaxItemsLimitReached()
-        {
-            return false;
-        }
-
         protected override void OnActivate()
         {
             base.OnActivate();
-            if (Items.Count != 0)
+            if (_contactCollection.Count != 0)
             {
                 return;
             }
             SyncContacts();
         }
 
-        protected override void OnFilterUpdated()
+        protected override void OnDeactivate(bool close)
         {
-            base.OnFilterUpdated();
+            if (close)
+            {
+                DisposeContactsSubscription();
+            }
+
+            base.OnDeactivate(close);
+        }
+
+        protected void OnFilterUpdated()
+        {
+            _filteredItems.Refresh();
             UpdateSelectAll();
         }
 
@@ -166,18 +181,29 @@
                             })).ToList();
         }
 
-        private static bool ModelIsSelected(object viewModel)
+        private static bool ModelIsSelected(object contact)
         {
-            var contactViewModel = viewModel as IContactViewModel;
-            return contactViewModel != null && contactViewModel.IsSelected;
+            var contactInfoPresenter = contact as IContactInfoPresenter;
+            return contactInfoPresenter != null && contactInfoPresenter.IsSelected;
         }
 
-        private bool IdentifierContainsFilterText(IContactViewModel viewModel)
+        private void DisposeContactsSubscription()
         {
-            return (viewModel != null)
+            if (_contactsSubscription == null)
+            {
+                return;
+            }
+            _contactsSubscription.Dispose();
+            _contactsSubscription = null;
+        }
+
+        private bool IdentifierContainsFilterText(object item)
+        {
+            var model = item as IContactInfoPresenter;
+            return (model != null)
                    && (string.IsNullOrWhiteSpace(FilterText)
                        || (CultureInfo.CurrentCulture.CompareInfo.IndexOf(
-                           viewModel.Model.Identifier,
+                           model.Identifier,
                            FilterText,
                            CompareOptions.IgnoreCase) > -1));
         }
@@ -192,16 +218,10 @@
         {
             foreach (var contactInfoPresenter in contactList.Contacts.SelectMany(GetContactInfoPresenter))
             {
-                _contactInfoSubject.OnNext(contactInfoPresenter);
+                _contactCollection.Add(contactInfoPresenter);
             }
 
             IsBusy = false;
-        }
-
-        private void SyncContacts()
-        {
-            IsBusy = true;
-            _commandService.Execute(new SyncContactsCommand()).Subscribe(OnGotNewContacts, OnGetContactsError);
         }
 
         private void SelectedContactsOnCollectionChanged(
@@ -211,19 +231,30 @@
             UpdateSelectAll();
         }
 
+        private void SyncContacts()
+        {
+            IsBusy = true;
+            DisposeContactsSubscription();
+            _contactsSubscription =
+                _commandService.Execute(new SyncContactsCommand())
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .Subscribe(OnGotNewContacts, OnGetContactsError);
+        }
+
         private void UpdateContactSelection()
         {
             var selectAllChecked = SelectAll;
-            foreach (IContactViewModel contactViewModel in FilteredItems)
+            foreach (IContactInfoPresenter contact in FilteredItems)
             {
-                contactViewModel.IsSelected = selectAllChecked;
+                contact.IsSelected = selectAllChecked;
             }
         }
 
         private void UpdateSelectAll()
         {
             _selectAll = FilteredItems.Count > 0
-                         && FilteredItems.Cast<IContactViewModel>().All(viewModel => viewModel.IsSelected);
+                         && FilteredItems.Cast<IContactInfoPresenter>().All(contact => contact.IsSelected);
             NotifyOfPropertyChange(() => SelectAll);
         }
 

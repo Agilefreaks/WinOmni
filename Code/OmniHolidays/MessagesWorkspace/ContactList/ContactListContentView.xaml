@@ -36,25 +36,31 @@
                 </Border>
             </Grid>
         </Border>
-        <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
-            <StackPanel>
-                <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}"/>
-                <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Height="55" Padding="18,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
-                                <ContentControl cal:View.Model="{Binding}"/>
+        <DockPanel Grid.Row="1" LastChildFill="True">
+            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}"/>
+            <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="55" Padding="18,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PassiveUiElementsBrush}">
+                            <Border DataContext="{Binding}">
+                                <DockPanel LastChildFill="True">
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                            <CheckBox IsChecked="{Binding Path=IsSelected, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0" 
+                                                      Style="{DynamicResource SmallCheckBoxStyle}"/>
+                                            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Width="28" Height="28" 
+                                                         Margin="0,0,8,0" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
+                                                   Foreground="{DynamicResource ActivityContentBrush}" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="220"/>
+                                </DockPanel>
                             </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
         <controls:MetroProgressBar Grid.Row="0" Grid.RowSpan="2" IsIndeterminate="True" Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>

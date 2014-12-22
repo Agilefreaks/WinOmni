@@ -40,7 +40,10 @@
 
             _subject.ClearContacts();
 
-            _subject.ContactsSource.Contacts.Should().BeEmpty();
+            _subject.ContactsSource.Contacts.Cast<IContactInfoPresenter>()
+                .Where(contact => contact.IsSelected)
+                .Should()
+                .BeEmpty();
         }
 
         [Test]
@@ -135,10 +138,10 @@
 
         private static Mock<IContactSource> CreateMockContactSource()
         {
-            var contactViewModels = Enumerable.Range(0, 2).Select(_ => GetContactViewModel()).ToList();
-            var sourceCollection = new BindableCollection<ContactViewModel>(contactViewModels);
-            Predicate<object> filter = item => ((ContactViewModel)item).IsSelected;
-            var collectionView = new DeepObservableCollectionView<ContactViewModel>(sourceCollection)
+            var contactList = Enumerable.Range(0, 2).Select(_ => GetContactPresenter()).ToList();
+            var sourceCollection = new BindableCollection<IContactInfoPresenter>(contactList);
+            Predicate<object> filter = item => ((IContactInfoPresenter)item).IsSelected;
+            var collectionView = new DeepObservableCollectionView<IContactInfoPresenter>(sourceCollection)
                                      {
                                          Filter = filter
                                      };
@@ -148,12 +151,14 @@
             return mockContactsSource;
         }
 
-        private static ContactViewModel GetContactViewModel()
+        private static IContactInfoPresenter GetContactPresenter()
         {
             var mockContactInfoPresenter = new Mock<IContactInfoPresenter>();
+            mockContactInfoPresenter.SetupProperty(x => x.IsSelected);
             mockContactInfoPresenter.SetupGet(x => x.ContactInfo).Returns(() => new ContactInfo());
+            mockContactInfoPresenter.Object.IsSelected = true;
 
-            return new ContactViewModel { Model = mockContactInfoPresenter.Object, IsSelected = true };
+            return mockContactInfoPresenter.Object;
         }
 
         #endregion

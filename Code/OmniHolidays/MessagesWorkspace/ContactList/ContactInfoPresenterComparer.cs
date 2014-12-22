@@ -2,22 +2,23 @@
 {
     using System;
     using System.Collections;
+    using OmniUI.Presenters;
 
-    public class ContactViewModelComparer : IComparer
+    public class ContactInfoPresenterComparer : IComparer
     {
         private readonly StringComparer _stringComparer;
 
-        public ContactViewModelComparer()
+        public ContactInfoPresenterComparer()
         {
             _stringComparer = StringComparer.CurrentCultureIgnoreCase;
         }
 
         public int Compare(object x, object y)
         {
-            var viewModel1 = (IContactViewModel)x;
-            var viewModel2 = (IContactViewModel)y;
+            var model1 = (IContactInfoPresenter)x;
+            var model2 = (IContactInfoPresenter)y;
 
-            return _stringComparer.Compare(viewModel1.Model.Identifier, viewModel2.Model.Identifier);
+            return _stringComparer.Compare(model1.Identifier, model2.Identifier);
         }
     }
 }

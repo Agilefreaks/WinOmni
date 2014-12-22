@@ -9,6 +9,7 @@
     using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Presenters;
     using OmniUI.Services;
 
     public class MessageDetailsHeaderViewModel : Screen, IMessageDetailsHeaderViewModel
@@ -79,7 +80,7 @@
         public void ClearContacts()
         {
             //This is done due to the fact that the selected contacts collection will be modified when deselecting items
-            var contacts = new List<IContactViewModel>(ContactsSource.Contacts.Cast<IContactViewModel>());
+            var contacts = new List<IContactInfoPresenter>(ContactsSource.Contacts.Cast<IContactInfoPresenter>());
             foreach (var contact in contacts)
             {
                 contact.IsSelected = false;
@@ -105,8 +106,8 @@
                 CommandService.Execute(
                     new SendMassSMSMessageCommand(
                         template,
-                        ContactsSource.Contacts.Cast<IContactViewModel>()
-                            .Select(viewModel => viewModel.Model.ContactInfo)
+                        ContactsSource.Contacts.Cast<IContactInfoPresenter>()
+                            .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
                             .ToList())).Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
         }
 
@@ -174,8 +175,8 @@
         private void UpdateDisplayName()
         {
             DisplayName =
-                ContactsSource.Contacts.Cast<IContactViewModel>()
-                    .Select(viewModel => viewModel.Model.Identifier)
+                ContactsSource.Contacts.Cast<IContactInfoPresenter>()
+                    .Select(contact => contact.Identifier)
                     .Aggregate(string.Empty, (current, next) => string.Join(" ", current, next));
         }
 
