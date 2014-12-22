@@ -27,6 +27,14 @@
             }
         }
 
+        public override string Background
+        {
+            get
+            {
+                return "HolidayWorkspaceBackgroundBrush";
+            }
+        }
+
         #endregion
     }
 }

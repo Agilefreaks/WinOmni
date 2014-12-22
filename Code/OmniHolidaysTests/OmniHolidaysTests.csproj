@@ -111,6 +111,7 @@
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\MessageDetailsContentViewModelTests.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageCategoryViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TemplateProcessingServiceTests.cs" />

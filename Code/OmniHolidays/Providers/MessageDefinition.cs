@@ -8,6 +8,10 @@ namespace OmniHolidays.Providers
 
         public string MessageTemplate { get; set; }
 
+        public MessageDefinition()
+        {
+        }
+
         public MessageDefinition(string language, string category, string messageTemplate)
         {
             Language = language;

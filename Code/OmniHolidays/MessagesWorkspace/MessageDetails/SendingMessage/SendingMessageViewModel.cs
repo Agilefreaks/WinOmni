@@ -1,28 +1,39 @@
 ﻿namespace OmniHolidays.MessagesWorkspace.MessageDetails.SendingMessage
 {
+    using System;
+    using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reactive.Linq;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
+    using OmniHolidays.ExtensionMethods;
+    using OmniHolidays.Resources;
     using OmniHolidays.Services;
-    using OmniUI.Models;
     using OmniUI.Presenters;
 
     public class SendingMessageViewModel : MessageStepViewModelBase, ISendingMessageViewModel
     {
+        #region Fields
+
+        private IDisposable _messageSubscription;
+
         private string _sampleMessage;
 
-        [Inject]
-        public ITemplateProcessingService TemplateProcessingService { get; set; }
+        private ObservableCollection<string> _sentMessages;
 
-        protected override void OnActivate()
+        #endregion
+
+        #region Constructors and Destructors
+
+        public SendingMessageViewModel()
         {
-            base.OnActivate();
-            var contactInfo =
-                MessageContext.Contacts.Cast<IContactInfoPresenter>()
-                    .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
-                    .DefaultIfEmpty(new ContactInfo())
-                    .First();
-            SampleMessage = TemplateProcessingService.Process(MessageContext.Template, contactInfo);
+            SentMessages = new ObservableCollection<string>();
         }
+
+        #endregion
+
+        #region Public Properties
 
         public string SampleMessage
         {
@@ -40,5 +51,66 @@
                 NotifyOfPropertyChange();
             }
         }
+
+        public ObservableCollection<string> SentMessages
+        {
+            get
+            {
+                return _sentMessages;
+            }
+            set
+            {
+                if (Equals(value, _sentMessages))
+                {
+                    return;
+                }
+                _sentMessages = value;
+                NotifyOfPropertyChange(() => SentMessages);
+            }
+        }
+
+        [Inject]
+        public ITemplateProcessingService TemplateProcessingService { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            DisposeMessageSubscription();
+            _messageSubscription =
+                MessageContext.Contacts.Cast<IContactInfoPresenter>()
+                    .ToList()
+                    .Select(
+                        (model, index) => TemplateProcessingService.Process(MessageContext.Template, model.ContactInfo))
+                    .ToSequentialDelayedObservable(Constants.SendingMessageInterval)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(sampleMessage => SentMessages.Insert(0, sampleMessage));
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            if (close)
+            {
+                DisposeMessageSubscription();
+            }
+            base.OnDeactivate(close);
+        }
+
+        private void DisposeMessageSubscription()
+        {
+            if (_messageSubscription == null)
+            {
+                return;
+            }
+            _messageSubscription.Dispose();
+            _messageSubscription = null;
+        }
+
+        #endregion
     }
 }

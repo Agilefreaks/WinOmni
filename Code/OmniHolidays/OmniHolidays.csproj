@@ -104,6 +104,7 @@
     <Compile Include="Commands\SendMassSMSMessageCommand.cs" />
     <Compile Include="Commands\SyncContactsCommand.cs" />
     <Compile Include="ContactInfoSelectionSource.cs" />
+    <Compile Include="ExtensionMethods\ObservableExtensions.cs" />
     <Compile Include="HolidaysModule.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContactInfoPresenter.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="MessagesWorkspace\Converters\TemplateInfoConverter.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\LanguageInfo.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderState.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageList\MessageListViewModel.cs" />
@@ -132,9 +134,6 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\ISendingMessageViewModel.cs" />
-    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageView.xaml.cs">
-      <DependentUpon>SendingMessageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />
@@ -165,6 +164,7 @@
     <Compile Include="Providers\GreetingDefinitionProvider.cs" />
     <Compile Include="Providers\IMessageDefinitionProvider.cs" />
     <Compile Include="Providers\MessageDefinition.cs" />
+    <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\ITemplateProcessingService.cs" />
     <Compile Include="Services\TemplateProcessingService.cs" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
@@ -251,6 +251,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MessagesWorkspace\MessagesMainMenuEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Border.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -287,6 +291,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Christmas-background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
