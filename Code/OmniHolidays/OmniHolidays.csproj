@@ -120,6 +120,7 @@
     <Compile Include="MessagesWorkspace\Converters\TemplateInfoConverter.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageStepViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\IMessageWizardViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\LanguageInfo.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategory\MessageCategoryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderState.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageList\MessageListViewModel.cs" />

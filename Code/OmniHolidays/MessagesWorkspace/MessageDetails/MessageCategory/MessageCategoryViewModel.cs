@@ -12,7 +12,7 @@
     {
         private readonly IMessageDefinitionProvider _messageDefinitionProvider;
 
-        private IList<object> _languages;
+        private IList<LanguageInfo> _languages;
 
         private string _selectedLanguage;
 
@@ -20,17 +20,10 @@
         {
             _messageDefinitionProvider = messageDefinitionProvider;
 
-            var knownLanguages = new Dictionary<string, string>
-                                     {
-                                         { "en", "English" },
-                                         { "pt", "Portuguese" },
-                                         { "pl", "Polish" },
-                                         { "ro", "Romanian" }
-                                     };
-            SelectedLanguage = knownLanguages[CultureInfo.CurrentCulture.TwoLetterISOLanguageName];
+            Languages = new List<LanguageInfo>();
         }
 
-        public IList<object> Languages
+        public IList<LanguageInfo> Languages
         {
             get
             {
@@ -76,19 +69,43 @@
         {
             base.OnActivate();
 
-            var resourceManager = new ResourceManager(typeof(Resources));
+            if (Languages.Any())
+            {
+                return;
+            }
+
             _messageDefinitionProvider.Get()
                 .Subscribe(
-                    messages =>
-                        {
-                            Languages =
-                                messages.Select(m => m.Language)
-                                    .Distinct()
-                                    .Select(lang => new { Value = lang, Content = resourceManager.GetString(lang) })
-                                    .Cast<object>()
-                                    .ToList();
-                        },
+                    OnMessagesReceived,
                     () => { });
+        }
+
+        private void OnMessagesReceived(IList<MessageDefinition> messages)
+        {
+            var resourceManager = new ResourceManager(typeof(Resources));
+
+            Languages = messages.Select(m => m.Language)
+                    .Distinct()
+                    .Select(lang => new LanguageInfo { Value = lang, Content = resourceManager.GetString(lang) })
+                    .ToList();
+
+            var knownLanguages = new Dictionary<string, string>
+                                     {
+                                         { "en", "English" },
+                                         { "pt", "Portuguese" },
+                                         { "pl", "Polish" },
+                                         { "ro", "Romanian" }
+                                     };
+            var appLanguageName = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            SelectedLanguage = HasMessagesForAppLanguage(knownLanguages, appLanguageName)
+                                   ? knownLanguages[appLanguageName]
+                                   : Languages.Select(l => l.Value).FirstOrDefault();
+        }
+
+        private bool HasMessagesForAppLanguage(Dictionary<string, string> knownLanguages, string appLanguageName)
+        {
+            return knownLanguages.ContainsKey(appLanguageName)
+                   && Languages.Any(l => l.Value == knownLanguages[appLanguageName]);
         }
     }
 }
