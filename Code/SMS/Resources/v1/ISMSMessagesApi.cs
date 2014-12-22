@@ -6,6 +6,7 @@
 
     public interface ISMSMessagesApi
     {
-        IObservable<EmptyModel> Create([Body]object payload, [Header("Authorization")] string token);
+        [Post("/sms_messages")]
+        IObservable<EmptyModel> Create([Body] object payload, [Header("Authorization")] string token);
     }
 }
