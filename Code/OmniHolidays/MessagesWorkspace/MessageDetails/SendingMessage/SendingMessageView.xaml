@@ -4,13 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid Margin="25">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -18,17 +16,35 @@
                    FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource LabelBrush}"
                    HorizontalAlignment="Center"/>
 
-        <controls:TransitioningContentControl Grid.Row="1" Transition="Left" RestartTransitionOnContentChange="True" Content="{Binding Path=SampleMessage}">
-            <controls:TransitioningContentControl.ContentTemplate>
-                <DataTemplate>
-                    <DockPanel Margin="0,40" LastChildFill="True">
-                        <Rectangle DockPanel.Dock="Left" Fill="{DynamicResource HolidaysDecoratorBrush}" Width="30" Height="30" 
-                       Margin="0,0,12,0"/>
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}"
-                       FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
-                    </DockPanel>
-                </DataTemplate>
-            </controls:TransitioningContentControl.ContentTemplate>
-        </controls:TransitioningContentControl>
-    </Grid>    
+        <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}" 
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      Margin="0,40,0,0">
+            <ItemsControl ItemsSource="{Binding Path=SentMessages}">
+                <ItemsControl.Resources>
+                    <Style x:Key="FadingDockPanel" TargetType="{x:Type DockPanel}">
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:2">
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Style="{StaticResource FadingDockPanel}" Margin="0,0,0,10" LastChildFill="True">
+                            <Rectangle DockPanel.Dock="Left" Fill="{DynamicResource HolidaysDecoratorBrush}" Width="30" Height="30" Margin="0,0,12,0"/>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
