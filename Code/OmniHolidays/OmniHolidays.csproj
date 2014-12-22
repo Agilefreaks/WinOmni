@@ -135,9 +135,6 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\ISendingMessageViewModel.cs" />
-    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageView.xaml.cs">
-      <DependentUpon>SendingMessageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />

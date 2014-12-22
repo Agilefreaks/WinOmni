@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
     <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,11 +17,18 @@
         <TextBlock Grid.Row="0" Text="{x:Static properties:Resources.SendingMessageContentHeader}" FontFamily="{DynamicResource ActivityContentFont}"
                    FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource LabelBrush}"
                    HorizontalAlignment="Center"/>
-        <DockPanel Grid.Row="1" Margin="0,40" LastChildFill="True">
-            <Rectangle DockPanel.Dock="Left" Fill="{DynamicResource HolidaysDecoratorBrush}" Width="30" Height="30" 
+
+        <controls:TransitioningContentControl Grid.Row="1" Transition="Left" RestartTransitionOnContentChange="True" Content="{Binding Path=SampleMessage}">
+            <controls:TransitioningContentControl.ContentTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="0,40" LastChildFill="True">
+                        <Rectangle DockPanel.Dock="Left" Fill="{DynamicResource HolidaysDecoratorBrush}" Width="30" Height="30" 
                        Margin="0,0,12,0"/>
-            <TextBlock x:Name="SampleMessage" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}"
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}"
                        FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
-        </DockPanel>
-    </Grid>
+                    </DockPanel>
+                </DataTemplate>
+            </controls:TransitioningContentControl.ContentTemplate>
+        </controls:TransitioningContentControl>
+    </Grid>    
 </UserControl>
