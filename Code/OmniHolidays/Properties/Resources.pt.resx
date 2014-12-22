@@ -117,23 +117,77 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChooseOtherTemplateLabel" xml:space="preserve">
+    <value>Escolha uma categoria ou outra língua</value>
+  </data>
+  <data name="Colleagues" xml:space="preserve">
+    <value>Colegas</value>
+  </data>
+  <data name="ColleaguesTemplateInfo" xml:space="preserve">
+    <value>Escolha uma saudação personalizada para seus colegas de trabalho!</value>
+  </data>
   <data name="ContactListHeader" xml:space="preserve">
     <value>Contactos</value>
   </data>
   <data name="ContactListSubHeader" xml:space="preserve">
     <value>Selecione os contatos para quem você deseja enviar o SMS</value>
   </data>
+  <data name="English" xml:space="preserve">
+    <value>Inglês</value>
+  </data>
   <data name="Family" xml:space="preserve">
     <value>Família</value>
+  </data>
+  <data name="FamilyTemplateInfo" xml:space="preserve">
+    <value>Escolha uma saudação personalizada para a sua família!</value>
   </data>
   <data name="Friends" xml:space="preserve">
     <value>Amigos</value>
   </data>
+  <data name="FriendsTemplateInfo" xml:space="preserve">
+    <value>Escolha uma saudação personalizada para seus amigos!</value>
+  </data>
+  <data name="GreetingHeader" xml:space="preserve">
+    <value>Escolha a sua saudação para</value>
+  </data>
+  <data name="GreetingLanguageLabel" xml:space="preserve">
+    <value>Saudações Idioma:</value>
+  </data>
   <data name="Holidays" xml:space="preserve">
     <value>Feriados</value>
   </data>
+  <data name="MessageSent" xml:space="preserve">
+    <value>Mensagem enviada com sucesso!</value>
+  </data>
+  <data name="PlaceholderInfo" xml:space="preserve">
+    <value>Os nomes serão adicionados automaticamente no espaço em branco.</value>
+  </data>
+  <data name="Polish" xml:space="preserve">
+    <value>Polonês</value>
+  </data>
+  <data name="Portuguese" xml:space="preserve">
+    <value>Português</value>
+  </data>
+  <data name="Romanian" xml:space="preserve">
+    <value>Romeno</value>
+  </data>
+  <data name="School" xml:space="preserve">
+    <value>Escola</value>
+  </data>
+  <data name="SchoolTemplateInfo" xml:space="preserve">
+    <value>Escolha uma saudação personalizada para os seus colegas de escola!</value>
+  </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Selecionar Tudo</value>
+  </data>
+  <data name="SendingMessageContentHeader" xml:space="preserve">
+    <value>Esta é a forma como a sua mensagem vai olhar:</value>
+  </data>
+  <data name="SendingMessagePart1" xml:space="preserve">
+    <value>Enviando a mensagem abaixo para o</value>
+  </data>
+  <data name="SendingMessagePart2" xml:space="preserve">
+    <value>contatos que você selecionou</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>Para: </value>
