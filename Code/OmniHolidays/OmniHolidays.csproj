@@ -258,6 +258,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MessagesWorkspace\MessagesMainMenuEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Border.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
