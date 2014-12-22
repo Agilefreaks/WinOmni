@@ -152,16 +152,18 @@
             UpdateSelectAll();
         }
 
-        private static ContactListContactInfoPresenter GetContactInfoPresenter(Contact contact)
+        private static IList<ContactListContactInfoPresenter> GetContactInfoPresenter(Contact contact)
         {
             return
-                new ContactListContactInfoPresenter(
-                    new ContactInfo
-                        {
-                            FirstName = contact.FirstName,
-                            LastName = contact.LastName,
-                            Phone = contact.PhoneNumber,
-                        });
+                contact.Numbers.Select(
+                    phoneNumber =>
+                    new ContactListContactInfoPresenter(
+                        new ContactInfo
+                            {
+                                FirstName = contact.FirstName,
+                                LastName = contact.LastName,
+                                Phone = phoneNumber.Number
+                            })).ToList();
         }
 
         private static bool ModelIsSelected(object viewModel)
@@ -188,13 +190,18 @@
 
         private void OnGotNewContacts(ContactList contactList)
         {
-//            foreach (
-//                var contactInfoPresenter in result.SelectMany(list => list.Contacts).Select(GetContactInfoPresenter))
-//            {
-//                _contactInfoSubject.OnNext(contactInfoPresenter);
-//            }
+            foreach (var contactInfoPresenter in contactList.Contacts.SelectMany(GetContactInfoPresenter))
+            {
+                _contactInfoSubject.OnNext(contactInfoPresenter);
+            }
 
             IsBusy = false;
+        }
+
+        private void SyncContacts()
+        {
+            IsBusy = true;
+            _commandService.Execute(new SyncContactsCommand()).Subscribe(OnGotNewContacts, OnGetContactsError);
         }
 
         private void SelectedContactsOnCollectionChanged(
@@ -202,12 +209,6 @@
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             UpdateSelectAll();
-        }
-
-        private void SyncContacts()
-        {
-            IsBusy = true;
-            _commandService.Execute(new SyncContactsCommand()).RunToCompletion(OnGotNewContacts, OnGetContactsError);
         }
 
         private void UpdateContactSelection()

@@ -1,13 +1,22 @@
 ﻿namespace OmniHolidaysTests.MessagesWorkspace.ContactList
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Linq;
+    using System.Threading;
     using System.Windows.Media;
     using Caliburn.Micro;
+    using Contacts.Models;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniUI.Helpers;
     using OmniUI.Presenters;
@@ -140,6 +149,43 @@
             _subject.SelectAll.Should().BeFalse();
             contactViewModel2.IsSelected = true;
             _subject.SelectAll.Should().BeTrue();
+        }
+
+        [Test]
+        public void OnActivate_WhenCommandReturnsContactsWithMultiplePhoneNumbers_AddsEntriesForEachPhoneNumber()
+        {
+            var contact = new Contact
+                              {
+                                  FirstName = "first",
+                                  LastName = "last",
+                                  Numbers =
+                                      new List<ContactPhoneNumber>
+                                          {
+                                              new ContactPhoneNumber { Number = "1" },
+                                              new ContactPhoneNumber { Number = "2" }
+                                          }
+                              };
+            var contactList = new ContactList { Contacts = new List<Contact> { contact } };
+            var testScheduler = new TestScheduler();
+            var contactObservable = testScheduler.CreateColdObservable(
+                new Recorded<Notification<ContactList>>(100, Notification.CreateOnNext(contactList)),
+                new Recorded<Notification<ContactList>>(200, Notification.CreateOnCompleted<ContactList>()));
+
+            _mockCommandService.Setup(m => m.Execute(It.IsAny<SyncContactsCommand>())).Returns(contactObservable);
+
+            _subject.Start();
+            ((IActivate)_subject).Activate();
+            testScheduler.Start(WaitWhileBusy(testScheduler));
+
+            _subject.Items.Count.Should().Be(2);
+        }
+
+        private Func<IObservable<EventPattern<object>>> WaitWhileBusy(TestScheduler testScheduler)
+        {
+            return () =>
+                   Observable.FromEventPattern(_subject, "PropertyChanged", testScheduler)
+                       .Where(e => ((PropertyChangedEventArgs)e.EventArgs).PropertyName == "IsBusy")
+                       .Take(2);
         }
 
         private void AddChildViewModel(ContactInfoPresenter model1)
