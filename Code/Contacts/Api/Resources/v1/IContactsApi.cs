@@ -6,7 +6,7 @@
 
     public interface IContactsApi
     {
-        [Get("/user/contacts")]
+        [Get("/users/contacts")]
         IObservable<ContactList> Get(string identifier, [Header("Authorization")] string token);
     }
 }
