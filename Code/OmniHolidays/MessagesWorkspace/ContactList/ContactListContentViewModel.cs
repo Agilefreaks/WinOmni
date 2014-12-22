@@ -9,6 +9,7 @@
     using System.Windows.Data;
     using Caliburn.Micro;
     using Contacts.Models;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniHolidays.Commands;
     using OmniUI.Framework;
@@ -18,6 +19,12 @@
 
     public class ContactListContentViewModel : Screen, IContactListContentViewModel
     {
+        #region Constants
+
+        private const int FetchContactsNormalDuration = 10;
+
+        #endregion
+
         #region Fields
 
         private readonly ICommandService _commandService;
@@ -32,9 +39,11 @@
 
         private string _filterText;
 
-        private bool _isBusy;
-
         private bool _selectAll;
+
+        private ContactListContentViewModelState _state;
+
+        private IDisposable _syncSupervisorSubscription;
 
         #endregion
 
@@ -46,12 +55,13 @@
             _contactCollection = new BindableCollection<IContactInfoPresenter>();
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(_contactCollection);
             _filteredItems.Filter = IdentifierContainsFilterText;
-            IsBusy = false;
+            State = ContactListContentViewModelState.Normal;
             FilterText = string.Empty;
             FilteredItems.CustomSort = new ContactInfoPresenterComparer();
             _selectedContacts = new DeepObservableCollectionView<IContactInfoPresenter>(_contactCollection)
                                     {
-                                        Filter = ModelIsSelected
+                                        Filter =
+                                            ModelIsSelected
                                     };
             _selectedContacts.CollectionChanged += SelectedContactsOnCollectionChanged;
         }
@@ -94,23 +104,6 @@
             }
         }
 
-        public bool IsBusy
-        {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                if (value.Equals(_isBusy))
-                {
-                    return;
-                }
-                _isBusy = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public IObservableCollection<IContactInfoPresenter> Items
         {
             get
@@ -137,12 +130,41 @@
             }
         }
 
+        public ContactListContentViewModelState State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+                _state = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void RetryFetchContacts()
+        {
+            DisposeSyncSupervisorSubscription();
+            DisposeContactsSubscription();
+            SyncContacts();
+        }
+
         #endregion
 
         #region Methods
 
         protected override void OnActivate()
         {
+            State = ContactListContentViewModelState.Normal;
             base.OnActivate();
             if (_contactCollection.Count != 0)
             {
@@ -156,6 +178,7 @@
             if (close)
             {
                 DisposeContactsSubscription();
+                DisposeSyncSupervisorSubscription();
             }
 
             base.OnDeactivate(close);
@@ -197,6 +220,16 @@
             _contactsSubscription = null;
         }
 
+        private void DisposeSyncSupervisorSubscription()
+        {
+            if (_syncSupervisorSubscription == null)
+            {
+                return;
+            }
+            _syncSupervisorSubscription.Dispose();
+            _syncSupervisorSubscription = null;
+        }
+
         private bool IdentifierContainsFilterText(object item)
         {
             var model = item as IContactInfoPresenter;
@@ -208,20 +241,28 @@
                            CompareOptions.IgnoreCase) > -1));
         }
 
+        private void OnFetchTakingLong()
+        {
+            DisposeSyncSupervisorSubscription();
+            State = ContactListContentViewModelState.FetchTakingLong;
+        }
+
         private void OnGetContactsError(Exception exception)
         {
+            DisposeSyncSupervisorSubscription();
             ExceptionReporter.Instance.Report(exception);
-            IsBusy = false;
+            State = ContactListContentViewModelState.FetchTakingLong;
         }
 
         private void OnGotNewContacts(ContactList contactList)
         {
+            DisposeSyncSupervisorSubscription();
             foreach (var contactInfoPresenter in contactList.Contacts.SelectMany(GetContactInfoPresenter))
             {
                 _contactCollection.Add(contactInfoPresenter);
             }
 
-            IsBusy = false;
+            State = ContactListContentViewModelState.Normal;
         }
 
         private void SelectedContactsOnCollectionChanged(
@@ -233,13 +274,18 @@
 
         private void SyncContacts()
         {
-            IsBusy = true;
+            State = ContactListContentViewModelState.Busy;
             DisposeContactsSubscription();
             _contactsSubscription =
                 _commandService.Execute(new SyncContactsCommand())
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .Subscribe(OnGotNewContacts, OnGetContactsError);
+            _syncSupervisorSubscription =
+                Observable.Timer(TimeSpan.FromSeconds(FetchContactsNormalDuration), SchedulerProvider.Default)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(_ => OnFetchTakingLong());
         }
 
         private void UpdateContactSelection()

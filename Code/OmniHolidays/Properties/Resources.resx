@@ -192,4 +192,14 @@
   <data name="To" xml:space="preserve">
     <value>To: </value>
   </data>
+  <data name="FetchingContacts" xml:space="preserve">
+    <value>Fetching your contacts...</value>
+  </data>
+  <data name="FetchContactsTakingLong" xml:space="preserve">
+    <value>It seems it's taking longer then usual to fetch your contacts.
+Please make sure your phone is on or try again.</value>
+  </data>
+  <data name="RetryFetchContacts" xml:space="preserve">
+    <value>Retry</value>
+  </data>
 </root>

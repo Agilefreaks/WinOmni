@@ -6,10 +6,11 @@
         <Setter Property="Height" Value="220"/>
         <Setter Property="Margin" Value="12,10"/>
         <Setter Property="BorderBrush" Value="#FFF6F6F6"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}">
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Container" CornerRadius="5" BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}" Background="Transparent">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -31,6 +32,11 @@
                             </Border>
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Container" Value="#fafff8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

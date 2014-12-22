@@ -108,6 +108,7 @@
     <Compile Include="HolidaysModule.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContactInfoPresenter.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
+    <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModelState.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListViewModel.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactInfoPresenterComparer.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\ISendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageViewModel.cs" />
+    <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SentMessage.cs" />
     <Compile Include="MessagesWorkspace\MessagesMainMenuEntryViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessagesWorkspace.cs" />
     <Compile Include="MessagesWorkspace\Behaviors\FormatPlaceholdersBehavior.cs" />
@@ -212,6 +214,18 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MessagesWorkspace\ContactList\ContactListContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\ContactList\ContactListContent\Busy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\ContactList\ContactListContent\FetchTakingLong.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessagesWorkspace\ContactList\ContactListContent\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

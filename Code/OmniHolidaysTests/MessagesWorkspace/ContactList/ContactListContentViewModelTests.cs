@@ -164,9 +164,8 @@
                 Observable.FromEventPattern(_subject, "PropertyChanged", _testScheduler)
                     .Select(@event => @event.EventArgs)
                     .Cast<PropertyChangedEventArgs>()
-                    .Where(eventArgs => eventArgs.PropertyName == "IsBusy")
-                    .Select(_ => _subject.IsBusy)
-                    .Where(isBusy => !isBusy)
+                    .Select(_ => _subject.State == ContactListContentViewModelState.Normal)
+                    .Where(hasNormalState => hasNormalState)
                     .Take(1);
         }
 

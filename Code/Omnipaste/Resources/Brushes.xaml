@@ -325,4 +325,27 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="RetryBrush" Viewbox="0,0,45,45" ViewboxUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <MatrixTransform Matrix="1.25,0,0,-1.25,0,45"/>
+                </DrawingGroup.Transform>
+                <DrawingGroup>
+                    <DrawingGroup>
+                        <DrawingGroup.Transform>
+                            <MatrixTransform Matrix="1,0,0,1,18,36"/>
+                        </DrawingGroup.Transform>
+                        <GeometryDrawing Brush="#FFF0A399" Geometry="F1 M0,0 C-9.941,0 -18,-8.059 -18,-18 -18,-27.941 -9.941,-36 0,-36 9.941,-36 18,-27.941 18,-18 18,-8.059 9.941,0 0,0 M0,-1.5 C9.098,-1.5 16.5,-8.902 16.5,-18 16.5,-27.098 9.098,-34.5 0,-34.5 -9.098,-34.5 -16.5,-27.098 -16.5,-18 -16.5,-8.902 -9.098,-1.5 0,-1.5"/>
+                    </DrawingGroup>
+                    <DrawingGroup>
+                        <DrawingGroup.Transform>
+                            <MatrixTransform Matrix="1,0,0,1,24.8374,16.3981"/>
+                        </DrawingGroup.Transform>
+                        <GeometryDrawing Brush="#FFD95059" Geometry="F1 M0,0 C0,-3.453 -2.809,-6.262 -6.262,-6.262 L-8.479,-6.262 C-8.846,-6.262 -9.144,-5.964 -9.144,-5.597 L-9.144,-5.375 C-9.144,-5.008 -8.846,-4.71 -8.479,-4.71 L-6.262,-4.71 C-3.665,-4.71 -1.552,-2.597 -1.552,8.8817842E-16 -1.552,2.597 -3.665,4.71 -6.262,4.71 L-10.351,4.71 -7.535,1.894 C-7.232,1.592 -7.232,1.099 -7.535,0.797 -7.828,0.503 -8.339,0.504 -8.632,0.797 L-12.773,4.938 C-12.919,5.084 -13,5.279 -13,5.486 -13,5.693 -12.919,5.888 -12.773,6.035 L-8.632,10.176 C-8.339,10.469 -7.828,10.469 -7.535,10.176 -7.232,9.873 -7.232,9.381 -7.535,9.079 L-10.351,6.262 -6.262,6.262 C-2.809,6.262 0,3.453 0,0"/>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
+             xmlns:converters="clr-namespace:OmniHolidays.MessagesWorkspace.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-
+    <UserControl.Resources>
+        <converters:MessageDefinitionIconConverter x:Key="MessageDefinitionIconConverter" />
+    </UserControl.Resources>
     <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,8 +42,12 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel Style="{StaticResource FadingDockPanel}" Margin="0,0,0,10" LastChildFill="True">
-                            <Rectangle DockPanel.Dock="Left" Fill="{DynamicResource HolidaysDecoratorBrush}" Width="30" Height="30" Margin="0,0,12,0"/>
-                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
+                            <Border Margin="26,0,14,0" Width="30" Height="30" VerticalAlignment="Center">
+                                <Border.Background>
+                                    <VisualBrush Stretch="UniformToFill" Visual="{Binding Path=Category, Converter={StaticResource MessageDefinitionIconConverter}}"/>
+                                </Border.Background>
+                            </Border>
+                            <TextBlock Text="{Binding Path=Text}" TextWrapping="Wrap" FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

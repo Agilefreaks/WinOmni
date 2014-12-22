@@ -20,7 +20,7 @@
 
         private string _sampleMessage;
 
-        private ObservableCollection<string> _sentMessages;
+        private ObservableCollection<SentMessage> _sentMessages;
 
         #endregion
 
@@ -28,7 +28,7 @@
 
         public SendingMessageViewModel()
         {
-            SentMessages = new ObservableCollection<string>();
+            SentMessages = new ObservableCollection<SentMessage>();
         }
 
         #endregion
@@ -52,7 +52,7 @@
             }
         }
 
-        public ObservableCollection<string> SentMessages
+        public ObservableCollection<SentMessage> SentMessages
         {
             get
             {
@@ -89,7 +89,7 @@
                     .ToSequentialDelayedObservable(Constants.SendingMessageInterval)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(sampleMessage => SentMessages.Insert(0, sampleMessage));
+                    .SubscribeAndHandleErrors(sampleMessage => SentMessages.Insert(0, CreateSentMessage(sampleMessage)));
         }
 
         protected override void OnDeactivate(bool close)
@@ -99,6 +99,11 @@
                 DisposeMessageSubscription();
             }
             base.OnDeactivate(close);
+        }
+
+        private SentMessage CreateSentMessage(string sampleMessage)
+        {
+            return new SentMessage { Text = sampleMessage, Category = MessageContext.MessageCategory };
         }
 
         private void DisposeMessageSubscription()
