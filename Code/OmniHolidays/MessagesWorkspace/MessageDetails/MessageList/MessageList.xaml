@@ -77,10 +77,12 @@
         <Button Grid.Row="2" Height="100" cal:Message.Attach="NotifyOnPrevious()">
             <Button.Template>
                 <ControlTemplate>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Border Style="{DynamicResource BackBorderStyle}" />
-                        <TextBlock Style="{DynamicResource NavigateBackButtonStyle}" Text="{x:Static res:Resources.ChooseOtherTemplateLabel}"/>
-                    </StackPanel>
+                    <Border Background="Transparent" Cursor="Hand">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Border Style="{DynamicResource BackBorderStyle}" />
+                            <TextBlock Style="{DynamicResource NavigateBackButtonStyle}" Text="{x:Static res:Resources.ChooseOtherTemplateLabel}"/>
+                        </StackPanel>
+                    </Border>
                 </ControlTemplate>
             </Button.Template>
         </Button>

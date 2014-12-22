@@ -134,9 +134,9 @@
 
                                    #region Romanian
 
-                                   new MessageDefinition(Romanian, School, "Colegi de clasă: Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
-                                   new MessageDefinition(Romanian, School, "Colegi de școală: Crăciun fericit, %ContactFirstName%! Bucură-te de vacanță cât mai mult și încearcă să ignori faptul că școala reîncepe în ianuarie! Sărbători fericite!"),
-                                   new MessageDefinition(Romanian, School, "Colegi de clasă: Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, %ContactFirstName%! Bucură-te de vacanță cât mai mult și încearcă să ignori faptul că școala reîncepe în ianuarie! Sărbători fericite!"),
+                                   new MessageDefinition(Romanian, School, "Crăciun fericit, %ContactFirstName%! Fără tine, nu m-aș distra pe cinste la școală, așa că trebuie să-ți mulțumesc pentru asta! Sărbători fericite!"),
                                    new MessageDefinition(Romanian, School, "Crăciun fericit, domnule %ContactFirstName%! Vă mulțumesc pentru răbdare și determinarea de a ne învăța lecții... de viață! Sărbători fericite!"),
                                    new MessageDefinition(Romanian, School, "Crăciun fericit, doamna %ContactFirstName%! Vă mulțumesc pentru răbdare și determinarea de a ne învăța lecții... de viață! Sărbători fericite!"),
                                    new MessageDefinition(Romanian, School, "Crăciun fericit, doamnă %ContactFirstName%! Vă doresc multe alte generații de elevi pe care să le ajutați. Vă mulțumesc că mi-ați fost profesoară!"),
