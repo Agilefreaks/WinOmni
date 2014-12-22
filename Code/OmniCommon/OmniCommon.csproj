@@ -99,7 +99,6 @@
     <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Helpers\SchedulerProvider.cs" />
-    <Compile Include="Models\DeviceInfo.cs" />
     <Compile Include="Models\KeyPair.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Settings\OmnipasteCredentials.cs" />

@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
     using System.Reactive.Subjects;
     using System.Reflection;
@@ -61,20 +60,6 @@
             {
                 _configurationContainer.SetObject(ConfigurationProperties.UserInfo, value);
                 _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.UserInfo, UserInfo));
-            }
-        }
-
-        public List<DeviceInfo> DeviceInfos
-        {
-            get
-            {
-                return _configurationContainer.GetObject<List<DeviceInfo>>(ConfigurationProperties.DeviceInfos);
-            }
-
-            set
-            {
-                _configurationContainer.SetObject(ConfigurationProperties.DeviceInfos, value);
-                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.DeviceInfos, DeviceInfos));
             }
         }
 
