@@ -1,11 +1,8 @@
 ﻿namespace OmniHolidaysTests.MessagesWorkspace.MessageDetails
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
-    using System.Reactive;
     using System.Reactive.Linq;
     using System.Threading;
     using Caliburn.Micro;
@@ -61,7 +58,7 @@
                         _testScheduler));
 
             ((IActivate)_subject).Activate();
-            _testScheduler.Start(() => WaitForProperty("Languages"));
+            _testScheduler.Start(() => _subject.WaitForProperty("Languages"));
             
             _subject.Languages.Count.Should().Be(2);
             _subject.Languages.Any(l => l.Value == "English").Should().BeTrue();
@@ -84,7 +81,7 @@
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("ro-RO");
 
             ((IActivate)_subject).Activate();
-            _testScheduler.Start(() => WaitForProperty("SelectedLanguage"));
+            _testScheduler.Start(() => _subject.WaitForProperty("SelectedLanguage"));
 
             _subject.SelectedLanguage.Should().Be("Romanian");
         }
@@ -105,17 +102,9 @@
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("hu-HU");
 
             ((IActivate)_subject).Activate();
-            _testScheduler.Start(() => WaitForProperty("SelectedLanguage"));
+            _testScheduler.Start(() => _subject.WaitForProperty("SelectedLanguage"));
 
             _subject.SelectedLanguage.Should().Be("English");
-        }
-
-        private IObservable<EventPattern<object>> WaitForProperty(string propertyName)
-        {
-            return
-                Observable.FromEventPattern(_subject, "PropertyChanged", _testScheduler)
-                    .Where(e => ((PropertyChangedEventArgs)e.EventArgs).PropertyName == propertyName)
-                    .Take(1);
         }
     }
 }
