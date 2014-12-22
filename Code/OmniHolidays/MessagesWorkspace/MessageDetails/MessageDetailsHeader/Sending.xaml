@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:OmniHolidays.Properties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="#fff3de" HorizontalAlignment="Stretch">
@@ -19,6 +20,7 @@
                     <Run Text="{x:Static properties:Resources.SendingMessagePart2}" FontStyle="Italic"/>
             </TextBlock>
         </DockPanel>
-        <Border Grid.Row="1" Background="#68353a" Height="5"/>
+        
+        <controls:MetroProgressBar Grid.Row="1" Height="5" Value="{Binding Path=Progress}" Background="Transparent" Foreground="{DynamicResource ChristmassBrush}" />
     </Grid>
 </UserControl>

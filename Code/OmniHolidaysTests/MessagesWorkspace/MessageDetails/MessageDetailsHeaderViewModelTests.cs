@@ -8,6 +8,7 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniHolidays.MessagesWorkspace.MessageDetails;
@@ -34,6 +35,29 @@
         #endregion
 
         #region Public Methods and Operators
+
+        [SetUp]
+        public void Setup()
+        {
+            _mockContactsSource = CreateMockContactSource();
+            _mockCommandService = new Mock<ICommandService> { DefaultValue = DefaultValue.Mock };
+            _subject = new MessageDetailsHeaderViewModel
+            {
+                CommandService = _mockCommandService.Object,
+                ContactsSource = _mockContactsSource.Object
+            };
+            _testScheduler = new TestScheduler();
+            _mockMessageDetails = new Mock<IMessageDetailsViewModel>();
+            _subject.Parent = _mockMessageDetails.Object;
+
+            SchedulerProvider.Default = _testScheduler;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
+        }
 
         [Test]
         public void ClearContacts_Always_SetsIsSelectedFalseForAllCurrentContacts()
@@ -120,6 +144,30 @@
         }
 
         [Test]
+        public void SendMessage_Always_ResetsProgress()
+        {
+            _subject.Progress = 100;
+
+            _subject.SendMessage(string.Empty);
+
+            _subject.Progress.Should().Be(0);
+        }
+
+        [Test]
+        public void SendMessage_WhenCommandIsSuccessful_UpdatesProgress()
+        {
+            var executeObservable =
+                   _testScheduler.CreateColdObservable(
+                       new Recorded<Notification<Unit>>(100, Notification.CreateOnCompleted<Unit>()));
+            _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
+
+            _subject.SendMessage(string.Empty);
+            _testScheduler.Start();
+
+            _subject.Progress.Should().Be(100);
+        }
+
+        [Test]
         public void StartNewMessage_Always_ClearsSelectedContacts()
         {
             _subject.ContactsSource.Contacts.Cast<object>().Count().Should().Be(2);
@@ -152,21 +200,6 @@
             _subject.Reset();
 
             _subject.State.Should().Be(MessageDetailsHeaderState.Normal);
-        }
-
-        [SetUp]
-        public void Setup()
-        {
-            _mockContactsSource = CreateMockContactSource();
-            _mockCommandService = new Mock<ICommandService> { DefaultValue = DefaultValue.Mock };
-            _subject = new MessageDetailsHeaderViewModel
-                           {
-                               CommandService = _mockCommandService.Object,
-                               ContactsSource = _mockContactsSource.Object
-                           };
-            _testScheduler = new TestScheduler();
-            _mockMessageDetails = new Mock<IMessageDetailsViewModel>();
-            _subject.Parent = _mockMessageDetails.Object;
         }
 
         #endregion
