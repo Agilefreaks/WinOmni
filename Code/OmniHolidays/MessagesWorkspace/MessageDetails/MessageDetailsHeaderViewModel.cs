@@ -95,6 +95,7 @@
 
         public void StartNewMessage()
         {
+            ClearContacts();
             this.GetParentOfType<IMessageDetailsViewModel>().Reset();
         }
 

@@ -29,6 +29,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<IMessageDetailsViewModel> _mockMessageDetails;
+
         #endregion
 
         #region Public Methods and Operators
@@ -81,13 +83,11 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<Unit>>(200, Notification.CreateOnError<Unit>(new Exception())));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
-            var mockMessageDetails = new Mock<IMessageDetailsViewModel>();
-            _subject.Parent = mockMessageDetails.Object;
 
             _subject.SendMessage(string.Empty);
             _testScheduler.Start();
 
-            mockMessageDetails.Verify(x => x.Reset());
+            _mockMessageDetails.Verify(x => x.Reset());
         }
 
         [Test]
@@ -119,6 +119,41 @@
             _subject.State.Should().Be(MessageDetailsHeaderState.Sending);
         }
 
+        [Test]
+        public void StartNewMessage_Always_ClearsSelectedContacts()
+        {
+            _subject.ContactsSource.Contacts.Cast<object>().Count().Should().Be(2);
+
+            _subject.StartNewMessage();
+
+            _subject.ContactsSource.Contacts.Cast<IContactInfoPresenter>()
+                .Where(contact => contact.IsSelected)
+                .Should()
+                .BeEmpty();
+        }
+
+        [Test]
+        public void StartNewMessage_Always_ResetsTheParentMessageDetailsViewModel()
+        {
+            _subject.ContactsSource.Contacts.Cast<object>().Count().Should().Be(2);
+
+            _subject.StartNewMessage();
+
+            _mockMessageDetails.Verify(x => x.Reset());
+        }
+
+        [Test]
+        public void Reset_Always_SetsStateToNormal()
+        {
+            _subject.SendMessage("someMessage");
+
+            _subject.State.Should().Be(MessageDetailsHeaderState.Sending);
+
+            _subject.Reset();
+
+            _subject.State.Should().Be(MessageDetailsHeaderState.Normal);
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -130,6 +165,8 @@
                                ContactsSource = _mockContactsSource.Object
                            };
             _testScheduler = new TestScheduler();
+            _mockMessageDetails = new Mock<IMessageDetailsViewModel>();
+            _subject.Parent = _mockMessageDetails.Object;
         }
 
         #endregion
