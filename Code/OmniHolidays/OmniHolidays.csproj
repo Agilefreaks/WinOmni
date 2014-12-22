@@ -104,6 +104,7 @@
     <Compile Include="Commands\SendMassSMSMessageCommand.cs" />
     <Compile Include="Commands\SyncContactsCommand.cs" />
     <Compile Include="ContactInfoSelectionSource.cs" />
+    <Compile Include="ExtensionMethods\ObservableExtensions.cs" />
     <Compile Include="HolidaysModule.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContactInfoPresenter.cs" />
     <Compile Include="MessagesWorkspace\ContactList\ContactListContentViewModel.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Providers\GreetingDefinitionProvider.cs" />
     <Compile Include="Providers\IMessageDefinitionProvider.cs" />
     <Compile Include="Providers\MessageDefinition.cs" />
+    <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\ITemplateProcessingService.cs" />
     <Compile Include="Services\TemplateProcessingService.cs" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">

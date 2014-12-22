@@ -5,8 +5,10 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
+    using OmniHolidays.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniHolidays.MessagesWorkspace.ContactList;
+    using OmniHolidays.Resources;
     using OmniHolidays.Services;
 
     public class SendingMessageViewModel : MessageStepViewModelBase, ISendingMessageViewModel
@@ -66,26 +68,14 @@
             _messageSubscription =
                 MessageContext.Contacts.Cast<IContactViewModel>()
                     .ToList()
-                    .Select(CreateDelayedObservable)
-                    .Concat()
+                    .Select(
+                        (viewModel, index) =>
+                        TemplateProcessingService.Process(MessageContext.Template, viewModel.Model.ContactInfo))
+                    .ToSequentialDelayedObservable(Constants.SendingMessageInterval)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .Subscribe(sampleMessage => { SentMessages.Insert(0, sampleMessage); }, () => { });
-        }
 
-        private IObservable<string> CreateDelayedObservable(IContactViewModel contactInfo, int index)
-        {
-            var compiledMessage = TemplateProcessingService.Process(
-                MessageContext.Template,
-                contactInfo.Model.ContactInfo);
-
-            var result = Observable.Return(compiledMessage);
-            if (index > 0)
-            {
-                result = result.Delay(TimeSpan.FromSeconds(2));
-            }
-
-            return result;
         }
 
         protected override void OnDeactivate(bool close)
