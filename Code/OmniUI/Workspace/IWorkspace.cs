@@ -4,5 +4,6 @@
 
     public interface IWorkspace : IScreen, IConductor
     {
+        string Background { get; set; }
     }
 }

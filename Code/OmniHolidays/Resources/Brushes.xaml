@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <ImageBrush x:Key="HolidayWorkspaceBackgroundBrush" ImageSource="Christmas-background.png" Stretch="UniformToFill" />
+    
     <DrawingBrush x:Key="SendMessageBrush" Viewbox="0,0,35,35" ViewboxUnits="Absolute">
         <DrawingBrush.Drawing>
             <DrawingGroup>

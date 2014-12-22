@@ -6,7 +6,8 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Border Style="{DynamicResource MainContainerStyle}">
+
+    <Border Background="{Binding Path=Background, Converter={StaticResource StringToResourceConverter}, ConverterParameter=MainWindowBackgroundBrush}">
         <ItemsControl ItemsSource="{Binding Path=Items}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
