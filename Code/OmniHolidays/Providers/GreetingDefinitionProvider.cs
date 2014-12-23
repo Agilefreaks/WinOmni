@@ -78,10 +78,10 @@
                                    new MessageDefinition(Polish, Friends, "%ContactFirstName%, miłości i spokoju w te Święta, dobrej zabawy w Sylwestra, i sukcesów w Nowym Roku. Cóż więcej mogę Ci życzyć? :D"),
                                    new MessageDefinition(Polish, Friends, "Cześć, %ContactFirstName%. Przyszły Święta, więc życzę Ci spokoju, radości, i dobrego jedzenia. A po Świętach dobrej zabawy na Sylwestrze. Pozdrowienia! :)"),
                                    
-                                   new MessageDefinition(Polish, Colleagues, "Spokojnych i wesołych Świąt Bożego Narodzenia i Szczęśliwego Nowego Roku życzy [sender-full-name]"),
-                                   new MessageDefinition(Polish, Colleagues, "Dużo miłości i pokoju w te Święta, oraz wszystkiego co dobre w Nowym Roku życzy [sender-full-name]"),
-                                   new MessageDefinition(Polish, Colleagues, "W te Święta Bożego Narodzenia odpoczynku w domowym zaciszu, pokoju i miłości życzy [sender-full-name]"),
-                                   new MessageDefinition(Polish, Colleagues, "Radosnych is zdrowych Świąt Bożego Narodzenia oraz pomyślności w Nowym Roku życzy [sender-full-name]"),
+                                   new MessageDefinition(Polish, Colleagues, "Spokojnych i wesołych Świąt Bożego Narodzenia i Szczęśliwego Nowego Roku życzy %ContactFirstName% %ContactLastName%"),
+                                   new MessageDefinition(Polish, Colleagues, "Dużo miłości i pokoju w te Święta, oraz wszystkiego co dobre w Nowym Roku życzy %ContactFirstName% %ContactLastName%"),
+                                   new MessageDefinition(Polish, Colleagues, "W te Święta Bożego Narodzenia odpoczynku w domowym zaciszu, pokoju i miłości życzy %ContactFirstName% %ContactLastName%"),
+                                   new MessageDefinition(Polish, Colleagues, "Radosnych is zdrowych Świąt Bożego Narodzenia oraz pomyślności w Nowym Roku życzy %ContactFirstName% %ContactLastName%"),
                                    
                                    new MessageDefinition(Polish, School, "Hej, %ContactFirstName%! Wszystkiego dobrego w te Święta. No i oczywiście sukcesów w Nowym Roku! :)"),
                                    new MessageDefinition(Polish, School, "Cześć %ContactFirstName%, odpocznij wreszcie w te Święta i Nowy Rok zacznij z nowymi siłami. :)"),
@@ -144,7 +144,7 @@
 
                                    new MessageDefinition(Romanian, Friends, "Sărbători fericite, %ContactFirstName%! Mă bucur mult să am oameni ca tine în viața mea cărora să le transmit gânduri bune de Sărbători. Crăciun fericit!"),
                                    new MessageDefinition(Romanian, Friends, "Cum să intri în spiritul Sărbătorilor: mulțumește pentru lucrurile bune pe care le ai: cineva așa de minunat ca mine! Crăciun fericit, %ContactFirstName%!"),
-                                   new MessageDefinition(Romanian, Friends, "Insername, mi se pare că a trecut un an întreg de când ți-am urat Crăciun fericit ultima oară. Poate ar trebui să sărbătorim Crăciunul mai des! :)"),
+                                   new MessageDefinition(Romanian, Friends, "%ContactFirstName%!, mi se pare că a trecut un an întreg de când ți-am urat Crăciun fericit ultima oară. Poate ar trebui să sărbătorim Crăciunul mai des! :)"),
                                    new MessageDefinition(Romanian, Friends, "Crăciun fericit ție și celor dragi! Sper ca Sărbătorile tale să fie pline de adevăratele binecuvântări ale Crăciunului: pace, bucurii și speranță!"),
 
                                    new MessageDefinition(Romanian, Colleagues, "Domnule %ContactFirstName%, vă mulțumesc pentru că sunteți un șef extraordinar și că ne-ați ajutat de fiecare dată. Crăciun fericit dvs. și celor dragi!"),
@@ -154,7 +154,7 @@
                                    new MessageDefinition(Romanian, Colleagues, "Doamnă %ContactFirstName%, vă mulțumesc pentru sprijinul acordat anul acesta în atingerea obiectivelor și depășirea obstacolelor. Crăciun fericit!"),
                                    new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, %ContactFirstName%! Mulțumesc pentru seriozitate și toată munca depusă anul acesta. Să lucrăm cel puțin la fel de bine și anul următor!"),
                                    new MessageDefinition(Romanian, Colleagues, "%ContactFirstName%, mulțumesc că ai contribuit anul acesta la rezultatele grozave ale echipei! Crăciun fericit alături de familie și prieteni!"),
-                                   new MessageDefinition(Romanian, Colleagues, "Insername, mulțumesc pentru felul în care ți-ai făcut treaba și ai ajutat echipa anul acesta. Crăciun fericit alături de familie și cei dragi!"),
+                                   new MessageDefinition(Romanian, Colleagues, "%ContactFirstName%!, mulțumesc pentru felul în care ți-ai făcut treaba și ai ajutat echipa anul acesta. Crăciun fericit alături de familie și cei dragi!"),
                                    new MessageDefinition(Romanian, Colleagues, "Mulțumesc pentru seriozitate și toată munca depusă anul acesta. Sper să colaborăm la fel de eficient și de acum înainte! Crăciun fericit!"),
                                    new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, domnule %ContactFirstName%! Mulțumesc pentru seriozitate și munca depusă. Sper să colaborăm la fel de eficient și de acum înainte!"),
                                    new MessageDefinition(Romanian, Colleagues, "Crăciun fericit, doamnă %ContactFirstName%! Mulțumesc pentru seriozitate și munca depusă. Sper să colaborăm la fel de eficient și de acum înainte!"),
@@ -170,7 +170,7 @@
                                    new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscătoare, iar familia e pe primul loc! Mulțumesc pentru că ești o soră minunată!"),
                                    new MessageDefinition(Romanian, Family, "Crăciunul ăsta mă gândesc la lucrurile pentru care sunt recunoscător, iar familia e pe primul loc! Mulțumesc pentru că ești o soră minunată!"),
                                    new MessageDefinition(Romanian, Family, "Să aveți un Crăciun plin de căldura familiei, bucuria prietenilor și gânduri frumoase. Mă bucur să fac parte din familia asta! Sărbători fericite!"),
-                                   new MessageDefinition(Romanian, Family, "Crăciun fericit, insername! Vă dorim liniște și pace sufletească, multe bucurii și inimi pline de speranță - de Sărbători și în anul ce urmează!")
+                                   new MessageDefinition(Romanian, Family, "Crăciun fericit, %ContactFirstName%!! Vă dorim liniște și pace sufletească, multe bucurii și inimi pline de speranță - de Sărbători și în anul ce urmează!")
 
                                    #endregion
                                };
