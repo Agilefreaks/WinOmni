@@ -3,17 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Reactive;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.Helpers;
     using OmniHolidays.Commands;
-    using OmniHolidays.ExtensionMethods;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniHolidays.Resources;
+    using OmniHolidays.Services;
     using OmniUI.ExtensionMethods;
     using OmniUI.Presenters;
     using OmniUI.Services;
@@ -36,6 +34,9 @@
 
         [Inject]
         public ICommandService CommandService { get; set; }
+
+        [Inject]
+        public IProgressUpdaterFactory ProgressUpdaterFactory { get; set; }
 
         public IContactSource ContactsSource
         {
@@ -135,30 +136,19 @@
                 ContactsSource.Contacts.Cast<IContactInfoPresenter>()
                     .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
                     .ToList();
-            
-            _sendingMessageSubscription =
-                CommandService.Execute(new SendMassSMSMessageCommand(template, contactInfos))
-                    .Select(_ => CreateProgressUpdater(contactInfos.Count * Constants.SendingMessageInterval.TotalMilliseconds))
-                    .Switch()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Default)
-                    .Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
-        }
 
-        private IObservable<Unit> CreateProgressUpdater(double totalDurationMilliseconds)
-        {
-            const int UpdateIntervalMilliseconds = 42;
-            var totalProgressUpdates = (int)totalDurationMilliseconds / UpdateIntervalMilliseconds + 1;
-            var progressIncrement = (double)100 / totalProgressUpdates;
-            var updateInterval = TimeSpan.FromMilliseconds(UpdateIntervalMilliseconds);
-            return Enumerable.Range(0, totalProgressUpdates)
-                .ToSequentialDelayedObservable(updateInterval)
-                .Do(_ =>
+            _sendingMessageSubscription = CommandService.Execute(new SendMassSMSMessageCommand(template, contactInfos))
+                .Select(
+                    _ => ProgressUpdaterFactory.Create(
+                        contactInfos.Count * Constants.SendingMessageInterval.TotalMilliseconds,
+                        increment =>
                             {
-                                Progress += progressIncrement;
-                            })
-                .Buffer(totalProgressUpdates)
-                .Select(_ => Unit.Default);
+                                Progress += increment;
+                            }))
+                .Switch()
+                .SubscribeOn(SchedulerProvider.Default)
+                .ObserveOn(SchedulerProvider.Default)
+                .Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
         }
 
         #endregion

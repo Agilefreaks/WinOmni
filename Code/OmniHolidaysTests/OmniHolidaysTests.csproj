@@ -114,6 +114,7 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageCategoryViewModelTests.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProgressUpdaterFactoryTests.cs" />
     <Compile Include="Services\TemplateProcessingServiceTests.cs" />
     <Compile Include="ObservableTestHelpers.cs" />
   </ItemGroup>

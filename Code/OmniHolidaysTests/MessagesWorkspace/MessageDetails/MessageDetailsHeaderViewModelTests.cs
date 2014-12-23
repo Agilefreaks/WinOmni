@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -12,6 +13,7 @@
     using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
     using OmniHolidays.MessagesWorkspace.MessageDetails;
+    using OmniHolidays.Services;
     using OmniUI.Framework;
     using OmniUI.Models;
     using OmniUI.Presenters;
@@ -32,6 +34,8 @@
 
         private Mock<IMessageDetailsViewModel> _mockMessageDetails;
 
+        private Mock<IProgressUpdaterFactory> _mockProgressUpdaterFactory;
+
         #endregion
 
         #region Public Methods and Operators
@@ -41,14 +45,19 @@
         {
             _mockContactsSource = CreateMockContactSource();
             _mockCommandService = new Mock<ICommandService> { DefaultValue = DefaultValue.Mock };
+            _mockProgressUpdaterFactory = new Mock<IProgressUpdaterFactory> { DefaultValue = DefaultValue.Mock };
             _subject = new MessageDetailsHeaderViewModel
-            {
-                CommandService = _mockCommandService.Object,
-                ContactsSource = _mockContactsSource.Object
-            };
+                           {
+                               CommandService = _mockCommandService.Object,
+                               ContactsSource = _mockContactsSource.Object,
+                               ProgressUpdaterFactory = _mockProgressUpdaterFactory.Object
+                           };
             _testScheduler = new TestScheduler();
             _mockMessageDetails = new Mock<IMessageDetailsViewModel>();
             _subject.Parent = _mockMessageDetails.Object;
+
+            _mockProgressUpdaterFactory.Setup(m => m.Create(It.IsAny<double>(), It.IsAny<Action<double>>()))
+                .Returns(Observable.Return(Unit.Default));
 
             SchedulerProvider.Default = _testScheduler;
         }
@@ -77,6 +86,7 @@
         {
             var executeObservable =
                 _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(Unit.Default)),
                     new Recorded<Notification<Unit>>(200, Notification.CreateOnCompleted<Unit>()));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
 
@@ -104,10 +114,9 @@
         public void SendMessage_CommandFails_ResetsTheMessageDetails()
         {
             var executeObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Unit>>(200, Notification.CreateOnError<Unit>(new Exception())));
+                _testScheduler.CreateColdObservable(new Recorded<Notification<Unit>>(200, Notification.CreateOnError<Unit>(new Exception())));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
-
+            
             _subject.SendMessage(string.Empty);
             _testScheduler.Start();
 
@@ -122,6 +131,8 @@
                     new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(new Unit())),
                     new Recorded<Notification<Unit>>(200, Notification.CreateOnCompleted<Unit>()));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
+            _mockProgressUpdaterFactory.Setup(m => m.Create(It.IsAny<double>(), It.IsAny<Action<double>>()))
+                .Returns(Observable.Return(Unit.Default));
 
             _subject.SendMessage(string.Empty);
             _testScheduler.Start();
@@ -134,8 +145,11 @@
         {
             var executeObservable =
                 _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(Unit.Default)),
                     new Recorded<Notification<Unit>>(200, Notification.CreateOnCompleted<Unit>()));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
+            _mockProgressUpdaterFactory.Setup(m => m.Create(It.IsAny<double>(), It.IsAny<Action<double>>()))
+                .Returns(Observable.Never<Unit>());
 
             _subject.SendMessage(string.Empty);
             _testScheduler.Start();
@@ -154,17 +168,31 @@
         }
 
         [Test]
-        public void SendMessage_WhenCommandIsSuccessful_UpdatesProgress()
+        public void SendMessage_WhenProgressUpdaterInvokesOnNext_UpdatesProgress()
         {
             var executeObservable =
-                   _testScheduler.CreateColdObservable(
-                       new Recorded<Notification<Unit>>(100, Notification.CreateOnCompleted<Unit>()));
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(Unit.Default)),
+                    new Recorded<Notification<Unit>>(200, Notification.CreateOnCompleted<Unit>()));
             _mockCommandService.Setup(x => x.Execute(It.IsAny<SendMassSMSMessageCommand>())).Returns(executeObservable);
+            Action<double> updateCallback = null;
+            var progressObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(Unit.Default)),
+                    new Recorded<Notification<Unit>>(300, Notification.CreateOnCompleted<Unit>()))
+                    .Do(_ => updateCallback(20));
+            _mockProgressUpdaterFactory.Setup(m => m.Create(It.IsAny<double>(), It.IsAny<Action<double>>()))
+                .Returns<double, Action<double>>(
+                    (interval, increaseProgressAction) =>
+                        {
+                            updateCallback = increaseProgressAction;
+                            return progressObservable;
+                        });
 
             _subject.SendMessage(string.Empty);
             _testScheduler.Start();
 
-            _subject.Progress.Should().Be(100);
+            _subject.Progress.Should().Be(20);
         }
 
         [Test]
@@ -213,7 +241,8 @@
             Predicate<object> filter = item => ((IContactInfoPresenter)item).IsSelected;
             var collectionView = new DeepObservableCollectionView<IContactInfoPresenter>(sourceCollection)
                                      {
-                                         Filter = filter
+                                         Filter =
+                                             filter
                                      };
             var mockContactsSource = new Mock<IContactSource>();
             mockContactsSource.Setup(x => x.Contacts).Returns(collectionView);

@@ -9,6 +9,7 @@
     using OmniHolidays.MessagesWorkspace.MessageDetails.MessageList;
     using OmniHolidays.MessagesWorkspace.MessageDetails.SendingMessage;
     using OmniHolidays.Providers;
+    using OmniHolidays.Services;
     using OmniUI;
     using OmniUI.MainMenuEntry;
 
@@ -24,6 +25,8 @@
         protected override void LoadCore()
         {
             Kernel.Bind<IMessageDefinitionProvider>().To<GreetingDefinitionProvider>().InSingletonScope();
+
+            Kernel.Bind<IProgressUpdaterFactory>().To<ProgressUpdaterFactory>().InSingletonScope();
 
             Kernel.Bind<IMainMenuEntryViewModel>().To<MessagesMainMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMessageStepViewModel>().To<MessageCategoryViewModel>();
