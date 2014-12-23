@@ -4,10 +4,14 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
+    using OmniCommon.Helpers;
     using OmniHolidays.Commands;
     using OmniHolidays.MessagesWorkspace.ContactList;
+    using OmniHolidays.Resources;
+    using OmniHolidays.Services;
     using OmniUI.ExtensionMethods;
     using OmniUI.Presenters;
     using OmniUI.Services;
@@ -22,12 +26,17 @@
 
         private MessageDetailsHeaderState _state;
 
+        private double _progress;
+
         #endregion
 
         #region Public Properties
 
         [Inject]
         public ICommandService CommandService { get; set; }
+
+        [Inject]
+        public IProgressUpdaterFactory ProgressUpdaterFactory { get; set; }
 
         public IContactSource ContactsSource
         {
@@ -73,6 +82,23 @@
             }
         }
 
+        public double Progress
+        {
+            get
+            {
+                return _progress;
+            }
+            set
+            {
+                if (value.Equals(_progress))
+                {
+                    return;
+                }
+                _progress = value;
+                NotifyOfPropertyChange(() => Progress);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -101,15 +127,28 @@
 
         public void SendMessage(string template)
         {
+            Progress = 0;
             State = MessageDetailsHeaderState.Sending;
+
             CleanUpSendingMessage();
-            _sendingMessageSubscription =
-                CommandService.Execute(
-                    new SendMassSMSMessageCommand(
-                        template,
-                        ContactsSource.Contacts.Cast<IContactInfoPresenter>()
-                            .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
-                            .ToList())).Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
+            
+            var contactInfos =
+                ContactsSource.Contacts.Cast<IContactInfoPresenter>()
+                    .Select(contactInfoPresenter => contactInfoPresenter.ContactInfo)
+                    .ToList();
+
+            _sendingMessageSubscription = CommandService.Execute(new SendMassSMSMessageCommand(template, contactInfos))
+                .Select(
+                    _ => ProgressUpdaterFactory.Create(
+                        contactInfos.Count * Constants.SendingMessageInterval.TotalMilliseconds,
+                        increment =>
+                            {
+                                Progress += increment;
+                            }))
+                .Switch()
+                .SubscribeOn(SchedulerProvider.Default)
+                .ObserveOn(SchedulerProvider.Default)
+                .Subscribe(_ => OnMessageSent(), _ => OnMessageFailed());
         }
 
         #endregion

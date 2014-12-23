@@ -134,6 +134,8 @@
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsContentViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsHeaderViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\MessageDetailsViewModel.cs" />
+    <Compile Include="Services\IProgressUpdaterFactory.cs" />
+    <Compile Include="Services\ProgressUpdaterFactory.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\ISendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SendingMessageViewModel.cs" />
     <Compile Include="MessagesWorkspace\MessageDetails\SendingMessage\SentMessage.cs" />

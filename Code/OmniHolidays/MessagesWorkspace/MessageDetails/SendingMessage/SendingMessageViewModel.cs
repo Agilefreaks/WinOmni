@@ -82,6 +82,7 @@
             SentMessages.Clear();
 
             DisposeMessageSubscription();
+            SentMessages.Clear();
             _messageSubscription =
                 MessageContext.Contacts.Cast<IContactInfoPresenter>()
                     .ToList()
