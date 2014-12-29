@@ -3,10 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        BorderBrush="{StaticResource MainColoBrush}"
         WindowStartupLocation="CenterScreen"
-        WindowTransitionsEnabled="False"
-        ShowTitleBar="False"
         Style="{DynamicResource ShellWindowStyle}">
     
     <controls:MetroWindow.Flyouts>
@@ -28,7 +25,7 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-    <Border BorderBrush="#4185a8" BorderThickness="2">
+    <Border BorderBrush="{DynamicResource WindowBorderBrush}" BorderThickness="5,0,5,5">
         <Grid>
             <ContentControl x:Name="ContextMenuViewModel" />
             <Grid>

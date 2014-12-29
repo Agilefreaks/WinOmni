@@ -5,11 +5,13 @@
         <Setter Property="Width" Value="{StaticResource DefaultWindowWidth}" />
         <Setter Property="Height" Value="{StaticResource DefaultWindowHeight}" />
         <Setter Property="Icon" Value="/Icon.ico"/>
+        <Setter Property="ShowIconOnTitleBar" Value="False"/>
         <Setter Property="ResizeMode" Value="CanResize"/>
         <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="NonActiveBorderBrush" Value="{StaticResource BlackBrush}"/>
         <Setter Property="MinHeight" Value="{StaticResource MinWindowHeight}"/>
         <Setter Property="MinWidth" Value="{StaticResource MinWindowWidth}"/>
+        <Setter Property="WindowTitleBrush" Value="{DynamicResource WindowBorderBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="WindowTransitionsEnabled" Value="False"/>
     </Style>
 </ResourceDictionary>
