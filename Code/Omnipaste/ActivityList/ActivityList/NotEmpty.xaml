@@ -8,30 +8,39 @@
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid HorizontalAlignment="Left">
-        <Border Style="{DynamicResource ListScreenContainerStyle}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <StackPanel Style="{DynamicResource FilterContainer}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="{DynamicResource ContentBackgroundBrush}" Height="150" Padding="18,42"
+                Width="{StaticResource NarrowContainerWidth}">
+            <StackPanel>
+                <DockPanel VerticalAlignment="Center">
+                    <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.Activity}" Foreground="{DynamicResource ActivityContentBrush}"
+                               FontFamily="{DynamicResource HeaderTitleFont}" FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap"
+                               VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35"/>
+                </DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Style="{DynamicResource FilterContainer}" Margin="0,16,0,0">
                     <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
                     <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsCheckBoxStyle}" Content="{x:Static properties:Resources.Calls}"/>
                     <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesCheckBoxStyle}" Content="{x:Static properties:Resources.Messages}"/>
                 </StackPanel>
-                <ScrollViewer Grid.Row="1" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
-                    <Grid>
-                        <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <Border Style="{DynamicResource LiveContentBorderStyle}" />
-                    </Grid>
-                </ScrollViewer>
-            </Grid>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
+            <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
+                <Grid>
+                    <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Border Style="{DynamicResource LiveContentBorderStyle}" />
+                </Grid>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>
