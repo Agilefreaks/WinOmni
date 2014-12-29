@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
+    <Compile Include="Behaviors\TextBoxAutoFocusBehavior.cs" />
     <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Behaviors\MultipleContentButton.cs" />
     <Compile Include="Converters\NullableToBooleanConverter.cs" />
