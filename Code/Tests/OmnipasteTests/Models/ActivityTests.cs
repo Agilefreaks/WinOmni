@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Models
 {
     using System;
+    using System.Globalization;
     using Clipboard.Models;
     using Events.Models;
     using FluentAssertions;
@@ -100,6 +101,73 @@
 
             contactInfo.Name.Should().Be("Some Name");
             contactInfo.Phone.Should().Be("07xxxxxx");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheDeviceName()
+        {
+            _subject.Device = "some device";
+
+            _subject.ToString().Should().Contain("some device");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheYearOfTheActivity()
+        {
+            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
+            _subject.Time = someTime;
+
+            _subject.ToString().Should().Contain("2000");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheMonthOfTheActivity()
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
+            _subject.Time = someTime;
+
+            _subject.ToString().Should().Contain("ianuarie");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheDateOfTheActivity()
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
+            _subject.Time = someTime;
+
+            _subject.ToString().Should().Contain("2000-1-1");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheTypeOfTheActivity()
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            _subject.Type = ActivityTypeEnum.Call;
+
+            _subject.ToString().Should().Contain("Apel de la:");
+        }
+        
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheContentOfTheActivity()
+        {
+            _subject.Content = "someContent";
+
+            _subject.ToString().Should().Contain("someContent");
+        }
+
+        [Test]
+        public void ToString_Always_ReturnsAStringContainingTheExtraDataOfTheActivity()
+        {
+            _subject.ExtraData.SomeData = new ContactInfo
+                                                 {
+                                                     FirstName = "someFirstName",
+                                                     LastName = "someLastName",
+                                                     Phone = "0987"
+                                                 };
+
+            _subject.ToString().Should().Contain("someFirstName someLastName 0987");
         }
 
         [TearDown]

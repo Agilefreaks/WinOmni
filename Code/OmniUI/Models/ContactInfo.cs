@@ -40,5 +40,10 @@
         public string Phone { get; set; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Join(NamePartSeparator, Name, Phone);
+        }
     }
 }

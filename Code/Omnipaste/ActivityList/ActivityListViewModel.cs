@@ -4,6 +4,7 @@ namespace Omnipaste.ActivityList
     using System.Reactive.Linq;
     using Clipboard.Handlers;
     using Events.Handlers;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
@@ -24,6 +25,8 @@ namespace Omnipaste.ActivityList
 
         private bool _showMessages;
 
+        private string _filterText;
+
         #endregion
 
         #region Constructors and Destructors
@@ -36,7 +39,7 @@ namespace Omnipaste.ActivityList
         {
             _activityViewModelFactory = activityViewModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
-            ViewModelFilter = MatchesActivityType;
+            ViewModelFilter = MatchesFilter;
         }
 
         #endregion
@@ -105,6 +108,24 @@ namespace Omnipaste.ActivityList
             }
         }
 
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+            set
+            {
+                if (value == _filterText)
+                {
+                    return;
+                }
+                _filterText = value;
+                NotifyOfPropertyChange();
+                UpdateFilter();
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -158,7 +179,20 @@ namespace Omnipaste.ActivityList
             OnFilterUpdated();
         }
 
-        protected bool MatchesActivityType(IActivityViewModel viewModel)
+        protected bool MatchesFilter(IActivityViewModel viewModel)
+        {
+            return MatchesActivityType(viewModel) && MatchesTextFilter(viewModel);
+        }
+
+        private bool MatchesTextFilter(IActivityViewModel viewModel)
+        {
+            return string.IsNullOrWhiteSpace(FilterText)
+                   || viewModel.Model.ToString()
+                          .RemoveDiacritics()
+                          .IndexOf(FilterText.RemoveDiacritics(), StringComparison.CurrentCultureIgnoreCase) >= 0;
+        }
+
+        private bool MatchesActivityType(IActivityViewModel viewModel)
         {
             return (viewModel != null) && _allowedActivityTypes.HasFlag(viewModel.Model.Type)
                    && (viewModel.Model.Type != ActivityTypeEnum.None)
