@@ -16,6 +16,7 @@
                                  IsEnabled="{Binding Path=CanSend}" Width="480">
                         <i:Interaction.Behaviors>
                             <behaviors:TextBoxAutoFocusBehavior/>
+                            <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                 </ScrollViewer>

@@ -7,9 +7,9 @@
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.Dialog;
+    using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Services;
 
@@ -25,6 +25,8 @@
 
         private SMSMessage _model;
 
+        private Command _sendCommand;
+
         #endregion
 
         #region Constructors and Destructors
@@ -33,6 +35,7 @@
         {
             SMSMessageFactory = smsMessageFactory;
             _devices = devices;
+            SendCommand = new Command(Send);
         }
 
         #endregion
@@ -87,6 +90,23 @@
                 _model = value;
                 _model.PropertyChanged += ModelPropertyChanged;
                 NotifyOfPropertyChange(() => Model);
+            }
+        }
+
+        public Command SendCommand
+        {
+            get
+            {
+                return _sendCommand;
+            }
+            set
+            {
+                if (Equals(value, _sendCommand))
+                {
+                    return;
+                }
+                _sendCommand = value;
+                NotifyOfPropertyChange(() => SendCommand);
             }
         }
 
