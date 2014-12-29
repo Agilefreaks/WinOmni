@@ -83,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
+    <Compile Include="Behaviors\DisposableBehavior.cs" />
+    <Compile Include="Behaviors\HotKeyBehavior.cs" />
+    <Compile Include="Behaviors\ScrollBehavior.cs" />
+    <Compile Include="Behaviors\TextBoxFocusBehavior.cs" />
     <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Behaviors\MultipleContentButton.cs" />
     <Compile Include="Converters\NullableToBooleanConverter.cs" />

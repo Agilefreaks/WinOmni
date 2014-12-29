@@ -10,7 +10,6 @@
     using Omnipaste.ActivityDetails.Conversation.Call;
     using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Models;
     using Omnipaste.Services;
     using OmniUI.Details;
     using OmniUI.Models;

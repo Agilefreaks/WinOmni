@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource ScreenBorderBrush}" CornerRadius="3" BorderThickness="1" 
@@ -11,7 +13,12 @@
             <StackPanel DockPanel.Dock="Top">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Height="82" Margin="11,0,8,0" Padding="0, 11" Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
                     <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=CanSend}" Width="480"/>
+                                 IsEnabled="{Binding Path=CanSend}" Width="480">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanSend}" />
+                            <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 </ScrollViewer>
                 <Border BorderThickness="1,0,0,1" BorderBrush="{DynamicResource ScreenBorderBrush}"/>
             </StackPanel>

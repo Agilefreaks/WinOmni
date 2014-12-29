@@ -4,23 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border Margin="0,0,0,4" Padding="18,16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
-                    <ContentControl cal:View.Model="{Binding}" />
-                </Border>
-                <DataTemplate.Triggers>
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                        <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
-                    </Trigger>
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                        <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" TargetName="ContentBorder"/>
-                    </Trigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    
+    <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
+        <i:Interaction.Behaviors>
+            <behaviors:ScrollBehavior Collection="{Binding Path=Items}" ScrollDirection="Bottom" />
+        </i:Interaction.Behaviors>
+
+        <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="0,0,0,4" Padding="18,16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
+                        <ContentControl cal:View.Model="{Binding}" />
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" TargetName="ContentBorder"/>
+                        </Trigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>
