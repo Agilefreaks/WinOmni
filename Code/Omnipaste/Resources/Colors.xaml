@@ -3,6 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Colors -->
+    <Color x:Key="WindowBorderColor">#4185a8</Color>
     <Color x:Key="MainColor">#FF4E5CA9</Color>
     <Color x:Key="NotificationBackgroundColor">#FFFFFF</Color>
     <Color x:Key="CallNotificationColor">#2673ec</Color>
