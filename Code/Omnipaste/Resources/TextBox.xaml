@@ -16,4 +16,27 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="IsReadOnly" Value="True"/>
     </Style>
+
+    <Style x:Key="FilterTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border CornerRadius="10" BorderThickness="2" BorderBrush="{DynamicResource PassiveUiElementsBrush}" Background="{DynamicResource ContentBackgroundBrush}" 
+                            Padding="5,0" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                        <DockPanel LastChildFill="True">
+                            <Rectangle DockPanel.Dock="Left"  Width="15" Height="15" Fill="{DynamicResource ActivityContentBrush}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{DynamicResource search_icon}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <TextBox VerticalAlignment="Center" BorderThickness="0" FontFamily="{DynamicResource ActivityContentFont}" 
+                                     FontSize="{DynamicResource ActivityContentFontSize}" Background="Transparent" Margin="5,0"
+                                     Text="{Binding Path=Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

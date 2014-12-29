@@ -41,5 +41,15 @@
 
             _subject.Name.Should().Be("some first name last");
         }
+
+        [Test]
+        public void ToString_Always_ReturnsTheNameAndPhone()
+        {
+            _subject.FirstName = "some first name";
+            _subject.LastName = "some last name";
+            _subject.Phone = "12367";
+
+            _subject.ToString().Should().Be("some first name some last name 12367");
+        }
     }
 }
