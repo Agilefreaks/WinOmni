@@ -15,7 +15,7 @@
                     <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
                                  IsEnabled="{Binding Path=CanSend}" Width="480">
                         <i:Interaction.Behaviors>
-                            <behaviors:TextBoxAutoFocusBehavior/>
+                            <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanSend}" />
                             <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
