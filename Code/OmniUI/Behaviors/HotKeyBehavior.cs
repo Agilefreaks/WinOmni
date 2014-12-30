@@ -3,9 +3,8 @@ namespace OmniUI.Behaviors
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Interactivity;
 
-    public class HotKeyBehavior : Behavior<TextBox>
+    public class HotKeyBehavior : DisposableBehavior<TextBox>
     {
         public static readonly DependencyProperty ActionKeyProperty = DependencyProperty.Register(
             "ActionKey",
@@ -57,12 +56,12 @@ namespace OmniUI.Behaviors
             }
         }
 
-        protected override void OnAttached()
+        protected override void SetUp()
         {
             AssociatedObject.KeyDown += OnKeyDown;
         }
 
-        protected override void OnDetaching()
+        protected override void TearDown()
         {
             AssociatedObject.KeyDown -= OnKeyDown;
         }

@@ -3,9 +3,8 @@
     using System;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Interactivity;
 
-    public class VisibleOnTruncationBehavior : Behavior<Control>
+    public class VisibleOnTruncationBehavior : DisposableBehavior<Control>
     {
         #region Static Fields
 
@@ -28,68 +27,49 @@
             }
             set
             {
-                OnTextBlockChanging(TextBlockControl, value);
                 SetValue(TextBlockControlProperty, value);
             }
         }
 
         #endregion
 
-        #region Public Methods and Operators
-
-        public bool IsTextBlockTruncated(TextBlock textBlock)
-        {
-            var result = false;
-            if (textBlock != null)
-            {
-                textBlock.Measure(new Size(textBlock.ActualWidth, Double.PositiveInfinity));
-                result = textBlock.DesiredSize.Height > textBlock.ActualHeight;
-            }
-
-            return result;
-        }
-
-        #endregion
-
         #region Methods
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            UpdateVisibility();
-        }
-
-        protected override void OnDetaching()
-        {
-            var textBlockControl = TextBlockControl;
-            if (textBlockControl != null)
-            {
-                textBlockControl.Loaded -= OnTextBlockLoaded;
-                textBlockControl.SizeChanged -= OnTextBlockSizeChanged;
-            }
-        }
 
         private static void OnTargetTextBlockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var visibleOnTruncationBehavior = (VisibleOnTruncationBehavior)d;
-            visibleOnTruncationBehavior.TextBlockControl = e.NewValue as TextBlock;
+            var behavior = (VisibleOnTruncationBehavior)d;
+            behavior.UnhookTextBlock(e.OldValue as TextBlock);
+            behavior.HookTextBlock(e.NewValue as TextBlock);
+            behavior.UpdateVisibility();
         }
 
-        private void OnTextBlockChanging(TextBlock oldValue, TextBlock newValue)
+        protected override void SetUp()
+        {
+            HookTextBlock(TextBlockControl);
+            UpdateVisibility();
+        }
+
+        protected override void TearDown()
+        {
+            UnhookTextBlock(TextBlockControl);
+        }
+
+        private void HookTextBlock(TextBlock newValue)
+        {
+            if (newValue != null)
+            {
+                newValue.Loaded += OnTextBlockLoaded;
+                newValue.SizeChanged += OnTextBlockSizeChanged;
+            }
+        }
+
+        private void UnhookTextBlock(TextBlock oldValue)
         {
             if (oldValue != null)
             {
                 oldValue.Loaded -= OnTextBlockLoaded;
                 oldValue.SizeChanged -= OnTextBlockSizeChanged;
             }
-
-            if (newValue != null)
-            {
-                newValue.Loaded += OnTextBlockLoaded;
-                newValue.SizeChanged += OnTextBlockSizeChanged;
-            }
-
-            UpdateVisibility();
         }
 
         private void OnTextBlockLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -108,6 +88,18 @@
             AssociatedObject.Visibility = textBlock != null && IsTextBlockTruncated(textBlock)
                                               ? Visibility.Visible
                                               : Visibility.Hidden;
+        }
+
+        private bool IsTextBlockTruncated(TextBlock textBlock)
+        {
+            var result = false;
+            if (textBlock != null)
+            {
+                textBlock.Measure(new Size(textBlock.ActualWidth, Double.PositiveInfinity));
+                result = textBlock.DesiredSize.Height > textBlock.ActualHeight;
+            }
+
+            return result;
         }
 
         #endregion
