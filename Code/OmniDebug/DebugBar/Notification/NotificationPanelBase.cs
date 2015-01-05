@@ -46,6 +46,10 @@
                              { EventTypeEnum.IncomingSmsEvent, OmniUI.Resources.IconNames.SMS }
                          };
             NotificationTime = DateTime.Now;
+            NotificationContactName = "Some Contact";
+            NotificationContent = "some content";
+            NotificationPhoneNumber = "0788999666";
+            NotificationTime = DateTime.Now;
         }
 
         #endregion

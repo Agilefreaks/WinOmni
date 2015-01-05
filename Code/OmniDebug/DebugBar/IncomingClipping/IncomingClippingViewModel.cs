@@ -28,6 +28,8 @@
         {
             _omniServiceWrapper = omniServiceWrapper;
             _clippingsWrapper = clippingsWrapper;
+            ClippingContent = "some content";
+            ClippingType = Clipping.ClippingTypeEnum.Unknown;
         }
 
         #endregion
