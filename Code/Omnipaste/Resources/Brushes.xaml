@@ -44,6 +44,7 @@
     <SolidColorBrush x:Key="ConnectionStatusStrokeBrush" Color="{DynamicResource ConnectionStatusStrokeColor}"/>
 
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource ButtonBorderColor}"/>
+    <SolidColorBrush x:Key="ScrollBarBrush" Color="{DynamicResource ScrollBarColor}"/>
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />

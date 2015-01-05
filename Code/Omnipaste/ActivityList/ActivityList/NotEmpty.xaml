@@ -29,7 +29,7 @@
             </StackPanel>
         </Border>
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
-            <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
+            <ScrollViewer>
                 <Grid>
                     <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                         <ItemsControl.ItemTemplate>

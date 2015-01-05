@@ -25,6 +25,7 @@
 
         <TextBox Grid.Row="2" x:Name="Model_Message" Height="90"  TabIndex="1" AcceptsReturn="True"
                  Style="{StaticResource SpacedTextBoxStyle}" 
+                 VerticalScrollBarVisibility="Auto"
                  controls:TextBoxHelper.Watermark="{x:Static p:Resources.SmsComposerLabelMessage}" 
                  controls:TextBoxHelper.IsWaitingForData="True" TextWrapping="Wrap"/>
 
