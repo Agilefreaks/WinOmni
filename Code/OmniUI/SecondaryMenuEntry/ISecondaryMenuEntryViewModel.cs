@@ -1,6 +1,6 @@
 ﻿namespace OmniUI.SecondaryMenuEntry
 {
-    using OmniUI.Intefaces;
+    using OmniUI.Interfaces;
 
     public interface ISecondaryMenuEntryViewModel : IMenuEntryViewModel
     {

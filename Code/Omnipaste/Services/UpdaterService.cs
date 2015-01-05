@@ -6,29 +6,28 @@
     using System.Linq;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Reflection;
     using Microsoft.Deployment.WindowsInstaller;
-    using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
-    using NAppUpdate.Framework.Tasks;
     using OmniCommon;
+    using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.ExtensionMethods;
 
     public class UpdaterService : IUpdaterService
     {
-        private readonly IWebProxyFactory _webProxyFactory;
-
         #region Constants
 
         private const string InstallerName = "OmnipasteInstaller.msi";
 
-        private const string MSIExec = "msiexec.exe";
-
         private const string UpdateFeedFileName = "FeedBuilder.xml";
+
+        private const string ReleaseLogFileName = "Release.md";
+        
+        private const string MSIExec = "msiexec.exe";
 
         private const int DefaultUpdateIntervalInMinutes = 60;
 
@@ -36,11 +35,17 @@
 
         #region Fields
 
+        private readonly IWebProxyFactory _webProxyFactory;
+
+        private readonly IArgumentsDataProvider _argumentsDataProvider;
+
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
-        private readonly UpdateManager _updateManager;
+        private readonly IUpdateManager _updateManager;
+        
+        private readonly ReplaySubject<UpdateInfo> _updateSubject;
 
         private IDisposable _systemIdleObserver;
 
@@ -53,14 +58,18 @@
         #region Constructors and Destructors
 
         public UpdaterService(
+            IUpdateManager updateManager,
             ISystemIdleService systemIdleService,
             IConfigurationService configurationService,
-            IWebProxyFactory webProxyFactory)
+            IWebProxyFactory webProxyFactory,
+            IArgumentsDataProvider argumentsDataProvider)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
-            _updateManager = UpdateManager.Instance;
+            _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
+            _argumentsDataProvider = argumentsDataProvider;
+            _updateSubject = new ReplaySubject<UpdateInfo>();
 
             SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
@@ -76,6 +85,14 @@
         public ISystemIdleService SystemIdleService { get; set; }
 
         public IConfigurationService ConfigurationService { get; set; }
+
+        public IObservable<UpdateInfo> UpdateObservable
+        {
+            get
+            {
+                return _updateSubject;
+            }
+        }
 
         #endregion
 
@@ -108,6 +125,14 @@
             }
         }
 
+        protected string ReleaseLogPath
+        {
+            get
+            {
+                return Path.Combine(RootDirectory, ReleaseLogFileName);
+            }
+        }
+
         protected static string RootDirectory
         {
             get
@@ -120,13 +145,21 @@
             }
         }
 
+        protected bool IsFirstRunAfterUpdate
+        {
+            get
+            {
+                return _argumentsDataProvider.Updated;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
 
         public IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval)
         {
-            var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval);
+            var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval, SchedulerProvider.Default);
             return timer.Select(_ => _updateManager.AreUpdatesAvailable(NewRemoteInstallerAvailable)).Switch();
         }
 
@@ -143,11 +176,6 @@
             {
                 ExceptionReporter.Instance.Report(exception);
             }
-        }
-
-        public IObservable<bool> DownloadUpdates()
-        {
-            return _updateManager.DownloadUpdates(PrepareDownloadedInstaller);
         }
 
         public void InstallNewVersion()
@@ -182,12 +210,19 @@
                         });
         }
 
+        public bool NewRemoteInstallerAvailable()
+        {
+            var newInstallerVersion = GetRemoteInstallerVersion(_updateManager);
+
+            return newInstallerVersion != null && RemoteInstallerHasHigherVersion(newInstallerVersion);
+        }
+
         public bool NewLocalInstallerAvailable()
         {
             bool result;
             try
             {
-                result = File.Exists(MsiTemporaryPath) && MsiHasHigherVersion(MsiTemporaryPath);
+                result = File.Exists(MsiTemporaryPath) && LocalInstallerHasHigherVersion(MsiTemporaryPath);
             }
             catch (Exception exception)
             {
@@ -215,11 +250,22 @@
                 _updateObserver =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
-                        .Select(_ => DownloadUpdates())
+                        .Select(_ => _updateManager.DownloadUpdates(OnDownloadSuccess))
                         .Switch()
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
+
+            if (IsFirstRunAfterUpdate)
+            {
+                NotifyNewVersion(true);
+            }
+        }
+
+        private void OnDownloadSuccess()
+        {
+            MoveUpdatesToTempFolder();
+            NotifyNewVersion();
         }
 
         public void Stop()
@@ -242,7 +288,7 @@
 
         #region Methods
 
-        private static string GetMsiVersion(string msiPath)
+        private static string GetLocalInstallerVersion(string msiPath)
         {
             string versionString;
             using (var database = new Database(msiPath))
@@ -254,15 +300,22 @@
 
             return versionString;
         }
-
-        private static bool MsiHasHigherVersion(string msiPath)
+        private static string GetRemoteInstallerVersion(IUpdateManager updateManager)
         {
-            return VersionIsHigherThanOwn(GetMsiVersion(msiPath));
+            return updateManager.GetUpdatedFiles()
+                    .Where(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName)
+                    .Select(fileUpdateTask => fileUpdateTask.Version)
+                    .FirstOrDefault();
         }
 
-        private static bool RemoteInstallerHasHigherVersion(FileUpdateTask installerUpdateTask)
+        private static bool LocalInstallerHasHigherVersion(string msiPath)
         {
-            return VersionIsHigherThanOwn(installerUpdateTask.Version);
+            return VersionIsHigherThanOwn(GetLocalInstallerVersion(msiPath));
+        }
+
+        private static bool RemoteInstallerHasHigherVersion(string version)
+        {
+            return VersionIsHigherThanOwn(version);
         }
 
         private static bool VersionIsHigherThanOwn(string versionString)
@@ -282,37 +335,44 @@
             }
         }
 
-        private FileUpdateTask GetUpdateInstallerTask()
-        {
-            return
-                _updateManager.Tasks.Where(task => task is FileUpdateTask)
-                    .Cast<FileUpdateTask>()
-                    .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
-        }
-
-        private bool NewRemoteInstallerAvailable()
-        {
-            var updateInstallerTask = GetUpdateInstallerTask();
-
-            return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
-        }
-
-        private void PrepareDownloadedInstaller()
+        private void MoveUpdatesToTempFolder()
         {
             try
             {
-                var updateInstallerTask = GetUpdateInstallerTask();
+                if (!Directory.Exists(InstallerTemporaryFolder))
+                {
+                    Directory.CreateDirectory(InstallerTemporaryFolder);
+                }
+
+                var localFiles = _updateManager.GetUpdatedFiles().Select(m => m.LocalPath).ToList();
+
                 _updateManager.ApplyUpdates(false);
-                Directory.CreateDirectory(InstallerTemporaryFolder);
-                //Move new msi to a temp file as the app directory might get uninstalled
-                var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
-                File.Copy(installerPath, MsiTemporaryPath, true);
+
+                //Copy updates to a temp file as the app directory might get uninstalled
+                localFiles.ForEach(
+                        localPath =>
+                            {
+                                var filePath = Path.Combine(RootDirectory, localPath);
+                                var newFilePath = Path.Combine(InstallerTemporaryFolder, localPath);
+                                
+                                File.Copy(filePath, newFilePath, true);
+                            });
             }
             catch (Exception exception)
             {
                 ExceptionReporter.Instance.Report(exception);
                 throw;
             }
+        }
+
+        private void NotifyNewVersion(bool wasInstalled = false)
+        {
+            var updateInfo = new UpdateInfo
+                                        {
+                                            WasInstalled = wasInstalled,
+                                            ReleaseLog = File.Exists(ReleaseLogPath) ? File.ReadAllText(ReleaseLogPath) : string.Empty
+                                        };
+            _updateSubject.OnNext(updateInfo);
         }
 
         private int GetUpdateCheckInterval()

@@ -4,14 +4,16 @@
 
     public static class ActivityTypeExtensions
     {
+        const string CallBrush = "CallBrush";
+
+        const string ClippingBrush = "ClippingBrush";
+
+        const string MessageBrush = "MessageBrush";
+
+        const string VersionBrush = "VersionBrush";
+        
         public static string GetBrushName(this ActivityTypeEnum activityType)
         {
-            const string CallBrush = "CallBrush";
-
-            const string ClippingBrush = "ClippingBrush";
-
-            const string MessageBrush = "MessageBrush";
-
             string brushName = null;
 
             switch (activityType)
@@ -24,6 +26,9 @@
                     break;
                 case ActivityTypeEnum.Call:
                     brushName = CallBrush;
+                    break;
+                case ActivityTypeEnum.Version:
+                    brushName = VersionBrush;
                     break;
             }
 

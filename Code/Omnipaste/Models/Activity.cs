@@ -8,6 +8,7 @@
     using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.Properties;
+    using Omnipaste.Services;
 
     public class Activity
     {
@@ -54,6 +55,14 @@
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Resources.FromCloud;
             _extraData.ContactInfo = new EventContactInfo(@event);
+        }
+
+        public Activity(UpdateInfo updateInfo)
+            : this()
+        {
+            Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
+            Type = ActivityTypeEnum.Version;
+            _extraData.UpdateInfo = updateInfo;
         }
 
         #endregion

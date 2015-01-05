@@ -713,6 +713,33 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New version! Restart application to update..
+        /// </summary>
+        public static string NewVersionAvailable {
+            get {
+                return ResourceManager.GetString("NewVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application has been updated..
+        /// </summary>
+        public static string NewVersionInstalled {
+            get {
+                return ResourceManager.GetString("NewVersionInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart application to update.
+        /// </summary>
+        public static string NewVersionLabel {
+            get {
+                return ResourceManager.GetString("NewVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No proxy server is used. A direct connection is made to the Omnipaste server..
         /// </summary>
         public static string NoProxyUsed {
@@ -934,6 +961,15 @@ namespace Omnipaste.Properties {
         public static string UserTokenLabel2 {
             get {
                 return ResourceManager.GetString("UserTokenLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed updates history.
+        /// </summary>
+        public static string VersionDetailsHeaderTitle {
+            get {
+                return ResourceManager.GetString("VersionDetailsHeaderTitle", resourceCulture);
             }
         }
         

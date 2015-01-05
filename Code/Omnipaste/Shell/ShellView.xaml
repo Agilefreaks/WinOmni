@@ -24,6 +24,16 @@
             </controls:FlyoutsControl.ItemContainerStyle>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
+    
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands ItemsSource="{Binding Path=TitleBarItems}">
+            <controls:WindowCommands.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl cal:View.Model="{Binding}" />
+                </DataTemplate>
+            </controls:WindowCommands.ItemTemplate>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
 
     <Border BorderBrush="{DynamicResource WindowBorderBrush}" BorderThickness="5,0,5,5">
         <Grid>

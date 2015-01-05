@@ -12,6 +12,7 @@ namespace Omnipaste.ActivityList
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using Omnipaste.Services;
     using OmniUI.List;
 
     public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
@@ -38,8 +39,9 @@ namespace Omnipaste.ActivityList
             IClipboardHandler clipboardHandler,
             IEventsHandler eventsHandler,
             IActivityViewModelFactory activityViewModelFactory,
+            IUpdaterService updaterService,
             IEventAggregator eventAggregator)
-            : base(GetActivityObservable(clipboardHandler, eventsHandler))
+            : base(GetActivityObservable(clipboardHandler, eventsHandler, updaterService))
         {
             _activityViewModelFactory = activityViewModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
@@ -151,11 +153,13 @@ namespace Omnipaste.ActivityList
 
         private static IObservable<Activity> GetActivityObservable(
             IClipboardHandler clipboardHandler,
-            IEventsHandler eventsHandler)
+            IEventsHandler eventsHandler,
+            IUpdaterService updaterService)
         {
             return
                 clipboardHandler.Select(clipping => new Activity(clipping))
-                    .Merge(eventsHandler.Select(@event => new Activity(@event)));
+                    .Merge(eventsHandler.Select(@event => new Activity(@event)))
+                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
         }
 
         protected void UpdateFilter()

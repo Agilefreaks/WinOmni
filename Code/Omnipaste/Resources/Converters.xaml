@@ -4,6 +4,7 @@
                     xmlns:converters1="clr-namespace:OmniUI.Converters;assembly=OmniUI">
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters1:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
     <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
     <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>

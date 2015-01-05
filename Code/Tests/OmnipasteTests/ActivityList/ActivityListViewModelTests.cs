@@ -28,6 +28,8 @@
 
         private Mock<IClipboardHandler> _mockClipboardHandler;
 
+        private Mock<IUpdaterService> _mockUpdateService;
+
         private Mock<IActivityViewModelFactory> _mockActivityViewModelFactory;
 
         private TestScheduler _testScheduler;
@@ -41,6 +43,7 @@
         {
             _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock};
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService>();
             _mockEventAggregator = new Mock<IEventAggregator>();
@@ -48,6 +51,7 @@
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
                 _mockActivityViewModelFactory.Object,
+                _mockUpdateService.Object,
                 _mockEventAggregator.Object);
             _testScheduler = new TestScheduler();
         }
@@ -67,6 +71,7 @@
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
                 _mockActivityViewModelFactory.Object,
+                _mockUpdateService.Object,
                 _mockEventAggregator.Object);
             viewModel.Start();
 
@@ -92,7 +97,33 @@
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
                 _mockActivityViewModelFactory.Object,
+                _mockUpdateService.Object,
                 _mockEventAggregator.Object);
+            viewModel.Start();
+
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            viewModel.Items.Count.Should().Be(1);
+            viewModel.Items[0].Should().Be(activityViewModel);
+        }
+
+        [Test]
+        public void ReceivingAnUpdate_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
+        {
+            var eventObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(new UpdateInfo())),
+                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
+            _mockUpdateService.SetupGet(x => x.UpdateObservable).Returns(eventObservable);
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter() };
+            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
+            var viewModel = new ActivityListViewModel(
+                _mockClipboardHandler.Object,
+                _mockEventsHandler.Object,
+                _mockActivityViewModelFactory.Object,
+                _mockUpdateService.Object,
+                _mockEventAggregator.Object
+                );
             viewModel.Start();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -153,10 +184,10 @@
             _subject.ShowMessages = false;
 
             var filteredItems = _subject.FilteredItems.Cast<IActivityViewModel>().ToList();
-            filteredItems.Count.Should().Be(3);
-            filteredItems[0].Model.Type.Should().Be(ActivityTypeEnum.Clipping);
-            filteredItems[1].Model.Type.Should().Be(ActivityTypeEnum.Call);
-            filteredItems[2].Model.Type.Should().Be(ActivityTypeEnum.Message);	
+
+            var values = Enum.GetValues(typeof(ActivityTypeEnum)).Cast<ActivityTypeEnum>().Where(type => type != ActivityTypeEnum.All && type != ActivityTypeEnum.None).ToList();
+            filteredItems.Count.Should().Be(values.Count);
+            filteredItems.ForEach(vm => { values.Should().Contain(vm.Model.Type); });
         }
 
         [Test]
