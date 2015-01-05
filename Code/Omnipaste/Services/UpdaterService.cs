@@ -6,10 +6,10 @@
     using System.Linq;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Reflection;
     using Castle.Core.Internal;
     using Microsoft.Deployment.WindowsInstaller;
-    using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
     using OmniCommon;
@@ -17,17 +17,16 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.ExtensionMethods;
 
     public class UpdaterService : IUpdaterService
     {
-        private readonly IWebProxyFactory _webProxyFactory;
-
         #region Constants
 
         private const string InstallerName = "OmnipasteInstaller.msi";
 
         private const string UpdateFeedFileName = "FeedBuilder.xml";
+
+        private const string ReleaseLogFileName = "Release.md";
         
         private const string MSIExec = "msiexec.exe";
 
@@ -37,11 +36,13 @@
 
         #region Fields
 
+        private readonly IWebProxyFactory _webProxyFactory;
+
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
-        private readonly UpdateManager _updateManager;
+        private readonly IUpdateManager _updateManager;
 
         private IDisposable _systemIdleObserver;
 
@@ -49,19 +50,23 @@
 
         private IDisposable _proxyConfigurationSubscription;
 
+        private readonly Subject<UpdateInfo> _updateAvailableSubject;
+
         #endregion
 
         #region Constructors and Destructors
 
         public UpdaterService(
+            IUpdateManager updateManager,
             ISystemIdleService systemIdleService,
             IConfigurationService configurationService,
             IWebProxyFactory webProxyFactory)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
-            _updateManager = UpdateManager.Instance;
+            _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
+            _updateAvailableSubject = new Subject<UpdateInfo>();
 
             SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
@@ -77,6 +82,14 @@
         public ISystemIdleService SystemIdleService { get; set; }
 
         public IConfigurationService ConfigurationService { get; set; }
+
+        public IObservable<UpdateInfo> UpdateAvailableObservable
+        {
+            get
+            {
+                return _updateAvailableSubject;
+            }
+        }
 
         #endregion
 
@@ -109,6 +122,14 @@
             }
         }
 
+        protected string ReleaseLogTemporaryPath
+        {
+            get
+            {
+                return Path.Combine(InstallerTemporaryFolder, ReleaseLogFileName);
+            }
+        }
+
         protected static string RootDirectory
         {
             get
@@ -127,7 +148,7 @@
 
         public IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval)
         {
-            var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval);
+            var timer = Observable.Timer(_initialUpdateCheckDelay, updateCheckInterval, SchedulerProvider.Default);
             return timer.Select(_ => _updateManager.AreUpdatesAvailable(NewRemoteInstallerAvailable)).Switch();
         }
 
@@ -221,6 +242,7 @@
                         .Select(_ => _updateManager.DownloadUpdates())
                         .Switch()
                         .Do(_ => MoveUpdatesToTempFolder())
+                        .Do(_ => NotifyUpdateAvailable())
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
@@ -258,7 +280,7 @@
 
             return versionString;
         }
-        private static string GetRemoteInstallerVersion(UpdateManager updateManager)
+        private static string GetRemoteInstallerVersion(IUpdateManager updateManager)
         {
             return
                 updateManager.Tasks.Where(task => task is FileUpdateTask)
@@ -322,6 +344,15 @@
                 ExceptionReporter.Instance.Report(exception);
                 throw;
             }
+        }
+
+        private void NotifyUpdateAvailable()
+        {
+            var updateInfo = new UpdateInfo
+                                        {
+                                            ReleaseLog = File.Exists(ReleaseLogTemporaryPath) ? File.ReadAllText(ReleaseLogTemporaryPath) : string.Empty
+                                        };
+            _updateAvailableSubject.OnNext(updateInfo);
         }
 
         private int GetUpdateCheckInterval()

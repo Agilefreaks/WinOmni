@@ -63,6 +63,7 @@
             Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
             Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
+            Kernel.Bind<IUpdateManager>().ToConstant(new NAppUpdateManager());
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
