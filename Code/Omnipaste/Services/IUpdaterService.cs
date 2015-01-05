@@ -7,8 +7,6 @@
     {
         IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 
-        IObservable<bool> DownloadUpdates();
-
         void InstallNewVersionWhenIdle(TimeSpan idleTimeSpan);
 
         void InstallNewVersion();

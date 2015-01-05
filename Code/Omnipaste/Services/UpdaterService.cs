@@ -7,6 +7,7 @@
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
     using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
@@ -26,9 +27,9 @@
 
         private const string InstallerName = "OmnipasteInstaller.msi";
 
-        private const string MSIExec = "msiexec.exe";
-
         private const string UpdateFeedFileName = "FeedBuilder.xml";
+        
+        private const string MSIExec = "msiexec.exe";
 
         private const int DefaultUpdateIntervalInMinutes = 60;
 
@@ -145,11 +146,6 @@
             }
         }
 
-        public IObservable<bool> DownloadUpdates()
-        {
-            return _updateManager.DownloadUpdates(PrepareDownloadedInstaller);
-        }
-
         public void InstallNewVersion()
         {
             try
@@ -182,12 +178,19 @@
                         });
         }
 
+        public bool NewRemoteInstallerAvailable()
+        {
+            var newInstallerVersion = GetRemoteInstallerVersion(_updateManager);
+
+            return newInstallerVersion != null && RemoteInstallerHasHigherVersion(newInstallerVersion);
+        }
+
         public bool NewLocalInstallerAvailable()
         {
             bool result;
             try
             {
-                result = File.Exists(MsiTemporaryPath) && MsiHasHigherVersion(MsiTemporaryPath);
+                result = File.Exists(MsiTemporaryPath) && LocalInstallerHasHigherVersion(MsiTemporaryPath);
             }
             catch (Exception exception)
             {
@@ -215,8 +218,9 @@
                 _updateObserver =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
-                        .Select(_ => DownloadUpdates())
+                        .Select(_ => _updateManager.DownloadUpdates())
                         .Switch()
+                        .Do(_ => MoveUpdatesToTempFolder())
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
@@ -242,7 +246,7 @@
 
         #region Methods
 
-        private static string GetMsiVersion(string msiPath)
+        private static string GetLocalInstallerVersion(string msiPath)
         {
             string versionString;
             using (var database = new Database(msiPath))
@@ -254,15 +258,24 @@
 
             return versionString;
         }
-
-        private static bool MsiHasHigherVersion(string msiPath)
+        private static string GetRemoteInstallerVersion(UpdateManager updateManager)
         {
-            return VersionIsHigherThanOwn(GetMsiVersion(msiPath));
+            return
+                updateManager.Tasks.Where(task => task is FileUpdateTask)
+                    .Cast<FileUpdateTask>()
+                    .Where(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName)
+                    .Select(fileUpdateTask => fileUpdateTask.Version)
+                    .FirstOrDefault();
         }
 
-        private static bool RemoteInstallerHasHigherVersion(FileUpdateTask installerUpdateTask)
+        private static bool LocalInstallerHasHigherVersion(string msiPath)
         {
-            return VersionIsHigherThanOwn(installerUpdateTask.Version);
+            return VersionIsHigherThanOwn(GetLocalInstallerVersion(msiPath));
+        }
+
+        private static bool RemoteInstallerHasHigherVersion(string version)
+        {
+            return VersionIsHigherThanOwn(version);
         }
 
         private static bool VersionIsHigherThanOwn(string versionString)
@@ -282,31 +295,27 @@
             }
         }
 
-        private FileUpdateTask GetUpdateInstallerTask()
-        {
-            return
-                _updateManager.Tasks.Where(task => task is FileUpdateTask)
-                    .Cast<FileUpdateTask>()
-                    .FirstOrDefault(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName);
-        }
-
-        private bool NewRemoteInstallerAvailable()
-        {
-            var updateInstallerTask = GetUpdateInstallerTask();
-
-            return updateInstallerTask != null && RemoteInstallerHasHigherVersion(updateInstallerTask);
-        }
-
-        private void PrepareDownloadedInstaller()
+        private void MoveUpdatesToTempFolder()
         {
             try
             {
-                var updateInstallerTask = GetUpdateInstallerTask();
+                if (!Directory.Exists(InstallerTemporaryFolder))
+                {
+                    Directory.CreateDirectory(InstallerTemporaryFolder);
+                }
+
+                _updateManager.Tasks.Cast<FileUpdateTask>()
+                    .ForEach(
+                        fileUpdateTask =>
+                            {
+                                //Copy updates to a temp file as the app directory might get uninstalled
+                                var filePath = Path.Combine(RootDirectory, fileUpdateTask.LocalPath);
+                                var newFilePath = Path.Combine(InstallerTemporaryFolder, fileUpdateTask.LocalPath);
+                                
+                                File.Copy(filePath, newFilePath, true);
+                            });
+                
                 _updateManager.ApplyUpdates(false);
-                Directory.CreateDirectory(InstallerTemporaryFolder);
-                //Move new msi to a temp file as the app directory might get uninstalled
-                var installerPath = Path.Combine(RootDirectory, updateInstallerTask.LocalPath);
-                File.Copy(installerPath, MsiTemporaryPath, true);
             }
             catch (Exception exception)
             {

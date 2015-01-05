@@ -3,6 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using NAppUpdate.Framework;
+    using OmniCommon.Helpers;
 
     public static class UpdateManagerExtensionMethods
     {
@@ -18,21 +19,18 @@
                         var result = (updateAvailableCheck ?? (() => updateManager.UpdatesAvailable > 0))();
 
                         return result;
-                    });
+                    }, SchedulerProvider.Default);
         }
 
         public static IObservable<bool> DownloadUpdates(
-            this UpdateManager updateManager,
-            Action onDownloadSuccess = null)
+            this UpdateManager updateManager)
         {
             return Observable.Start(
                 () =>
                     {
                         updateManager.PrepareUpdates();
-                        if (onDownloadSuccess != null) onDownloadSuccess();
-
                         return true;
-                    });
+                    }, SchedulerProvider.Default);
 
         }
     }
