@@ -403,4 +403,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="OutgoingCallLabel" xml:space="preserve">
     <value>1 Apel efectuat</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Setări</value>
+  </data>
 </root>

@@ -161,8 +161,9 @@
 
     <Style TargetType="TextBlock" x:Key="VersionNumberTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="10"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5,0,5,0"/>
         <Setter Property="FontFamily" Value="{DynamicResource ContentFont}"/>
         <Setter Property="Foreground" Value="{DynamicResource NavigationMenuTextBrush}"/>

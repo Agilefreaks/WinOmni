@@ -1,12 +1,14 @@
 ﻿namespace OmniDebug.DebugBar
 {
+    using Caliburn.Micro;
+    using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using OmniDebug.Properties;
     using OmniUI.Attributes;
     using OmniUI.SecondaryMenuEntry;
 
     [UseView(typeof(SecondaryMenuEntryView))]
-    public class DebugMenuEntryViewModel : ISecondaryMenuEntryViewModel
+    public class DebugMenuEntryViewModel : Screen, ISecondaryMenuEntryViewModel
     {
         #region Fields
 
@@ -38,6 +40,14 @@
             get
             {
                 return _configurationService.DebugMode;
+            }
+        }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return Resources.Debug;
             }
         }
 

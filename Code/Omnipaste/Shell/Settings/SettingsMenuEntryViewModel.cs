@@ -1,11 +1,12 @@
 ﻿namespace Omnipaste.Shell.Settings
 {
+    using Caliburn.Micro;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
     using OmniUI.SecondaryMenuEntry;
 
     [UseView(typeof(SecondaryMenuEntryView))]
-    public class SettingsMenuEntryViewModel : ISecondaryMenuEntryViewModel
+    public class SettingsMenuEntryViewModel : Screen, ISecondaryMenuEntryViewModel
     {
         #region Fields
 
@@ -45,6 +46,14 @@
             get
             {
                 return true;
+            }
+        }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return Resources.Settings;
             }
         }
 

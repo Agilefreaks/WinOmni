@@ -403,4 +403,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="OutgoingCallLabel" xml:space="preserve">
     <value>1 Outgoing call</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>

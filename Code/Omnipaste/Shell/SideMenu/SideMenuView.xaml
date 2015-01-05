@@ -27,27 +27,18 @@
             </ItemsControl>
 
             <Border Grid.Row="2" Style="{DynamicResource SideSecondaryMenuBorderStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
+                <StackPanel>
                     <ItemsControl ItemsSource="{Binding Path=SecondaryMenuViewModels}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl cal:View.Model="{Binding}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Style="{DynamicResource SideSecondaryStackPanelStyle}" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
                     </ItemsControl>
 
-                    <TextBlock Grid.Column="1" Style="{DynamicResource VersionNumberTextBlockStyle}" Text="{Binding Path=AppNameAndVersion}" ToolTip="{Binding Path=AppNameAndVersion}"/>
-                </Grid>
+                    <TextBlock Style="{DynamicResource VersionNumberTextBlockStyle}" Text="{Binding Path=AppNameAndVersion}" ToolTip="{Binding Path=AppNameAndVersion}"
+                               TextWrapping="Wrap" Margin="0,10,0,0"/>
+                </StackPanel>
             </Border>
         </Grid>
     </Border>

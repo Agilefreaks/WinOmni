@@ -73,8 +73,9 @@
     
     <Style x:Key="SideSecondaryMenuBorderStyle" TargetType="Border">
         <Setter Property="Width" Value="{DynamicResource SideMenuWidth}"/>
-        <Setter Property="Margin" Value="10,0,10,20"/>
+        <Setter Property="Margin" Value="0,0,0,20"/>
         <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="SideUserInfoBorderStyle" TargetType="Border">

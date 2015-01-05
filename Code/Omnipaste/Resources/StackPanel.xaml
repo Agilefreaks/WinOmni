@@ -34,10 +34,6 @@
         <Setter Property="Width" Value="{DynamicResource SideMenuWidth}"/>
     </Style>
 
-    <Style x:Key="SideSecondaryStackPanelStyle" TargetType="StackPanel">
-        <Setter Property="Width" Value="{DynamicResource SecondaryNavButtonWidth}"/>
-    </Style>
-
     <Style x:Key="SideUserInfoStackPanelStyle" TargetType="StackPanel">
         <Setter Property="Margin" Value="0,10,0,0"/>
     </Style>
