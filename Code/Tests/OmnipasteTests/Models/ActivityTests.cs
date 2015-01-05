@@ -112,35 +112,6 @@
         }
 
         [Test]
-        public void ToString_Always_ReturnsAStringContainingTheYearOfTheActivity()
-        {
-            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
-            _subject.Time = someTime;
-
-            _subject.ToString().Should().Contain("2000");
-        }
-
-        [Test]
-        public void ToString_Always_ReturnsAStringContainingTheMonthOfTheActivity()
-        {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
-            _subject.Time = someTime;
-
-            _subject.ToString().Should().Contain("ianuarie");
-        }
-
-        [Test]
-        public void ToString_Always_ReturnsAStringContainingTheDateOfTheActivity()
-        {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var someTime = new DateTime(2000, 1, 1, 13, 45, 13);
-            _subject.Time = someTime;
-
-            _subject.ToString().Should().Contain("2000-1-1");
-        }
-
-        [Test]
         public void ToString_Always_ReturnsAStringContainingTheTypeOfTheActivity()
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");

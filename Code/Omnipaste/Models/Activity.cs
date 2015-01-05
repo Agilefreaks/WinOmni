@@ -89,7 +89,6 @@
             var parts = new List<string>
                             {
                                 Device,
-                                Time.ToString(DateTimeFormatPattern, Thread.CurrentThread.CurrentUICulture),
                                 GetTypeAsString(),
                                 Content,
                                 GetExtraDataAsString()
