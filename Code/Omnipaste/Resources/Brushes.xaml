@@ -32,7 +32,6 @@
     <SolidColorBrush x:Key="AlternativeContentBackgroundBrush" Color="{DynamicResource AlternativeContentBackgroundColor}"/>
     <SolidColorBrush x:Key="CallFadedBrush" Color="{DynamicResource CallFadedColor}"/>
     <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
-    <SolidColorBrush x:Key="ChristmassBrush" Color="{DynamicResource ChristmassColor}"/>
     <SolidColorBrush x:Key="HolidayMenuEntryBackgroundBrush" Color="{DynamicResource HolidayMenuEntryBackgroundColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
