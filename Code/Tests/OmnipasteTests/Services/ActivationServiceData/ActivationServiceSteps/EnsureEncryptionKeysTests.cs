@@ -43,7 +43,7 @@
 
             _mockDevices.Setup(m => m.Update(It.IsAny<object>())).Returns(updateObservable);
 
-            testScheduler.Start(() => _subject.Execute());
+            testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
 
             _mockConfigurationService.VerifySet(x => x.DeviceKeyPair = keyPair);
         }
@@ -80,7 +80,7 @@
 
             _mockDevices.Setup(m => m.Update(It.IsAny<object>())).Returns(updateObservable);
 
-            testScheduler.Start(() => _subject.Execute());
+            testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
 
             _mockConfigurationService.VerifySet(x => x.DeviceKeyPair = keyPair);
         }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Border Background="{DynamicResource CallFadedBrush}" Margin="-18,-16" Padding="18,16">
+    <Border Background="{DynamicResource CallFadedBrush}" Margin="-16" Padding="16">
         <DockPanel LastChildFill="True">
             <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="28" Height="28" 
                      Background="{Binding Path=Background, ElementName=ContentBorder}" DockPanel.Dock="Left" Margin="0,0,18,0"/>

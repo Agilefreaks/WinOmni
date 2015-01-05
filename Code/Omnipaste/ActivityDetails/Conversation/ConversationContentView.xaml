@@ -8,8 +8,8 @@
              xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <ScrollViewer Style="{DynamicResource ScrollViewerWithSlimBarsStyle}">
+
+    <ScrollViewer Width="{StaticResource WideContainerWidth}" HorizontalScrollBarVisibility="Hidden">
         <i:Interaction.Behaviors>
             <behaviors:ScrollBehavior Collection="{Binding Path=Items}" ScrollDirection="Bottom" />
         </i:Interaction.Behaviors>
@@ -17,7 +17,7 @@
         <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="0,0,0,4" Padding="18,16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
+                    <Border Margin="0,0,0,4" Padding="16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
                         <ContentControl cal:View.Model="{Binding}" />
                     </Border>
                     <DataTemplate.Triggers>
