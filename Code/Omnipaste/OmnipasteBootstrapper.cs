@@ -21,7 +21,6 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
-    using OmniHolidays;
     using Omnipaste.Services;
     using Omnipaste.Shell;
     using OmniSync;
@@ -79,8 +78,7 @@
                 new EventsModule(),
                 new ContactsModule(),
                 new SMSModule(),
-                new OmnipasteModule(),
-                new HolidaysModule());
+                new OmnipasteModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
             
             var locator = new NinjectServiceLocator(_kernel);

@@ -993,10 +993,6 @@
       <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
       <Name>OmniDebug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OmniHolidays\OmniHolidays.csproj">
-      <Project>{08ee2858-abd6-4bb3-9c28-65f4dee0cd67}</Project>
-      <Name>OmniHolidays</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OmniSync\OmniSync.csproj">
       <Project>{0063e0a0-3b61-4358-9534-3c6a9aa90cb0}</Project>
       <Name>OmniSync</Name>

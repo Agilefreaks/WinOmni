@@ -27,8 +27,6 @@
         <ResourceDictionary Source="ItemsControl.xaml"/>
         <ResourceDictionary Source="Window.xaml"/>
         <ResourceDictionary Source="../Themes/ExpandableTextBlock.xaml"/>
-
-        <ResourceDictionary Source="pack://application:,,,/OmniHolidays;component/Resources/Style.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
