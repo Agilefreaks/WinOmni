@@ -23,6 +23,7 @@
     <SolidColorBrush x:Key="ClippingBrush" Color="{DynamicResource ClippingColor}"/>
     <SolidColorBrush x:Key="MessageBrush" Color="{DynamicResource MessageColor}"/>
     <SolidColorBrush x:Key="CallBrush" Color="{DynamicResource CallColor}"/>
+    <SolidColorBrush x:Key="VersionBrush" Color="{DynamicResource VersionColor}"/>
     <SolidColorBrush x:Key="LabelBrush" Color="{DynamicResource LabelColor}"/>
     <SolidColorBrush x:Key="TimeStampBrush" Color="{DynamicResource TimeStampColor}"/>
     <SolidColorBrush x:Key="ActivityContentBrush" Color="{DynamicResource ActivityContentColor}"/>

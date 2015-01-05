@@ -20,6 +20,7 @@
     <Color x:Key="ClippingColor">#FFAD1D</Color>
     <Color x:Key="MessageColor">#5BC462</Color>
     <Color x:Key="CallColor">#00C7ED</Color>
+    <Color x:Key="VersionColor">#8B6CBC</Color>
     <Color x:Key="LabelColor">#CCCBCB</Color>
     <Color x:Key="TimeStampColor">#D8D8D8</Color>
     <Color x:Key="ActivityContentColor">#4E4D4D</Color>
