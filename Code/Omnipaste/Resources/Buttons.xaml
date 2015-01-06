@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:p="clr-namespace:Omnipaste.Properties">
+                    xmlns:p="clr-namespace:Omnipaste.Properties"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!-- Button -->
     <ControlTemplate x:Key="ShapeButtonControlTemplate" TargetType="Button">
@@ -180,21 +181,36 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
+                    <ControlTemplate.Resources>
+                        <system:Double x:Key="InactiveIconOpacity">0.45</system:Double>
+                        <system:Double x:Key="ActiveIconOpacity">1</system:Double>
+                        
+                        <Storyboard x:Key="FadeStoryboard">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Icon" RepeatBehavior="Forever">
+                                <EasingDoubleKeyFrame KeyTime="0" Value="{StaticResource InactiveIconOpacity}"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="{StaticResource ActiveIconOpacity}"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="{StaticResource InactiveIconOpacity}"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
                     <Grid Width="35">
                         <Border Name="ButtonBackground" Background="{TemplateBinding Background}" Opacity="{TemplateBinding Opacity}"/>
-
-                        <Rectangle Name="Icon" Fill="#FFE6E6E6" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle Name="Icon" Fill="{DynamicResource WhiteBrush}" Opacity="{StaticResource InactiveIconOpacity}" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringToResourceConverter}}"/>
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Grid>
+                    
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ButtonBackground" Property="Background" Value="#FFFFFFFF"/>
+                            <Setter TargetName="ButtonBackground" Property="Background" Value="{DynamicResource WhiteBrush}"/>
                             <Setter TargetName="ButtonBackground" Property="Opacity" Value="0.35"/>
-                            <Setter TargetName="Icon" Property="Fill" Value="#FFFFFFFF"/>
+                            <Setter TargetName="Icon" Property="Opacity" Value="{StaticResource ActiveIconOpacity}"/>
                         </Trigger>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource FadeStoryboard}"/>
+                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
