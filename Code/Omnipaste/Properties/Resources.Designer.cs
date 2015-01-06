@@ -259,6 +259,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clipping deleted. Undo it from here..
+        /// </summary>
+        public static string ClippingDeleted {
+            get {
+                return ResourceManager.GetString("ClippingDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clipping from your .
         /// </summary>
         public static string ClippingDetailsHeaderTitle {

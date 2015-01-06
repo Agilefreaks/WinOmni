@@ -18,4 +18,5 @@
     <System:Double x:Key="ActivityLabelFontSize">9</System:Double>
     <System:Double x:Key="ActivityContentFontSize">14</System:Double>
     <System:Double x:Key="HeaderTitleFontSize">36</System:Double>
+    <System:Double x:Key="HeaderContentFontSize">17.5</System:Double>
 </ResourceDictionary>

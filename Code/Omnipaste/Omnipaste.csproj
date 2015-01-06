@@ -248,6 +248,13 @@
     <Compile Include="ActivityDetails\ActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml.cs">
+      <DependentUpon>Deleted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml.cs">
+      <DependentUpon>Normal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDetails\Conversation\Call\CallViewModel.cs" />
     <Compile Include="ActivityDetails\Conversation\Call\ICallViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsContentViewModel.cs" />
@@ -428,6 +435,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\ActivityDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -11,31 +11,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.RowSpan="2" Margin="22,0,22,22" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Rectangle Height="24" Width="25" Fill="{DynamicResource ActivityContentBrush}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource clippings_icon}"/>
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-                <TextBlock Text="{x:Static properties:Resources.ClippingDetailsHeaderTitle}" 
-                       Margin="13,0,0,0" VerticalAlignment="Center"
-                       FontFamily="{DynamicResource ActivityContentFont}" 
-                       FontSize="{DynamicResource ActivityContentFontSize}" 
-                       Foreground="{DynamicResource LabelBrush}"/>
-                <TextBlock x:Name="Model_Device" FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"
-                       FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="48" Height="48" x:Name="CopyClipping"
-                        Background="{DynamicResource ActivityContentBrush}"/>
-            </StackPanel>
-        </Grid>
+        <ContentControl Grid.Row="0" Grid.RowSpan="2" cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}" Margin="22,0,22,22"/>
         <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ClippingBrush}"/>
     </Grid>
 </UserControl>

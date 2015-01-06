@@ -5,7 +5,30 @@
 
     public class ClippingDetailsHeaderViewModel : ActivityDetailsHeaderViewModel, IClippingDetailsHeaderViewModel
     {
+        #region Fields
+
+        private ClippingDetailsHeaderStateEnum _state;
+
+        #endregion
+
         #region Public Properties
+
+        public ClippingDetailsHeaderStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+                _state = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         [Inject]
         public IWindowsClipboardWrapper WindowsClipboardWrapper { get; set; }
@@ -17,6 +40,11 @@
         public void CopyClipping()
         {
             WindowsClipboardWrapper.SetData(Model.Content);
+        }
+
+        public void DeleteClipping()
+        {
+            State = ClippingDetailsHeaderStateEnum.Deleted;
         }
 
         #endregion

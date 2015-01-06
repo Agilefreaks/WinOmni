@@ -406,4 +406,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="Settings" xml:space="preserve">
     <value>Definições</value>
   </data>
+  <data name="ClippingDeleted" xml:space="preserve">
+    <value>Clipping excluído. Desfazer-lo a partir daqui.</value>
+  </data>
 </root>

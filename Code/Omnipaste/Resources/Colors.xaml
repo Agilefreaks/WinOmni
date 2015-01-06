@@ -39,4 +39,6 @@
     <Color x:Key="ButtonBorderColor">#FFE6E5E5</Color>
     <Color x:Key="ScrollBarColor">#999999</Color>
     <Color x:Key="InactiveButtonColor">#e7e6e6</Color>
+    <Color x:Key="DeletedClippingColor">#fff3de</Color>
+    <Color x:Key="ConfirmationMessageColor">#d6434e</Color>
 </ResourceDictionary>

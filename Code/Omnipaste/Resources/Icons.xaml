@@ -5523,17 +5523,44 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                 <Canvas.RenderTransform>
                     <MatrixTransform Matrix="1.25 0 0 -1.25 174.15457 332.36775"/>
                 </Canvas.RenderTransform>
-                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                     <Path.Data>
                         <PathGeometry Figures="m 0 0 -1.759 0 0 -10.244 10.244 0 0 1.757" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
-            <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+            <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                 <Path.Data>
                     <PathGeometry Figures="m 189.45594 327.67262 -12.805 0 0 12.805 12.805 0 0 -12.805 z" FillRule="NonZero"/>
                 </Path.Data>
             </Path>
+        </Canvas>
+    </Canvas>
+    <Canvas x:Key="delete_icon"  Width="19" Height="19">
+        <Canvas.RenderTransform>
+            <MatrixTransform Matrix="1.25 0 0 -1.25 0 18.75"/>
+        </Canvas.RenderTransform>
+        <Canvas>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0.5" Y="0.5"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 0 0 14 14" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0.5" Y="14.5"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 0 0 14 -14" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
         </Canvas>
     </Canvas>
 </ResourceDictionary>

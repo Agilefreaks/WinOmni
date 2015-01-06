@@ -177,21 +177,23 @@
 
     <Style x:Key="ShapeButtonWithOuterHighlight" TargetType="Button">
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2.5*"/>
-                            <ColumnDefinition Width="2.5*"/>
-                            <ColumnDefinition Width="2.5*"/>
-                            <ColumnDefinition Width="2.5*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="2.5*"/>
-                            <RowDefinition Height="2.5*"/>
-                            <RowDefinition Height="2.5*"/>
-                            <RowDefinition Height="2.5*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="3*"/>
                         </Grid.RowDefinitions>
                         <Rectangle Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" x:Name="PART_Circle"
                                    Fill="{DynamicResource InactiveButtonBrush}">
@@ -202,7 +204,7 @@
                         <Rectangle Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="PART_Glyph" 
                                    Fill="{TemplateBinding Background}">
                             <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{DynamicResource copy_icon}"/>
+                                <VisualBrush Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Grid>
