@@ -86,9 +86,11 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Omnipaste\Release.md">
+      <Link>Release.md</Link>
+    </Content>
     <Content Include="Includes\OmnipasteVariables.wxi" />
     <Content Include="Packages\en-us\OmnipasteInstaller.msi" />
-    <Content Include="Release.md" />
     <Content Include="Resources\banner.bmp" />
     <Content Include="Resources\side.bmp" />
     <Content Include="Resources\Icon.ico" />
@@ -100,7 +102,7 @@
   <Import Project="$(WixTargetsPath)" />
   <Target Name="AfterBuild">
     <ItemGroup>
-      <DocFiles Include="Release.md" />
+      <DocFiles Include="..\..\Omnipaste\Release.md" />
     </ItemGroup>
     <Copy SourceFiles="@(DocFiles)" DestinationFolder="$(OutDir)en-us">
     </Copy>
