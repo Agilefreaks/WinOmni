@@ -1,6 +1,6 @@
 ﻿namespace OmniUI.MainMenuEntry
 {
-    using OmniUI.Intefaces;
+    using OmniUI.Interfaces;
 
     public interface IMainMenuEntryViewModel : IMenuEntryViewModel
     {

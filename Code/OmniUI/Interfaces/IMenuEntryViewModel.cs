@@ -1,4 +1,4 @@
-﻿namespace OmniUI.Intefaces
+﻿namespace OmniUI.Interfaces
 {
     using System;
 

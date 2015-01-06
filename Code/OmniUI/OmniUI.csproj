@@ -106,7 +106,7 @@
     <Compile Include="Helpers\IResourceHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
-    <Compile Include="Intefaces\IMenuEntryViewModel.cs" />
+    <Compile Include="Interfaces\IMenuEntryViewModel.cs" />
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Models\ContactInfo.cs" />
