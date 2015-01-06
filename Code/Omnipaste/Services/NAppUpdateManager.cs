@@ -83,12 +83,14 @@ namespace Omnipaste.Services
             _updateManager.CleanUp();
         }
 
-        public IObservable<bool> DownloadUpdates()
+        public IObservable<bool> DownloadUpdates(Action onSuccess)
         {
             return Observable.Start(
                 () =>
                     {
                         _updateManager.PrepareUpdates();
+                        onSuccess();
+
                         return true;
                     }, SchedulerProvider.Default);
 

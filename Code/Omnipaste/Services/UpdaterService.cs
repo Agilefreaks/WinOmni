@@ -239,13 +239,17 @@
                 _updateObserver =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
-                        .Select(_ => _updateManager.DownloadUpdates())
+                        .Select(_ => _updateManager.DownloadUpdates(OnDownloadSuccess))
                         .Switch()
-                        .Do(_ => MoveUpdatesToTempFolder())
-                        .Do(_ => NotifyUpdateAvailable())
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
+        }
+
+        private void OnDownloadSuccess()
+        {
+            MoveUpdatesToTempFolder();
+            NotifyUpdateAvailable();
         }
 
         public void Stop()
@@ -326,18 +330,19 @@
                     Directory.CreateDirectory(InstallerTemporaryFolder);
                 }
 
-                _updateManager.Tasks.Cast<FileUpdateTask>()
-                    .ForEach(
-                        fileUpdateTask =>
+                var localFiles = _updateManager.Tasks.Cast<FileUpdateTask>().Select(m => m.LocalPath).ToList();
+
+                _updateManager.ApplyUpdates(false);
+
+                //Copy updates to a temp file as the app directory might get uninstalled
+                localFiles.ForEach(
+                        localPath =>
                             {
-                                //Copy updates to a temp file as the app directory might get uninstalled
-                                var filePath = Path.Combine(RootDirectory, fileUpdateTask.LocalPath);
-                                var newFilePath = Path.Combine(InstallerTemporaryFolder, fileUpdateTask.LocalPath);
+                                var filePath = Path.Combine(RootDirectory, localPath);
+                                var newFilePath = Path.Combine(InstallerTemporaryFolder, localPath);
                                 
                                 File.Copy(filePath, newFilePath, true);
                             });
-                
-                _updateManager.ApplyUpdates(false);
             }
             catch (Exception exception)
             {

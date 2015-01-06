@@ -25,6 +25,6 @@
 
         IObservable<bool> AreUpdatesAvailable(Func<bool> newRemoteInstallerAvailable = null);
 
-        IObservable<bool> DownloadUpdates();
+        IObservable<bool> DownloadUpdates(Action onSuccess);
     }
 }
