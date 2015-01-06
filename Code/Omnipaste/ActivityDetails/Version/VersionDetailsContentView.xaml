@@ -10,40 +10,24 @@
     <UserControl.Resources>
 
         <Style TargetType="FlowDocument" x:Key="DocumentStyle">
-            <Setter Property="FontFamily"
-                    Value="Calibri" />
-            <Setter Property="TextAlignment"
-                    Value="Left" />
+            <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}" />
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}" />
         </Style>
 
-        <Style x:Key="PageHeader"
-               TargetType="Paragraph">
-            <Setter Property="FontSize"
-                    Value="42" />
-            <Setter Property="Foreground"
-                    Value="#ff000000" />
-            <Setter Property="FontWeight"
-                    Value="Light" />
+        <Style x:Key="PageHeader" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="42" />
+            <Setter Property="FontWeight" Value="Light" />
         </Style>
 
-        <Style x:Key="SubHeader"
-               TargetType="Paragraph">
-            <Setter Property="FontSize"
-                    Value="20" />
-            <Setter Property="Foreground"
-                    Value="#ff000000" />
-            <Setter Property="FontWeight"
-                    Value="Light" />
+        <Style x:Key="SubHeader" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Light" />
         </Style>
 
-        <Style x:Key="SubHeaderSecondary"
-               TargetType="Paragraph">
-            <Setter Property="FontSize"
-                    Value="20" />
-            <Setter Property="Foreground"
-                    Value="#99000000" />
-            <Setter Property="FontWeight"
-                    Value="Light" />
+        <Style x:Key="SubHeaderSecondary" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Light" />
         </Style>
 
         <xaml:Markdown x:Key="Markdown"
@@ -59,6 +43,6 @@
     <FlowDocumentScrollViewer VerticalAlignment="Stretch"
                                   HorizontalAlignment="Stretch"
                                   Margin="5"
+                                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                                   Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
-
 </UserControl>
