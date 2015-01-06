@@ -22,6 +22,7 @@
     using Omnipaste.Shell.SideMenu;
     using Omnipaste.Workspaces;
     using OmniUI.Flyout;
+    using OmniUI.TitleBarItem;
 
     public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {
@@ -82,6 +83,9 @@
 
         [Inject]
         public IActivityWorkspace DefaultWorkspace { get; set; }
+
+        [Inject]
+        public IEnumerable<ITitleBarItemViewModel> TitleBarItems { get; set; }
 
         #endregion
 

@@ -27,11 +27,13 @@
     using Omnipaste.Shell;
     using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Shell.Settings;
+    using Omnipaste.Shell.TitleBar;
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.MainMenuEntry;
     using OmniUI.SecondaryMenuEntry;
+    using OmniUI.TitleBarItem;
     using OmniUI.Workspace;
 
     public class OmnipasteModule : ModuleBase
@@ -53,6 +55,7 @@
             Kernel.Bind<IMainMenuEntryViewModel>().To<EventsMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
+            Kernel.Bind<ITitleBarItemViewModel>().To<NewVersionTitleBarItemViewModel>().InSingletonScope();
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Bind<IProxyConfigurationDetector>().To<HttpProxyConfigurationDetector>();

@@ -695,6 +695,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart application to update.
+        /// </summary>
+        public static string NewVersionLabel {
+            get {
+                return ResourceManager.GetString("NewVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No proxy server is used. A direct connection is made to the Omnipaste server..
         /// </summary>
         public static string NoProxyUsed {

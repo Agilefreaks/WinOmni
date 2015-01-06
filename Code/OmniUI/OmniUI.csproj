@@ -115,6 +115,7 @@
     <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Framework\Commands\ICommand.cs" />
     <Compile Include="Services\ICommandService.cs" />
+    <Compile Include="TitleBarItem\ITitleBarItemViewModel.cs" />
     <Compile Include="Workspace\IWorkspaceConductor.cs" />
     <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
     <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
@@ -148,6 +149,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TitleBarItem\TitleBarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

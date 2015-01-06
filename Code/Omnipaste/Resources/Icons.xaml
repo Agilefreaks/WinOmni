@@ -5226,7 +5226,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="9.3872" Y="11.54"/>
                         </Canvas.RenderTransform>
-                        <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                        <Path StrokeThickness="3" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                             <Path.Data>
                                 <PathGeometry Figures="M 0 0 3.271 0.568 3.347 0.671 2.957 3.96" FillRule="NonZero"/>
                             </Path.Data>
@@ -5236,7 +5236,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <Canvas.RenderTransform>
                             <TranslateTransform X="12.6951" Y="12.1512"/>
                         </Canvas.RenderTransform>
-                        <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                        <Path StrokeThickness="3" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                             <Path.Data>
                                 <PathGeometry Figures="m 0 0 c -1.281 1.418 -3.131 2.314 -5.195 2.314 -3.866 0 -7 -3.126 -7 -6.982 0 -3.857 3.134 -6.983 7 -6.983 3.866 0 7 3.126 7 6.983" FillRule="NonZero"/>
                             </Path.Data>
