@@ -8,10 +8,8 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Reflection;
-    using Castle.Core.Internal;
     using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework.Sources;
-    using NAppUpdate.Framework.Tasks;
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -286,9 +284,7 @@
         }
         private static string GetRemoteInstallerVersion(IUpdateManager updateManager)
         {
-            return
-                updateManager.Tasks.Where(task => task is FileUpdateTask)
-                    .Cast<FileUpdateTask>()
+            return updateManager.GetUpdatedFiles()
                     .Where(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName)
                     .Select(fileUpdateTask => fileUpdateTask.Version)
                     .FirstOrDefault();
@@ -330,7 +326,7 @@
                     Directory.CreateDirectory(InstallerTemporaryFolder);
                 }
 
-                var localFiles = _updateManager.Tasks.Cast<FileUpdateTask>().Select(m => m.LocalPath).ToList();
+                var localFiles = _updateManager.GetUpdatedFiles().Select(m => m.LocalPath).ToList();
 
                 _updateManager.ApplyUpdates(false);
 

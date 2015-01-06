@@ -404,6 +404,7 @@
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
+    <Compile Include="Services\UpdateFileInfo.cs" />
     <Compile Include="Services\UpdateInfo.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />

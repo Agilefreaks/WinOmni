@@ -2,6 +2,7 @@ namespace Omnipaste.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
@@ -71,6 +72,15 @@ namespace Omnipaste.Services
         public void PrepareUpdates()
         {
             _updateManager.PrepareUpdates();
+        }
+
+        public IList<UpdateFileInfo> GetUpdatedFiles()
+        {
+            return
+                _updateManager.Tasks.Where(task => task is FileUpdateTask)
+                    .Cast<FileUpdateTask>()
+                    .Select(t => new UpdateFileInfo { LocalPath = t.LocalPath, Version = t.Version })
+                    .ToList();
         }
 
         public void CheckForUpdates()

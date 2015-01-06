@@ -3,12 +3,9 @@
     using System;
     using System.Collections.Generic;
     using NAppUpdate.Framework.Sources;
-    using NAppUpdate.Framework.Tasks;
 
     public interface IUpdateManager
     {
-        IEnumerable<IUpdateTask> Tasks { get; }
-
         IUpdateSource UpdateSource { get; set; }
 
         int UpdatesAvailable { get; }
@@ -22,6 +19,8 @@
         void CheckForUpdates();
 
         void CleanUp();
+
+        IList<UpdateFileInfo> GetUpdatedFiles();
 
         IObservable<bool> AreUpdatesAvailable(Func<bool> newRemoteInstallerAvailable = null);
 
