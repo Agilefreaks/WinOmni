@@ -11,21 +11,30 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,0,22">
-            <Rectangle Height="24" Width="25" Fill="{DynamicResource ActivityContentBrush}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Uniform" Visual="{DynamicResource clippings_icon}"/>
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <TextBlock Text="{x:Static properties:Resources.ClippingDetailsHeaderTitle}" 
-                       Margin="13,0,0,0" 
+        <Grid Grid.RowSpan="2" Margin="22,0,22,22" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Rectangle Height="24" Width="25" Fill="{DynamicResource ActivityContentBrush}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource clippings_icon}"/>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <TextBlock Text="{x:Static properties:Resources.ClippingDetailsHeaderTitle}" 
+                       Margin="13,0,0,0" VerticalAlignment="Center"
                        FontFamily="{DynamicResource ActivityContentFont}" 
                        FontSize="{DynamicResource ActivityContentFontSize}" 
                        Foreground="{DynamicResource LabelBrush}"/>
-            <TextBlock x:Name="Model_Device" FontFamily="{DynamicResource ContentFont}" 
+                <TextBlock x:Name="Model_Device" FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"
                        FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
-        </StackPanel>
-        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ClippingBrush}" 
-                DockPanel.Dock="Bottom"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="48" Height="48" Background="{DynamicResource ActivityContentBrush}"/>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ClippingBrush}"/>
     </Grid>
 </UserControl>

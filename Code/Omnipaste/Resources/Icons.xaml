@@ -5495,4 +5495,45 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Canvas>
         </Canvas>
     </Canvas>
+
+    <Canvas x:Key="thin_circle_icon" Width="45" Height="45">
+        <Canvas>
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-60.968908" Y="-264.87395"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <MatrixTransform Matrix="1.25 0 0 -1.25 83.468908 264.87395"/>
+                </Canvas.RenderTransform>
+                <Path Fill="{DynamicResource BlackBrush}">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0 0 c -9.941 0 -18 -8.059 -18 -18 0 -9.941 8.059 -18 18 -18 9.941 0 18 8.059 18 18 C 18 -8.059 9.941 0 0 0 m 0 -1.5 c 9.098 0 16.5 -7.402 16.5 -16.5 0 -9.098 -7.402 -16.5 -16.5 -16.5 -9.098 0 -16.5 7.402 -16.5 16.5 0 9.098 7.402 16.5 16.5 16.5" FillRule="nonzero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="copy_icon" Width="19" Height="19">
+        <Canvas>
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-171.02954" Y="-326.7453"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <MatrixTransform Matrix="1.25 0 0 -1.25 174.15457 332.36775"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0 0 -1.759 0 0 -10.244 10.244 0 0 1.757" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+            <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path.Data>
+                    <PathGeometry Figures="m 189.45594 327.67262 -12.805 0 0 12.805 12.805 0 0 -12.805 z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Canvas>
 </ResourceDictionary>

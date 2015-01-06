@@ -44,6 +44,7 @@
 
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource ButtonBorderColor}"/>
     <SolidColorBrush x:Key="ScrollBarBrush" Color="{DynamicResource ScrollBarColor}"/>
+    <SolidColorBrush x:Key="InactiveButtonBrush" Color="{DynamicResource InactiveButtonColor}"/>
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />
