@@ -2,6 +2,7 @@
 {
     using Clipboard.Handlers.WindowsClipboard;
     using Clipboard.Models;
+    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Clipping;
@@ -21,7 +22,8 @@
             _mockWindowsClipboardWrapper = new Mock<IWindowsClipboardWrapper>();
             _subject = new ClippingDetailsHeaderViewModel
                            {
-                               WindowsClipboardWrapper = _mockWindowsClipboardWrapper.Object
+                               WindowsClipboardWrapper = _mockWindowsClipboardWrapper.Object,
+                               Model = new ActivityPresenter()
                            };
         }
 
@@ -35,6 +37,38 @@
             _subject.CopyClipping();
 
             _mockWindowsClipboardWrapper.Verify(x => x.SetData(Content), Times.Once());
+        }
+
+        [Test]
+        public void DeleteClipping_Always_MarksTheCurrentModelForDeletion()
+        {
+            _subject.DeleteClipping();
+
+            _subject.Model.MarkedForDeletion.Should().BeTrue();
+        }
+
+        [Test]
+        public void DeleteClipping_Always_SetsViewModelStateToDeleted()
+        {
+            _subject.DeleteClipping();
+
+            _subject.State.Should().Be(ClippingDetailsHeaderStateEnum.Deleted);
+        }
+
+        [Test]
+        public void UndoDelete_Always_ClearsTheDeletionMarkFromTheModel()
+        {
+            _subject.UndoDelete();
+
+            _subject.Model.MarkedForDeletion.Should().BeFalse();
+        }
+
+        [Test]
+        public void UndoDelete_Always_SetsTheViewModelStateToNormal()
+        {
+            _subject.UndoDelete();
+
+            _subject.State.Should().Be(ClippingDetailsHeaderStateEnum.Normal);
         }
     }
 }

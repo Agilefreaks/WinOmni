@@ -30,8 +30,7 @@
                     break;
             }
 
-            result.HeaderViewModel.Model = activity;
-            result.ContentViewModel.Model = activity;
+            result.Model = activity;
 
             return result;
         }

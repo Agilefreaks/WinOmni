@@ -44,7 +44,14 @@
 
         public void DeleteClipping()
         {
+            Model.MarkedForDeletion = true;
             State = ClippingDetailsHeaderStateEnum.Deleted;
+        }
+
+        public void UndoDelete()
+        {
+            Model.MarkedForDeletion = false;
+            State = ClippingDetailsHeaderStateEnum.Normal;
         }
 
         #endregion

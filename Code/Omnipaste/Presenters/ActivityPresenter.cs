@@ -30,6 +30,14 @@
 
         #region Public Properties
 
+        public Activity BackingModel
+        {
+            get
+            {
+                return _activity;
+            }
+        }
+
         public string Content
         {
             get

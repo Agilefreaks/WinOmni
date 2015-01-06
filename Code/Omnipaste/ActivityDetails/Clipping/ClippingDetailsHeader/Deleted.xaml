@@ -7,10 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Border Background="{DynamicResource DeletedClippingBrush}" Margin="-22,0,-22,-22" Padding="22,0,22,22">
-        <Grid VerticalAlignment="Center">
-            <TextBlock Text="{x:Static properties:Resources.ClippingDeleted}" FontFamily="{DynamicResource ActivityContentFont}" 
+        <DockPanel VerticalAlignment="Center">
+            <Button DockPanel.Dock="Right" Style="{DynamicResource ShapeButtonWithOuterHighlight}" x:Name="UndoDelete"
+                    Background="{DynamicResource ConfirmationMessageBrush}" Content="{DynamicResource undo_icon}"/>
+            <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.ClippingDeleted}" FontFamily="{DynamicResource ActivityContentFont}" 
                    FontSize="{DynamicResource HeaderContentFontSize}" FontStyle="Italic" Foreground="{DynamicResource ConfirmationMessageBrush}"
                    VerticalAlignment="Center"/>
-        </Grid>
+        </DockPanel>
     </Border>
 </UserControl>

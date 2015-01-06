@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderViewModelTests.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModelTests.cs" />
     <Compile Include="ActivityDetails\Conversation\ConversationContentViewModelTests.cs" />
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />

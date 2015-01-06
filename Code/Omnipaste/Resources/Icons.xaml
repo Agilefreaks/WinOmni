@@ -5536,6 +5536,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Path>
         </Canvas>
     </Canvas>
+    
     <Canvas x:Key="delete_icon"  Width="19" Height="19">
         <Canvas.RenderTransform>
             <MatrixTransform Matrix="1.25 0 0 -1.25 0 18.75"/>
@@ -5560,6 +5561,26 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                         <PathGeometry Figures="M 0 0 14 -14" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+    
+    <Canvas x:Key="undo_icon">
+        <Canvas Width="16" Height="21">
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="-366.875" Y="-521.95109"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <MatrixTransform Matrix="1.25 0 0 -1.25 383.125 534.94578"/>
+                    </Canvas.RenderTransform>
+                    <Path Fill="{DynamicResource BlackBrush}">
+                        <Path.Data>
+                            <PathGeometry Figures="m 0 0 c 0 -3.453 -2.809 -6.262 -6.262 -6.262 l -2.217 0 c -0.367 0 -0.665 0.298 -0.665 0.665 l 0 0.222 c 0 0.367 0.298 0.665 0.665 0.665 l 2.217 0 c 2.597 0 4.71 2.113 4.71 4.71 0 2.597 -2.113 4.71 -4.71 4.71 l -4.089 0 2.816 -2.816 c 0.303 -0.302 0.303 -0.795 0 -1.097 -0.293 -0.294 -0.804 -0.293 -1.097 0 l -4.141 4.141 C -12.919 5.084 -13 5.279 -13 5.486 c 0 0.207 0.081 0.402 0.227 0.549 l 4.141 4.141 c 0.293 0.293 0.804 0.293 1.097 0 0.303 -0.303 0.303 -0.795 0 -1.097 l -2.816 -2.817 4.089 0 C -2.809 6.262 0 3.453 0 0" FillRule="nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
             </Canvas>
         </Canvas>
     </Canvas>
