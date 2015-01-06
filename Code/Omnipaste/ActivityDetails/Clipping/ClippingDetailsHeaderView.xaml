@@ -32,7 +32,8 @@
                        FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="48" Height="48" Background="{DynamicResource ActivityContentBrush}"/>
+                <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="48" Height="48" x:Name="CopyClipping"
+                        Background="{DynamicResource ActivityContentBrush}"/>
             </StackPanel>
         </Grid>
         <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ClippingBrush}"/>

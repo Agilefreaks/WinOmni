@@ -91,5 +91,36 @@
 
             observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
         }
+
+        [Test]
+        public void OnNext_AfterAPostClippingWithTheSameContentFollowedByAOnNextWithDifferentContent_ForwardsTheEvent()
+        {
+            const string Content = "some content";
+            var testableObserver = _testScheduler.CreateObserver<Clipping>();
+            _subject.Clippings.Subscribe(testableObserver);
+            _subject.PostClipping(new Clipping(Content));
+            _subject.OnNext(new ClipboardEventArgs("some other content"));
+
+            _subject.OnNext(new ClipboardEventArgs(Content));
+
+            testableObserver.Messages.Count.Should().Be(2);
+            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages[0].Value.Value.Content.Should().Be("some other content");
+            testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages[1].Value.Value.Content.Should().Be("some content");
+        }
+
+        [Test]
+        public void OnNext_AfterAPostClippingWithTheSameContent_DoesNotForwardTheEvent()
+        {
+            const string Content = "some content";
+            var testableObserver = _testScheduler.CreateObserver<Clipping>();
+            _subject.Clippings.Subscribe(testableObserver);
+            _subject.PostClipping(new Clipping(Content));
+
+            _subject.OnNext(new ClipboardEventArgs(Content));
+
+            testableObserver.Messages.Count.Should().Be(0);
+        }
     }
 }
