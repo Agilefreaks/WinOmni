@@ -5,7 +5,7 @@
 
     public interface IUpdaterService : IStartable
     {
-        IObservable<UpdateInfo> UpdateAvailableObservable { get; }
+        IObservable<UpdateInfo> UpdateObservable { get; }
 
         IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 

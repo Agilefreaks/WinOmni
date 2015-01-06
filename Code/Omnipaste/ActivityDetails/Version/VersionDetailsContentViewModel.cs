@@ -6,7 +6,15 @@
         {
             get
             {
-                return Model.ExtraData.ReleaseLog;
+                return Model.ExtraData.UpdateInfo.ReleaseLog;
+            }
+        }
+
+        public bool WasInstalled
+        {
+            get
+            {
+                return Model.ExtraData.UpdateInfo.WasInstalled;
             }
         }
     }

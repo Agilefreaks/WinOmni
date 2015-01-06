@@ -415,4 +415,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="NewVersionLabel" xml:space="preserve">
     <value>Restart application to update</value>
   </data>
+  <data name="NewVersionInstalled" xml:space="preserve">
+    <value>Application has been updated.</value>
+  </data>
 </root>

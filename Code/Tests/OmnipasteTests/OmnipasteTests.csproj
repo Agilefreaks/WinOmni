@@ -125,6 +125,7 @@
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
     <Compile Include="Activity\VersionActivityViewModelTests.cs" />
+    <Compile Include="Framework\Converters\InverseBooleanToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Models\ActivityTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModelTests.cs" />
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
+    <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModelTests.cs" />
     <Compile Include="SMSComposer\InlineSMSComposerViewModelTests.cs" />
     <Compile Include="SMSComposer\ModalSMSComposerViewModelTests.cs" />
     <Compile Include="Models\SMSMessageFactoryTests.cs" />

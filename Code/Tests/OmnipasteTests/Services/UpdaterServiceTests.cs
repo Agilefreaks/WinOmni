@@ -1,16 +1,15 @@
 ﻿namespace OmnipasteTests.Services
 {
     using System;
-    using System.Linq;
     using System.Net;
     using System.Reactive;
-    using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NAppUpdate.Framework.Sources;
     using NUnit.Framework;
     using OmniCommon;
+    using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.Services;
@@ -29,6 +28,8 @@
         private Func<UpdaterService> _createInstance;
 
         private Mock<IWebProxyFactory> _mockWebProxyFactory;
+        
+        private Mock<IArgumentsDataProvider> _mockArgumentsDataProvider;
 
         private TestScheduler _testScheduler;
 
@@ -43,13 +44,15 @@
             _mockSystemIdleService = new Mock<ISystemIdleService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockWebProxyFactory = new Mock<IWebProxyFactory> { DefaultValue = DefaultValue.Mock };
+            _mockArgumentsDataProvider = new Mock<IArgumentsDataProvider> { DefaultValue = DefaultValue.Mock };
             _createInstance =
                 () =>
                 new UpdaterService(
                     _mockUpdateManager.Object,
                     _mockSystemIdleService.Object,
                     _mockConfigurationService.Object,
-                    _mockWebProxyFactory.Object);
+                    _mockWebProxyFactory.Object,
+                    _mockArgumentsDataProvider.Object);
             _subject = _createInstance();
         }
 
@@ -99,6 +102,18 @@
         }
 
         [Test]
+        public void Start_WhenAppStartedAfterUpdate_NotifiesUpdateListenersThatUpdateWasInstalled()
+        {
+            _mockArgumentsDataProvider.SetupGet(m => m.Updated).Returns(true);
+            UpdateInfo updateInfo = null;
+            _subject.UpdateObservable.Subscribe(ui => { updateInfo = ui; }, _ => { });
+
+            _subject.Start();
+
+            updateInfo.WasInstalled.Should().BeTrue();
+        }
+
+        [Test]
         public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailable_InitiatesDownload()
         {
             var updatesAvailableObservable =
@@ -128,7 +143,7 @@
             _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>())).Returns(updatesAvailableObservable);
             _mockUpdateManager.Setup(m => m.DownloadUpdates(It.IsAny<Action>())).Returns<Action>(a => { a(); return downloadUpdatesObservable; });
             var onNextCalled = false;
-            _subject.UpdateAvailableObservable.Subscribe(_ => { onNextCalled = true; }, _ => { });
+            _subject.UpdateObservable.Subscribe(_ => { onNextCalled = true; }, _ => { });
 
             _subject.Start();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20).Ticks);

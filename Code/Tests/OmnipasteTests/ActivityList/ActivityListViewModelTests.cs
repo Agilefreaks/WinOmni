@@ -106,7 +106,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(new UpdateInfo())),
                     new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
-            _mockUpdateService.SetupGet(x => x.UpdateAvailableObservable).Returns(eventObservable);
+            _mockUpdateService.SetupGet(x => x.UpdateObservable).Returns(eventObservable);
             var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Shell.TitleBar
 {
     using System;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Services;
@@ -53,12 +54,8 @@
         public NewVersionTitleBarItemViewModel(IUpdaterService updaterService)
         {
             _updaterService = updaterService;
-            _updateAvailableSubscription = _updaterService.UpdateAvailableObservable.SubscribeAndHandleErrors(OnUpdateAvailable);
-        }
-
-        private void OnUpdateAvailable(UpdateInfo updateInfo)
-        {
-            CanPerformAction = true;
+            _updateAvailableSubscription = _updaterService.UpdateObservable
+                .SubscribeAndHandleErrors(OnUpdateAvailable);
         }
 
         public void PerformAction()
@@ -69,6 +66,11 @@
         public void Dispose()
         {
             DisposeUpdateAvailableSubscription();
+        }
+
+        private void OnUpdateAvailable(UpdateInfo updateInfo)
+        {
+            CanPerformAction = !updateInfo.WasInstalled;
         }
 
         private void DisposeUpdateAvailableSubscription()

@@ -11,6 +11,7 @@
     using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework.Sources;
     using OmniCommon;
+    using OmniCommon.DataProviders;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -36,19 +37,21 @@
 
         private readonly IWebProxyFactory _webProxyFactory;
 
+        private readonly IArgumentsDataProvider _argumentsDataProvider;
+
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
 
         private readonly IUpdateManager _updateManager;
+        
+        private readonly ReplaySubject<UpdateInfo> _updateSubject;
 
         private IDisposable _systemIdleObserver;
 
         private IDisposable _updateObserver;
 
         private IDisposable _proxyConfigurationSubscription;
-
-        private readonly Subject<UpdateInfo> _updateAvailableSubject;
 
         #endregion
 
@@ -58,13 +61,15 @@
             IUpdateManager updateManager,
             ISystemIdleService systemIdleService,
             IConfigurationService configurationService,
-            IWebProxyFactory webProxyFactory)
+            IWebProxyFactory webProxyFactory,
+            IArgumentsDataProvider argumentsDataProvider)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
-            _updateAvailableSubject = new Subject<UpdateInfo>();
+            _argumentsDataProvider = argumentsDataProvider;
+            _updateSubject = new ReplaySubject<UpdateInfo>();
 
             SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
@@ -81,11 +86,11 @@
 
         public IConfigurationService ConfigurationService { get; set; }
 
-        public IObservable<UpdateInfo> UpdateAvailableObservable
+        public IObservable<UpdateInfo> UpdateObservable
         {
             get
             {
-                return _updateAvailableSubject;
+                return _updateSubject;
             }
         }
 
@@ -120,11 +125,11 @@
             }
         }
 
-        protected string ReleaseLogTemporaryPath
+        protected string ReleaseLogPath
         {
             get
             {
-                return Path.Combine(InstallerTemporaryFolder, ReleaseLogFileName);
+                return Path.Combine(RootDirectory, ReleaseLogFileName);
             }
         }
 
@@ -137,6 +142,14 @@
                 var path = Uri.UnescapeDataString(uri.Path);
 
                 return Path.GetDirectoryName(path);
+            }
+        }
+
+        protected bool IsFirstRunAfterUpdate
+        {
+            get
+            {
+                return _argumentsDataProvider.Updated;
             }
         }
 
@@ -242,12 +255,17 @@
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
+
+            if (IsFirstRunAfterUpdate)
+            {
+                NotifyNewVersion(true);
+            }
         }
 
         private void OnDownloadSuccess()
         {
             MoveUpdatesToTempFolder();
-            NotifyUpdateAvailable();
+            NotifyNewVersion();
         }
 
         public void Stop()
@@ -347,13 +365,14 @@
             }
         }
 
-        private void NotifyUpdateAvailable()
+        private void NotifyNewVersion(bool wasInstalled = false)
         {
             var updateInfo = new UpdateInfo
                                         {
-                                            ReleaseLog = File.Exists(ReleaseLogTemporaryPath) ? File.ReadAllText(ReleaseLogTemporaryPath) : string.Empty
+                                            WasInstalled = wasInstalled,
+                                            ReleaseLog = File.Exists(ReleaseLogPath) ? File.ReadAllText(ReleaseLogPath) : string.Empty
                                         };
-            _updateAvailableSubject.OnNext(updateInfo);
+            _updateSubject.OnNext(updateInfo);
         }
 
         private int GetUpdateCheckInterval()

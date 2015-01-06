@@ -14,6 +14,14 @@ namespace Omnipaste.Activity
             _updateService = updateService;
         }
 
+        public bool WasInstalled
+        {
+            get
+            {
+                return Model.ExtraData.UpdateInfo.WasInstalled;
+            }
+        }
+
         public void UpdateApp()
         {
             _updateService.InstallNewVersion();

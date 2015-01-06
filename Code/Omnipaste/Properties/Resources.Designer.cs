@@ -695,6 +695,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application has been updated..
+        /// </summary>
+        public static string NewVersionInstalled {
+            get {
+                return ResourceManager.GetString("NewVersionInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart application to update.
         /// </summary>
         public static string NewVersionLabel {

@@ -154,7 +154,7 @@ namespace Omnipaste.ActivityList
             return
                 clipboardHandler.Select(clipping => new Activity(clipping))
                     .Merge(eventsHandler.Select(@event => new Activity(@event)))
-                    .Merge(updaterService.UpdateAvailableObservable.Select(updateInfo => new Activity(updateInfo)));
+                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
         }
 
         protected void UpdateFilter()

@@ -62,9 +62,9 @@
         public Activity(UpdateInfo updateInfo)
             : this()
         {
-            Content = Resources.NewVersionAvailable;
+            Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
             Type = ActivityTypeEnum.Version;
-            _extraData.ReleaseLog = updateInfo.ReleaseLog;
+            _extraData.UpdateInfo = updateInfo;
         }
 
         #endregion
