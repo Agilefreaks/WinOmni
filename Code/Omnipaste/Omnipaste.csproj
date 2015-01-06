@@ -339,6 +339,7 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>

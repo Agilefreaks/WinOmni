@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Activity
 {
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     using OmniUI.Attributes;
@@ -42,7 +43,7 @@
             }
         }
 
-        public override Models.Activity Model
+        public override ActivityPresenter Model
         {
             get
             {

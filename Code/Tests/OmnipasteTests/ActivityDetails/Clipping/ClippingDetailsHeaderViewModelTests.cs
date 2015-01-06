@@ -6,6 +6,7 @@
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Clipping;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     [TestFixture]
     public class ClippingDetailsHeaderViewModelTests
@@ -29,7 +30,7 @@
         {
             const string Content = "some content";
             var clipping = new Clipping(Content);
-            _subject.Model = new Activity(clipping);
+            _subject.Model = new ActivityPresenter(new Activity(clipping));
 
             _subject.CopyClipping();
 

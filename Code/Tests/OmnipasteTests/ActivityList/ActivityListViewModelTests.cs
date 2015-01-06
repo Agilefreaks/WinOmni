@@ -14,6 +14,7 @@
     using Omnipaste.Activity;
     using Omnipaste.ActivityList;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -54,7 +55,7 @@
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnCompleted<Clipping>()));
             _mockClipboardHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Callback<IObserver<Clipping>>(observer => clippingObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
@@ -78,7 +79,7 @@
                     new Recorded<Notification<Event>>(200, Notification.CreateOnCompleted<Event>()));
             _mockEventsHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(observer => eventObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
@@ -174,7 +175,7 @@
                 .ForEach(
                     activityType =>
                     _subject.Items.Add(
-                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity(activityType) }));
+                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new Activity(activityType)) }));
         }
     }
 }

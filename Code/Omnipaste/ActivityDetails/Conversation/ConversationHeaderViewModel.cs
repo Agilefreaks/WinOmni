@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation
 {
-    using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using OmniUI.Presenters;
 
     public class ConversationHeaderViewModel : ActivityDetailsHeaderViewModel, IConversationHeaderViewModel
@@ -30,7 +30,7 @@
             }
         }
 
-        public override Activity Model
+        public override ActivityPresenter Model
         {
             get
             {

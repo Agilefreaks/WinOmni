@@ -4,13 +4,14 @@
     using Omnipaste.ActivityDetails.Clipping;
     using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public class ActivityDetailsViewModelFactory : IActivityDetailsViewModelFactory
     {
         [Inject]
         public IKernel Kernel { get; set; }
 
-        public IActivityDetailsViewModel Create(Activity activity)
+        public IActivityDetailsViewModel Create(ActivityPresenter activity)
         {
             IActivityDetailsViewModel result;
             switch (activity.Type)

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Linq;
-    using System.Threading;
     using Clipboard.Models;
     using Events.Models;
     using OmniCommon.Helpers;
@@ -13,8 +12,6 @@
     public class Activity
     {
         #region Constants
-
-        private const string DateTimeFormatPattern = "yyyy-M-d MMMM dddd";
 
         private const string StringFormPartSeparator = " ";
 
@@ -86,13 +83,7 @@
 
         public override string ToString()
         {
-            var parts = new List<string>
-                            {
-                                Device,
-                                GetTypeAsString(),
-                                Content,
-                                GetExtraDataAsString()
-                            };
+            var parts = new List<string> { Device, GetTypeAsString(), Content, GetExtraDataAsString() };
 
             return string.Join(StringFormPartSeparator, parts);
         }
@@ -126,6 +117,7 @@
             }
             return result;
         }
+
         #endregion
     }
 }
