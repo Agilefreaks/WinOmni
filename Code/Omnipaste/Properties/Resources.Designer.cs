@@ -920,6 +920,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installed updates history.
+        /// </summary>
+        public static string VersionDetailsHeaderTitle {
+            get {
+                return ResourceManager.GetString("VersionDetailsHeaderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         public static string Warning {
