@@ -292,6 +292,8 @@
     <Compile Include="Activity\Converters\ViewedSizeConverter.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="Activity\IVersionActivityViewModel.cs" />
+    <Compile Include="Activity\VersionActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="DetailsViewModel\IConversationItem.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
@@ -503,6 +505,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Activity\Activity\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activity\Activity\Version.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

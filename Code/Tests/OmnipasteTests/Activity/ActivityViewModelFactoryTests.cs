@@ -22,10 +22,13 @@
             var mockingKernel = new MoqMockingKernel();
             var mockContactRelatedActivityViewModel = mockingKernel.GetMock<IContactRelatedActivityViewModel>();
             mockContactRelatedActivityViewModel.SetupAllProperties();
+            var mockVersionActivityViewModel = mockingKernel.GetMock<IVersionActivityViewModel>();
+            mockVersionActivityViewModel.SetupAllProperties();
             var mockActivityViewModel = mockingKernel.GetMock<IActivityViewModel>();
             mockActivityViewModel.SetupAllProperties();
             mockingKernel.Bind<IContactRelatedActivityViewModel>()
                 .ToConstant(mockContactRelatedActivityViewModel.Object);
+            mockingKernel.Bind<IVersionActivityViewModel>().ToConstant(mockVersionActivityViewModel.Object);
             mockingKernel.Bind<IActivityViewModel>().ToConstant(mockActivityViewModel.Object);
             _subject = new ActivityViewModelFactory { Kernel = mockingKernel };
         }
@@ -62,6 +65,17 @@
             var activityViewModel = _subject.Create(activity);
 
             activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
+            activityViewModel.Model.Should().Be(activity);
+        }
+
+        [Test]
+        public void Create_ActivityIsOfTypeVersion_ReturnsAVersionActivityViewModelWithTheGivenActivityAsTheModel()
+        {
+            var activity = new Activity(ActivityTypeEnum.Version);
+
+            var activityViewModel = _subject.Create(activity);
+
+            activityViewModel.Should().BeAssignableTo<IVersionActivityViewModel>();
             activityViewModel.Model.Should().Be(activity);
         }
     }

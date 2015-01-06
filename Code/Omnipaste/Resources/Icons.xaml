@@ -5212,6 +5212,41 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         </Canvas>
     </Canvas>
 
+    <Canvas x:Key="restart_icon"  Width="19" Height="20">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath2999" Figures="M 0 16 15 16 15 0 0 0 0 16 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 20"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="9.3872" Y="11.54"/>
+                        </Canvas.RenderTransform>
+                        <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 3.271 0.568 3.347 0.671 2.957 3.96" FillRule="NonZero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="12.6951" Y="12.1512"/>
+                        </Canvas.RenderTransform>
+                        <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 c -1.281 1.418 -3.131 2.314 -5.195 2.314 -3.866 0 -7 -3.126 -7 -6.982 0 -3.857 3.134 -6.983 7 -6.983 3.866 0 7 3.126 7 6.983" FillRule="NonZero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
     <Canvas Width="59.678" Height="45.279" x:Key="phone_icon">
         <Path Fill="{DynamicResource BlackBrush}" Data="F1 M 40.191,34.815 L 19.489,34.815 L 19.489,5.565 L 40.191,5.565 L 40.191,34.815 Z M 31.281,41.531 C 29.102,43.080 26.688,40.677 28.219,38.491 C 28.263,38.429 28.323,38.368 28.384,38.323 C 30.563,36.745 33.008,39.160 31.448,41.364 C 31.404,41.426 31.344,41.486 31.281,41.531 Z M 25.138,2.003 L 34.543,2.003 C 34.781,2.003 34.974,2.358 34.974,2.797 C 34.974,3.236 34.781,3.592 34.543,3.592 L 25.138,3.592 C 24.899,3.592 24.709,3.236 24.709,2.797 C 24.709,2.358 24.899,2.003 25.138,2.003 Z M 41.121,0.000 L 18.554,0.000 C 17.706,0.000 17.019,0.687 17.019,1.535 L 17.019,43.744 C 17.019,44.592 17.706,45.279 18.554,45.279 L 41.125,45.279 C 41.973,45.279 42.660,44.592 42.660,43.744 L 42.660,1.538 C 42.660,0.689 41.971,0.000 41.121,0.000 Z"/>
         <Canvas>

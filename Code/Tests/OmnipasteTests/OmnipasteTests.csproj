@@ -124,6 +124,7 @@
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
+    <Compile Include="Activity\VersionActivityViewModelTests.cs" />
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Models\ActivityTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
