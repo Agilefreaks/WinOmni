@@ -126,7 +126,7 @@
                     new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
                     new Recorded<Notification<bool>>(150, Notification.CreateOnCompleted<bool>()));
             _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>())).Returns(updatesAvailableObservable);
-            _mockUpdateManager.Setup(m => m.DownloadUpdates(It.IsAny<Action>())).Returns(downloadUpdatesObservable);
+            _mockUpdateManager.Setup(m => m.DownloadUpdates(It.IsAny<Action>())).Returns<Action>(a => { a(); return downloadUpdatesObservable; });
             var onNextCalled = false;
             _subject.UpdateAvailableObservable.Subscribe(_ => { onNextCalled = true; }, _ => { });
 

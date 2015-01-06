@@ -174,10 +174,10 @@
             _subject.ShowMessages = false;
 
             var filteredItems = _subject.FilteredItems.Cast<IActivityViewModel>().ToList();
-            filteredItems.Count.Should().Be(3);
-            filteredItems[0].Model.Type.Should().Be(ActivityTypeEnum.Clipping);
-            filteredItems[1].Model.Type.Should().Be(ActivityTypeEnum.Call);
-            filteredItems[2].Model.Type.Should().Be(ActivityTypeEnum.Message);	
+
+            var values = Enum.GetValues(typeof(ActivityTypeEnum)).Cast<ActivityTypeEnum>().Where(type => type != ActivityTypeEnum.All && type != ActivityTypeEnum.None).ToList();
+            filteredItems.Count.Should().Be(values.Count);
+            filteredItems.ForEach(vm => { values.Should().Contain(vm.Model.Type); });
         }
 
         [Test]
