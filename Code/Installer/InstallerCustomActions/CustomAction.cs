@@ -54,7 +54,7 @@
                 var msiFileName = session["OriginalDatabase"];
                 var authorizationKey = AuthorizationBootstrapper.ExtractAuthorizationKey(msiFileName);
                 var arguments = string.IsNullOrWhiteSpace(authorizationKey)
-                                    ? " -minimized"
+                                    ? " -minimized -updated"
                                     : string.Format("-authorizationKey={0}", authorizationKey);
                 session["STARTAPPARGUMENTS"] = arguments;
             }

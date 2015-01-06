@@ -11,6 +11,8 @@
 
         public bool EnableLog { get; private set; }
 
+        public bool Updated { get; private set; }
+
         public ArgumentsDataProvider(IArgumentsProvider argumentsProvider = null)
         {
             argumentsProvider = argumentsProvider ?? new EnvironmentArgumentsProvider();
@@ -18,7 +20,8 @@
                                 {
                                     { "authorizationKey:", v => { AuthorizationKey = v; } },
                                     { "minimized", v => { Minimized = true; } },
-                                    { "log", v => { EnableLog = true; } }
+                                    { "log", v => { EnableLog = true; } },
+                                    { "updated", v => { Updated = true; } }
                                 };
             optionSet.Parse(argumentsProvider.GetCommandLineArgs());
         }
