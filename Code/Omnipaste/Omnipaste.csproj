@@ -248,6 +248,13 @@
     <Compile Include="ActivityDetails\ActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\ActivityDetailsViewModelFactory.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml.cs">
+      <DependentUpon>Deleted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml.cs">
+      <DependentUpon>Normal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDetails\Conversation\Call\CallViewModel.cs" />
     <Compile Include="ActivityDetails\Conversation\Call\ICallViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\ClippingDetailsContentViewModel.cs" />
@@ -256,6 +263,8 @@
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateEnum.cs" />
+    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateToProgressBarEnabledConverter.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
@@ -285,10 +294,15 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="DetailsViewModel\IConversationItem.cs" />
+    <Compile Include="EventAggregatorMessages\DeleteClippingMessage.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
+    <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
+    <Compile Include="Helpers\TextParser.cs" />
+    <Compile Include="Helpers\TextPartTypeEnum.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
@@ -332,6 +346,7 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -431,6 +446,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityDetails\Conversation\Call\CallView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -452,6 +475,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\Conversation\ConversationHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\Calling.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

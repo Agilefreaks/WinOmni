@@ -11,6 +11,7 @@
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
     using OmniUI.Workspace;
@@ -95,7 +96,7 @@
         public void ShowDetails_Always_SetsModelWasViewedToTrue()
         {
             var activity = new Activity { WasViewed = true };
-            _subject.Model = activity;
+            _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -110,12 +111,12 @@
         public void ShowDetails_WhenDetailsIsActive_SetsContentInfoStateToViewing()
         {
             var activity = new Activity { WasViewed = true };
-            _subject.Model = activity;
+            _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
-            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(true);
 
@@ -130,12 +131,12 @@
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasViewed_SetsContentInfoStateToViewing()
         {
             var activity = new Activity { WasViewed = true };
-            _subject.Model = activity;
+            _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
-            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
 
@@ -150,12 +151,12 @@
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
         {
             var activity = new Activity { WasViewed = false };
-            _subject.Model = activity;
+            _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
-            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
 
@@ -170,12 +171,12 @@
         public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
         {
             var activity = new Activity { WasViewed = false };
-            _subject.Model = activity;
+            _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
-            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>()))
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
 

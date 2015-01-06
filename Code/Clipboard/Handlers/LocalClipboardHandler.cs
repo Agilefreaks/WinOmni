@@ -89,14 +89,15 @@ namespace Clipboard.Handlers
             }
         }
 
-        private void WindowsClipboardWrapperDataReceived(ClipboardEventArgs args)
+        private void WindowsClipboardWrapperDataReceived(ClipboardEventArgs arguments)
         {
-            if (Equals(_lastClippingContent, args.Data))
+            if (Equals(_lastClippingContent, arguments.Data))
             {
                 return;
             }
 
-            _subject.OnNext(new Clipping(args.Data) { Source = Clipping.ClippingSourceEnum.Local });
+            _lastClippingContent = arguments.Data;
+            _subject.OnNext(new Clipping(arguments.Data) { Source = Clipping.ClippingSourceEnum.Local });
         }
 
         #endregion

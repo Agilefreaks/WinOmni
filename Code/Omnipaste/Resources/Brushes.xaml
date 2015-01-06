@@ -33,6 +33,9 @@
     <SolidColorBrush x:Key="CallFadedBrush" Color="{DynamicResource CallFadedColor}"/>
     <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
     <SolidColorBrush x:Key="HolidayMenuEntryBackgroundBrush" Color="{DynamicResource HolidayMenuEntryBackgroundColor}"/>
+    <SolidColorBrush x:Key="DeletedClippingBrush" Color="{DynamicResource DeletedClippingColor}"/>
+    <SolidColorBrush x:Key="CallingBackgroundBrush" Color="{DynamicResource CallingBackgroundColor}"/>
+    <SolidColorBrush x:Key="ConfirmationMessageBrush" Color="{DynamicResource ConfirmationMessageColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
@@ -44,6 +47,7 @@
 
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource ButtonBorderColor}"/>
     <SolidColorBrush x:Key="ScrollBarBrush" Color="{DynamicResource ScrollBarColor}"/>
+    <SolidColorBrush x:Key="InactiveButtonBrush" Color="{DynamicResource InactiveButtonColor}"/>
     
     <VisualBrush x:Key="CloudVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_cloud}" />
     <VisualBrush x:Key="LocalVisualBrush" Stretch="Uniform" Visual="{DynamicResource appbar_laptop}" />

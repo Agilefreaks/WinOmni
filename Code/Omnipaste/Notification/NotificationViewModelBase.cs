@@ -10,9 +10,11 @@
     {
         #region Fields
 
-        private readonly TimeSpan _halfSecondInterval = new TimeSpan(0, 0, 0, 0, 500);
+        private readonly TimeSpan _defaultDimissInterval = TimeSpan.FromMilliseconds(700);
 
-        private readonly TimeSpan _oneMinuteInterval = new TimeSpan(0, 0, 60);
+        private readonly TimeSpan _halfSecondInterval = TimeSpan.FromMilliseconds(500);
+
+        private readonly TimeSpan _oneMinuteInterval = TimeSpan.FromMinutes(1);
 
         private DispatcherTimer _autoCloseTimer;
 
@@ -63,7 +65,6 @@
         public void Close()
         {
             State = ViewModelStatusEnum.Closed;
-
             _deactivationTimer.Start();
         }
 
@@ -71,7 +72,7 @@
 
         #region Methods
 
-        protected void Dismiss(int delay = 1000)
+        protected void Dismiss()
         {
             if (State == ViewModelStatusEnum.Closed)
             {
@@ -83,7 +84,7 @@
                 _autoCloseTimer.Stop();
             }
 
-            _autoCloseTimer.Interval = new TimeSpan(0, 0, 0, 0, delay);
+            _autoCloseTimer.Interval = _defaultDimissInterval;
             _autoCloseTimer.Start();
         }
 
@@ -104,24 +105,18 @@
             }
         }
 
-        private void InitializeTimers()
-        {
-            InitializeAutoCloseTimer();
-            InitializeDeactivationTimer();
-        }
-
         private void InitializeAutoCloseTimer()
         {
             _autoCloseTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
-                              {
-                                  Interval = _oneMinuteInterval
-                              };
+                                  {
+                                      Interval = _oneMinuteInterval
+                                  };
 
             _autoCloseTimer.Tick += (sender, arguments) =>
-            {
-                _autoCloseTimer.Stop();
-                Close();
-            };
+                {
+                    _autoCloseTimer.Stop();
+                    Close();
+                };
 
             _autoCloseTimer.Start();
         }
@@ -129,14 +124,20 @@
         private void InitializeDeactivationTimer()
         {
             _deactivationTimer = new DispatcherTimer(DispatcherPriority.Normal, ApplicationService.Dispatcher)
-                                 {
-                                     Interval = _halfSecondInterval
-                                 };
+                                     {
+                                         Interval = _halfSecondInterval
+                                     };
             _deactivationTimer.Tick += (sender, arguments) =>
-            {
-                _deactivationTimer.Stop();
-                Deactivate();
-            };
+                {
+                    _deactivationTimer.Stop();
+                    Deactivate();
+                };
+        }
+
+        private void InitializeTimers()
+        {
+            InitializeAutoCloseTimer();
+            InitializeDeactivationTimer();
         }
 
         #endregion

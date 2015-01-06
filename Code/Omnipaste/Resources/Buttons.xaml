@@ -174,4 +174,47 @@
         <Setter Property="Template" Value="{StaticResource EmptyButtonTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
+
+    <Style x:Key="ShapeButtonWithOuterHighlight" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" x:Name="PART_Circle"
+                                   Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.4">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{DynamicResource thin_circle_icon}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="PART_Glyph" 
+                                   Fill="{TemplateBinding Background}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Circle" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

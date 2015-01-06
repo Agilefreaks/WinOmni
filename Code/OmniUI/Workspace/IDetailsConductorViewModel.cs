@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
 
-    public interface IDetailsConductorViewModel : IConductor, IScreen
+    public interface IDetailsConductorViewModel : IConductor, IHaveActiveItem, IScreen
     {
     }
 }

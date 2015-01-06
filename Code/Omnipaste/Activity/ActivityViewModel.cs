@@ -5,14 +5,14 @@ namespace Omnipaste.Activity
     using Ninject;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Workspaces;
     using OmniUI.ExtensionMethods;
 
-    public class ActivityViewModel : DetailsViewModelWithAutoRefresh<Models.Activity>, IActivityViewModel
+    public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityPresenter>, IActivityViewModel
     {
         #region Fields
 
@@ -41,7 +41,7 @@ namespace Omnipaste.Activity
 
         public ICommand ClickCommand { get; set; }
 
-        public override Models.Activity Model
+        public override ActivityPresenter Model
         {
             get
             {

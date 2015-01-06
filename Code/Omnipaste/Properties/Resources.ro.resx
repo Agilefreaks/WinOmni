@@ -406,4 +406,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="Settings" xml:space="preserve">
     <value>Setări</value>
   </data>
+  <data name="ClippingDeleted" xml:space="preserve">
+    <value>Clipping-ul a fost șters. Anulează asta de aici.</value>
+  </data>
 </root>

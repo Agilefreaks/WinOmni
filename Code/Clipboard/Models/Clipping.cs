@@ -1,5 +1,8 @@
 ﻿namespace Clipboard.Models
 {
+    using System;
+    using Newtonsoft.Json;
+
     public class Clipping
     {
         public enum ClippingSourceEnum
@@ -32,11 +35,16 @@
         {
             Content = content;
             Identifier = identifier;
+            UniqueId = Guid.NewGuid().ToString();
         }
 
         #endregion
 
         #region Public Properties
+
+        //This is not called Id momentarily as the API returns an Id property with a BSON value
+        [JsonIgnore]
+        public string UniqueId { get; set; }
 
         public string Content { get; set; }
         

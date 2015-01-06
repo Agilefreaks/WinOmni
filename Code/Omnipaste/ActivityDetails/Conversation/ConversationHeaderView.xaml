@@ -3,23 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             xmlns:conversation="clr-namespace:Omnipaste.ActivityDetails.Conversation"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <conversation:ConversationHeaderStateToProgressBarEnabledConverter x:Key="ConversationHeaderStateToProgressBarEnabledConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="18,8,0,18">
-            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40" 
-                     Background="{DynamicResource ContentBackgroundBrush}"/>
-            <TextBlock Text="{x:Static properties:Resources.MessageDetailsHeader}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
-                       Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center"/>
-            <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextStyle}" 
-                       FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"/>
-        </StackPanel>
-        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource MessageBrush}" 
-                DockPanel.Dock="Bottom"/>
+
+        <ContentControl Grid.Row="0" Grid.RowSpan="2" cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}"/>
+
+        <controls:MetroProgressBar Grid.Row="1" Height="5" Background="Transparent" Foreground="{DynamicResource MessageBrush}">
+            <i:Interaction.Behaviors>
+                <behaviors:TimeProgressUpdateBehavior Duration="{Binding Path=ProgressDuration, Mode=OneWay}" IsEnabled="{Binding Path=State, Converter={StaticResource ConversationHeaderStateToProgressBarEnabledConverter}}" />
+            </i:Interaction.Behaviors>
+        </controls:MetroProgressBar>
     </Grid>
 </UserControl>

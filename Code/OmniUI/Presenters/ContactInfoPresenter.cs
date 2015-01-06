@@ -108,6 +108,14 @@
             }
         }
 
+        public string Name
+        {
+            get
+            {
+                return ContactInfo.Name;
+            }
+        }
+
         #endregion
 
         #region Methods

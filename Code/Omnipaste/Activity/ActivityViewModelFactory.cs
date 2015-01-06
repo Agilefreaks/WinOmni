@@ -2,6 +2,7 @@
 {
     using Ninject;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public class ActivityViewModelFactory : IActivityViewModelFactory
     {
@@ -28,7 +29,7 @@
                     break;
             }
 
-            result.Model = activity;
+            result.Model = new ActivityPresenter(activity);
 
             return result;
         }

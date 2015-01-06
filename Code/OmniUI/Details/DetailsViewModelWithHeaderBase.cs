@@ -18,9 +18,9 @@
 
         #region Public Properties
 
-        public TContent ContentViewModel { get; protected set; }
+        public TContent ContentViewModel { get; private set; }
 
-        public THeader HeaderViewModel { get; protected set; }
+        public THeader HeaderViewModel { get; private set; }
 
         #endregion
 

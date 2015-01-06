@@ -5495,4 +5495,118 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
             </Canvas>
         </Canvas>
     </Canvas>
+
+    <Canvas x:Key="thin_circle_icon" Width="45" Height="45">
+        <Canvas>
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-60.968908" Y="-264.87395"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <MatrixTransform Matrix="1.25 0 0 -1.25 83.468908 264.87395"/>
+                </Canvas.RenderTransform>
+                <Path Fill="{DynamicResource BlackBrush}">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0 0 c -9.941 0 -18 -8.059 -18 -18 0 -9.941 8.059 -18 18 -18 9.941 0 18 8.059 18 18 C 18 -8.059 9.941 0 0 0 m 0 -1.5 c 9.098 0 16.5 -7.402 16.5 -16.5 0 -9.098 -7.402 -16.5 -16.5 -16.5 -9.098 0 -16.5 7.402 -16.5 16.5 0 9.098 7.402 16.5 16.5 16.5" FillRule="nonzero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="copy_icon" Width="19" Height="19">
+        <Canvas>
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-171.02954" Y="-326.7453"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <MatrixTransform Matrix="1.25 0 0 -1.25 174.15457 332.36775"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0 0 -1.759 0 0 -10.244 10.244 0 0 1.757" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+            <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path.Data>
+                    <PathGeometry Figures="m 189.45594 327.67262 -12.805 0 0 12.805 12.805 0 0 -12.805 z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Canvas>
+    
+    <Canvas x:Key="delete_icon"  Width="19" Height="19">
+        <Canvas.RenderTransform>
+            <MatrixTransform Matrix="1.25 0 0 -1.25 0 18.75"/>
+        </Canvas.RenderTransform>
+        <Canvas>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0.5" Y="0.5"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 0 0 14 14" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0.5" Y="14.5"/>
+                </Canvas.RenderTransform>
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 0 0 14 -14" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+    
+    <Canvas x:Key="undo_icon">
+        <Canvas Width="16" Height="21">
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="-366.875" Y="-521.95109"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <MatrixTransform Matrix="1.25 0 0 -1.25 383.125 534.94578"/>
+                    </Canvas.RenderTransform>
+                    <Path Fill="{DynamicResource BlackBrush}">
+                        <Path.Data>
+                            <PathGeometry Figures="m 0 0 c 0 -3.453 -2.809 -6.262 -6.262 -6.262 l -2.217 0 c -0.367 0 -0.665 0.298 -0.665 0.665 l 0 0.222 c 0 0.367 0.298 0.665 0.665 0.665 l 2.217 0 c 2.597 0 4.71 2.113 4.71 4.71 0 2.597 -2.113 4.71 -4.71 4.71 l -4.089 0 2.816 -2.816 c 0.303 -0.302 0.303 -0.795 0 -1.097 -0.293 -0.294 -0.804 -0.293 -1.097 0 l -4.141 4.141 C -12.919 5.084 -13 5.279 -13 5.486 c 0 0.207 0.081 0.402 0.227 0.549 l 4.141 4.141 c 0.293 0.293 0.804 0.293 1.097 0 0.303 -0.303 0.303 -0.795 0 -1.097 l -2.816 -2.817 4.089 0 C -2.809 6.262 0 3.453 0 0" FillRule="nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+
+    <Canvas x:Key="call_icon" Width="21" Height="21">
+        <Canvas.Resources>
+            <PathGeometry xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="clipPath2999" Figures="m 0 16.442 16.5 0 L 16.5 0 0 0 0 16.442 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 20.553125"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="5.1737" Y="9.952"/>
+                        </Canvas.RenderTransform>
+                        <Path StrokeThickness="2" Stroke="#FF585858" StrokeMiterLimit="10" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 C -0.046 0.081 -0.089 0.157 -0.131 0.231 L 1.037 1.416 C 1.515 1.9 1.523 2.671 1.057 3.132 L -1.295 5.45 C -1.764 5.91 -2.44 5.743 -2.919 5.5 -3.515 5.198 -3.773 5.003 -4.075 4.361 -4.301 3.88 -4.406 3.186 -4.418 2.789 -4.422 2.638 -4.728 -0.847 -0.414 -5.153 L -0.421 -5.16 c 4.381 -4.381 7.911 -4.039 8.064 -4.034 0.396 0.014 1.09 0.125 1.569 0.354 0.64 0.306 0.832 0.566 1.13 1.164 0.24 0.481 0.402 1.158 -0.062 1.624 L 7.946 -3.717 C 7.481 -3.254 6.711 -3.268 6.229 -3.75 L 5.053 -4.926 C 4.979 -4.885 4.902 -4.842 4.821 -4.797 4.096 -4.395 2.909 -3.33 1.705 -2.185 1.052 -1.564 0 0 0 0 z" FillRule="NonZero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
 </ResourceDictionary>

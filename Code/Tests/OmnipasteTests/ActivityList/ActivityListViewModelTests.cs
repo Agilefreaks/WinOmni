@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using Caliburn.Micro;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -13,7 +14,9 @@
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.ActivityList;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     [TestFixture]
@@ -31,6 +34,8 @@
 
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         [SetUp]
         public void Setup()
         {
@@ -38,10 +43,12 @@
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService>();
+            _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
-                _mockActivityViewModelFactory.Object);
+                _mockActivityViewModelFactory.Object,
+                _mockEventAggregator.Object);
             _testScheduler = new TestScheduler();
         }
 
@@ -54,12 +61,13 @@
                     new Recorded<Notification<Clipping>>(200, Notification.CreateOnCompleted<Clipping>()));
             _mockClipboardHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Callback<IObserver<Clipping>>(observer => clippingObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
-                _mockActivityViewModelFactory.Object);
+                _mockActivityViewModelFactory.Object,
+                _mockEventAggregator.Object);
             viewModel.Start();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -78,12 +86,13 @@
                     new Recorded<Notification<Event>>(200, Notification.CreateOnCompleted<Event>()));
             _mockEventsHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Event>>()))
                 .Callback<IObserver<Event>>(observer => eventObservable.Subscribe(observer));
-            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity() };
+            var activityViewModel = new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter() };
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<Activity>())).Returns(activityViewModel);
             var viewModel = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
                 _mockEventsHandler.Object,
-                _mockActivityViewModelFactory.Object);
+                _mockActivityViewModelFactory.Object,
+                _mockEventAggregator.Object);
             viewModel.Start();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -166,6 +175,23 @@
 	
         }
 
+        [Test]
+        public void HandleDeleteClippingMessage_AChildViewModelExistsWithAModelStemmingFromAClippingWithTheGivenId_ClosesThatViewModel()
+        {
+            var mockActivityViewModel = new Mock<IActivityViewModel>();
+            var clipping = new Clipping();
+            mockActivityViewModel.Setup(x => x.Model).Returns(new ActivityPresenter(new Activity(clipping)));
+            //Caliburn conductors only remove a conducted view model if it can close
+            mockActivityViewModel.Setup(x => x.CanClose(It.IsAny<Action<bool>>())).Callback<Action<bool>>(action => action(true));
+            ((IActivate)_subject).Activate();
+            _subject.ActivateItem(mockActivityViewModel.Object);
+            _subject.Items.Contains(mockActivityViewModel.Object).Should().BeTrue();
+
+            _subject.Handle(new DeleteClippingMessage(clipping.UniqueId));
+
+            _subject.Items.Contains(mockActivityViewModel.Object).Should().BeFalse();
+        }
+
         private void AddItemsForAllActivityTypes()
         {
             Enum.GetValues(typeof(ActivityTypeEnum))
@@ -174,7 +200,7 @@
                 .ForEach(
                     activityType =>
                     _subject.Items.Add(
-                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new Activity(activityType) }));
+                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new Activity(activityType)) }));
         }
     }
 }

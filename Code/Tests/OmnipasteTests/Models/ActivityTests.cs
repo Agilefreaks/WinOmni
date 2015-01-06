@@ -6,6 +6,7 @@
     using Events.Models;
     using FluentAssertions;
     using NUnit.Framework;
+    using NUnit.Framework.Constraints;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
@@ -69,6 +70,13 @@
         {
             new Activity(new Clipping { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
                 .Be(Resources.FromLocal);
+        }
+
+        [Test]
+        public void CtorWithClipping_Always_SetsTheClippingIdInTheExtraData()
+        {
+            const string Id = "SomeId";
+            ((string)new Activity(new Clipping { UniqueId = Id }).ExtraData.SourceId).Should().Be(Id);
         }
 
         [Test]

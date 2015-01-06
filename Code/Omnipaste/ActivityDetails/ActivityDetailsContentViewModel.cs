@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.ActivityDetails
 {
-    using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using OmniUI.Details;
 
-    public class ActivityDetailsContentViewModel : DetailsViewModelBase<Activity>, IActivityDetailsContentViewModel
+    public class ActivityDetailsContentViewModel : DetailsViewModelBase<ActivityPresenter>, IActivityDetailsContentViewModel
     {
     }
 }
