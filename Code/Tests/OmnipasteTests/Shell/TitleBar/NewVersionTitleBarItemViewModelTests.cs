@@ -64,7 +64,7 @@
 
             _testScheduler.Start();
 
-            _subject.CanPerformAction.Should().BeTrue();
+            _subject.CanPerformAction.Should().BeFalse();
         }
 
         private NewVersionTitleBarItemViewModel CreateSubject()
