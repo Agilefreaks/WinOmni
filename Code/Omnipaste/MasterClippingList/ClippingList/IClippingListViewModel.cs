@@ -1,6 +1,9 @@
 namespace Omnipaste.MasterClippingList.ClippingList
 {
-    public interface IClippingListViewModel
+    using Caliburn.Micro;
+    using Omnipaste.EventAggregatorMessages;
+
+    public interface IClippingListViewModel : IHandle<DeleteClippingMessage>
     {
     }
 }

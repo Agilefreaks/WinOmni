@@ -44,6 +44,7 @@
             Content = clipping.Content;
             Type = ActivityTypeEnum.Clipping;
             Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            _extraData.SourceId = clipping.UniqueId;
         }
 
         public Activity(Event @event)

@@ -33,7 +33,7 @@
                 }
                 else
                 {
-                    _eventAggregator.PublishOnUIThread(new DeleteClippingMessage(Model.BackingModel));
+                    _eventAggregator.PublishOnUIThread(new DeleteClippingMessage(Model.ExtraData.SourceId));
                 }
             }
             else

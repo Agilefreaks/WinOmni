@@ -1,11 +1,14 @@
 namespace Omnipaste.ActivityList
 {
     using System;
+    using System.Linq;
     using System.Reactive.Linq;
+    using Caliburn.Micro;
     using Clipboard.Handlers;
     using Events.Handlers;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
@@ -34,12 +37,14 @@ namespace Omnipaste.ActivityList
         public ActivityListViewModel(
             IClipboardHandler clipboardHandler,
             IEventsHandler eventsHandler,
-            IActivityViewModelFactory activityViewModelFactory)
+            IActivityViewModelFactory activityViewModelFactory,
+            IEventAggregator eventAggregator)
             : base(GetActivityObservable(clipboardHandler, eventsHandler))
         {
             _activityViewModelFactory = activityViewModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
             ViewModelFilter = MatchesFilter;
+            eventAggregator.Subscribe(this);
         }
 
         #endregion
@@ -200,5 +205,14 @@ namespace Omnipaste.ActivityList
         }
 
         #endregion
+
+        public void Handle(DeleteClippingMessage message)
+        {
+            var activityViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.ExtraData.SourceId == message.ClippingId);
+            if (activityViewModel != null)
+            {
+                DeactivateItem(activityViewModel, true);
+            }
+        }
     }
 }

@@ -1,21 +1,31 @@
 ﻿namespace Omnipaste.EventAggregatorMessages
 {
-    using Omnipaste.Models;
-
     public class DeleteClippingMessage
     {
+        #region Fields
+
+        private readonly string _clippingId;
+
+        #endregion
+
         #region Constructors and Destructors
 
-        public DeleteClippingMessage(Activity backingModel)
+        public DeleteClippingMessage(string clippingId)
         {
-            Activity = backingModel;
+            _clippingId = clippingId;
         }
 
         #endregion
 
         #region Public Properties
 
-        public Activity Activity { get; set; }
+        public string ClippingId
+        {
+            get
+            {
+                return _clippingId;
+            }
+        }
 
         #endregion
     }
