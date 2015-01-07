@@ -296,8 +296,11 @@
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
+    <Compile Include="Helpers\TextParser.cs" />
+    <Compile Include="Helpers\TextPartTypeEnum.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
