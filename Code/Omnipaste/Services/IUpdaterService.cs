@@ -5,9 +5,9 @@
 
     public interface IUpdaterService : IStartable
     {
-        IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
+        IObservable<UpdateInfo> UpdateObservable { get; }
 
-        IObservable<bool> DownloadUpdates();
+        IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 
         void InstallNewVersionWhenIdle(TimeSpan idleTimeSpan);
 

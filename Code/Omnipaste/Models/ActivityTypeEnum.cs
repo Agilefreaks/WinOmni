@@ -13,6 +13,8 @@
 
         Message = 4,
 
-        All = Call | Clipping | Message
+        Version = 8,
+
+        All = Call | Clipping | Message | Version
     }
 }

@@ -9,6 +9,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using Omnipaste.Services;
     using OmniUI.Models;
 
     [TestFixture]
@@ -103,6 +104,16 @@
             contactInfo.Phone.Should().Be("07xxxxxx");
         }
 
+        [Test]
+        public void CtorWithUpdateInfo_Always_SetsExtraDataUpdateInfo()
+        {
+            var updateInfo = new UpdateInfo { WasInstalled = true, ReleaseLog = "test" };
+
+            var activity = new Activity(updateInfo);
+
+            (activity.ExtraData.UpdateInfo as UpdateInfo).Should().Be(updateInfo);
+        }
+        
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheDeviceName()
         {

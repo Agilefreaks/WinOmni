@@ -6,6 +6,8 @@
 
         Message,
 
-        Call
+        Call,
+        
+        Version
     }
 }

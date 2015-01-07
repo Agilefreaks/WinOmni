@@ -6,22 +6,6 @@
     <AssemblyName>Omnipaste</AssemblyName>
     <AssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(AssemblyName)-debug</AssemblyName>
     <AssemblyName Condition=" '$(Configuration)' == 'Staging' ">$(AssemblyName)-staging</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A5370D41-9479-46AA-B2FB-5CD4467379A1}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Omnipaste</RootNamespace>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>D:\Temp\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -45,6 +29,22 @@
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A5370D41-9479-46AA-B2FB-5CD4467379A1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Omnipaste</RootNamespace>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <NuGetPackageImportStamp>6312d629</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -148,6 +148,9 @@
     <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Markdown.Xaml">
+      <HintPath>..\..\Libs\Markdown.Xaml\Markdown.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
@@ -273,6 +276,12 @@
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDetails\Conversation\Message\MessageViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\IVersionDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\IVersionDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\IVersionDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\VersionDetailsContentViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\VersionDetailsHeaderViewModel.cs" />
+    <Compile Include="ActivityDetails\Version\VersionDetailsViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityContentInfo.cs" />
     <Compile Include="Activity\ContentStateEnum.cs" />
@@ -283,6 +292,8 @@
     <Compile Include="Activity\Converters\ViewedSizeConverter.cs" />
     <Compile Include="Activity\IActivityViewModelFactory.cs" />
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="Activity\IVersionActivityViewModel.cs" />
+    <Compile Include="Activity\VersionActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="DetailsViewModel\IConversationItem.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
@@ -309,7 +320,6 @@
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
     <Compile Include="ExtensionMethods\ConfigurationContainerExtensions.cs" />
-    <Compile Include="ExtensionMethods\UpdateManagerExtensionMethods.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
     <Compile Include="Framework\Commands\CancelCommandEventArgs.cs" />
@@ -376,6 +386,7 @@
     <Compile Include="Services\InMemoryStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
+    <Compile Include="Services\IUpdateManager.cs" />
     <Compile Include="Services\IUpdaterService.cs" />
     <Compile Include="Services\IUrlShortenerService.cs" />
     <Compile Include="Services\Monitors\Credentials\CredentialsMonitor.cs" />
@@ -390,8 +401,11 @@
     <Compile Include="Services\Monitors\User\IUserMonitor.cs" />
     <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
+    <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
+    <Compile Include="Services\UpdateFileInfo.cs" />
+    <Compile Include="Services\UpdateInfo.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />
@@ -402,6 +416,7 @@
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
     <Compile Include="Models\ISMSMessageFactory.cs" />
     <Compile Include="Models\SMSMessageFactory.cs" />
+    <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
     <Compile Include="Workspaces\EventsMenuEntryViewModel.cs" />
@@ -459,6 +474,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ActivityDetails\Version\VersionDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Version\VersionDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityList\ActivityListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -484,6 +507,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Activity\Activity\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activity\Activity\Version.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -920,6 +947,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx" />
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
+    <None Include="Release.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\Entypo.ttf" />
     <Resource Include="Resources\segoeuil.ttf" />
     <Resource Include="Resources\segoeuisl.ttf" />

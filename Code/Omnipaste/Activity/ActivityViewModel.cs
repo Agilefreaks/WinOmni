@@ -128,6 +128,9 @@ namespace Omnipaste.Activity
                     case ActivityTypeEnum.Message:
                         ContentType = ContentTypeEnum.Message;
                         break;
+                    case ActivityTypeEnum.Version:
+                        ContentType = ContentTypeEnum.Version;
+                        break;
                     default:
                         ContentType = ContentTypeEnum.Normal;
                         break;

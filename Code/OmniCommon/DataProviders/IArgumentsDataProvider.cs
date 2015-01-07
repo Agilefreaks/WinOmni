@@ -7,5 +7,7 @@
         bool Minimized { get; }
 
         bool EnableLog { get; }
+
+        bool Updated { get; }
     }
 }

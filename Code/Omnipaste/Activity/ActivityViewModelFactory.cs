@@ -23,6 +23,9 @@
                 case ActivityTypeEnum.Message:
                     result = Kernel.Get<IContactRelatedActivityViewModel>();
                     break;
+                case ActivityTypeEnum.Version:
+                    result = Kernel.Get<IVersionActivityViewModel>();
+                    break;
                 default:
                     result = Kernel.Get<IActivityViewModel>();
                     break;
