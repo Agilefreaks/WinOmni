@@ -12,7 +12,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,0,22">
+        <StackPanel Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0">
             <Rectangle Height="24" Width="25" Fill="{DynamicResource ActivityContentBrush}">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Uniform" Visual="{DynamicResource version_icon}"/>
