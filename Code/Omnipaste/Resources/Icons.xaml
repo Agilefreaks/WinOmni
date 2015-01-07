@@ -5546,7 +5546,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                 <Canvas.RenderTransform>
                     <TranslateTransform X="0.5" Y="0.5"/>
                 </Canvas.RenderTransform>
-                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                     <Path.Data>
                         <PathGeometry Figures="M 0 0 14 14" FillRule="NonZero"/>
                     </Path.Data>
@@ -5556,7 +5556,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                 <Canvas.RenderTransform>
                     <TranslateTransform X="0.5" Y="14.5"/>
                 </Canvas.RenderTransform>
-                <Path StrokeThickness="1" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path StrokeThickness="2" Stroke="{DynamicResource BlackBrush}" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
                     <Path.Data>
                         <PathGeometry Figures="M 0 0 14 -14" FillRule="NonZero"/>
                     </Path.Data>
