@@ -418,4 +418,13 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="NewVersionLabel" xml:space="preserve">
     <value>Reinicie o aplicativo para atualizar</value>
   </data>
+  <data name="VersionDetailsHeaderTitle" xml:space="preserve">
+    <value>História atualizações instaladas</value>
+  </data>
+  <data name="Calling" xml:space="preserve">
+    <value>O chamada</value>
+  </data>
+  <data name="CallingGuide" xml:space="preserve">
+    <value>Pegue o seu telemóvel!</value>
+  </data>
 </root>
