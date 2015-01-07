@@ -92,4 +92,9 @@
     <Style x:Key="StaticContentDecoratorStyle" TargetType="Border">
         <Setter Property="Height" Value="5"/>
     </Style>
+
+    <Style x:Key="MainWindowContentBorderStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="5,0,5,5"/>
+    </Style>
 </ResourceDictionary>

@@ -35,7 +35,7 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
-    <Border BorderBrush="{DynamicResource WindowBorderBrush}" BorderThickness="5,0,5,5">
+    <Border Style="{DynamicResource MainWindowContentBorderStyle}">
         <Grid>
             <ContentControl x:Name="ContextMenuViewModel" />
             <Grid>
