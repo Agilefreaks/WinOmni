@@ -49,7 +49,10 @@
         {
             var mockConductor = new Mock<IConductor>();
             _subject.Parent = mockConductor.Object;
-            _subject.Model = new ActivityPresenter { MarkedForDeletion = true };
+            var activityPresenter = new ActivityPresenter { MarkedForDeletion = true };
+            activityPresenter.ExtraData.SourceId = "someId";
+            _subject.Model = activityPresenter;
+
             ((IActivate)_subject).Activate();
 
             ((IClippingDetailsViewModel)_subject).Deactivate(true);

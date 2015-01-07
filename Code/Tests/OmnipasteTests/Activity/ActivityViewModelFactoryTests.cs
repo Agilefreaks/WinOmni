@@ -1,14 +1,10 @@
 ﻿namespace OmnipasteTests.Activity
 {
     using FluentAssertions;
-    using Moq;
-    using Ninject;
-    using Ninject.MockingKernel;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.Models;
-    using Omnipaste.Services;
     using OmniUI.Models;
 
     [TestFixture]
@@ -41,7 +37,7 @@
             var activityViewModel = _subject.Create(activity);
 
             activityViewModel.Should().BeAssignableTo<IActivityViewModel>();
-            activityViewModel.Model.Should().Be(activity);
+            activityViewModel.Model.BackingModel.Should().Be(activity);
         }
 
         [Test]
@@ -53,7 +49,7 @@
             var activityViewModel = _subject.Create(activity);
 
             activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
-            activityViewModel.Model.Should().Be(activity);
+            activityViewModel.Model.BackingModel.Should().Be(activity);
         }
 
         [Test]
@@ -65,7 +61,7 @@
             var activityViewModel = _subject.Create(activity);
 
             activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
-            activityViewModel.Model.Should().Be(activity);
+            activityViewModel.Model.BackingModel.Should().Be(activity);
         }
 
         [Test]
@@ -76,7 +72,7 @@
             var activityViewModel = _subject.Create(activity);
 
             activityViewModel.Should().BeAssignableTo<IVersionActivityViewModel>();
-            activityViewModel.Model.Should().Be(activity);
+            activityViewModel.Model.BackingModel.Should().Be(activity);
         }
     }
 }

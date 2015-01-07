@@ -72,7 +72,7 @@
 
             _subject.LogOut();
             //Wait for OmniService to stop
-            Thread.Sleep(TimeSpan.FromMilliseconds(500));
+            Thread.Sleep(TimeSpan.FromMilliseconds(1000));
 
             _mockSessionManager.Verify(mss => mss.LogOut(), Times.Once());
         }
