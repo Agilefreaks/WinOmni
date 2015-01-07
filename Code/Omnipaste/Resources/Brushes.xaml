@@ -34,6 +34,7 @@
     <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
     <SolidColorBrush x:Key="HolidayMenuEntryBackgroundBrush" Color="{DynamicResource HolidayMenuEntryBackgroundColor}"/>
     <SolidColorBrush x:Key="DeletedClippingBrush" Color="{DynamicResource DeletedClippingColor}"/>
+    <SolidColorBrush x:Key="CallingBackgroundBrush" Color="{DynamicResource CallingBackgroundColor}"/>
     <SolidColorBrush x:Key="ConfirmationMessageBrush" Color="{DynamicResource ConfirmationMessageColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>

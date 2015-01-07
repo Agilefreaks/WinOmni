@@ -263,6 +263,8 @@
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsViewModel.cs" />
+    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateEnum.cs" />
+    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateToProgressBarEnabledConverter.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
@@ -473,6 +475,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDetails\Conversation\ConversationHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\Calling.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,8 @@
 ﻿namespace OmniCommon.ExtensionMethods
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Threading.Tasks;
@@ -155,6 +157,12 @@
         public static IDisposable SubscribeAndHandleErrors<T>(this IObservable<T> observable, Action<T> onNext)
         {
             return observable.Subscribe(onNext, OnExceptionEncountered);
+        }
+
+        public static IObservable<T> ToSequentialDelayedObservable<T>(this IEnumerable<T> output, TimeSpan delay)
+        {
+            var items = output as T[] ?? output.ToArray();
+            return items.Select(item => Observable.Return(item).Delay(delay)).Concat();
         }
 
         #endregion
