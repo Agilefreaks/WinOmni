@@ -409,4 +409,13 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="ClippingDeleted" xml:space="preserve">
     <value>Clipping-ul a fost șters. Anulează asta de aici.</value>
   </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>Versiune nouă! Restartează aplicația pentru a aplica actualizarea.</value>
+  </data>
+  <data name="NewVersionInstalled" xml:space="preserve">
+    <value>Aplicația a fost actualizată.</value>
+  </data>
+  <data name="NewVersionLabel" xml:space="preserve">
+    <value>Restartează aplicația pentru a aplica actualizarea</value>
+  </data>
 </root>

@@ -409,4 +409,13 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="ClippingDeleted" xml:space="preserve">
     <value>Clipping excluído. Desfazer-lo a partir daqui.</value>
   </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>Nova versão! Reinicie o aplicativo para atualizar.</value>
+  </data>
+  <data name="NewVersionInstalled" xml:space="preserve">
+    <value>Aplicação foi atualizado.</value>
+  </data>
+  <data name="NewVersionLabel" xml:space="preserve">
+    <value>Reinicie o aplicativo para atualizar</value>
+  </data>
 </root>
