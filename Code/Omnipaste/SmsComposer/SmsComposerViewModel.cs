@@ -50,6 +50,14 @@
             }
         }
 
+        public bool CanEditText
+        {
+            get
+            {
+                return !IsSending;
+            }
+        }
+
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
@@ -68,6 +76,7 @@
                 _isSending = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CanSend);
+                NotifyOfPropertyChange(() => CanEditText);
             }
         }
 

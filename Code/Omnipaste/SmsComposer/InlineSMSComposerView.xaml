@@ -11,27 +11,25 @@
                 Height="110" Margin="11,0">
         <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Top">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="60" Margin="11,11,8,11">
-                    <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=CanSend}" Width="468">
-                        <i:Interaction.Behaviors>
-                            <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanSend}" />
-                            <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                </ScrollViewer>
+                <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
+                                 IsEnabled="{Binding Path=CanEditText}" Width="468" Height="60" Margin="11,11,8,11" VerticalScrollBarVisibility="Auto">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanEditText}" />
+                        <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <Border BorderThickness="1,0,0,1" BorderBrush="{DynamicResource ScreenBorderBrush}"/>
             </StackPanel>
             <DockPanel Margin="11,0" LastChildFill="True">
                 <Button x:Name="Send" DockPanel.Dock="Right" Content="{DynamicResource airplane_icon}" Style="{DynamicResource ShapeButtonStyle}"
-                            Width="15" Height="15"/>
+                        Width="15" Height="15"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Send from your " Foreground="{DynamicResource LabelBrush}" 
-                                   FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}" 
-                                   VerticalAlignment="Center"/>
+                               FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}" 
+                               VerticalAlignment="Center"/>
                     <TextBlock Text="Mobile Device" Foreground="{DynamicResource ActivityContentBrush}" 
-                                   FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}"
-                                   VerticalAlignment="Center"/>
+                               FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}"
+                               VerticalAlignment="Center"/>
                 </StackPanel>
             </DockPanel>
         </DockPanel>
