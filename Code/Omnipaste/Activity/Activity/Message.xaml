@@ -4,12 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
-             xmlns:converters="clr-namespace:Omnipaste.Activity.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <converters:ViewedSizeConverter x:Key="ViewedSizeConverter"/>
-    </UserControl.Resources>
     
     <StackPanel>
         <StackPanel Orientation="Horizontal">
