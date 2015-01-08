@@ -1,6 +1,5 @@
 namespace Omnipaste.ActivityDetails.Conversation.Call
 {
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using OmniUI.Details;
 

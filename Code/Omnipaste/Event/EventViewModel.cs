@@ -2,7 +2,6 @@
 {
     using System;
     using Caliburn.Micro;
-    using Events.Models;
     using Ninject;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
@@ -13,11 +12,11 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.MasterEventList.Calling;
     using Omnipaste.Models;
-    using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.Models;
 
-    public class EventViewModel : DetailsViewModelBase<Event>, IEventViewModel
+    public class EventViewModel : DetailsViewModelBase<IConversationItem>, IEventViewModel
     {
         #region Constructors and Destructors
 
@@ -48,7 +47,7 @@
         public IDialogViewModel DialogViewModel { get; set; }
 
         [Inject]
-        public ICallStore CallStore { get; set; }
+        public ICallRepository CallRepository { get; set; }
 
         public IEventAggregator EventAggregator { get; set; }
 
@@ -64,15 +63,7 @@
         {
             get
             {
-                return string.IsNullOrWhiteSpace(Model.ContactName) ? Model.PhoneNumber : Model.ContactName;
-            }
-        }
-
-        public EventTypeEnum Type
-        {
-            get
-            {
-                return Model.Type;
+                return string.IsNullOrWhiteSpace(Model.ContactInfo.Name) ? Model.ContactInfo.Phone : Model.ContactInfo.Name;
             }
         }
 
@@ -82,19 +73,19 @@
 
         public void CallBack()
         {
-            Devices.Call(Model.PhoneNumber)
+            Devices.Call(Model.ContactInfo.Phone)
                 .RunToCompletion(OnCallStarted, dispatcher: DispatcherProvider.Current);
         }
 
         private void OnCallStarted(EmptyModel model)
         {
             ShowCallingNotification();
-            CallStore.AddCall(new Call { ContactInfo = new ContactInfo { Phone = Model.PhoneNumber } });
+            CallRepository.Save(new Call { ContactInfo = new ContactInfo { Phone = Model.ContactInfo.Phone } });
         }
 
         public void SendSms()
         {
-            EventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = Model.PhoneNumber });
+            EventAggregator.PublishOnCurrentThread(new SendSmsMessage { Recipient = Model.ContactInfo.Phone });
         }
 
         #endregion

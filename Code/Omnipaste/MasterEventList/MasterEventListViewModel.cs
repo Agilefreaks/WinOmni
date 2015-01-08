@@ -8,7 +8,7 @@
     using Omnipaste.Properties;
     using Omnipaste.SMSComposer;
 
-    public sealed class MasterEventListViewModel : Screen, IMasterEventListViewModel
+    public sealed class MasterEventListViewModel : Conductor<IScreen>.Collection.AllActive, IMasterEventListViewModel
     {
         [Inject]
         public IModalSMSComposerViewModel SmsComposerViewModel { get; set; }
@@ -25,6 +25,21 @@
         public MasterEventListViewModel()
         {
             DisplayName = Resources.MasterEventListDisplayName;
+        }
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            ActivateItem(AllEventListViewModel);
+            ActivateItem(IncomingSmsEventListViewModel);
+            ActivateItem(IncomingCallEventListViewModel);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DeactivateItem(AllEventListViewModel, close);
+            DeactivateItem(IncomingSmsEventListViewModel, close);
+            DeactivateItem(IncomingCallEventListViewModel, close);
+            base.OnDeactivate(close);
         }
     }
 }

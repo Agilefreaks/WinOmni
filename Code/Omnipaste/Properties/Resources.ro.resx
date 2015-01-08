@@ -427,4 +427,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="CallingGuide" xml:space="preserve">
     <value>Ridică-ți telefonul mobil!</value>
   </data>
+  <data name="ConversationDeleted" xml:space="preserve">
+    <value>Conversația a fost ștearsă. Anulează asta de aici.</value>
+  </data>
 </root>

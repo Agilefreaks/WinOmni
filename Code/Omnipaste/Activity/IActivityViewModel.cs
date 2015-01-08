@@ -1,5 +1,6 @@
 namespace Omnipaste.Activity
 {
+    using System;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Presenters;
 
@@ -8,5 +9,7 @@ namespace Omnipaste.Activity
         ContentTypeEnum ContentType { get; set; }
 
         ActivityContentInfo ContentInfo { get; set; }
+
+        DateTime Time { get; }
     }
 }

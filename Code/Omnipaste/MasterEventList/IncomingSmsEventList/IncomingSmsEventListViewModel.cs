@@ -1,34 +1,50 @@
 namespace Omnipaste.MasterEventList.IncomingSmsEventList
 {
     using System;
-    using Events.Handlers;
-    using Events.Models;
+    using System.Collections.Generic;
+    using System.Reactive.Linq;
     using Ninject;
+    using Omnipaste.Event;
     using Omnipaste.MasterEventList.EventList;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Attributes;
+    using OmniUI.List;
 
     [UseView(typeof(EventListView))]
-    public class IncomingSmsEventListViewModel : EventListViewModelBase, IIncomingSmsEventListViewModel
+    public class IncomingSmsEventListViewModel : ListViewModelBase<Message, IEventViewModel>, IIncomingSmsEventListViewModel
     {
-        #region Constructors and Destructors
+        private readonly IMessageRepository _messageRepository;
 
-        public IncomingSmsEventListViewModel(IEventsHandler eventsHandler, IKernel kernel)
-            : base(eventsHandler, kernel)
+        private readonly IKernel _kernel;
+
+        public IncomingSmsEventListViewModel(IMessageRepository messageRepository, IKernel kernel)
         {
+            _messageRepository = messageRepository;
+            _kernel = kernel;
         }
 
-        #endregion
-
-        #region Public Properties
-
-        public override Func<Event, bool> EntityFilter
+        protected override IObservable<IEnumerable<Message>> GetFetchItemsObservable()
         {
-            get
-            {
-                return @event => @event.Type == EventTypeEnum.IncomingSmsEvent;
-            }
+            return _messageRepository.GetAll();
         }
 
-        #endregion
+        protected override IObservable<Message> GetItemAddedObservable()
+        {
+            return _messageRepository.OperationObservable.Created().Select(o => o.Item);
+        }
+
+        protected override IObservable<Message> GetItemRemovedObservable()
+        {
+            return _messageRepository.OperationObservable.Deleted().Select(o => o.Item);
+        }
+
+        protected override IEventViewModel CreateViewModel(Message model)
+        {
+            var eventViewModel = _kernel.Get<IEventViewModel>();
+            eventViewModel.Model = model;
+
+            return eventViewModel;
+        }
     }
 }

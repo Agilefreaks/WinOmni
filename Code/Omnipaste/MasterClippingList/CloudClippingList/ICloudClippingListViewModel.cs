@@ -1,6 +1,8 @@
 namespace Omnipaste.MasterClippingList.CloudClippingList
 {
-    public interface ICloudClippingListViewModel
+    using Caliburn.Micro;
+
+    public interface ICloudClippingListViewModel : IScreen
     {
     }
 }

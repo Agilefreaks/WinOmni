@@ -10,6 +10,8 @@
 
         SourceType Source { get; }
 
+        string Content { get; }
+
         DateTime Time { get; }
     }
 }

@@ -1,14 +1,11 @@
 ﻿namespace Omnipaste.Event
 {
-    using Events.Models;
     using Omnipaste.DetailsViewModel;
     using OmniUI.Details;
 
-    public interface IEventViewModel : IDetailsViewModel<Event>
+    public interface IEventViewModel : IDetailsViewModel<IConversationItem>
     {
         #region Public Properties
-
-        EventTypeEnum Type { get; }
 
         string Title { get; }
 

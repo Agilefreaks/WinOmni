@@ -3,6 +3,7 @@
     public enum EventTypeEnum
     {
         IncomingCallEvent,
+
         IncomingSmsEvent
     }
 }

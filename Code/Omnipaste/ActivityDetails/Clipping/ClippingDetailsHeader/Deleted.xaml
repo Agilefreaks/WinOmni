@@ -6,7 +6,7 @@
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Border Background="{DynamicResource DeletedClippingBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
+    <Border Background="{DynamicResource DeletedItemHeaderBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
         <DockPanel VerticalAlignment="Center">
             <Button DockPanel.Dock="Right" Style="{DynamicResource ShapeButtonWithOuterHighlight}" x:Name="UndoDelete"
                     Background="{DynamicResource ConfirmationMessageBrush}" Content="{DynamicResource undo_icon}"/>

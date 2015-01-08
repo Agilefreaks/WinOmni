@@ -1,12 +1,16 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using System;
+    using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Presenters;
 
     public class ConversationHeaderViewModel : ActivityDetailsHeaderViewModel, IConversationHeaderViewModel
@@ -85,6 +89,12 @@
         [Inject]
         public IDevices Devices { get; set; }
 
+        [Inject]
+        public ICallRepository CallRepository { get; set; }
+
+        [Inject]
+        public IMessageRepository MessageRepository { get; set; }
+
         #endregion
 
         public void Call()
@@ -93,7 +103,7 @@
             _callSubscription = Observable.Interval(DelayCallDuration, SchedulerProvider.Default)
                 .Take(1, SchedulerProvider.Default)
                 .Do(_ => { State = ConversationHeaderStateEnum.Calling; })
-                .Select(_ => Devices.Call(Model.BackingModel.ExtraData.ContactInfo.Phone as string))
+                .Select(_ => Devices.Call(Model.ExtraData.ContactInfo.Phone as string))
                 .Switch()
                 .Delay(CallingDuration, SchedulerProvider.Default)
                 .Do(_ =>  { State = ConversationHeaderStateEnum.Normal; })
@@ -107,6 +117,55 @@
             DisposeCallSubscription();
 
             State = ConversationHeaderStateEnum.Normal;
+        }
+
+        public void Delete()
+        {
+            Model.IsDeleted = true;
+            UpdateConversationItems(CallRepository, item => item.IsDeleted = true);
+            UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
+            State = ConversationHeaderStateEnum.Deleted;
+        }
+
+        public void UndoDelete()
+        {
+            Model.IsDeleted = false;
+            UpdateConversationItems(CallRepository, item => item.IsDeleted = false);
+            UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
+            State = ConversationHeaderStateEnum.Normal;
+        }
+
+        protected override void OnActivate()
+        {
+            State = ConversationHeaderStateEnum.Normal;
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DeleteConversationItems(CallRepository);
+            DeleteConversationItems(MessageRepository);
+            base.OnDeactivate(close);
+        }
+
+        private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update) where T : BaseModel, IConversationItem
+        {
+            repository.GetByContact(ContactInfo.ContactInfo)
+                .SubscribeAndHandleErrors(
+                    items => items.ToList().ForEach(
+                        i =>
+                            {
+                                update(i);
+                                repository.Save(i).RunToCompletion();
+                            }));
+        }
+
+        private void DeleteConversationItems<T>(IRepository<T> repository) where T : BaseModel, IConversationItem
+        {
+            repository.GetByContact(ContactInfo.ContactInfo)
+                .SubscribeAndHandleErrors(
+                    items =>
+                    items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete(c.UniqueId).RunToCompletion()));
         }
 
         private void DisposeCallSubscription()
