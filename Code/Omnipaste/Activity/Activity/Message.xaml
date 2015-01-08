@@ -13,10 +13,11 @@
     
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Path=ContactInfo.Image}" Style="{DynamicResource UserIconStyle}"/>
+            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Margin="0,0,14,0"/>
             <TextBlock Text="{x:Static properties:Resources.SMSLabel}" Style="{DynamicResource ActivityTitleTextBlockStyle}"/>
-            <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold" Padding="0,8"/>
+            <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold"/>
         </StackPanel>
-        <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivitySecondaryContentTextBlockStyle}" MaxHeight="{Binding Path=ContentInfo, Converter={StaticResource ViewedSizeConverter}}"/>
+        <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivitySecondaryContentTextBlockStyle}" 
+                   MaxHeight="{Binding Path=ContentInfo, Converter={StaticResource ViewedSizeConverter}}"/>
     </StackPanel>
 </UserControl>

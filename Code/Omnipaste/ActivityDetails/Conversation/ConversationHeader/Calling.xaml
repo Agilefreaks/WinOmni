@@ -9,9 +9,7 @@
 
     <Border Background="{DynamicResource CallingBackgroundBrush}" Padding="18,8,18,18">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40" Margin="0,0,10,0"
-                     Background="{DynamicResource CallingBackgroundBrush}"/>
-
+            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40" Margin="0,0,10,0"/>
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Style="{DynamicResource ActivityContentTextStyle}" Foreground="{DynamicResource CallBrush}">
                     <Run Text="{x:Static properties:Resources.Calling}" />

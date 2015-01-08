@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal">
-        <Image Source="{Binding Path=ContactInfo.Image}" Style="{DynamicResource UserIconStyle}"/>
+        <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Margin="0,0,14,0"/>
         <TextBlock Text="{x:Static properties:Resources.CallLabel}" Style="{DynamicResource ActivityTitleTextBlockStyle}"/>
-        <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold" Padding="0,8"/>
+        <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextBlockStyle}" FontWeight="SemiBold"/>
     </StackPanel>
 </UserControl>

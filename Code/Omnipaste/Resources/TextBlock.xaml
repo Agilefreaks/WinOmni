@@ -135,7 +135,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ActivityDeviceNameStyle" BasedOn="{StaticResource ActivityTimeStampStyle}">
-        <Setter Property="Margin" Value="7,0,0,5"/>
+        <Setter Property="Margin" Value="7,5,0,5"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ActivityTitleTextBlockStyle" BasedOn="{StaticResource ActivityContentTextStyle}">

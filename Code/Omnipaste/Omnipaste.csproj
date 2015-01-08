@@ -310,6 +310,9 @@
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
+    <Compile Include="Framework\Converters\ControlToCenterPointConverter.cs" />
+    <Compile Include="Framework\Converters\ControlToXRadiusConverter.cs" />
+    <Compile Include="Framework\Converters\ControlToYRadiusConverter.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Helpers\TextParser.cs" />
