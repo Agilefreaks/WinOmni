@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Border Background="{DynamicResource CallingBackgroundBrush}" Padding="18,8,18,18">
+    <Border Background="{DynamicResource CallingBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
