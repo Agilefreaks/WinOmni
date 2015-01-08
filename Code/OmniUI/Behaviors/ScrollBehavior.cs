@@ -53,6 +53,14 @@
         protected override void SetUp()
         {
             HookCollection(Collection);
+            if (ScrollDirection == ScrollDirectionType.Bottom)
+            {
+                AssociatedObject.ScrollToBottom();
+            }
+            else
+            {
+                AssociatedObject.ScrollToTop();
+            }
         }
 
         protected override void TearDown()
