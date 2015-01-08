@@ -315,6 +315,7 @@
     <Compile Include="Framework\Converters\ControlToXRadiusConverter.cs" />
     <Compile Include="Framework\Converters\ControlToYRadiusConverter.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />

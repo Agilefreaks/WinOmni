@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Omnipaste.Framework.Converters">
     <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -84,6 +85,9 @@
     </Style>
 
     <ControlTemplate x:Key="ScrollViewerWithSlimBarsTemplate" TargetType="{x:Type ScrollViewer}">
+        <ControlTemplate.Resources>
+            <converters:ScrollPositionToVisibilityConverter x:Key="ScrollPositionToVisibilityConverter"/>
+        </ControlTemplate.Resources>
         <Grid x:Name="Grid" Background="{TemplateBinding Background}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -96,6 +100,8 @@
             <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}"
                                     CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}"
                                     Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+            <Border Grid.Row="0" Grid.Column="0" Height="20" VerticalAlignment="Top" Background="{DynamicResource ScrollViewerMarkerBrush}"
+                    Visibility="{Binding Path=VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ScrollPositionToVisibilityConverter}}"/>
             <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" 
                        Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                        Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"

@@ -354,4 +354,10 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+
+    <LinearGradientBrush x:Key="ScrollViewerMarkerBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#00FFFFFF" Offset="1"/>
+        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+        <GradientStop Color="#AAFFFFFF" Offset="0.75"/>
+    </LinearGradientBrush>
 </ResourceDictionary>
