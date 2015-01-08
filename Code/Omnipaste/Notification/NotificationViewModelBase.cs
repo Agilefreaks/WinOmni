@@ -22,12 +22,16 @@
 
         private ViewModelStatusEnum _state = ViewModelStatusEnum.Closed;
 
+        private object _identifier;
+
         #endregion
 
         #region Public Properties
 
         [Inject]
         public IApplicationService ApplicationService { get; set; }
+
+        public abstract object Identifier { get; }
 
         public abstract string Line1 { get; }
 
@@ -72,7 +76,7 @@
 
         #region Methods
 
-        protected void Dismiss()
+        public void Dismiss()
         {
             if (State == ViewModelStatusEnum.Closed)
             {

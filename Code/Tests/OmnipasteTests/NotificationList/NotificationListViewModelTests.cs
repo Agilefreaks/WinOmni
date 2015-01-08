@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using Caliburn.Micro;
     using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
@@ -16,6 +17,8 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
@@ -43,6 +46,8 @@
 
         private Mock<IApplicationService> _mockApplicationService;
 
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         #endregion
 
         #region Public Methods and Operators
@@ -65,6 +70,8 @@
             _mockingKernel.Bind<IApplicationService>().ToConstant(_mockApplicationService.Object);
             _mockNotificationViewModelFactory = _mockingKernel.GetMock<INotificationViewModelFactory>();
             _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
+            _mockEventAggregator = new Mock<IEventAggregator>();
+            _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
             
             _subject = _mockingKernel.Get<INotificationListViewModel>();
         }
@@ -73,6 +80,12 @@
         public void Constructor_WillInitializeNotificationsCollection()
         {
             _subject.Notifications.Should().NotBeNull();
+        }
+
+        [Test]
+        public void Constructor_WillSubscribeInstanceToEventAggregator()
+        {
+            _mockEventAggregator.Verify(m => m.Subscribe(_subject));
         }
 
         [Test]
@@ -116,6 +129,31 @@
             _testScheduler.Start();
 
             _subject.Notifications.First().Should().Be(mockIncomingCallNotificationViewModel.Object);
+        }
+
+        [Test]
+        public void HandleWithDismissNotification_WhenNotificationExist_DismissesNotification()
+        {
+            const int Identifier = 42;
+            var mockNotification = new Mock<INotificationViewModel> { DefaultValue = DefaultValue.Mock };
+            mockNotification.SetupGet(m => m.Identifier).Returns(Identifier);
+            _subject.Notifications.Add(mockNotification.Object);
+
+            _subject.Handle(new DismissNotification(Identifier));
+
+            mockNotification.Verify(m => m.Dismiss());
+        }
+
+        [Test]
+        public void HandleWithDismissNotification_WhenNotificationDoesNotExist_DoesNotDismissOtherNotification()
+        {
+            var mockNotification = new Mock<INotificationViewModel> { DefaultValue = DefaultValue.Mock };
+            mockNotification.SetupGet(m => m.Identifier).Returns(111);
+            _subject.Notifications.Add(mockNotification.Object);
+
+            _subject.Handle(new DismissNotification(42));
+
+            mockNotification.Verify(m => m.Dismiss(), Times.Never());
         }
 
         #endregion

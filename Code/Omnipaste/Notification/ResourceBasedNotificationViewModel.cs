@@ -21,8 +21,8 @@
                 NotifyOfPropertyChange(() => Line1);
                 NotifyOfPropertyChange(() => Line2);
                 NotifyOfPropertyChange(() => Title);
+                NotifyOfPropertyChange(() => Identifier);
             }
         }
-
     }
 }

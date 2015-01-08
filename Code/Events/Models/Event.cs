@@ -9,6 +9,7 @@
         public Event()
         {
             Time = DateTime.Now;
+            UniqueId = Guid.NewGuid().ToString();
         }
 
         #endregion
@@ -24,6 +25,8 @@
         public DateTime Time { get; set; }
 
         public EventTypeEnum Type { get; set; }
+
+        public string UniqueId { get; set; }
 
         #endregion
     }
