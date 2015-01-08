@@ -42,25 +42,26 @@
         public Activity(Clipping clipping)
             : this()
         {
-            Content = clipping.Content;
+            SourceId = clipping.UniqueId;
+             Content = clipping.Content;
             Type = ActivityTypeEnum.Clipping;
             Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
-            _extraData.SourceId = clipping.UniqueId;
         }
 
         public Activity(Event @event)
             : this()
         {
+            SourceId = @event.UniqueId;
             Content = @event.Content ?? string.Empty;
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Resources.FromCloud;
             _extraData.ContactInfo = new EventContactInfo(@event);
-            _extraData.SourceId = @event.UniqueId;
         }
 
         public Activity(UpdateInfo updateInfo)
             : this()
         {
+            SourceId = ActivityTypeEnum.Version.ToString();
             Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
             Type = ActivityTypeEnum.Version;
             _extraData.UpdateInfo = updateInfo;
@@ -87,6 +88,8 @@
         public ActivityTypeEnum Type { get; set; }
 
         public bool WasViewed { get; set; }
+
+        public string SourceId { get; set; }
 
         #endregion
 

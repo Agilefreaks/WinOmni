@@ -212,7 +212,7 @@ namespace Omnipaste.ActivityList
 
         public void Handle(DeleteClippingMessage message)
         {
-            var activityViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.ExtraData.SourceId == message.ClippingId);
+            var activityViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.SourceId == message.ClippingId);
             if (activityViewModel != null)
             {
                 DeactivateItem(activityViewModel, true);

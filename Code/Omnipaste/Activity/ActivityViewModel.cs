@@ -106,7 +106,7 @@ namespace Omnipaste.Activity
             UpdateContentInfo();
             if (Model != null && !Model.WasViewed)
             {
-                EventAggregator.PublishOnUIThread(new DismissNotification(Model.ExtraData.SourceId));
+                EventAggregator.PublishOnUIThread(new DismissNotification(Model.SourceId));
             }
         }
 
