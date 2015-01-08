@@ -6,6 +6,7 @@
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Clipping;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
 
     [TestFixture]
@@ -49,8 +50,7 @@
         {
             var mockConductor = new Mock<IConductor>();
             _subject.Parent = mockConductor.Object;
-            var activityPresenter = new ActivityPresenter { MarkedForDeletion = true };
-            activityPresenter.ExtraData.SourceId = "someId";
+            var activityPresenter = new ActivityPresenter(new Activity { SourceId = "someId" }) { MarkedForDeletion = true };
             _subject.Model = activityPresenter;
 
             ((IActivate)_subject).Activate();

@@ -113,6 +113,23 @@
             }
         }
 
+        public string SourceId
+        {
+            get
+            {
+                return _activity.SourceId;
+            }
+            set
+            {
+                if (Equals(value, _activity.SourceId))
+                {
+                    return;
+                }
+                _activity.SourceId = value;
+                NotifyOfPropertyChange(() => SourceId);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

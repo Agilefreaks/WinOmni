@@ -77,7 +77,7 @@
         public void CtorWithClipping_Always_SetsTheClippingIdInTheExtraData()
         {
             const string Id = "SomeId";
-            ((string)new Activity(new Clipping { UniqueId = Id }).ExtraData.SourceId).Should().Be(Id);
+            (new Activity(new Clipping { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
@@ -110,6 +110,13 @@
 
             contactInfo.Name.Should().Be("Some Name");
             contactInfo.Phone.Should().Be("07xxxxxx");
+        }
+
+        [Test]
+        public void CtorWithEvent_Always_SetsTheEventUniqueIdInExtraData()
+        {
+            const string Id = "42";
+            (new Activity(new Event { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]

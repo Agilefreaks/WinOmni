@@ -39,6 +39,14 @@
             }
         }
 
+        public override object Identifier
+        {
+            get
+            {
+                return Resource.UniqueId;
+            }
+        }
+
         #endregion
     }
 }

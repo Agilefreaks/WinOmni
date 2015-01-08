@@ -9,11 +9,13 @@
     using System.Windows;
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
+    using Castle.Core.Internal;
     using Clipboard.Handlers;
     using Events.Handlers;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
@@ -40,7 +42,7 @@
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(IEventsHandler eventsHandler, IOmniClipboardHandler omniClipboardHandler)
+        public NotificationListViewModel(IEventsHandler eventsHandler, IOmniClipboardHandler omniClipboardHandler, IEventAggregator eventAggregator)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
             Notifications.CollectionChanged += NotificationsCollectionChanged;
@@ -49,6 +51,8 @@
             _omniClipboardHandler = omniClipboardHandler;
 
             Height = double.NaN;
+
+            eventAggregator.Subscribe(this);
         }
 
         #endregion
@@ -164,5 +168,10 @@
         }
 
         #endregion
+
+        public void Handle(DismissNotification message)
+        {
+            Notifications.Where(n => n.Identifier.Equals(message.Identifier)).ForEach(n => n.Dismiss());
+        }
     }
 }
