@@ -241,6 +241,22 @@
             _subject.FilteredItems.Cast<IActivityViewModel>().First().Model.Should().Be(activityPresenter2);
         }
 
+        [Test]
+        public void ChangingFilterText_TextIsMadeUpOfMultipleWords_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveAllTheWordsInTheFilterTextInTheirStringRepresentation()
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            var activityPresenter1 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent, ContactName = "John Doe" }));
+            var activityPresenter2 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent, ContactName = "Jane Doe" }));
+            ((IActivate)_subject).Activate();
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
+
+            _subject.FilterText = "JAnE DoE sms";
+
+            _subject.FilteredItems.Count.Should().Be(1);
+            _subject.FilteredItems.Cast<IActivityViewModel>().First().Model.Should().Be(activityPresenter2);
+        }
+
         private void AddItemsForAllActivityTypes()
         {
             Enum.GetValues(typeof(ActivityTypeEnum))

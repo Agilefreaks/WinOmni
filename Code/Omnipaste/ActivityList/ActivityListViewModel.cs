@@ -212,9 +212,11 @@ namespace Omnipaste.ActivityList
         private bool MatchesTextFilter(IActivityViewModel viewModel)
         {
             return string.IsNullOrWhiteSpace(FilterText)
-                   || viewModel.Model.ToString()
-                          .RemoveDiacritics()
-                          .IndexOf(FilterText.RemoveDiacritics(), StringComparison.CurrentCultureIgnoreCase) >= 0;
+                   || FilterText.Split(' ')
+                          .Select(filterPart => filterPart.RemoveDiacritics())
+                          .All(filterPart => viewModel.Model.ToString()
+                                  .RemoveDiacritics()
+                                  .IndexOf(filterPart, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         #endregion
