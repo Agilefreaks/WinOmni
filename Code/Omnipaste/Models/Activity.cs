@@ -55,6 +55,7 @@
             Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
             Device = Resources.FromCloud;
             _extraData.ContactInfo = new EventContactInfo(@event);
+            _extraData.SourceId = @event.UniqueId;
         }
 
         public Activity(UpdateInfo updateInfo)

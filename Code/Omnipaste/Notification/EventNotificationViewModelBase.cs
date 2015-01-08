@@ -59,6 +59,14 @@
             }
         }
 
+        public override object Identifier
+        {
+            get
+            {
+                return Resource.UniqueId;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

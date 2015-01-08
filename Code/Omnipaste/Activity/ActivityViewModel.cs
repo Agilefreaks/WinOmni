@@ -2,9 +2,11 @@ namespace Omnipaste.Activity
 {
     using System;
     using System.Windows.Input;
+    using Caliburn.Micro;
     using Ninject;
     using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -38,6 +40,9 @@ namespace Omnipaste.Activity
 
         [Inject]
         public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
 
         public ICommand ClickCommand { get; set; }
 
@@ -99,6 +104,10 @@ namespace Omnipaste.Activity
             _detailsViewModel.Deactivated += OnDetailsClosed;
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
             UpdateContentInfo();
+            if (Model != null && !Model.WasViewed)
+            {
+                EventAggregator.PublishOnUIThread(new DismissNotification(Model.ExtraData.SourceId));
+            }
         }
 
         #endregion

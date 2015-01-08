@@ -113,6 +113,13 @@
         }
 
         [Test]
+        public void CtorWithEvent_Always_SetsTheEventUniqueIdInExtraData()
+        {
+            const string Id = "42";
+            (new Activity(new Event { UniqueId = Id }).ExtraData.SourceId as string).Should().Be(Id);
+        }
+
+        [Test]
         public void CtorWithUpdateInfo_Always_SetsExtraDataUpdateInfo()
         {
             var updateInfo = new UpdateInfo { WasInstalled = true, ReleaseLog = "test" };
