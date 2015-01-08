@@ -1,6 +1,7 @@
 namespace OmniUI.List
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
@@ -8,11 +9,13 @@ namespace OmniUI.List
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
+    using OmniUI.Details;
 
-    public abstract class ListViewModelBase<TEntity, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
+    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                    IDisposable,
                                                                    IStartable
-        where TViewModel : class
+        where TViewModel : class, IDetailsViewModel
     {
         #region Constants
 
@@ -22,39 +25,27 @@ namespace OmniUI.List
 
         #region Fields
 
-        protected readonly IObservable<TEntity> EntityObservable;
-
         private readonly ListCollectionView _filteredItems;
-
-        private IDisposable _entityObserver;
 
         private ListViewModelStatusEnum _status;
 
-        private Func<TViewModel, bool> _viewModelFilter;
+        protected readonly List<IDisposable> Subscriptions;
 
         #endregion
 
         #region Constructors and Destructors
-
-        protected ListViewModelBase(IObservable<TEntity> entityObservable)
+        
+        protected ListViewModelBase()
         {
-            EntityObservable = entityObservable;
+            Subscriptions = new List<IDisposable>();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
-            _filteredItems.Filter = ShouldShowViewModel;
+            _filteredItems.Filter = vm => CanShow((TViewModel) vm);
         }
 
         #endregion
 
         #region Public Properties
-
-        public virtual Func<TEntity, bool> EntityFilter
-        {
-            get
-            {
-                return @event => true;
-            }
-        }
 
         public ListCollectionView FilteredItems
         {
@@ -79,23 +70,6 @@ namespace OmniUI.List
 
         #endregion
 
-        #region Properties
-
-        protected Func<TViewModel, bool> ViewModelFilter
-        {
-            get
-            {
-                return _viewModelFilter;
-            }
-            set
-            {
-                _viewModelFilter = value;
-                OnFilterUpdated();
-            }
-        }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public override void ActivateItem(TViewModel item)
@@ -108,23 +82,8 @@ namespace OmniUI.List
             base.ActivateItem(item);
         }
 
-        public virtual void Dispose()
-        {
-            if (_entityObserver == null)
-            {
-                return;
-            }
-            _entityObserver.Dispose();
-            _entityObserver = null;
-        }
-
         public virtual void Start()
         {
-            Stop();
-            _entityObserver =
-                EntityObservable.Where(entity => EntityFilter(entity))
-                    .Select(CreateViewModel)
-                    .SubscribeAndHandleErrors(ActivateItem);
         }
 
         public virtual void Stop()
@@ -132,11 +91,82 @@ namespace OmniUI.List
             Dispose();
         }
 
+        protected virtual bool CanShow(TViewModel viewModel)
+        {
+            return true;
+        }
+
+        public void AddItem(TModel model)
+        {
+            var viewModel = CreateViewModel(model);
+            ActivateItem(viewModel);
+        }
+
+        public void AddItems(IEnumerable<TModel> models)
+        {
+            models.ToList().ForEach(AddItem);
+        }
+
+        public void RemoveItem(TModel entity)
+        {
+            var viewModel = GetViewModel(entity);
+            if (viewModel == null)
+            {
+                return;
+            }
+            DeactivateItem(viewModel, true);
+        }
+
+        public virtual void RefreshItems()
+        {
+            _filteredItems.Refresh();
+        }
+
+        public virtual void Dispose()
+        {
+            DisposeSubscriptions();
+        }
+        
         #endregion
 
         #region Methods
 
-        protected abstract TViewModel CreateViewModel(TEntity entity);
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            Subscriptions.Add(GetFetchItemsObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItems));
+            Subscriptions.Add(GetItemAddedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItem));
+            Subscriptions.Add(GetItemRemovedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(RemoveItem));
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DisposeSubscriptions();
+            
+            base.OnDeactivate(true);
+        }
+
+        protected TViewModel GetViewModel(TModel entity)
+        {
+            return Items.FirstOrDefault(vm => Equals(vm.Model, entity));
+        }
+
+        protected virtual IObservable<IEnumerable<TModel>> GetFetchItemsObservable()
+        {
+            return Observable.Empty<IEnumerable<TModel>>(SchedulerProvider.Default);
+        }
+
+        protected virtual IObservable<TModel> GetItemAddedObservable()
+        {
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
+        }
+
+        protected virtual IObservable<TModel> GetItemRemovedObservable()
+        {
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
+        }
+
+        protected abstract TViewModel CreateViewModel(TModel model);
 
         protected override TViewModel EnsureItem(TViewModel newItem)
         {
@@ -159,19 +189,15 @@ namespace OmniUI.List
             return Items.Count == MaxItemCount;
         }
 
-        protected virtual void OnFilterUpdated()
-        {
-            _filteredItems.Refresh();
-        }
-
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Status = Items.Any() ? ListViewModelStatusEnum.NotEmpty : ListViewModelStatusEnum.Empty;
         }
 
-        private bool ShouldShowViewModel(object viewModel)
+        private void DisposeSubscriptions()
         {
-            return ViewModelFilter == null || ViewModelFilter.Invoke(viewModel as TViewModel);
+            Subscriptions.ForEach(s => s.Dispose());
+            Subscriptions.Clear();
         }
 
         #endregion

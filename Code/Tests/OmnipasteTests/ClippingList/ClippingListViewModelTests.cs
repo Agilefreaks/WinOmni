@@ -3,49 +3,79 @@
     using System;
     using System.Linq;
     using System.Reactive.Subjects;
-    using Clipboard.Models;
+    using Caliburn.Micro;
     using FluentAssertions;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Clipping;
     using Omnipaste.MasterClippingList.ClippingList;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
     [TestFixture]
     public class ClippingListViewModelTests
     {
-        private Subject<Clipping> _fakeClippingSubject;
+        private Subject<RepositoryOperation<ClippingModel>> _fakeClippingOperationSubject;
+        
+        private Mock<IClippingRepository> _mockClippingRepository;
 
         private ClippingListViewModel _subject;
 
         private MoqMockingKernel _mockingKernel;
 
+        private TestScheduler _testScheduler;
+
         internal class ClippingListViewModel : ClippingListViewModelBase
         {
-            public ClippingListViewModel(IObservable<Clipping> entityObservable)
-                : base(entityObservable)
+            public ClippingListViewModel(IClippingRepository clippingRepository)
+                : base(clippingRepository)
             {
+            }
+
+            public override bool CanHandle(ClippingModel clipping)
+            {
+                return true;
             }
         }
 
         [SetUp]
         public void SetUp()
         {
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
+
             _mockingKernel = new MoqMockingKernel();
 
-            _fakeClippingSubject = new Subject<Clipping>();
-            _mockingKernel.Bind<IObservable<Clipping>>().ToConstant(_fakeClippingSubject);
+            _fakeClippingOperationSubject = new Subject<RepositoryOperation<ClippingModel>>();
+            _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
+            _mockClippingRepository.SetupGet(m => m.OperationObservable).Returns(_fakeClippingOperationSubject);
+            _mockingKernel.Bind<IClippingRepository>().ToConstant(_mockClippingRepository.Object);
 
             _subject = _mockingKernel.Get<ClippingListViewModel>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
+            SchedulerProvider.Dispatcher = null;
         }
 
         [Test]
         public void NewClippingArrives_CreatesClippingViewModelForItAndActivatesIt()
         {
-            var clipping = new Clipping();
-            _fakeClippingSubject.OnNext(clipping);
+            var clipping = new ClippingModel();
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+            
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Items.Count.Should().Be(1);
             _subject.Items[0].Model.Should().Be(clipping);
@@ -54,12 +84,15 @@
         [Test]
         public void NewClippingArrives_ThereAreOtherClippingsFromBefore_InsertsTheNewClippingViewModelAtTheStart()
         {
-            var clipping = new Clipping();
+            var clipping = new ClippingModel();
             var existingViewModel = new ClippingViewModel();
             _subject.Items.Add(existingViewModel);
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
 
-            _fakeClippingSubject.OnNext(clipping);
-
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
+            
             _subject.Items.Count.Should().Be(2);
             _subject.Items.First().Model.Should().Be(clipping);
             _subject.Items.Last().Should().Be(existingViewModel);
@@ -74,8 +107,12 @@
         [Test]
         public void Clippings_WhenNotEmpty_StatusIsNotEmpty()
         {
-            var clipping = new Clipping();
-            _fakeClippingSubject.OnNext(clipping);
+            var clipping = new ClippingModel();
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
         }
@@ -83,8 +120,11 @@
         [Test]
         public void Clippings_BecomesEmpty_StatusIsEmpty()
         {
-            var clipping = new Clipping();
-            _fakeClippingSubject.OnNext(clipping);
+            var clipping = new ClippingModel();
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Items.Clear();
 
@@ -111,6 +151,7 @@
             var mockClippingViewModel = new Mock<IClippingViewModel>();
             mockClippingViewModel.Setup(x => x.CanClose(It.IsAny<Action<bool>>()))
                 .Callback<Action<bool>>(action => action(true));
+            ((IActivate)_subject).Activate();
             _subject.ActivateItem(mockClippingViewModel.Object);
             Enumerable.Range(0, ClippingListViewModel.MaxItemCount - 1)
                 .Select(_ => new ClippingViewModel())

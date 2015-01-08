@@ -306,7 +306,6 @@
     <Compile Include="Activity\VersionActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="DetailsViewModel\IConversationItem.cs" />
-    <Compile Include="EventAggregatorMessages\DeleteClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
@@ -324,11 +323,12 @@
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
-    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Call.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
@@ -358,6 +358,7 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
+    <Compile Include="Models\ClippingModel.cs" />
     <Compile Include="Models\EventContactInfo.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SourceType.cs" />
@@ -366,7 +367,6 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -393,7 +393,7 @@
     <Compile Include="Services\Commands\CommandService.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
-    <Compile Include="Services\ICallStore.cs" />
+    <Compile Include="Services\EntitySupervisor.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
@@ -405,10 +405,9 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
-    <Compile Include="Services\IMessageStore.cs" />
+    <Compile Include="Services\IEntitySupervisor.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
-    <Compile Include="Services\InMemoryStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdateManager.cs" />
@@ -428,6 +427,20 @@
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\Repositories\CallRepository.cs" />
+    <Compile Include="Services\Repositories\ClippingRepository.cs" />
+    <Compile Include="Services\Repositories\ICallRepository.cs" />
+    <Compile Include="Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Services\Repositories\IMessageRepository.cs" />
+    <Compile Include="Services\Repositories\InMemoryRepository.cs" />
+    <Compile Include="Services\Repositories\IRepository.cs" />
+    <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
+    <Compile Include="Services\Repositories\MessageRepository.cs" />
+    <Compile Include="Services\Repositories\ObservableExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
+    <Compile Include="Services\Repositories\RepositoryOperation.cs" />
+    <Compile Include="Services\Repositories\UpdateInfoRepository.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UpdateFileInfo.cs" />
     <Compile Include="Services\UpdateInfo.cs" />
@@ -507,6 +520,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ActivityDetails\Conversation\ConversationHeader\Deleted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -575,7 +592,6 @@
     <Compile Include="Event\IEventViewModel.cs" />
     <Compile Include="MasterEventList\Calling\CallingViewModel.cs" />
     <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
-    <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />

@@ -1,6 +1,8 @@
 namespace Omnipaste.MasterClippingList.AllClippingList
 {
-    public interface IAllClippingListViewModel
+    using Caliburn.Micro;
+
+    public interface IAllClippingListViewModel : IScreen
     {
     }
 }

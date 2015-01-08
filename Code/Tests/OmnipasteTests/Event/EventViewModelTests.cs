@@ -1,9 +1,10 @@
 ﻿namespace OmnipasteTests.Event
 {
+    using System;
+    using System.Reactive;
     using System.Reactive.Linq;
     using System.Threading;
     using Caliburn.Micro;
-    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -17,6 +18,8 @@
     using Omnipaste.Event;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.MasterEventList.Calling;
+    using Omnipaste.Models;
+    using OmniUI.Models;
 
     [TestFixture]
     public class EventViewModelTests
@@ -50,7 +53,7 @@
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object);
 
             _subject = _kernel.Get<EventViewModel>();
-            _subject.Model = new Event { PhoneNumber = "phone_number" };
+            _subject.Model = new Call { ContactInfo = new ContactInfo { Phone = "phone_number" } };
         }
 
         [Test]
@@ -58,7 +61,7 @@
         {
             _subject.SendSms();
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "phone_number"), It.IsAny<System.Action<System.Action>>()));
+            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "phone_number"), It.IsAny<Action<Action>>()));
         }
 
         [Test]
@@ -87,16 +90,17 @@
         [Test]
         public void Title_EventHasNonEmptyContactName_IsContactName()
         {
-            _subject.Model.ContactName = "testName";
+            _subject.Model.ContactInfo.FirstName = "test";
+            _subject.Model.ContactInfo.LastName = "name";
 
-            _subject.Title.Should().Be("testName");
+            _subject.Title.Should().Be("test name");
         }
 
         [Test]
         public void Title_EventHasEmptyContactName_IsPhoneNumber()
         {
-            _subject.Model.PhoneNumber = "1231321";
-            _subject.Model.ContactName = string.Empty;
+            _subject.Model.ContactInfo.Phone = "1231321";
+            _subject.Model.ContactInfo.FirstName = string.Empty;
 
             _subject.Title.Should().Be("1231321");
         }
@@ -106,9 +110,9 @@
             _testScheduler = new TestScheduler();
 
             _testScheduler.CreateHotObservable(
-                new Recorded<System.Reactive.Notification<EmptyModel>>(
+                new Recorded<Notification<EmptyModel>>(
                     0,
-                    System.Reactive.Notification.CreateOnNext(new EmptyModel())));
+                    Notification.CreateOnNext(new EmptyModel())));
 
             SchedulerProvider.Dispatcher = _testScheduler;
         }

@@ -2,5 +2,6 @@
 {
     public interface IClippingDetailsHeaderViewModel : IActivityDetailsHeaderViewModel
     {
+        ClippingDetailsHeaderStateEnum State { get; set; }
     }
 }

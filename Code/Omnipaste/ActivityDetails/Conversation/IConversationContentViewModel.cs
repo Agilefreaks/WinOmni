@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using OmniUI.Models;
 
-    public interface IConversationContentViewModel : IConductor, IParent<IScreen>, IActivate, IDeactivate
+    public interface IConversationContentViewModel : IConductor, IActivate, IDeactivate
     {
         ContactInfo ContactInfo { get; set; }
     }

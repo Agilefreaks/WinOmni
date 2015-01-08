@@ -1,10 +1,9 @@
 ﻿namespace Omnipaste.Clipping
 {
-    using Clipboard.Models;
-    using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using OmniUI.Details;
 
-    public interface IClippingViewModel : IDetailsViewModel<Clipping>
+    public interface IClippingViewModel : IDetailsViewModel<ClippingModel>
     {
     }
 }

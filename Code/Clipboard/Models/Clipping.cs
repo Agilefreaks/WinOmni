@@ -2,6 +2,7 @@
 {
     using System;
     using Newtonsoft.Json;
+    using OmniCommon.Helpers;
 
     public class Clipping
     {
@@ -33,6 +34,7 @@
 
         public Clipping(string content, string identifier)
         {
+            Time = TimeHelper.UtcNow;
             Content = content;
             Identifier = identifier;
             UniqueId = Guid.NewGuid().ToString();
@@ -50,17 +52,11 @@
         
         public string Identifier { get; set; }
 
+        public DateTime Time { get; set; }
+
         public ClippingTypeEnum Type { get; set; }
 
         public ClippingSourceEnum Source { get; set; }
-
-        public bool IsLink
-        {
-            get
-            {
-                return Type == ClippingTypeEnum.Url;
-            }
-        }
 
         #endregion
     }

@@ -33,6 +33,13 @@
             ActivateItem(ContentViewModel);
         }
 
+        protected override void OnDeactivate(bool close)
+        {
+            DeactivateItem(HeaderViewModel, close);
+            DeactivateItem(ContentViewModel, close);
+            base.OnDeactivate(close);
+        }
+
         #endregion
     }
 }

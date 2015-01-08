@@ -24,6 +24,7 @@
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
+    using Omnipaste.Services.Repositories;
     using Omnipaste.Shell;
     using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Shell.Settings;
@@ -63,9 +64,6 @@
             Kernel.Bind<IWorkspaceConductor>().ToMethod(context => context.Kernel.Get<IShellViewModel>());
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
-            Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
-            Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
-            Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<IUpdateManager>().ToConstant(new NAppUpdateManager());
         }
 
@@ -77,8 +75,10 @@
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
                            typeof(SessionInfoViewModel), typeof(ActivationSequenceProvider),
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
-                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
-                           typeof(ConnectivitySupervisor), typeof(ProxyConfigurationMonitor), typeof(SMSMessageFactory),
+                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
+                           typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
+                           typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(EventsWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };

@@ -424,6 +424,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conversation deleted. Undo it from here..
+        /// </summary>
+        public static string ConversationDeleted {
+            get {
+                return ResourceManager.GetString("ConversationDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Once copied, you&apos;ll have this text available on your computer&apos;s clipboard. 
         ///You can even paste it on Facebook. The possibilities are endless..
         /// </summary>

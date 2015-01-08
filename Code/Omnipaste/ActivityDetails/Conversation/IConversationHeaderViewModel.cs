@@ -2,5 +2,6 @@
 {
     public interface IConversationHeaderViewModel : IActivityDetailsHeaderViewModel
     {
+        ConversationHeaderStateEnum State { get; set; }
     }
 }

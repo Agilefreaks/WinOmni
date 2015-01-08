@@ -1,26 +1,28 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
     using Events.Models;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using OmniUI.Models;
 
-    public class Call : IConversationItem
+    public class Call : BaseModel, IConversationItem
     {
         #region Constructors and Destructors
 
         public Call()
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Source = SourceType.Local;
         }
 
         public Call(Event @event)
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new EventContactInfo(@event);
             Source = SourceType.Remote;
+            UniqueId = @event.UniqueId;
+            Content = @event.Content;
         }
 
         #endregion
@@ -31,7 +33,7 @@
 
         public SourceType Source { get; set; }
 
-        public DateTime Time { get; set; }
+        public string Content { get; set; }
 
         #endregion
     }

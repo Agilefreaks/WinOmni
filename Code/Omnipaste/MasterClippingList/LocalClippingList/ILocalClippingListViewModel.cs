@@ -1,6 +1,8 @@
 namespace Omnipaste.MasterClippingList.LocalClippingList
 {
-    public interface ILocalClippingListViewModel
+    using Caliburn.Micro;
+
+    public interface ILocalClippingListViewModel : IScreen
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Omnipaste.MasterClippingList
     using Omnipaste.MasterClippingList.LocalClippingList;
     using Omnipaste.Properties;
 
-    public sealed class MasterClippingListViewModel : Screen, IMasterClippingListViewModel
+    public sealed class MasterClippingListViewModel : Conductor<IScreen>.Collection.AllActive, IMasterClippingListViewModel
     {
         [Inject]
         public IAllClippingListViewModel AllClippingListViewModel { get; set; }
@@ -21,6 +21,22 @@ namespace Omnipaste.MasterClippingList
         public MasterClippingListViewModel()
         {
             DisplayName = Resources.MasterClippingListDisplayName;
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            ActivateItem(AllClippingListViewModel);
+            ActivateItem(CloudClippingListViewModel);
+            ActivateItem(LocalClippingListViewModel);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DeactivateItem(AllClippingListViewModel, close);
+            DeactivateItem(CloudClippingListViewModel, close);
+            DeactivateItem(LocalClippingListViewModel, close);
+            base.OnActivate();
         }
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Reactive;
     using Caliburn.Micro;
-    using Clipboard.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -101,8 +100,8 @@
         [Test]
         public void ShowDetails_Always_SetsModelWasViewedToTrue()
         {
-            var activity = new Activity { WasViewed = true };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { WasViewed = true});
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -117,8 +116,8 @@
         public void ShowDetails_WhenModelWasNotViewed_DismissesNotificationForActivity()
         {
             const string Identifier = "42";
-            var activity = new Activity(new Clipping { UniqueId = Identifier }) { WasViewed = false };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -132,8 +131,8 @@
         [Test]
         public void ShowDetails_WhenDetailsIsActive_SetsContentInfoStateToViewing()
         {
-            var activity = new Activity { WasViewed = true };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { WasViewed = true });
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -152,8 +151,8 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasViewed_SetsContentInfoStateToViewing()
         {
-            var activity = new Activity { WasViewed = true };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { WasViewed = true });
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -172,8 +171,8 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
         {
-            var activity = new Activity(new Clipping { Identifier = "42" }) { WasViewed = false };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { Identifier = "42", WasViewed = false });
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -192,8 +191,8 @@
         [Test]
         public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
         {
-            var activity = new Activity(new Clipping { Identifier = "42" }) { WasViewed = false };
-            _subject.Model = new ActivityPresenter(activity);
+            var activity = new ActivityPresenter(new ClippingModel { Identifier = "42", WasViewed = false });
+            _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);

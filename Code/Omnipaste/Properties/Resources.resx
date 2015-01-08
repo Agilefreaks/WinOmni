@@ -411,7 +411,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   </data>
   <data name="ClippingDeleted" xml:space="preserve">
     <value>Clipping deleted. Undo it from here.</value>
-  </data>
+  </data>
   <data name="VersionDetailsHeaderTitle" xml:space="preserve">
     <value>Installed updates history</value>
   </data>
@@ -426,5 +426,8 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   </data>
   <data name="NewVersionInstalled" xml:space="preserve">
     <value>Application has been updated.</value>
+  </data>
+  <data name="ConversationDeleted" xml:space="preserve">
+    <value>Conversation deleted. Undo it from here.</value>
   </data>
 </root>

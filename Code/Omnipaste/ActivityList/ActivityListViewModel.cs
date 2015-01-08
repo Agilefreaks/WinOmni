@@ -1,23 +1,30 @@
 namespace Omnipaste.ActivityList
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reactive.Linq;
-    using Caliburn.Micro;
-    using Clipboard.Handlers;
-    using Events.Handlers;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
+    public class ActivityListViewModel : ListViewModelBase<ActivityPresenter, IActivityViewModel>, IActivityListViewModel
     {
         #region Fields
+
+        private readonly IClippingRepository _clippingRepository;
+
+        private readonly IMessageRepository _messageRepository;
+
+        private readonly ICallRepository _callRepository;
+
+        private readonly IUpdateInfoRepository _updateInfoRepository;
 
         private readonly IActivityViewModelFactory _activityViewModelFactory;
 
@@ -36,17 +43,20 @@ namespace Omnipaste.ActivityList
         #region Constructors and Destructors
 
         public ActivityListViewModel(
-            IClipboardHandler clipboardHandler,
-            IEventsHandler eventsHandler,
-            IActivityViewModelFactory activityViewModelFactory,
-            IUpdaterService updaterService,
-            IEventAggregator eventAggregator)
-            : base(GetActivityObservable(clipboardHandler, eventsHandler, updaterService))
+            IClippingRepository clippingRepository,
+            IMessageRepository messageRepository,
+            ICallRepository callRepository,
+            IUpdateInfoRepository updateInfoRepository,
+            IActivityViewModelFactory activityViewModelFactory)
         {
+            _clippingRepository = clippingRepository;
+            _messageRepository = messageRepository;
+            _callRepository = callRepository;
             _activityViewModelFactory = activityViewModelFactory;
+            _updateInfoRepository = updateInfoRepository;
             _allowedActivityTypes = ActivityTypeEnum.All;
-            ViewModelFilter = MatchesFilter;
-            eventAggregator.Subscribe(this);
+            
+            FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
         }
 
         #endregion
@@ -137,16 +147,6 @@ namespace Omnipaste.ActivityList
 
         #region Public Methods and Operators
 
-        public void Handle(DeleteClippingMessage message)
-        {
-            var activityViewModel =
-                Items.SingleOrDefault(viewModel => viewModel.Model.SourceId == message.ClippingId);
-            if (activityViewModel != null)
-            {
-                DeactivateItem(activityViewModel, true);
-            }
-        }
-
         public void ShowVideoTutorial()
         {
             ExternalProcessHelper.ShowVideoTutorial();
@@ -156,12 +156,12 @@ namespace Omnipaste.ActivityList
 
         #region Methods
 
-        protected override IActivityViewModel CreateViewModel(Activity entity)
+        protected override IActivityViewModel CreateViewModel(ActivityPresenter model)
         {
-            return _activityViewModelFactory.Create(entity);
+            return _activityViewModelFactory.Create(model);
         }
 
-        protected bool MatchesFilter(IActivityViewModel viewModel)
+        protected override bool CanShow(IActivityViewModel viewModel)
         {
             return MatchesActivityType(viewModel) && MatchesTextFilter(viewModel);
         }
@@ -189,18 +189,55 @@ namespace Omnipaste.ActivityList
                 _allowedActivityTypes = ActivityTypeEnum.All;
             }
 
-            OnFilterUpdated();
+            RefreshItems();
         }
 
-        private static IObservable<Activity> GetActivityObservable(
-            IClipboardHandler clipboardHandler,
-            IEventsHandler eventsHandler,
-            IUpdaterService updaterService)
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
+        }
+        
+        protected override IObservable<IEnumerable<ActivityPresenter>> GetFetchItemsObservable()
         {
             return
-                clipboardHandler.Select(clipping => new Activity(clipping))
-                    .Merge(eventsHandler.Select(@event => new Activity(@event)))
-                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
+                _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item)))
+                    .Merge(_messageRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
+                    .Merge(_callRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
+                    .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))));
+        }
+
+        protected override IObservable<ActivityPresenter> GetItemAddedObservable()
+        {
+            return
+                _clippingRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
+        }
+
+        protected IObservable<ActivityPresenter> GetItemUpdatedObservable()
+        {
+            return _clippingRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_updateInfoRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)));
+        }
+
+        protected override IObservable<ActivityPresenter> GetItemRemovedObservable()
+        {
+            return
+                _clippingRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
+                    .Merge(_messageRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
+                    .Merge(_callRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                    .Merge(_updateInfoRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Version, o.Item.UniqueId)));
+        }
+
+        private ActivityPresenter GetActivity(ActivityTypeEnum type, string id)
+        {
+            return
+                Items.Select(vm => vm.Model)
+                    .FirstOrDefault(activity => activity.Type == type && activity.SourceId == id);
         }
 
         private bool MatchesActivityType(IActivityViewModel viewModel)
@@ -217,6 +254,16 @@ namespace Omnipaste.ActivityList
                           .All(filterPart => viewModel.Model.ToString()
                                   .RemoveDiacritics()
                                   .IndexOf(filterPart, StringComparison.CurrentCultureIgnoreCase) >= 0);
+        }
+
+        private void UpdateViewModel(ActivityPresenter newModel)
+        {
+            var currentModel = GetActivity(newModel.Type, newModel.SourceId);
+            var activityViewModel = GetViewModel(currentModel);
+            if (activityViewModel != null)
+            {
+                activityViewModel.Model = newModel;
+            }
         }
 
         #endregion

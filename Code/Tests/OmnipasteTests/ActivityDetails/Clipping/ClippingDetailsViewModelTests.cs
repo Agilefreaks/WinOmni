@@ -1,13 +1,9 @@
 ﻿namespace OmnipasteTests.ActivityDetails.Clipping
 {
-    using System;
     using Caliburn.Micro;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Clipping;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
-    using Omnipaste.Presenters;
 
     [TestFixture]
     public class ClippingDetailsViewModelTests
@@ -18,26 +14,22 @@
 
         private Mock<IClippingDetailsContentViewModel> _mockContentViewModel;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
-
         [SetUp]
         public void Setup()
         {
             _mockHeaderViewModel = new Mock<IClippingDetailsHeaderViewModel>();
             _mockContentViewModel = new Mock<IClippingDetailsContentViewModel>();
-            _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new ClippingDetailsViewModel(
                 _mockHeaderViewModel.Object,
-                _mockContentViewModel.Object,
-                _mockEventAggregator.Object);
+                _mockContentViewModel.Object);
         }
 
         [Test]
-        public void Deactivate_ModelIsMarkedForDeletionAndCloseIsFalse_CallsParentDeactivateItemWithSelfAndCloseTrue()
+        public void Deactivate_WasDeleted_ClosesDetailsView()
         {
             var mockConductor = new Mock<IConductor>();
             _subject.Parent = mockConductor.Object;
-            _subject.Model = new ActivityPresenter { MarkedForDeletion = true };
+            _mockHeaderViewModel.SetupGet(m => m.State).Returns(ClippingDetailsHeaderStateEnum.Deleted);
             ((IActivate)_subject).Activate();
 
             ((IClippingDetailsViewModel)_subject).Deactivate(false);
@@ -46,33 +38,16 @@
         }
 
         [Test]
-        public void Deactivate_ModelIsMarkedForDeletionAndCloseIsTrue_PublishesADeleteClippingMessage()
+        public void Deactivate_ModelWasNotDeleted_DoesNotCloseDetailsView()
         {
             var mockConductor = new Mock<IConductor>();
             _subject.Parent = mockConductor.Object;
-            var activityPresenter = new ActivityPresenter(new Activity { SourceId = "someId" }) { MarkedForDeletion = true };
-            _subject.Model = activityPresenter;
-
+            _mockHeaderViewModel.SetupGet(m => m.State).Returns(ClippingDetailsHeaderStateEnum.Normal);
             ((IActivate)_subject).Activate();
 
             ((IClippingDetailsViewModel)_subject).Deactivate(true);
 
-            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<DeleteClippingMessage>(), It.IsAny<Action<Action>>()),
-                Times.Once());
-        }
-
-        [Test]
-        public void Deactivate_ModelIsNotMarkedForDeletionAndCloseIsTrue_PublishesADeleteClippingMessage()
-        {
-            var mockConductor = new Mock<IConductor>();
-            _subject.Parent = mockConductor.Object;
-            _subject.Model = new ActivityPresenter { MarkedForDeletion = false };
-            ((IActivate)_subject).Activate();
-
-            ((IClippingDetailsViewModel)_subject).Deactivate(true);
-
-            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<DeleteClippingMessage>(), It.IsAny<Action<Action>>()),
-                Times.Never());
+            mockConductor.Verify(x => x.DeactivateItem(_subject, true), Times.Never);
         }
     }
 }

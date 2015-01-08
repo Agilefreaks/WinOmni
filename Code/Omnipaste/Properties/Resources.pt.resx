@@ -427,4 +427,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="CallingGuide" xml:space="preserve">
     <value>Pegue o seu telemóvel!</value>
   </data>
+  <data name="ConversationDeleted" xml:space="preserve">
+    <value>Conversa excluído. Desfazer-lo a partir daqui.</value>
+  </data>
 </root>

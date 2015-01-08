@@ -1,31 +1,23 @@
 namespace Omnipaste.MasterClippingList.ClippingList
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using Caliburn.Micro;
-    using Clipboard.Models;
+    using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Clipping;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Helpers;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public abstract class ClippingListViewModelBase : ListViewModelBase<Clipping, IClippingViewModel>,
+    public abstract class ClippingListViewModelBase : ListViewModelBase<ClippingModel, IClippingViewModel>,
                                                       IClippingListViewModel
     {
         #region Fields
 
-        private IEventAggregator _eventAggregator;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        protected ClippingListViewModelBase(IObservable<Clipping> entityObservable)
-            : base(entityObservable)
-        {
-        }
+        private readonly IClippingRepository _clippingRepository;
 
         #endregion
 
@@ -34,32 +26,20 @@ namespace Omnipaste.MasterClippingList.ClippingList
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator
+        #endregion
+
+        #region Constructors and Destructors
+
+        protected ClippingListViewModelBase(IClippingRepository clippingRepository)
         {
-            get
-            {
-                return _eventAggregator;
-            }
-            set
-            {
-                _eventAggregator = value;
-                _eventAggregator.Subscribe(this);
-            }
+            _clippingRepository = clippingRepository;
         }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public void Handle(DeleteClippingMessage message)
-        {
-            var clippingViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.UniqueId == message.ClippingId);
-            if (clippingViewModel != null)
-            {
-                DeactivateItem(clippingViewModel, true);
-            }
-        }
+        public abstract bool CanHandle(ClippingModel clipping);
 
         public void ShowVideoTutorial()
         {
@@ -70,10 +50,25 @@ namespace Omnipaste.MasterClippingList.ClippingList
 
         #region Methods
 
-        protected override IClippingViewModel CreateViewModel(Clipping clipping)
+        protected override IObservable<IEnumerable<ClippingModel>> GetFetchItemsObservable()
+        {
+            return _clippingRepository.GetAll().Select(items => items.Where(CanHandle));
+        }
+
+        protected override IObservable<ClippingModel> GetItemAddedObservable()
+        {
+            return _clippingRepository.OperationObservable.Created().Select(o => o.Item).Where(CanHandle);
+        }
+
+        protected override IObservable<ClippingModel> GetItemRemovedObservable()
+        {
+            return _clippingRepository.OperationObservable.Deleted().Select(o => o.Item).Where(CanHandle);
+        }
+
+        protected override IClippingViewModel CreateViewModel(ClippingModel model)
         {
             IClippingViewModel clippingViewModel = new ClippingViewModel();
-            clippingViewModel.Model = clipping;
+            clippingViewModel.Model = model;
 
             return clippingViewModel;
         }

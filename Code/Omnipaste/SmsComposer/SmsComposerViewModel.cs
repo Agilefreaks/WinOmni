@@ -11,7 +11,7 @@
     using Omnipaste.Dialog;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
 
     public abstract class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
@@ -81,7 +81,7 @@
         }
 
         [Inject]
-        public IMessageStore MessageStore { get; set; }
+        public IMessageRepository MessageRepository { get; set; }
 
         public SMSMessage Model
         {
@@ -144,7 +144,7 @@
         protected virtual void OnSentSMS(EmptyModel model)
         {
             IsSending = false;
-            MessageStore.AddMessage(Model.BaseModel);
+            MessageRepository.Save(Model.BaseModel);
             NotifyOfPropertyChange(() => CanSend);
         }
 

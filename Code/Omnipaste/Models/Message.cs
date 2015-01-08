@@ -2,16 +2,17 @@
 {
     using System;
     using Events.Models;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using OmniUI.Models;
 
-    public class Message : IConversationItem
+    public class Message : BaseModel, IConversationItem
     {
         #region Constructors and Destructors
 
         public Message()
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Content = string.Empty;
             Source = SourceType.Local;
@@ -19,10 +20,11 @@
 
         public Message(Event @event)
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new EventContactInfo(@event);
             Content = @event.Content;
             Source = SourceType.Remote;
+            UniqueId = @event.UniqueId;
         }
 
         #endregion
@@ -34,8 +36,6 @@
         public string Content { get; set; }
 
         public SourceType Source { get; set; }
-
-        public DateTime Time { get; set; }
 
         #endregion
     }
