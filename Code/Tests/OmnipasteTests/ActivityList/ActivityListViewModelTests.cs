@@ -1,8 +1,10 @@
 ﻿namespace OmnipasteTests.ActivityList
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Reactive;
+    using System.Threading;
     using Caliburn.Micro;
     using Clipboard.Handlers;
     using Clipboard.Models;
@@ -45,7 +47,7 @@
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
             _mockUpdateService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
-            _mockUiRefreshService = new Mock<IUiRefreshService>();
+            _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new ActivityListViewModel(
                 _mockClipboardHandler.Object,
@@ -221,6 +223,22 @@
             _subject.Handle(new DeleteClippingMessage(clipping.UniqueId));
 
             _subject.Items.Contains(mockActivityViewModel.Object).Should().BeFalse();
+        }
+
+        [Test]
+        public void ChangingFilterText_Always_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveTheFilterTextInTheirStringRepresentation()
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            var activityPresenter1 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingCallEvent}));
+            var activityPresenter2 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent}));
+            ((IActivate)_subject).Activate();
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
+
+            _subject.FilterText = "sms de la";
+
+            _subject.FilteredItems.Count.Should().Be(1);
+            _subject.FilteredItems.Cast<IActivityViewModel>().First().Model.Should().Be(activityPresenter2);
         }
 
         private void AddItemsForAllActivityTypes()

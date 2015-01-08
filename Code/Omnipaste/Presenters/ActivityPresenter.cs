@@ -114,5 +114,14 @@
         }
 
         #endregion
+
+        #region Public Methods and Operators
+
+        public override string ToString()
+        {
+            return BackingModel.ToString();
+        }
+
+        #endregion
     }
 }

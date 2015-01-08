@@ -23,13 +23,13 @@ namespace Omnipaste.ActivityList
 
         private ActivityTypeEnum _allowedActivityTypes;
 
+        private string _filterText;
+
         private bool _showCalls;
 
         private bool _showClippings;
 
         private bool _showMessages;
-
-        private string _filterText;
 
         #endregion
 
@@ -58,6 +58,24 @@ namespace Omnipaste.ActivityList
             get
             {
                 return Resources.Activity;
+            }
+        }
+
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+            set
+            {
+                if (value == _filterText)
+                {
+                    return;
+                }
+                _filterText = value;
+                NotifyOfPropertyChange();
+                UpdateFilter();
             }
         }
 
@@ -115,27 +133,19 @@ namespace Omnipaste.ActivityList
             }
         }
 
-        public string FilterText
-        {
-            get
-            {
-                return _filterText;
-            }
-            set
-            {
-                if (value == _filterText)
-                {
-                    return;
-                }
-                _filterText = value;
-                NotifyOfPropertyChange();
-                UpdateFilter();
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
+
+        public void Handle(DeleteClippingMessage message)
+        {
+            var activityViewModel =
+                Items.SingleOrDefault(viewModel => viewModel.Model.ExtraData.SourceId == message.ClippingId);
+            if (activityViewModel != null)
+            {
+                DeactivateItem(activityViewModel, true);
+            }
+        }
 
         public void ShowVideoTutorial()
         {
@@ -151,15 +161,9 @@ namespace Omnipaste.ActivityList
             return _activityViewModelFactory.Create(entity);
         }
 
-        private static IObservable<Activity> GetActivityObservable(
-            IClipboardHandler clipboardHandler,
-            IEventsHandler eventsHandler,
-            IUpdaterService updaterService)
+        protected bool MatchesFilter(IActivityViewModel viewModel)
         {
-            return
-                clipboardHandler.Select(clipping => new Activity(clipping))
-                    .Merge(eventsHandler.Select(@event => new Activity(@event)))
-                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
+            return MatchesActivityType(viewModel) && MatchesTextFilter(viewModel);
         }
 
         protected void UpdateFilter()
@@ -188,9 +192,21 @@ namespace Omnipaste.ActivityList
             OnFilterUpdated();
         }
 
-        protected bool MatchesFilter(IActivityViewModel viewModel)
+        private static IObservable<Activity> GetActivityObservable(
+            IClipboardHandler clipboardHandler,
+            IEventsHandler eventsHandler,
+            IUpdaterService updaterService)
         {
-            return MatchesActivityType(viewModel) && MatchesTextFilter(viewModel);
+            return
+                clipboardHandler.Select(clipping => new Activity(clipping))
+                    .Merge(eventsHandler.Select(@event => new Activity(@event)))
+                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
+        }
+
+        private bool MatchesActivityType(IActivityViewModel viewModel)
+        {
+            return (viewModel != null) && _allowedActivityTypes.HasFlag(viewModel.Model.Type)
+                   && (viewModel.Model.Type != ActivityTypeEnum.None) && (viewModel.Model.Type != ActivityTypeEnum.All);
         }
 
         private bool MatchesTextFilter(IActivityViewModel viewModel)
@@ -201,22 +217,6 @@ namespace Omnipaste.ActivityList
                           .IndexOf(FilterText.RemoveDiacritics(), StringComparison.CurrentCultureIgnoreCase) >= 0;
         }
 
-        private bool MatchesActivityType(IActivityViewModel viewModel)
-        {
-            return (viewModel != null) && _allowedActivityTypes.HasFlag(viewModel.Model.Type)
-                   && (viewModel.Model.Type != ActivityTypeEnum.None)
-                   && (viewModel.Model.Type != ActivityTypeEnum.All);
-        }
-
         #endregion
-
-        public void Handle(DeleteClippingMessage message)
-        {
-            var activityViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.ExtraData.SourceId == message.ClippingId);
-            if (activityViewModel != null)
-            {
-                DeactivateItem(activityViewModel, true);
-            }
-        }
     }
 }
