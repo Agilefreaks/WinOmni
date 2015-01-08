@@ -96,5 +96,6 @@
     <Style x:Key="MainWindowContentBorderStyle" TargetType="Border">
         <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}"/>
         <Setter Property="BorderThickness" Value="5,0,5,5"/>
+        <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
     </Style>
 </ResourceDictionary>
