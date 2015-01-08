@@ -6,7 +6,7 @@
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center" Margin="{DynamicResource ActivityHeaderMargin}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

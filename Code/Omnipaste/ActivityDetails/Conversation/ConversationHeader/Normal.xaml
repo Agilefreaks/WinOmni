@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Grid VerticalAlignment="Center" Margin="22,0">
+    <Grid VerticalAlignment="Center" Margin="{DynamicResource ActivityHeaderMargin}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
