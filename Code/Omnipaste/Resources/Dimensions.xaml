@@ -11,7 +11,8 @@
     <system:Double x:Key="ContactListContainerWidth">320</system:Double>
     <system:Double x:Key="ActivityContentWidth">379</system:Double>
     <system:Double x:Key="MinimumActivityHeight">50</system:Double>
-    <system:Double x:Key="ClippingMaxHeight">19</system:Double>
+    <system:Double x:Key="CollapsedActivityMaxHeight">19</system:Double>
+    <system:Double x:Key="ExpandedActivityMaxHeight">190</system:Double>
     <system:Double x:Key="SideMenuWidth">120</system:Double>
     <system:Double x:Key="SecondaryNavButtonWidth">16</system:Double>
     <system:Double x:Key="WideContainerWidth">530</system:Double>

@@ -12,8 +12,8 @@
             var contentInfo = (ActivityContentInfo)value;
 
             return contentInfo.ContentState == ContentStateEnum.NotViewed
-                ? Double.MaxValue
-                : ResourceHelper.GetByKey<double>("ClippingMaxHeight");
+                ? ResourceHelper.GetByKey<double>("ExpandedActivityMaxHeight")
+                : ResourceHelper.GetByKey<double>("CollapsedActivityMaxHeight");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

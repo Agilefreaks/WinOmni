@@ -10,5 +10,6 @@
         <converters:ViewedSizeConverter x:Key="ViewedSizeConverter"/>
     </UserControl.Resources>
 
-    <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivityTitleTextBlockStyle}" MaxHeight="{Binding Path=ContentInfo, Converter={StaticResource ViewedSizeConverter}}"/>
+    <TextBlock x:Name="Model_Content" Style="{DynamicResource ActivityTitleTextBlockStyle}" 
+               MaxHeight="{Binding Path=ContentInfo, Converter={StaticResource ViewedSizeConverter}}"/>
 </UserControl>
