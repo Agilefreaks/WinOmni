@@ -60,5 +60,23 @@
             textParts[0].Item1.Should().Be(TextPartTypeEnum.PlainText);
             textParts[0].Item2.Should().Be("some plain text here\r\n hello me");
         }
+
+        [Test]
+        public void Parse_TextHasMoreThanOneHyperlink_ReturnsAListOfTextPartsMarkedWithTheCorrectTextPartType()
+        {
+            var textParts = _subject.Parse("some plain text here\r\n http://hyperlink.com/test?asd=123 some other here http://link2.com final text");
+
+            textParts.Count.Should().Be(5);
+            textParts[0].Item1.Should().Be(TextPartTypeEnum.PlainText);
+            textParts[0].Item2.Should().Be("some plain text here\r\n ");
+            textParts[1].Item1.Should().Be(TextPartTypeEnum.Hyperlink);
+            textParts[1].Item2.Should().Be("http://hyperlink.com/test?asd=123");
+            textParts[2].Item1.Should().Be(TextPartTypeEnum.PlainText);
+            textParts[2].Item2.Should().Be(" some other here ");
+            textParts[3].Item1.Should().Be(TextPartTypeEnum.Hyperlink);
+            textParts[3].Item2.Should().Be("http://link2.com");
+            textParts[4].Item1.Should().Be(TextPartTypeEnum.PlainText);
+            textParts[4].Item2.Should().Be(" final text");
+        }
     }
 }

@@ -30,7 +30,7 @@
             previousPlainTextPartStartIndex = matches.Count > 0
                                ? matches[matches.Count - 1].Index + matches[matches.Count - 1].Length
                                : 0;
-            previousPlainTextPartEndIndex = text.Length - previousPlainTextPartStartIndex;
+            previousPlainTextPartEndIndex = text.Length;
             AddPlainTextPart(text, previousPlainTextPartStartIndex, previousPlainTextPartEndIndex);
 
             return _result;
@@ -38,7 +38,7 @@
 
         private void AddPlainTextPart(string text, int startIndex, int endIndex)
         {
-            var previousTextPart = text.Substring(startIndex, endIndex);
+            var previousTextPart = text.Substring(startIndex, endIndex - startIndex);
             if (!string.IsNullOrWhiteSpace(previousTextPart))
             {
                 _result.Add(new Tuple<TextPartTypeEnum, string>(TextPartTypeEnum.PlainText, previousTextPart));
