@@ -109,6 +109,16 @@
             State = ConversationHeaderStateEnum.Normal;
         }
 
+        public void Delete()
+        {
+            State = ConversationHeaderStateEnum.Deleted;
+        }
+
+        public void UndoDelete()
+        {
+            State = ConversationHeaderStateEnum.Normal;
+        }
+
         private void DisposeCallSubscription()
         {
             if (_callSubscription == null)

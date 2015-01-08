@@ -24,7 +24,10 @@
 
         <StackPanel Grid.Column="2" Orientation="Horizontal">
             <Button x:Name="Call" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
-                    Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource call_icon}" />
+                    Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource call_icon}"
+                    Margin="0,0,14,0"/>
+            <Button x:Name="Delete" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
+                    Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"/>
         </StackPanel>
     </Grid>
 </UserControl>

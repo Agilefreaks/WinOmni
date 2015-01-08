@@ -120,5 +120,21 @@
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
         }
+
+        [Test]
+        public void Delete_Always_ChangesStateToDeleted()
+        {
+            _subject.Delete();
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Deleted);
+        }
+
+        [Test]
+        public void UndoDelete_Always_ChangesStateToNormal()
+        {
+            _subject.UndoDelete();
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+        }
     }
 }

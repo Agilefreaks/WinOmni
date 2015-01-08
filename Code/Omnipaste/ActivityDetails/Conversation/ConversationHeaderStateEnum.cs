@@ -6,6 +6,8 @@
 
         InitiatingCall,
 
-        Calling
+        Calling,
+        
+        Deleted
     }
 }
