@@ -69,7 +69,7 @@
 
         #region Public Methods and Operators
 
-        public void Execute(object parameter)
+        public void Execute(object parameter = null)
         {
             ExecuteCore(parameter);
         }

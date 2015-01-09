@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:commands="clr-namespace:Omnipaste.Framework.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid VerticalAlignment="Center" Margin="{DynamicResource ActivityHeaderMargin}">
@@ -27,9 +28,9 @@
                        FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal">
-            <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" x:Name="CopyClipping"
+            <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Margin="0,0,14,0"
                     Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource copy_icon}"
-                    Margin="0,0,14,0"/>
+                    Command="{x:Static commands:ClippingCommands.SimulateClippingCommand}" CommandParameter="{Binding Path=Model.Content}"/>
             <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" x:Name="DeleteClipping"
                     Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"/>
         </StackPanel>

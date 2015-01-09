@@ -127,6 +127,7 @@
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
     <Compile Include="Activity\VersionActivityViewModelTests.cs" />
+    <Compile Include="Framework\Commands\SimulateClippingCommandTests.cs" />
     <Compile Include="Framework\Converters\InverseBooleanToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Helpers\TextParserTests.cs" />

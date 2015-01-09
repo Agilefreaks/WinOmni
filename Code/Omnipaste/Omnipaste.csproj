@@ -313,6 +313,8 @@
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\Behaviours\AddNewLineBehavior.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
+    <Compile Include="Framework\Commands\ClippingCommands.cs" />
+    <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
     <Compile Include="Framework\Converters\ControlToCenterPointConverter.cs" />
     <Compile Include="Framework\Converters\ControlToXRadiusConverter.cs" />
     <Compile Include="Framework\Converters\ControlToYRadiusConverter.cs" />
