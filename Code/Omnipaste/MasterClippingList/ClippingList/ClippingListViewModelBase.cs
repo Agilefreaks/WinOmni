@@ -1,30 +1,45 @@
 namespace Omnipaste.MasterClippingList.ClippingList
 {
     using System;
-    using System.Linq;
-    using Caliburn.Micro;
-    using Clipboard.Models;
+    using System.Reactive.Linq;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.Clipping;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Helpers;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public abstract class ClippingListViewModelBase : ListViewModelBase<Clipping, IClippingViewModel>,
+    public abstract class ClippingListViewModelBase : ListViewModelBase<ClippingModel, IClippingViewModel>,
                                                       IClippingListViewModel
     {
         #region Fields
 
-        private IEventAggregator _eventAggregator;
+        private readonly IDisposable _itemAddedSubscription;
+
+        private readonly IDisposable _itemRemovedSubscription;
 
         #endregion
 
         #region Constructors and Destructors
 
-        protected ClippingListViewModelBase(IObservable<Clipping> entityObservable)
-            : base(entityObservable)
+        protected ClippingListViewModelBase(IClippingRepository clippingRepository)
         {
+            _itemAddedSubscription =
+                clippingRepository.OperationObservable.Where(o => CanHandle(o.Item))
+                    .Saved()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(o => AddItem(o.Item));
+
+            _itemRemovedSubscription =
+                clippingRepository.OperationObservable.Where(o => CanHandle(o.Item))
+                    .Deleted()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(o => RemoveItem(o.Item));
         }
 
         #endregion
@@ -34,43 +49,29 @@ namespace Omnipaste.MasterClippingList.ClippingList
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator
-        {
-            get
-            {
-                return _eventAggregator;
-            }
-            set
-            {
-                _eventAggregator = value;
-                _eventAggregator.Subscribe(this);
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
-        public void Handle(DeleteClippingMessage message)
-        {
-            var clippingViewModel = Items.SingleOrDefault(viewModel => viewModel.Model.UniqueId == message.ClippingId);
-            if (clippingViewModel != null)
-            {
-                DeactivateItem(clippingViewModel, true);
-            }
-        }
+        public abstract bool CanHandle(ClippingModel clipping);
 
         public void ShowVideoTutorial()
         {
             ExternalProcessHelper.ShowVideoTutorial();
         }
 
+        public override void Dispose()
+        {
+            _itemAddedSubscription.Dispose();
+            _itemRemovedSubscription.Dispose();
+            base.Dispose();
+        }
+
         #endregion
 
         #region Methods
 
-        protected override IClippingViewModel CreateViewModel(Clipping clipping)
+        protected override IClippingViewModel CreateViewModel(ClippingModel clipping)
         {
             IClippingViewModel clippingViewModel = new ClippingViewModel();
             clippingViewModel.Model = clipping;

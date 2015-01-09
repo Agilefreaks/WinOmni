@@ -5,6 +5,7 @@
     using NUnit.Framework;
     using Omnipaste.Activity;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using OmniUI.Models;
 
     [TestFixture]
@@ -32,47 +33,47 @@
         [Test]
         public void Create_ActivityIsOfTypeClipping_ReturnsAnActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activity = new Activity(ActivityTypeEnum.Clipping);
+            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Clipping));
 
-            var activityViewModel = _subject.Create(activity);
+            var activityViewModel = _subject.Create(activityPresenter);
 
             activityViewModel.Should().BeAssignableTo<IActivityViewModel>();
-            activityViewModel.Model.BackingModel.Should().Be(activity);
+            activityViewModel.Model.Should().Be(activityPresenter);
         }
 
         [Test]
         public void Create_ActivityIsOfTypeCall_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activity = new Activity(ActivityTypeEnum.Call);
-            activity.ExtraData.ContactInfo = new ContactInfo();
+            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Call));
+            activityPresenter.ExtraData.ContactInfo = new ContactInfo();
 
-            var activityViewModel = _subject.Create(activity);
+            var activityViewModel = _subject.Create(activityPresenter);
 
             activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
-            activityViewModel.Model.BackingModel.Should().Be(activity);
+            activityViewModel.Model.Should().Be(activityPresenter);
         }
 
         [Test]
         public void Create_ActivityIsOfTypeMessage_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activity = new Activity(ActivityTypeEnum.Message);
-            activity.ExtraData.ContactInfo = new ContactInfo();
+            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Message));
+            activityPresenter.ExtraData.ContactInfo = new ContactInfo();
 
-            var activityViewModel = _subject.Create(activity);
+            var activityViewModel = _subject.Create(activityPresenter);
 
             activityViewModel.Should().BeAssignableTo<IContactRelatedActivityViewModel>();
-            activityViewModel.Model.BackingModel.Should().Be(activity);
+            activityViewModel.Model.Should().Be(activityPresenter);
         }
 
         [Test]
         public void Create_ActivityIsOfTypeVersion_ReturnsAVersionActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activity = new Activity(ActivityTypeEnum.Version);
+            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Version));
 
-            var activityViewModel = _subject.Create(activity);
+            var activityViewModel = _subject.Create(activityPresenter);
 
             activityViewModel.Should().BeAssignableTo<IVersionActivityViewModel>();
-            activityViewModel.Model.BackingModel.Should().Be(activity);
+            activityViewModel.Model.Should().Be(activityPresenter);
         }
     }
 }

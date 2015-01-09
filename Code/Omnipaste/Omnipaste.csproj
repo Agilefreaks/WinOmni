@@ -306,7 +306,6 @@
     <Compile Include="Activity\VersionActivityViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="DetailsViewModel\IConversationItem.cs" />
-    <Compile Include="EventAggregatorMessages\DeleteClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
@@ -358,6 +357,7 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
+    <Compile Include="Models\ClippingModel.cs" />
     <Compile Include="Models\EventContactInfo.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SourceType.cs" />
@@ -393,6 +393,7 @@
     <Compile Include="Services\Commands\CommandService.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
+    <Compile Include="Services\EntitySupervisor.cs" />
     <Compile Include="Services\ICallStore.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
@@ -405,6 +406,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
+    <Compile Include="Services\IEntitySupervisor.cs" />
     <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
@@ -428,6 +430,13 @@
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\Repositories\ClippingRepository.cs" />
+    <Compile Include="Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Services\Repositories\InMemoryRepository.cs" />
+    <Compile Include="Services\Repositories\IRepository.cs" />
+    <Compile Include="Services\Repositories\ObservableExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
+    <Compile Include="Services\Repositories\RepositoryOperation.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UpdateFileInfo.cs" />
     <Compile Include="Services\UpdateInfo.cs" />

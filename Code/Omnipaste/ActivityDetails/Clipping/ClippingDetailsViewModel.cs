@@ -1,22 +1,22 @@
 ﻿namespace Omnipaste.ActivityDetails.Clipping
 {
     using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Attributes;
     using OmniUI.Details;
 
     [UseView(typeof(DetailsViewWithHeader))]
     public class ClippingDetailsViewModel : ActivityDetailsViewModel, IClippingDetailsViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
+        private readonly IClippingRepository _clippingRepository;
 
         public ClippingDetailsViewModel(
             IClippingDetailsHeaderViewModel headerViewModel,
             IClippingDetailsContentViewModel contentViewModel,
-            IEventAggregator eventAggregator)
+            IClippingRepository clippingRepository)
             : base(headerViewModel, contentViewModel)
         {
-            _eventAggregator = eventAggregator;
+            _clippingRepository = clippingRepository;
         }
 
         protected override void OnDeactivate(bool close)
@@ -33,7 +33,7 @@
                 }
                 else
                 {
-                    _eventAggregator.PublishOnUIThread(new DeleteClippingMessage(Model.SourceId));
+                    _clippingRepository.Delete(Model.SourceId);
                 }
             }
             else
@@ -41,6 +41,5 @@
                 base.OnDeactivate(close);
             }
         }
-
     }
 }

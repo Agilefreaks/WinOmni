@@ -50,26 +50,26 @@
         [Test]
         public void CtorWithClipping_Always_SetsTypeToClipping()
         {
-            new Activity(new Clipping()).Type.Should().Be(ActivityTypeEnum.Clipping);
+            new Activity(new ClippingModel()).Type.Should().Be(ActivityTypeEnum.Clipping);
         }
 
         [Test]
         public void CtorWithClipping_Always_SetsContentToClippingContent()
         {
-            new Activity(new Clipping("someContent")).Content.Should().Be("someContent");
+            new Activity(new ClippingModel { Content = "someContent" }).Content.Should().Be("someContent");
         }
 
         [Test]
         public void CtorWithClipping_ClippingSourceIsCloud_SetsDeviceToCloud()
         {
-            new Activity(new Clipping { Source = Clipping.ClippingSourceEnum.Cloud }).Device.Should()
+            new Activity(new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }).Device.Should()
                 .Be(Resources.FromCloud);
         }
 
         [Test]
         public void CtorWithClipping_ClippingSourceIsLocal_SetsDeviceToCloud()
         {
-            new Activity(new Clipping { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
+            new Activity(new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
                 .Be(Resources.FromLocal);
         }
 
@@ -77,7 +77,7 @@
         public void CtorWithClipping_Always_SetsTheClippingIdInTheExtraData()
         {
             const string Id = "SomeId";
-            (new Activity(new Clipping { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new Activity(new ClippingModel { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]

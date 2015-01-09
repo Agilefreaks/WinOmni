@@ -54,14 +54,6 @@
 
         public ClippingSourceEnum Source { get; set; }
 
-        public bool IsLink
-        {
-            get
-            {
-                return Type == ClippingTypeEnum.Url;
-            }
-        }
-
         #endregion
     }
 }

@@ -10,13 +10,29 @@
     {
         private ClippingDetailsHeaderViewModel _subject;
 
+        private Mock<IWindowsClipboardWrapper> _mockWindowsClipboardWrapper;
+
         [SetUp]
         public void Setup()
         {
+            _mockWindowsClipboardWrapper = new Mock<IWindowsClipboardWrapper>();
             _subject = new ClippingDetailsHeaderViewModel
                            {
+                               WindowsClipboardWrapper = _mockWindowsClipboardWrapper.Object,
                                Model = new ActivityPresenter()
                            };
+        }
+        
+        [Test]
+        public void CopyClipping_ModelHasContent_CopiesTheContentToTheLocalClipboard()
+        {
+            const string Content = "some content";
+            var clipping = new Clipping(Content);
+            _subject.Model = new ActivityPresenter(new Activity(clipping));
+
+            _subject.CopyClipping();
+
+            _mockWindowsClipboardWrapper.Verify(x => x.SetData(Content), Times.Once());
         }
 
         [Test]

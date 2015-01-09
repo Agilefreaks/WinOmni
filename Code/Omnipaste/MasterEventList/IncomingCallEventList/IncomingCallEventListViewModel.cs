@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.MasterEventList.IncomingCallEventList
 {
-    using System;
     using Events.Handlers;
     using Events.Models;
     using Ninject;
@@ -19,14 +18,11 @@
 
         #endregion
 
-        #region Public Properties
+        #region Public Methods and Operators
 
-        public override Func<Event, bool> EntityFilter
+        public override bool CanHandle(Event @event)
         {
-            get
-            {
-                return @event => @event.Type == EventTypeEnum.IncomingCallEvent;
-            }
+            return @event.Type == EventTypeEnum.IncomingCallEvent;
         }
 
         #endregion

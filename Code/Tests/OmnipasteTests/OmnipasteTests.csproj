@@ -167,6 +167,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDeviceTests.cs" />
     <Compile Include="Services\Commands\CommandServiceTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />
+    <Compile Include="Services\EntitySupervisorTests.cs" />
     <Compile Include="Services\InMemoryStoreTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
@@ -185,6 +186,8 @@
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitorTests.cs" />
     <Compile Include="Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitorTests.cs" />
     <Compile Include="Services\ProxyConfigurationTests.cs" />
+    <Compile Include="Services\Repositories\InMemoryRepositoryTests.cs" />
+    <Compile Include="Services\Repositories\ObservableExtensionMethodsTests.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />
     <Compile Include="Services\UpdaterServiceTests.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModelTests.cs" />

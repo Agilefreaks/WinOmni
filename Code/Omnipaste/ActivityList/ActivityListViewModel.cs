@@ -3,19 +3,19 @@ namespace Omnipaste.ActivityList
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using Caliburn.Micro;
-    using Clipboard.Handlers;
     using Events.Handlers;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.Activity;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ActivityListViewModel : ListViewModelBase<Activity, IActivityViewModel>, IActivityListViewModel
+    public class ActivityListViewModel : ListViewModelBase<ActivityPresenter, IActivityViewModel>, IActivityListViewModel
     {
         #region Fields
 
@@ -31,22 +31,32 @@ namespace Omnipaste.ActivityList
 
         private bool _showMessages;
 
+        private readonly IDisposable _itemRemovedSubscription;
+
+        private readonly IDisposable _itemAddedSubscription;
+
         #endregion
 
         #region Constructors and Destructors
 
         public ActivityListViewModel(
-            IClipboardHandler clipboardHandler,
+            IClippingRepository clippingRepository,
             IEventsHandler eventsHandler,
             IActivityViewModelFactory activityViewModelFactory,
-            IUpdaterService updaterService,
-            IEventAggregator eventAggregator)
-            : base(GetActivityObservable(clipboardHandler, eventsHandler, updaterService))
+            IUpdaterService updaterService)
         {
             _activityViewModelFactory = activityViewModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
-            ViewModelFilter = MatchesFilter;
-            eventAggregator.Subscribe(this);
+
+            _itemAddedSubscription = GetItemAddedObservable(clippingRepository, eventsHandler, updaterService)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(AddItem);
+
+            _itemRemovedSubscription = GetItemRemovedObservable(clippingRepository)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(RemoveItem);
         }
 
         #endregion
@@ -137,31 +147,28 @@ namespace Omnipaste.ActivityList
 
         #region Public Methods and Operators
 
-        public void Handle(DeleteClippingMessage message)
-        {
-            var activityViewModel =
-                Items.SingleOrDefault(viewModel => viewModel.Model.SourceId == message.ClippingId);
-            if (activityViewModel != null)
-            {
-                DeactivateItem(activityViewModel, true);
-            }
-        }
-
         public void ShowVideoTutorial()
         {
             ExternalProcessHelper.ShowVideoTutorial();
+        }
+
+        public override void Dispose()
+        {
+            _itemAddedSubscription.Dispose();
+            _itemRemovedSubscription.Dispose();
+            base.Dispose();
         }
 
         #endregion
 
         #region Methods
 
-        protected override IActivityViewModel CreateViewModel(Activity entity)
+        protected override IActivityViewModel CreateViewModel(ActivityPresenter activityPresenter)
         {
-            return _activityViewModelFactory.Create(entity);
+            return _activityViewModelFactory.Create(activityPresenter);
         }
 
-        protected bool MatchesFilter(IActivityViewModel viewModel)
+        protected override bool CanShow(IActivityViewModel viewModel)
         {
             return MatchesActivityType(viewModel) && MatchesTextFilter(viewModel);
         }
@@ -189,18 +196,33 @@ namespace Omnipaste.ActivityList
                 _allowedActivityTypes = ActivityTypeEnum.All;
             }
 
-            OnFilterUpdated();
+            RefreshItems();
         }
 
-        private static IObservable<Activity> GetActivityObservable(
-            IClipboardHandler clipboardHandler,
+        private IObservable<ActivityPresenter> GetItemAddedObservable(
+            IClippingRepository clippingRepository,
             IEventsHandler eventsHandler,
             IUpdaterService updaterService)
         {
             return
-                clipboardHandler.Select(clipping => new Activity(clipping))
-                    .Merge(eventsHandler.Select(@event => new Activity(@event)))
-                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new Activity(updateInfo)));
+                clippingRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item)))
+                    .Merge(eventsHandler.Select(@event => new ActivityPresenter(new Activity(@event))))
+                    .Merge(updaterService.UpdateObservable.Select(updateInfo => new ActivityPresenter(new Activity(updateInfo))));
+        }
+
+        private IObservable<ActivityPresenter> GetItemRemovedObservable(IClippingRepository clippingRepository)
+        {
+            return
+                clippingRepository.OperationObservable.Deleted()
+                    .Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
+                    .Where(activity => activity != null);
+        }
+
+        private ActivityPresenter GetActivity(ActivityTypeEnum type, string id)
+        {
+            return
+                Items.Select(vm => vm.Model)
+                    .FirstOrDefault(activity => activity.Type == type && activity.SourceId == id);
         }
 
         private bool MatchesActivityType(IActivityViewModel viewModel)

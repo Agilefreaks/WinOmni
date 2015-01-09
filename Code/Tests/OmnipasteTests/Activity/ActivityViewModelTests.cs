@@ -3,7 +3,6 @@
     using System;
     using System.Reactive;
     using Caliburn.Micro;
-    using Clipboard.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -117,7 +116,7 @@
         public void ShowDetails_WhenModelWasNotViewed_DismissesNotificationForActivity()
         {
             const string Identifier = "42";
-            var activity = new Activity(new Clipping { UniqueId = Identifier }) { WasViewed = false };
+            var activity = new Activity(new ClippingModel { UniqueId = Identifier }) { WasViewed = false };
             _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -172,7 +171,7 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
         {
-            var activity = new Activity(new Clipping { Identifier = "42" }) { WasViewed = false };
+            var activity = new Activity(new ClippingModel { Identifier = "42" }) { WasViewed = false };
             _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -192,7 +191,7 @@
         [Test]
         public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
         {
-            var activity = new Activity(new Clipping { Identifier = "42" }) { WasViewed = false };
+            var activity = new Activity(new ClippingModel { Identifier = "42" }) { WasViewed = false };
             _subject.Model = new ActivityPresenter(activity);
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();

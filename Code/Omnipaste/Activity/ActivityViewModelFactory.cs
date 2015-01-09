@@ -15,10 +15,10 @@
 
         #region Public Methods and Operators
 
-        public IActivityViewModel Create(Models.Activity activity)
+        public IActivityViewModel Create(ActivityPresenter activityPresenter)
         {
             IActivityViewModel result;
-            switch (activity.Type)
+            switch (activityPresenter.Type)
             {
                 case ActivityTypeEnum.Call:
                 case ActivityTypeEnum.Message:
@@ -32,7 +32,7 @@
                     break;
             }
 
-            result.Model = new ActivityPresenter(activity);
+            result.Model = activityPresenter;
 
             return result;
         }

@@ -39,7 +39,7 @@
             Type = activityType;
         }
 
-        public Activity(Clipping clipping)
+        public Activity(ClippingModel clipping)
             : this()
         {
             SourceId = clipping.UniqueId;

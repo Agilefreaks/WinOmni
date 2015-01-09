@@ -1,13 +1,12 @@
 ﻿namespace OmnipasteTests.ActivityDetails.Clipping
 {
-    using System;
     using Caliburn.Micro;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ActivityDetails.Clipping;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class ClippingDetailsViewModelTests
@@ -18,18 +17,18 @@
 
         private Mock<IClippingDetailsContentViewModel> _mockContentViewModel;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
+        private Mock<IClippingRepository> _mockClippingRepository;
 
         [SetUp]
         public void Setup()
         {
             _mockHeaderViewModel = new Mock<IClippingDetailsHeaderViewModel>();
             _mockContentViewModel = new Mock<IClippingDetailsContentViewModel>();
-            _mockEventAggregator = new Mock<IEventAggregator>();
+            _mockClippingRepository = new Mock<IClippingRepository>();
             _subject = new ClippingDetailsViewModel(
                 _mockHeaderViewModel.Object,
                 _mockContentViewModel.Object,
-                _mockEventAggregator.Object);
+                _mockClippingRepository.Object);
         }
 
         [Test]
@@ -46,19 +45,19 @@
         }
 
         [Test]
-        public void Deactivate_ModelIsMarkedForDeletionAndCloseIsTrue_PublishesADeleteClippingMessage()
+        public void Deactivate_ModelIsMarkedForDeletionAndCloseIsTrue_RemovesItemFromStorage()
         {
             var mockConductor = new Mock<IConductor>();
             _subject.Parent = mockConductor.Object;
-            var activityPresenter = new ActivityPresenter(new Activity { SourceId = "someId" }) { MarkedForDeletion = true };
+            const string SourceId = "someId";
+            var activityPresenter = new ActivityPresenter(new Activity { SourceId = SourceId }) { MarkedForDeletion = true };
             _subject.Model = activityPresenter;
 
             ((IActivate)_subject).Activate();
 
             ((IClippingDetailsViewModel)_subject).Deactivate(true);
 
-            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<DeleteClippingMessage>(), It.IsAny<Action<Action>>()),
-                Times.Once());
+            _mockClippingRepository.Verify(m => m.Delete(SourceId), Times.Once());
         }
 
         [Test]
@@ -71,8 +70,7 @@
 
             ((IClippingDetailsViewModel)_subject).Deactivate(true);
 
-            _mockEventAggregator.Verify(x => x.Publish(It.IsAny<DeleteClippingMessage>(), It.IsAny<Action<Action>>()),
-                Times.Never());
+            _mockClippingRepository.Verify(m => m.Delete(It.IsAny<object>()), Times.Never());
         }
     }
 }

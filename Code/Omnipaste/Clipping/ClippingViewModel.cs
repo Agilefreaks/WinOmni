@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.Clipping
 {
     using Clipboard.Models;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
+    using Omnipaste.Models;
     using OmniUI.Details;
 
-    public class ClippingViewModel : DetailsViewModelBase<Clipping>, IClippingViewModel
+    public class ClippingViewModel : DetailsViewModelBase<ClippingModel>, IClippingViewModel
     {
         #region Public Properties
 
