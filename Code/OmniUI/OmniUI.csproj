@@ -85,6 +85,7 @@
     <Compile Include="Attributes\UseViewAttribute.cs" />
     <Compile Include="Behaviors\DisposableBehavior.cs" />
     <Compile Include="Behaviors\HotKeyBehavior.cs" />
+    <Compile Include="Behaviors\HotKeyCommandBehavior.cs" />
     <Compile Include="Behaviors\ScrollBehavior.cs" />
     <Compile Include="Behaviors\TextBoxFocusBehavior.cs" />
     <Compile Include="Behaviors\TimeProgressUpdateBehavior.cs" />

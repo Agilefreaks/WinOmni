@@ -311,6 +311,7 @@
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\Behaviours\AddNewLineBehavior.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Converters\ControlToCenterPointConverter.cs" />
     <Compile Include="Framework\Converters\ControlToXRadiusConverter.cs" />

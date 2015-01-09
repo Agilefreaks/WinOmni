@@ -1,16 +1,12 @@
-namespace OmniUI.Behaviors
+﻿namespace OmniUI.Behaviors
 {
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
 
-    public class HotKeyBehavior : DisposableBehavior<TextBox>
+    public abstract class HotKeyBehavior : DisposableBehavior<TextBox>
     {
-        public static readonly DependencyProperty ActionKeyProperty = DependencyProperty.Register(
-            "ActionKey",
-            typeof(ModifierKeys),
-            typeof(HotKeyBehavior),
-            new PropertyMetadata(default(ModifierKeys)));
+        #region Static Fields
 
         public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(
             "Key",
@@ -18,19 +14,15 @@ namespace OmniUI.Behaviors
             typeof(HotKeyBehavior),
             new PropertyMetadata(default(Key)));
 
-        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(HotKeyBehavior), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty ModifierKeyProperty = DependencyProperty.Register(
+            "ModifierKey",
+            typeof(ModifierKeys?),
+            typeof(HotKeyBehavior),
+            new PropertyMetadata(default(ModifierKeys?)));
 
-        public ModifierKeys ActionKey
-        {
-            get
-            {
-                return (ModifierKeys)GetValue(ActionKeyProperty);
-            }
-            set
-            {
-                SetValue(ActionKeyProperty, value);
-            }
-        }
+        #endregion
+
+        #region Public Properties
 
         public Key Key
         {
@@ -44,15 +36,30 @@ namespace OmniUI.Behaviors
             }
         }
 
-        public ICommand Command
+        public ModifierKeys? ModifierKey
         {
             get
             {
-                return (ICommand)GetValue(CommandProperty);
+                return (ModifierKeys?)GetValue(ModifierKeyProperty);
             }
             set
             {
-                SetValue(CommandProperty, value);
+                SetValue(ModifierKeyProperty, value);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected abstract void ExecuteAction();
+
+        protected void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key && ModifierMatches())
+            {
+                e.Handled = true;
+                ExecuteAction();
             }
         }
 
@@ -66,12 +73,12 @@ namespace OmniUI.Behaviors
             AssociatedObject.KeyDown -= OnKeyDown;
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private bool ModifierMatches()
         {
-            if (Keyboard.Modifiers == ActionKey && e.Key == Key)
-            {
-                Command.Execute(null);
-            }
+            return ((Keyboard.Modifiers == ModifierKeys.None && !ModifierKey.HasValue)
+                    || Keyboard.Modifiers == ModifierKey);
         }
+
+        #endregion
     }
 }

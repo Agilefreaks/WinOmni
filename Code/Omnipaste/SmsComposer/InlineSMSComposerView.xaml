@@ -5,17 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource ScreenBorderBrush}" CornerRadius="3" BorderThickness="1" 
                 Height="110" Margin="11,0">
         <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Top">
-                <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True"
+                <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap"
                                  IsEnabled="{Binding Path=CanEditText}" Width="468" Height="60" Margin="11,11,8,11" VerticalScrollBarVisibility="Auto">
                     <i:Interaction.Behaviors>
                         <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanEditText}" />
-                        <behaviors:HotKeyBehavior ActionKey="Ctrl" Key="Enter" Command="{Binding Path=SendCommand}" />
+                        <behaviours:AddNewLineBehavior ModifierKey="Shift" Key="Enter" TextToAdd="{x:Static system:Environment.NewLine}"/>
+                        <behaviors:HotKeyCommandBehavior Key="Enter" Command="{Binding Path=SendCommand}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <Border BorderThickness="1,0,0,1" BorderBrush="{DynamicResource ScreenBorderBrush}"/>
