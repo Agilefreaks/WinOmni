@@ -394,7 +394,6 @@
     <Compile Include="Services\ConnectivitySupervisor.cs" />
     <Compile Include="Services\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\EntitySupervisor.cs" />
-    <Compile Include="Services\ICallStore.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
@@ -407,10 +406,8 @@
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\IEntitySupervisor.cs" />
-    <Compile Include="Services\IMessageStore.cs" />
     <Compile Include="Services\INetworkService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
-    <Compile Include="Services\InMemoryStore.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
     <Compile Include="Services\IUpdateManager.cs" />
@@ -430,11 +427,16 @@
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\Repositories\CallRepository.cs" />
     <Compile Include="Services\Repositories\ClippingRepository.cs" />
+    <Compile Include="Services\Repositories\ICallRepository.cs" />
     <Compile Include="Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Services\Repositories\IMessageRepository.cs" />
     <Compile Include="Services\Repositories\InMemoryRepository.cs" />
     <Compile Include="Services\Repositories\IRepository.cs" />
+    <Compile Include="Services\Repositories\MessageRepository.cs" />
     <Compile Include="Services\Repositories\ObservableExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
     <Compile Include="Services\Repositories\RepositoryOperation.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
@@ -588,7 +590,6 @@
     <Compile Include="Event\IEventViewModel.cs" />
     <Compile Include="MasterEventList\Calling\CallingViewModel.cs" />
     <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
-    <Compile Include="MasterEventList\EventList\EventListViewModelBase.cs" />
     <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />

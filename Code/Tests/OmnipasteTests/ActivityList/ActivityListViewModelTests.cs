@@ -25,8 +25,6 @@
     {
         private ActivityListViewModel _subject;
 
-        private Mock<IEventsHandler> _mockEventsHandler;
-
         private Mock<IUpdaterService> _mockUpdateService;
 
         private Mock<IActivityViewModelFactory> _mockActivityViewModelFactory;
@@ -34,6 +32,10 @@
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
         private Mock<IClippingRepository> _mockClippingRepository;
+
+        private Mock<ICallRepository> _mockCallRepository;
+
+        private Mock<IMessageRepository> _mockMessageRepository;
 
         private TestScheduler _testScheduler;
 
@@ -44,14 +46,16 @@
             SchedulerProvider.Default = _testScheduler;
             SchedulerProvider.Dispatcher = _testScheduler;
 
-            _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock};
+            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockUpdateService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ActivityListViewModel(
                 _mockClippingRepository.Object,
-                _mockEventsHandler.Object,
+                _mockMessageRepository.Object,
+                _mockCallRepository.Object,
                 _mockActivityViewModelFactory.Object,
                 _mockUpdateService.Object);
         }
@@ -77,7 +81,8 @@
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
             var viewModel = new ActivityListViewModel(
                 _mockClippingRepository.Object,
-                _mockEventsHandler.Object,
+                _mockMessageRepository.Object,
+                _mockCallRepository.Object,
                 _mockActivityViewModelFactory.Object,
                 _mockUpdateService.Object);
             viewModel.Start();
@@ -101,7 +106,8 @@
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
             var viewModel = new ActivityListViewModel(
                 _mockClippingRepository.Object,
-                _mockEventsHandler.Object,
+                _mockMessageRepository.Object,
+                _mockCallRepository.Object,
                 _mockActivityViewModelFactory.Object,
                 _mockUpdateService.Object);
             viewModel.Start();
@@ -112,18 +118,18 @@
         }
 
         [Test]
-        public void ReceivingAnEvent_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
+        public void ReceivingAnCall_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
         {
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event())),
-                    new Recorded<Notification<Event>>(200, Notification.CreateOnCompleted<Event>()));
-            _mockEventsHandler.Setup(x => x.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Callback<IObserver<Event>>(observer => eventObservable.Subscribe(observer));
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
+            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
             var viewModel = new ActivityListViewModel(
                 _mockClippingRepository.Object,
-                _mockEventsHandler.Object,
+                _mockMessageRepository.Object,
+                _mockCallRepository.Object,
                 _mockActivityViewModelFactory.Object,
                 _mockUpdateService.Object);
             viewModel.Start();
@@ -144,7 +150,8 @@
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
             var viewModel = new ActivityListViewModel(
                 _mockClippingRepository.Object,
-                _mockEventsHandler.Object,
+                _mockMessageRepository.Object,
+                _mockCallRepository.Object,
                 _mockActivityViewModelFactory.Object,
                 _mockUpdateService.Object);
             viewModel.Start();
@@ -232,8 +239,8 @@
         public void ChangingFilterText_Always_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingCallEvent}));
-            var activityPresenter2 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent}));
+            var activityPresenter1 = new ActivityPresenter(new Activity(new Call()));
+            var activityPresenter2 = new ActivityPresenter(new Activity(new Message()));
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });

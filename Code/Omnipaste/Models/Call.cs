@@ -21,6 +21,8 @@
             Time = DateTime.UtcNow;
             ContactInfo = new EventContactInfo(@event);
             Source = SourceType.Remote;
+            UniqueId = @event.UniqueId;
+            Content = @event.Content;
         }
 
         #endregion
@@ -32,6 +34,10 @@
         public SourceType Source { get; set; }
 
         public DateTime Time { get; set; }
+
+        public string Content { get; set; }
+
+        public string UniqueId { get; set; }
 
         #endregion
     }

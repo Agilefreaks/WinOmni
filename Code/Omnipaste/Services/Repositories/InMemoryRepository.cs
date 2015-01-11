@@ -44,7 +44,12 @@ namespace Omnipaste.Services.Repositories
 
         public IObservable<IEnumerable<T>> GetAll()
         {
-            return Observable.Start(() => _items.ToList(), SchedulerProvider.Default);
+            return GetAll(_ => true);
+        }
+
+        public IObservable<IEnumerable<T>> GetAll(Func<T, bool> include)
+        {
+            return Observable.Start(() => _items.Where(include).ToList(), SchedulerProvider.Default);
         }
 
         public IObservable<RepositoryOperation<T>> Delete(object id)

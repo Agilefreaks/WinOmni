@@ -2,11 +2,10 @@
 {
     using System;
     using System.Globalization;
+    using System.Threading;
     using Clipboard.Models;
-    using Events.Models;
     using FluentAssertions;
     using NUnit.Framework;
-    using NUnit.Framework.Constraints;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Properties;
@@ -81,42 +80,66 @@
         }
 
         [Test]
-        public void CtorWithEvent_EventHasTypeIncomingCall_SetsTypeToCall()
+        public void CtorWithCall_Always_SetsTypeToCall()
         {
-            var @event = new Event { Type = EventTypeEnum.IncomingCallEvent };
+            var call = new Call();
 
-            new Activity(@event).Type.Should().Be(ActivityTypeEnum.Call);
+            new Activity(call).Type.Should().Be(ActivityTypeEnum.Call);
         }
 
         [Test]
-        public void CtorWithEvent_Always_SetsDeviceToCloud()
+        public void CtorWithCall_Always_SetsDeviceToCloud()
         {
-            new Activity(new Event()).Device.Should().Be(Resources.FromCloud);
+            new Activity(new Call()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
-        public void CtorWithEvent_TypeIsCall_SetsContentAnEmptyString()
+        public void CtorWithCall_TypeIsCall_SetsContentAnEmptyString()
         {
-            new Activity(new Event { Type = EventTypeEnum.IncomingCallEvent, ContactName = "Some Contact" }).Content
+            new Activity(new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Contact" } }).Content
                 .Should().Be(string.Empty);
         }
 
         [Test]
-        public void CtorWithEvent_Always_SetsContactInfo()
+        public void CtorWithCall_Always_SetsContactInfo()
         {
-            var @event = new Event { ContactName = "Some Name", PhoneNumber = "07xxxxxx" };
+            var call = new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
 
-            ContactInfo contactInfo = new Activity(@event).ExtraData.ContactInfo;
+            ContactInfo contactInfo = new Activity(call).ExtraData.ContactInfo;
 
             contactInfo.Name.Should().Be("Some Name");
             contactInfo.Phone.Should().Be("07xxxxxx");
         }
 
         [Test]
-        public void CtorWithEvent_Always_SetsTheEventUniqueIdInExtraData()
+        public void CtorWithCall_Always_SetsTheEventUniqueIdInExtraData()
         {
             const string Id = "42";
-            (new Activity(new Event { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new Activity(new Call { UniqueId = Id }).SourceId).Should().Be(Id);
+        }
+
+        [Test]
+        public void CtorWithMessage_Always_SetsContactInfo()
+        {
+            var message = new Message { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
+
+            ContactInfo contactInfo = new Activity(message).ExtraData.ContactInfo;
+
+            contactInfo.Name.Should().Be("Some Name");
+            contactInfo.Phone.Should().Be("07xxxxxx");
+        }
+
+        [Test]
+        public void CtorWithMessage_Always_SetsTheEventUniqueIdInExtraData()
+        {
+            const string Id = "42";
+            (new Activity(new Message { UniqueId = Id }).SourceId).Should().Be(Id);
+        }
+
+        [Test]
+        public void CtorWithMessage_Always_SetsDeviceToCloud()
+        {
+            new Activity(new Message()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
@@ -140,7 +163,7 @@
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheTypeOfTheActivity()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
             _subject.Type = ActivityTypeEnum.Call;
 
             _subject.ToString().Should().Contain("Apel de la:");

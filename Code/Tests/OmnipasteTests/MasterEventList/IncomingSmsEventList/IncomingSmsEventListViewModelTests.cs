@@ -1,10 +1,6 @@
 ﻿namespace OmnipasteTests.MasterEventList.IncomingSmsEventList
 {
-    using System;
-    using System.Linq;
     using System.Reactive;
-    using Events.Handlers;
-    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -14,6 +10,8 @@
     using OmniCommon.Helpers;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.IncomingSmsEventList;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class IncomingSmsEventListViewModelTests
@@ -22,49 +20,61 @@
 
         private IncomingSmsEventListViewModel _subject;
 
-        private Mock<IEventsHandler> _mockEventsHandler;
-
         private TestScheduler _testScheduler;
 
-        private ITestableObservable<Event> _testableIncomingEventsObservable;
+        private Mock<IMessageRepository>  _mockMessageRepository;
 
         [SetUp]
         public void SetUp()
         {
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
+            
             _kernel = new MoqMockingKernel();
-
-            SetupTestScheduler();
-
-            _mockEventsHandler = _kernel.GetMock<IEventsHandler>();
+            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _kernel.Bind<IEventViewModel>().To<EventViewModel>();
-            _mockEventsHandler
-                .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Callback<IObserver<Event>>(o => _testableIncomingEventsObservable.Subscribe(o));
-            _kernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
+            _kernel.Bind<IMessageRepository>().ToConstant(_mockMessageRepository.Object);
 
-            _subject = _kernel.Get<IncomingSmsEventListViewModel>();
+            _subject = new IncomingSmsEventListViewModel(_mockMessageRepository.Object, _kernel);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
+            SchedulerProvider.Dispatcher = null;
         }
 
         [Test]
-        public void IncomingSmsEvent_IsAddedToTheList()
+        public void OnMessageAdded_Always_AddedItemToList()
         {
+            var messageOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
+            _subject = new IncomingSmsEventListViewModel(_mockMessageRepository.Object, _kernel);
+
             _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Type.Should().Be(EventTypeEnum.IncomingSmsEvent);
         }
 
-        private void SetupTestScheduler()
+        [Test]
+        public void OnMessageRemoved_AfterPreviouslyAdded_RemovesItemFromList()
         {
-            _testScheduler = new TestScheduler();
+            var message = new Message();
+            var messageOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, message))),
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message)))
+                    );
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
+            _subject = new IncomingSmsEventListViewModel(_mockMessageRepository.Object, _kernel);
 
-            _testableIncomingEventsObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent })),
-                    new Recorded<Notification<Event>>(200, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingSmsEvent })));
+            _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
 
-            SchedulerProvider.Dispatcher = _testScheduler;
+            _subject.Items.Count.Should().Be(0);
         }
-
     }
 }

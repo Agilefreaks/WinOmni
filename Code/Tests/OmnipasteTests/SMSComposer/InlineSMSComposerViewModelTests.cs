@@ -10,7 +10,7 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
-    using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using Omnipaste.SMSComposer;
     using OmniUI.Models;
 
@@ -25,17 +25,17 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IMessageStore> _mockMessageStore;
+        private Mock<IMessageRepository> _mockMessageRepository;
 
         [SetUp]
         public void Setup()
         {
             _mockSMSMessageFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockDevices = new Mock<IDevices>();
-            _mockMessageStore = new Mock<IMessageStore>();
+            _mockMessageRepository = new Mock<IMessageRepository>();
             _subject = new InlineSMSComposerViewModel(_mockDevices.Object, _mockSMSMessageFactory.Object)
                            {
-                               MessageStore = _mockMessageStore.Object
+                               MessageRepository = _mockMessageRepository.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
@@ -91,7 +91,7 @@
             _subject.Send();
             _testScheduler.Start();
 
-            _mockMessageStore.Verify(x => x.AddMessage(message));
+            _mockMessageRepository.Verify(x => x.Save(message));
         }
     }
 }

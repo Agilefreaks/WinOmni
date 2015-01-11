@@ -8,7 +8,7 @@ namespace OmniUI.List
     using Caliburn.Micro;
     using Ninject;
 
-    public abstract class ListViewModelBase<TEntity, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
+    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                    IDisposable,
                                                                    IStartable
         where TViewModel : class
@@ -21,7 +21,7 @@ namespace OmniUI.List
 
         #region Fields
 
-        private readonly IDictionary<TEntity, TViewModel> _viewModelDictionary;
+        private readonly IDictionary<TModel, TViewModel> _viewModelDictionary;
 
         private readonly ListCollectionView _filteredItems;
 
@@ -34,7 +34,7 @@ namespace OmniUI.List
         protected ListViewModelBase()
         {
             Items.CollectionChanged += OnViewModelsCollectionChanged;
-            _viewModelDictionary = new Dictionary<TEntity, TViewModel>();
+            _viewModelDictionary = new Dictionary<TModel, TViewModel>();
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel) vm);
         }
@@ -92,14 +92,14 @@ namespace OmniUI.List
             return true;
         }
 
-        public void AddItem(TEntity entity)
+        public void AddItem(TModel model)
         {
-            var viewModel = CreateViewModel(entity);
-            _viewModelDictionary.Add(entity, viewModel);
+            var viewModel = CreateViewModel(model);
+            _viewModelDictionary.Add(model, viewModel);
             ActivateItem(viewModel);
         }
 
-        public void RemoveItem(TEntity entity)
+        public void RemoveItem(TModel entity)
         {
             var viewModel = _viewModelDictionary.ContainsKey(entity) ? _viewModelDictionary[entity] : null;
             if (viewModel == null)
@@ -123,7 +123,7 @@ namespace OmniUI.List
 
         #region Methods
 
-        protected abstract TViewModel CreateViewModel(TEntity entity);
+        protected abstract TViewModel CreateViewModel(TModel model);
 
         protected override TViewModel EnsureItem(TViewModel newItem)
         {

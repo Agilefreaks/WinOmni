@@ -64,9 +64,6 @@
             Kernel.Bind<IWorkspaceConductor>().ToMethod(context => context.Kernel.Get<IShellViewModel>());
 
             Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
-            Kernel.Bind<InMemoryStore>().ToSelf().InSingletonScope();
-            Kernel.Bind<IMessageStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
-            Kernel.Bind<ICallStore>().ToMethod(context => context.Kernel.Get<InMemoryStore>());
             Kernel.Bind<IUpdateManager>().ToConstant(new NAppUpdateManager());
         }
 
@@ -80,7 +77,8 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(SMSMessageFactory),
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
+                           typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(EventsWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };

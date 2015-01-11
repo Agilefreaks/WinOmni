@@ -10,7 +10,7 @@
     using Omnipaste.ActivityDetails.Conversation.Call;
     using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.Models;
 
@@ -27,9 +27,6 @@
         #endregion
 
         #region Public Properties
-
-        [Inject]
-        public ICallStore CallStore { get; set; }
 
         public ContactInfo ContactInfo
         {
@@ -52,7 +49,10 @@
         public IKernel Kernel { get; set; }
 
         [Inject]
-        public IMessageStore MessageStore { get; set; }
+        public IMessageRepository MessageRepository { get; set; }
+
+        [Inject]
+        public ICallRepository CallRepository { get; set; }
 
         #endregion
 
@@ -62,17 +62,28 @@
         {
             base.OnActivate();
 
-            MessageStore.GetRelatedMessages(ContactInfo)
-                .Select(CreateMessageViewModel)
-                .Concat(CallStore.GetRelatedCalls(ContactInfo).Select(CreateCallViewModel).Cast<IDetailsViewModel>())
-                .OrderBy(screen => ((IConversationItem)screen.Model).Time)
-                .ForEach(ActivateItem);
+            MessageRepository.GetByContact(ContactInfo)
+                .Select(messages => messages.Select(CreateMessageViewModel))
+                .Merge(
+                    CallRepository.GetByContact(ContactInfo)
+                        .Select(calls => calls.Select(CreateCallViewModel).Cast<IDetailsViewModel>()))
+                .Buffer(2)
+                .Subscribe(
+                    itemLists =>
+                        {
+                            itemLists.SelectMany(i => i.ToList())
+                                .OrderBy(vm => ((IConversationItem)vm.Model).Time)
+                                .ForEach(ActivateItem);
+                        });
+
             _messageSubscription =
-                MessageStore.MessageObservable.Where(message => message.ContactInfo.Phone == ContactInfo.Phone)
-                    .SubscribeAndHandleErrors(message => ActivateItem(CreateMessageViewModel(message)));
+                MessageRepository.OperationObservable.Saved()
+                    .ForContact(ContactInfo)
+                    .SubscribeAndHandleErrors(o => ActivateItem(CreateMessageViewModel(o.Item)));
             _callSubscription =
-                CallStore.CallObservable.Where(call => call.ContactInfo.Phone == ContactInfo.Phone)
-                    .SubscribeAndHandleErrors(call => ActivateItem(CreateCallViewModel(call)));
+                CallRepository.OperationObservable.Saved()
+                    .ForContact(ContactInfo)
+                    .SubscribeAndHandleErrors(o => ActivateItem(CreateCallViewModel(o.Item)));
         }
 
         protected override void OnDeactivate(bool close)

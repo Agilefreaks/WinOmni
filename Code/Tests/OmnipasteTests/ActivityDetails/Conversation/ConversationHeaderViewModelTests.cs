@@ -53,7 +53,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(@event));
+            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -66,7 +66,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(@event));
+            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
 
             _subject.Call();
             _subject.CancelCall();
@@ -80,7 +80,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(@event));
+            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
 
             _subject.Call();
             _subject.CancelCall();
@@ -93,7 +93,7 @@
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
             var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Activity(@event));
+            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
@@ -109,7 +109,7 @@
         public void Call_OnInitiated_ChangesStateToCalling()
         {
             var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Activity(@event));
+            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));

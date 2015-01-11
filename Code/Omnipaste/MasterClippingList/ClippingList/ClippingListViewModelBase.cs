@@ -71,10 +71,10 @@ namespace Omnipaste.MasterClippingList.ClippingList
 
         #region Methods
 
-        protected override IClippingViewModel CreateViewModel(ClippingModel clipping)
+        protected override IClippingViewModel CreateViewModel(ClippingModel model)
         {
             IClippingViewModel clippingViewModel = new ClippingViewModel();
-            clippingViewModel.Model = clipping;
+            clippingViewModel.Model = model;
 
             return clippingViewModel;
         }

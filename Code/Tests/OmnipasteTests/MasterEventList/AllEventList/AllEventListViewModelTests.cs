@@ -1,8 +1,6 @@
 ﻿namespace OmnipasteTests.MasterEventList.AllEventList
 {
-    using System;
-    using Events.Handlers;
-    using Events.Models;
+    using System.Reactive;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -12,8 +10,8 @@
     using OmniCommon.Helpers;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.AllEventList;
-    using System.Reactive;
-    using OmniUI.List;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class AllEventListViewModelTests
@@ -22,68 +20,87 @@
 
         private AllEventListViewModel _subject;
 
-        private Mock<IEventsHandler> _mockEventsHandler;
+        private Mock<ICallRepository> _mockCallRepository;
+
+        private Mock<IMessageRepository> _mockMessageRepository;
 
         private TestScheduler _testScheduler;
-
-        private ITestableObservable<Event> _testableIncomingEventsObservable;
 
         [SetUp]
         public void SetUp()
         {
-            _kernel = new MoqMockingKernel();
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
 
-            SetupTestScheduler();
-            
-            _mockEventsHandler = _kernel.GetMock<IEventsHandler>();
-            _mockEventsHandler
-                .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Callback<IObserver<Event>>(o => _testableIncomingEventsObservable.Subscribe(o));
-            _kernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
+            _kernel = new MoqMockingKernel();
+            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _kernel.Bind<ICallRepository>().ToConstant(_mockCallRepository.Object);
+            _kernel.Bind<IMessageRepository>().ToConstant(_mockMessageRepository.Object);
             _kernel.Bind<IEventViewModel>().To<EventViewModel>();
 
-            _subject = _kernel.Get<AllEventListViewModel>();
-        }
-
-        private void SetupTestScheduler()
-        {
-            _testScheduler = new TestScheduler();
-
-            
-            _testableIncomingEventsObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent })),
-                    new Recorded<Notification<Event>>(200, Notification.CreateOnNext(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingSmsEvent })));
-
-            SchedulerProvider.Dispatcher = _testScheduler;
+            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
         }
 
         [Test]
-        public void NewInstance_SubscribesToEventHandler()
+        public void OnCallSaved_Always_AddsItemToList()
         {
-            _mockEventsHandler.Verify(h => h.Subscribe(It.IsAny<IObserver<Event>>()));
-        }
+            var callOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))));
+            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
+            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
 
-        [Test]
-        public void IncomingEvents_NoMatterTheType_AreAddedToTheList()
-        {
             _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
 
-            _subject.Items.Count.Should().Be(2);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]
-        public void Status_WhenEventsListIsEmpty_StatusIsEmpty()
+        public void OnCallRemoved_AfterPreviouslyAdded_RemovesItemFromList()
         {
-            _subject.Status.Should().Be(ListViewModelStatusEnum.Empty);
-        }
+            var call = new Call();
+            var callOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, call))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Delete, call))));
+            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
+            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
 
-        [Test]
-        public void Status_WhenEventListIsNotEmpty_StatusIsNotEmpty()
-        {
             _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
 
-            _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
+            _subject.Items.Count.Should().Be(0);
+        }
+
+        [Test]
+        public void OnMessageSaved_Always_AddsItemToList()
+        {
+            var callOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
+            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+
+            _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.Items.Count.Should().Be(1);
+        }
+
+        [Test]
+        public void OnMessageRemoved_AfterPreviouslyAdded_RemovesItemFromList()
+        {
+            var message = new Message();
+            var callOperationObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, message))),
+                    new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message))));
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
+            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+
+            _testScheduler.Start();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.Items.Count.Should().Be(0);
         }
     }
 }

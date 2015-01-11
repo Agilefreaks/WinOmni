@@ -5,7 +5,6 @@
     using System.Dynamic;
     using System.Linq;
     using Clipboard.Models;
-    using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.Properties;
     using Omnipaste.Services;
@@ -48,14 +47,24 @@
             Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
         }
 
-        public Activity(Event @event)
+        public Activity(Call call)
             : this()
         {
-            SourceId = @event.UniqueId;
-            Content = @event.Content ?? string.Empty;
-            Type = @event.Type == EventTypeEnum.IncomingCallEvent ? ActivityTypeEnum.Call : ActivityTypeEnum.Message;
+            SourceId = call.UniqueId;
+            Content = call.Content ?? string.Empty;
+            Type = ActivityTypeEnum.Call;
             Device = Resources.FromCloud;
-            _extraData.ContactInfo = new EventContactInfo(@event);
+            _extraData.ContactInfo = call.ContactInfo;
+        }
+
+        public Activity(Message message)
+            : this()
+        {
+            SourceId = message.UniqueId;
+            Content = message.Content ?? string.Empty;
+            Type = ActivityTypeEnum.Message;
+            Device = Resources.FromCloud;
+            _extraData.ContactInfo = message.ContactInfo;
         }
 
         public Activity(UpdateInfo updateInfo)

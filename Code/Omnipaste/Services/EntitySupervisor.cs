@@ -5,6 +5,8 @@
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
+    using Events.Handlers;
+    using Events.Models;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -21,6 +23,15 @@
         [Inject]
         public IClippingRepository ClippingRepository { get; set; }
 
+        [Inject]
+        public IEventsHandler EventsHandler { get; set; }
+
+        [Inject]
+        public ICallRepository CallRepository { get; set; }
+
+        [Inject]
+        public IMessageRepository MessageRepository { get; set; }
+
         public EntitySupervisor()
         {
             _subscriptions = new List<IDisposable>();
@@ -34,6 +45,18 @@
                 ClipboardHandler.SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
+
+            _subscriptions.Add(
+                EventsHandler.Where(@event => @event.Type == EventTypeEnum.IncomingCallEvent)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(@event => CallRepository.Save(new Call(@event))));
+
+            _subscriptions.Add(
+                EventsHandler.Where(@event => @event.Type == EventTypeEnum.IncomingSmsEvent)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(@event => MessageRepository.Save(new Message(@event))));
         }
 
         public void Stop()

@@ -3,7 +3,6 @@ namespace Omnipaste.ActivityList
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using Events.Handlers;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
@@ -41,19 +40,20 @@ namespace Omnipaste.ActivityList
 
         public ActivityListViewModel(
             IClippingRepository clippingRepository,
-            IEventsHandler eventsHandler,
+            IMessageRepository messageRepository,
+            ICallRepository callRepository,
             IActivityViewModelFactory activityViewModelFactory,
             IUpdaterService updaterService)
         {
             _activityViewModelFactory = activityViewModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
 
-            _itemAddedSubscription = GetItemAddedObservable(clippingRepository, eventsHandler, updaterService)
+            _itemAddedSubscription = GetItemAddedObservable(clippingRepository, messageRepository, callRepository, updaterService)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(AddItem);
 
-            _itemRemovedSubscription = GetItemRemovedObservable(clippingRepository)
+            _itemRemovedSubscription = GetItemRemovedObservable(clippingRepository, messageRepository, callRepository)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(RemoveItem);
@@ -163,9 +163,9 @@ namespace Omnipaste.ActivityList
 
         #region Methods
 
-        protected override IActivityViewModel CreateViewModel(ActivityPresenter activityPresenter)
+        protected override IActivityViewModel CreateViewModel(ActivityPresenter model)
         {
-            return _activityViewModelFactory.Create(activityPresenter);
+            return _activityViewModelFactory.Create(model);
         }
 
         protected override bool CanShow(IActivityViewModel viewModel)
@@ -201,20 +201,27 @@ namespace Omnipaste.ActivityList
 
         private IObservable<ActivityPresenter> GetItemAddedObservable(
             IClippingRepository clippingRepository,
-            IEventsHandler eventsHandler,
+            IMessageRepository messageRepository,
+            ICallRepository callRepository,
             IUpdaterService updaterService)
         {
             return
                 clippingRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item)))
-                    .Merge(eventsHandler.Select(@event => new ActivityPresenter(new Activity(@event))))
+                    .Merge(messageRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item))))
+                    .Merge(callRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item))))
                     .Merge(updaterService.UpdateObservable.Select(updateInfo => new ActivityPresenter(new Activity(updateInfo))));
         }
 
-        private IObservable<ActivityPresenter> GetItemRemovedObservable(IClippingRepository clippingRepository)
+        private IObservable<ActivityPresenter> GetItemRemovedObservable(
+            IClippingRepository clippingRepository,
+            IMessageRepository messageRepository,
+            ICallRepository callRepository)
         {
             return
                 clippingRepository.OperationObservable.Deleted()
                     .Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
+                    .Merge(messageRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
+                    .Merge(callRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
                     .Where(activity => activity != null);
         }
 

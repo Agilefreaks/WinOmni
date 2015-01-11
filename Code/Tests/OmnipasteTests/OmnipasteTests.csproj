@@ -168,7 +168,6 @@
     <Compile Include="Services\Commands\CommandServiceTests.cs" />
     <Compile Include="Services\ConnectivitySupervisorTests.cs" />
     <Compile Include="Services\EntitySupervisorTests.cs" />
-    <Compile Include="Services\InMemoryStoreTests.cs" />
     <Compile Include="Services\Monitors\Power\PowerMonitorTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AndroidInstallGuideTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfigurationTests.cs" />
