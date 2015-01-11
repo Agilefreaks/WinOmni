@@ -11,6 +11,8 @@
 
         IObservable<RepositoryOperation<T>> Delete(object id);
 
+        IObservable<T> Get(object id);
+
         IObservable<IEnumerable<T>> GetAll();
 
         IObservable<IEnumerable<T>> GetAll(Func<T, bool> include);

@@ -33,11 +33,27 @@ namespace Omnipaste.Services.Repositories
             return Observable.Start(
                 () =>
                     {
-                        _items.Add(item);
-                        var result = new RepositoryOperation<T>(RepositoryMethodEnum.Save, item);
-                        _subject.OnNext(result);
+                        lock (_items)
+                        {
+                            _items.Add(item);
+                            var result = new RepositoryOperation<T>(RepositoryMethodEnum.Save, item);
+                            _subject.OnNext(result);
 
-                        return result;
+                            return result;
+                        }
+                    },
+                SchedulerProvider.Default);
+        }
+
+        public IObservable<T> Get(object id)
+        {
+            return Observable.Start(
+                () =>
+                    {
+                        lock (_items)
+                        {
+                            return _items.FirstOrDefault(item => IsMatch(item, id));
+                        }
                     },
                 SchedulerProvider.Default);
         }
@@ -49,7 +65,18 @@ namespace Omnipaste.Services.Repositories
 
         public IObservable<IEnumerable<T>> GetAll(Func<T, bool> include)
         {
-            return Observable.Start(() => _items.Where(include).ToList(), SchedulerProvider.Default);
+            lock (_items)
+            {
+                return Observable.Start(
+                    () =>
+                        {
+                            lock (_items)
+                            {
+                                return _items.Where(include).ToList();
+                            }
+                        },
+                    SchedulerProvider.Default);
+            }
         }
 
         public IObservable<RepositoryOperation<T>> Delete(object id)
@@ -57,17 +84,21 @@ namespace Omnipaste.Services.Repositories
             return Observable.Start(
                 () =>
                     {
-                        var targetItem = _items.FirstOrDefault(item => IsMatch(item, id));
-                        if (targetItem == null)
+                        lock (_items)
                         {
-                            throw new InstanceNotFoundException();
+                            var targetItem = _items.FirstOrDefault(item => IsMatch(item, id));
+                            if (targetItem == null)
+                            {
+                                throw new InstanceNotFoundException();
+                            }
+
+                            _items.Remove(targetItem);
+                            var result = new RepositoryOperation<T>(RepositoryMethodEnum.Delete, targetItem);
+                            _subject.OnNext(result);
+
+                            return result;
                         }
 
-                        _items.Remove(targetItem);
-                        var result = new RepositoryOperation<T>(RepositoryMethodEnum.Delete, targetItem);
-                        _subject.OnNext(result);
-
-                        return result;
                     },
                 SchedulerProvider.Default);
         }
