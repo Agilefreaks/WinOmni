@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
@@ -12,17 +11,18 @@
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
+    using OmniUI.List;
     using OmniUI.Models;
 
-    public class ConversationContentViewModel : Conductor<IScreen>.Collection.AllActive, IConversationContentViewModel
+    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IDetailsViewModel>, IConversationContentViewModel
     {
         #region Fields
 
-        private IDisposable _callSubscription;
+        private IDisposable _itemRemovedObservable;
 
         private ContactInfo _contactInfo;
 
-        private IDisposable _messageSubscription;
+        private IDisposable _itemAddedObservable;
 
         #endregion
 
@@ -63,60 +63,90 @@
             base.OnActivate();
 
             MessageRepository.GetByContact(ContactInfo)
-                .Select(messages => messages.Select(CreateMessageViewModel))
-                .Merge(
-                    CallRepository.GetByContact(ContactInfo)
-                        .Select(calls => calls.Select(CreateCallViewModel).Cast<IDetailsViewModel>()))
+                .Merge(CallRepository.GetByContact(ContactInfo).Select(i => i.Cast<IConversationItem>()))
                 .Buffer(2)
                 .Subscribe(
                     itemLists =>
                         {
                             itemLists.SelectMany(i => i.ToList())
-                                .OrderBy(vm => ((IConversationItem)vm.Model).Time)
-                                .ForEach(ActivateItem);
+                                .OrderBy(conversationItem => conversationItem.Time)
+                                .ForEach(AddItem);
                         });
 
-            _messageSubscription =
+            DisposeItemAddedObservable();
+            _itemAddedObservable = GetItemAddedObservable().SubscribeAndHandleErrors(AddItem);
+            
+            DisposeItemRemovedObservable();
+            _itemRemovedObservable = GetItemRemovedObservable().SubscribeAndHandleErrors(RemoveItem);
+        }
+
+        private IObservable<IConversationItem> GetItemAddedObservable()
+        {
+            return
                 MessageRepository.OperationObservable.Saved()
                     .ForContact(ContactInfo)
-                    .SubscribeAndHandleErrors(o => ActivateItem(CreateMessageViewModel(o.Item)));
-            _callSubscription =
-                CallRepository.OperationObservable.Saved()
+                    .Select(o => o.Item)
+                    .Merge(
+                        CallRepository.OperationObservable.Saved()
+                            .ForContact(ContactInfo)
+                            .Select(o => o.Item)
+                            .Cast<IConversationItem>());
+        }
+
+        private IObservable<IConversationItem> GetItemRemovedObservable()
+        {
+            return
+                MessageRepository.OperationObservable.Deleted()
                     .ForContact(ContactInfo)
-                    .SubscribeAndHandleErrors(o => ActivateItem(CreateCallViewModel(o.Item)));
+                    .Select(o => o.Item)
+                    .Merge(
+                        CallRepository.OperationObservable.Deleted()
+                            .ForContact(ContactInfo)
+                            .Select(o => o.Item)
+                            .Cast<IConversationItem>());
         }
 
         protected override void OnDeactivate(bool close)
         {
-            if (_messageSubscription != null)
-            {
-                _messageSubscription.Dispose();
-                _messageSubscription = null;
-            }
-
-            if (_callSubscription != null)
-            {
-                _callSubscription.Dispose();
-                _callSubscription = null;
-            }
+            DisposeItemAddedObservable();
+            DisposeItemRemovedObservable();
+            Items.ToList().Select(vm => vm.Model as IConversationItem).Where(model => model != null).ForEach(RemoveItem);
 
             base.OnDeactivate(true);
         }
 
-        private ICallViewModel CreateCallViewModel(Models.Call call)
+        protected override IDetailsViewModel CreateViewModel(IConversationItem model)
         {
-            var viewModel = Kernel.Get<ICallViewModel>();
-            viewModel.Model = call;
+            IDetailsViewModel result;
+            if (model is Models.Call)
+            {
+                result = Kernel.Get<ICallViewModel>();
+            }
+            else
+            {
+                result = Kernel.Get<IMessageViewModel>();
+            }
+            result.Model = model;
 
-            return viewModel;
+            return result;
         }
 
-        private IMessageViewModel CreateMessageViewModel(Models.Message message)
+        private void DisposeItemRemovedObservable()
         {
-            var viewModel = Kernel.Get<IMessageViewModel>();
-            viewModel.Model = message;
+            if (_itemRemovedObservable != null)
+            {
+                _itemRemovedObservable.Dispose();
+                _itemRemovedObservable = null;
+            }
+        }
 
-            return viewModel;
+        private void DisposeItemAddedObservable()
+        {
+            if (_itemAddedObservable != null)
+            {
+                _itemAddedObservable.Dispose();
+                _itemAddedObservable = null;
+            }
         }
 
         #endregion

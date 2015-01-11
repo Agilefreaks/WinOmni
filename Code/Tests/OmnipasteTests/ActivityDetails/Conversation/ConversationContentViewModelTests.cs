@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
+    using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -16,13 +17,12 @@
     using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Details;
     using OmniUI.Models;
 
     [TestFixture]
     public class ConversationContentViewModelTests
     {
-        private IConversationContentViewModel _subject;
+        private ConversationContentViewModel _subject;
 
         private Mock<IMessageRepository> _mockMessageRepository;
 
@@ -37,9 +37,8 @@
             SchedulerProvider.Default = _testScheduler;
 
             var mockingKernel = new MoqMockingKernel();
-            mockingKernel.Bind<ICallViewModel>().ToMethod(context => GetMockDetailsViewModel<ICallViewModel, Call>());
-            mockingKernel.Bind<IMessageViewModel>()
-                .ToMethod(context => GetMockDetailsViewModel<IMessageViewModel, Message>());
+            mockingKernel.Bind<ICallViewModel>().ToMethod(context => CreateMock<ICallViewModel>());
+            mockingKernel.Bind<IMessageViewModel>().ToMethod(context => CreateMock<IMessageViewModel>());
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ConversationContentViewModel
@@ -73,11 +72,10 @@
             _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
             _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
 
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            var children = _subject.GetChildren();
-            calls.All(call => children.Any(child => ((IDetailsViewModel)child).Model == call)).Should().BeTrue();
+            _subject.Items.Count().Should().Be(2);
         }
 
         [Test]
@@ -90,12 +88,11 @@
                 new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, callFromContact))));
             _mockCallRepository.Setup(x => x.OperationObservable).Returns(callObservable);
 
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            var children = _subject.GetChildren().ToList();
+            var children = _subject.Items.ToList();
             children.Count().Should().Be(1);
-            ((ICallViewModel)children.First()).Model.Should().Be(callFromContact);
         }
 
         [Test]
@@ -115,11 +112,10 @@
             _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
             _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
 
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            var children = _subject.GetChildren();
-            messages.All(call => children.Any(child => ((IDetailsViewModel)child).Model == call)).Should().BeTrue();
+            _subject.Items.Count().Should().Be(2);
         }
 
         [Test]
@@ -132,12 +128,11 @@
                 new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, messageFromContact))));
             _mockMessageRepository.Setup(x => x.OperationObservable).Returns(messageObservable);
 
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            var children = _subject.GetChildren().ToList();
+            var children = _subject.Items.ToList();
             children.Count().Should().Be(1);
-            ((IMessageViewModel)children.First()).Model.Should().Be(messageFromContact);
         }
 
         [Test]
@@ -154,14 +149,9 @@
             _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>()))
                 .Returns(Observable.Return(new List<Message> { message1, message2 }));
 
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
 
-            var screens = _subject.GetChildren().Cast<IDetailsViewModel>().ToList();
-            screens.Count.Should().Be(4);
-            screens[0].Model.Should().Be(call1);
-            screens[1].Model.Should().Be(message1);
-            screens[2].Model.Should().Be(call2);
-            screens[3].Model.Should().Be(message2);
+            _subject.Items.Count().Should().Be(4);
         }
 
         [Test]
@@ -181,23 +171,21 @@
             _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
             _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
 
-            _testScheduler.Start();
-            _subject.Activate();
+            ((IActivate)_subject).Activate();
             _testScheduler.AdvanceBy(150);
-            _subject.Deactivate(false);
-            _subject.Activate();
+            ((IDeactivate)_subject).Deactivate(false);
+            ((IActivate)_subject).Activate();
             _testScheduler.AdvanceBy(150);
 
-            _subject.GetChildren().Count().Should().Be(2);
+            _subject.Items.Count().Should().Be(2);
         }
 
-        private static TViewModel GetMockDetailsViewModel<TViewModel, TModel>()
-            where TViewModel : class, IDetailsViewModel<TModel>
+        private static TViewModel CreateMock<TViewModel>()
+            where TViewModel : class
         {
-            var callViewModel = new Mock<TViewModel>();
-            callViewModel.SetupAllProperties();
-            callViewModel.As<IDetailsViewModel>().SetupGet(x => x.Model).Returns(() => callViewModel.Object.Model);
-            return callViewModel.Object;
+            var mock = new Mock<TViewModel> { DefaultValue = DefaultValue.Mock };
+            mock.SetupAllProperties();
+            return mock.Object;
         }
     }
 }
