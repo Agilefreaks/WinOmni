@@ -2,6 +2,7 @@
 {
     using System;
     using Events.Models;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using OmniUI.Models;
 
@@ -11,14 +12,14 @@
 
         public Call()
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Source = SourceType.Local;
         }
 
         public Call(Event @event)
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new EventContactInfo(@event);
             Source = SourceType.Remote;
             UniqueId = @event.UniqueId;

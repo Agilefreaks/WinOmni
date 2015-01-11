@@ -28,7 +28,6 @@
         public Activity()
         {
             Content = string.Empty;
-            Time = TimeHelper.UtcNow;
             _extraData = new ExpandoObject();
         }
 
@@ -42,7 +41,8 @@
             : this()
         {
             SourceId = clipping.UniqueId;
-             Content = clipping.Content;
+            Time = clipping.Time;
+            Content = clipping.Content;
             Type = ActivityTypeEnum.Clipping;
             Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
         }
@@ -51,6 +51,7 @@
             : this()
         {
             SourceId = call.UniqueId;
+            Time = call.Time;
             Content = call.Content ?? string.Empty;
             Type = ActivityTypeEnum.Call;
             Device = Resources.FromCloud;
@@ -61,6 +62,7 @@
             : this()
         {
             SourceId = message.UniqueId;
+            Time = message.Time;
             Content = message.Content ?? string.Empty;
             Type = ActivityTypeEnum.Message;
             Device = Resources.FromCloud;
@@ -71,6 +73,7 @@
             : this()
         {
             SourceId = ActivityTypeEnum.Version.ToString();
+            Time = TimeHelper.UtcNow;
             Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
             Type = ActivityTypeEnum.Version;
             _extraData.UpdateInfo = updateInfo;

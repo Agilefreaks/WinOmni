@@ -2,6 +2,7 @@
 {
     using System;
     using Events.Models;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using OmniUI.Models;
 
@@ -11,7 +12,7 @@
 
         public Message()
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Content = string.Empty;
             Source = SourceType.Local;
@@ -19,7 +20,7 @@
 
         public Message(Event @event)
         {
-            Time = DateTime.UtcNow;
+            Time = TimeHelper.UtcNow;
             ContactInfo = new EventContactInfo(@event);
             Content = @event.Content;
             Source = SourceType.Remote;
