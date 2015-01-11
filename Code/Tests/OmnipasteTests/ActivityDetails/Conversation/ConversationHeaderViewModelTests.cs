@@ -1,6 +1,8 @@
 ﻿namespace OmnipasteTests.ActivityDetails.Conversation
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive;
     using Events.Models;
     using FluentAssertions;
@@ -13,6 +15,9 @@
     using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Repositories;
+    using OmniUI.Models;
+    using OmniUI.Presenters;
 
     [TestFixture]
     public class ConversationHeaderViewModelTests
@@ -21,6 +26,10 @@
 
         private Mock<IDevices> _mockDevices;
 
+        private Mock<ICallRepository> _mockCallRepository;
+
+        private Mock<IMessageRepository> _mockMessageRepository;
+
         private TestScheduler _testScheduler;
 
         [SetUp]
@@ -28,16 +37,26 @@
         {
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
 
             _mockDevices = new Mock<IDevices> { DefaultValue = DefaultValue.Mock };
+            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
 
-            _subject = new ConversationHeaderViewModel { Devices = _mockDevices.Object };
+            _subject = new ConversationHeaderViewModel
+                           {
+                               Devices = _mockDevices.Object,
+                               CallRepository = _mockCallRepository.Object,
+                               MessageRepository = _mockMessageRepository.Object,
+                               ContactInfo = new ContactInfoPresenter(new ContactInfo())
+                           };
         }
 
         [TearDown]
         public void TearDown()
         {
             SchedulerProvider.Default = null;
+            SchedulerProvider.Dispatcher = null;
         }
 
         [Test]
@@ -130,11 +149,73 @@
         }
 
         [Test]
+        public void Delete_WhenCallsExistForContact_DeletesEachCall()
+        {
+            var call = new Call { UniqueId = "42" };
+            var getCallObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(getCallObservable);
+
+            _subject.Delete();
+            _testScheduler.AdvanceBy(1000);
+
+            _mockCallRepository.Verify(m => m.Delete(call.UniqueId));
+        }
+
+        [Test]
+        public void Delete_WhenMessagesExistForContact_DeletesEachMessage()
+        {
+            var message = new Message { UniqueId = "42" };
+            var getMessageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(getMessageObservable);
+
+            _subject.Delete();
+            _testScheduler.AdvanceBy(1000);
+
+            _mockMessageRepository.Verify(m => m.Delete(message.UniqueId));
+        }
+
+        [Test]
         public void UndoDelete_Always_ChangesStateToNormal()
         {
             _subject.UndoDelete();
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+        }
+
+        [Test]
+        public void UndoDelete_WhenCallsWereDeleted_RestoresCalls()
+        {
+            var call = new Call { UniqueId = "42" };
+            var getCallObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(getCallObservable);
+            _subject.Delete();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.UndoDelete();
+
+            _mockCallRepository.Verify(m => m.Save(call));
+        }
+
+        [Test]
+        public void UndoDelete_WhenMessagesWereDeleted_RestoresMessages()
+        {
+            var message = new Message { UniqueId = "42" };
+            var getMessageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(getMessageObservable);
+            _subject.Delete();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.UndoDelete();
+
+            _mockMessageRepository.Verify(m => m.Save(message));
         }
     }
 }

@@ -10,8 +10,6 @@
 
         private readonly Activity _activity;
 
-        private bool _markedForDeletion;
-
         #endregion
 
         #region Constructors and Destructors
@@ -59,23 +57,6 @@
             get
             {
                 return _activity.ExtraData;
-            }
-        }
-
-        public bool MarkedForDeletion
-        {
-            get
-            {
-                return _markedForDeletion;
-            }
-            set
-            {
-                if (value.Equals(_markedForDeletion))
-                {
-                    return;
-                }
-                _markedForDeletion = value;
-                NotifyOfPropertyChange();
             }
         }
 

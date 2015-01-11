@@ -36,17 +36,6 @@
         }
 
         [Test]
-        public void Ctor_Always_SetsTimeToCurrentTime()
-        {
-            var currentTime = DateTime.Now;
-            TimeHelper.UtcNow = currentTime;
-
-            var activity = new Activity();
-
-            activity.Time.Should().Be(currentTime);
-        }
-
-        [Test]
         public void CtorWithClipping_Always_SetsTypeToClipping()
         {
             new Activity(new ClippingModel()).Type.Should().Be(ActivityTypeEnum.Clipping);
