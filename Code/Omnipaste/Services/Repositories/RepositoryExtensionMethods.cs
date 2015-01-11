@@ -7,7 +7,7 @@
 
     public static class RepositoryExtensionMethods
     {
-        public static IObservable<IEnumerable<T>> GetByContact<T>(this IRepository<T> repository, ContactInfo contactInfo)
+        public static IObservable<IEnumerable<T>> GetByContact<T>(this IRepository<T> repository, IContactInfo contactInfo)
             where T : IConversationItem
         {
             return repository.GetAll(item => item.ContactInfo.Phone == contactInfo.Phone);
