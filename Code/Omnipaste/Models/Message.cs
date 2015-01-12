@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
     using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;

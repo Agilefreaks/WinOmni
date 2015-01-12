@@ -35,7 +35,7 @@
         {
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
-
+            SchedulerProvider.Dispatcher = _testScheduler;
             var mockingKernel = new MoqMockingKernel();
             mockingKernel.Bind<ICallViewModel>().ToMethod(context => CreateMock<ICallViewModel>());
             mockingKernel.Bind<IMessageViewModel>().ToMethod(context => CreateMock<IMessageViewModel>());

@@ -165,9 +165,10 @@
         [Test]
         public void ReceivingAMessage_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
+            var message = new Message{ Source = SourceType.Remote};
             var messageObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, new Message()))),
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, message))),
                     new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Message>>()));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageObservable);
             ((IActivate)_subject).Activate();
@@ -181,8 +182,8 @@
         public void UpdatingAMessage_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewMessage()
         {
             const string UniqueId = "42";
-            var message = new Message { UniqueId = UniqueId };
-            var modifiedMessage = new Message { UniqueId = UniqueId, Content = "Test" };
+            var message = new Message { UniqueId = UniqueId, Source = SourceType.Remote };
+            var modifiedMessage = new Message { UniqueId = UniqueId, Content = "Test", Source = SourceType.Remote };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, message))),

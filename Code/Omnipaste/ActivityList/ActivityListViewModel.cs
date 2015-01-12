@@ -210,8 +210,11 @@ namespace Omnipaste.ActivityList
         protected override IObservable<ActivityPresenter> GetItemAddedObservable()
         {
             return
-                _clippingRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item))
-                    .Merge(_messageRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                _clippingRepository.OperationObservable.Created()
+                    .Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Created()
+                            .Where(operation => operation.Item.Source == SourceType.Remote)
+                            .Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_callRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
         }
