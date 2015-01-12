@@ -6,8 +6,8 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <DockPanel LastChildFill="True">
+
+    <DockPanel LastChildFill="True" Visibility="{Binding Path=Model.IsDeleted, Mode=OneWay, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
         <ContentControl cal:View.Model="{Binding Path=SMSComposer}" DockPanel.Dock="Bottom"/>
         <ContentControl cal:View.Model="{Binding Path=ConversationContentViewModel}" Margin="0,0,0,10"/>
     </DockPanel>

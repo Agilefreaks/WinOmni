@@ -121,6 +121,7 @@
 
         public void Delete()
         {
+            Model.IsDeleted = true;
             UpdateConversationItems(CallRepository, item => item.IsDeleted = true);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
             State = ConversationHeaderStateEnum.Deleted;
@@ -128,6 +129,7 @@
 
         public void UndoDelete()
         {
+            Model.IsDeleted = false;
             UpdateConversationItems(CallRepository, item => item.IsDeleted = false);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
             State = ConversationHeaderStateEnum.Normal;

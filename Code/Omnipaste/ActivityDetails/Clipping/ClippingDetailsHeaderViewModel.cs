@@ -41,14 +41,14 @@
 
         public void DeleteClipping()
         {
-            Model.BackingModel.IsDeleted = true;
+            Model.IsDeleted = true;
             ClippingRepository.Save(Model.BackingModel as ClippingModel).RunToCompletion();
             State = ClippingDetailsHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            Model.BackingModel.IsDeleted = false;
+            Model.IsDeleted = false;
             ClippingRepository.Save(Model.BackingModel as ClippingModel).RunToCompletion();
             State = ClippingDetailsHeaderStateEnum.Normal;
         }
@@ -61,7 +61,7 @@
 
         protected override void OnDeactivate(bool close)
         {
-            if (Model.BackingModel.IsDeleted)
+            if (Model.IsDeleted)
             {
                 ClippingRepository.Delete(Model.SourceId).RunToCompletion();
             }
