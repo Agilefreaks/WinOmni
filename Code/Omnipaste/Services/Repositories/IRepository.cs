@@ -15,6 +15,6 @@
 
         IObservable<IEnumerable<T>> GetAll();
 
-        IObservable<IEnumerable<T>> GetAll(Func<T, bool> include);
+        IObservable<IEnumerable<T>> GetAll(Func<T, bool> filter);
     }
 }
