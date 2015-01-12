@@ -2,18 +2,18 @@
 {
     using Caliburn.Micro;
 
-    public abstract class DetailsViewModelBase<TEntity> : Screen, IDetailsViewModel<TEntity>
-        where TEntity : class
+    public abstract class DetailsViewModelBase<TModel> : Screen, IDetailsViewModel<TModel>
+        where TModel : class
     {
         #region Fields
 
-        private TEntity _model;
+        private TModel _model;
 
         #endregion
 
         #region Public Properties
 
-        public virtual TEntity Model
+        public virtual TModel Model
         {
             get
             {
@@ -42,7 +42,7 @@
             }
             set
             {
-                Model = value as TEntity;
+                Model = value as TModel;
             }
         }
 

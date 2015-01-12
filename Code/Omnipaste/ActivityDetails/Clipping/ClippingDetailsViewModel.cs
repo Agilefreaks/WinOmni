@@ -16,16 +16,9 @@
 
         protected override void OnDeactivate(bool close)
         {
-            if (((IClippingDetailsHeaderViewModel)HeaderViewModel).State == ClippingDetailsHeaderStateEnum.Deleted)
+            if (((IClippingDetailsHeaderViewModel)HeaderViewModel).State == ClippingDetailsHeaderStateEnum.Deleted && !close)
             {
-                if (!close)
-                {
-                    var parentConductor = Parent as IConductor;
-                    if (parentConductor != null)
-                    {
-                        parentConductor.DeactivateItem(this, true);
-                    }
-                }
+                ((IConductor)Parent).DeactivateItem(this, true);
             }
             else
             {

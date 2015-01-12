@@ -20,22 +20,14 @@
 
         protected override void OnDeactivate(bool close)
         {
-            if (((IConversationHeaderViewModel)HeaderViewModel).State == ConversationHeaderStateEnum.Deleted)
+            if (((IConversationHeaderViewModel)HeaderViewModel).State == ConversationHeaderStateEnum.Deleted && !close)
             {
-                if (!close)
-                {
-                    var parentConductor = Parent as IConductor;
-                    if (parentConductor != null)
-                    {
-                        parentConductor.DeactivateItem(this, true);
-                    }
-                }
+                ((IConductor)Parent).DeactivateItem(this, true);
             }
             else
             {
                 base.OnDeactivate(close);
             }
         }
-
     }
 }

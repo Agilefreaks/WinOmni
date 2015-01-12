@@ -10,11 +10,12 @@ namespace OmniUI.List
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using OmniUI.Details;
 
     public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                    IDisposable,
                                                                    IStartable
-        where TViewModel : class
+        where TViewModel : class, IDetailsViewModel
     {
         #region Constants
 
@@ -23,8 +24,6 @@ namespace OmniUI.List
         #endregion
 
         #region Fields
-
-        private readonly IDictionary<TModel, TViewModel> _viewModelDictionary;
 
         private readonly ListCollectionView _filteredItems;
 
@@ -40,7 +39,6 @@ namespace OmniUI.List
         {
             _subscriptions = new List<IDisposable>();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
-            _viewModelDictionary = new Dictionary<TModel, TViewModel>();
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel) vm);
         }
@@ -101,7 +99,6 @@ namespace OmniUI.List
         public void AddItem(TModel model)
         {
             var viewModel = CreateViewModel(model);
-            _viewModelDictionary.Add(model, viewModel);
             ActivateItem(viewModel);
         }
 
@@ -112,13 +109,12 @@ namespace OmniUI.List
 
         public void RemoveItem(TModel entity)
         {
-            var viewModel = _viewModelDictionary.ContainsKey(entity) ? _viewModelDictionary[entity] : null;
+            var viewModel = Items.FirstOrDefault(vm => Equals(vm.Model, entity));
             if (viewModel == null)
             {
                 return;
             }
             DeactivateItem(viewModel, true);
-            _viewModelDictionary.Remove(entity);
         }
 
         public virtual void RefreshItems()
@@ -138,16 +134,16 @@ namespace OmniUI.List
         protected override void OnActivate()
         {
             base.OnActivate();
-
-            _subscriptions.Add(GetFetchItemsObservable().SubscribeAndHandleErrors(AddItems));
-            _subscriptions.Add(GetItemAddedObservable().SubscribeAndHandleErrors(AddItem));
-            _subscriptions.Add(GetItemRemovedObservable().SubscribeAndHandleErrors(RemoveItem));
+            _subscriptions.Add(GetFetchItemsObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItems));
+            _subscriptions.Add(GetItemAddedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItem));
+            _subscriptions.Add(GetItemRemovedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(RemoveItem));
         }
 
         protected override void OnDeactivate(bool close)
         {
             DisposeSubscriptions();
-            base.OnDeactivate(close);
+            
+            base.OnDeactivate(true);
         }
 
         protected virtual IObservable<IEnumerable<TModel>> GetFetchItemsObservable()
