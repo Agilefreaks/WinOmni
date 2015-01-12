@@ -192,6 +192,12 @@ namespace Omnipaste.ActivityList
             RefreshItems();
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
+        }
+        
         protected override IObservable<IEnumerable<ActivityPresenter>> GetFetchItemsObservable()
         {
             return
@@ -208,6 +214,14 @@ namespace Omnipaste.ActivityList
                     .Merge(_messageRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_callRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
+        }
+
+        protected IObservable<ActivityPresenter> GetItemUpdatedObservable()
+        {
+            return _clippingRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_updateInfoRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)));
         }
 
         protected override IObservable<ActivityPresenter> GetItemRemovedObservable()
@@ -240,6 +254,16 @@ namespace Omnipaste.ActivityList
                           .All(filterPart => viewModel.Model.ToString()
                                   .RemoveDiacritics()
                                   .IndexOf(filterPart, StringComparison.CurrentCultureIgnoreCase) >= 0);
+        }
+
+        private void UpdateViewModel(ActivityPresenter newModel)
+        {
+            var currentModel = GetActivity(newModel.Type, newModel.SourceId);
+            var activityViewModel = GetViewModel(currentModel);
+            if (activityViewModel != null)
+            {
+                activityViewModel.Model = newModel;
+            }
         }
 
         #endregion

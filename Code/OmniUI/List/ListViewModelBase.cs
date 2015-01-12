@@ -29,7 +29,7 @@ namespace OmniUI.List
 
         private ListViewModelStatusEnum _status;
 
-        private readonly List<IDisposable> _subscriptions;
+        protected readonly List<IDisposable> Subscriptions;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace OmniUI.List
         
         protected ListViewModelBase()
         {
-            _subscriptions = new List<IDisposable>();
+            Subscriptions = new List<IDisposable>();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel) vm);
@@ -109,7 +109,7 @@ namespace OmniUI.List
 
         public void RemoveItem(TModel entity)
         {
-            var viewModel = Items.FirstOrDefault(vm => Equals(vm.Model, entity));
+            var viewModel = GetViewModel(entity);
             if (viewModel == null)
             {
                 return;
@@ -134,9 +134,9 @@ namespace OmniUI.List
         protected override void OnActivate()
         {
             base.OnActivate();
-            _subscriptions.Add(GetFetchItemsObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItems));
-            _subscriptions.Add(GetItemAddedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItem));
-            _subscriptions.Add(GetItemRemovedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(RemoveItem));
+            Subscriptions.Add(GetFetchItemsObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItems));
+            Subscriptions.Add(GetItemAddedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(AddItem));
+            Subscriptions.Add(GetItemRemovedObservable().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher).SubscribeAndHandleErrors(RemoveItem));
         }
 
         protected override void OnDeactivate(bool close)
@@ -144,6 +144,11 @@ namespace OmniUI.List
             DisposeSubscriptions();
             
             base.OnDeactivate(true);
+        }
+
+        protected TViewModel GetViewModel(TModel entity)
+        {
+            return Items.FirstOrDefault(vm => Equals(vm.Model, entity));
         }
 
         protected virtual IObservable<IEnumerable<TModel>> GetFetchItemsObservable()
@@ -191,8 +196,8 @@ namespace OmniUI.List
 
         private void DisposeSubscriptions()
         {
-            _subscriptions.ForEach(s => s.Dispose());
-            _subscriptions.Clear();
+            Subscriptions.ForEach(s => s.Dispose());
+            Subscriptions.Clear();
         }
 
         #endregion
