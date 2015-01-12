@@ -4,12 +4,9 @@
   Versioning. These have to be changed for upgrades.
   It's not enough to just include newer files. Set from TeamCity
   -->
-  <?ifdef var.REVISION?>  
-    <?define VersionNumber="$(var.REVISION)" ?>
-  <?else?>
-    <?define VersionNumber="1.0.0.0" ?>
-  <?endif?>
-  
+  <?define VersionNumber="$(var.MainAssemblyVersion)" ?>
+  <?define ProductName="$(var.MainAssemblyName)" ?>
+
   <!--
     Path to the resources directory.
     -->
@@ -19,13 +16,10 @@
     and creating the desktop shortcut
     -->   
   <?if $(var.Configuration) = Debug ?>
-    <?define ProductName="Omnipaste-debug" ?>
     <?define UpgradeCode="d626cbbe-61e3-4d43-9ccd-028351b3b31d" ?>
   <?elseif $(var.Configuration) = Staging ?>
-    <?define ProductName="Omnipaste-staging" ?>
     <?define UpgradeCode="54074354-619f-48e7-bd0b-2d41e8c214e4" ?>
   <?else ?>
-    <?define ProductName="Omnipaste" ?>
     <?define UpgradeCode="b09a7654-afb6-49ac-b306-6478945e6dfb" ?>
   <?endif ?>
   

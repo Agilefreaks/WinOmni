@@ -10,6 +10,9 @@
     <OutputType>Package</OutputType>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <MainAssemblyName>Omnipaste</MainAssemblyName>
+    <MainAssemblyName Condition=" '$(Configuration)' == 'Debug' ">$(MainAssemblyName)-debug</MainAssemblyName>
+    <MainAssemblyName Condition=" '$(Configuration)' == 'Staging' ">$(MainAssemblyName)-staging</MainAssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>Packages\</OutputPath>
@@ -129,7 +132,13 @@
   <Target Name="BeforeBuild">
     <HeatDirectory OutputFile="Fragments\Components.wxs" Directory="$(SolutionDir)Omnipaste\bin\$(Configuration)" ComponentGroupName="OmnipasteFiles" DirectoryRefId="INSTALLFOLDER" PreprocessorVariable="var.SourceDir" ToolPath="$(WixToolPath)" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" Transforms="$(ProjectDir)Transforms\ComponentsFilter.xslt" VerboseOutput="true">
     </HeatDirectory>
-    <CreateProperty Condition="$(REVISION) != ''" Value="REVISION=$(REVISION);$(DefineConstants)">
+    <GetAssemblyIdentity AssemblyFiles="..\..\Omnipaste\bin\$(Configuration)\$(MainAssemblyName).exe">
+      <Output TaskParameter="Assemblies" ItemName="MainAssemblyVersion" />
+    </GetAssemblyIdentity>
+    <CreateProperty Value="MainAssemblyVersion=%(MainAssemblyVersion.Version);$(DefineConstants)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants" />
+    </CreateProperty>
+    <CreateProperty Value="MainAssemblyName=$(MainAssemblyName);$(DefineConstants)">
       <Output TaskParameter="Value" PropertyName="DefineConstants" />
     </CreateProperty>
   </Target>
