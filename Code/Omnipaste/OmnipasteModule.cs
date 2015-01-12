@@ -78,7 +78,7 @@
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
-                           typeof(MessageRepository), typeof(SMSMessageFactory),
+                           typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(EventsWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };

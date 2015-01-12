@@ -1,10 +1,10 @@
 ﻿namespace OmnipasteTests.MasterEventList.IncomingSmsEventList
 {
     using System.Reactive;
+    using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
-    using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
@@ -52,7 +52,7 @@
             var messageOperationObservable = _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
-            _subject = new IncomingSmsEventListViewModel(_mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
@@ -69,7 +69,7 @@
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message)))
                     );
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
-            _subject = new IncomingSmsEventListViewModel(_mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);

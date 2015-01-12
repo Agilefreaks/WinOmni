@@ -1,10 +1,9 @@
 namespace Omnipaste.MasterEventList.IncomingSmsEventList
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.EventList;
     using Omnipaste.Models;
@@ -15,33 +14,29 @@ namespace Omnipaste.MasterEventList.IncomingSmsEventList
     [UseView(typeof(EventListView))]
     public class IncomingSmsEventListViewModel : ListViewModelBase<Message, IEventViewModel>, IIncomingSmsEventListViewModel
     {
+        private readonly IMessageRepository _messageRepository;
+
         private readonly IKernel _kernel;
-
-        private readonly IDisposable _itemAddedSubscription;
-
-        private readonly IDisposable _itemRemovedSubscription;
 
         public IncomingSmsEventListViewModel(IMessageRepository messageRepository, IKernel kernel)
         {
+            _messageRepository = messageRepository;
             _kernel = kernel;
-
-            _itemAddedSubscription =
-                messageRepository.OperationObservable.Saved()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => AddItem(o.Item));
-            _itemRemovedSubscription =
-                messageRepository.OperationObservable.Deleted()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => RemoveItem(o.Item));
         }
 
-        public override void Dispose()
+        protected override IObservable<IEnumerable<Message>> GetFetchItemsObservable()
         {
-            _itemAddedSubscription.Dispose();
-            _itemRemovedSubscription.Dispose();
-            base.Dispose();
+            return _messageRepository.GetAll();
+        }
+
+        protected override IObservable<Message> GetItemAddedObservable()
+        {
+            return _messageRepository.OperationObservable.Saved().Select(o => o.Item);
+        }
+
+        protected override IObservable<Message> GetItemRemovedObservable()
+        {
+            return _messageRepository.OperationObservable.Deleted().Select(o => o.Item);
         }
 
         protected override IEventViewModel CreateViewModel(Message model)

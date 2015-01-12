@@ -6,8 +6,6 @@
     using System.Reactive;
     using System.Threading;
     using Caliburn.Micro;
-    using Events.Handlers;
-    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -26,7 +24,7 @@
     {
         private ActivityListViewModel _subject;
 
-        private Mock<IUpdaterService> _mockUpdateService;
+        private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
 
         private Mock<IActivityViewModelFactory> _mockActivityViewModelFactory;
 
@@ -49,7 +47,7 @@
 
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockUpdateService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
@@ -57,8 +55,8 @@
                 _mockClippingRepository.Object,
                 _mockMessageRepository.Object,
                 _mockCallRepository.Object,
-                _mockActivityViewModelFactory.Object,
-                _mockUpdateService.Object);
+                _mockUpdateInfoRepository.Object,
+                _mockActivityViewModelFactory.Object);
         }
 
         [TearDown]
@@ -69,7 +67,7 @@
         }
 
         [Test]
-        public void ReceivingAClipping_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
+        public void ReceivingAClipping_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
@@ -80,17 +78,11 @@
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
-            var viewModel = new ActivityListViewModel(
-                _mockClippingRepository.Object,
-                _mockMessageRepository.Object,
-                _mockCallRepository.Object,
-                _mockActivityViewModelFactory.Object,
-                _mockUpdateService.Object);
-            viewModel.Start();
+            ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
-            viewModel.Items.Count.Should().Be(1);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]
@@ -105,17 +97,12 @@
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300,Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
-            var viewModel = new ActivityListViewModel(
-                _mockClippingRepository.Object,
-                _mockMessageRepository.Object,
-                _mockCallRepository.Object,
-                _mockActivityViewModelFactory.Object,
-                _mockUpdateService.Object);
-            viewModel.Start();
+            ((IActivate)_subject).Activate();
+            
             _testScheduler.Start();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
-            viewModel.Items.Count.Should().Be(0);
+            _subject.Items.Count.Should().Be(0);
         }
 
         [Test]
@@ -127,39 +114,27 @@
                     new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
-            var viewModel = new ActivityListViewModel(
-                _mockClippingRepository.Object,
-                _mockMessageRepository.Object,
-                _mockCallRepository.Object,
-                _mockActivityViewModelFactory.Object,
-                _mockUpdateService.Object);
-            viewModel.Start();
+            ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
-            viewModel.Items.Count.Should().Be(1);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]
         public void ReceivingAnUpdate_AfterStart_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var eventObservable =
+            var operationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(new UpdateInfo())),
-                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
-            _mockUpdateService.SetupGet(x => x.UpdateObservable).Returns(eventObservable);
+                    new Recorded<Notification<RepositoryOperation<UpdateInfo>>>(100, Notification.CreateOnNext(new RepositoryOperation<UpdateInfo>(RepositoryMethodEnum.Save, new UpdateInfo()))),
+                    new Recorded<Notification<RepositoryOperation<UpdateInfo>>>(200, Notification.CreateOnCompleted<RepositoryOperation<UpdateInfo>>()));
+            _mockUpdateInfoRepository.SetupGet(x => x.OperationObservable).Returns(operationObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
-            var viewModel = new ActivityListViewModel(
-                _mockClippingRepository.Object,
-                _mockMessageRepository.Object,
-                _mockCallRepository.Object,
-                _mockActivityViewModelFactory.Object,
-                _mockUpdateService.Object);
-            viewModel.Start();
+            ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
-            viewModel.Items.Count.Should().Be(1);
+            _subject.Items.Count.Should().Be(1);
         }
 
         [Test]

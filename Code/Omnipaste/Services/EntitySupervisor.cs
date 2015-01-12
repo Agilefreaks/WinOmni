@@ -32,6 +32,12 @@
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
 
+        [Inject]
+        public IUpdaterService UpdaterService { get; set; }
+
+        [Inject]
+        public IUpdateInfoRepository UpdateInfoRepository { get; set; }
+
         public EntitySupervisor()
         {
             _subscriptions = new List<IDisposable>();
@@ -57,6 +63,11 @@
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(@event => MessageRepository.Save(new Message(@event))));
+
+            _subscriptions.Add(
+                UpdaterService.UpdateObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(updateInfo => UpdateInfoRepository.Save(updateInfo)));
         }
 
         public void Stop()

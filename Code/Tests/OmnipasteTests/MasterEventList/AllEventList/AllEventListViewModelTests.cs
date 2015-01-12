@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.MasterEventList.AllEventList
 {
     using System.Reactive;
+    using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -49,7 +50,7 @@
             var callOperationObservable = _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
-            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
@@ -65,7 +66,7 @@
                     new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, call))),
                     new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Delete, call))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
-            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
@@ -79,7 +80,7 @@
             var callOperationObservable = _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
-            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
@@ -95,7 +96,7 @@
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, message))),
                     new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
-            _subject = new AllEventListViewModel(_mockCallRepository.Object, _mockMessageRepository.Object, _kernel);
+            ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);

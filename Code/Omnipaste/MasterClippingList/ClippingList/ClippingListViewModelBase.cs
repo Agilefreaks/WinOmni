@@ -1,10 +1,10 @@
 namespace Omnipaste.MasterClippingList.ClippingList
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.Clipping;
     using Omnipaste.Helpers;
@@ -17,30 +17,7 @@ namespace Omnipaste.MasterClippingList.ClippingList
     {
         #region Fields
 
-        private readonly IDisposable _itemAddedSubscription;
-
-        private readonly IDisposable _itemRemovedSubscription;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        protected ClippingListViewModelBase(IClippingRepository clippingRepository)
-        {
-            _itemAddedSubscription =
-                clippingRepository.OperationObservable.Where(o => CanHandle(o.Item))
-                    .Saved()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => AddItem(o.Item));
-
-            _itemRemovedSubscription =
-                clippingRepository.OperationObservable.Where(o => CanHandle(o.Item))
-                    .Deleted()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => RemoveItem(o.Item));
-        }
+        private readonly IClippingRepository _clippingRepository;
 
         #endregion
 
@@ -48,6 +25,15 @@ namespace Omnipaste.MasterClippingList.ClippingList
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        protected ClippingListViewModelBase(IClippingRepository clippingRepository)
+        {
+            _clippingRepository = clippingRepository;
+        }
 
         #endregion
 
@@ -60,16 +46,24 @@ namespace Omnipaste.MasterClippingList.ClippingList
             ExternalProcessHelper.ShowVideoTutorial();
         }
 
-        public override void Dispose()
-        {
-            _itemAddedSubscription.Dispose();
-            _itemRemovedSubscription.Dispose();
-            base.Dispose();
-        }
-
         #endregion
 
         #region Methods
+
+        protected override IObservable<IEnumerable<ClippingModel>> GetFetchItemsObservable()
+        {
+            return _clippingRepository.GetAll().Select(items => items.Where(CanHandle));
+        }
+
+        protected override IObservable<ClippingModel> GetItemAddedObservable()
+        {
+            return _clippingRepository.OperationObservable.Saved().Select(o => o.Item).Where(CanHandle);
+        }
+
+        protected override IObservable<ClippingModel> GetItemRemovedObservable()
+        {
+            return _clippingRepository.OperationObservable.Deleted().Select(o => o.Item).Where(CanHandle);
+        }
 
         protected override IClippingViewModel CreateViewModel(ClippingModel model)
         {

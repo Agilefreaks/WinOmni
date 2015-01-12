@@ -72,8 +72,8 @@
         public Activity(UpdateInfo updateInfo)
             : this()
         {
-            SourceId = ActivityTypeEnum.Version.ToString();
-            Time = TimeHelper.UtcNow;
+            SourceId = updateInfo.UniqueId;
+            Time = updateInfo.Time;
             Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
             Type = ActivityTypeEnum.Version;
             _extraData.UpdateInfo = updateInfo;

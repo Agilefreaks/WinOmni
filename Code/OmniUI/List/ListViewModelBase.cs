@@ -4,9 +4,12 @@ namespace OmniUI.List
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
 
     public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                    IDisposable,
@@ -27,12 +30,15 @@ namespace OmniUI.List
 
         private ListViewModelStatusEnum _status;
 
+        private readonly List<IDisposable> _subscriptions;
+
         #endregion
 
         #region Constructors and Destructors
-
+        
         protected ListViewModelBase()
         {
+            _subscriptions = new List<IDisposable>();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _viewModelDictionary = new Dictionary<TModel, TViewModel>();
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
@@ -99,6 +105,11 @@ namespace OmniUI.List
             ActivateItem(viewModel);
         }
 
+        public void AddItems(IEnumerable<TModel> models)
+        {
+            models.ToList().ForEach(AddItem);
+        }
+
         public void RemoveItem(TModel entity)
         {
             var viewModel = _viewModelDictionary.ContainsKey(entity) ? _viewModelDictionary[entity] : null;
@@ -117,11 +128,42 @@ namespace OmniUI.List
 
         public virtual void Dispose()
         {
+            DisposeSubscriptions();
         }
         
         #endregion
 
         #region Methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            _subscriptions.Add(GetFetchItemsObservable().SubscribeAndHandleErrors(AddItems));
+            _subscriptions.Add(GetItemAddedObservable().SubscribeAndHandleErrors(AddItem));
+            _subscriptions.Add(GetItemRemovedObservable().SubscribeAndHandleErrors(RemoveItem));
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DisposeSubscriptions();
+            base.OnDeactivate(close);
+        }
+
+        protected virtual IObservable<IEnumerable<TModel>> GetFetchItemsObservable()
+        {
+            return Observable.Empty<IEnumerable<TModel>>(SchedulerProvider.Default);
+        }
+
+        protected virtual IObservable<TModel> GetItemAddedObservable()
+        {
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
+        }
+
+        protected virtual IObservable<TModel> GetItemRemovedObservable()
+        {
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
+        }
 
         protected abstract TViewModel CreateViewModel(TModel model);
 
@@ -149,6 +191,12 @@ namespace OmniUI.List
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Status = Items.Any() ? ListViewModelStatusEnum.NotEmpty : ListViewModelStatusEnum.Empty;
+        }
+
+        private void DisposeSubscriptions()
+        {
+            _subscriptions.ForEach(s => s.Dispose());
+            _subscriptions.Clear();
         }
 
         #endregion

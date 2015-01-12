@@ -1,10 +1,10 @@
 ﻿namespace Omnipaste.MasterEventList.AllEventList
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.EventList;
@@ -15,36 +15,20 @@
     [UseView(typeof(EventListView))]
     public class AllEventListViewModel : ListViewModelBase<IConversationItem, IEventViewModel>, IAllEventListViewModel
     {
+        private readonly ICallRepository _callRepository;
+
+        private readonly IMessageRepository _messageRepository;
+
         private readonly IKernel _kernel;
-
-        private readonly IDisposable _itemAddedSubscription;
-
-        private readonly IDisposable _itemRemovedSubscription;
-
+        
         public AllEventListViewModel(
             ICallRepository callRepository,
             IMessageRepository messageRepository,
             IKernel kernel)
         {
+            _callRepository = callRepository;
+            _messageRepository = messageRepository;
             _kernel = kernel;
-
-            _itemAddedSubscription =
-                GetItemAddedObservable(callRepository, messageRepository)
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(AddItem);
-            _itemRemovedSubscription =
-                GetItemRemovedObservable(callRepository, messageRepository)
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(RemoveItem);
-        }
-
-        public override void Dispose()
-        {
-            _itemAddedSubscription.Dispose();
-            _itemRemovedSubscription.Dispose();
-            base.Dispose();
         }
 
         protected override IEventViewModel CreateViewModel(IConversationItem model)
@@ -55,18 +39,22 @@
             return eventViewModel;
         }
 
-        private IObservable<IConversationItem> GetItemAddedObservable(ICallRepository callRepository, IMessageRepository messageRepository)
+        protected override IObservable<IEnumerable<IConversationItem>> GetFetchItemsObservable()
         {
-            return callRepository.OperationObservable.Saved()
-                .Select(o => o.Item)
-                .Merge(messageRepository.OperationObservable.Saved().Select(o => o.Item).Cast<IConversationItem>());
+            return _callRepository.GetAll()
+                .Merge(_messageRepository.GetAll().Select(items => items.Cast<IConversationItem>()));
         }
 
-        private IObservable<IConversationItem> GetItemRemovedObservable(ICallRepository callRepository, IMessageRepository messageRepository)
+        protected override IObservable<IConversationItem> GetItemAddedObservable()
         {
-            return callRepository.OperationObservable.Deleted()
-                .Select(o => o.Item)
-                .Merge(messageRepository.OperationObservable.Deleted().Select(o => o.Item).Cast<IConversationItem>());
+            return _callRepository.OperationObservable.Saved().Select(o => o.Item)
+                .Merge(_messageRepository.OperationObservable.Saved().Select(o => o.Item).Cast<IConversationItem>());
+        }
+
+        protected override IObservable<IConversationItem> GetItemRemovedObservable()
+        {
+            return _callRepository.OperationObservable.Deleted().Select(o => o.Item)
+                .Merge(_messageRepository.OperationObservable.Deleted().Select(o => o.Item).Cast<IConversationItem>());
         }
     }
 }

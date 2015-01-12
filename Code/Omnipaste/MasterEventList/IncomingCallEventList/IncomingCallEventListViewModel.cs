@@ -1,10 +1,9 @@
 ﻿namespace Omnipaste.MasterEventList.IncomingCallEventList
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.Event;
     using Omnipaste.MasterEventList.EventList;
     using Omnipaste.Models;
@@ -15,33 +14,29 @@
     [UseView(typeof(EventListView))]
     public class IncomingCallEventListViewModel : ListViewModelBase<Call, IEventViewModel>, IIncomingCallEventListViewModel
     {
+        private readonly ICallRepository _callRepository;
+
         private readonly IKernel _kernel;
-
-        private readonly IDisposable _itemAddedSubscription;
-
-        private readonly IDisposable _itemRemovedSubscription;
 
         public IncomingCallEventListViewModel(ICallRepository callRepository, IKernel kernel)
         {
+            _callRepository = callRepository;
             _kernel = kernel;
-
-            _itemAddedSubscription =
-                callRepository.OperationObservable.Saved()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => AddItem(o.Item));
-            _itemRemovedSubscription =
-                callRepository.OperationObservable.Deleted()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(o => RemoveItem(o.Item));
         }
 
-        public override void Dispose()
+        protected override IObservable<IEnumerable<Call>> GetFetchItemsObservable()
         {
-            _itemAddedSubscription.Dispose();
-            _itemRemovedSubscription.Dispose();
-            base.Dispose();
+            return _callRepository.GetAll();
+        }
+
+        protected override IObservable<Call> GetItemAddedObservable()
+        {
+            return _callRepository.OperationObservable.Saved().Select(o => o.Item);
+        }
+
+        protected override IObservable<Call> GetItemRemovedObservable()
+        {
+            return _callRepository.OperationObservable.Deleted().Select(o => o.Item);
         }
 
         protected override IEventViewModel CreateViewModel(Call model)

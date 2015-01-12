@@ -31,6 +31,10 @@
 
         private Mock<IMessageRepository> _mockMessageRepository;
 
+        private Mock<IUpdaterService> _mockUpdaterService;
+
+        private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
+
         [SetUp]
         public void SetUp()
         {
@@ -42,13 +46,17 @@
             _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new EntitySupervisor
                            {
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
                                EventsHandler = _mockEventsHandler.Object,
                                MessageRepository = _mockMessageRepository.Object,
-                               CallRepository = _mockCallRepository.Object
+                               CallRepository = _mockCallRepository.Object,
+                               UpdaterService = _mockUpdaterService.Object,
+                               UpdateInfoRepository = _mockUpdateInfoRepository.Object
                            };
         }
 
@@ -101,6 +109,20 @@
             _testScheduler.Start(() => eventObservable);
             
             _mockMessageRepository.Verify(m => m.Save(It.Is<Message>(c => c.UniqueId == UniqueId)));
+        }
+
+        [Test]
+        public void OnNewUpdateInfo_Always_SotresUpdateInfo()
+        {
+            const string UniqueId = "42";
+            var updateInfo = new UpdateInfo { UniqueId = UniqueId };
+            var updateInfoObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)));
+            _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateInfoObservable);
+
+            _subject.Start();
+            _testScheduler.Start(() => updateInfoObservable);
+            
+            _mockUpdateInfoRepository.Verify(m => m.Save(It.Is<UpdateInfo>(c => c.UniqueId == UniqueId)));
         }
     }
 }
