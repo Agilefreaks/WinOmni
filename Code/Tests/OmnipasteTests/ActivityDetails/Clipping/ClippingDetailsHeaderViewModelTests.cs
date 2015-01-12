@@ -22,19 +22,20 @@
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ClippingDetailsHeaderViewModel
                            {
-                               Model = new ActivityPresenter(new Activity(new ClippingModel { UniqueId = "42" })),
+                               Model = new ActivityPresenter(new ClippingModel { UniqueId = "42" }),
                                ClippingRepository = _mockClippingRepository.Object
                            };
         }
         
         [Test]
-        public void DeleteClipping_WhenClippingExists_DeletesCurrentClipping()
+        public void DeleteClipping_WhenClippingExists_MarksCurrentClippingAsDeleted()
         {
             _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingModel()));
 
             _subject.DeleteClipping();
 
-            _mockClippingRepository.Verify(m => m.Delete(_subject.Model.SourceId));
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingModel));
+            _subject.Model.BackingModel.IsDeleted.Should().BeTrue();
         }
 
         [Test]
@@ -53,6 +54,17 @@
             _subject.UndoDelete();
 
             _subject.State.Should().Be(ClippingDetailsHeaderStateEnum.Normal);
+        }
+
+        [Test]
+        public void UndoDelete_WhenClippingIsMarkedAsDeleted_MarksCurrentClippingAsNotDeleted()
+        {
+            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingModel { IsDeleted = true }));
+
+            _subject.UndoDelete();
+
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingModel));
+            _subject.Model.BackingModel.IsDeleted.Should().BeFalse();
         }
     }
 }

@@ -194,20 +194,20 @@ namespace Omnipaste.ActivityList
 
         protected override IObservable<IEnumerable<ActivityPresenter>> GetFetchItemsObservable()
         {
-            return 
-                _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(new Activity(item))))
-                    .Merge(_messageRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(new Activity(item)))))
-                    .Merge(_callRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(new Activity(item)))))
-                    .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(new Activity(item)))));
+            return
+                _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item)))
+                    .Merge(_messageRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
+                    .Merge(_callRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
+                    .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))));
         }
 
         protected override IObservable<ActivityPresenter> GetItemAddedObservable()
         {
             return
-                _clippingRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item)))
-                    .Merge(_messageRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item))))
-                    .Merge(_callRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item))))
-                    .Merge(_updateInfoRepository.OperationObservable.Saved().Select(o => new ActivityPresenter(new Activity(o.Item))));
+                _clippingRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
         }
 
         protected override IObservable<ActivityPresenter> GetItemRemovedObservable()

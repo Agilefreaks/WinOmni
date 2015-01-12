@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
     using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
@@ -33,8 +32,6 @@
         public ContactInfo ContactInfo { get; set; }
 
         public SourceType Source { get; set; }
-
-        public DateTime Time { get; set; }
 
         public string Content { get; set; }
 

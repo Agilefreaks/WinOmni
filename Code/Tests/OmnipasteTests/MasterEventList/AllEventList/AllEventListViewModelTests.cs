@@ -48,7 +48,7 @@
         public void OnCallSaved_Always_AddsItemToList()
         {
             var callOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))));
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -63,7 +63,7 @@
         {
             var call = new Call();
             var callOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, call))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, call))),
                     new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Delete, call))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
             ((IActivate)_subject).Activate();
@@ -78,7 +78,7 @@
         public void OnMessageSaved_Always_AddsItemToList()
         {
             var callOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, new Message()))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -93,7 +93,7 @@
         {
             var message = new Message();
             var callOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, message))),
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, message))),
                     new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(callOperationObservable);
             ((IActivate)_subject).Activate();

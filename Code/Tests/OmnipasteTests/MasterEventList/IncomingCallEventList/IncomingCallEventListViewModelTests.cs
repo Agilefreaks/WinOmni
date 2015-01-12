@@ -50,7 +50,7 @@
         public void OnCallAdded_Always_AddsItemToList()
         {
             var messageOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))));
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
             ((IActivate)_subject).Activate();
             
@@ -65,7 +65,7 @@
         {
             var call = new Call();
             var messageOperationObservable = _testScheduler.CreateColdObservable(
-                     new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, call))),
+                     new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, call))),
                      new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Delete, call))));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
             ((IActivate)_subject).Activate();

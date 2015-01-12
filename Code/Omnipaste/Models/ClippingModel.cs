@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
     using Clipboard.Models;
 
     public class ClippingModel : BaseModel
@@ -8,8 +7,6 @@
         public string Content { get; set; }
 
         public string Identifier { get; set; }
-
-        public DateTime Time { get; set; }
 
         public Clipping.ClippingTypeEnum Type { get; set; }
 

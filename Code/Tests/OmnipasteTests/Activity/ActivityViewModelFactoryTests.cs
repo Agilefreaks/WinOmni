@@ -33,7 +33,7 @@
         [Test]
         public void Create_ActivityIsOfTypeClipping_ReturnsAnActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Clipping));
+            var activityPresenter = new ActivityPresenter(ActivityTypeEnum.Clipping);
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -44,7 +44,7 @@
         [Test]
         public void Create_ActivityIsOfTypeCall_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Call));
+            var activityPresenter = new ActivityPresenter(ActivityTypeEnum.Call);
             activityPresenter.ExtraData.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activityPresenter);
@@ -56,7 +56,7 @@
         [Test]
         public void Create_ActivityIsOfTypeMessage_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Message));
+            var activityPresenter = new ActivityPresenter(ActivityTypeEnum.Message);
             activityPresenter.ExtraData.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activityPresenter);
@@ -68,7 +68,7 @@
         [Test]
         public void Create_ActivityIsOfTypeVersion_ReturnsAVersionActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = new ActivityPresenter(new Activity(ActivityTypeEnum.Version));
+            var activityPresenter = new ActivityPresenter(ActivityTypeEnum.Version);
 
             var activityViewModel = _subject.Create(activityPresenter);
 

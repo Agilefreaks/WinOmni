@@ -7,10 +7,16 @@
 
     public static class ObservableExtensionMethods
     {
-        public static IObservable<RepositoryOperation<T>> Saved<T>(
+        public static IObservable<RepositoryOperation<T>> Created<T>(
             this IObservable<RepositoryOperation<T>> operationObservable)
         {
-            return operationObservable.OnMethod(RepositoryMethodEnum.Save);
+            return operationObservable.OnMethod(RepositoryMethodEnum.Create);
+        }
+
+        public static IObservable<RepositoryOperation<T>> Updated<T>(
+            this IObservable<RepositoryOperation<T>> operationObservable)
+        {
+            return operationObservable.OnMethod(RepositoryMethodEnum.Update);
         }
 
         public static IObservable<RepositoryOperation<T>> Deleted<T>(

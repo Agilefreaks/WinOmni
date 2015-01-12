@@ -31,7 +31,7 @@
 
         protected override IObservable<Call> GetItemAddedObservable()
         {
-            return _callRepository.OperationObservable.Saved().Select(o => o.Item);
+            return _callRepository.OperationObservable.Created().Select(o => o.Item);
         }
 
         protected override IObservable<Call> GetItemRemovedObservable()

@@ -37,8 +37,6 @@
 
         public SourceType Source { get; set; }
 
-        public DateTime Time { get; set; }
-
         #endregion
     }
 }

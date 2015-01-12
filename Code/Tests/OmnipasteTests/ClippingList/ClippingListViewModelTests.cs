@@ -74,7 +74,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
             
-            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, clipping));
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Items.Count.Should().Be(1);
@@ -90,7 +90,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, clipping));
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
             
             _subject.Items.Count.Should().Be(2);
@@ -111,7 +111,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, clipping));
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
@@ -123,7 +123,7 @@
             var clipping = new ClippingModel();
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
-            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, clipping));
+            _fakeClippingOperationSubject.OnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clipping));
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
             _subject.Items.Clear();

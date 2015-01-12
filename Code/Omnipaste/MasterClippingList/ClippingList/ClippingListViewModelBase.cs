@@ -57,7 +57,7 @@ namespace Omnipaste.MasterClippingList.ClippingList
 
         protected override IObservable<ClippingModel> GetItemAddedObservable()
         {
-            return _clippingRepository.OperationObservable.Saved().Select(o => o.Item).Where(CanHandle);
+            return _clippingRepository.OperationObservable.Created().Select(o => o.Item).Where(CanHandle);
         }
 
         protected override IObservable<ClippingModel> GetItemRemovedObservable()

@@ -1,14 +1,14 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
-    using Castle.Core.Internal;
     using Ninject;
     using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.Presenters;
@@ -26,10 +26,6 @@
         private ConversationHeaderStateEnum _state;
 
         private IDisposable _callSubscription;
-
-        private IList<Models.Message> _deletedMessages;
-
-        private List<Models.Call> _deletedCalls;
 
         #endregion
 
@@ -107,7 +103,7 @@
             _callSubscription = Observable.Interval(DelayCallDuration, SchedulerProvider.Default)
                 .Take(1, SchedulerProvider.Default)
                 .Do(_ => { State = ConversationHeaderStateEnum.Calling; })
-                .Select(_ => Devices.Call(Model.BackingModel.ExtraData.ContactInfo.Phone as string))
+                .Select(_ => Devices.Call(Model.ExtraData.ContactInfo.Phone as string))
                 .Switch()
                 .Delay(CallingDuration, SchedulerProvider.Default)
                 .Do(_ =>  { State = ConversationHeaderStateEnum.Normal; })
@@ -125,21 +121,15 @@
 
         public void Delete()
         {
-            CallRepository.GetByContact(ContactInfo.ContactInfo)
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(DeleteCalls);
-            MessageRepository.GetByContact(ContactInfo.ContactInfo)
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(DeleteMessages);
+            UpdateConversationItems(CallRepository, item => item.IsDeleted = true);
+            UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
             State = ConversationHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            RestoreCalls();
-            RestoreMessages();
+            UpdateConversationItems(CallRepository, item => item.IsDeleted = false);
+            UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
             State = ConversationHeaderStateEnum.Normal;
         }
 
@@ -151,9 +141,29 @@
 
         protected override void OnDeactivate(bool close)
         {
-            _deletedCalls = null;
-            _deletedMessages = null;
+            DeleteConversationItems(CallRepository);
+            DeleteConversationItems(MessageRepository);
             base.OnDeactivate(close);
+        }
+
+        private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update) where T : BaseModel, IConversationItem
+        {
+            repository.GetByContact(ContactInfo.ContactInfo)
+                .SubscribeAndHandleErrors(
+                    items => items.ToList().ForEach(
+                        i =>
+                            {
+                                update(i);
+                                repository.Save(i).RunToCompletion();
+                            }));
+        }
+
+        private void DeleteConversationItems<T>(IRepository<T> repository) where T : BaseModel, IConversationItem
+        {
+            repository.GetByContact(ContactInfo.ContactInfo)
+                .SubscribeAndHandleErrors(
+                    items =>
+                    items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete(c.UniqueId).RunToCompletion()));
         }
 
         private void DisposeCallSubscription()
@@ -165,40 +175,6 @@
 
             _callSubscription.Dispose();
             _callSubscription = null;
-        }
-
-        private void DeleteCalls(IEnumerable<Models.Call> calls)
-        {
-            _deletedCalls = calls.ToList();
-            _deletedCalls.ForEach(call => CallRepository.Delete(call.UniqueId));
-        }
-
-        private void DeleteMessages(IEnumerable<Models.Message> messages)
-        {
-            _deletedMessages = messages.ToList();
-            _deletedMessages.ForEach(message => MessageRepository.Delete(message.UniqueId));
-        }
-
-        private void RestoreCalls()
-        {
-            if (_deletedCalls == null)
-            {
-                return;
-            }
-
-            _deletedCalls.ForEach(call => CallRepository.Save(call));
-            _deletedCalls = null;
-        }
-
-        private void RestoreMessages()
-        {
-            if (_deletedMessages == null)
-            {
-                return;
-            }
-
-            _deletedMessages.ForEach(message => MessageRepository.Save(message));
-            _deletedMessages = null;
         }
     }
 }

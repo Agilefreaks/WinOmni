@@ -1,6 +1,5 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Presenters
 {
-    using System;
     using System.Globalization;
     using System.Threading;
     using Clipboard.Models;
@@ -8,56 +7,37 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using OmniUI.Models;
 
     [TestFixture]
-    public class ActivityTests
+    public class ActivityPresenterTests
     {
-        private Activity _subject;
-
-        [SetUp]
-        public void Setup()
-        {
-            _subject = new Activity();
-        }
-
-        [Test]
-        public void Type_ByDefault_IsGeneric()
-        {
-            _subject.Type.Should().Be(ActivityTypeEnum.None);
-        }
-
-        [Test]
-        public void Content_ByDefault_IsEmptyString()
-        {
-            _subject.Content.Should().Be(string.Empty);
-        }
-
         [Test]
         public void CtorWithClipping_Always_SetsTypeToClipping()
         {
-            new Activity(new ClippingModel()).Type.Should().Be(ActivityTypeEnum.Clipping);
+            new ActivityPresenter(new ClippingModel()).Type.Should().Be(ActivityTypeEnum.Clipping);
         }
 
         [Test]
         public void CtorWithClipping_Always_SetsContentToClippingContent()
         {
-            new Activity(new ClippingModel { Content = "someContent" }).Content.Should().Be("someContent");
+            new ActivityPresenter(new ClippingModel { Content = "someContent" }).Content.Should().Be("someContent");
         }
 
         [Test]
         public void CtorWithClipping_ClippingSourceIsCloud_SetsDeviceToCloud()
         {
-            new Activity(new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }).Device.Should()
+            new ActivityPresenter(new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }).Device.Should()
                 .Be(Resources.FromCloud);
         }
 
         [Test]
         public void CtorWithClipping_ClippingSourceIsLocal_SetsDeviceToCloud()
         {
-            new Activity(new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
+            new ActivityPresenter(new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }).Device.Should()
                 .Be(Resources.FromLocal);
         }
 
@@ -65,7 +45,7 @@
         public void CtorWithClipping_Always_SetsTheClippingIdInTheExtraData()
         {
             const string Id = "SomeId";
-            (new Activity(new ClippingModel { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new ActivityPresenter(new ClippingModel { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
@@ -73,19 +53,19 @@
         {
             var call = new Call();
 
-            new Activity(call).Type.Should().Be(ActivityTypeEnum.Call);
+            new ActivityPresenter(call).Type.Should().Be(ActivityTypeEnum.Call);
         }
 
         [Test]
         public void CtorWithCall_Always_SetsDeviceToCloud()
         {
-            new Activity(new Call()).Device.Should().Be(Resources.FromCloud);
+            new ActivityPresenter(new Call()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
         public void CtorWithCall_TypeIsCall_SetsContentAnEmptyString()
         {
-            new Activity(new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Contact" } }).Content
+            new ActivityPresenter(new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Contact" } }).Content
                 .Should().Be(string.Empty);
         }
 
@@ -94,7 +74,7 @@
         {
             var call = new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
 
-            ContactInfo contactInfo = new Activity(call).ExtraData.ContactInfo;
+            ContactInfo contactInfo = new ActivityPresenter(call).ExtraData.ContactInfo;
 
             contactInfo.Name.Should().Be("Some Name");
             contactInfo.Phone.Should().Be("07xxxxxx");
@@ -104,7 +84,7 @@
         public void CtorWithCall_Always_SetsTheEventUniqueIdInExtraData()
         {
             const string Id = "42";
-            (new Activity(new Call { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new ActivityPresenter(new Call { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
@@ -112,7 +92,7 @@
         {
             var message = new Message { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
 
-            ContactInfo contactInfo = new Activity(message).ExtraData.ContactInfo;
+            ContactInfo contactInfo = new ActivityPresenter(message).ExtraData.ContactInfo;
 
             contactInfo.Name.Should().Be("Some Name");
             contactInfo.Phone.Should().Be("07xxxxxx");
@@ -122,13 +102,13 @@
         public void CtorWithMessage_Always_SetsTheEventUniqueIdInExtraData()
         {
             const string Id = "42";
-            (new Activity(new Message { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new ActivityPresenter(new Message { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
         public void CtorWithMessage_Always_SetsDeviceToCloud()
         {
-            new Activity(new Message()).Device.Should().Be(Resources.FromCloud);
+            new ActivityPresenter(new Message()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
@@ -136,7 +116,7 @@
         {
             var updateInfo = new UpdateInfo { WasInstalled = true, ReleaseLog = "test" };
 
-            var activity = new Activity(updateInfo);
+            var activity = new ActivityPresenter(updateInfo);
 
             (activity.ExtraData.UpdateInfo as UpdateInfo).Should().Be(updateInfo);
         }
@@ -144,39 +124,43 @@
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheDeviceName()
         {
-            _subject.Device = "some device";
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
+            var clippingModel = new ClippingModel { Source = Clipping.ClippingSourceEnum.Local };
 
-            _subject.ToString().Should().Contain("some device");
+            var subject = new ActivityPresenter(clippingModel);
+
+            subject.ToString().Should().Contain("Din Local Clipping");
         }
 
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheTypeOfTheActivity()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            _subject.Type = ActivityTypeEnum.Call;
+            var subject = new ActivityPresenter(new Call());
 
-            _subject.ToString().Should().Contain("Apel de la:");
+            subject.ToString().Should().Contain("Apel de la:");
         }
         
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheContentOfTheActivity()
         {
-            _subject.Content = "someContent";
+            var subject = new ActivityPresenter(new Call { Content = "someContent" });
 
-            _subject.ToString().Should().Contain("someContent");
+            subject.ToString().Should().Contain("someContent");
         }
 
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheExtraDataOfTheActivity()
         {
-            _subject.ExtraData.SomeData = new ContactInfo
-                                                 {
-                                                     FirstName = "someFirstName",
-                                                     LastName = "someLastName",
-                                                     Phone = "0987"
-                                                 };
-
-            _subject.ToString().Should().Contain("someFirstName someLastName 0987");
+            var contactInfo = new ContactInfo
+                                          {
+                                              FirstName = "someFirstName",
+                                              LastName = "someLastName",
+                                              Phone = "0987"
+                                          };
+            var subject = new ActivityPresenter(new Message { ContactInfo = contactInfo });
+            
+            subject.ToString().Should().Contain("someFirstName someLastName 0987");
         }
 
         [TearDown]

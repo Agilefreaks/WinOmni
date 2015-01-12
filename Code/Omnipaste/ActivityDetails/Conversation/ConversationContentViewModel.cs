@@ -83,11 +83,11 @@
         private IObservable<IConversationItem> GetItemAddedObservable()
         {
             return
-                MessageRepository.OperationObservable.Saved()
+                MessageRepository.OperationObservable.Created()
                     .ForContact(ContactInfo)
                     .Select(o => o.Item)
                     .Merge(
-                        CallRepository.OperationObservable.Saved()
+                        CallRepository.OperationObservable.Created()
                             .ForContact(ContactInfo)
                             .Select(o => o.Item)
                             .Cast<IConversationItem>());

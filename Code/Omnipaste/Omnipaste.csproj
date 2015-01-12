@@ -323,7 +323,7 @@
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
-    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
@@ -367,7 +367,6 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>

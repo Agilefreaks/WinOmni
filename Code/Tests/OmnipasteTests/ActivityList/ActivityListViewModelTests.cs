@@ -73,7 +73,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, new ClippingModel()))),
+                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, new ClippingModel()))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
@@ -92,7 +92,7 @@
             var clippingModel = new ClippingModel { UniqueId = SourceId };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Save, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Delete, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300,Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
@@ -110,7 +110,7 @@
         {
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
                     new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
@@ -126,7 +126,7 @@
         {
             var operationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<UpdateInfo>>>(100, Notification.CreateOnNext(new RepositoryOperation<UpdateInfo>(RepositoryMethodEnum.Save, new UpdateInfo()))),
+                    new Recorded<Notification<RepositoryOperation<UpdateInfo>>>(100, Notification.CreateOnNext(new RepositoryOperation<UpdateInfo>(RepositoryMethodEnum.Create, new UpdateInfo()))),
                     new Recorded<Notification<RepositoryOperation<UpdateInfo>>>(200, Notification.CreateOnCompleted<RepositoryOperation<UpdateInfo>>()));
             _mockUpdateInfoRepository.SetupGet(x => x.OperationObservable).Returns(operationObservable);
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
@@ -206,17 +206,16 @@
 
             var filteredItems = _subject.FilteredItems.Cast<IActivityViewModel>().ToList();
             filteredItems.Count.Should().Be(2);
-            filteredItems[0].Model.Type.Should().Be(ActivityTypeEnum.Clipping);
-            filteredItems[1].Model.Type.Should().Be(ActivityTypeEnum.Message);
-	
+            filteredItems.Count(vm => vm.Model.Type == ActivityTypeEnum.Clipping).Should().Be(1);
+            filteredItems.Count(vm => vm.Model.Type == ActivityTypeEnum.Message).Should().Be(1);
         }
 
         [Test]
         public void ChangingFilterText_Always_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new Activity(new Call()));
-            var activityPresenter2 = new ActivityPresenter(new Activity(new Message()));
+            var activityPresenter1 = new ActivityPresenter(new Call());
+            var activityPresenter2 = new ActivityPresenter(new Message());
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
@@ -231,8 +230,8 @@
         public void ChangingFilterText_TextIsMadeUpOfMultipleWords_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveAllTheWordsInTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new Activity(new Message { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } }));
-            var activityPresenter2 = new ActivityPresenter(new Activity(new Message { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } }));
+            var activityPresenter1 = new ActivityPresenter(new Message { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } });
+            var activityPresenter2 = new ActivityPresenter(new Message { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
@@ -245,13 +244,10 @@
 
         private void AddItemsForAllActivityTypes()
         {
-            Enum.GetValues(typeof(ActivityTypeEnum))
-                .Cast<ActivityTypeEnum>()
-                .ToList()
-                .ForEach(
-                    activityType =>
-                    _subject.Items.Add(
-                        new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new Activity(activityType)) }));
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new ClippingModel()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new Call()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model= new ActivityPresenter(new Message()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model= new ActivityPresenter(new UpdateInfo()) });
         }
     }
 }

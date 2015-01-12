@@ -31,7 +31,7 @@ namespace Omnipaste.MasterEventList.IncomingSmsEventList
 
         protected override IObservable<Message> GetItemAddedObservable()
         {
-            return _messageRepository.OperationObservable.Saved().Select(o => o.Item);
+            return _messageRepository.OperationObservable.Created().Select(o => o.Item);
         }
 
         protected override IObservable<Message> GetItemRemovedObservable()

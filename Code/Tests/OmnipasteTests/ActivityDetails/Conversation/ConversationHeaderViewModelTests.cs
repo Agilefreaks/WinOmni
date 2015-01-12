@@ -72,7 +72,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
+            _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -85,7 +85,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
+            _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
             _subject.CancelCall();
@@ -99,7 +99,7 @@
         {
             var phoneNumber = "1234567890";
             var @event = new Event { PhoneNumber = phoneNumber };
-            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
+            _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
             _subject.CancelCall();
@@ -112,7 +112,7 @@
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
             var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
+            _subject.Model = new ActivityPresenter(new Call(@event));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
@@ -128,7 +128,7 @@
         public void Call_OnInitiated_ChangesStateToCalling()
         {
             var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Activity(new Call(@event)));
+            _subject.Model = new ActivityPresenter(new Call(@event));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
@@ -149,7 +149,7 @@
         }
 
         [Test]
-        public void Delete_WhenCallsExistForContact_DeletesEachCall()
+        public void Delete_WhenCallsExistForContact_UpdatesIsDeletedForCall()
         {
             var call = new Call { UniqueId = "42" };
             var getCallObservable =
@@ -160,7 +160,8 @@
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockCallRepository.Verify(m => m.Delete(call.UniqueId));
+            _mockCallRepository.Verify(m => m.Save(call));
+            call.IsDeleted.Should().BeTrue();
         }
 
         [Test]
@@ -175,7 +176,8 @@
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockMessageRepository.Verify(m => m.Delete(message.UniqueId));
+            _mockMessageRepository.Verify(m => m.Save(message));
+            message.IsDeleted.Should().BeTrue();
         }
 
         [Test]
@@ -189,33 +191,33 @@
         [Test]
         public void UndoDelete_WhenCallsWereDeleted_RestoresCalls()
         {
-            var call = new Call { UniqueId = "42" };
+            var call = new Call { UniqueId = "42", IsDeleted = true };
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
             _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(getCallObservable);
-            _subject.Delete();
+            
+            _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _subject.UndoDelete();
-
             _mockCallRepository.Verify(m => m.Save(call));
+            call.IsDeleted.Should().BeFalse();
         }
 
         [Test]
         public void UndoDelete_WhenMessagesWereDeleted_RestoresMessages()
         {
-            var message = new Message { UniqueId = "42" };
+            var message = new Message { UniqueId = "42", IsDeleted = true };
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(getMessageObservable);
-            _subject.Delete();
-            _testScheduler.AdvanceBy(1000);
 
             _subject.UndoDelete();
+            _testScheduler.AdvanceBy(1000);
 
             _mockMessageRepository.Verify(m => m.Save(message));
+            message.IsDeleted.Should().BeFalse();
         }
     }
 }

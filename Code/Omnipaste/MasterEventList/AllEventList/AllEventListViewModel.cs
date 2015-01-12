@@ -47,8 +47,8 @@
 
         protected override IObservable<IConversationItem> GetItemAddedObservable()
         {
-            return _callRepository.OperationObservable.Saved().Select(o => o.Item)
-                .Merge(_messageRepository.OperationObservable.Saved().Select(o => o.Item).Cast<IConversationItem>());
+            return _callRepository.OperationObservable.Created().Select(o => o.Item)
+                .Merge(_messageRepository.OperationObservable.Created().Select(o => o.Item).Cast<IConversationItem>());
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()

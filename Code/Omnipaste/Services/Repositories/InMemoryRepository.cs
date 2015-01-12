@@ -3,23 +3,23 @@ namespace Omnipaste.Services.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Management.Instrumentation;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using Caliburn.Micro;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
 
     public abstract class InMemoryRepository<T> : IRepository<T>
         where T : BaseModel
     {
-        private readonly IList<T> _items;
+        private readonly IDictionary<string, T> _items;
 
         private readonly Subject<RepositoryOperation<T>> _subject;
 
         protected InMemoryRepository()
         {
             _subject = new Subject<RepositoryOperation<T>>();
-            _items = new List<T>();
+            _items = new Dictionary<string, T>();
         }
 
         public IObservable<RepositoryOperation<T>> OperationObservable
@@ -59,7 +59,7 @@ namespace Omnipaste.Services.Repositories
         {
             lock (_items)
             {
-                return _items.Where(filter).ToList();
+                return _items.Values.Where(filter).ToList();
             }
         }
 
@@ -67,7 +67,7 @@ namespace Omnipaste.Services.Repositories
         {
             lock (_items)
             {
-                return _items.FirstOrDefault(item => item.UniqueId == id);
+                return _items.GetValueOrDefault(id);
             }
         }
 
@@ -75,8 +75,10 @@ namespace Omnipaste.Services.Repositories
         {
             lock (_items)
             {
-                _items.Add(item);
-                var result = new RepositoryOperation<T>(RepositoryMethodEnum.Save, item);
+                var value = _items.GetValueOrDefault(item.UniqueId);
+                var operation = value == null ? RepositoryMethodEnum.Create : RepositoryMethodEnum.Update;
+                var result = new RepositoryOperation<T>(operation, item);
+                _items[item.UniqueId] = item;
                 _subject.OnNext(result);
 
                 return result;
@@ -87,13 +89,8 @@ namespace Omnipaste.Services.Repositories
         {
             lock (_items)
             {
-                var targetItem = _items.FirstOrDefault(item => item.UniqueId == id);
-                if (targetItem == null)
-                {
-                    throw new InstanceNotFoundException();
-                }
-
-                _items.Remove(targetItem);
+                var targetItem = _items.GetValueOrDefault(id);
+                _items.Remove(id);
                 var result = new RepositoryOperation<T>(RepositoryMethodEnum.Delete, targetItem);
                 _subject.OnNext(result);
 

@@ -50,7 +50,7 @@
         public void OnMessageAdded_Always_AddedItemToList()
         {
             var messageOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))));
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, new Message()))));
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -65,7 +65,7 @@
         {
             var message = new Message();
             var messageOperationObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, message))),
+                    new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, message))),
                     new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message)))
                     );
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);

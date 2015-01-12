@@ -84,8 +84,8 @@
             var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.ContactInfo = new ContactInfo { Phone = "123" };
             var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, new Call()))),
-                new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Save, callFromContact))));
+                new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
+                new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, callFromContact))));
             _mockCallRepository.Setup(x => x.OperationObservable).Returns(callObservable);
 
             ((IActivate)_subject).Activate();
@@ -124,8 +124,8 @@
             var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.ContactInfo = new ContactInfo { Phone = "123" };
             var messageObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, new Message()))),
-                new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Save, messageFromContact))));
+                new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, new Message()))),
+                new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, messageFromContact))));
             _mockMessageRepository.Setup(x => x.OperationObservable).Returns(messageObservable);
 
             ((IActivate)_subject).Activate();

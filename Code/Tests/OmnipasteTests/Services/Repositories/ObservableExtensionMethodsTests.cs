@@ -20,24 +20,38 @@
         }
 
         [Test]
-        public void OnSaved_Always_ReturnsOnlySaveOperations()
+        public void Created_Always_ReturnsOnlySaveOperations()
         {
-            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Save, "1"));
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Create, "1"));
             _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Delete, "2"));
-            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Save, "3"));
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Create, "3"));
 
             var result = new List<RepositoryOperation<string>>(); 
-            _repositoryOperationSubject.Saved().Subscribe(e => result.Add(e));
+            _repositoryOperationSubject.Created().Subscribe(e => result.Add(e));
 
             result.Count.Should().Be(2);
-            result.All(m => m.RepositoryMethod == RepositoryMethodEnum.Save).Should().BeTrue();
+            result.All(m => m.RepositoryMethod == RepositoryMethodEnum.Create).Should().BeTrue();
+        }
+
+        [Test]
+        public void Update_Always_ReturnsOnlySaveOperations()
+        {
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Update, "1"));
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Create, "2"));
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Update, "3"));
+
+            var result = new List<RepositoryOperation<string>>(); 
+            _repositoryOperationSubject.Updated().Subscribe(e => result.Add(e));
+
+            result.Count.Should().Be(2);
+            result.All(m => m.RepositoryMethod == RepositoryMethodEnum.Update).Should().BeTrue();
         }
 
         [Test]
         public void Deleted_Always_ReturnsOnlySaveOperations()
         {
             _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Delete, "1"));
-            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Save, "2"));
+            _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Create, "2"));
             _repositoryOperationSubject.OnNext(new RepositoryOperation<string>(RepositoryMethodEnum.Delete, "3"));
 
             var result = new List<RepositoryOperation<string>>(); 

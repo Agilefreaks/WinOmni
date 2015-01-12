@@ -1,17 +1,15 @@
 ﻿namespace Omnipaste.ActivityDetails.Clipping
 {
-    using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
+
     public class ClippingDetailsHeaderViewModel : ActivityDetailsHeaderViewModel, IClippingDetailsHeaderViewModel
     {
         #region Fields
 
         private ClippingDetailsHeaderStateEnum _state;
-
-        private ClippingModel _deletedClipping;
 
         #endregion
 
@@ -43,21 +41,15 @@
 
         public void DeleteClipping()
         {
-            ClippingRepository.Get(Model.SourceId).Where(item => item != null).SubscribeAndHandleErrors(
-                item =>
-                    {
-                        _deletedClipping = item;
-                        ClippingRepository.Delete(Model.SourceId);
-                        State = ClippingDetailsHeaderStateEnum.Deleted;
-                    });
+            Model.BackingModel.IsDeleted = true;
+            ClippingRepository.Save(Model.BackingModel as ClippingModel).RunToCompletion();
+            State = ClippingDetailsHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            if (_deletedClipping != null)
-            {
-                ClippingRepository.Save(_deletedClipping);
-            }
+            Model.BackingModel.IsDeleted = false;
+            ClippingRepository.Save(Model.BackingModel as ClippingModel).RunToCompletion();
             State = ClippingDetailsHeaderStateEnum.Normal;
         }
 
@@ -69,7 +61,11 @@
 
         protected override void OnDeactivate(bool close)
         {
-            _deletedClipping = null;
+            if (Model.BackingModel.IsDeleted)
+            {
+                ClippingRepository.Delete(Model.SourceId).RunToCompletion();
+            }
+
             base.OnDeactivate(close);
         }
 

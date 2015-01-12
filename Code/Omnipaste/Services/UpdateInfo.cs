@@ -6,8 +6,6 @@ namespace Omnipaste.Services
 
     public class UpdateInfo : BaseModel
     {
-        public DateTime Time { get; set; }
-
         public bool WasInstalled { get; set; }
 
         public string ReleaseLog { get; set; }
