@@ -8,6 +8,7 @@
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
@@ -35,7 +36,7 @@
         [Test]
         public void Save_Always_SavesItem()
         {
-            var testModel = new TestModel { Id = "42" };
+            var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable =
                 _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.GetAll()).Switch());
@@ -47,7 +48,7 @@
         [Test]
         public void Save_Always_ReturnsRepositoryOperationObservable()
         {
-            var testModel = new TestModel { Id = "42" };
+            var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable = _testScheduler.Start(() => _subject.Save(testModel));
 
@@ -58,7 +59,7 @@
         [Test]
         public void Save_Always_NotifiesOperation()
         {
-            var testModel = new TestModel { Id = "42" };
+            var testModel = new TestModel { UniqueId = "42" };
             var results = new List<RepositoryOperation<TestModel>>();
             _subject.OperationObservable.Subscribe(ro => results.Add(ro));
 
@@ -70,13 +71,13 @@
         [Test]
         public void Delete_WhenItemExists_DeletesItem()
         {
-            var testModel = new TestModel { Id = "42" };
+            var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable =
                 _testScheduler.Start(
                     () =>
                     _subject.Save(testModel)
-                        .Select(_ => _subject.Delete(testModel.Id))
+                        .Select(_ => _subject.Delete(testModel.UniqueId))
                         .Switch()
                         .Select(_ => _subject.GetAll())
                         .Switch());
@@ -88,26 +89,21 @@
         [Test]
         public void Delete_WhenItemExists_NotifiesOperation()
         {
-            var testModel = new TestModel { Id = "42" };
+            var testModel = new TestModel { UniqueId = "42" };
             var results = new List<RepositoryOperation<TestModel>>();
             _subject.OperationObservable.Subscribe(ro => results.Add(ro));
 
-            _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Delete(testModel.Id)).Switch());
+            _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Delete(testModel.UniqueId)).Switch());
 
             results[1].RepositoryMethod.Should().Be(RepositoryMethodEnum.Delete);
         }
 
-        public class TestModel
+        public class TestModel : BaseModel
         {
-            public string Id { get; set; }
         }
 
         public class TestModelRepository : InMemoryRepository<TestModel>
         {
-            protected override bool IsMatch(TestModel item, object id)
-            {
-                return Equals(item.Id, id);
-            }
         }
     }
 }

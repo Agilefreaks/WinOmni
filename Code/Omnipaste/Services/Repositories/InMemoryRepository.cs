@@ -7,8 +7,10 @@ namespace Omnipaste.Services.Repositories
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using OmniCommon.Helpers;
+    using Omnipaste.Models;
 
     public abstract class InMemoryRepository<T> : IRepository<T>
+        where T : BaseModel
     {
         private readonly IList<T> _items;
 
@@ -33,7 +35,7 @@ namespace Omnipaste.Services.Repositories
             return Async(() => SaveSynchronous(item));
         }
 
-        public IObservable<T> Get(object id)
+        public IObservable<T> Get(string id)
         {
             return Async(() => GetSynchronous(id));
         }
@@ -48,7 +50,7 @@ namespace Omnipaste.Services.Repositories
             return Async(() => GetAllSynchronous(filter));
         }
 
-        public IObservable<RepositoryOperation<T>> Delete(object id)
+        public IObservable<RepositoryOperation<T>> Delete(string id)
         {
             return Async(() => DeleteSynchronous(id));
         }
@@ -61,11 +63,11 @@ namespace Omnipaste.Services.Repositories
             }
         }
 
-        public T GetSynchronous(object id)
+        public T GetSynchronous(string id)
         {
             lock (_items)
             {
-                return _items.FirstOrDefault(item => IsMatch(item, id));
+                return _items.FirstOrDefault(item => item.UniqueId == id);
             }
         }
 
@@ -81,11 +83,11 @@ namespace Omnipaste.Services.Repositories
             }
         }
 
-        public RepositoryOperation<T> DeleteSynchronous(object id)
+        public RepositoryOperation<T> DeleteSynchronous(string id)
         {
             lock (_items)
             {
-                var targetItem = _items.FirstOrDefault(item => IsMatch(item, id));
+                var targetItem = _items.FirstOrDefault(item => item.UniqueId == id);
                 if (targetItem == null)
                 {
                     throw new InstanceNotFoundException();
@@ -98,8 +100,6 @@ namespace Omnipaste.Services.Repositories
                 return result;
             }
         }
-
-        protected abstract bool IsMatch(T item, object id);
 
         private IObservable<TResult> Async<TResult>(Func<TResult> funcToExecute)
         {

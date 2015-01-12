@@ -6,7 +6,7 @@
     using Omnipaste.DetailsViewModel;
     using OmniUI.Models;
 
-    public class Call : IConversationItem
+    public class Call : BaseModel, IConversationItem
     {
         #region Constructors and Destructors
 
@@ -37,8 +37,6 @@
         public DateTime Time { get; set; }
 
         public string Content { get; set; }
-
-        public string UniqueId { get; set; }
 
         #endregion
     }

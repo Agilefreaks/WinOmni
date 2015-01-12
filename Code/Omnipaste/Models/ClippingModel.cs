@@ -3,10 +3,8 @@
     using System;
     using Clipboard.Models;
 
-    public class ClippingModel
+    public class ClippingModel : BaseModel
     {
-        public string UniqueId { get; set; }
-
         public string Content { get; set; }
 
         public string Identifier { get; set; }
