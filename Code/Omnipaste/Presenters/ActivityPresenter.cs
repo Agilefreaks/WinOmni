@@ -118,6 +118,23 @@
             }
         }
 
+        public bool IsDeleted
+        {
+            get
+            {
+                return BackingModel.IsDeleted;
+            }
+            set
+            {
+                if (value.Equals(BackingModel.IsDeleted))
+                {
+                    return;
+                }
+                BackingModel.IsDeleted = value;
+                NotifyOfPropertyChange(() => IsDeleted);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

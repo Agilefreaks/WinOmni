@@ -34,7 +34,8 @@
                     <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch" />
+                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch" 
+                                                Visibility="{Binding Path=Model.IsDeleted, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
