@@ -19,6 +19,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using OmniUI.Models;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -255,8 +256,8 @@
         public void ChangingFilterText_TextIsMadeUpOfMultipleWords_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveAllTheWordsInTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent, ContactName = "John Doe" }));
-            var activityPresenter2 = new ActivityPresenter(new Activity(new Event { Type = EventTypeEnum.IncomingSmsEvent, ContactName = "Jane Doe" }));
+            var activityPresenter1 = new ActivityPresenter(new Activity(new Message { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } }));
+            var activityPresenter2 = new ActivityPresenter(new Activity(new Message { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } }));
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });

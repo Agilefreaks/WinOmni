@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.ActivityDetails.Clipping
 {
     using System.Reactive.Linq;
+    using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
