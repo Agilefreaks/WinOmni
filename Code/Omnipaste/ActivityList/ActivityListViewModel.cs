@@ -1,6 +1,7 @@
 namespace Omnipaste.ActivityList
 {
     using System;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
@@ -57,6 +58,8 @@ namespace Omnipaste.ActivityList
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(RemoveItem);
+
+            FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
         }
 
         #endregion

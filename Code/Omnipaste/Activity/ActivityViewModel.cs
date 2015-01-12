@@ -94,6 +94,14 @@ namespace Omnipaste.Activity
             }
         }
 
+        public DateTime Time
+        {
+            get
+            {
+                return Model.Time;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
