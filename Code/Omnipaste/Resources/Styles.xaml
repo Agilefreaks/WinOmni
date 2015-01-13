@@ -26,6 +26,7 @@
         <ResourceDictionary Source="ToggleSwitch.xaml"/>
         <ResourceDictionary Source="ItemsControl.xaml"/>
         <ResourceDictionary Source="Window.xaml"/>
+        <ResourceDictionary Source="TransitioningContentControl.xaml"/>
         <ResourceDictionary Source="../Themes/ExpandableTextBlock.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
