@@ -224,6 +224,34 @@
                                         </PointAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
+                                <VisualState x:Name="Fade">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="CurrentContentPresentationSite">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseInOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseInOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PreviousContentPresentationSite">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="1">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid>
