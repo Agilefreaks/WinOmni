@@ -133,6 +133,11 @@
             return saved;
         }
 
+        public void ClearAll()
+        {
+            SaveToFile(GetProtectedData(InitializeNewSettingsDocument()));
+        }
+
         #endregion
 
         #region Methods

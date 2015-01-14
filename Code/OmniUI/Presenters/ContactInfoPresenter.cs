@@ -7,6 +7,7 @@
     using OmniCommon.Helpers;
     using OmniUI.Helpers;
     using OmniUI.Models;
+    using OmniUI.Properties;
     using Action = System.Action;
 
     public class ContactInfoPresenter : PropertyChangedBase, IContactInfoPresenter
@@ -15,7 +16,11 @@
 
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
-        private const string DefaultContactIdentifier = "Unknown Contact";
+        #endregion
+
+        #region Static Fields
+
+        private static readonly string DefaultContactIdentifier = Resources.UnknownContact;
 
         #endregion
 

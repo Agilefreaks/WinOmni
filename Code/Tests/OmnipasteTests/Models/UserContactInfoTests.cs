@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Models
 {
+    using System;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Models;
@@ -30,6 +31,14 @@
             var UserContactInfo = new UserContactInfo(new UserInfo { ImageUrl = "http://some_url/" });
 
             UserContactInfo.ImageUri.ToString().Should().Be("http://some_url/");
+        }
+
+        [Test]
+        public void Ctor_WithUserInfoNull_DoesNotThrowException()
+        {
+            Action actionToTest = () => new UserContactInfo();
+
+            actionToTest.ShouldNotThrow<Exception>();
         }
     }
 }

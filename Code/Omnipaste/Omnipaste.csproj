@@ -630,11 +630,6 @@
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\ViewModelStatusEnum.cs" />
-    <Compile Include="Properties\Resources.pt.Designer.cs">
-      <DependentUpon>Resources.pt.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Services\WebProxyFactory.cs" />
     <Compile Include="Services\WindowHandleProvider.cs" />
     <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
@@ -1023,8 +1018,6 @@
     <Resource Include="Icon.ico" />
     <Resource Include="Connected.ico" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config">

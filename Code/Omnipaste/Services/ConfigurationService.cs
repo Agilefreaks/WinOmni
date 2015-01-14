@@ -210,9 +210,11 @@
             _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
         }
 
-        public void ResetAuthSettings()
+        public void ClearSettings()
         {
-            SaveAuthSettings(new OmnipasteCredentials());
+            _configurationContainer.ClearAll();
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.UserInfo));
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration));
         }
 
         public bool HasSavedValueFor(string propertyName)

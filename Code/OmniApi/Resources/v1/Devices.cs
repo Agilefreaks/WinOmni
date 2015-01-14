@@ -55,6 +55,11 @@
             return ResourceApi.Deactivate(device, AccessToken);
         }
 
+        public IObservable<EmptyModel> Remove(string identifier)
+        {
+            return ResourceApi.Remove(identifier, AccessToken);
+        }
+
         public IObservable<EmptyModel> EndCall()
         {
             return ResourceApi.EndCall(AccessToken);
