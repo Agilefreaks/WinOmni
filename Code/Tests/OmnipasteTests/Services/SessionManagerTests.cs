@@ -27,11 +27,11 @@
         }
 
         [Test]
-        public void LogOut_Calls_ConfigurationServiceWithEmptyValues()
+        public void LogOut_Always_ClearsStoredConfigurationValues()
         {
             _subject.LogOut();
 
-            _mockConfigurationService.Verify(cs => cs.ResetAuthSettings(), Times.Once);
+            _mockConfigurationService.Verify(cs => cs.ClearSettings(), Times.Once);
         }
 
         [Test]

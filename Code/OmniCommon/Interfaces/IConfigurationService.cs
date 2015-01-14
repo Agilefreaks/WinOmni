@@ -50,7 +50,7 @@
 
         bool HasSavedValueFor(string propertyName);
 
-        void ResetAuthSettings();
+        void ClearSettings();
 
         void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
 

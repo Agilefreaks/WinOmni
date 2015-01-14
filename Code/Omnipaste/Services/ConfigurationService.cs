@@ -210,7 +210,7 @@
             _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
         }
 
-        public void ResetAuthSettings()
+        public void ClearSettings()
         {
             SaveAuthSettings(new OmnipasteCredentials());
         }

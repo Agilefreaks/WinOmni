@@ -42,7 +42,7 @@
 
         public void LogOut()
         {
-            ConfigurationService.ResetAuthSettings();
+            ConfigurationService.ClearSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
         }
 
