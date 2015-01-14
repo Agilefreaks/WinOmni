@@ -60,6 +60,11 @@ namespace OmniUI.List
             }
             set
             {
+                if (_status == value)
+                {
+                    return;
+                }
+
                 _status = value;
                 NotifyOfPropertyChange(() => Status);
             }
