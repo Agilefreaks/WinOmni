@@ -3,7 +3,9 @@
     using System;
     using System.Reactive.Subjects;
     using Ninject;
+    using OmniApi.Resources.v1;
     using OmniApi.Support;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
 
     public class SessionManager : ISessionManager, IHttpResponseMessageHandler
@@ -28,6 +30,9 @@
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
+        [Inject]
+        public IDevices Devices { get; set; }
+
         public IObservable<EventArgs> SessionDestroyedObservable
         {
             get
@@ -42,6 +47,7 @@
 
         public void LogOut()
         {
+            Devices.Remove(ConfigurationService.DeviceIdentifier).RunToCompletionSynchronous();
             ConfigurationService.ClearSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
         }
