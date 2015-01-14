@@ -212,7 +212,7 @@
 
         public void ClearSettings()
         {
-            SaveAuthSettings(new OmnipasteCredentials());
+            _configurationContainer.ClearAll();
         }
 
         public bool HasSavedValueFor(string propertyName)

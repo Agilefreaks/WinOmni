@@ -134,7 +134,7 @@
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
-    <Compile Include="DataProviders\DPAPIConfigurationProviderTests.cs" />
+    <Compile Include="DataProviders\DPAPIConfigurationContainerTests.cs" />
     <Compile Include="Event\EventViewModelTests.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverterTests.cs" />
     <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverterTests.cs" />

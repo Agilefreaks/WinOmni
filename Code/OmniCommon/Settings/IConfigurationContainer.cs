@@ -6,6 +6,8 @@
 
         bool SetValue(string key, string value);
 
+        void ClearAll();
+
         #endregion
     }
 }

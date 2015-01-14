@@ -35,12 +35,11 @@
         }
 
         [Test]
-        public void ClearSettings_ResetsAllSettingsNeededForAuthentication()
+        public void ClearSettings_Always_ClearsAllStoredSettings()
         {
             _subject.ClearSettings();
 
-            _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, string.Empty));
-            _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, string.Empty));
+            _mockConfigurationProvider.Verify(provider => provider.ClearAll(), Times.Once());
         }
 
         [Test]

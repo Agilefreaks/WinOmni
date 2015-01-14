@@ -5,7 +5,7 @@
     using NUnit.Framework;
     using Omnipaste.DataProviders;
 
-    public class DPAPIConfigurationProviderTests
+    public class DPAPIConfigurationContainerTests
     {
         #region Fields
 
@@ -64,6 +64,17 @@
             _subject.SetValue("token", "token value update");
 
             _subject.GetValue("token").Should().Be("token value update");
+        }
+
+        [Test]
+        public void ClearAll_Always_ClearsStoredValues()
+        {
+            const string Key = "someKey";
+            _subject.SetValue(Key, "value");
+
+            _subject.ClearAll();
+
+            _subject.HasValue(Key).Should().BeFalse();
         }
 
         #endregion
