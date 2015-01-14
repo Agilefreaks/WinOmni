@@ -17,6 +17,7 @@
                 <ControlTemplate TargetType="{x:Type ContentControl}">
                     <ControlTemplate.Resources>
                         <converters:NegativeThicknessConverter x:Key="NegativeThicknessConverter"/>
+                        <Duration x:Key="AnimationDuration">0:0:.4</Duration>
                     </ControlTemplate.Resources>
 
                     <ContentPresenter Name="ContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Stretch">
@@ -26,7 +27,7 @@
                         
                         <ContentPresenter.Resources>
                             <Storyboard x:Key="FlyInStoryboard" TargetName="ContentPresenter">
-                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0" Duration="0:0:.4"
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0" Duration="{StaticResource AnimationDuration}"
                                                         From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NegativeThicknessConverter}}">
                                     <ThicknessAnimation.EasingFunction>
                                         <QuarticEase EasingMode="EaseOut" />
@@ -49,12 +50,12 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard TargetName="ContentPresenter">
-                                        <DoubleAnimation From="1" To="0" Duration="0:0:.4" Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity">
                                             <DoubleAnimation.EasingFunction>
                                                 <QuinticEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
-                                        <DoubleAnimation From="1" To="0" Duration="0:0:.4" Storyboard.TargetProperty="LayoutTransform.ScaleY">
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleY">
                                             <DoubleAnimation.EasingFunction>
                                                 <QuinticEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
@@ -65,12 +66,12 @@
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard TargetName="ContentPresenter">
-                                        <DoubleAnimation From="0" To="1" Duration="0:0:.4" Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity">
                                             <DoubleAnimation.EasingFunction>
                                                 <QuinticEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
-                                        <DoubleAnimation From="0" To="1" Duration="0:0:.4" Storyboard.TargetProperty="LayoutTransform.ScaleY">
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleY">
                                             <DoubleAnimation.EasingFunction>
                                                 <QuinticEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
