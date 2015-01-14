@@ -1,4 +1,12 @@
-﻿**Version 1.2 (12.01.2015)**
+﻿**Version 1.2.1 (14.01.2015)**
+
+**Improvements:**
+
+- added some nice transitions for opening an activity details screen and for switching between different activity details headers
+
+----------
+
+**Version 1.2 (12.01.2015)**
 
 **Bug fixes:**
 
