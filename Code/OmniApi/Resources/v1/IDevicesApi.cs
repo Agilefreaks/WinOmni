@@ -33,6 +33,9 @@
         [Post("/devices/call")]
         IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
 
+        [Delete("/devices")]
+        IObservable<EmptyModel> Remove(string identifier, [Header("Authorization")] string accessToken);
+
         #endregion
     }
 }
