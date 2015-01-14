@@ -213,6 +213,8 @@
         public void ClearSettings()
         {
             _configurationContainer.ClearAll();
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.UserInfo));
+            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration));
         }
 
         public bool HasSavedValueFor(string propertyName)

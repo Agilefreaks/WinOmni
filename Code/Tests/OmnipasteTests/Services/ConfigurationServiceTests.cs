@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services
 {
+    using System.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -18,11 +19,14 @@
 
         private IConfigurationService _subject;
 
+        private TestScheduler _testScheduler;
+
         [SetUp]
         public void SetUp()
         {
             _mockConfigurationProvider = new Mock<IConfigurationContainer>();
             _subject = new ConfigurationService(_mockConfigurationProvider.Object);
+            _testScheduler = new TestScheduler();
         }
 
         [Test]
@@ -40,6 +44,34 @@
             _subject.ClearSettings();
 
             _mockConfigurationProvider.Verify(provider => provider.ClearAll(), Times.Once());
+        }
+        
+        [Test]
+        public void ClearSettings_Always_EmitsASettingsChangedDataEventForUserInfo()
+        {
+            var observer = _testScheduler.CreateObserver<SettingsChangedData>();
+            _subject.SettingsChangedObservable.Subscribe(observer);
+
+            _subject.ClearSettings();
+
+            observer.Messages.Any(
+                message =>
+                message.Value.Kind == NotificationKind.OnNext
+                && message.Value.Value.SettingName == ConfigurationProperties.UserInfo).Should().BeTrue();
+        }
+
+        [Test]
+        public void ClearSettings_Always_EmitsASettingsChangedDataEventForProxyConfiguration()
+        {
+            var observer = _testScheduler.CreateObserver<SettingsChangedData>();
+            _subject.SettingsChangedObservable.Subscribe(observer);
+
+            _subject.ClearSettings();
+
+            observer.Messages.Any(
+                message =>
+                message.Value.Kind == NotificationKind.OnNext
+                && message.Value.Value.SettingName == ConfigurationProperties.ProxyConfiguration).Should().BeTrue();
         }
 
         [Test]
@@ -200,8 +232,7 @@
         [Test]
         public void SetUserInfo_Always_TriggersOnNext()
         {
-            var scheduler = new TestScheduler();
-            var observer = scheduler.CreateObserver<SettingsChangedData>();
+            var observer = _testScheduler.CreateObserver<SettingsChangedData>();
             _subject.SettingsChangedObservable.Subscribe(observer);
 
             _subject.UserInfo = new UserInfo();
