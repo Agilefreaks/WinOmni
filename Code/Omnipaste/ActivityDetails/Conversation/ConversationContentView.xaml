@@ -17,9 +17,11 @@
         <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="0,0,0,4" Padding="16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
-                        <ContentControl cal:View.Model="{Binding}" />
-                    </Border>
+                    <ContentControl Style="{DynamicResource AnimatedContentControlStyle}">
+                        <Border Margin="0,0,0,4" Padding="16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
+                            <ContentControl cal:View.Model="{Binding}" />
+                        </Border>
+                    </ContentControl>
                     <DataTemplate.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                             <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
