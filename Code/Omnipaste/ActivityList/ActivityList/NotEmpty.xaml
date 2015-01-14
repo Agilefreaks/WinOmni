@@ -34,8 +34,9 @@
                     <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch" 
-                                                Visibility="{Binding Path=Model.IsDeleted, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"  Style="{DynamicResource AnimatedContentControlStyle}"
+                                                VerticalContentAlignment="Top"
+                                                Tag="{Binding Path=Model.IsDeleted}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

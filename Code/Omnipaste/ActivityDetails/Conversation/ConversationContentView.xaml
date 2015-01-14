@@ -14,22 +14,31 @@
             <behaviors:ScrollBehavior Collection="{Binding Path=Items}" ScrollDirection="Bottom" />
         </i:Interaction.Behaviors>
 
-        <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="0,0,0,4" Padding="16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
-                        <ContentControl cal:View.Model="{Binding}" />
-                    </Border>
-                    <DataTemplate.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
-                        </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" TargetName="ContentBorder"/>
-                        </Trigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl Style="{DynamicResource AnimatedContentControlStyle}" VerticalContentAlignment="Bottom">
+                            <Border Margin="0,0,0,4" Padding="16" x:Name="ContentBorder" Width="{StaticResource WideContainerWidth}">
+                                <ContentControl cal:View.Model="{Binding}" />
+                            </Border>
+                        </ContentControl>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource AlternativeContentBackgroundBrush}" TargetName="ContentBorder"/>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" TargetName="ContentBorder"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </Grid>
     </ScrollViewer>
 </UserControl>

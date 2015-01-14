@@ -92,6 +92,7 @@
     <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Behaviors\MultipleContentButton.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\NegativeThicknessConverter.cs" />
     <Compile Include="Converters\NullableToBooleanConverter.cs" />
     <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="Converters\IntegerToNullableConverter.cs" />
