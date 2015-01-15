@@ -18,7 +18,7 @@
 
         private readonly Subject<SettingsChangedData> _settingsChangedSubject;
 
-        private bool _deviceIdentifierChanged;
+        private bool _deviceIdChanged;
 
         #endregion
 
@@ -28,7 +28,7 @@
         {
             _settingsChangedSubject = new Subject<SettingsChangedData>();
             _configurationContainer = configurationContainer;
-            _deviceIdentifierChanged = false;
+            _deviceIdChanged = false;
         }
 
         #endregion
@@ -102,6 +102,7 @@
             }
         }
 
+        //ToDo: This should be removed once the migration to using the  DeviceId id completed - 15.01.2014
         public string DeviceIdentifier
         {
             get
@@ -112,7 +113,6 @@
             set
             {
                 _configurationContainer.SetValue(ConfigurationProperties.DeviceIdentifier, value);
-                _deviceIdentifierChanged = true;
             }
         }
 
@@ -134,7 +134,7 @@
         {
             get
             {
-                return string.IsNullOrWhiteSpace(DeviceIdentifier) || _deviceIdentifierChanged;
+                return string.IsNullOrWhiteSpace(DeviceId) || _deviceIdChanged;
             }
         }
 
@@ -152,6 +152,19 @@
             {
                 bool value;
                 return bool.TryParse(this[ConfigurationProperties.ShowDebugBar], out value) && value;
+            }
+        }
+
+        public string DeviceId
+        {
+            get
+            {
+                return _configurationContainer.GetValue(ConfigurationProperties.DeviceId);
+            }
+            set
+            {
+                _configurationContainer.SetValue(ConfigurationProperties.DeviceId, value);
+                _deviceIdChanged = true;
             }
         }
 

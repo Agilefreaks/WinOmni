@@ -16,6 +16,9 @@
 
         bool DebugMode { get; }
 
+        string DeviceId { get; set; }
+
+        //ToDo: This should be removed once the migration to using the  DeviceId id completed - 15.01.2014
         string DeviceIdentifier { get; set; }
 
         KeyPair DeviceKeyPair { get; set; }
@@ -48,9 +51,9 @@
 
         #region Public Methods and Operators
 
-        bool HasSavedValueFor(string propertyName);
-
         void ClearSettings();
+
+        bool HasSavedValueFor(string propertyName);
 
         void SaveAuthSettings(OmnipasteCredentials omnipasteCredentials);
 
