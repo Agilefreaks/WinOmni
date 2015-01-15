@@ -79,7 +79,7 @@ namespace Omnipaste.Services
             return
                 _updateManager.Tasks.Where(task => task is FileUpdateTask)
                     .Cast<FileUpdateTask>()
-                    .Select(t => new UpdateFileInfo { LocalPath = t.LocalPath, Version = t.Version })
+                    .Select(CreateUpdateFileInfo)
                     .ToList();
         }
 
@@ -104,6 +104,14 @@ namespace Omnipaste.Services
                         return true;
                     }, SchedulerProvider.Default);
 
+        }
+
+        private static UpdateFileInfo CreateUpdateFileInfo(FileUpdateTask t)
+        {
+            Version version;
+            Version.TryParse(t.Version, out version);
+
+            return new UpdateFileInfo { LocalPath = t.LocalPath, Version = version };
         }
     }
 }
