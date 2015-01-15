@@ -1,6 +1,7 @@
 ﻿namespace ClipboardTests.Handlers
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Threading;
@@ -46,28 +47,28 @@
             var observer = new Mock<IObserver<Clipping>>();
             var omniMessageObservable = new Subject<OmniMessage>();
             var clipping = new Clipping();
-            _mockClippings.Setup(c => c.Last()).Returns(Observable.Return(clipping));
+            _mockClippings.Setup(c => c.Get("42")).Returns(Observable.Return(clipping));
             _omniClipboardHandler.Start(omniMessageObservable);
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
             DispatcherProvider.Instance = new ImmediateDispatcherProvider();
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(clipping)).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage(OmniMessageProviderEnum.Clipboard));
+            omniMessageObservable.OnNext(new OmniMessage { Type = OmniMessageType.ClippingCreated, Payload = new Dictionary<string, string> { {"id", "42"} }});
 
             autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(clipping), Times.Once);
         }
 
         [Test]
-        public void WhenANotificationMessageArrives_SubscriberOnNextIsNotCalled()
+        public void WhenOtherMessageArrive_SubscriberOnNextIsNotCalled()
         {
             var observer = new Mock<IObserver<Clipping>>();
             var observable = new Subject<OmniMessage>();
 
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
 
-            observable.OnNext(new OmniMessage(OmniMessageProviderEnum.Notification));
+            observable.OnNext(new OmniMessage { Type = "other" });
 
             observer.Verify(o => o.OnNext(It.IsAny<Clipping>()), Times.Never);
         }

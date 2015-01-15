@@ -8,6 +8,9 @@ namespace Clipboard.API.Resources.v1
     {
         #region Public Methods and Operators
 
+        [Get("/clippings/{id}")]
+        IObservable<Clipping> Get([AliasAs("id")] string id);
+
         [Post("/clippings")]
         IObservable<Clipping> Create([Body] Clipping clipping, [Header("Authorization")] string token);
 

@@ -66,7 +66,13 @@
 
         public void OnNext(OmniMessage value)
         {
-            _clippingsResource.Last().RunToCompletion(
+            var clippingId = value.GetPayload("id");
+            if (string.IsNullOrEmpty(clippingId))
+            {
+                return;
+            }
+
+            _clippingsResource.Get(clippingId).RunToCompletion(
                 c =>
                     {
                         c.Source = Clipping.ClippingSourceEnum.Cloud;
@@ -90,7 +96,7 @@
         public void Start(IObservable<OmniMessage> observable)
         {
             Stop();
-            _subscription = observable.Where(m => m.Provider == OmniMessageProviderEnum.Clipboard).Subscribe(this);
+            _subscription = observable.Where(m => m.Type == OmniMessageType.ClippingCreated).Subscribe(this);
         }
 
         public void Stop()

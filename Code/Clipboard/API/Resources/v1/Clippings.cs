@@ -34,6 +34,11 @@
             return ResourceApi.Create(new Clipping(content, identifier), AccessToken);
         }
 
+        public IObservable<Clipping> Get(string id)
+        {
+            return ResourceApi.Get(id);
+        }
+
         #endregion
 
         #region Methods
