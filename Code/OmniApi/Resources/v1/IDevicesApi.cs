@@ -21,7 +21,7 @@
         [Put("/devices/deactivate")]
         IObservable<Device> Deactivate([Body] Device device, [Header("Authorization")] string token);
 
-        [Get("/devices")]
+        [Get("/user/devices")]
         IObservable<List<Device>> GetAll([Header("Authorization")] string token);
 
         [Post("/devices/end_call")]
@@ -33,7 +33,7 @@
         [Post("/devices/call")]
         IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
 
-        [Delete("/devices")]
+        [Delete("/user/devices")]
         IObservable<EmptyModel> Remove(string identifier, [Header("Authorization")] string accessToken);
 
         #endregion
