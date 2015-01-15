@@ -14,7 +14,7 @@
 
         IObservable<EmptyModel> Call(string phoneNumber);
 
-        IObservable<Device> Create(string identifier, string name, string publicKey);
+        IObservable<Device> Create(string name, string publicKey);
 
         IObservable<Device> Deactivate(string identifier);
 

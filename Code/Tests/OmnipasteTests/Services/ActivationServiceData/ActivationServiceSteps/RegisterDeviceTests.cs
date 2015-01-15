@@ -1,6 +1,5 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using System;
     using System.Collections.Generic;
     using System.Reactive;
     using FluentAssertions;
@@ -61,7 +60,7 @@
             var createDeviceObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
                 new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
+            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             var keyPair = new KeyPair { Public = "publicKey" };
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(keyPair);
             
@@ -77,15 +76,12 @@
             var createDeviceObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
                 new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
+            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
             
             _testScheduler.Start(_subject.Execute);
 
-            Guid newId;
-            _mockDevices.Verify(
-                x => x.Create(It.Is<string>(id => Guid.TryParse(id, out newId)), "testMachine", "publicKey"),
-                Times.Once());
+            _mockDevices.Verify(x => x.Create("testMachine", "publicKey"), Times.Once());
         }
 
         [Test]
@@ -93,14 +89,14 @@
         {
             const string NewDeviceId = "someNewId";
             var createDeviceObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device(NewDeviceId))),
+                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device { Id = NewDeviceId  })),
                 new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
+            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
 
             _testScheduler.Start(_subject.Execute);
 
-            _mockConfigurationService.VerifySet(x => x.DeviceIdentifier = NewDeviceId);
+            _mockConfigurationService.VerifySet(x => x.DeviceId = NewDeviceId);
         }
 
         [Test]
@@ -109,7 +105,7 @@
             var createDeviceObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
                 new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
+            _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
 
             var testableObserver = _testScheduler.Start(_subject.Execute);
@@ -127,7 +123,7 @@
 
             _testScheduler.Start(_subject.Execute);
 
-            _mockDevices.Verify(x => x.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),Times.Never());
+            _mockDevices.Verify(x => x.Create(It.IsAny<string>(), It.IsAny<string>()),Times.Never());
         }
 
         [Test]

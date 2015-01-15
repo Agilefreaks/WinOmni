@@ -73,13 +73,12 @@
         {
             var keyPair = _cryptoService.GenerateKeyPair();
 
-            return _devices.Create(Guid.NewGuid().ToString(), _configurationService.MachineName, keyPair.Public)
+            return _devices.Create(_configurationService.MachineName, keyPair.Public)
                 .Select(
                     device => Observable.Start(
                         () =>
                         {
                             _configurationService.DeviceKeyPair = keyPair;
-                            _configurationService.DeviceIdentifier = device.Identifier;
                             _configurationService.DeviceId = device.Id;
                         },
                         SchedulerProvider.Default))

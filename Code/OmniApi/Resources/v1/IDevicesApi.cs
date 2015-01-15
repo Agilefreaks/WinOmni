@@ -15,7 +15,7 @@
         [Post("/devices/call")]
         IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
 
-        [Post("/devices")]
+        [Post("/user/devices")]
         IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
 
         [Put("/devices/deactivate")]
