@@ -8,22 +8,14 @@
         {
         }
 
-        public Device(string identifier)
+        public Device(string registrationId)
         {
-            Identifier = identifier;
-        }
-
-        public Device(string identifier, string registratonId)
-            : this(identifier)
-        {
-            RegistrationId = registratonId;
+            RegistrationId = registrationId;
         }
 
         #endregion
 
         #region Public Properties
-
-        public string Identifier { get; set; }
 
         public string Name { get; set; }
 

@@ -147,9 +147,9 @@
             _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns("someIdentifier");
             var devices = new List<Device>
                               {
-                                  new Device("identifier1"),
-                                  new Device("test") { Name = "someIdentifier", Id = "someId" },
-                                  new Device("identifier3")
+                                  new Device(),
+                                  new Device { Name = "someIdentifier", Id = "someId" },
+                                  new Device()
                               };
             var getDevicesObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<List<Device>>>(100, Notification.CreateOnNext(devices)),

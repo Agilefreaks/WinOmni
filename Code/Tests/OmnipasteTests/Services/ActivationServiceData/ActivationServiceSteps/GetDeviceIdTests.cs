@@ -48,7 +48,7 @@
         public void Execute_AtEndAndConfigurationServiceHasADeviceId_ReturnsSuccessfulResult()
         {
             var autoResetEvent = new AutoResetEvent(false);
-            _mockConfigurationService.Setup(x => x.DeviceIdentifier).Returns("test");
+            _mockConfigurationService.Setup(x => x.DeviceId).Returns("test");
             SchedulerProvider.Default = new NewThreadScheduler();
 
             IExecuteResult executeResult = null;
