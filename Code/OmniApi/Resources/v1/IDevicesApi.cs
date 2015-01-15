@@ -21,8 +21,8 @@
         [Get("/user/devices")]
         IObservable<List<Device>> GetAll([Header("Authorization")] string token);
 
-        [Delete("/user/devices")]
-        IObservable<EmptyModel> Remove(string identifier, [Header("Authorization")] string accessToken);
+        [Delete("/user/devices/{id}")]
+        IObservable<EmptyModel> Remove(string id, [Header("Authorization")] string accessToken);
 
         [Post("/devices/sms")]
         IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);

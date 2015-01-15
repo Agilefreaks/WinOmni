@@ -47,7 +47,7 @@
 
         public void LogOut()
         {
-            Devices.Remove(ConfigurationService.DeviceIdentifier).RunToCompletionSynchronous();
+            Devices.Remove(ConfigurationService.DeviceId).RunToCompletionSynchronous();
             ConfigurationService.ClearSettings();
             _sessionDestroyedObservable.OnNext(new EventArgs());
         }
