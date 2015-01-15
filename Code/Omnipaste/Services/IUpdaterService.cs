@@ -11,7 +11,7 @@
 
         void InstallNewVersionWhenIdle(TimeSpan idleTimeSpan);
 
-        void InstallNewVersion();
+        void InstallNewVersion(bool startMinimized = false);
 
         void CleanTemporaryFiles();
 
