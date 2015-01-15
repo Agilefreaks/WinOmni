@@ -24,15 +24,15 @@
         protected override IExecuteResult ExecuteSynchronously()
         {
             var result = new ExecuteResult();
-            var deviceIdentifier = _configurationService.DeviceIdentifier;
-            if (string.IsNullOrWhiteSpace(deviceIdentifier))
+            var deviceId = _configurationService.DeviceId;
+            if (string.IsNullOrWhiteSpace(deviceId))
             {
                 result.State = SimpleStepStateEnum.Failed;
             }
             else
             {
                 result.State = SimpleStepStateEnum.Successful;
-                result.Data = deviceIdentifier;
+                result.Data = deviceId;
             }
 
             return result;
