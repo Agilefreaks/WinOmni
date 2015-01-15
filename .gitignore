@@ -35,6 +35,7 @@ code/Omnipaste/omnipaste-setup.*
 !code/.nuget/nuget.exe
 !tools/**/*.exe
 !tools/AzCopy/*.exe
+!Libs/**/*.*
 Code/Installer/OmnipasteInstaller/Packages/*
 Libs/NAppUpdate/FeedBuilder/output/*
 Tools/FeedBuilder/output/*
