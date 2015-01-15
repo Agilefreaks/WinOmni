@@ -2,7 +2,7 @@
 {
     public class OmniMessage
     {
-        public OmniMessageTypeEnum Provider { get; set; }
+        public OmniMessageProviderEnum Provider { get; set; }
 
         public OmniMessage()
         {

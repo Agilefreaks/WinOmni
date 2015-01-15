@@ -90,7 +90,7 @@
         public void Start(IObservable<OmniMessage> observable)
         {
             Stop();
-            _subscription = observable.Where(m => m.Provider == OmniMessageTypeEnum.Clipboard).Subscribe(this);
+            _subscription = observable.Where(m => m.Provider == OmniMessageProviderEnum.Clipboard).Subscribe(this);
         }
 
         public void Stop()

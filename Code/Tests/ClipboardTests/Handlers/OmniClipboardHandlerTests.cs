@@ -53,7 +53,7 @@
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(clipping)).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageProviderEnum.Clipboard));
 
             autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(clipping), Times.Once);
@@ -67,7 +67,7 @@
 
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
 
-            observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
+            observable.OnNext(new OmniMessage(OmniMessageProviderEnum.Notification));
 
             observer.Verify(o => o.OnNext(It.IsAny<Clipping>()), Times.Never);
         }

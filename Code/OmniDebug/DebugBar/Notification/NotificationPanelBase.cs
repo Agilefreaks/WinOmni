@@ -169,7 +169,7 @@
                         PhoneNumber = NotificationPhoneNumber,
                         ContactName = NotificationContactName
                     });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Notification));
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageProviderEnum.Notification));
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿namespace OmniCommon.Models
 {
-    public enum OmniMessageTypeEnum
+    public enum OmniMessageProviderEnum
     {
         Clipboard,
         Phone,

@@ -104,7 +104,7 @@
     <Compile Include="Settings\OmnipasteCredentials.cs" />
     <Compile Include="Settings\IConfigurationProvider.cs" />
     <Compile Include="Models\OmniMessage.cs" />
-    <Compile Include="Models\OmniMessageTypeEnum.cs" />
+    <Compile Include="Models\OmniMessageProviderEnum.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\UriExtensionMethods.cs" />
     <Compile Include="Settings\IConfigurationContainer.cs" />

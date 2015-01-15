@@ -68,7 +68,7 @@
 
         private void SubscribeTo(IObservable<OmniMessage> observable)
         {
-            _subscription = observable.Where(i => i.Provider == OmniMessageTypeEnum.Contacts).Subscribe(this);
+            _subscription = observable.Where(i => i.Provider == OmniMessageProviderEnum.Contacts).Subscribe(this);
         }
 
         #endregion

@@ -85,7 +85,7 @@
         public void SimulateIncomingClipping()
         {
             _clippingsWrapper.MockLast(new Clipping { Content = ClippingContent, Type = ClippingType });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageProviderEnum.Clipboard));
         }
 
         #endregion
