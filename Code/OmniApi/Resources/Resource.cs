@@ -13,11 +13,15 @@
     public abstract class Resource<T> : IDisposable
         where T : class
     {
+        #region Fields
+
         protected readonly IConfigurationService ConfigurationService;
 
         private readonly IDisposable _proxyChangeSubscription;
 
         private T _resourceApi;
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -34,9 +38,10 @@
                     return jsonSerializerSettings;
                 };
             WebProxyFactory = webProxyFactory;
-            _proxyChangeSubscription = ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
-                ConfigurationProperties.ProxyConfiguration,
-                OnConfigurationChanged);
+            _proxyChangeSubscription =
+                ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
+                    ConfigurationProperties.ProxyConfiguration,
+                    OnConfigurationChanged);
         }
 
         #endregion
@@ -59,32 +64,37 @@
 
         #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
-        protected abstract T CreateResourceApi(HttpClient httpClient);
-
-        protected virtual HttpClient CreateHttpClient()
+        public void Dispose()
         {
-            var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
-            var handler = new HttpClientHandler
-                              {
-                                  Proxy = WebProxyFactory.CreateFromAppConfiguration(),
-                                  UseProxy = true,
-                                  AllowAutoRedirect = true,
-                              };
-            return new HttpClient(handler) { BaseAddress = baseAddress };
+            _proxyChangeSubscription.Dispose();
         }
-
-        #endregion
 
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
         {
             ResourceApi = CreateResourceApi(CreateHttpClient());
         }
 
-        public void Dispose()
+        #endregion
+
+        #region Methods
+
+        protected virtual HttpClient CreateHttpClient()
         {
-            _proxyChangeSubscription.Dispose();
+            var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
+            var handler = CreateHttpHandler();
+            return new HttpClient(handler) { BaseAddress = baseAddress };
         }
+
+        protected HttpClientHandler CreateHttpHandler()
+        {
+            var webProxy = WebProxyFactory.CreateFromAppConfiguration();
+            return new HttpClientHandler { Proxy = webProxy, UseProxy = webProxy != null, AllowAutoRedirect = true, };
+        }
+
+        protected abstract T CreateResourceApi(HttpClient httpClient);
+
+        #endregion
     }
 }

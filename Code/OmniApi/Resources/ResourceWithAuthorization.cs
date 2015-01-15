@@ -71,12 +71,7 @@
             var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
             var handler = new HttpClientWithAuthorizationHandler(OAuth2, Token, ResponseHandler)
             {
-                InnerHandler = new HttpClientHandler
-                {
-                    Proxy = WebProxyFactory.CreateFromAppConfiguration(),
-                    UseProxy = true,
-                    AllowAutoRedirect = true
-                }
+                InnerHandler = CreateHttpHandler()
             };
             return new HttpClient(handler) { BaseAddress = baseAddress };
         }
