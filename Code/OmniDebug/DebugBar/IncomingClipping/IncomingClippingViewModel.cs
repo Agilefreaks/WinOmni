@@ -84,8 +84,9 @@
 
         public void SimulateIncomingClipping()
         {
-            _clippingsWrapper.MockLast(new Clipping { Content = ClippingContent, Type = ClippingType });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage(OmniMessageProviderEnum.Clipboard));
+            var clippingId = Guid.NewGuid().ToString();
+            _clippingsWrapper.MockGet(clippingId, new Clipping { UniqueId = clippingId, Content = ClippingContent, Type = ClippingType });
+            _omniServiceWrapper.SimulateMessage(new OmniMessage { Type = OmniMessageType.ClippingCreated, Payload = new Dictionary<string, string> { {"id", clippingId} }});
         }
 
         #endregion

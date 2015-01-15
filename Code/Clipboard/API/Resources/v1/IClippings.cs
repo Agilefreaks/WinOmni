@@ -10,8 +10,6 @@
 
         IObservable<Clipping> Create(string identifier, string content);
 
-        IObservable<Clipping> Get(string id);
-
         #endregion
     }
 }

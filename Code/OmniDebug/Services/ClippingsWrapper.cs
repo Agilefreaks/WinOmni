@@ -18,10 +18,5 @@
         {
             return _clippings.Create(identifier, content);
         }
-
-        public IObservable<Clipping> Get(string id)
-        {
-            return _clippings.Get(id);
-        }
     }
 }
