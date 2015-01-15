@@ -33,7 +33,7 @@
 
         public IObservable<EmptyModel> Activate(string registrationId, string deviceId)
         {
-            return ResourceApi.Update(deviceId, new { registrationId }, AccessToken, ConfigurationService.Version.ToString());
+            return ResourceApi.Patch(deviceId, new { registrationId }, AccessToken, ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Call(string phoneNumber)
@@ -49,7 +49,7 @@
 
         public IObservable<EmptyModel> Deactivate(string deviceId)
         {
-            return ResourceApi.Update(deviceId, new { registrationId = string.Empty }, AccessToken, ConfigurationService.Version.ToString());
+            return ResourceApi.Patch(deviceId, new { registrationId = string.Empty }, AccessToken, ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Remove(string identifier)

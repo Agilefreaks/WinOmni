@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using OmniApi.Models;
-    using OmniApi.Support;
     using Refit;
 
     public interface IDevicesApi
@@ -32,7 +31,7 @@
         IObservable<EmptyModel> Update([Body] object deviceParams, [Header("Authorization")] string token);
 
         [Patch("/user/devices/{id}")]
-        IObservable<EmptyModel> Update(string id, [Body] object deviceParams, [Header("Authorization")] string token, [Header("Client-Version")] string version);
+        IObservable<EmptyModel> Patch(string id, [Body] object deviceParams, [Header("Authorization")] string token, [Header("Client-Version")] string version);
 
         #endregion
     }
