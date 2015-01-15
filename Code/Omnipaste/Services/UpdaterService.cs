@@ -15,6 +15,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Helpers;
     using Omnipaste.Services.Providers;
 
     public class UpdaterService : IUpdaterService
@@ -39,8 +40,6 @@
 
         private readonly IArgumentsDataProvider _argumentsDataProvider;
 
-        private readonly IProcessService _processService;
-
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
@@ -64,15 +63,13 @@
             ISystemIdleService systemIdleService,
             IConfigurationService configurationService,
             IWebProxyFactory webProxyFactory,
-            IArgumentsDataProvider argumentsDataProvider,
-            IProcessService processService)
+            IArgumentsDataProvider argumentsDataProvider)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
             _argumentsDataProvider = argumentsDataProvider;
-            _processService = processService;
             _updateSubject = new ReplaySubject<UpdateInfo>();
 
             SetUpdateSource();
@@ -184,19 +181,12 @@
 
         public void InstallNewVersion()
         {
-            try
+            ExternalProcessHelper.Start(new ProcessStartInfo
             {
-                _processService.Start(new ProcessStartInfo
-                                  {
-                                      FileName = MSIExec,
-                                      Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
-                                      WorkingDirectory = InstallerTemporaryFolder
-                                  });
-            }
-            catch (Exception exception)
-            {
-                ExceptionReporter.Instance.Report(exception);
-            }
+                FileName = MSIExec,
+                Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
+                WorkingDirectory = InstallerTemporaryFolder
+            });
         }
 
         public void InstallNewVersionWhenIdle(TimeSpan systemIdleThreshold)

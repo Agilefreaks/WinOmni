@@ -2,8 +2,10 @@
 {
     using System.Diagnostics;
 
-    public interface IProcessService
+    public interface IProcessHelper
     {
+        void Start(string processName);
+
         void Start(ProcessStartInfo processInfo);
     }
 }

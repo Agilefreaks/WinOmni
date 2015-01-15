@@ -4,20 +4,27 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using Caliburn.Micro;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Services;
 
-    public class ExternalProcessHelper
+    public class ExternalProcessHelper : IProcessHelper
     {
-        #region Public Methods and Operators
+        private static IProcessHelper _instance;
 
-        public static void ShowVideoTutorial()
+        public static IProcessHelper Instance
         {
-            var configurationService = IoC.Get<IConfigurationService>();
-            var videoTutorialAddress = new Uri(configurationService.WebBaseUrl + "/#video").ToString();
-            Start(videoTutorialAddress);
+            get
+            {
+                return _instance ?? (_instance = new ExternalProcessHelper());
+            }
+            set
+            {
+                _instance = value;
+            }
         }
 
-        public static void Start(string process)
+        void IProcessHelper.Start(string process)
         {
             try
             {
@@ -29,6 +36,36 @@
             }
         }
 
-        #endregion
+        void IProcessHelper.Start(ProcessStartInfo processInfo)
+        {
+            try
+            {
+                Process.Start(processInfo);
+            }
+            catch (Win32Exception)
+            {
+            }
+            catch (Exception exception)
+            {
+                ExceptionReporter.Instance.Report(exception);
+            }
+        }
+
+        public static void ShowVideoTutorial()
+        {
+            var configurationService = IoC.Get<IConfigurationService>();
+            var videoTutorialAddress = new Uri(configurationService.WebBaseUrl + "/#video").ToString();
+            Start(videoTutorialAddress);
+        }
+
+        public static void Start(string process)
+        {
+            Instance.Start(process);
+        }
+
+        public static void Start(ProcessStartInfo processStartInfo)
+        {
+            Instance.Start(processStartInfo);
+        }
     }
 }

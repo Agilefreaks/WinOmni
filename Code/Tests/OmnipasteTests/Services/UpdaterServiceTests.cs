@@ -13,6 +13,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Helpers;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
 
@@ -33,7 +34,7 @@
         
         private Mock<IArgumentsDataProvider> _mockArgumentsDataProvider;
 
-        private Mock<IProcessService> _mockProcessService;
+        private Mock<IProcessHelper> _mockProcessHelper;
 
         private Mock<ILocalInstallerVersionProvider> _mockLocalInstallerVersionProvider;
 
@@ -55,11 +56,12 @@
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockWebProxyFactory = new Mock<IWebProxyFactory> { DefaultValue = DefaultValue.Mock };
             _mockArgumentsDataProvider = new Mock<IArgumentsDataProvider> { DefaultValue = DefaultValue.Mock };
-            _mockProcessService = new Mock<IProcessService> { DefaultValue = DefaultValue.Mock };
+            _mockProcessHelper = new Mock<IProcessHelper> { DefaultValue = DefaultValue.Mock };
             _mockLocalInstallerVersionProvider = new Mock<ILocalInstallerVersionProvider>();
             _mockRemoteInstallerVersionProvider = new Mock<IRemoteInstallerVersionProvider>();
             _mockApplicationVersionProvider = new Mock<IApplicationVersionProvider>();
 
+            ExternalProcessHelper.Instance = _mockProcessHelper.Object;
             LocalInstallerVersionProvider.Instance = _mockLocalInstallerVersionProvider.Object;
             RemoteInstallerVersionProvider.Instance = _mockRemoteInstallerVersionProvider.Object;
             ApplicationVersionProvider.Instance = _mockApplicationVersionProvider.Object;
@@ -71,8 +73,7 @@
                     _mockSystemIdleService.Object,
                     _mockConfigurationService.Object,
                     _mockWebProxyFactory.Object,
-                    _mockArgumentsDataProvider.Object,
-                    _mockProcessService.Object);
+                    _mockArgumentsDataProvider.Object);
             _subject = _createInstance();
         }
 
@@ -82,6 +83,7 @@
             SchedulerProvider.Default = null;
             SchedulerProvider.Dispatcher = null;
 
+            ExternalProcessHelper.Instance = null;
             LocalInstallerVersionProvider.Instance = null;
             RemoteInstallerVersionProvider.Instance = null;
             ApplicationVersionProvider.Instance = null;
@@ -187,7 +189,7 @@
             _subject.Start();
             _testScheduler.AdvanceBy(TimeSpan.FromHours(2).Ticks);
 
-            _mockProcessService.Verify(m => m.Start(It.IsAny<ProcessStartInfo>()));
+            _mockProcessHelper.Verify(m => m.Start(It.IsAny<ProcessStartInfo>()));
         }
 
         [Test]
