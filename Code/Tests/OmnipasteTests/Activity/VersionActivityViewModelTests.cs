@@ -28,7 +28,7 @@
         {
             _subject.UpdateApp();
 
-            _mockUpdaterService.Verify(m => m.InstallNewVersion());
+            _mockUpdaterService.Verify(m => m.InstallNewVersion(It.IsAny<bool>()));
         }
     }
 }
