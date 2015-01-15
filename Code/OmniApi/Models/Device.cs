@@ -33,6 +33,8 @@
 
         public string RegistrationId { get; set; }
 
+        public string Id { get; set; }
+
         #endregion
     }
 }
