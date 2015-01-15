@@ -5,19 +5,24 @@
     using System.Windows;
     using System.Windows.Data;
 
-    public class NegativeThicknessConverter : IValueConverter
+    public class NegativeThicknessConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            double height = 0;
-            if (value != null)
+            var result = new Thickness(0, 0, 0, 0);
+            if (values != null && values.Length == 2)
             {
-                height = (double)value;
+                var height = (double)values[0];
+                var direction = (VerticalAlignment)values[1];
+                result = direction == VerticalAlignment.Top
+                             ? new Thickness(0, -height, 0, 0)
+                             : new Thickness(0, 0, 0, -height);
             }
-            return new Thickness(0, -height, 0, 0);
+
+            return result;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

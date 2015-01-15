@@ -35,6 +35,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"  Style="{DynamicResource AnimatedContentControlStyle}"
+                                                VerticalContentAlignment="Top"
                                                 Tag="{Binding Path=Model.IsDeleted}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

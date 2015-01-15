@@ -27,8 +27,13 @@
                         
                         <ContentPresenter.Resources>
                             <Storyboard x:Key="FlyInStoryboard" TargetName="ContentPresenter">
-                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0" Duration="{StaticResource AnimationDuration}"
-                                                        From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NegativeThicknessConverter}}">
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0" Duration="{StaticResource AnimationDuration}">
+                                    <ThicknessAnimation.From>
+                                        <MultiBinding Converter="{StaticResource NegativeThicknessConverter}">
+                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            <Binding Path="VerticalContentAlignment" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        </MultiBinding>
+                                    </ThicknessAnimation.From>
                                     <ThicknessAnimation.EasingFunction>
                                         <QuarticEase EasingMode="EaseOut" />
                                     </ThicknessAnimation.EasingFunction>
