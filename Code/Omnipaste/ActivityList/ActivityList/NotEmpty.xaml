@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Background="{DynamicResource ContentBackgroundBrush}" Height="150" Padding="18,42"
+        <Border Background="{DynamicResource ContentBackgroundBrush}" Height="150" Padding="18,42,18,37"
                 Width="{StaticResource NarrowContainerWidth}">
             <StackPanel>
                 <DockPanel VerticalAlignment="Center">
@@ -21,11 +21,15 @@
                                FontFamily="{DynamicResource HeaderTitleFont}" FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap"
                                VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35"/>
                 </DockPanel>
-                <StackPanel DockPanel.Dock="Bottom" Style="{DynamicResource FilterContainer}" Margin="0,16,0,0">
-                    <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}"/>
-                    <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsCheckBoxStyle}" Content="{x:Static properties:Resources.Calls}"/>
-                    <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesCheckBoxStyle}" Content="{x:Static properties:Resources.Messages}"/>
-                </StackPanel>
+                <DockPanel DockPanel.Dock="Bottom" Margin="0,16,0,0">
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.ActivityTypeFilterText}" FontSize="{DynamicResource FilterButtonFontSize}" 
+                               FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}" Margin="0"/>
+                        <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsCheckBoxStyle}" Content="{x:Static properties:Resources.Calls}"/>
+                        <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesCheckBoxStyle}" Content="{x:Static properties:Resources.Messages}"/>
+                    </StackPanel>
+                </DockPanel>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
@@ -35,8 +39,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"  Style="{DynamicResource AnimatedContentControlStyle}"
-                                                VerticalContentAlignment="Top"
-                                                Tag="{Binding Path=Model.IsDeleted}"/>
+                                                VerticalContentAlignment="Top" Tag="{Binding Path=Model.IsDeleted}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

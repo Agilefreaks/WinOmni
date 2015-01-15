@@ -22,11 +22,6 @@
         <Setter Property="Orientation" Value="Vertical"/>
         <Setter Property="Margin" Value="50,50"/>
     </Style>
-    
-    <Style x:Key="FilterContainer" TargetType="StackPanel">
-        <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-    </Style>
 
     <Style x:Key="SideMainMenuStackPanelStyle" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"/>

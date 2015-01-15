@@ -430,4 +430,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="ConversationDeleted" xml:space="preserve">
     <value>Conversația a fost ștearsă. Anulează asta de aici.</value>
   </data>
+  <data name="ActivityTypeFilterText" xml:space="preserve">
+    <value>Filtrează cardurile după tip:</value>
+  </data>
 </root>

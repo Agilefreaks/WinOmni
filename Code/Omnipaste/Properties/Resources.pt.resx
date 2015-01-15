@@ -430,4 +430,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="ConversationDeleted" xml:space="preserve">
     <value>Conversa excluído. Desfazer-lo a partir daqui.</value>
   </data>
+  <data name="ActivityTypeFilterText" xml:space="preserve">
+    <value>Filtre cartões por tipo:</value>
+  </data>
 </root>

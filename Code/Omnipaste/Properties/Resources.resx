@@ -430,4 +430,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="ConversationDeleted" xml:space="preserve">
     <value>Conversation deleted. Undo it from here.</value>
   </data>
+  <data name="ActivityTypeFilterText" xml:space="preserve">
+    <value>Filter cards by type:</value>
+  </data>
 </root>

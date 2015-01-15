@@ -33,7 +33,7 @@
                             </Rectangle.OpacityMask>
                         </Rectangle>
                         <TextBlock Grid.Column="1" Margin="5,0,0,0" FontSize="{DynamicResource FilterButtonFontSize}" 
-                                   FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" 
+                                   FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource ActivityContentBrush}" 
                                    Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
