@@ -14,7 +14,7 @@
             get
             {
                 var result = new Point();
-                var frameworkElement = Application.Current.MainWindow;
+                var frameworkElement = GetView() as FrameworkElement;
                 if (frameworkElement != null)
                 {
                     var mousePosition = Mouse.GetPosition(frameworkElement);
