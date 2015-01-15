@@ -407,6 +407,7 @@
     <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
     <Compile Include="Services\IEntitySupervisor.cs" />
     <Compile Include="Services\INetworkService.cs" />
+    <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISessionManager.cs" />
     <Compile Include="Services\ISystemIdleService.cs" />
     <Compile Include="Services\IUiRefreshService.cs" />
@@ -427,6 +428,7 @@
     <Compile Include="Services\Monitors\User\UserMonitor.cs" />
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Services\Repositories\CallRepository.cs" />
     <Compile Include="Services\Repositories\ClippingRepository.cs" />
     <Compile Include="Services\Repositories\ICallRepository.cs" />

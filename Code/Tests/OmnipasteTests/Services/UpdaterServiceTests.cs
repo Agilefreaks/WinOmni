@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Services
 {
     using System;
+    using System.Diagnostics;
     using System.Net;
     using System.Reactive;
     using FluentAssertions;
@@ -31,6 +32,8 @@
         
         private Mock<IArgumentsDataProvider> _mockArgumentsDataProvider;
 
+        private Mock<IProcessService> _mockProcessService;
+
         private TestScheduler _testScheduler;
 
         [SetUp]
@@ -45,6 +48,7 @@
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockWebProxyFactory = new Mock<IWebProxyFactory> { DefaultValue = DefaultValue.Mock };
             _mockArgumentsDataProvider = new Mock<IArgumentsDataProvider> { DefaultValue = DefaultValue.Mock };
+            _mockProcessService = new Mock<IProcessService> { DefaultValue = DefaultValue.Mock };
             _createInstance =
                 () =>
                 new UpdaterService(
@@ -52,7 +56,8 @@
                     _mockSystemIdleService.Object,
                     _mockConfigurationService.Object,
                     _mockWebProxyFactory.Object,
-                    _mockArgumentsDataProvider.Object);
+                    _mockArgumentsDataProvider.Object,
+                    _mockProcessService.Object);
             _subject = _createInstance();
         }
 
@@ -127,6 +132,54 @@
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20).Ticks);
 
             _mockUpdateManager.Verify(m => m.DownloadUpdates(It.IsAny<Action>()));
+        }
+
+        [Test]
+        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailable_DownloadsUpdateOnlyOnce()
+        {
+            var updatesAvailableObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(TimeSpan.FromMinutes(30).Ticks, Notification.CreateOnNext(true)));
+            var downloadUpdatesObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(TimeSpan.FromMinutes(30).Ticks, Notification.CreateOnNext(true)));
+            _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>()))
+                .Returns(updatesAvailableObservable);
+            _mockUpdateManager.Setup(m => m.DownloadUpdates(It.IsAny<Action>())).Returns<Action>(a => { a(); return downloadUpdatesObservable; });
+
+            _subject.Start();
+            _testScheduler.AdvanceBy(TimeSpan.FromMinutes(100).Ticks);
+
+            _mockUpdateManager.Verify(m => m.DownloadUpdates(It.IsAny<Action>()), Times.Once());
+        }
+
+        [Test]
+        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailableAndSystemIsIdle_StartsInstallerOnce()
+        {
+            var updatesAvailableObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(TimeSpan.FromMinutes(30).Ticks, Notification.CreateOnNext(true)));
+            var downloadUpdatesObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(TimeSpan.FromMinutes(30).Ticks, Notification.CreateOnNext(true)));
+            _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>()))
+                .Returns(updatesAvailableObservable);
+            var systemIdleObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(TimeSpan.FromMinutes(30).Ticks, Notification.CreateOnNext(true)));
+            _mockUpdateManager.Setup(m => m.DownloadUpdates(It.IsAny<Action>())).Returns<Action>(a => { a(); return downloadUpdatesObservable; });
+            _mockSystemIdleService.Setup(m => m.CreateSystemIdleObservable(It.IsAny<TimeSpan>())).Returns(systemIdleObservable);
+
+
+            _subject.Start();
+            _testScheduler.AdvanceBy(TimeSpan.FromMinutes(100).Ticks);
+
+            _mockProcessService.Verify(m => m.Start(It.IsAny<ProcessStartInfo>()), Times.Once());
         }
 
         [Test]

@@ -39,6 +39,8 @@
 
         private readonly IArgumentsDataProvider _argumentsDataProvider;
 
+        private readonly IProcessService _processService;
+
         private readonly TimeSpan _initialUpdateCheckDelay = TimeSpan.FromSeconds(15);
 
         private readonly TimeSpan _systemIdleThreshold = TimeSpan.FromMinutes(5);
@@ -49,7 +51,7 @@
 
         private IDisposable _systemIdleObserver;
 
-        private IDisposable _updateObserver;
+        private IDisposable _updateCheckSubscription;
 
         private IDisposable _proxyConfigurationSubscription;
 
@@ -62,13 +64,15 @@
             ISystemIdleService systemIdleService,
             IConfigurationService configurationService,
             IWebProxyFactory webProxyFactory,
-            IArgumentsDataProvider argumentsDataProvider)
+            IArgumentsDataProvider argumentsDataProvider,
+            IProcessService processService)
         {
             SystemIdleService = systemIdleService;
             ConfigurationService = configurationService;
             _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
             _argumentsDataProvider = argumentsDataProvider;
+            _processService = processService;
             _updateSubject = new ReplaySubject<UpdateInfo>();
 
             SetUpdateSource();
@@ -182,7 +186,7 @@
         {
             try
             {
-                Process.Start(new ProcessStartInfo
+                _processService.Start(new ProcessStartInfo
                                   {
                                       FileName = MSIExec,
                                       Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
@@ -242,18 +246,23 @@
             if (NewLocalInstallerAvailable())
             {
                 InstallNewVersion();
-                _updateObserver = Disposable.Empty;
+                _updateCheckSubscription = Disposable.Empty;
             }
             else
             {
                 CleanTemporaryFiles();
-                _updateObserver =
+                _updateCheckSubscription =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => _updateManager.DownloadUpdates(OnDownloadSuccess))
                         .Switch()
                         .ObserveOn(SchedulerProvider.Dispatcher)
-                        .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
+                        .SubscribeAndHandleErrors(
+                            _ =>
+                                {
+                                    InstallNewVersionWhenIdle(_systemIdleThreshold);
+                                    DisposeUpdateCheckSubscription();
+                                });
             }
 
             if (IsFirstRunAfterUpdate)
@@ -270,13 +279,8 @@
 
         public void Stop()
         {
-            if (_proxyConfigurationSubscription != null)
-            {
-                _proxyConfigurationSubscription.Dispose();
-                _proxyConfigurationSubscription = null;
-            }
-
-            _updateObserver.Dispose();
+            DisposeProxyConfigurationSubscription();
+            DisposeUpdateCheckSubscription();
         }
 
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
@@ -329,10 +333,34 @@
 
         private void DisposeSystemIdleObserver()
         {
-            if (_systemIdleObserver != null)
+            if (_systemIdleObserver == null)
             {
-                _systemIdleObserver.Dispose();
+                return;
             }
+
+            _systemIdleObserver.Dispose();
+            _systemIdleObserver = null;
+        }
+
+        private void DisposeProxyConfigurationSubscription()
+        {
+            if (_proxyConfigurationSubscription == null)
+            {
+                return;
+            }
+
+            _proxyConfigurationSubscription.Dispose();
+            _proxyConfigurationSubscription = null;
+        }
+
+        private void DisposeUpdateCheckSubscription()
+        {
+            if (_updateCheckSubscription == null)
+            {
+                return;
+            }
+            _updateCheckSubscription.Dispose();
+            _updateCheckSubscription = null;
         }
 
         private void MoveUpdatesToTempFolder()
