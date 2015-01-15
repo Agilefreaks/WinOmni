@@ -8,7 +8,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Reflection;
-    using Microsoft.Deployment.WindowsInstaller;
     using NAppUpdate.Framework.Sources;
     using OmniCommon;
     using OmniCommon.DataProviders;
@@ -16,6 +15,8 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Helpers;
+    using Omnipaste.Services.Providers;
 
     public class UpdaterService : IUpdaterService
     {
@@ -49,7 +50,7 @@
 
         private IDisposable _systemIdleObserver;
 
-        private IDisposable _updateObserver;
+        private IDisposable _updateCheckSubscription;
 
         private IDisposable _proxyConfigurationSubscription;
 
@@ -85,7 +86,7 @@
         public ISystemIdleService SystemIdleService { get; set; }
 
         public IConfigurationService ConfigurationService { get; set; }
-
+        
         public IObservable<UpdateInfo> UpdateObservable
         {
             get
@@ -180,19 +181,12 @@
 
         public void InstallNewVersion()
         {
-            try
+            ExternalProcessHelper.Start(new ProcessStartInfo
             {
-                Process.Start(new ProcessStartInfo
-                                  {
-                                      FileName = MSIExec,
-                                      Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
-                                      WorkingDirectory = InstallerTemporaryFolder
-                                  });
-            }
-            catch (Exception exception)
-            {
-                ExceptionReporter.Instance.Report(exception);
-            }
+                FileName = MSIExec,
+                Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
+                WorkingDirectory = InstallerTemporaryFolder
+            });
         }
 
         public void InstallNewVersionWhenIdle(TimeSpan systemIdleThreshold)
@@ -212,25 +206,30 @@
 
         public bool NewRemoteInstallerAvailable()
         {
-            var newInstallerVersion = GetRemoteInstallerVersion(_updateManager);
+            return ExecuteAndHandleErrorsWithDefault(
+                () =>
+                    {
+                        var newInstallerVersion = GetRemoteInstallerVersion();
+                        var localInstallerVersion = GetLocalInstallerVersion();
+                        var installedVersion = GetInstalledVersion();
 
-            return newInstallerVersion != null && RemoteInstallerHasHigherVersion(newInstallerVersion);
+                        return newInstallerVersion != null && newInstallerVersion > installedVersion
+                               && (localInstallerVersion == null || newInstallerVersion > localInstallerVersion);
+                    },
+                false);
         }
 
         public bool NewLocalInstallerAvailable()
         {
-            bool result;
-            try
-            {
-                result = File.Exists(MsiTemporaryPath) && LocalInstallerHasHigherVersion(MsiTemporaryPath);
-            }
-            catch (Exception exception)
-            {
-                result = false;
-                ExceptionReporter.Instance.Report(exception);
-            }
+            return ExecuteAndHandleErrorsWithDefault(
+                () =>
+                    {
+                        var installedVersion = GetInstalledVersion();
+                        var localInstallerVersion = GetLocalInstallerVersion();
 
-            return result;
+                        return localInstallerVersion != null && localInstallerVersion > installedVersion;
+                    },
+                false);
         }
 
         public void Start()
@@ -242,12 +241,12 @@
             if (NewLocalInstallerAvailable())
             {
                 InstallNewVersion();
-                _updateObserver = Disposable.Empty;
+                _updateCheckSubscription = Disposable.Empty;
             }
             else
             {
                 CleanTemporaryFiles();
-                _updateObserver =
+                _updateCheckSubscription =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => _updateManager.DownloadUpdates(OnDownloadSuccess))
@@ -270,13 +269,8 @@
 
         public void Stop()
         {
-            if (_proxyConfigurationSubscription != null)
-            {
-                _proxyConfigurationSubscription.Dispose();
-                _proxyConfigurationSubscription = null;
-            }
-
-            _updateObserver.Dispose();
+            DisposeProxyConfigurationSubscription();
+            DisposeUpdateCheckSubscription();
         }
 
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
@@ -287,52 +281,37 @@
         #endregion
 
         #region Methods
-
-        private static string GetLocalInstallerVersion(string msiPath)
-        {
-            string versionString;
-            using (var database = new Database(msiPath))
-            {
-                versionString =
-                    database.ExecuteScalar("SELECT `Value` FROM `Property` WHERE `Property` = '{0}'", "ProductVersion")
-                    as string;
-            }
-
-            return versionString;
-        }
-        private static string GetRemoteInstallerVersion(IUpdateManager updateManager)
-        {
-            return updateManager.GetUpdatedFiles()
-                    .Where(fileUpdateTask => fileUpdateTask.LocalPath == InstallerName)
-                    .Select(fileUpdateTask => fileUpdateTask.Version)
-                    .FirstOrDefault();
-        }
-
-        private static bool LocalInstallerHasHigherVersion(string msiPath)
-        {
-            return VersionIsHigherThanOwn(GetLocalInstallerVersion(msiPath));
-        }
-
-        private static bool RemoteInstallerHasHigherVersion(string version)
-        {
-            return VersionIsHigherThanOwn(version);
-        }
-
-        private static bool VersionIsHigherThanOwn(string versionString)
-        {
-            Version msiVersion;
-            Version.TryParse(versionString, out msiVersion);
-            var exeVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-            return msiVersion > exeVersion;
-        }
-
+        
         private void DisposeSystemIdleObserver()
         {
-            if (_systemIdleObserver != null)
+            if (_systemIdleObserver == null)
             {
-                _systemIdleObserver.Dispose();
+                return;
             }
+
+            _systemIdleObserver.Dispose();
+            _systemIdleObserver = null;
+        }
+
+        private void DisposeProxyConfigurationSubscription()
+        {
+            if (_proxyConfigurationSubscription == null)
+            {
+                return;
+            }
+
+            _proxyConfigurationSubscription.Dispose();
+            _proxyConfigurationSubscription = null;
+        }
+
+        private void DisposeUpdateCheckSubscription()
+        {
+            if (_updateCheckSubscription == null)
+            {
+                return;
+            }
+            _updateCheckSubscription.Dispose();
+            _updateCheckSubscription = null;
         }
 
         private void MoveUpdatesToTempFolder()
@@ -391,6 +370,37 @@
         {
             var proxy = _webProxyFactory.CreateFromAppConfiguration();
             _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
+        }
+
+        private Version GetLocalInstallerVersion()
+        {
+            return LocalInstallerVersionProvider.GetVersion(MsiTemporaryPath);
+        }
+
+        private Version GetRemoteInstallerVersion()
+        {
+            return RemoteInstallerVersionProvider.GetVersion(_updateManager, InstallerName);
+        }
+
+        private Version GetInstalledVersion()
+        {
+            return ApplicationVersionProvider.GetVersion();
+        }
+
+        private T ExecuteAndHandleErrorsWithDefault<T>(Func<T> executeFunc, T defaultValue)
+        {
+            T result;
+            try
+            {
+                result = executeFunc();
+            }
+            catch (Exception exception)
+            {
+                result = defaultValue;
+                ExceptionReporter.Instance.Report(exception);
+            }
+
+            return result;
         }
 
         #endregion
