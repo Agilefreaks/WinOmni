@@ -1,4 +1,17 @@
-﻿**Version 1.2.1 (14.01.2015)**
+﻿**Version 1.2.2 (15.01.2015)**
+
+**Bug fixes:**
+
+ - fixes issue with app not working with certain system proxy configurations
+
+**Improvements:**
+
+- added some nice transitions for activity item added, deleted/restored and also for the notifications being dismissed
+- other minor improvements
+
+----------
+
+**Version 1.2.1 (14.01.2015)**
 
 **Improvements:**
 
