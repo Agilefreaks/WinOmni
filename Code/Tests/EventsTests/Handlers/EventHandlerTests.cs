@@ -53,7 +53,7 @@
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(@event)).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Notification));
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageProviderEnum.Notification));
 
             autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(@event), Times.Once);
@@ -67,7 +67,7 @@
 
             _eventsHandler.Subscribe(observer.Object);
 
-            observable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            observable.OnNext(new OmniMessage(OmniMessageProviderEnum.Clipboard));
 
             observer.Verify(o => o.OnNext(It.IsAny<Event>()), Times.Never);            
         }

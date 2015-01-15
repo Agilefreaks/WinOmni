@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Notification.HyperlinkNotification
 {
-    using Clipboard.Models;
     using Omnipaste.Helpers;
+    using Omnipaste.Models;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Properties;
 
@@ -32,7 +32,7 @@
             }
         }
 
-        public override Clipping Resource
+        public override ClippingModel Resource
         {
             get
             {

@@ -1,20 +1,20 @@
 ﻿namespace OmnipasteTests.Notification.HyperlinkNotification
 {
-    using Clipboard.Models;
     using FluentAssertions;
     using NUnit.Framework;
+    using Omnipaste.Models;
     using Omnipaste.Notification.HyperlinkNotification;
 
     public class HyperlinkNotificationViewModelTests
     {
         private HyperlinkNotificationViewModel _subject;
 
-        private Clipping _clipping;
+        private ClippingModel _clipping;
 
         [SetUp]
         public void Setup()
         {
-            _clipping = new Clipping("test");
+            _clipping = new ClippingModel { Content = "test" };
             _subject = new HyperlinkNotificationViewModel
                            {
                                Resource = _clipping

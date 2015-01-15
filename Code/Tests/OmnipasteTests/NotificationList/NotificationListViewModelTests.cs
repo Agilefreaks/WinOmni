@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Reactive;
     using Caliburn.Micro;
-    using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
     using Events.Models;
@@ -18,10 +17,12 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
+    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class NotificationListViewModelTests
@@ -30,7 +31,7 @@
 
         private Mock<IEventsHandler> _mockEventsHandler;
 
-        private Mock<IOmniClipboardHandler> _mockOmniClipboardHandler;
+        private Mock<IClippingRepository> _mockClippingRepository;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -38,7 +39,7 @@
 
         private TestScheduler _testScheduler;
 
-        private ITestableObservable<Clipping> _testableClippingsObservable;
+        private ITestableObservable<RepositoryOperation<ClippingModel>> _testableClippingsObservable;
 
         private ITestableObservable<Event> _testableEventsObservable;
 
@@ -63,7 +64,7 @@
 
             SetupEventsHandler();
 
-            SetupClipboardHandler();
+            SetupClippingRepository();
 
             _mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
@@ -89,11 +90,11 @@
         }
 
         [Test]
-        public void WhenNewClippingComesThroughOmniClipboardHandler_AddsNewNotificationViewModel()
+        public void WhenNewCloudClippingIsSaved_AddsNewNotificationViewModel()
         {
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Clipping>()))
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<ClippingModel>()))
                 .Returns(new Mock<IClippingNotificationViewModel>().Object);
-            _mockOmniClipboardHandler.Setup(h => h.Clippings).Returns(_testableClippingsObservable);
+            _mockClippingRepository.Setup(m => m.OperationObservable).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -102,12 +103,12 @@
         }
 
         [Test]
-        public void WhenNewClippingComesThroughOmniClipboardHandler_CreatesNewNotificationViewModel()
+        public void WhenNewCloudClippingIsSaved_CreatesNewNotificationViewModel()
         {
             var mockClippingNotificationViewModel = new Mock<IClippingNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Clipping>()))
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<ClippingModel>()))
                 .Returns(mockClippingNotificationViewModel.Object);
-            _mockOmniClipboardHandler.Setup(h => h.Clippings).Returns(_testableClippingsObservable);
+            _mockClippingRepository.Setup(m => m.OperationObservable).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -160,10 +161,10 @@
 
         #region Methods
 
-        private void SetupClipboardHandler()
+        private void SetupClippingRepository()
         {
-            _mockOmniClipboardHandler = new Mock<IOmniClipboardHandler> { DefaultValue = DefaultValue.Mock };
-            _mockingKernel.Bind<IOmniClipboardHandler>().ToConstant(_mockOmniClipboardHandler.Object);
+            _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
+            _mockingKernel.Bind<IClippingRepository>().ToConstant(_mockClippingRepository.Object);
         }
 
         private void SetupEventsHandler()
@@ -177,7 +178,18 @@
             _testScheduler = new TestScheduler();
             _testableClippingsObservable =
                 _testScheduler.CreateHotObservable(
-                    new Recorded<Notification<Clipping>>(200, Notification.CreateOnNext(new Clipping())));
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ClippingModel>(
+                                RepositoryMethodEnum.Create,
+                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                        250,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ClippingModel>(
+                                RepositoryMethodEnum.Create,
+                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))));
 
             _testScheduler.CreateHotObservable(
                 new Recorded<Notification<Event>>(

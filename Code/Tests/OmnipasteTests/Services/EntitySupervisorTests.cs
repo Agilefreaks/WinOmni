@@ -69,8 +69,8 @@
         [Test]
         public void OnNewClipping_AfterStart_AlwayStoresClipping()
         {
-            const string UniqueId = "42";
-            var clipping = new Clipping { UniqueId = UniqueId };
+            const string Id = "42";
+            var clipping = new Clipping { Id = Id };
             var clippingObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(clipping)));
             _mockClipboardHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Clipping>>()))
                 .Returns<IObserver<Clipping>>(o => clippingObservable.Subscribe(o));
@@ -78,7 +78,7 @@
             _subject.Start();
             _testScheduler.Start(() => clippingObservable);
             
-            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingModel>(c => c.UniqueId == UniqueId)));
+            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingModel>(c => c.Id == Id)));
         }
 
         [Test]

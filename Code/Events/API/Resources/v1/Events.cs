@@ -20,6 +20,11 @@
 
         #region Public Methods and Operators
 
+        public IObservable<Event> Get(string id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IObservable<Event> Last()
         {
             return ResourceApi.Last(AccessToken);

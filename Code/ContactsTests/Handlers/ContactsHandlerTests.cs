@@ -46,7 +46,7 @@
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(It.IsAny<Unit>())).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Contacts));
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageProviderEnum.Contacts));
 
             autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(It.IsAny<Unit>()), Times.Once);
@@ -63,7 +63,7 @@
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(It.IsAny<Unit>())).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage(OmniMessageTypeEnum.Clipboard));
+            omniMessageObservable.OnNext(new OmniMessage(OmniMessageProviderEnum.Clipboard));
 
             autoResetEvent.WaitOne(1000);
             

@@ -11,12 +11,14 @@
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
+    using Clipboard.Models;
     using Events.Handlers;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification;
+    using Omnipaste.Services.Repositories;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel
     {
@@ -30,7 +32,7 @@
 
         private readonly IEventsHandler _eventsHandler;
 
-        private readonly IOmniClipboardHandler _omniClipboardHandler;
+        private readonly IClippingRepository _clippingRepository;
 
         private IDisposable _clippingsSubscription;
 
@@ -42,13 +44,13 @@
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(IEventsHandler eventsHandler, IOmniClipboardHandler omniClipboardHandler, IEventAggregator eventAggregator)
+        public NotificationListViewModel(IEventsHandler eventsHandler, IClippingRepository clippingRepository, IEventAggregator eventAggregator)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
             Notifications.CollectionChanged += NotificationsCollectionChanged;
 
             _eventsHandler = eventsHandler;
-            _omniClipboardHandler = omniClipboardHandler;
+            _clippingRepository = clippingRepository;
 
             Height = double.NaN;
 
@@ -135,7 +137,10 @@
         private void CreateNotificationsFromIncomingClippings()
         {
             _clippingsSubscription =
-                _omniClipboardHandler.Clippings.ObserveOn(SchedulerProvider.Dispatcher)
+                _clippingRepository.OperationObservable.Created()
+                    .Select(o => o.Item)
+                    .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(
                         clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
         }
