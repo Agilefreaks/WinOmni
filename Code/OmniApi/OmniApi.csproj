@@ -127,6 +127,7 @@
     <Compile Include="Support\HttpClientWithAuthorizationHandler.cs" />
     <Compile Include="Cryptography\ICryptoService.cs" />
     <Compile Include="Support\IHttpResponseMessageHandler.cs" />
+    <Compile Include="Support\PatchAttribute.cs" />
     <Compile Include="Support\Serialization\DeliminatorSeparatedPropertyNamesContractResolver.cs" />
     <Compile Include="Support\Converters\EncryptionConverter.cs" />
     <Compile Include="Support\Serialization\SnakeCasePropertyNamesContractResolver.cs" />
