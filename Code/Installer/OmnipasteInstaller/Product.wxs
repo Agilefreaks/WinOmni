@@ -9,6 +9,8 @@
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of Omnipaste is already installed." />
 
+    <Property Id="START_MINIMIZED">false</Property>
+
     <Property Id="DOTNETVERSION45FULL" Secure="yes">
       <RegistrySearch Id="DotNet45Full" Root="HKLM" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" Name="Version" Type="raw" />
     </Property>

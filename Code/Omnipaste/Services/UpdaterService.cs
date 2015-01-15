@@ -178,14 +178,14 @@
             }
         }
 
-        public void InstallNewVersion()
+        public void InstallNewVersion(bool startMinimized = false)
         {
             try
             {
                 Process.Start(new ProcessStartInfo
                                   {
                                       FileName = MSIExec,
-                                      Arguments = string.Format("/i {0} /qn /l*v LogFile.txt", MsiTemporaryPath),
+                                      Arguments = string.Format("/i {0} /qn /l*v LogFile.txt START_MINIMIZED={1}", MsiTemporaryPath, startMinimized),
                                       WorkingDirectory = InstallerTemporaryFolder
                                   });
             }
@@ -206,7 +206,7 @@
                         _ =>
                         {
                             DisposeSystemIdleObserver();
-                            InstallNewVersion();
+                            InstallNewVersion(true);
                         });
         }
 
@@ -241,7 +241,7 @@
                     OnConfigurationChanged);
             if (NewLocalInstallerAvailable())
             {
-                InstallNewVersion();
+                InstallNewVersion(_argumentsDataProvider.Minimized);
                 _updateObserver = Disposable.Empty;
             }
             else

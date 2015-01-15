@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Shell.TitleBar
 {
     using System;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Services;
