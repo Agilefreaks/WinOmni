@@ -142,6 +142,7 @@
             var configurationService = _kernel.Get<IConfigurationService>();
             GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Application Version", configurationService.Version.ToString()));
             GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Identifier", configurationService.DeviceIdentifier));
+            GlobalConfig.AdditionalData.Add(new KeyValuePair<string, string>("Device Id", configurationService.DeviceId));
         }
 
         private void StartBackgroundServices()

@@ -10,13 +10,13 @@
 
         IObservable<EmptyModel> Update(object deviceParams);
 
-        IObservable<Device> Activate(string registrationId, string identifier);
+        IObservable<EmptyModel> Activate(string registrationId, string deviceId);
 
         IObservable<EmptyModel> Call(string phoneNumber);
 
-        IObservable<Device> Create(string identifier, string name, string publicKey);
+        IObservable<Device> Create(string name, string publicKey);
 
-        IObservable<Device> Deactivate(string identifier);
+        IObservable<EmptyModel> Deactivate(string identifier);
 
         IObservable<EmptyModel> Remove(string identifier);
 

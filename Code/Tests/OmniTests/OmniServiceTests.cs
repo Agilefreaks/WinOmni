@@ -27,7 +27,7 @@
 
         private const string DeviceName = "Laptop";
 
-        private const string DeviceIdentifier = "42";
+        private const string DeviceId = "42";
 
         private IOmniService _subject;
 
@@ -64,8 +64,8 @@
                 .Returns(DeviceName);
 
             _mockConfigurationService
-                .SetupGet(cs => cs.DeviceIdentifier)
-                .Returns(DeviceIdentifier);
+                .SetupGet(cs => cs.DeviceId)
+                .Returns(DeviceId);
 
             _mockConfigurationService.SetupGet(cs => cs.AccessToken).Returns("SomeToken");
 
@@ -156,10 +156,10 @@
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
             var deactivateObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
-                new Recorded<Notification<Device>>(120, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
+                new Recorded<Notification<EmptyModel>>(120, Notification.CreateOnCompleted<EmptyModel>()));
             var deviceId = Guid.NewGuid().ToString();
-            _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns(deviceId);
+            _mockConfigurationService.SetupGet(x => x.DeviceId).Returns(deviceId);
             _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
             var testableObserver = testScheduler.CreateObserver<Unit>();
 
@@ -179,10 +179,10 @@
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
             var deactivateObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnError<Device>(new Exception("test"))),
-                new Recorded<Notification<Device>>(120, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnError<EmptyModel>(new Exception("test"))),
+                new Recorded<Notification<EmptyModel>>(120, Notification.CreateOnCompleted<EmptyModel>()));
             var deviceId = Guid.NewGuid().ToString();
-            _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns(deviceId);
+            _mockConfigurationService.SetupGet(x => x.DeviceId).Returns(deviceId);
             _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
             var testableObserver = testScheduler.CreateObserver<Unit>();
 
@@ -210,7 +210,7 @@
             _scheduler.Start(_subject.Start);
 
             SchedulerProvider.Default = Scheduler.Default;
-            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new Device()));
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
 
             _subject.Dispose();
 
@@ -224,11 +224,11 @@
             _scheduler.Start(_subject.Start);
 
             SchedulerProvider.Default = Scheduler.Default;
-            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new Device()));
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
 
             _subject.Dispose();
 
-            _mockDevices.Verify(x => x.Deactivate(_mockConfigurationService.Object.DeviceIdentifier));
+            _mockDevices.Verify(x => x.Deactivate(_mockConfigurationService.Object.DeviceId));
         }
 
         [Test]
@@ -263,7 +263,6 @@
 
         private void SetupOmniServiceForStart()
         {
-            var device = new Device { Identifier = DeviceIdentifier };
             var openWebsocketConnection =
                 _scheduler.CreateColdObservable(
                     new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
@@ -272,9 +271,9 @@
             _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
             var activateDevice =
                 _scheduler.CreateColdObservable(
-                    new Recorded<Notification<Device>>(0, Notification.CreateOnNext(device)),
-                    new Recorded<Notification<Device>>(0, Notification.CreateOnCompleted<Device>()));
-            _mockDevices.Setup(m => m.Activate(_registrationId, DeviceIdentifier)).Returns(activateDevice);
+                    new Recorded<Notification<EmptyModel>>(0, Notification.CreateOnNext(new EmptyModel())),
+                    new Recorded<Notification<EmptyModel>>(0, Notification.CreateOnCompleted<EmptyModel>()));
+            _mockDevices.Setup(m => m.Activate(_registrationId, DeviceId)).Returns(activateDevice);
         }
     }
 }

@@ -243,29 +243,29 @@
         }
 
         [Test]
-        public void IsNewDevice_NoDeviceIdentifierIsStored_ReturnsTrue()
+        public void IsNewDevice_NoDeviceIdIsStored_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns(string.Empty);
 
             _subject.IsNewDevice.Should().BeTrue();
         }
 
         [Test]
-        public void IsNewDevice_ADeviceIdentifierIsStoredAndNoDeviceIdentifierChangesHaveOccured_ReturnsFalse()
+        public void IsNewDevice_ADeviceIdIsStoredAndNoDeviceIdChangesHaveOccured_ReturnsFalse()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns("someId");
 
             _subject.IsNewDevice.Should().BeFalse();
         }
 
         [Test]
-        public void IsNewDevice_ADeviceIdentifierIsStoredButACallToSaveANewDeviceIdentifierHasBeenMade_ReturnsTrue()
+        public void IsNewDevice_ADeviceIdIsStoredButACallToSaveANewDeviceIdHasBeenMade_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceIdentifier))
+            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns("someId");
-            _subject.DeviceIdentifier = "someNewId";
+            _subject.DeviceId = "someNewId";
 
             _subject.IsNewDevice.Should().BeTrue();
         }

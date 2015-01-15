@@ -57,7 +57,7 @@
         public void LogOut_Always_RemovesTheCurrentDeviceFromTheUserDeviceList()
         {
              var deviceId = Guid.NewGuid().ToString();
-            _mockConfigurationService.SetupGet(x => x.DeviceIdentifier).Returns(deviceId);
+            _mockConfigurationService.SetupGet(x => x.DeviceId).Returns(deviceId);
 
             _subject.LogOut();
 

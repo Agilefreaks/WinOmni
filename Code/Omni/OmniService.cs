@@ -126,10 +126,10 @@
             return Observable.Return(new Unit(), SchedulerProvider.Default);
         }
 
-        private IObservable<Device> ActivateDevice(string deviceIdentifier)
+        private IObservable<EmptyModel> ActivateDevice(string deviceId)
         {
             SimpleLogger.Log("Activating device");
-            return Devices.Activate(WebsocketConnection.SessionId, deviceIdentifier);
+            return Devices.Activate(WebsocketConnection.SessionId, deviceId);
         }
 
         private void AssureAuthenticationCredentialsExist()
@@ -194,7 +194,7 @@
                 Observable.Start(AssureAuthenticationCredentialsExist, SchedulerProvider.Default)
                     .Select(_ => OpenWebsocketConnection())
                     .Switch()
-                    .Select(_ => ActivateDevice(ConfigurationService.DeviceIdentifier))
+                    .Select(_ => ActivateDevice(ConfigurationService.DeviceId))
                     .Switch()
                     .Select(_ => Observable.Start(StartHandlers, SchedulerProvider.Default))
                     .Switch()
@@ -232,7 +232,7 @@
         {
             SimpleLogger.Log("Deactivating device");
             return
-                Devices.Deactivate(ConfigurationService.DeviceIdentifier)
+                Devices.Deactivate(ConfigurationService.DeviceId)
                     .Select(_ => new Unit())
                     .Catch<Unit, Exception>(OnDeactivateDeviceException);
         }

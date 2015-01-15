@@ -9,32 +9,29 @@
     {
         #region Public Methods and Operators
 
-        [Put("/devices")]
-        IObservable<EmptyModel> Update([Body] object deviceParams, [Header("Authorization")] string token);
+        [Post("/devices/call")]
+        IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
 
-        [Put("/devices/activate")]
-        IObservable<Device> Activate([Body] Device device, [Header("Authorization")] string token, [Header("Client-Version")] string version);
-
-        [Post("/devices")]
+        [Post("/user/devices")]
         IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
-
-        [Put("/devices/deactivate")]
-        IObservable<Device> Deactivate([Body] Device device, [Header("Authorization")] string token);
-
-        [Get("/devices")]
-        IObservable<List<Device>> GetAll([Header("Authorization")] string token);
 
         [Post("/devices/end_call")]
         IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
 
+        [Get("/user/devices")]
+        IObservable<List<Device>> GetAll([Header("Authorization")] string token);
+
+        [Delete("/user/devices/{id}")]
+        IObservable<EmptyModel> Remove(string id, [Header("Authorization")] string accessToken);
+
         [Post("/devices/sms")]
         IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);
 
-        [Post("/devices/call")]
-        IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
+        [Put("/devices")]
+        IObservable<EmptyModel> Update([Body] object deviceParams, [Header("Authorization")] string token);
 
-        [Delete("/devices")]
-        IObservable<EmptyModel> Remove(string identifier, [Header("Authorization")] string accessToken);
+        [Patch("/user/devices/{id}")]
+        IObservable<EmptyModel> Patch(string id, [Body] object deviceParams, [Header("Authorization")] string token, [Header("Client-Version")] string version);
 
         #endregion
     }

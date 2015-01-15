@@ -11,7 +11,7 @@
     {
         #region Constants
 
-        public const string NotificationProvider = "omni_sync";
+        public const string NotificationsProvider = "omni_sync";
 
         #endregion
 
@@ -31,11 +31,13 @@
             return ResourceApi.Update(deviceParams, AccessToken);
         }
 
-        public IObservable<Device> Activate(string registrationId, string identifier)
+        public IObservable<EmptyModel> Activate(string registrationId, string deviceId)
         {
-            var device = new Device(identifier, registrationId) { Provider = NotificationProvider };
-
-            return ResourceApi.Activate(device, AccessToken, ConfigurationService.Version.ToString());
+            return ResourceApi.Patch(
+                deviceId,
+                new { registrationId, provider = NotificationsProvider },
+                AccessToken,
+                ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Call(string phoneNumber)
@@ -43,16 +45,15 @@
             return ResourceApi.Call(phoneNumber, AccessToken);
         }
 
-        public IObservable<Device> Create(string identifier, string name, string publicKey)
+        public IObservable<Device> Create(string name, string publicKey)
         {
-            var device = new Device(identifier) { Name = name, PublicKey = publicKey };
+            var device = new Device { Name = name, PublicKey = publicKey };
             return ResourceApi.Create(device, AccessToken);
         }
 
-        public IObservable<Device> Deactivate(string identifier)
+        public IObservable<EmptyModel> Deactivate(string deviceId)
         {
-            var device = new Device(identifier);
-            return ResourceApi.Deactivate(device, AccessToken);
+            return ResourceApi.Patch(deviceId, new { registrationId = string.Empty }, AccessToken, ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Remove(string identifier)

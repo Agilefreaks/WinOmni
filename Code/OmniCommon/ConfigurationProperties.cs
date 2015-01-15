@@ -20,6 +20,8 @@
 
         public static string DeviceIdentifier = "DeviceIdentifier";
 
+        public static string DeviceId = "DeviceId";
+
         public static string DeviceKeyPair = "DeviceKeyPair";
 
         public static string UpdateSource = "UpdateSource";
