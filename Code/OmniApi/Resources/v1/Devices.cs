@@ -11,7 +11,7 @@
     {
         #region Constants
 
-        public const string NotificationProvider = "omni_sync";
+        public const string NotificationsProvider = "omni_sync";
 
         #endregion
 
@@ -33,7 +33,11 @@
 
         public IObservable<EmptyModel> Activate(string registrationId, string deviceId)
         {
-            return ResourceApi.Patch(deviceId, new { registrationId }, AccessToken, ConfigurationService.Version.ToString());
+            return ResourceApi.Patch(
+                deviceId,
+                new { registrationId, provider = NotificationsProvider },
+                AccessToken,
+                ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Call(string phoneNumber)

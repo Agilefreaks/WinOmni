@@ -119,6 +119,7 @@
     <Compile Include="Resources\ITestApi.cs" />
     <Compile Include="Resources\TestResource.cs" />
     <Compile Include="Resources\ResourceTest.cs" />
+    <Compile Include="Resources\v1\DevicesTests.cs" />
     <Compile Include="Support\Converters\EncryptionConverterTests.cs" />
     <Compile Include="Support\Converters\SnakeCaseStringEnumConverterTests.cs" />
     <Compile Include="Support\HttpClientWithAuthorizationHandlerTests.cs" />
