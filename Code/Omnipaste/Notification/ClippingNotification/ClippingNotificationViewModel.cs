@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Notification.ClippingNotification
 {
-    using Clipboard.Models;
+    using Omnipaste.Models;
     using Omnipaste.Properties;
 
-    public class ClippingNotificationViewModel : ResourceBasedNotificationViewModel<Clipping>, IClippingNotificationViewModel
+    public class ClippingNotificationViewModel : ResourceBasedNotificationViewModel<ClippingModel>, IClippingNotificationViewModel
     {
         #region Public Properties
 

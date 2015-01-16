@@ -6,6 +6,7 @@
     using Ninject;
     using Omnipaste.Notification;
     using Clipboard.Models;
+    using Omnipaste.Models;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.HyperlinkNotification;
     using Omnipaste.Notification.IncomingCallNotification;
@@ -35,7 +36,7 @@
             _eventNotificationConstructors.Add(EventTypeEnum.IncomingSmsEvent, () => Kernel.Get<IIncomingSmsNotificationViewModel>());
         }
 
-        public INotificationViewModel Create(Clipping clipping)
+        public INotificationViewModel Create(ClippingModel clipping)
         {
             var result = _clippingNotificationConstructors[clipping.Type]();
             result.Resource = clipping;

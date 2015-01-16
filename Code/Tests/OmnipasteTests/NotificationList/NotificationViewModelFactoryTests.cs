@@ -5,6 +5,7 @@
     using FluentAssertions;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;
@@ -32,7 +33,7 @@
         [Test]
         public void Create_WithClipping_SetsTheClippingOnTheViewModel()
         {
-            var clipping = new Clipping();
+            var clipping = new ClippingModel();
             var viewModel = (IClippingNotificationViewModel)_subject.Create(clipping);
 
             viewModel.Resource.Should().Be(clipping);
