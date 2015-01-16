@@ -81,8 +81,6 @@
   <ItemGroup>
     <Compile Include="Handlers\ISmsMessageCreatedHandler.cs" />
     <Compile Include="Handlers\SmsMessageCreatedHandler.cs" />
-    <Compile Include="Models\SMSMessageType.cs" />
-    <Compile Include="Models\SMSMessageState.cs" />
     <Compile Include="Models\SmsMessage.cs" />
     <Compile Include="Models\SmsMessageState.cs" />
     <Compile Include="Models\SmsMessageType.cs" />

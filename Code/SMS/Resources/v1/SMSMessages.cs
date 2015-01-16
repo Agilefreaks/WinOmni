@@ -28,14 +28,13 @@
 
         public IObservable<EmptyModel> Send(string message, string phoneNumber)
         {
-            var payload =
-                new
-                    {
-                        Content = message,
-                        PhoneNumber = phoneNumber,
-                        Type = SMSMessageType.Incoming,
-                        State = SMSMessageState.Sending
-                    };
+            var payload = new SmsMessage
+                              {
+                                  Content = message,
+                                  PhoneNumber = phoneNumber,
+                                  Type = SmsMessageType.Outgoing,
+                                  State = SmsMessageState.Sending
+                              };
 
             return ResourceApi.Create(payload, AccessToken);
         }
