@@ -40,11 +40,6 @@
                 ConfigurationService.Version.ToString());
         }
 
-        public IObservable<EmptyModel> Call(string phoneNumber)
-        {
-            return ResourceApi.Call(phoneNumber, AccessToken);
-        }
-
         public IObservable<Device> Create(string name, string publicKey)
         {
             var device = new Device { Name = name, PublicKey = publicKey };
@@ -63,11 +58,6 @@
         public IObservable<EmptyModel> Remove(string identifier)
         {
             return ResourceApi.Remove(identifier, AccessToken);
-        }
-
-        public IObservable<EmptyModel> EndCall()
-        {
-            return ResourceApi.EndCall(AccessToken);
         }
 
         public IObservable<List<Device>> GetAll()

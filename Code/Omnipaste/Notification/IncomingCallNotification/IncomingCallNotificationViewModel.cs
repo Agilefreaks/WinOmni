@@ -2,9 +2,9 @@
 {
     using Caliburn.Micro;
     using Ninject;
-    using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Properties;
+    using PhoneCalls.Resources.v1;
 
     public class IncomingCallNotificationViewModel : EventNotificationViewModelBase, IIncomingCallNotificationViewModel
     {
@@ -47,7 +47,7 @@
         }
 
         [Inject]
-        public IDevices Devices { get; set; }
+        public IPhoneCalls PhoneCalls { get; set; }
 
         public string EndCallButtonText
         {
@@ -90,7 +90,7 @@
         {
             CanEndCall = false;
 
-            Devices.EndCall().RunToCompletion(
+            PhoneCalls.EndCall(Resource.Id).RunToCompletion(
                 _ =>
                     {
                         EndCallButtonText = Resources.IncommingCallNotificationCallEnded;

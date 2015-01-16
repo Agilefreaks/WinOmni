@@ -12,15 +12,11 @@
 
         IObservable<EmptyModel> Activate(string registrationId, string deviceId);
 
-        IObservable<EmptyModel> Call(string phoneNumber);
-
         IObservable<Device> Create(string name, string publicKey);
 
         IObservable<EmptyModel> Deactivate(string identifier);
 
         IObservable<EmptyModel> Remove(string identifier);
-
-        IObservable<EmptyModel> EndCall();
 
         IObservable<List<Device>> GetAll();
 

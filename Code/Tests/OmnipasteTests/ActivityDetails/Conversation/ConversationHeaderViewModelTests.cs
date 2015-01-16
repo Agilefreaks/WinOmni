@@ -10,7 +10,6 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
@@ -18,13 +17,14 @@
     using Omnipaste.Services.Repositories;
     using OmniUI.Models;
     using OmniUI.Presenters;
+    using PhoneCalls.Resources.v1;
 
     [TestFixture]
     public class ConversationHeaderViewModelTests
     {
         private ConversationHeaderViewModel _subject;
 
-        private Mock<IDevices> _mockDevices;
+        private Mock<IPhoneCalls> _mockPhoneCalls;
 
         private Mock<ICallRepository> _mockCallRepository;
 
@@ -39,13 +39,13 @@
             SchedulerProvider.Default = _testScheduler;
             SchedulerProvider.Dispatcher = _testScheduler;
 
-            _mockDevices = new Mock<IDevices> { DefaultValue = DefaultValue.Mock };
+            _mockPhoneCalls = new Mock<IPhoneCalls> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
 
             _subject = new ConversationHeaderViewModel
                            {
-                               Devices = _mockDevices.Object,
+                               PhoneCalls = _mockPhoneCalls.Object,
                                CallRepository = _mockCallRepository.Object,
                                MessageRepository = _mockMessageRepository.Object,
                                ContactInfo = new ContactInfoPresenter(new ContactInfo()),
@@ -71,35 +71,35 @@
         [Test]
         public void Call_Always_InitiatesACall()
         {
-            var phoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = phoneNumber };
+            const string PhoneNumber = "1234567890";
+            var @event = new Event { PhoneNumber = PhoneNumber };
             _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
-            _mockDevices.Verify(m => m.Call(phoneNumber));
+            _mockPhoneCalls.Verify(m => m.Call(PhoneNumber));
         }
 
         [Test]
         public void Call_WhenCanceled_DoesNotInitiateACall()
         {
-            var phoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = phoneNumber };
+            const string PhoneNumber = "1234567890";
+            var @event = new Event { PhoneNumber = PhoneNumber };
             _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
             _subject.CancelCall();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
-            _mockDevices.Verify(m => m.Call(It.IsAny<string>()), Times.Never());
+            _mockPhoneCalls.Verify(m => m.Call(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
         public void Call_WhenCanceled_ChangesStateToNormal()
         {
-            var phoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = phoneNumber };
+            const string PhoneNumber = "1234567890";
+            var @event = new Event { PhoneNumber = PhoneNumber };
             _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
@@ -117,7 +117,7 @@
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
-            _mockDevices.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
+            _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
             
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -133,7 +133,7 @@
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
-            _mockDevices.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
+            _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
             
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);

@@ -12,7 +12,6 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Dialog;
     using Omnipaste.Event;
@@ -20,6 +19,7 @@
     using Omnipaste.MasterEventList.Calling;
     using Omnipaste.Models;
     using OmniUI.Models;
+    using PhoneCalls.Resources.v1;
 
     [TestFixture]
     public class EventViewModelTests
@@ -30,7 +30,7 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
-        private Mock<IDevices> _mockDevices;
+        private Mock<IPhoneCalls> _mockPhoneCalls;
 
         private TestScheduler _testScheduler;
 
@@ -45,9 +45,9 @@
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
 
-            _mockDevices = _kernel.GetMock<IDevices>();
-            _mockDevices.DefaultValue = DefaultValue.Mock;
-            _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
+            _mockPhoneCalls = _kernel.GetMock<IPhoneCalls>();
+            _mockPhoneCalls.DefaultValue = DefaultValue.Mock;
+            _kernel.Bind<IPhoneCalls>().ToConstant(_mockPhoneCalls.Object);
 
             _mockDialogViewModel = _kernel.GetMock<IDialogViewModel>();
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object);
@@ -69,13 +69,13 @@
         {
             _subject.CallBack();
 
-            _mockDevices.Verify(d => d.Call(It.Is<string>(s => s == "phone_number")), Times.Once);
+            _mockPhoneCalls.Verify(d => d.Call(It.Is<string>(s => s == "phone_number")), Times.Once);
         }
 
         [Test]
         public void CallBack_ShowsTheCallingScreenInTheDialogViewModel()
         {
-            _mockDevices.Setup(d => d.Call(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
+            _mockPhoneCalls.Setup(d => d.Call(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
             DispatcherProvider.Instance = new ImmediateDispatcherProvider();
             var autoResetEvent = new AutoResetEvent(false);
             _mockDialogViewModel.Setup(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()))

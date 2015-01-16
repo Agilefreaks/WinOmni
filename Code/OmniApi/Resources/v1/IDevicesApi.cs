@@ -9,14 +9,8 @@
     {
         #region Public Methods and Operators
 
-        [Post("/devices/call")]
-        IObservable<EmptyModel> Call([AliasAs("phone_number")] string phoneNumber, [Header("Authorization")] string token);
-
         [Post("/user/devices")]
         IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
-
-        [Post("/devices/end_call")]
-        IObservable<EmptyModel> EndCall([Header("Authorization")] string token);
 
         [Get("/user/devices")]
         IObservable<List<Device>> GetAll([Header("Authorization")] string token);

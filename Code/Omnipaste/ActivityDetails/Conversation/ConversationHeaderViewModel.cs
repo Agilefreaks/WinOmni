@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
@@ -12,6 +11,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.Presenters;
+    using PhoneCalls.Resources.v1;
 
     public class ConversationHeaderViewModel : ActivityDetailsHeaderViewModel, IConversationHeaderViewModel
     {
@@ -87,7 +87,7 @@
         }
 
         [Inject]
-        public IDevices Devices { get; set; }
+        public IPhoneCalls PhoneCalls { get; set; }
 
         [Inject]
         public ICallRepository CallRepository { get; set; }
@@ -103,7 +103,7 @@
             _callSubscription = Observable.Interval(DelayCallDuration, SchedulerProvider.Default)
                 .Take(1, SchedulerProvider.Default)
                 .Do(_ => { State = ConversationHeaderStateEnum.Calling; })
-                .Select(_ => Devices.Call(Model.ExtraData.ContactInfo.Phone as string))
+                .Select(_ => PhoneCalls.Call(Model.ExtraData.ContactInfo.Phone as string))
                 .Switch()
                 .Delay(CallingDuration, SchedulerProvider.Default)
                 .Do(_ =>  { State = ConversationHeaderStateEnum.Normal; })

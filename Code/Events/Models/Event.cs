@@ -28,6 +28,8 @@
 
         public string UniqueId { get; set; }
 
+        public string Id { get; set; }
+
         #endregion
     }
 }

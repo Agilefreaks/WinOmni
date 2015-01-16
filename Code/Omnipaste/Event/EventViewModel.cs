@@ -4,7 +4,6 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
@@ -15,6 +14,7 @@
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.Models;
+    using PhoneCalls.Resources.v1;
 
     public class EventViewModel : DetailsViewModelBase<IConversationItem>, IEventViewModel
     {
@@ -41,7 +41,7 @@
         }
 
         [Inject]
-        public IDevices Devices { get; set; }
+        public IPhoneCalls PhoneCalls { get; set; }
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
@@ -73,7 +73,7 @@
 
         public void CallBack()
         {
-            Devices.Call(Model.ContactInfo.Phone)
+            PhoneCalls.Call(Model.ContactInfo.Phone)
                 .RunToCompletion(OnCallStarted, dispatcher: DispatcherProvider.Current);
         }
 

@@ -7,11 +7,11 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
+    using PhoneCalls.Resources.v1;
 
     [TestFixture]
     public class IncomingCallNotificationViewModelTests
@@ -20,7 +20,7 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IDevices> _mockDevices;
+        private Mock<IPhoneCalls> _mockPhoneCalls;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -30,8 +30,8 @@
         public void SetUp()
         {
             _kernel = new MoqMockingKernel();
-            _mockDevices = _kernel.GetMock<IDevices>();
-            _mockDevices.DefaultValue = DefaultValue.Mock;
+            _mockPhoneCalls = _kernel.GetMock<IPhoneCalls>();
+            _mockPhoneCalls.DefaultValue = DefaultValue.Mock;
             
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
             _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object).InSingletonScope();
@@ -45,11 +45,14 @@
         }
 
         [Test]
-        public void EndCall_CallsPhonesEndCallMethod()
+        public void EndCall_EndsThePhoneCallCorespondingToTheAssociatedResource()
         {
+            const string ResourceId = "someId";
+            _subject.Resource = new Event { Id = ResourceId };
+            
             _subject.EndCall();
 
-            _mockDevices.Verify(p => p.EndCall(), Times.Once);
+            _mockPhoneCalls.Verify(p => p.EndCall(ResourceId), Times.Once);
         }
 
         [Test]
