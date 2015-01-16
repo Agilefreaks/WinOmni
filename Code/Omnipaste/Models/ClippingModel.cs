@@ -4,6 +4,8 @@
 
     public class ClippingModel : BaseModel
     {
+        public string Id { get; set; }
+
         public string Content { get; set; }
 
         public string Identifier { get; set; }
@@ -25,8 +27,9 @@
         }
 
         public ClippingModel(Clipping clipping)
+            : this()
         {
-            UniqueId = clipping.UniqueId;
+            Id = clipping.Id;
             Time = clipping.Time;
             Content = clipping.Content;
             Identifier = clipping.Identifier;
