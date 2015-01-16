@@ -7,7 +7,7 @@
 
     public interface IPhoneCalls : IResource<PhoneCall>
     {
-        IObservable<EmptyModel> Call(string phoneNumber);
+        IObservable<PhoneCall> Call(string phoneNumber);
 
         IObservable<EmptyModel> EndCall(string callId);
     }

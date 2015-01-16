@@ -62,7 +62,7 @@
                     var apiException = exception.GetApiException();
                     if (apiException.HasStatusCode(HttpStatusCode.BadRequest))
                     {
-                        Observable.Start(_responseMessageHandler.OnBadRequest);
+                        _responseMessageHandler.OnBadRequest();
                     }
 
                     return Observable.Throw<HttpResponseMessage>(exception);

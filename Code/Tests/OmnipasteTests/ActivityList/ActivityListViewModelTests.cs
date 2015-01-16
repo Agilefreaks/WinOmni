@@ -130,9 +130,10 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
+            var repositoryOperation = new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call { Source = SourceType.Remote });
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(repositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             ((IActivate)_subject).Activate();
@@ -146,7 +147,7 @@
         public void UpdatingACall_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewCall()
         {
             const string UniqueId = "42";
-            var call = new Call { UniqueId = UniqueId };
+            var call = new Call { UniqueId = UniqueId, Source = SourceType.Remote };
             var modifiedCall = new Call { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(

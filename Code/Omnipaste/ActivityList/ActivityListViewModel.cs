@@ -202,8 +202,8 @@ namespace Omnipaste.ActivityList
         {
             return
                 _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item)))
-                    .Merge(_messageRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
-                    .Merge(_callRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))))
+                    .Merge(_messageRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
+                    .Merge(_callRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
                     .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))));
         }
 
@@ -211,11 +211,13 @@ namespace Omnipaste.ActivityList
         {
             return
                 _clippingRepository.OperationObservable.Created()
-                    .Select(o => new ActivityPresenter(o.Item))
+                            .Select(o => new ActivityPresenter(o.Item))
                     .Merge(_messageRepository.OperationObservable.Created()
                             .Where(operation => operation.Item.Source == SourceType.Remote)
                             .Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_callRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Created()
+                            .Where(operation => operation.Item.Source == SourceType.Remote)
+                            .Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
         }
 

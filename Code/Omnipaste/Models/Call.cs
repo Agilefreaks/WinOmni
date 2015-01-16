@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
     using OmniUI.Models;
@@ -20,10 +19,9 @@
         public Call(PhoneCall phoneCall)
             : this()
         {
-            Id = phoneCall.Id;
-            Source = SourceType.Remote;
             string firstName, lastName;
             NameParser.Parse(phoneCall.ContactName, out firstName, out lastName);
+            Id = phoneCall.Id;
             Source = SourceType.Remote;
             ContactInfo = new ContactInfo
                               {

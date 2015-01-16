@@ -1,6 +1,10 @@
 ﻿namespace Omnipaste.Event
 {
+    using System;
+    using System.Threading.Tasks;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Details;
 
     public interface IEventViewModel : IDetailsViewModel<IConversationItem>
@@ -13,7 +17,7 @@
 
         #region Public Methods and Operators
 
-        void CallBack();
+        Task CallBack();
 
         void SendSms();
 
