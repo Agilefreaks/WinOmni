@@ -213,8 +213,7 @@
             return Observable.Defer(() => _omniService.Stop())
                 .Select(_ => _omniService.Start())
                 .Switch()
-                .Select(_ => Observable.Start(StopConnectProcess))
-                .Switch()
+                .Do(_ => StopConnectProcess())
                 .RetryAfter(DefaultReconnectInterval);
         }
 
