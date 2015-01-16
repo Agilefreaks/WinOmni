@@ -30,7 +30,6 @@
             : this()
         {
             Id = clipping.Id;
-            Time = clipping.Time;
             Content = clipping.Content;
             DeviceId = clipping.DeviceId;
             Type = clipping.Type;

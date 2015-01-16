@@ -67,6 +67,14 @@
             }
         }
 
+        public string Icon
+        {
+            get
+            {
+                return Model.GetType() == typeof(Call) ? "CallVisualBrush" : "EnvelopeVisualBrush";
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators

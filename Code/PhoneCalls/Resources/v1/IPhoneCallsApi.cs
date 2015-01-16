@@ -7,6 +7,9 @@
 
     public interface IPhoneCallsApi
     {
+        [Get("/phone_calls/{id}")]
+        IObservable<PhoneCall> Get(string id, [Header("Authorization")] string token);
+
         [Post("/phone_calls")]
         IObservable<EmptyModel> Create([Body] PhoneCall payload, [Header("Authorization")] string token);
 

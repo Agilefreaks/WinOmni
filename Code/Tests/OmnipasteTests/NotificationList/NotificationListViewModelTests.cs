@@ -5,8 +5,6 @@
     using System.Reactive;
     using Caliburn.Micro;
     using Clipboard.Models;
-    using Events.Handlers;
-    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -23,15 +21,18 @@
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Services.Repositories;
+    using OmniUI.Models;
 
     [TestFixture]
     public class NotificationListViewModelTests
     {
         #region Fields
 
-        private Mock<IEventsHandler> _mockEventsHandler;
-
         private Mock<IClippingRepository> _mockClippingRepository;
+
+        private Mock<ICallRepository> _mockCallRepository;
+
+        private Mock<IMessageRepository> _mockMessageRepository;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -41,7 +42,9 @@
 
         private ITestableObservable<RepositoryOperation<ClippingModel>> _testableClippingsObservable;
 
-        private ITestableObservable<Event> _testableEventsObservable;
+        private ITestableObservable<RepositoryOperation<Call>> _testableCallsObservable;
+
+        private ITestableObservable<RepositoryOperation<Message>> _testableMessagesObservable;
 
         private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
 
@@ -62,10 +65,12 @@
 
             SetupTestScheduler();
 
-            SetupEventsHandler();
-
-            SetupClippingRepository();
-
+            _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
+            _mockingKernel.Bind<IClippingRepository>().ToConstant(_mockClippingRepository.Object);
+            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockingKernel.Bind<ICallRepository>().ToConstant(_mockCallRepository.Object);
+            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockingKernel.Bind<IMessageRepository>().ToConstant(_mockMessageRepository.Object);
             _mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
             _mockingKernel.Bind<IApplicationService>().ToConstant(_mockApplicationService.Object);
@@ -75,6 +80,12 @@
             _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
             
             _subject = _mockingKernel.Get<INotificationListViewModel>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
         }
 
         [Test]
@@ -117,14 +128,26 @@
         }
 
         [Test]
-        public void WhenAnIncomingCallComesThroughOmniEventsHandler_CreatesNewNotificationViewModel()
+        public void WhenACallIsSaved_CreatesNewNotificationViewModel()
         {
             var mockIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Event>()))
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Call>()))
                 .Returns(mockIncomingCallNotificationViewModel.Object);
-            _mockEventsHandler
-                .Setup(h => h.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Callback<IObserver<Event>>(o => _testableEventsObservable.Subscribe(o));
+            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(_testableCallsObservable);
+            _subject.Activate();
+
+            _testScheduler.Start();
+
+            _subject.Notifications.First().Should().Be(mockIncomingCallNotificationViewModel.Object);
+        }
+
+        [Test]
+        public void WhenAMessageIsSaved_CreatesNewNotificationViewModel()
+        {
+            var mockIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Message>()))
+                .Returns(mockIncomingCallNotificationViewModel.Object);
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(_testableMessagesObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -161,23 +184,11 @@
 
         #region Methods
 
-        private void SetupClippingRepository()
-        {
-            _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
-            _mockingKernel.Bind<IClippingRepository>().ToConstant(_mockClippingRepository.Object);
-        }
-
-        private void SetupEventsHandler()
-        {
-            _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock };
-            _mockingKernel.Bind<IEventsHandler>().ToConstant(_mockEventsHandler.Object);
-        }
-
         private void SetupTestScheduler()
         {
             _testScheduler = new TestScheduler();
             _testableClippingsObservable =
-                _testScheduler.CreateHotObservable(
+                _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         200,
                         Notification.CreateOnNext(
@@ -191,13 +202,30 @@
                                 RepositoryMethodEnum.Create,
                                 new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))));
 
-            _testScheduler.CreateHotObservable(
-                new Recorded<Notification<Event>>(
-                    300,
-                    Notification.CreateOnNext(new Event { PhoneNumber = "phone number" })));
-            _testableEventsObservable =
+            _testableCallsObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Event>>(100, Notification.CreateOnNext(new Event {PhoneNumber = "your number"})));
+                    new Recorded<Notification<RepositoryOperation<Call>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<Call>(
+                                RepositoryMethodEnum.Create,
+                                new Call
+                                    {
+                                        Source = SourceType.Remote,
+                                        ContactInfo = new ContactInfo { Phone = "phone number" }
+                                    }))));
+            _testableMessagesObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<Message>(
+                                RepositoryMethodEnum.Create,
+                                new Message
+                                    {
+                                        Source = SourceType.Remote,
+                                        ContactInfo = new ContactInfo { Phone = "phone number" }
+                                    }))));
 
             SchedulerProvider.Dispatcher = _testScheduler;
         }

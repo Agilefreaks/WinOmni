@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.Models
 {
     using System;
-    using Clipboard.Models;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
@@ -9,7 +8,7 @@
     using SMS.Models;
 
     [TestFixture]
-    public class ClippingModelTests
+    public class MessageTests
     {
         [TearDown]
         public void TearDown()
@@ -18,28 +17,20 @@
         }
 
         [Test]
-        public void CtorWithClipping_AlwaysAssignsAUniqueId()
+        public void CtorWithMessage_AlwaysAssignsAUniqueId()
         {
-            new ClippingModel(new Clipping()).UniqueId.Should().NotBeNullOrEmpty();
+            new Message(new SmsMessage()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
-        public void CtorWithClipping_AlwaysCopiesId()
+        public void CtorWithMessage_AlwaysCopiesId()
         {
             const string Id = "42";
-            new ClippingModel(new Clipping { Id = Id }).Id.Should().Be(Id);
+            new Message(new SmsMessage { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
-        public void IsLink_WhenClippingTypeIsUrl_ReturnsTrue()
-        {
-            var subject = new ClippingModel(new Clipping { Type = Clipping.ClippingTypeEnum.Url });
-
-            subject.IsLink.Should().BeTrue();
-        }
-
-        [Test]
-        public void CtorWithClipping_Always_AssignsTime()
+        public void CtorWithMessage_Always_AssignsTime()
         {
             var dateTime = new DateTime(2014, 1, 1);
             TimeHelper.UtcNow = dateTime;
@@ -47,7 +38,7 @@
         }
 
         [Test]
-        public void CtorWithCall_Always_SetsSourceToRemote()
+        public void CtorWithMessage_Always_SetsSourceToRemote()
         {
             new Message(new SmsMessage()).Source.Should().Be(SourceType.Remote);
         }

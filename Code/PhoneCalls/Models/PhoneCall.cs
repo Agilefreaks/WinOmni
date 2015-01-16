@@ -1,5 +1,7 @@
 ﻿namespace PhoneCalls.Models
 {
+    using System;
+
     public class PhoneCall
     {
         public string Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Notification.IncomingSmsNotification
 {
-    public interface IIncomingSmsNotificationViewModel : IEventNotificationViewModel
+    public interface IIncomingSmsNotificationViewModel : IConversationNotificationViewModel
     {
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Events.Models;
     using Ninject;
     using Omnipaste.Notification;
     using Clipboard.Models;
@@ -19,8 +18,6 @@
 
         private readonly IDictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
 
-        private readonly IDictionary<EventTypeEnum, Func<IEventNotificationViewModel>> _eventNotificationConstructors;
-
         public NotificationViewModelFactory(IKernel kernel)
         {
             Kernel = kernel;
@@ -30,10 +27,6 @@
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>());
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>());
             _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.PhoneNumber, () => Kernel.Get<IClippingNotificationViewModel>());
-
-            _eventNotificationConstructors = new Dictionary<EventTypeEnum, Func<IEventNotificationViewModel>>();
-            _eventNotificationConstructors.Add(EventTypeEnum.IncomingCallEvent, () => Kernel.Get<IIncomingCallNotificationViewModel>());
-            _eventNotificationConstructors.Add(EventTypeEnum.IncomingSmsEvent, () => Kernel.Get<IIncomingSmsNotificationViewModel>());
         }
 
         public INotificationViewModel Create(ClippingModel clipping)
@@ -44,10 +37,18 @@
             return result;
         }
 
-        public INotificationViewModel Create(Event @event)
+        public INotificationViewModel Create(Call call)
         {
-            var result = _eventNotificationConstructors[@event.Type]();
-            result.Resource = @event;
+            var result = Kernel.Get<IIncomingCallNotificationViewModel>();
+            result.Resource = call;
+
+            return result;
+        }
+
+        public INotificationViewModel Create(Message message)
+        {
+            var result = Kernel.Get<IIncomingSmsNotificationViewModel>();
+            result.Resource = message;
 
             return result;
         }

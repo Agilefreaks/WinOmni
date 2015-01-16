@@ -1,7 +1,5 @@
 ﻿namespace OmnipasteTests.NotificationList
 {
-    using Clipboard.Models;
-    using Events.Models;
     using FluentAssertions;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
@@ -11,6 +9,7 @@
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
+    using OmniUI.Models;
 
     [TestFixture]
     public class NotificationViewModelFactoryTests
@@ -40,27 +39,27 @@
         }
 
         [Test]
-        public void Create_WithIncomingCallNotification_SetsThePhoneNumberOnTheModel()
+        public void Create_WithCallNotification_SetsThePhoneNumberOnTheModel()
         {
-            var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(new Event { PhoneNumber = "your number", Type = EventTypeEnum.IncomingCallEvent});
+            var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(new Call { ContactInfo = new ContactInfo { Phone = "your number" } });
 
             notificationViewModel.Line1.Should().Be("your number");
         }
 
         [Test]
-        public void Create_WithEvent_SetsTheEventOnTheViewModelAsTheResource()
+        public void Create_WithCall_SetsTheEventOnTheViewModelAsTheResource()
         {
-            var @event = new Event();
-            var viewModel = (IEventNotificationViewModel)_subject.Create(@event);
+            var call = new Call();
+            var viewModel = (IConversationNotificationViewModel)_subject.Create(call);
 
-            viewModel.Resource.Should().Be(@event);
+            viewModel.Resource.Should().Be(call);
         }
 
         [Test]
-        public void Create_WithEventOfTypeIncomingSmsAndNoContactNamePresent_SetsThePhoneAndContentProperties()
+        public void Create_WithMessageAndNoContactNamePresent_SetsThePhoneAndContentProperties()
         {
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
-                new Event { PhoneNumber = "1234567", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
+                new Message { ContactInfo = new ContactInfo { Phone = "1234567" }, Content = "SmsContent" });
 
             notificationViewModel.Line1.Should().Be("1234567");
             notificationViewModel.Line2.Should().Be("SmsContent");
@@ -70,7 +69,7 @@
         public void Create_WithEventOfTypeIncomingSmsAndContactNamePresent_SetsTheContactNameAndContentProperties()
         {
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
-                new Event { PhoneNumber = "1234567", ContactName = "Test Contact", Content = "SmsContent", Type = EventTypeEnum.IncomingSmsEvent });
+                new Message { ContactInfo = new ContactInfo { Phone = "1234567", FirstName = "Test", LastName = "Contact" }, Content = "SmsContent" });
 
             notificationViewModel.Line1.Should().Be("Test Contact");
             notificationViewModel.Line2.Should().Be("SmsContent");

@@ -1,40 +1,84 @@
 ﻿namespace OmniDebug.DebugBar.PhoneNotification
 {
-    using Events.Models;
-    using OmniDebug.DebugBar.Notification;
+    using System;
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using OmniCommon.Models;
     using OmniDebug.Services;
-    using OmniUI.Attributes;
+    using PhoneCalls.Models;
 
-    [UseView(typeof(SMSNotification.SMSNotificationView))]
-    public class PhoneNotificationViewModel : NotificationPanelBase, IDebugBarPanel
+    public class PhoneNotificationViewModel : PropertyChangedBase, IDebugBarPanel
     {
-        #region Constructors and Destructors
+        private string _notificationContactName;
 
-        public PhoneNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, IEventsWrapper eventsWrapper)
-            : base(omniServiceWrapper, eventsWrapper)
+        private string _notificationPhoneNumber;
+
+        private readonly IOmniServiceWrapper _omniServiceWrapper;
+
+        private readonly IPhoneCallsWrapper _phoneCallsWrapper;
+
+        public PhoneNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, IPhoneCallsWrapper phoneCallsWrapper)
         {
+            _omniServiceWrapper = omniServiceWrapper;
+            _phoneCallsWrapper = phoneCallsWrapper;
+
+            NotificationContactName = "Some Contact";
+            NotificationPhoneNumber = "0788999666";
         }
 
-        #endregion
-
-        #region Properties
-
-        protected override EventTypeEnum NotificationType
-        {
-            get
-            {
-                return EventTypeEnum.IncomingCallEvent;
-            }
-        }
-
-        public override bool CanAddContent
+        public string NotificationContactName
         {
             get
             {
-                return false;
+                return _notificationContactName;
+            }
+            set
+            {
+                if (value == _notificationContactName)
+                {
+                    return;
+                }
+                _notificationContactName = value;
+                NotifyOfPropertyChange();
             }
         }
 
-        #endregion
+        public string NotificationPhoneNumber
+        {
+            get
+            {
+                return _notificationPhoneNumber;
+            }
+            set
+            {
+                if (value == _notificationPhoneNumber)
+                {
+                    return;
+                }
+                _notificationPhoneNumber = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public void SimulateCall()
+        {
+            var id = Guid.NewGuid().ToString();
+            _phoneCallsWrapper.MockGet(
+                id,
+                new PhoneCall
+                    {
+                        Id = id,
+                        ContactName = NotificationContactName,
+                        Number = NotificationContactName,
+                        State = PhoneCallState.Starting,
+                        Type = PhoneCallType.Incoming
+                    });
+            _omniServiceWrapper.SimulateMessage(
+                new OmniMessage
+                    {
+                        Type = "phone_call_received",
+                        Payload = new Dictionary<string, string> { { "id", id } }
+                    });
+        }
     }
 }

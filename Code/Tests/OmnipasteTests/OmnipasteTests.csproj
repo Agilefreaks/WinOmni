@@ -130,7 +130,9 @@
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Helpers\NameParserTests.cs" />
     <Compile Include="Helpers\TextParserTests.cs" />
+    <Compile Include="Models\CallTests.cs" />
     <Compile Include="Models\ClippingModelTests.cs" />
+    <Compile Include="Models\MessageTests.cs" />
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
@@ -211,10 +213,6 @@
     <ProjectReference Include="..\..\Contacts\Contacts.csproj">
       <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
       <Name>Contacts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Events\Events.csproj">
-      <Project>{54d0afe4-0cd1-414d-ad1f-b9424250673a}</Project>
-      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>

@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.Notification
 {
     using Caliburn.Micro;
-    using Events.Models;
+    using Omnipaste.DetailsViewModel;
     using Omnipaste.EventAggregatorMessages;
 
-    public abstract class EventNotificationViewModelBase : ResourceBasedNotificationViewModel<Event>,
-                                                           IEventNotificationViewModel
+    public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationItem>,
+                                                           IConversationNotificationViewModel
     {
         #region Fields
 
@@ -15,7 +15,7 @@
 
         #region Constructors and Destructors
 
-        protected EventNotificationViewModelBase(IEventAggregator eventAggregator)
+        protected ConversationNotificationViewModelBase(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
         }
@@ -47,7 +47,7 @@
         {
             get
             {
-                return string.IsNullOrWhiteSpace(Resource.ContactName) ? Resource.PhoneNumber : Resource.ContactName;
+                return string.IsNullOrWhiteSpace(Resource.ContactInfo.Name) ? Resource.ContactInfo.Phone : Resource.ContactInfo.Name;
             }
         }
 
@@ -74,7 +74,7 @@
         public void ReplyWithSMS()
         {
             CanReplyWithSMS = false;
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Resource.PhoneNumber, Message = "" });
+            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Resource.ContactInfo.Phone, Message = "" });
             Dismiss();
         }
 

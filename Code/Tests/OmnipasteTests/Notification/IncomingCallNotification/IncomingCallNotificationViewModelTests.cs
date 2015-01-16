@@ -2,15 +2,16 @@
 {
     using System.Windows.Threading;
     using Caliburn.Micro;
-    using Events.Models;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
+    using OmniUI.Models;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]
@@ -48,7 +49,7 @@
         public void EndCall_EndsThePhoneCallCorespondingToTheAssociatedResource()
         {
             const string ResourceId = "someId";
-            _subject.Resource = new Event { Id = ResourceId };
+            _subject.Resource = new Call { Id = ResourceId };
             
             _subject.EndCall();
 
@@ -58,7 +59,7 @@
         [Test]
         public void ReplyWithSms_CallsPhonesSendSms()
         {
-            _subject.Resource = new Event { PhoneNumber = "1234567" };
+            _subject.Resource = new Call { ContactInfo = new ContactInfo { Phone = "1234567"  } };
             _subject.ReplyWithSMS();
 
             _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "1234567" && m.Message == ""), It.IsAny<System.Action<System.Action>>()));

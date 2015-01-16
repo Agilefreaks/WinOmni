@@ -1,8 +1,5 @@
 ﻿namespace Clipboard.Models
 {
-    using System;
-    using OmniCommon.Helpers;
-
     public class Clipping
     {
         public enum ClippingSourceEnum
@@ -33,7 +30,6 @@
 
         public Clipping(string content, string deviceId)
         {
-            Time = TimeHelper.UtcNow;
             Content = content;
             DeviceId = deviceId;
         }
@@ -47,8 +43,6 @@
         public string Content { get; set; }
         
         public string DeviceId { get; set; }
-
-        public DateTime Time { get; set; }
 
         public ClippingTypeEnum Type { get; set; }
 

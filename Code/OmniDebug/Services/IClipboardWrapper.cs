@@ -5,8 +5,6 @@
 
     public interface IClippingsWrapper : IClippings
     {
-        void MockLast(Clipping clipping);
-
         void MockGet(string clippingId, Clipping clipping);
     }
 }

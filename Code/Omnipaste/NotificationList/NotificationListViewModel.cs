@@ -10,13 +10,12 @@
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Castle.Core.Internal;
-    using Clipboard.Handlers;
     using Clipboard.Models;
-    using Events.Handlers;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Services.Repositories;
 
@@ -30,27 +29,32 @@
 
         #region Fields
 
-        private readonly IEventsHandler _eventsHandler;
-
         private readonly IClippingRepository _clippingRepository;
 
-        private IDisposable _clippingsSubscription;
+        private readonly ICallRepository _callRepository;
+
+        private readonly IMessageRepository _messageRepository;
 
         private double _height;
 
-        private IDisposable _notificationsSubscription;
+        private IDisposable _clippingsSubscription;
+
+        private IDisposable _callSubscription;
+
+        private IDisposable _messageSubscription;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(IEventsHandler eventsHandler, IClippingRepository clippingRepository, IEventAggregator eventAggregator)
+        public NotificationListViewModel(IClippingRepository clippingRepository, ICallRepository callRepository, IMessageRepository messageRepository, IEventAggregator eventAggregator)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
             Notifications.CollectionChanged += NotificationsCollectionChanged;
 
-            _eventsHandler = eventsHandler;
             _clippingRepository = clippingRepository;
+            _callRepository = callRepository;
+            _messageRepository = messageRepository;
 
             Height = double.NaN;
 
@@ -113,24 +117,31 @@
         {
             base.OnActivate();
 
-            CreateNotificationsFromIncomingEvents();
             CreateNotificationsFromIncomingClippings();
+            CreateNotificationsFromIncomingMessages();
+            CreateNotificationsFromIncomingCalls();
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
 
-            if (_notificationsSubscription != null)
-            {
-                _notificationsSubscription.Dispose();
-                _notificationsSubscription = null;
-            }
-
             if (_clippingsSubscription != null)
             {
                 _clippingsSubscription.Dispose();
                 _clippingsSubscription = null;
+            }
+
+            if (_callSubscription != null)
+            {
+                _callSubscription.Dispose();
+                _callSubscription = null;
+            }
+
+            if (_messageSubscription != null)
+            {
+                _messageSubscription.Dispose();
+                _messageSubscription = null;
             }
         }
 
@@ -145,11 +156,25 @@
                         clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
         }
 
-        private void CreateNotificationsFromIncomingEvents()
+        private void CreateNotificationsFromIncomingMessages()
         {
-            _notificationsSubscription =
-                _eventsHandler.ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(@event => Notifications.Add(NotificationViewModelFactory.Create(@event)));
+            _messageSubscription =
+                _messageRepository.OperationObservable.Created()
+                    .Select(o => o.Item)
+                    .Where(item => item.Source == SourceType.Remote)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(
+                        message => Notifications.Add(NotificationViewModelFactory.Create(message)));
+        }
+
+        private void CreateNotificationsFromIncomingCalls()
+        {
+            _callSubscription =
+                _callRepository.OperationObservable.Created()
+                    .Select(o => o.Item)
+                    .Where(item => item.Source == SourceType.Remote)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(call => Notifications.Add(NotificationViewModelFactory.Create(call)));
         }
 
         private void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

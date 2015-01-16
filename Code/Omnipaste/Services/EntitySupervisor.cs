@@ -5,13 +5,12 @@
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
-    using Events.Handlers;
-    using Events.Models;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
+    using PhoneCalls.Handlers;
     using SMS.Handlers;
 
     public class EntitySupervisor : IEntitySupervisor
@@ -25,7 +24,7 @@
         public IClippingRepository ClippingRepository { get; set; }
 
         [Inject]
-        public IEventsHandler EventsHandler { get; set; }
+        public IPhoneCallReceivedHandler PhoneCallReceivedHandler { get; set; }
 
         [Inject]
         public ICallRepository CallRepository { get; set; }
@@ -57,10 +56,9 @@
                 .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
 
             _subscriptions.Add(
-                EventsHandler.Where(@event => @event.Type == EventTypeEnum.IncomingCallEvent)
-                    .SubscribeOn(SchedulerProvider.Default)
+                PhoneCallReceivedHandler.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(@event => CallRepository.Save(new Call(@event))));
+                    .SubscribeAndHandleErrors(phoneCall => CallRepository.Save(new Call(phoneCall))));
 
             _subscriptions.Add(
                 SmsMessageCreatedHandler
