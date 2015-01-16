@@ -8,7 +8,7 @@
     {
         #region Public Methods and Operators
 
-        IObservable<Clipping> Create(string identifier, string content);
+        IObservable<Clipping> Create(string deviceId, string content);
 
         #endregion
     }

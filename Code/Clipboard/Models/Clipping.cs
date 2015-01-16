@@ -1,7 +1,6 @@
 ﻿namespace Clipboard.Models
 {
     using System;
-    using Newtonsoft.Json;
     using OmniCommon.Helpers;
 
     public class Clipping
@@ -32,11 +31,11 @@
         {
         }
 
-        public Clipping(string content, string identifier)
+        public Clipping(string content, string deviceId)
         {
             Time = TimeHelper.UtcNow;
             Content = content;
-            Identifier = identifier;
+            DeviceId = deviceId;
         }
 
         #endregion
@@ -47,7 +46,7 @@
 
         public string Content { get; set; }
         
-        public string Identifier { get; set; }
+        public string DeviceId { get; set; }
 
         public DateTime Time { get; set; }
 

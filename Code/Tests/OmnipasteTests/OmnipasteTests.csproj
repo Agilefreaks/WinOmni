@@ -128,6 +128,7 @@
     <Compile Include="Framework\Commands\SimulateClippingCommandTests.cs" />
     <Compile Include="Framework\Converters\InverseBooleanToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
+    <Compile Include="Helpers\NameParserTests.cs" />
     <Compile Include="Helpers\TextParserTests.cs" />
     <Compile Include="Models\ClippingModelTests.cs" />
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
@@ -145,7 +146,6 @@
     <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModelTests.cs" />
     <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModelTests.cs" />
     <Compile Include="Models\ContactInfoTests.cs" />
-    <Compile Include="Models\EventContactInfoTests.cs" />
     <Compile Include="Models\UserContactInfoTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
@@ -239,6 +239,10 @@
     <ProjectReference Include="..\..\Omni\Omni.csproj">
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
       <Name>Omni</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SMS\SMS.csproj">
+      <Project>{6B364690-348D-4354-B12B-64770342FFD0}</Project>
+      <Name>SMS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SMS\SMS.csproj">
       <Project>{6b364690-348d-4354-b12b-64770342ffd0}</Project>

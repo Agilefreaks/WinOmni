@@ -322,6 +322,7 @@
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
     <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
+    <Compile Include="Helpers\NameParser.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
     <Compile Include="Presenters\ActivityPresenter.cs" />
@@ -360,7 +361,6 @@
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Models\ClippingModel.cs" />
-    <Compile Include="Models\EventContactInfo.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SourceType.cs" />
     <Compile Include="Models\UserContactInfo.cs" />

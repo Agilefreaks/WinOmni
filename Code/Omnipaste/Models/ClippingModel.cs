@@ -8,7 +8,7 @@
 
         public string Content { get; set; }
 
-        public string Identifier { get; set; }
+        public string DeviceId { get; set; }
 
         public Clipping.ClippingTypeEnum Type { get; set; }
 
@@ -32,7 +32,7 @@
             Id = clipping.Id;
             Time = clipping.Time;
             Content = clipping.Content;
-            Identifier = clipping.Identifier;
+            DeviceId = clipping.DeviceId;
             Type = clipping.Type;
             Source = clipping.Source;
         }

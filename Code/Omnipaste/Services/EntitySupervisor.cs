@@ -12,6 +12,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
+    using SMS.Handlers;
 
     public class EntitySupervisor : IEntitySupervisor
     {
@@ -28,6 +29,9 @@
 
         [Inject]
         public ICallRepository CallRepository { get; set; }
+
+        [Inject]
+        public ISmsMessageCreatedHandler SmsMessageCreatedHandler { get; set; }
 
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
@@ -59,10 +63,10 @@
                     .SubscribeAndHandleErrors(@event => CallRepository.Save(new Call(@event))));
 
             _subscriptions.Add(
-                EventsHandler.Where(@event => @event.Type == EventTypeEnum.IncomingSmsEvent)
+                SmsMessageCreatedHandler
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(@event => MessageRepository.Save(new Message(@event))));
+                    .SubscribeAndHandleErrors(smsMessage => MessageRepository.Save(new Message(smsMessage))));
 
             _subscriptions.Add(
                 UpdaterService.UpdateObservable.SubscribeOn(SchedulerProvider.Default)

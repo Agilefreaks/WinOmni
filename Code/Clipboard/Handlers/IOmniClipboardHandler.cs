@@ -1,12 +1,9 @@
 ﻿namespace Clipboard.Handlers
 {
-    using System;
-    using OmniCommon.Models;
+    using Clipboard.Models;
+    using OmniCommon.Handlers;
 
-    public interface IOmniClipboardHandler : IClipboard, IObserver<OmniMessage>
+    public interface IOmniClipboardHandler : IClipboard, IResourceHandler<Clipping>
     {
-        void Start(IObservable<OmniMessage> observable);
-
-        void Stop();
     }
 }

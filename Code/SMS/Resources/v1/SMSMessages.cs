@@ -21,16 +21,20 @@
 
         #region Public Methods and Operators
 
-        public IObservable<EmptyModel> Send(string message, string phoneNumber)
+        public IObservable<SmsMessage> Get(string id)
         {
-            var payload =
-                new
-                    {
-                        Content = message,
-                        PhoneNumber = phoneNumber,
-                        Type = SMSMessageType.Incoming,
-                        State = SMSMessageState.Sending
-                    };
+            return ResourceApi.Get(id, AccessToken);
+        }
+
+        public IObservable<EmptyModel> Send(string phoneNumber, string message)
+        {
+            var payload = new SmsMessage
+                              {
+                                  Content = message,
+                                  PhoneNumber = phoneNumber,
+                                  Type = SmsMessageType.Outgoing,
+                                  State = SmsMessageState.Sending
+                              };
 
             return ResourceApi.Create(payload, AccessToken);
         }

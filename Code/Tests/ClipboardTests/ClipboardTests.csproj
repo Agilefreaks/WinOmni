@@ -103,8 +103,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Resources\v1\ClippingsTests.cs" />
     <Compile Include="Handlers\ClipboardHandlerTests.cs" />
-    <Compile Include="Handlers\OmniClipboardHandlerTests.cs" />
+    <Compile Include="Handlers\ClippingCreatedHandlerTests.cs" />
     <Compile Include="Handlers\LocalClipboardHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -119,6 +120,10 @@
     <ProjectReference Include="..\..\Clipboard\Clipboard.csproj">
       <Project>{C7D3C627-311F-4395-BE3C-953F1F715C74}</Project>
       <Name>Clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OmniApi\OmniApi.csproj">
+      <Project>{FE52A16D-0E4A-4794-AF54-4CA066608FF9}</Project>
+      <Name>OmniApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OmniCommon\OmniCommon.csproj">
       <Project>{1E9C5284-DFDC-4AC1-B257-526CB1989876}</Project>

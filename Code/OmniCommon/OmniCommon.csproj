@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
     <Compile Include="DataProviders\IArgumentsDataProvider.cs" />
+    <Compile Include="Handlers\IResourceHandler.cs" />
+    <Compile Include="Handlers\ResourceHandler.cs" />
     <Compile Include="Helpers\ImmediateDispatcherProvider.cs" />
     <Compile Include="Helpers\ExceptionReporter.cs" />
     <Compile Include="Helpers\DispatcherProvider.cs" />
@@ -100,7 +102,6 @@
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Helpers\SchedulerProvider.cs" />
     <Compile Include="Models\KeyPair.cs" />
-    <Compile Include="Models\OmniMessageType.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Settings\OmnipasteCredentials.cs" />
     <Compile Include="Settings\IConfigurationProvider.cs" />
