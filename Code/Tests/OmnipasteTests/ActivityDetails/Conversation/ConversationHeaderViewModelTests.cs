@@ -17,6 +17,7 @@
     using Omnipaste.Services.Repositories;
     using OmniUI.Models;
     using OmniUI.Presenters;
+    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]
@@ -72,8 +73,8 @@
         public void Call_Always_InitiatesACall()
         {
             const string PhoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = PhoneNumber };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var phoneCall = new PhoneCall { Number = PhoneNumber };
+            _subject.Model = new ActivityPresenter(new Call(phoneCall));
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -85,7 +86,7 @@
         public void Call_WhenCanceled_DoesNotInitiateACall()
         {
             const string PhoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = PhoneNumber };
+            var @event = new PhoneCall { Number = PhoneNumber };
             _subject.Model = new ActivityPresenter(new Call(@event));
 
             _subject.Call();
@@ -99,8 +100,8 @@
         public void Call_WhenCanceled_ChangesStateToNormal()
         {
             const string PhoneNumber = "1234567890";
-            var @event = new Event { PhoneNumber = PhoneNumber };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var phoneCall = new PhoneCall { Number = PhoneNumber };
+            _subject.Model = new ActivityPresenter(new Call(phoneCall));
 
             _subject.Call();
             _subject.CancelCall();
@@ -112,8 +113,8 @@
         [Test]
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
-            var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var phoneCall = new PhoneCall { Number = "1234567890" };
+            _subject.Model = new ActivityPresenter(new Call(phoneCall));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
@@ -128,8 +129,8 @@
         [Test]
         public void Call_OnInitiated_ChangesStateToCalling()
         {
-            var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var phoneCall = new PhoneCall { Number = "1234567890" };
+            _subject.Model = new ActivityPresenter(new Call(phoneCall));
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));

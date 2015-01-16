@@ -10,7 +10,6 @@
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Castle.Core.Internal;
-    using Clipboard.Handlers;
     using Clipboard.Models;
     using Events.Handlers;
     using Ninject;

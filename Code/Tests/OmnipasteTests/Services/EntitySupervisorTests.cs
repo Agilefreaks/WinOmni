@@ -4,8 +4,6 @@
     using System.Reactive;
     using Clipboard.Handlers;
     using Clipboard.Models;
-    using Events.Models;
-    using Events.Handlers;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
@@ -13,6 +11,8 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using PhoneCalls.Handlers;
+    using PhoneCalls.Models;
     using SMS.Handlers;
     using SMS.Models;
 
@@ -27,9 +27,9 @@
 
         private Mock<IClippingRepository> _mockClippingRepository;
 
-        private Mock<ISmsMessageCreatedHandler> _mockSmsMessageCreatedHandler;
+        private Mock<IPhoneCallReceivedHandler> _mockPhoneCallReceivedHandler;
 
-        private Mock<IEventsHandler> _mockEventsHandler;
+        private Mock<ISmsMessageCreatedHandler> _mockSmsMessageCreatedHandler;
 
         private Mock<ICallRepository> _mockCallRepository;
 
@@ -47,7 +47,7 @@
             
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
-            _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock };
+            _mockPhoneCallReceivedHandler = new Mock<IPhoneCallReceivedHandler> { DefaultValue = DefaultValue.Mock };
             _mockSmsMessageCreatedHandler = new Mock<ISmsMessageCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
@@ -57,7 +57,7 @@
                            {
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
-                               EventsHandler = _mockEventsHandler.Object,
+                               PhoneCallReceivedHandler = _mockPhoneCallReceivedHandler.Object,
                                SmsMessageCreatedHandler = _mockSmsMessageCreatedHandler.Object,
                                MessageRepository = _mockMessageRepository.Object,
                                CallRepository = _mockCallRepository.Object,
@@ -90,16 +90,16 @@
         [Test]
         public void OnNewEvent_WhenEventIsIncomingCall_AlwayStoresCall()
         {
-            const string UniqueId = "42";
-            var @event = new Event { Type = EventTypeEnum.IncomingCallEvent, UniqueId = UniqueId };
-            var eventObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<Event>>(100, Notification.CreateOnNext(@event)));
-            _mockEventsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Returns<IObserver<Event>>(o => eventObservable.Subscribe(o));
-
-            _subject.Start();
-            _testScheduler.Start(() => eventObservable);
+            const string Id = "42";
+            var phoneCall = new PhoneCall { Id = Id };
+            var phoneCallObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(phoneCall)));
+            _mockPhoneCallReceivedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<PhoneCall>>()))
+                .Returns<IObserver<PhoneCall>>(o => phoneCallObservable.Subscribe(o));
             
-            _mockCallRepository.Verify(m => m.Save(It.Is<Call>(c => c.UniqueId == UniqueId)));
+            _subject.Start();
+            _testScheduler.Start(() => phoneCallObservable);
+            
+            _mockCallRepository.Verify(m => m.Save(It.Is<Call>(c => c.Id == Id)));
         }
 
         [Test]

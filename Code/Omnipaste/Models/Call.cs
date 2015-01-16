@@ -1,10 +1,10 @@
 ﻿namespace Omnipaste.Models
 {
-    using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
     using OmniUI.Models;
+    using PhoneCalls.Models;
 
     public class Call : BaseModel, IConversationItem
     {
@@ -14,23 +14,32 @@
         {
             Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
+            Content = string.Empty;
             Source = SourceType.Local;
         }
 
-        public Call(Event @event)
+        public Call(PhoneCall phoneCall)
+            : this()
         {
+            Id = phoneCall.Id;
             Time = TimeHelper.UtcNow;
-            string firstName, lastName;
-            NameParser.Parse(@event.ContactName, out firstName, out lastName);
-            ContactInfo = new ContactInfo { FirstName = firstName, LastName = lastName, Phone = @event.PhoneNumber };
             Source = SourceType.Remote;
-            UniqueId = @event.UniqueId;
-            Content = @event.Content;
+            string firstName, lastName;
+            NameParser.Parse(phoneCall.ContactName, out firstName, out lastName);
+            Source = SourceType.Remote;
+            ContactInfo = new ContactInfo
+                              {
+                                  FirstName = firstName, 
+                                  LastName = lastName, 
+                                  Phone = phoneCall.Number
+                              };
         }
 
         #endregion
 
         #region Public Properties
+
+        public string Id { get; set; }
 
         public ContactInfo ContactInfo { get; set; }
 

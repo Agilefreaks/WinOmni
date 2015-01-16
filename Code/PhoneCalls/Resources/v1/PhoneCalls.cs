@@ -21,6 +21,11 @@
 
         #region Public Methods and Operators
 
+        public IObservable<PhoneCall> Get(string id)
+        {
+            return ResourceApi.Get(id, AccessToken);
+        }
+
         public IObservable<EmptyModel> Call(string phoneNumber)
         {
             return

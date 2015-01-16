@@ -130,6 +130,7 @@
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Helpers\NameParserTests.cs" />
     <Compile Include="Helpers\TextParserTests.cs" />
+    <Compile Include="Models\CallTests.cs" />
     <Compile Include="Models\ClippingModelTests.cs" />
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
