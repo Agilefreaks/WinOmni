@@ -75,11 +75,6 @@
             return ResourceApi.GetAll(AccessToken);
         }
 
-        public IObservable<EmptyModel> SendSms(string phoneNumber, string content)
-        {
-            return ResourceApi.SendSms(phoneNumber, content, AccessToken);
-        }
-
         #endregion
 
         #region Methods
