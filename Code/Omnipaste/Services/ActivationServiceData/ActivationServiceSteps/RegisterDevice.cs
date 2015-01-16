@@ -6,7 +6,6 @@
     using OmniApi.Cryptography;
     using OmniApi.Resources.v1;
     using OmniCommon;
-    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
 
@@ -57,15 +56,9 @@
             return
                 _devices.GetAll()
                     .Select(deviceList => deviceList.Where(device => device.Name == deviceIdentifier).ToList())
-                    .Select(
+                    .Do(
                         matchingDevices =>
-                        Observable.Start(
-                            () =>
-                            _configurationContainer.SetValue(
-                                ConfigurationProperties.DeviceId,
-                                matchingDevices.First().Id),
-                            SchedulerProvider.Default))
-                    .Switch()
+                        _configurationContainer.SetValue(ConfigurationProperties.DeviceId, matchingDevices.First().Id))
                     .Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful));
         }
 
@@ -73,17 +66,12 @@
         {
             var keyPair = _cryptoService.GenerateKeyPair();
 
-            return _devices.Create(_configurationService.MachineName, keyPair.Public)
-                .Select(
-                    device => Observable.Start(
-                        () =>
-                        {
-                            _configurationService.DeviceKeyPair = keyPair;
-                            _configurationService.DeviceId = device.Id;
-                        },
-                        SchedulerProvider.Default))
-                .Switch()
-                .Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful));
+            return _devices.Create(_configurationService.MachineName, keyPair.Public).Do(
+                device =>
+                    {
+                        _configurationService.DeviceKeyPair = keyPair;
+                        _configurationService.DeviceId = device.Id;
+                    }).Select(_ => new ExecuteResult(SimpleStepStateEnum.Successful));
         }
 
         #endregion

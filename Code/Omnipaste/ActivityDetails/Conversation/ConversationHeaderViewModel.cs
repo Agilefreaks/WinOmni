@@ -102,11 +102,11 @@
             DisposeCallSubscription();
             _callSubscription = Observable.Interval(DelayCallDuration, SchedulerProvider.Default)
                 .Take(1, SchedulerProvider.Default)
-                .Do(_ => { State = ConversationHeaderStateEnum.Calling; })
+                .Do(_ => State = ConversationHeaderStateEnum.Calling)
                 .Select(_ => PhoneCalls.Call(Model.ExtraData.ContactInfo.Phone as string))
                 .Switch()
                 .Delay(CallingDuration, SchedulerProvider.Default)
-                .Do(_ =>  { State = ConversationHeaderStateEnum.Normal; })
+                .Do(_ => State = ConversationHeaderStateEnum.Normal)
                 .SubscribeAndHandleErrors();
 
             State = ConversationHeaderStateEnum.InitiatingCall;
