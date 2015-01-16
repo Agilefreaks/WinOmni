@@ -1,9 +1,10 @@
 ﻿namespace Omnipaste.Models
 {
-    using Events.Models;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Helpers;
     using OmniUI.Models;
+    using SMS.Models;
 
     public class Message : BaseModel, IConversationItem
     {
@@ -17,18 +18,28 @@
             Source = SourceType.Local;
         }
 
-        public Message(Event @event)
+        public Message(SmsMessage smsMessage)
+            : this()
         {
+            Id = smsMessage.Id;
             Time = TimeHelper.UtcNow;
-            ContactInfo = new EventContactInfo(@event);
-            Content = @event.Content;
             Source = SourceType.Remote;
-            UniqueId = @event.UniqueId;
+            Content = smsMessage.Content;
+            string firstName, lastName;
+            NameParser.Parse(smsMessage.ContactName, out firstName, out lastName);
+            ContactInfo = new ContactInfo
+                              {
+                                  FirstName = firstName,
+                                  LastName = lastName,
+                                  Phone = smsMessage.PhoneNumber
+                              };
         }
 
         #endregion
 
         #region Public Properties
+
+        public string Id { get; set; }
 
         public ContactInfo ContactInfo { get; set; }
 

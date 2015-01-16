@@ -13,6 +13,8 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using SMS.Handlers;
+    using SMS.Models;
 
     [TestFixture]
     public class EntitySupervisorTests
@@ -24,6 +26,8 @@
         private Mock<IClipboardHandler> _mockClipboardHandler;
 
         private Mock<IClippingRepository> _mockClippingRepository;
+
+        private Mock<ISmsMessageCreatedHandler> _mockSmsMessageCreatedHandler;
 
         private Mock<IEventsHandler> _mockEventsHandler;
 
@@ -44,6 +48,7 @@
             _mockClipboardHandler = new Mock<IClipboardHandler> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _mockEventsHandler = new Mock<IEventsHandler> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessageCreatedHandler = new Mock<ISmsMessageCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
@@ -53,6 +58,7 @@
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
                                EventsHandler = _mockEventsHandler.Object,
+                               SmsMessageCreatedHandler = _mockSmsMessageCreatedHandler.Object,
                                MessageRepository = _mockMessageRepository.Object,
                                CallRepository = _mockCallRepository.Object,
                                UpdaterService = _mockUpdaterService.Object,
@@ -97,18 +103,18 @@
         }
 
         [Test]
-        public void OnNewEvent_WhenEventIsIncomingSms_AlwayStoresMessage()
+        public void OnSmsMessageCreated_Alway_AlwayStoresMessage()
         {
-            const string UniqueId = "42";
-            var @event = new Event { Type = EventTypeEnum.IncomingSmsEvent, UniqueId = UniqueId };
-            var eventObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<Event>>(100, Notification.CreateOnNext(@event)));
-            _mockEventsHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Event>>()))
-                .Returns<IObserver<Event>>(o => eventObservable.Subscribe(o));
+            const string Id = "42";
+            var smsMessage = new SmsMessage { Id = Id };
+            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(smsMessage)));
+            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessage>>()))
+                .Returns<IObserver<SmsMessage>>(o => smsMessageObservable.Subscribe(o));
 
             _subject.Start();
-            _testScheduler.Start(() => eventObservable);
+            _testScheduler.Start(() => smsMessageObservable);
             
-            _mockMessageRepository.Verify(m => m.Save(It.Is<Message>(c => c.UniqueId == UniqueId)));
+            _mockMessageRepository.Verify(m => m.Save(It.Is<Message>(c => c.Id == Id)));
         }
 
         [Test]

@@ -84,6 +84,8 @@
     <Compile Include="Models\SMSMessageType.cs" />
     <Compile Include="Models\SMSMessageState.cs" />
     <Compile Include="Models\SmsMessage.cs" />
+    <Compile Include="Models\SmsMessageState.cs" />
+    <Compile Include="Models\SmsMessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefitStubs.cs" />
     <Compile Include="Resources\v1\ISMSMessages.cs" />
