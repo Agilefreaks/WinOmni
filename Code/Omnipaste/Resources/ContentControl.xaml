@@ -91,4 +91,25 @@
         </Setter>
     </Style>
 
+    <Style x:Key="FadingContentControlStyle" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Border x:Name="TextContainer">
+                        <Border.OpacityMask>
+                            <VisualBrush Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Rectangle Width="{Binding ElementName=TextContainer, Path=ActualWidth}"
+                                               Height="{Binding ElementName=TextContainer, Path=ActualHeight}" 
+                                               Fill="{DynamicResource ActivityActionMarkerBrush}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.OpacityMask>
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
