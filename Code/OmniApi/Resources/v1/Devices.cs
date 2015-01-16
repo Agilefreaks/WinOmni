@@ -35,7 +35,7 @@
         {
             return ResourceApi.Patch(
                 deviceId,
-                new { registrationId, provider = NotificationsProvider },
+                new { RegistrationId = registrationId, Provider = NotificationsProvider },
                 AccessToken,
                 ConfigurationService.Version.ToString());
         }
@@ -53,7 +53,11 @@
 
         public IObservable<EmptyModel> Deactivate(string deviceId)
         {
-            return ResourceApi.Patch(deviceId, new { registrationId = string.Empty }, AccessToken, ConfigurationService.Version.ToString());
+            return ResourceApi.Patch(
+                deviceId,
+                new { RegistrationId = string.Empty },
+                AccessToken,
+                ConfigurationService.Version.ToString());
         }
 
         public IObservable<EmptyModel> Remove(string identifier)
