@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsTests", "ContactsTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS", "SMS\SMS.csproj", "{6B364690-348D-4354-B12B-64770342FFD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSTests", "SMSTests\SMSTests.csproj", "{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -427,6 +429,21 @@ Global
 		{6B364690-348D-4354-B12B-64770342FFD0}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6B364690-348D-4354-B12B-64770342FFD0}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
 		{6B364690-348D-4354-B12B-64770342FFD0}.Staging|x86.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5}.Staging|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -443,5 +460,6 @@ Global
 		{6DABB140-4028-4262-BCFA-12D43916F966} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{1F63B9DA-1BD8-43B9-8EAE-A87684E5CE59} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 		{3634E814-19A4-4122-BC8A-1975ECE485B3} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
+		{A04D4B37-2801-40D2-99B0-E60CDC9C73F5} = {3B427A33-480F-4312-A049-06BFE5C4EBCC}
 	EndGlobalSection
 EndGlobal

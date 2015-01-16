@@ -26,7 +26,7 @@
             return ResourceApi.Get(id, AccessToken);
         }
 
-        public IObservable<EmptyModel> Send(string message, string phoneNumber)
+        public IObservable<EmptyModel> Send(string phoneNumber, string message)
         {
             var payload = new SmsMessage
                               {

@@ -6,8 +6,8 @@
 
     public interface ISMSMessages
     {
-        IObservable<EmptyModel> Send(string message, string phoneNumber);
+        IObservable<EmptyModel> Send(string phoneNumber, string message);
+
         IObservable<SmsMessage> Get(string id);
-        
     }
 }
