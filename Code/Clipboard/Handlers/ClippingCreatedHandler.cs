@@ -39,7 +39,7 @@
 
         public void PostClipping(Clipping clipping)
         {
-            _clippingsResource.Create(ConfigurationService.DeviceIdentifier, clipping.Content).RunToCompletion();
+            _clippingsResource.Create(ConfigurationService.DeviceId, clipping.Content).RunToCompletion();
         }
 
         protected override IObservable<Clipping> CreateResult(OmniMessage value)

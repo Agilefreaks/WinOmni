@@ -17,7 +17,7 @@
     using OmniCommon.Models;
 
     [TestFixture]
-    public class OmniClipboardHandlerTests
+    public class ClippingCreatedHandlerTests
     {
         private IOmniClipboardHandler _omniClipboardHandler;
 
@@ -78,7 +78,7 @@
         {
             _mockClippings.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Observable.Empty<Clipping>());
-            _mockConfigurationService.Setup(cs => cs.DeviceIdentifier).Returns("Radio");
+            _mockConfigurationService.Setup(cs => cs.DeviceId).Returns("Radio");
 
             _omniClipboardHandler.PostClipping(new Clipping("some Content"));
 

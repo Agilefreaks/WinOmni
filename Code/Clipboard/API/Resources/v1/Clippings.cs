@@ -29,9 +29,9 @@
             return ResourceApi.Last(AccessToken);
         }
 
-        public IObservable<Clipping> Create(string identifier, string content)
+        public IObservable<Clipping> Create(string deviceId, string content)
         {
-            return ResourceApi.Create(new Clipping(content, identifier), AccessToken);
+            return ResourceApi.Create(new Clipping(content, deviceId), AccessToken);
         }
 
         public IObservable<Clipping> Get(string id)

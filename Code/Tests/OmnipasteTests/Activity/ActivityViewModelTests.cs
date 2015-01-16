@@ -171,7 +171,7 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
         {
-            var activity = new ActivityPresenter(new ClippingModel { Identifier = "42", WasViewed = false });
+            var activity = new ActivityPresenter(new ClippingModel { DeviceId = "42", WasViewed = false });
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -191,7 +191,7 @@
         [Test]
         public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
         {
-            var activity = new ActivityPresenter(new ClippingModel { Identifier = "42", WasViewed = false });
+            var activity = new ActivityPresenter(new ClippingModel { DeviceId = "42", WasViewed = false });
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();

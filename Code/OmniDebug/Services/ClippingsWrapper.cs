@@ -14,9 +14,9 @@
             _clippings = originalResource;
         }
 
-        public IObservable<Clipping> Create(string identifier, string content)
+        public IObservable<Clipping> Create(string deviceId, string content)
         {
-            return _clippings.Create(identifier, content);
+            return _clippings.Create(deviceId, content);
         }
     }
 }
