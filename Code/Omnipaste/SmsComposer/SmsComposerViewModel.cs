@@ -6,20 +6,20 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Dialog;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
+    using SMS.Resources.v1;
 
     public abstract class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
         #region Fields
 
-        protected readonly ISMSMessageFactory SMSMessageFactory;
+        private readonly ISMSMessages _smsMessages;
 
-        private readonly IDevices _devices;
+        protected readonly ISMSMessageFactory SMSMessageFactory;
 
         private bool _isSending;
 
@@ -31,10 +31,10 @@
 
         #region Constructors and Destructors
 
-        protected SMSComposerViewModel(IDevices devices, ISMSMessageFactory smsMessageFactory)
+        protected SMSComposerViewModel(ISMSMessages smsMessages, ISMSMessageFactory smsMessageFactory)
         {
+            _smsMessages = smsMessages;
             SMSMessageFactory = smsMessageFactory;
-            _devices = devices;
             SendCommand = new Command(Send);
         }
 
@@ -126,7 +126,7 @@
         public virtual void Send()
         {
             IsSending = true;
-            _devices.SendSms(Model.Recipient, Model.Message)
+            _smsMessages.Send(Model.Recipient, Model.Message)
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);

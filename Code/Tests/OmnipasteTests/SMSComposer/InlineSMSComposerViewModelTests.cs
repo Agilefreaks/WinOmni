@@ -7,12 +7,12 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.SMSComposer;
     using OmniUI.Models;
+    using SMS.Resources.v1;
 
     [TestFixture]
     public class InlineSMSComposerViewModelTests
@@ -21,7 +21,7 @@
 
         private Mock<ISMSMessageFactory> _mockSMSMessageFactory;
 
-        private Mock<IDevices> _mockDevices;
+        private Mock<ISMSMessages> _mockSMSMessages;
 
         private TestScheduler _testScheduler;
 
@@ -31,9 +31,9 @@
         public void Setup()
         {
             _mockSMSMessageFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
-            _mockDevices = new Mock<IDevices>();
+            _mockSMSMessages = new Mock<ISMSMessages>();
             _mockMessageRepository = new Mock<IMessageRepository>();
-            _subject = new InlineSMSComposerViewModel(_mockDevices.Object, _mockSMSMessageFactory.Object)
+            _subject = new InlineSMSComposerViewModel(_mockSMSMessages.Object, _mockSMSMessageFactory.Object)
                            {
                                MessageRepository = _mockMessageRepository.Object
                            };
@@ -69,14 +69,14 @@
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             var sendObservable = Observable.Return(new EmptyModel());
             _subject.Model = new SMSMessage { Message = "test", Recipient = "1234" };
-            _mockDevices.Setup(x => x.SendSms("1234", "test")).Returns(sendObservable);
+            _mockSMSMessages.Setup(x => x.Send("1234", "test")).Returns(sendObservable);
             var contactInfo = new ContactInfo();
             _subject.ContactInfo = contactInfo;
 
             _subject.Send();
             _testScheduler.Start();
 
-            _mockDevices.Verify(x => x.SendSms("1234", "test"), Times.Once());
+            _mockSMSMessages.Verify(x => x.Send("1234", "test"), Times.Once());
             _mockSMSMessageFactory.Verify(x => x.Create(contactInfo), Times.Once());
         }
 
@@ -86,7 +86,7 @@
             var sendObservable = Observable.Return(new EmptyModel());
             var message = new Message();
             _subject.Model = new SMSMessage(message);
-            _mockDevices.Setup(x => x.SendSms(It.IsAny<string>(), It.IsAny<string>())).Returns(sendObservable);
+            _mockSMSMessages.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<string>())).Returns(sendObservable);
 
             _subject.Send();
             _testScheduler.Start();
