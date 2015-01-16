@@ -18,9 +18,6 @@
         [Delete("/user/devices/{id}")]
         IObservable<EmptyModel> Remove(string id, [Header("Authorization")] string accessToken);
 
-        [Put("/devices")]
-        IObservable<EmptyModel> Update([Body] object deviceParams, [Header("Authorization")] string token);
-
         [Patch("/user/devices/{id}")]
         IObservable<EmptyModel> Patch(string id, [Body] object deviceParams, [Header("Authorization")] string token, [Header("Client-Version")] string version);
 

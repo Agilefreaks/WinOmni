@@ -26,18 +26,9 @@
 
         #region Public Methods and Operators
 
-        public IObservable<EmptyModel> Update(object deviceParams)
-        {
-            return ResourceApi.Update(deviceParams, AccessToken);
-        }
-
         public IObservable<EmptyModel> Activate(string registrationId, string deviceId)
         {
-            return ResourceApi.Patch(
-                deviceId,
-                new { RegistrationId = registrationId, Provider = NotificationsProvider },
-                AccessToken,
-                ConfigurationService.Version.ToString());
+            return Update(deviceId, new { RegistrationId = registrationId, Provider = NotificationsProvider });
         }
 
         public IObservable<Device> Create(string name, string publicKey)
@@ -48,21 +39,22 @@
 
         public IObservable<EmptyModel> Deactivate(string deviceId)
         {
-            return ResourceApi.Patch(
-                deviceId,
-                new { RegistrationId = string.Empty },
-                AccessToken,
-                ConfigurationService.Version.ToString());
-        }
-
-        public IObservable<EmptyModel> Remove(string identifier)
-        {
-            return ResourceApi.Remove(identifier, AccessToken);
+            return Update(deviceId, new { RegistrationId = string.Empty });
         }
 
         public IObservable<List<Device>> GetAll()
         {
             return ResourceApi.GetAll(AccessToken);
+        }
+
+        public IObservable<EmptyModel> Remove(string deviceId)
+        {
+            return ResourceApi.Remove(deviceId, AccessToken);
+        }
+
+        public IObservable<EmptyModel> Update(string deviceId, object deviceParams)
+        {
+            return ResourceApi.Patch(deviceId, deviceParams, AccessToken, ConfigurationService.Version.ToString());
         }
 
         #endregion

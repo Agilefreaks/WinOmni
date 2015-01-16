@@ -53,9 +53,48 @@
                 x =>
                 x.Patch(
                     DeviceId,
-                    It.Is<object>(@object => @object.GetHashCode() == expectedDeviceParams.GetHashCode()),
+                    ObjectWithHashCode(expectedDeviceParams.GetHashCode()),
                     "bearer " + Accesstoken,
                     _version.ToString()));
+        }
+
+        [Test]
+        public void Deactivate_Always_PatchesTheGivenDeviceWithAnEmptyRegistrationId()
+        {
+            const string DeviceId = "SomeDeviceId";
+            
+            _subject.Deactivate(DeviceId);
+
+            var expectedDeviceParams = new { RegistrationId = string.Empty };
+            _mockDevicesAPI.Verify(
+                x =>
+                x.Patch(
+                    DeviceId,
+                    ObjectWithHashCode(expectedDeviceParams.GetHashCode()),
+                    "bearer " + Accesstoken,
+                    _version.ToString()));
+        }
+
+        [Test]
+        public void Update_Always_PatchesTheGivenDeviceWithTheGivenParams()
+        {
+            const string DeviceId = "SomeDeviceId";
+            var toUpdate = new { SomeProperty = "someValue", SomeOtherProperty = "someOtherValue" };
+
+            _subject.Update(DeviceId, toUpdate);
+
+            _mockDevicesAPI.Verify(
+                x =>
+                x.Patch(
+                    DeviceId,
+                    ObjectWithHashCode(toUpdate.GetHashCode()),
+                    "bearer " + Accesstoken,
+                    _version.ToString()));
+        }
+
+        private static object ObjectWithHashCode(int expectedHashCode)
+        {
+            return It.Is<object>(@object => @object.GetHashCode() == expectedHashCode);
         }
     }
 }

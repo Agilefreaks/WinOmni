@@ -44,12 +44,7 @@
                 currentEncryptionKey = _cryptoService.GenerateKeyPair();
 
                 result =
-                    _devices.Update(
-                        new
-                            {
-                                Identifier = _configurationService.DeviceIdentifier,
-                                PublicKey = currentEncryptionKey.Public
-                            })
+                    _devices.Update(_configurationService.DeviceId, new { PublicKey = currentEncryptionKey.Public })
                         .Select(_ => Observable.Start(() => _configurationService.DeviceKeyPair = currentEncryptionKey))
                         .Switch()
                         .Select(_ => new ExecuteResult { State = SimpleStepStateEnum.Successful });

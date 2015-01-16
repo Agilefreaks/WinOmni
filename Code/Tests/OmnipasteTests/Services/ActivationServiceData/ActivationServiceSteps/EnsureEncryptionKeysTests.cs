@@ -10,6 +10,7 @@
     using OmniApi.Cryptography;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
@@ -17,10 +18,14 @@
     [TestFixture]
     public class EnsureEncryptionKeysTests
     {
+        private const string Deviceid = "SomeDeviceId";
+
         private EnsureEncryptionKeys _subject;
         private Mock<ICryptoService> _mockCryptoService;
         private Mock<IConfigurationService> _mockConfigurationService;
         private Mock<IDevices> _mockDevices;
+
+        private TestScheduler _testScheduler;
 
         [SetUp]
         public void SetUp()
@@ -28,7 +33,16 @@
             _mockCryptoService = new Mock<ICryptoService>();
             _mockConfigurationService = new Mock<IConfigurationService>();
             _mockDevices = new Mock<IDevices>();
+            _mockConfigurationService.Setup(x => x.DeviceId).Returns(Deviceid);
             _subject = new EnsureEncryptionKeys(_mockCryptoService.Object, _mockConfigurationService.Object, _mockDevices.Object);
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
         }
 
         [Test]
@@ -36,14 +50,12 @@
         {
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
-            var testScheduler = new TestScheduler();
-            var updateObservable = testScheduler.CreateColdObservable(
+            var updateObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+            _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
 
-            _mockDevices.Setup(m => m.Update(It.IsAny<object>())).Returns(updateObservable);
-
-            testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
 
             _mockConfigurationService.VerifySet(x => x.DeviceKeyPair = keyPair);
         }
@@ -53,16 +65,14 @@
         {
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
-            var testScheduler = new TestScheduler();
-            var updateObservable = testScheduler.CreateColdObservable(
+            var updateObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnError<EmptyModel>(new Exception())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             KeyPair newValue = null;
-            _mockConfigurationService.SetupSet(m => m.DeviceKeyPair).Callback(pair => newValue = pair);
+            _mockConfigurationService.SetupSet(m => m.DeviceKeyPair = It.IsAny<KeyPair>()).Callback<KeyPair>(pair => newValue = pair);
+            _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
 
-            _mockDevices.Setup(m => m.Update(It.IsAny<object>())).Returns(updateObservable);
-
-            testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
 
             newValue.Should().BeNull();
         }
@@ -72,15 +82,13 @@
         {
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
-            var testScheduler = new TestScheduler();
-            var updateObservable = testScheduler.CreateColdObservable(
+            var updateObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             _mockConfigurationService.SetupGet(x => x.DeviceKeyPair).Returns(new KeyPair { Private = "test" });
+            _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
 
-            _mockDevices.Setup(m => m.Update(It.IsAny<object>())).Returns(updateObservable);
-
-            testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
 
             _mockConfigurationService.VerifySet(x => x.DeviceKeyPair = keyPair);
         }
