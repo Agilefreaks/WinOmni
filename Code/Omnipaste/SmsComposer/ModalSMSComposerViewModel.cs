@@ -3,9 +3,9 @@
     using System;
     using Caliburn.Micro;
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
+    using SMS.Resources.v1;
 
     public class ModalSMSComposerViewModel : SMSComposerViewModel, IModalSMSComposerViewModel
     {
@@ -20,10 +20,10 @@
         #region Constructors and Destructors
 
         public ModalSMSComposerViewModel(
-            IDevices devices,
+            ISMSMessages smsMessages,
             IEventAggregator eventAggregator,
             ISMSMessageFactory smsMessageFactory)
-            : base(devices, smsMessageFactory)
+            : base(smsMessages, smsMessageFactory)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);

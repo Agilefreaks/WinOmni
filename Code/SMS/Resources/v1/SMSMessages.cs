@@ -1,13 +1,12 @@
 ﻿namespace SMS.Resources.v1
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
+    using SMS.Models;
 
     public class SMSMessages : ResourceWithAuthorization<ISMSMessagesApi>, ISMSMessages
     {
@@ -22,9 +21,16 @@
 
         #region Public Methods and Operators
 
-        public IObservable<EmptyModel> Send(IEnumerable<string> messages, IEnumerable<string> phoneNumbers)
+        public IObservable<EmptyModel> Send(string message, string phoneNumber)
         {
-            var payload = new { ContentList = messages.ToArray(), PhoneNumberList = phoneNumbers.ToArray() };
+            var payload =
+                new
+                    {
+                        Content = message,
+                        PhoneNumber = phoneNumber,
+                        Type = SMSMessageType.Incoming,
+                        State = SMSMessageState.Sending
+                    };
 
             return ResourceApi.Create(payload, AccessToken);
         }

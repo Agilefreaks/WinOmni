@@ -1,16 +1,16 @@
 ﻿namespace Omnipaste.SMSComposer
 {
     using OmniApi.Models;
-    using OmniApi.Resources.v1;
     using Omnipaste.Models;
     using OmniUI.Models;
+    using SMS.Resources.v1;
 
     public class InlineSMSComposerViewModel : SMSComposerViewModel, IInlineSMSComposerViewModel
     {
         #region Constructors and Destructors
 
-        public InlineSMSComposerViewModel(IDevices devices, ISMSMessageFactory smsMessageFactory)
-            : base(devices, smsMessageFactory)
+        public InlineSMSComposerViewModel(ISMSMessages smsMessages, ISMSMessageFactory smsMessageFactory)
+            : base(smsMessages, smsMessageFactory)
         {
         }
 

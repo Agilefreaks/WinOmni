@@ -6,12 +6,12 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Resources.v1;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.SMSComposer;
     using OmniUI.Models;
+    using SMS.Resources.v1;
 
     [TestFixture]
     public class ModalSMSComposerViewModelTests
@@ -20,7 +20,7 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IDevices> _mockDevices;
+        private Mock<ISMSMessages> _mockSMSMessages;
 
         private EventAggregator _eventAggregator;
 
@@ -32,8 +32,8 @@
         public void SetUp()
         {
             _kernel = new MoqMockingKernel();
-            _mockDevices = _kernel.GetMock<IDevices>();
-            _mockDevices.DefaultValue = DefaultValue.Mock;
+            _mockSMSMessages = _kernel.GetMock<ISMSMessages>();
+            _mockSMSMessages.DefaultValue = DefaultValue.Mock;
 
             _eventAggregator = new EventAggregator();
             _kernel.Bind<IEventAggregator>().ToConstant(_eventAggregator).InSingletonScope();
@@ -41,7 +41,7 @@
             _mockDialogViewModel = new Mock<IDialogViewModel>();
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object).InSingletonScope();
 
-            _kernel.Bind<IDevices>().ToConstant(_mockDevices.Object);
+            _kernel.Bind<ISMSMessages>().ToConstant(_mockSMSMessages.Object);
 
             _mockSMSFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
             _kernel.Bind<ISMSMessageFactory>().ToConstant(_mockSMSFactory.Object);
@@ -61,7 +61,7 @@
         {
             _subject.Send();
 
-            _mockDevices.Verify(p => p.SendSms("1234567", "save me Obi-Wan Kenobi"), Times.Once);
+            _mockSMSMessages.Verify(p => p.Send("1234567", "save me Obi-Wan Kenobi"), Times.Once);
         }
 
         [Test]

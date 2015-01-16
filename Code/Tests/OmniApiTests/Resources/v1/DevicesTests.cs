@@ -1,7 +1,6 @@
 ﻿namespace OmniApiTests.Resources.v1
 {
     using System;
-    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Resources.v1;
@@ -49,7 +48,7 @@
 
             //The registration id is required to identify the websocket channel to talk to the device and the provider
             //is required to identify which notification provider is to be used when sending notifications (WebSocket or GoogleCloudMessaging)
-            var expectedDeviceParams = new { registrationId = RegistrationId, provider = Devices.NotificationsProvider };
+            var expectedDeviceParams = new { RegistrationId, Provider = Devices.NotificationsProvider };
             _mockDevicesAPI.Verify(
                 x =>
                 x.Patch(

@@ -24,8 +24,6 @@
 
         IObservable<List<Device>> GetAll();
 
-        IObservable<EmptyModel> SendSms(string phoneNumber, string content);
-
         #endregion
     }
 }

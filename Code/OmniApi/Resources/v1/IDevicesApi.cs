@@ -24,9 +24,6 @@
         [Delete("/user/devices/{id}")]
         IObservable<EmptyModel> Remove(string id, [Header("Authorization")] string accessToken);
 
-        [Post("/devices/sms")]
-        IObservable<EmptyModel> SendSms([AliasAs("phone_number")] string phoneNumber, string content, [Header("Authorization")] string token);
-
         [Put("/devices")]
         IObservable<EmptyModel> Update([Body] object deviceParams, [Header("Authorization")] string token);
 
