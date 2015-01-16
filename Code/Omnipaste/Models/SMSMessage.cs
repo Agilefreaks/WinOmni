@@ -86,9 +86,12 @@
             }
             set
             {
-                _message.Content = value;
-                NotifyOfPropertyChange(() => Message);
-                NotifyOfPropertyChange(() => LimitMessage);
+                if (_message.Content != value)
+                {
+                    _message.Content = value;
+                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange(() => LimitMessage);
+                }
             }
         }
 
@@ -100,8 +103,11 @@
             }
             set
             {
-                _message.ContactInfo.Phone = value;
-                NotifyOfPropertyChange(() => Recipient);
+                if (_message.ContactInfo.Phone != value)
+                {
+                    _message.ContactInfo.Phone = value;
+                    NotifyOfPropertyChange();
+                }
             }
         }
 

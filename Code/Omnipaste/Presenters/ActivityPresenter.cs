@@ -106,7 +106,7 @@
                     return;
                 }
                 BackingModel.WasViewed = value;
-                NotifyOfPropertyChange(() => WasViewed);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -131,7 +131,7 @@
                     return;
                 }
                 BackingModel.IsDeleted = value;
-                NotifyOfPropertyChange(() => IsDeleted);
+                NotifyOfPropertyChange();
             }
         }
 

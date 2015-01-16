@@ -17,7 +17,7 @@
                     return;
                 }
                 _resource = value;
-                NotifyOfPropertyChange(() => Resource);
+                NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => Line1);
                 NotifyOfPropertyChange(() => Line2);
                 NotifyOfPropertyChange(() => Title);

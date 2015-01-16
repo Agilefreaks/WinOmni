@@ -37,7 +37,7 @@
                     return;
                 }
                 _canReplyWithSms = value;
-                NotifyOfPropertyChange(() => CanReplyWithSMS);
+                NotifyOfPropertyChange();
             }
         }
 

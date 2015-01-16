@@ -27,7 +27,7 @@
                     return;
                 }
                 _background = value;
-                NotifyOfPropertyChange(() => Background);
+                NotifyOfPropertyChange();
             }
         }
 

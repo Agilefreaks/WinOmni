@@ -24,7 +24,7 @@ namespace OmniUI.Flyout
                 if (_header != value)
                 {
                     _header = value;
-                    NotifyOfPropertyChange(() => Header);
+                    NotifyOfPropertyChange();
                 }
             }
         }
@@ -42,7 +42,7 @@ namespace OmniUI.Flyout
                     return;
                 }
                 _isOpen = value;
-                NotifyOfPropertyChange(() => IsOpen);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -57,7 +57,7 @@ namespace OmniUI.Flyout
                 if (_isModal != value)
                 {
                     _isModal = value;
-                    NotifyOfPropertyChange(() => IsModal);
+                    NotifyOfPropertyChange();
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace OmniUI.Flyout
                 if (_isPinned != value)
                 {
                     _isPinned = value;
-                    NotifyOfPropertyChange(() => IsPinned);
+                    NotifyOfPropertyChange();
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace OmniUI.Flyout
                 if (_position != value)
                 {
                     _position = value;
-                    NotifyOfPropertyChange(() => Position);
+                    NotifyOfPropertyChange();
                 }
                 
             }

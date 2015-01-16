@@ -98,7 +98,7 @@
 
                 _model = value;
                 _model.PropertyChanged += ModelPropertyChanged;
-                NotifyOfPropertyChange(() => Model);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -115,7 +115,7 @@
                     return;
                 }
                 _sendCommand = value;
-                NotifyOfPropertyChange(() => SendCommand);
+                NotifyOfPropertyChange();
             }
         }
 

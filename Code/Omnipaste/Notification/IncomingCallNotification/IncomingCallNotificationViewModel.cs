@@ -42,7 +42,7 @@
                     return;
                 }
                 _canEndCall = value;
-                NotifyOfPropertyChange(() => CanEndCall);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -62,7 +62,7 @@
                     return;
                 }
                 _endCallButtonText = value;
-                NotifyOfPropertyChange(() => EndCallButtonText);
+                NotifyOfPropertyChange();
             }
         }
 

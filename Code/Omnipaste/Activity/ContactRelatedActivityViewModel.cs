@@ -51,8 +51,11 @@
             }
             set
             {
+                if (base.Model != value)
+                {
+                    ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
+                }
                 base.Model = value;
-                ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
             }
         }
 

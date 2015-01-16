@@ -28,7 +28,7 @@
                     return;
                 }
                 _canOpenLink = value;
-                NotifyOfPropertyChange(() => CanOpenLink);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -40,8 +40,12 @@
             }
             set
             {
+                var oldResource = base.Resource;
                 base.Resource = value;
-                NotifyOfPropertyChange(() => Uri);
+                if (oldResource != value)
+                {
+                    NotifyOfPropertyChange(() => Uri);
+                }
             }
         }
 

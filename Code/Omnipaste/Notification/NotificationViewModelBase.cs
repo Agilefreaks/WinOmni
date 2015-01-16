@@ -50,7 +50,7 @@
                     return;
                 }
                 _state = value;
-                NotifyOfPropertyChange(() => State);
+                NotifyOfPropertyChange();
                 if (State == ViewModelStatusEnum.Open)
                 {
                     InitializeTimers();

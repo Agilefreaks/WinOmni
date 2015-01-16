@@ -46,7 +46,7 @@
                     return;
                 }
                 _canPerformAction = value;
-                NotifyOfPropertyChange(() => CanPerformAction);
+                NotifyOfPropertyChange();
             }
         }
 

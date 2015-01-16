@@ -54,7 +54,7 @@
                     return;
                 }
                 _state = value;
-                NotifyOfPropertyChange(() => State);
+                NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CanSend);
             }
         }

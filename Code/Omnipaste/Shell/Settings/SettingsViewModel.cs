@@ -42,8 +42,11 @@
             }
             set
             {
+                if (base.IsOpen != value)
+                {
+                    NotifyOfPropertyChange(() => IsSMSSuffixEnabled);
+                }
                 base.IsOpen = value;
-                NotifyOfPropertyChange(() => IsSMSSuffixEnabled);
             }
         }
 

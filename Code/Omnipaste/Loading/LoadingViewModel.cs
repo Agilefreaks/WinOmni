@@ -43,7 +43,7 @@
                 if (_state != value)
                 {
                     _state = value;
-                    NotifyOfPropertyChange(() => State);
+                    NotifyOfPropertyChange();
                 }
             }
         }

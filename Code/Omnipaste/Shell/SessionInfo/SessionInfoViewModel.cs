@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Caliburn.Micro;
+    using Ninject.Injection;
     using Omni;
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
@@ -91,10 +92,13 @@
             }
             set
             {
-                _state = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => StatusText);
-                NotifyOfPropertyChange(() => Icon);
+                if (_state != value)
+                {
+                    _state = value;
+                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange(() => StatusText);
+                    NotifyOfPropertyChange(() => Icon);
+                }
             }
         }
 

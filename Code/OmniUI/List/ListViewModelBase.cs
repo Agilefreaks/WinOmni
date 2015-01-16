@@ -66,7 +66,7 @@ namespace OmniUI.List
                 }
 
                 _status = value;
-                NotifyOfPropertyChange(() => Status);
+                NotifyOfPropertyChange();
             }
         }
 

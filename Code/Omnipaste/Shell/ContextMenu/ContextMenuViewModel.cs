@@ -77,8 +77,11 @@
             }
             set
             {
-                _balloonInfo = value;
-                NotifyOfPropertyChange(() => BalloonInfo);
+                if (_balloonInfo != value)
+                {
+                    _balloonInfo = value;
+                    NotifyOfPropertyChange();
+                }
             }
         }
 
@@ -90,8 +93,11 @@
             }
             set
             {
-                _iconSource = value;
-                NotifyOfPropertyChange(() => IconSource);
+                if (_iconSource != value)
+                {
+                    _iconSource = value;
+                    NotifyOfPropertyChange();
+                }
             }
         }
 

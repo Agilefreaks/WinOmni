@@ -73,7 +73,7 @@ namespace Omnipaste.Activity
                     return;
                 }
                 _contentType = value;
-                NotifyOfPropertyChange(() => ContentType);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -90,7 +90,7 @@ namespace Omnipaste.Activity
                     return;
                 }
                 _contentInfo = value;
-                NotifyOfPropertyChange(() => ContentInfo);
+                NotifyOfPropertyChange();
             }
         }
 

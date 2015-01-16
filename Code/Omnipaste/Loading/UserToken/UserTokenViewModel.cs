@@ -39,9 +39,12 @@
             }
             set
             {
-                _activationCode = value;
-                NotifyOfPropertyChange(() => ActivationCode);
-                NotifyOfPropertyChange(() => CanAuthenticate);
+                if (_activationCode != value)
+                {
+                    _activationCode = value;
+                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange(() => CanAuthenticate);
+                }
             }
         }
 
@@ -66,8 +69,11 @@
             }
             set
             {
-                _isBusy = value;
-                NotifyOfPropertyChange(() => IsBusy);
+                if (_isBusy != value)
+                {
+                    _isBusy = value;
+                    NotifyOfPropertyChange();
+                }
             }
         }
 
@@ -82,7 +88,7 @@
                 if (_message != value)
                 {
                     _message = value;
-                    NotifyOfPropertyChange(() => Message);
+                    NotifyOfPropertyChange();
                     NotifyOfPropertyChange(() => HasMessage);
                 }
             }

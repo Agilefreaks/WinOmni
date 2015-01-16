@@ -30,7 +30,7 @@
                 if (_isOpen != value)
                 {
                     _isOpen = value;
-                    NotifyOfPropertyChange(() => IsOpen);
+                    NotifyOfPropertyChange();
                 }
             }
         }
