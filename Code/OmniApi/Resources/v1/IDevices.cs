@@ -12,8 +12,6 @@
 
         IObservable<EmptyModel> Activate(string registrationId, string deviceId);
 
-        IObservable<EmptyModel> Call(string phoneNumber);
-
         IObservable<Device> Create(string name, string publicKey);
 
         IObservable<EmptyModel> Deactivate(string identifier);

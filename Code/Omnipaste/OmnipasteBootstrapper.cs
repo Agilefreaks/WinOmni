@@ -25,6 +25,7 @@
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
+    using PhoneCalls;
     using SMS;
     using ViewLocator = Caliburn.Micro.ViewLocator;
 
@@ -78,6 +79,7 @@
                 new EventsModule(),
                 new ContactsModule(),
                 new SMSModule(),
+                new PhoneCallsModule(),
                 new OmnipasteModule());
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
             

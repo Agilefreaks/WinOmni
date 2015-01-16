@@ -1101,6 +1101,10 @@
       <Project>{b3f798a0-a219-49ea-8a25-183a91662e82}</Project>
       <Name>Omni</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PhoneCalls\PhoneCalls.csproj">
+      <Project>{f98013c8-3258-4ea7-adab-52ad904c3927}</Project>
+      <Name>PhoneCalls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SMS\SMS.csproj">
       <Project>{6b364690-348d-4354-b12b-64770342ffd0}</Project>
       <Name>SMS</Name>
