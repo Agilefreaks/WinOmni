@@ -66,6 +66,7 @@
     <Compile Include="Models\PhoneCallType.cs" />
     <Compile Include="PhoneCallsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefitStubs.cs" />
     <Compile Include="Resources\v1\IPhoneCalls.cs" />
     <Compile Include="Resources\v1\IPhoneCallsApi.cs" />
     <Compile Include="Resources\v1\PhoneCalls.cs" />
