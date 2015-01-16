@@ -21,6 +21,11 @@
 
         #region Public Methods and Operators
 
+        public IObservable<SmsMessage> Get(string id)
+        {
+            return ResourceApi.Get(id, AccessToken);
+        }
+
         public IObservable<EmptyModel> Send(string message, string phoneNumber)
         {
             var payload =

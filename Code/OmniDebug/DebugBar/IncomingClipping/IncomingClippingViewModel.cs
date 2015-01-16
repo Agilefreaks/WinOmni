@@ -86,7 +86,7 @@
         {
             var clippingId = Guid.NewGuid().ToString();
             _clippingsWrapper.MockGet(clippingId, new Clipping { Id = clippingId, Content = ClippingContent, Type = ClippingType });
-            _omniServiceWrapper.SimulateMessage(new OmniMessage { Type = OmniMessageType.ClippingCreated, Payload = new Dictionary<string, string> { {"id", clippingId} }});
+            _omniServiceWrapper.SimulateMessage(new OmniMessage { Type = "clipping_created", Payload = new Dictionary<string, string> { {"id", clippingId} }});
         }
 
         #endregion

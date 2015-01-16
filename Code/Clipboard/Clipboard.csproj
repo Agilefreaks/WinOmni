@@ -99,7 +99,7 @@
     <Compile Include="Handlers\IClipboardHandler.cs" />
     <Compile Include="Handlers\IClipboard.cs" />
     <Compile Include="Handlers\IOmniClipboardHandler.cs" />
-    <Compile Include="Handlers\OmniClipboardHandler.cs" />
+    <Compile Include="Handlers\ClippingCreatedHandler.cs" />
     <Compile Include="Handlers\ILocalClipboardHandler.cs" />
     <Compile Include="Handlers\LocalClipboardHandler.cs" />
     <Compile Include="Handlers\WindowsClipboard\ClipboardEventArgs.cs" />

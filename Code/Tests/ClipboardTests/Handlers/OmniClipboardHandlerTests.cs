@@ -36,7 +36,7 @@
             _mockClippings = _mockingKernel.GetMock<IClippings>();
             _mockConfigurationService = _mockingKernel.GetMock<IConfigurationService>();
 
-            _mockingKernel.Bind<IOmniClipboardHandler>().To<OmniClipboardHandler>();
+            _mockingKernel.Bind<IOmniClipboardHandler>().To<ClippingCreatedHandler>();
 
             _omniClipboardHandler = _mockingKernel.Get<IOmniClipboardHandler>();
         }
@@ -54,7 +54,7 @@
             var autoResetEvent = new AutoResetEvent(false);
             observer.Setup(o => o.OnNext(clipping)).Callback(() => autoResetEvent.Set());
 
-            omniMessageObservable.OnNext(new OmniMessage { Type = OmniMessageType.ClippingCreated, Payload = new Dictionary<string, string> { {"id", "42"} }});
+            omniMessageObservable.OnNext(new OmniMessage { Type = "clipping_created", Payload = new Dictionary<string, string> { { "id", "42" } } });
 
             autoResetEvent.WaitOne(1000);
             observer.Verify(o => o.OnNext(clipping), Times.Once);
