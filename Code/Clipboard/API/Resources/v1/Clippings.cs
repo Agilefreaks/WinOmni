@@ -36,7 +36,7 @@
 
         public IObservable<Clipping> Get(string id)
         {
-            return ResourceApi.Get(id);
+            return ResourceApi.Get(id, AccessToken);
         }
 
         #endregion
