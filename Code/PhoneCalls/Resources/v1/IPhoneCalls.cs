@@ -6,5 +6,7 @@
     public interface IPhoneCalls
     {
         IObservable<EmptyModel> Call(string phoneNumber);
+
+        IObservable<EmptyModel> EndCall(string callId);
     }
 }

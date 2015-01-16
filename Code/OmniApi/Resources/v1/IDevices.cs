@@ -18,8 +18,6 @@
 
         IObservable<EmptyModel> Remove(string identifier);
 
-        IObservable<EmptyModel> EndCall();
-
         IObservable<List<Device>> GetAll();
 
         #endregion

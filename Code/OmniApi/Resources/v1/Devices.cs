@@ -60,11 +60,6 @@
             return ResourceApi.Remove(identifier, AccessToken);
         }
 
-        public IObservable<EmptyModel> EndCall()
-        {
-            return ResourceApi.EndCall(AccessToken);
-        }
-
         public IObservable<List<Device>> GetAll()
         {
             return ResourceApi.GetAll(AccessToken);

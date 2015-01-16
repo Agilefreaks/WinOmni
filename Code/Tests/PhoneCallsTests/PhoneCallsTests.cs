@@ -48,5 +48,21 @@
                         && phoneCall.Type == PhoneCallType.Outgoing),
                     "bearer SomeToken"));
         }
+
+        [Test]
+        public void EndCall_Always_PatchesTheGivenCallWithTheStateEnding()
+        {
+            const string CallId = "someCallId";
+
+            _subject.EndCall(CallId);
+
+            var expectedPayload = new { State = PhoneCallState.Ending };
+            _mockPhoneCallsAPI.Verify(
+                x =>
+                x.Patch(
+                    CallId,
+                    It.Is<object>(payload => payload.GetHashCode() == expectedPayload.GetHashCode()),
+                    "bearer SomeToken"));
+        }
     }
 }

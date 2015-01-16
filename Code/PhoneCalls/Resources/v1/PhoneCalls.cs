@@ -34,6 +34,11 @@
                     AccessToken);
         }
 
+        public IObservable<EmptyModel> EndCall(string callId)
+        {
+            return ResourceApi.Patch(callId, new  { State = PhoneCallState.Ending }, AccessToken);
+        }
+
         #endregion
 
         #region Methods
