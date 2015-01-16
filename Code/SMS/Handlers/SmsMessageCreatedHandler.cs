@@ -14,7 +14,7 @@
         {
             get
             {
-                return "sms_message_created";
+                return "sms_message_received";
             }
         }
 
