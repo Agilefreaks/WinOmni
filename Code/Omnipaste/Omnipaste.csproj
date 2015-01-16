@@ -1073,10 +1073,6 @@
       <Project>{9666d071-c0e7-4cc0-adda-a9ea7a8842d0}</Project>
       <Name>Contacts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Events\Events.csproj">
-      <Project>{54D0AFE4-0CD1-414D-AD1F-B9424250673A}</Project>
-      <Name>Events</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OmniApi\OmniApi.csproj">
       <Project>{fe52a16d-0e4a-4794-af54-4ca066608ff9}</Project>
       <Name>OmniApi</Name>
