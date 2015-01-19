@@ -15,7 +15,7 @@
             _originalResource = originalResource;
         }
 
-        public IObservable<EmptyModel> Call(string phoneNumber)
+        public IObservable<PhoneCall> Call(string phoneNumber)
         {
             return _originalResource.Call(phoneNumber);
         }

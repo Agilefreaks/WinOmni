@@ -10,7 +10,6 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
     using OmniCommon.Helpers;
     using Omnipaste.Dialog;
     using Omnipaste.Event;
@@ -19,6 +18,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using OmniUI.Models;
+    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]
@@ -138,8 +138,8 @@
         {
             var createCallObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                    new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
+                    new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
             _mockPhoneCalls.Setup(x => x.Call(It.IsAny<string>())).Returns(createCallObservable);
         }
 

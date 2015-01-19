@@ -11,6 +11,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.Presenters;
+    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     public class ConversationHeaderViewModel : ActivityDetailsHeaderViewModel, IConversationHeaderViewModel
@@ -111,7 +112,7 @@
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
                     .Select(_ => PhoneCalls.Call(Model.ExtraData.ContactInfo.Phone as string))
                     .Switch()
-                    .Select(_ => SaveCallLocally())
+                    .Select(SaveCallLocally)
                     .Switch()
                     .Delay(CallingDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Normal)
@@ -179,11 +180,9 @@
             _callSubscription = null;
         }
 
-        private IObservable<RepositoryOperation<Models.Call>> SaveCallLocally()
+        private IObservable<RepositoryOperation<Models.Call>> SaveCallLocally(PhoneCall call)
         {
-            return
-                CallRepository.Save(
-                    new Models.Call { ContactInfo = Model.ExtraData.ContactInfo, Source = SourceType.Local });
+            return CallRepository.Save(new Models.Call(call) { Source = SourceType.Local });
         }
 
         private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)

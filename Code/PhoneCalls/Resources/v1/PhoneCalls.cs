@@ -26,7 +26,7 @@
             return ResourceApi.Get(id, AccessToken);
         }
 
-        public IObservable<EmptyModel> Call(string phoneNumber)
+        public IObservable<PhoneCall> Call(string phoneNumber)
         {
             return
                 ResourceApi.Create(

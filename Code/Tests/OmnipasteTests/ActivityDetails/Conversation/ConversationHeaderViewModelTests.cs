@@ -8,7 +8,6 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
     using OmniCommon.Helpers;
     using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
@@ -115,8 +114,8 @@
             var phoneCall = new PhoneCall { Number = "1234567890" };
             _subject.Model = new ActivityPresenter(new Call(phoneCall));
             var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
+                new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
             
             _subject.Call();
@@ -131,8 +130,8 @@
             var phoneCall = new PhoneCall { Number = "1234567890" };
             _subject.Model = new ActivityPresenter(new Call(phoneCall));
             var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
+                new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
             SetupSaveCallObservable();
 
@@ -145,11 +144,11 @@
         [Test]
         public void Call_AfterCreatingTheCall_SavesTheCallInfoLocally()
         {
-            var @event = new Event { PhoneNumber = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var call = new Call(new PhoneCall { Number = "1234567890" });
+            _subject.Model = new ActivityPresenter(call);
             var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
+                new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
             SetupSaveCallObservable();
 

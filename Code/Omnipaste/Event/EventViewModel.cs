@@ -13,7 +13,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
-    using OmniUI.Models;
+    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     public class EventViewModel : DetailsViewModelBase<IConversationItem>, IEventViewModel
@@ -85,7 +85,7 @@
         {
             return
                 PhoneCalls.Call(Model.ContactInfo.Phone)
-                    .Select(_ => SaveCallLocally())
+                    .Select(SaveCallLocally)
                     .Switch()
                     .Do(_ => ShowCallingNotification())
                     .ToTask();
@@ -100,15 +100,9 @@
 
         #region Methods
 
-        private IObservable<RepositoryOperation<Call>> SaveCallLocally()
+        private IObservable<RepositoryOperation<Call>> SaveCallLocally(PhoneCall call)
         {
-            return
-                CallRepository.Save(
-                    new Call
-                        {
-                            ContactInfo = new ContactInfo { Phone = Model.ContactInfo.Phone },
-                            Source = SourceType.Local
-                        });
+            return CallRepository.Save(new Call(call) { Source = SourceType.Local });
         }
 
         private void ShowCallingNotification()
