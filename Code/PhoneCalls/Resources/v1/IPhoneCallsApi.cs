@@ -7,7 +7,7 @@
 
     public interface IPhoneCallsApi
     {
-        [Patch("/phone_calls/{id}")]
+        [Get("/phone_calls/{id}")]
         IObservable<PhoneCall> Get(string id, [Header("Authorization")] string token);
 
         [Post("/phone_calls")]
