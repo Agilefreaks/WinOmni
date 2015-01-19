@@ -6,9 +6,9 @@
 
 **Improvements:**
 
-- migrates to using the new more powerfull/flexible Omnipaste API
-- upadeted the style for the activity type filter to make it more obvious that it is a filter
-- modified the auto-update process so as to restore the app window to its previous state (minimized/maximized) after installing an update
+- migrated to using the new, more powerful and flexible Omnipaste API
+- updated the style for the activity type filter to make it more obvious that it is a filter
+- modified the auto-update process so as to restore the application window to its previous state (minimized/maximized) after installing an update
 
 
 **New features**
