@@ -134,11 +134,29 @@
                 new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                 new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
-            
+            SetupSaveCallObservable();
+
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+        }
+
+        [Test]
+        public void Call_AfterCreatingTheCall_SavesTheCallInfoLocally()
+        {
+            var @event = new Event { PhoneNumber = "1234567890" };
+            _subject.Model = new ActivityPresenter(new Call(@event));
+            var callObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
+                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+            _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>())).Returns(callObservable);
+            SetupSaveCallObservable();
+
+            _subject.Call();
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
+
+            _mockCallRepository.Verify(x => x.Save(It.IsAny<Call>()), Times.Once());
         }
 
         [Test]
@@ -219,6 +237,19 @@
 
             _mockMessageRepository.Verify(m => m.Save(message));
             message.IsDeleted.Should().BeFalse();
+        }
+
+        private void SetupSaveCallObservable()
+        {
+            var saveObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(
+                        200,
+                        Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
+            _mockCallRepository.Setup(x => x.Save(It.IsAny<Call>())).Returns(saveObservable);
         }
     }
 }

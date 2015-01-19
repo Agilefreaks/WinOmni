@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.Event
 {
     using System;
+    using System.Reactive.Linq;
+    using System.Reactive.Threading.Tasks;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Ninject;
-    using OmniApi.Models;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Dialog;
     using Omnipaste.EventAggregatorMessages;
@@ -30,6 +30,9 @@
         #region Public Properties
 
         [Inject]
+        public ICallRepository CallRepository { get; set; }
+
+        [Inject]
         public ICallingViewModel CallingViewModel { get; set; }
 
         public string Content
@@ -41,15 +44,12 @@
         }
 
         [Inject]
-        public IPhoneCalls PhoneCalls { get; set; }
-
-        [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
 
-        [Inject]
-        public ICallRepository CallRepository { get; set; }
-
         public IEventAggregator EventAggregator { get; set; }
+
+        [Inject]
+        public IPhoneCalls PhoneCalls { get; set; }
 
         public DateTime Time
         {
@@ -63,7 +63,9 @@
         {
             get
             {
-                return string.IsNullOrWhiteSpace(Model.ContactInfo.Name) ? Model.ContactInfo.Phone : Model.ContactInfo.Name;
+                return string.IsNullOrWhiteSpace(Model.ContactInfo.Name)
+                           ? Model.ContactInfo.Phone
+                           : Model.ContactInfo.Name;
             }
         }
 
@@ -79,16 +81,14 @@
 
         #region Public Methods and Operators
 
-        public void CallBack()
+        public Task CallBack()
         {
-            PhoneCalls.Call(Model.ContactInfo.Phone)
-                .RunToCompletion(OnCallStarted, dispatcher: DispatcherProvider.Current);
-        }
-
-        private void OnCallStarted(EmptyModel model)
-        {
-            ShowCallingNotification();
-            CallRepository.Save(new Call { ContactInfo = new ContactInfo { Phone = Model.ContactInfo.Phone } });
+            return
+                PhoneCalls.Call(Model.ContactInfo.Phone)
+                    .Select(_ => SaveCallLocally())
+                    .Switch()
+                    .Do(_ => ShowCallingNotification())
+                    .ToTask();
         }
 
         public void SendSms()
@@ -99,6 +99,17 @@
         #endregion
 
         #region Methods
+
+        private IObservable<RepositoryOperation<Call>> SaveCallLocally()
+        {
+            return
+                CallRepository.Save(
+                    new Call
+                        {
+                            ContactInfo = new ContactInfo { Phone = Model.ContactInfo.Phone },
+                            Source = SourceType.Local
+                        });
+        }
 
         private void ShowCallingNotification()
         {

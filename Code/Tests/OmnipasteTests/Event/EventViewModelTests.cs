@@ -2,8 +2,7 @@
 {
     using System;
     using System.Reactive;
-    using System.Reactive.Linq;
-    using System.Threading;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -18,6 +17,7 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.MasterEventList.Calling;
     using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
     using OmniUI.Models;
     using PhoneCalls.Resources.v1;
 
@@ -36,10 +36,14 @@
 
         private Mock<IDialogViewModel> _mockDialogViewModel;
 
+        private Mock<ICallRepository> _mockCallRepository;
+
         [SetUp]
         public void SetUp()
         {
-            SetupTestScheduler();
+            _testScheduler = new TestScheduler();
+            SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
 
             _kernel = new MoqMockingKernel();
             _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
@@ -49,11 +53,20 @@
             _mockPhoneCalls.DefaultValue = DefaultValue.Mock;
             _kernel.Bind<IPhoneCalls>().ToConstant(_mockPhoneCalls.Object);
 
+            _mockCallRepository = _kernel.GetMock<ICallRepository>();
+            _kernel.Bind<ICallRepository>().ToConstant(_mockCallRepository.Object);
+
             _mockDialogViewModel = _kernel.GetMock<IDialogViewModel>();
             _kernel.Bind<IDialogViewModel>().ToConstant(_mockDialogViewModel.Object);
 
             _subject = _kernel.Get<EventViewModel>();
             _subject.Model = new Call { ContactInfo = new ContactInfo { Phone = "phone_number" } };
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
         }
 
         [Test]
@@ -65,26 +78,42 @@
         }
 
         [Test]
-        public void CallBack_MakesTheDeviceCallTheEventPhoneNumber()
+        public async Task CallBack_MakesTheDeviceCallTheEventPhoneNumber()
         {
-            _subject.CallBack();
+            SetupCreateCall();
+            SetupSaveCall();
+
+            var task = _subject.CallBack();
+            _testScheduler.Start();
+            await task;
 
             _mockPhoneCalls.Verify(d => d.Call(It.Is<string>(s => s == "phone_number")), Times.Once);
         }
 
         [Test]
-        public void CallBack_ShowsTheCallingScreenInTheDialogViewModel()
+        public async Task CallBack_ShowsTheCallingScreenInTheDialogViewModel()
         {
-            _mockPhoneCalls.Setup(d => d.Call(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
-            DispatcherProvider.Instance = new ImmediateDispatcherProvider();
-            var autoResetEvent = new AutoResetEvent(false);
-            _mockDialogViewModel.Setup(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()))
-                .Callback(() => autoResetEvent.Set());
+            SetupCreateCall();
+            SetupSaveCall();
 
-            _subject.CallBack();
+            var task = _subject.CallBack();
+            _testScheduler.Start();
+            await task;
 
-            autoResetEvent.WaitOne();
             _mockDialogViewModel.Verify(dvm => dvm.ActivateItem(It.IsAny<ICallingViewModel>()));
+        }
+
+        [Test]
+        public async Task CallBack_SavesTheCreateCall()
+        {
+            SetupCreateCall();
+            SetupSaveCall();
+
+            var task = _subject.CallBack();
+            _testScheduler.Start();
+            await task;
+
+            _mockCallRepository.Verify(x => x.Save(It.IsAny<Call>()), Times.Once());
         }
 
         [Test]
@@ -105,16 +134,27 @@
             _subject.Title.Should().Be("1231321");
         }
 
-        public void SetupTestScheduler()
+        private void SetupCreateCall()
         {
-            _testScheduler = new TestScheduler();
+            var createCallObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
+                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+            _mockPhoneCalls.Setup(x => x.Call(It.IsAny<string>())).Returns(createCallObservable);
+        }
 
-            _testScheduler.CreateHotObservable(
-                new Recorded<Notification<EmptyModel>>(
-                    0,
-                    Notification.CreateOnNext(new EmptyModel())));
-
-            SchedulerProvider.Dispatcher = _testScheduler;
+        private void SetupSaveCall()
+        {
+            var saveCallObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Call>>>(
+                        100,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
+                    new Recorded<Notification<RepositoryOperation<Call>>>(
+                        200,
+                        Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
+            _mockCallRepository.Setup(x => x.Save(It.IsAny<Call>())).Returns(saveCallObservable);
         }
     }
 }
