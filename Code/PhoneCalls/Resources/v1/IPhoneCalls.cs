@@ -3,11 +3,10 @@
     using System;
     using global::PhoneCalls.Models;
     using OmniApi.Models;
+    using OmniCommon.Interfaces;
 
-    public interface IPhoneCalls
+    public interface IPhoneCalls : IResource<PhoneCall>
     {
-        IObservable<PhoneCall> Get(string id);
-
         IObservable<EmptyModel> Call(string phoneNumber);
 
         IObservable<EmptyModel> EndCall(string callId);

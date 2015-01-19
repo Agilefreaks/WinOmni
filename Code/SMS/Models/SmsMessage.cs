@@ -1,8 +1,12 @@
 ﻿namespace SMS.Models
 {
+    using System;
+
     public class SmsMessage
     {
         public string Id { get; set; }
+
+        public DateTime Time { get; set; }
 
         public string Content { get; set; }
 

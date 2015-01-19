@@ -10,7 +10,6 @@
     using Clipboard;
     using CommonServiceLocator.NinjectAdapter.Unofficial;
     using Contacts;
-    using Events;
     using Humanizer.DateTimeHumanizeStrategy;
     using Microsoft.Practices.ServiceLocation;
     using Ninject;
@@ -76,7 +75,6 @@
                 new OmniUiModule(),
                 new OmniModule(),
                 new ClipboardModule(),
-                new EventsModule(),
                 new ContactsModule(),
                 new SMSModule(),
                 new PhoneCallsModule(),

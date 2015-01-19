@@ -5,8 +5,6 @@
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
-    using Events.Handlers;
-    using Events.Models;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;

@@ -6,7 +6,7 @@
     using Omnipaste.Properties;
     using PhoneCalls.Resources.v1;
 
-    public class IncomingCallNotificationViewModel : EventNotificationViewModelBase, IIncomingCallNotificationViewModel
+    public class IncomingCallNotificationViewModel : ConversationNotificationViewModelBase, IIncomingCallNotificationViewModel
     {
         #region Fields
 

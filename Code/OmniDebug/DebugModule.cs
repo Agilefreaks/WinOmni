@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Clipboard.API.Resources.v1;
-    using Events.Api.Resources.v1;
     using Ninject;
     using Omni;
     using OmniDebug.DebugBar;
@@ -15,6 +14,8 @@
     using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.SecondaryMenuEntry;
+    using PhoneCalls.Resources.v1;
+    using SMS.Resources.v1;
 
     public class DebugModule : ModuleBase
     {
@@ -42,11 +43,17 @@
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
             Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<DebugMenuEntryViewModel>());
 
-            Kernel.Bind<EventsWrapper>()
-                .ToConstructor(syntax => new EventsWrapper(syntax.Context.Kernel.Get<Events>()))
+            Kernel.Bind<SmsMessagesWrapper>()
+                .ToConstructor(syntax => new SmsMessagesWrapper(syntax.Context.Kernel.Get<SMSMessages>()))
                 .InSingletonScope();
-            Kernel.Bind<IEventsWrapper>().ToMethod(context => context.Kernel.Get<EventsWrapper>());
-            Kernel.Bind<IEvents>().ToMethod(context => context.Kernel.Get<IEventsWrapper>());
+            Kernel.Bind<ISmsMessagesWrapper>().ToMethod(context => context.Kernel.Get<SmsMessagesWrapper>());
+            Kernel.Bind<ISMSMessages>().ToMethod(context => context.Kernel.Get<ISmsMessagesWrapper>());
+
+            Kernel.Bind<PhoneCallsWrapper>()
+                .ToConstructor(syntax => new PhoneCallsWrapper(syntax.Context.Kernel.Get<PhoneCalls>()))
+                .InSingletonScope();
+            Kernel.Bind<IPhoneCallsWrapper>().ToMethod(context => context.Kernel.Get<PhoneCallsWrapper>());
+            Kernel.Bind<IPhoneCalls>().ToMethod(context => context.Kernel.Get<IPhoneCallsWrapper>());
 
             Kernel.Bind<ClippingsWrapper>()
                 .ToConstructor(syntax => new ClippingsWrapper(syntax.Context.Kernel.Get<Clippings>()))
@@ -61,7 +68,7 @@
 
         protected override IEnumerable<Type> TypesToOverriderBindingsFor()
         {
-            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(IEvents), typeof(IClippings) };
+            return new[] { typeof(IWebsocketConnectionFactory), typeof(IOmniService), typeof(ISMSMessages), typeof(IPhoneCalls), typeof(IClippings) };
         }
 
         #endregion

@@ -325,6 +325,7 @@
     <Compile Include="Helpers\NameParser.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
+    <Compile Include="Notification\IConversationNotificationViewModel.cs" />
     <Compile Include="Presenters\ActivityPresenter.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Models\ActivityTypeEnum.cs" />
@@ -630,7 +631,6 @@
     <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
     <Compile Include="Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
     <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
-    <Compile Include="Notification\IEventNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />

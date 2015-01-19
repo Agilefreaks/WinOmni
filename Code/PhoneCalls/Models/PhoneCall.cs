@@ -1,8 +1,12 @@
 ﻿namespace PhoneCalls.Models
 {
+    using System;
+
     public class PhoneCall
     {
         public string Id { get; set; }
+
+        public DateTime Time { get; set; }
 
         public string Number { get; set; }
 

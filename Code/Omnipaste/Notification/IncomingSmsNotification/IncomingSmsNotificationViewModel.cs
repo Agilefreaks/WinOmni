@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using Omnipaste.Properties;
 
-    public class IncomingSmsNotificationViewModel : EventNotificationViewModelBase, IIncomingSmsNotificationViewModel
+    public class IncomingSmsNotificationViewModel : ConversationNotificationViewModelBase, IIncomingSmsNotificationViewModel
     {
         #region Constructors and Destructors
 

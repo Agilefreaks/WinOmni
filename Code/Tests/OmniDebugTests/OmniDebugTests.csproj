@@ -65,7 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventsWrapperTests.cs" />
+    <Compile Include="PhoneCallsWrapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +84,10 @@
     <ProjectReference Include="..\..\OmniDebug\OmniDebug.csproj">
       <Project>{55e15a36-fb93-47e2-9e9a-9dcb58bb71d3}</Project>
       <Name>OmniDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PhoneCalls\PhoneCalls.csproj">
+      <Project>{F98013C8-3258-4EA7-ADAB-52AD904C3927}</Project>
+      <Name>PhoneCalls</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

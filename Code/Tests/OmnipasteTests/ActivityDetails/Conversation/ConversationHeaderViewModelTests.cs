@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
-    using Events.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
