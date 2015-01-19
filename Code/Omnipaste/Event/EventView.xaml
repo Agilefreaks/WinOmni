@@ -16,11 +16,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.Column="0" Style="{DynamicResource EventTypeIconStyle}">
-            <Rectangle.OpacityMask>
-                <VisualBrush Visual="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" />
-            </Rectangle.OpacityMask>
-        </Rectangle>
+        <Rectangle Grid.Column="0" Width="20" Height="20" Margin="10,0" Fill="{DynamicResource ActivityContentBrush}" OpacityMask="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}"/>
 
         <StackPanel Grid.Column="1" Style="{StaticResource VerticalPanel}">
             <StackPanel Style="{StaticResource HorizontalPanel}">
