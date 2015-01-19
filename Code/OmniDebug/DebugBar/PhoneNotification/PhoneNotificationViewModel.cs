@@ -13,8 +13,6 @@
 
         private string _notificationPhoneNumber;
 
-        private DateTime _notificationTime;
-
         private readonly IOmniServiceWrapper _omniServiceWrapper;
 
         private readonly IPhoneCallsWrapper _phoneCallsWrapper;
@@ -24,10 +22,8 @@
             _omniServiceWrapper = omniServiceWrapper;
             _phoneCallsWrapper = phoneCallsWrapper;
 
-            NotificationTime = DateTime.Now;
             NotificationContactName = "Some Contact";
             NotificationPhoneNumber = "0788999666";
-            NotificationTime = DateTime.Now;
         }
 
         public string NotificationContactName
@@ -64,23 +60,6 @@
             }
         }
 
-        public DateTime NotificationTime
-        {
-            get
-            {
-                return _notificationTime;
-            }
-            set
-            {
-                if (value == _notificationTime)
-                {
-                    return;
-                }
-                _notificationTime = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public void SimulateCall()
         {
             var id = Guid.NewGuid().ToString();
@@ -89,7 +68,6 @@
                 new PhoneCall
                     {
                         Id = id,
-                        Time = NotificationTime,
                         ContactName = NotificationContactName,
                         Number = NotificationContactName,
                         State = PhoneCallState.Starting,

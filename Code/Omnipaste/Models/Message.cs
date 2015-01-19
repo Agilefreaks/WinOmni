@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
     using OmniUI.Models;
@@ -12,7 +11,6 @@
 
         public Message()
         {
-            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Content = string.Empty;
             Source = SourceType.Local;
@@ -22,7 +20,6 @@
             : this()
         {
             Id = smsMessage.Id;
-            Time = TimeHelper.UtcNow;
             Source = SourceType.Remote;
             Content = smsMessage.Content;
             string firstName, lastName;

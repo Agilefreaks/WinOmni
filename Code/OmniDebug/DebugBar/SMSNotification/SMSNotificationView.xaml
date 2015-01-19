@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              xmlns:properties="clr-namespace:OmniDebug.Properties"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
@@ -21,8 +20,6 @@
             <TextBox x:Name="NotificationPhoneNumber"/>
             <Label Content="{x:Static properties:Resources.NotificationContactName}"/>
             <TextBox x:Name="NotificationContactName"/>
-            <Label Content="{x:Static properties:Resources.NotificationTime}"/>
-            <DatePicker x:Name="NotificationTime" SelectedDate="{x:Static sys:DateTime.Now}"/>
         </StackPanel>
         <Button Grid.Row="1"  x:Name="SimulateSms" behaviors:MultipleContentButton.Text="{x:Static properties:Resources.SimulateSMSNotification}" 
                 Content="{DynamicResource appbar_email_minimal}" HorizontalContentAlignment="Stretch"

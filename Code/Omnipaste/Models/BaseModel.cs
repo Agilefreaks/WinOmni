@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Models
 {
     using System;
+    using OmniCommon.Helpers;
 
     public class BaseModel
     {
@@ -9,6 +10,7 @@
         public BaseModel()
         {
             UniqueId = Guid.NewGuid().ToString();
+            Time = TimeHelper.UtcNow;
         }
 
         #endregion

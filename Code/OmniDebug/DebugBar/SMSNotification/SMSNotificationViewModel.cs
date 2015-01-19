@@ -19,14 +19,11 @@
 
         private string _notificationPhoneNumber;
 
-        private DateTime _notificationTime;
-
         public SMSNotificationViewModel(IOmniServiceWrapper omniServiceWrapper, ISmsMessagesWrapper smsMessagesWrapper)
         {
             _omniServiceWrapper = omniServiceWrapper;
             _smsMessagesWrapper = smsMessagesWrapper;
 
-            NotificationTime = DateTime.Now;
             NotificationContactName = "Some Contact";
             NotificationContent = "some content";
             NotificationPhoneNumber = "0788999666";
@@ -83,23 +80,6 @@
             }
         }
 
-        public DateTime NotificationTime
-        {
-            get
-            {
-                return _notificationTime;
-            }
-            set
-            {
-                if (value == _notificationTime)
-                {
-                    return;
-                }
-                _notificationTime = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public void SimulateSms()
         {
             var id = Guid.NewGuid().ToString();
@@ -108,7 +88,6 @@
                 new SmsMessage
                     {
                         Id = id,
-                        Time = NotificationTime,
                         Content = NotificationContent,
                         ContactName = NotificationContactName,
                         PhoneNumber = NotificationPhoneNumber,

@@ -132,6 +132,7 @@
     <Compile Include="Helpers\TextParserTests.cs" />
     <Compile Include="Models\CallTests.cs" />
     <Compile Include="Models\ClippingModelTests.cs" />
+    <Compile Include="Models\MessageTests.cs" />
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />

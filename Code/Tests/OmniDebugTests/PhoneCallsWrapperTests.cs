@@ -26,7 +26,7 @@
         public void GetWithId_AfterFirstCallingMockGet_ReturnsTheGivenPhoneCallObject()
         {
             var mockObserver = new Mock<IObserver<PhoneCall>>();
-            var phoneCall = new PhoneCall { Id = "42", Time = DateTime.Now };
+            var phoneCall = new PhoneCall { Id = "42" };
 
             _subject.MockGet(phoneCall.Id, phoneCall);
             _subject.Get(phoneCall.Id).Subscribe(mockObserver.Object);

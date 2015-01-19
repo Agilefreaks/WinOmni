@@ -12,7 +12,6 @@
 
         public Call()
         {
-            Time = TimeHelper.UtcNow;
             ContactInfo = new ContactInfo();
             Content = string.Empty;
             Source = SourceType.Local;
@@ -22,7 +21,6 @@
             : this()
         {
             Id = phoneCall.Id;
-            Time = TimeHelper.UtcNow;
             Source = SourceType.Remote;
             string firstName, lastName;
             NameParser.Parse(phoneCall.ContactName, out firstName, out lastName);
