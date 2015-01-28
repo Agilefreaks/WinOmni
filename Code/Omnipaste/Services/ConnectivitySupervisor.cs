@@ -74,12 +74,7 @@
         public void Start()
         {
             Stop();
-            _eventObservers.Add(
-                _omniService.StatusChangedObservable.Where(status => status == OmniServiceStatusEnum.Started)
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(_ => StopConnectProcess()));
-
+            
             _eventObservers.Add(
                 InternetConnectivityMonitor.ConnectivityChangedObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
@@ -179,20 +174,24 @@
 
         private void RestartOmniService()
         {
-            StopConnectProcess();
-            _connectObserver = GetConnectObservable().SubscribeOn(SchedulerProvider.Default)
+            if (_connectObserver != null) return;
+
+            _connectObserver =
+                Observable.Defer(() => _omniService.Stop())
+                    .Select(_ => _omniService.Start())
+                    .Switch()
+                    .Do(
+                        _ =>
+                            {
+                                _connectObserver.Dispose();
+                                _connectObserver = null;
+                            })
+                    .RetryUntil(_ => _omniService.State != OmniServiceStatusEnum.Started, DefaultReconnectInterval)
+                    .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors();
         }
-
-        private void StopConnectProcess()
-        {
-            if (_connectObserver != null)
-            {
-                _connectObserver.Dispose();
-            }
-        }
-
+        
         private void StopOmniService()
         {
             _omniService.Stop().RunToCompletion();
@@ -206,15 +205,6 @@
                     OnConnectionLost();
                     break;
             }
-        }
-
-        private IObservable<Unit> GetConnectObservable()
-        {
-            return Observable.Defer(() => _omniService.Stop())
-                .Select(_ => _omniService.Start())
-                .Switch()
-                .Do(_ => StopConnectProcess())
-                .RetryAfter(DefaultReconnectInterval);
         }
 
         #endregion

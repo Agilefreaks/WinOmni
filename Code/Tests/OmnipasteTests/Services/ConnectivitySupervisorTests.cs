@@ -182,5 +182,42 @@
 
             _mockOmniService.Verify(x => x.Stop(), Times.Once());
         }
+
+        [Test]
+        public void AfterStart_WhenNetworkChanges_RestartsOmniService()
+        {
+            _mockOmniService.SetupGet(x => x.State).Returns(OmniServiceStatusEnum.Started);
+            _mockOmniService.SetupGet(x => x.InTransition).Returns(false);
+
+            var webSocketObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<WebSocketConnectionStatusEnum>>(
+                    100,
+                    Notification.CreateOnNext(WebSocketConnectionStatusEnum.Disconnected)));
+            _mockWebSocketMonitor.Setup(x => x.ConnectionObservable).Returns(webSocketObservable);
+
+            var connectivityObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<InternetConnectivityStatusEnum>>(
+                        200,
+                        Notification.CreateOnNext(InternetConnectivityStatusEnum.Disconnected)));
+            _mockInternetConnectivityMonitor.Setup(m => m.ConnectivityChangedObservable).Returns(connectivityObservable);
+
+            var stopObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<Unit>>(200, Notification.CreateOnNext(new Unit())));
+            var startObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<Unit>>(
+                    200,
+                    Notification.CreateOnNext(new Unit())));
+
+            _mockOmniService.Setup(x => x.Stop()).Returns(stopObservable);
+            _mockOmniService.Setup(x => x.Start()).Returns(startObservable);
+
+            _mockingKernel.Get<ConnectivitySupervisor>();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(40).Ticks);
+
+            _mockOmniService.Verify(x => x.Stop(), Times.Exactly(1));
+            _mockOmniService.Verify(x => x.Start(), Times.Exactly(1));
+        }
     }
 }
