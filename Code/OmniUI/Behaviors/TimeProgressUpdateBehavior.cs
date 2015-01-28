@@ -16,12 +16,6 @@
             typeof(TimeProgressUpdateBehavior),
             new PropertyMetadata(default(TimeSpan)));
 
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            "IsEnabled",
-            typeof(bool),
-            typeof(TimeProgressUpdateBehavior),
-            new PropertyMetadata(default(bool), OnStateChanged));
-
         public const int UpdateIntervalMilliseconds = 42;
 
         private IDisposable _progressUpdaterSubscription;
@@ -38,23 +32,6 @@
             }
         }
 
-        public bool IsEnabled
-        {
-            get
-            {
-                return (bool)GetValue(IsEnabledProperty);
-            }
-            set
-            {
-                SetValue(IsEnabledProperty, value);
-            }
-        }
-
-        private static void OnStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((TimeProgressUpdateBehavior)d).ResetProgress();
-        }
-
         protected override void SetUp()
         {
             ResetProgress();
@@ -67,15 +44,8 @@
 
         private void ResetProgress()
         {
-            if (IsEnabled)
-            {
-                AssociatedObject.Value = 0;
-                BeginProgressUpdate();
-            }
-            else
-            {
-                AssociatedObject.Value = 100;
-            }
+            AssociatedObject.Value = 0;
+            BeginProgressUpdate();
         }
 
         private void BeginProgressUpdate()

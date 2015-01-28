@@ -6,23 +6,32 @@
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <Border Background="{DynamicResource DeletedItemHeaderBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{x:Static properties:Resources.ConversationDeleted}" FontFamily="{DynamicResource ActivityContentFont}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource DeletedItemHeaderBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Static properties:Resources.ConversationDeleted}" FontFamily="{DynamicResource ActivityContentFont}"
                    FontSize="{DynamicResource HeaderContentFontSize}" FontStyle="Italic" Foreground="{DynamicResource ConfirmationMessageBrush}"
                    VerticalAlignment="Center"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                <Button x:Name="UndoDelete" DockPanel.Dock="Right" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="UndoDelete" DockPanel.Dock="Right" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
                     Background="{DynamicResource ConfirmationMessageBrush}" Content="{DynamicResource undo_icon}"/>
-            </StackPanel>
-        </Grid>
-    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ConfirmationMessageBrush}" />
+    </Grid>
 </UserControl>

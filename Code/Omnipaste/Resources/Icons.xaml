@@ -5586,6 +5586,41 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         </Canvas>
     </Canvas>
 
+    <Canvas x:Key="down_arrow" Width="10" Height="16">
+        <Canvas.Resources>
+            <PathGeometry x:Key="clipPath2999" Figures="m 0 12.908 8 0 L 8 0 0 0 0 12.908 z" FillRule="NonZero"/>
+        </Canvas.Resources>
+        <Canvas>
+            <Canvas.RenderTransform>
+                <MatrixTransform Matrix="1.25 0 0 -1.25 0 16.13525"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="0.5" Y="3.854"/>
+                        </Canvas.RenderTransform>
+                        <Path StrokeThickness="1" Stroke="#FF585858" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="m 0 0 3.453 -3.354 0.282 0 L 7 0" FillRule="NonZero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="4.0773" Y="12.4082"/>
+                        </Canvas.RenderTransform>
+                        <Path StrokeThickness="1" Stroke="#FF585858" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="M 0 0 0 -11.611" FillRule="NonZero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+    
     <Canvas x:Key="thin_circle_icon" Width="45" Height="45">
         <Canvas>
             <Canvas.RenderTransform>

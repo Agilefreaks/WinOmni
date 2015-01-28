@@ -14,9 +14,6 @@
     </UserControl.Resources>
     
     <Border Style="{DynamicResource ActivityContainerStyle}">
-        <Border.InputBindings>
-            <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
-        </Border.InputBindings>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -30,30 +27,35 @@
                 <TextBlock x:Name="Model_Time" Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}, 
                     ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" Style="{StaticResource ActivityTimeStampStyle}"/>
             </Border>
-            <Grid Grid.Row="0" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Border Grid.Row="0" Grid.Column="1" Style="{DynamicResource ActivityContentStyle}">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
+                </Border.InputBindings>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
                         Style="{DynamicResource ActivityBackgroundBorder}"
                         Background="{Binding Path=ContentInfo, Converter={StaticResource ActivityBackgroundBrushConverter}}">
-                </Border>
-                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
                         BorderBrush="{Binding Path=ContentInfo, Converter={StaticResource ActivityBorderBrushConverter}}"
                         Style="{DynamicResource ActivityContentBorder}">
-                    <ContentControl cal:View.Context="{Binding Path=ContentType}" cal:View.Model="{Binding}" />
-                </Border>
-                <Ellipse Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIconBorder}"/>
-                <Rectangle Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIcon}" 
+                        <ContentControl cal:View.Context="{Binding Path=ContentType}" cal:View.Model="{Binding}" />
+                    </Border>
+                    <Ellipse Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIconBorder}"/>
+                    <Rectangle Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIcon}" 
                            Fill="{Binding Path=ContentInfo, Converter={StaticResource ActivityIconBrushConverter}}"/>
-            </Grid>
+                </Grid>
+            </Border>
             <TextBlock x:Name="Model_Device" Grid.Row="1" Grid.Column="1" Style="{DynamicResource ActivityDeviceNameStyle}"/>
         </Grid>
     </Border>

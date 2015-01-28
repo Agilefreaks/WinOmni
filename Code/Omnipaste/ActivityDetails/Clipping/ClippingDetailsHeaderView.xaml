@@ -7,13 +7,6 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <controls:TransitioningContentControl Grid.Row="0" Grid.RowSpan="2" cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}" 
-                                              CustomVisualStatesName="Fade" Transition="Custom"/>
-        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ClippingBrush}" />
-    </Grid>
+
+    <controls:TransitioningContentControl cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}" CustomVisualStatesName="Fade" Transition="Custom"/>
 </UserControl>

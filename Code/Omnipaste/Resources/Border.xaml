@@ -48,8 +48,11 @@
     </Style>
 
     <Style x:Key="ActivityContainerStyle" TargetType="Border">
-        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="ActivityContentStyle" TargetType="Border">
+        <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
     <Style x:Key="DetailsScreenContainerStyle" TargetType="Border">

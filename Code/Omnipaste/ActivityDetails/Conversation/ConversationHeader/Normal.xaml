@@ -6,28 +6,37 @@
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-    <Grid VerticalAlignment="Center" Margin="{DynamicResource ActivityHeaderMargin}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" Margin="{DynamicResource ActivityHeaderMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40"/>
-            <TextBlock Text="{x:Static properties:Resources.MessageDetailsHeader}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Width="40" Height="40"/>
+                <TextBlock Text="{x:Static properties:Resources.MessageDetailsHeader}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center"/>
-            <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextStyle}" 
+                <TextBlock x:Name="ContactInfo_Identifier" Style="{DynamicResource ActivityContentTextStyle}" 
                        FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"/>
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel Grid.Column="2" Orientation="Horizontal">
-            <Button x:Name="Call" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="Call" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
                     Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource call_icon}"
                     Margin="0,0,14,0"/>
-            <Button x:Name="Delete" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
+                <Button x:Name="Delete" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
                     Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"/>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource MessageBrush}" />
     </Grid>
 </UserControl>
