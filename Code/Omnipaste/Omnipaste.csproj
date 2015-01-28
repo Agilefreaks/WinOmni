@@ -269,7 +269,6 @@
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\Clipping\IClippingDetailsViewModel.cs" />
     <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateEnum.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateToProgressBarEnabledConverter.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
     <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
