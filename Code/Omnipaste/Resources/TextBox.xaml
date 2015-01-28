@@ -22,7 +22,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border CornerRadius="10" BorderThickness="2" BorderBrush="{DynamicResource PassiveUiElementsBrush}" Background="{DynamicResource ContentBackgroundBrush}" 
+                    <Border CornerRadius="14" BorderThickness="2" BorderBrush="{DynamicResource PassiveUiElementsBrush}" Background="{DynamicResource ContentBackgroundBrush}" 
                             Padding="5,0" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
                         <DockPanel LastChildFill="True">
                             <Rectangle DockPanel.Dock="Left"  Width="15" Height="15" Fill="{DynamicResource ActivityContentBrush}">
