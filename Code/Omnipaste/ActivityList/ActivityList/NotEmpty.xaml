@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:properties="clr-namespace:Omnipaste.Properties"
+        xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid HorizontalAlignment="Left">
@@ -34,6 +36,10 @@
         </Border>
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
             <ScrollViewer>
+                <i:Interaction.Behaviors>
+                    <behaviors:ScrollBehavior Collection="{Binding Path=FilteredItems}" ScrollDirection="Top" />
+                </i:Interaction.Behaviors>
+                
                 <Grid>
                     <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
                         <ItemsControl.ItemTemplate>
