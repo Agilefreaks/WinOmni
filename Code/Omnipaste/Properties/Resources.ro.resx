@@ -174,15 +174,6 @@
   <data name="MasterClippingListHeaderLocal" xml:space="preserve">
     <value>Local</value>
   </data>
-  <data name="MasterEventListHeaderAll" xml:space="preserve">
-    <value>Toate</value>
-  </data>
-  <data name="MasterEventListHeaderCalls" xml:space="preserve">
-    <value>Apeluri primite</value>
-  </data>
-  <data name="MasterEventListHeaderSms" xml:space="preserve">
-    <value>Mesaje primite</value>
-  </data>
   <data name="ButtonBrowse" xml:space="preserve">
     <value>Browse</value>
   </data>
@@ -236,9 +227,6 @@
   </data>
   <data name="MasterClippingListDisplayName" xml:space="preserve">
     <value>Clipping-uri</value>
-  </data>
-  <data name="MasterEventListDisplayName" xml:space="preserve">
-    <value>Notificări</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
     <value>Omnipaste încă rulează. Pentru a-l deschide, fă dublu-click pe iconiță.</value>
@@ -432,5 +420,11 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   </data>
   <data name="ActivityTypeFilterText" xml:space="preserve">
     <value>Filtrează cardurile după tip:</value>
+  </data>
+  <data name="ConversationFilterText" xml:space="preserve">
+    <value>Filtrează contectele:</value>
+  </data>
+  <data name="Starred" xml:space="preserve">
+    <value>Favorite</value>
   </data>
 </root>

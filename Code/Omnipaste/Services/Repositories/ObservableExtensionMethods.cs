@@ -2,9 +2,8 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Omnipaste.DetailsViewModel;
-    using OmniUI.Models;
-
+    using Omnipaste.Models;
+    
     public static class ObservableExtensionMethods
     {
         public static IObservable<RepositoryOperation<T>> Created<T>(

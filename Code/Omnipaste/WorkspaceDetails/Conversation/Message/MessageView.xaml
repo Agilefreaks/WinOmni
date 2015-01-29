@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Omnipaste.WorkspaceDetails.Conversation.Message.MessageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel LastChildFill="True">
+        <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=ContactInfo.Image}" Margin="0,0,18,0"
+                 DockPanel.Dock="Left"/>
+        <TextBox Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}}" DockPanel.Dock="Right" 
+                 Style="{DynamicResource ActivityContentTextBoxStyle}"
+                 FontSize="{DynamicResource ActivityLabelFontSize}" Margin="18,0,0,0"
+                 Foreground="{DynamicResource TimeStampBrush}" Background="{Binding Path=Background, ElementName=ContentBorder}"/>
+        <TextBox x:Name="Model_Content" Style="{DynamicResource ActivityContentTextBoxStyle}"
+                 Background="{Binding Path=Background, ElementName=ContentBorder}" />
+    </DockPanel>
+</UserControl>

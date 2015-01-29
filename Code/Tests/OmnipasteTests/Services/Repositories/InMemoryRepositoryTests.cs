@@ -82,6 +82,33 @@
         }
 
         [Test]
+        public void GetWithFunc_WhenItemExists_ReturnsItem()
+        {
+            const string UniqueId = "42";
+            var testModel = new TestModel { UniqueId = UniqueId };
+
+            var testObservable =
+                _testScheduler.Start(
+                    () => _subject.Save(testModel).Select(_ => _subject.Get(c => c.UniqueId == UniqueId)).Switch());
+
+            testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testObservable.Messages[0].Value.Value.Should().Be(testModel);
+        }
+
+        [Test]
+        public void GetWithFunc_WhenItemDoesNotExist_ReturnsNull()
+        {
+            var testModel = new TestModel { UniqueId = "42" };
+
+            var testObservable =
+                _testScheduler.Start(
+                    () => _subject.Save(testModel).Select(_ => _subject.Get(c => false)).Switch());
+
+            testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testObservable.Messages[0].Value.Value.Should().Be(null);
+        }
+
+        [Test]
         public void Delete_WhenItemExists_DeletesItem()
         {
             var testModel = new TestModel { UniqueId = "42" };

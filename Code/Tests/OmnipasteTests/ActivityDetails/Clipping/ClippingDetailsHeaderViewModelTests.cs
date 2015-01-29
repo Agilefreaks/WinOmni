@@ -4,10 +4,10 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.ActivityDetails.Clipping;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
+    using Omnipaste.WorkspaceDetails.Clipping;
 
     [TestFixture]
     public class ClippingDetailsHeaderViewModelTests

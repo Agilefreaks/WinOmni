@@ -2,8 +2,8 @@
 {
     using OmniCommon.Interfaces;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
-    using OmniUI.Presenters;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>
         where TModel : class, IConversationItem

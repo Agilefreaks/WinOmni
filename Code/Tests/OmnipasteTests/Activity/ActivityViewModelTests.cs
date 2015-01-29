@@ -9,11 +9,10 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
-    using Omnipaste.ActivityDetails;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
+    using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.Workspace;
 
@@ -26,20 +25,16 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IActivityDetailsViewModelFactory> _mockDetailsViewModelFactory;
-
-        private Mock<IEventAggregator> _mockEventAggregator;
+        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         [SetUp]
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IActivityDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
-            _mockEventAggregator = new Mock<IEventAggregator>();
+            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _subject = new ActivityViewModel(_mockUiRefreshService.Object)
                            {
-                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
-                               EventAggregator = _mockEventAggregator.Object
+                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
@@ -94,38 +89,7 @@
 
             _subject.ShowDetails();
 
-            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IActivityDetailsViewModel>()), Times.Once());
-        }
-
-        [Test]
-        public void ShowDetails_Always_SetsModelWasViewedToTrue()
-        {
-            var activity = new ActivityPresenter(new ClippingModel { WasViewed = true});
-            _subject.Model = activity;
-            var mockWorkspace = new Mock<IActivityWorkspace>();
-            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
-            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            _subject.Parent = mockWorkspace.Object;
-
-            _subject.ShowDetails();
-
-            _subject.Model.WasViewed.Should().BeTrue();
-        }
-
-        [Test]
-        public void ShowDetails_WhenModelWasNotViewed_DismissesNotificationForActivity()
-        {
-            const string Identifier = "42";
-            var activity = new ActivityPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
-            _subject.Model = activity;
-            var mockWorkspace = new Mock<IActivityWorkspace>();
-            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
-            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            _subject.Parent = mockWorkspace.Object;
-
-            _subject.ShowDetails();
-
-            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(o => Identifier.Equals(o.Identifier)), It.IsAny<Action<Action>>()));
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
         }
 
         [Test]
@@ -136,7 +100,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(true);
@@ -156,7 +120,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
@@ -176,7 +140,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
@@ -196,7 +160,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);

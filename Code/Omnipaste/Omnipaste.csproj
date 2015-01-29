@@ -249,49 +249,50 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityDetails\ActivityDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\ActivityDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\ActivityDetailsViewModel.cs" />
-    <Compile Include="ActivityDetails\ActivityDetailsViewModelFactory.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml.cs">
+    <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
+    <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
+    <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Deleted.xaml.cs">
       <DependentUpon>Deleted.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml.cs">
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Normal.xaml.cs">
       <DependentUpon>Normal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDetails\Conversation\Call\CallViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\Call\ICallViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\IClippingDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Clipping\IClippingDetailsViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationHeaderStateEnum.cs" />
-    <Compile Include="ActivityDetails\IActivityDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\IActivityDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\IActivityDetailsViewModel.cs" />
-    <Compile Include="ActivityDetails\IActivityDetailsViewModelFactory.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\IConversationContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\IConversationContainerViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\IConversationHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\IConversationViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\Message\IMessageViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationContainerViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationViewModel.cs" />
-    <Compile Include="ActivityDetails\Conversation\Message\MessageView.xaml.cs">
+    <Compile Include="WorkspaceDetails\Conversation\Call\CallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Call\ICallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderStateEnum.cs" />
+    <Compile Include="WorkspaceDetails\IWorkspaceDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\IWorkspaceDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\IWorkspaceDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\IWorkspaceDetailsViewModelFactory.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\IConversationContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\IConversationContainerViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\IConversationHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\IConversationViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Message\IMessageViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationContainerViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Message\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDetails\Conversation\Message\MessageViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\IVersionDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\IVersionDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\IVersionDetailsViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\VersionDetailsContentViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\VersionDetailsHeaderViewModel.cs" />
-    <Compile Include="ActivityDetails\Version\VersionDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Message\MessageViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\IVersionDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\IVersionDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\IVersionDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\VersionDetailsContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\VersionDetailsHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Version\VersionDetailsViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityContentInfo.cs" />
     <Compile Include="Activity\ContentStateEnum.cs" />
@@ -304,8 +305,17 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
+    <Compile Include="ContactList\ContactInfoViewModel.cs" />
+    <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\ContactListViewModel.cs" />
+    <Compile Include="ContactList\IContactInfoViewModel.cs" />
+    <Compile Include="ContactList\IContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\IContactListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
-    <Compile Include="DetailsViewModel\IConversationItem.cs" />
+    <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
+    <Compile Include="Framework\CheckboxHelper.cs" />
+    <Compile Include="Models\ContactInfo.cs" />
+    <Compile Include="Models\IConversationItem.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
@@ -368,6 +378,8 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -439,6 +451,8 @@
     <Compile Include="Services\Repositories\ClippingRepository.cs" />
     <Compile Include="Services\Repositories\ICallRepository.cs" />
     <Compile Include="Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Services\Repositories\IContactRepository.cs" />
+    <Compile Include="Services\Repositories\ContactRepository.cs" />
     <Compile Include="Services\Repositories\IMessageRepository.cs" />
     <Compile Include="Services\Repositories\InMemoryRepository.cs" />
     <Compile Include="Services\Repositories\IRepository.cs" />
@@ -465,7 +479,7 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\EventsMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\MessageMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
@@ -479,76 +493,76 @@
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
-    <Compile Include="Workspaces\EventsWorkspace.cs" />
     <Compile Include="Workspaces\IActivityWorkspace.cs" />
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IEventsWorkspace.cs" />
+    <Compile Include="Workspaces\IMessageWorkspace.cs" />
+    <Compile Include="Workspaces\MessageWorkspace.cs" />
     <Compile Include="Workspaces\SingleItemWorkspace.cs" />
-    <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
+    <Page Include="WorkspaceDetails\WorkspaceDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\ActivityDetailsHeaderView.xaml">
+    <Page Include="WorkspaceDetails\WorkspaceDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Deleted.xaml">
+    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Deleted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeader\Normal.xaml">
+    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\Call\CallView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\Call\CallView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Clipping\ClippingDetailsContentView.xaml">
+    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Clipping\ClippingDetailsHeaderView.xaml">
+    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationContentView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationContainerView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationHeaderView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationHeader\Calling.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Calling.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationHeader\Deleted.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Deleted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\ConversationHeader\Normal.xaml">
+    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Conversation\Message\MessageView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\Message\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Version\VersionDetailsContentView.xaml">
+    <Page Include="WorkspaceDetails\Version\VersionDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDetails\Version\VersionDetailsHeaderView.xaml">
+    <Page Include="WorkspaceDetails\Version\VersionDetailsHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -594,13 +608,6 @@
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
-    <Compile Include="Event\EventViewModel.cs" />
-    <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
-    <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
-    <Compile Include="Event\IEventViewModel.cs" />
-    <Compile Include="MasterEventList\Calling\CallingViewModel.cs" />
-    <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
-    <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
@@ -610,12 +617,6 @@
     <Compile Include="MasterClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
-    <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingSmsEventList\IIncomingSmsEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModel.cs" />
-    <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
@@ -699,6 +700,14 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
+    <Page Include="ContactList\ContactInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContactList\ContactListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Loading\Congratulations\CongratulationsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -751,35 +760,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Event\EventView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\Calling\CallingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventList\Empty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventList\NotEmpty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterEventList\MasterEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

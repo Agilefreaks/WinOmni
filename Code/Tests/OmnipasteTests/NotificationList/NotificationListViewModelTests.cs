@@ -21,7 +21,6 @@
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Models;
 
     [TestFixture]
     public class NotificationListViewModelTests

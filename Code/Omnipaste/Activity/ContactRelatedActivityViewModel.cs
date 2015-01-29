@@ -4,7 +4,6 @@
     using Omnipaste.Services;
 
     using OmniUI.Attributes;
-    using OmniUI.Presenters;
 
     [UseView(typeof(ActivityView))]
     public class ContactRelatedActivityViewModel : ActivityViewModel, IContactRelatedActivityViewModel

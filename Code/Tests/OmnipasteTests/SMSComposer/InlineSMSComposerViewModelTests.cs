@@ -11,7 +11,6 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.SMSComposer;
-    using OmniUI.Models;
     using SMS.Resources.v1;
 
     [TestFixture]

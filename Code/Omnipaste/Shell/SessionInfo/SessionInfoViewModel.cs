@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Ninject.Injection;
     using Omni;
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
@@ -12,7 +11,9 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using Omnipaste.Models;
-    using OmniUI.Presenters;
+    using Omnipaste.Presenters;
+    using Omnipaste.Properties;
+    using OmniUI.Resources;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
@@ -38,13 +39,13 @@
         {
             _statusTexts = new Dictionary<ConnectionStateEnum, string>
                             {
-                                { ConnectionStateEnum.Connected, Properties.Resources.Connected },
-                                { ConnectionStateEnum.Disconnected, Properties.Resources.Disconnected }
+                                { ConnectionStateEnum.Connected, Resources.Connected },
+                                { ConnectionStateEnum.Disconnected, Resources.Disconnected }
                             };
             _icons = new Dictionary<ConnectionStateEnum, string>
                          {
-                             { ConnectionStateEnum.Connected, OmniUI.Resources.IconNames.Connected },
-                             { ConnectionStateEnum.Disconnected, OmniUI.Resources.IconNames.Disconnected }
+                             { ConnectionStateEnum.Connected, IconNames.Connected },
+                             { ConnectionStateEnum.Disconnected, IconNames.Disconnected }
                          };
             _statusObserver =
                 omniService.StatusChangedObservable.SubscribeOn(SchedulerProvider.Default)

@@ -9,13 +9,12 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
-    <Grid HorizontalAlignment="Left">
+    <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Background="{DynamicResource ContentBackgroundBrush}" Height="150" Padding="18,42,18,37"
-                Width="{StaticResource NarrowContainerWidth}">
+        <Border Height="150" Padding="18,42,18,37">
             <StackPanel>
                 <DockPanel VerticalAlignment="Center">
                     <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />

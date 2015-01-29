@@ -43,4 +43,5 @@
     <Color x:Key="DeletedItemHeaderBackgroundColor">#fff3de</Color>
     <Color x:Key="CallingBackgroundColor">#EBFDFF</Color>
     <Color x:Key="ConfirmationMessageColor">#d6434e</Color>
+    <Color x:Key="FavoriteColor">#FFE003</Color>
 </ResourceDictionary>

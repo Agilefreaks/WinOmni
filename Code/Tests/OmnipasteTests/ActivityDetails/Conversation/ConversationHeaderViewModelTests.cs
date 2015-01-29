@@ -9,12 +9,10 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ActivityDetails.Conversation;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Models;
-    using OmniUI.Presenters;
+    using Omnipaste.WorkspaceDetails.Conversation;
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
@@ -47,8 +45,7 @@
                                PhoneCalls = _mockPhoneCalls.Object,
                                CallRepository = _mockCallRepository.Object,
                                MessageRepository = _mockMessageRepository.Object,
-                               ContactInfo = new ContactInfoPresenter(new ContactInfo()),
-                               Model = new ActivityPresenter(new Call())
+                               Model = new ContactInfoPresenter(new ContactInfo())
                            };
         }
 
@@ -71,8 +68,8 @@
         public void Call_Always_InitiatesACall()
         {
             const string PhoneNumber = "1234567890";
-            var phoneCall = new PhoneCall { Number = PhoneNumber };
-            _subject.Model = new ActivityPresenter(new Call(phoneCall));
+            var contactInfo = new ContactInfo { Phone = PhoneNumber };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -84,8 +81,8 @@
         public void Call_WhenCanceled_DoesNotInitiateACall()
         {
             const string PhoneNumber = "1234567890";
-            var @event = new PhoneCall { Number = PhoneNumber };
-            _subject.Model = new ActivityPresenter(new Call(@event));
+            var contactInfo = new ContactInfo { Phone = PhoneNumber };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
 
             _subject.Call();
             _subject.CancelCall();
@@ -98,8 +95,8 @@
         public void Call_WhenCanceled_ChangesStateToNormal()
         {
             const string PhoneNumber = "1234567890";
-            var phoneCall = new PhoneCall { Number = PhoneNumber };
-            _subject.Model = new ActivityPresenter(new Call(phoneCall));
+            var contactInfo = new ContactInfo { Phone = PhoneNumber };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
 
             _subject.Call();
             _subject.CancelCall();
@@ -111,8 +108,8 @@
         [Test]
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
-            var phoneCall = new PhoneCall { Number = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Call(phoneCall));
+            var contactInfo = new ContactInfo { Phone = "1234567890" };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
                 new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
@@ -127,8 +124,8 @@
         [Test]
         public void Call_OnInitiated_ChangesStateToCalling()
         {
-            var phoneCall = new PhoneCall { Number = "1234567890" };
-            _subject.Model = new ActivityPresenter(new Call(phoneCall));
+            var contactInfo = new ContactInfo { Phone = "1234567890" };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
                 new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));
@@ -144,8 +141,8 @@
         [Test]
         public void Call_AfterCreatingTheCall_SavesTheCallInfoLocally()
         {
-            var call = new Call(new PhoneCall { Number = "1234567890" });
-            _subject.Model = new ActivityPresenter(call);
+            var contactInfo = new ContactInfo { Phone = "1234567890" };
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(new PhoneCall())),
                 new Recorded<Notification<PhoneCall>>(200, Notification.CreateOnCompleted<PhoneCall>()));

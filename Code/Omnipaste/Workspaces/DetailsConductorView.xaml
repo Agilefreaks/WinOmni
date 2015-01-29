@@ -7,6 +7,72 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <controls:TransitioningContentControl cal:View.Model="{Binding Path=ActiveItem}" CustomVisualStatesName="RightAndScaleTransition" Transition="Custom"
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ContentControl" Tag="{Binding Path=AnimationOriginPoint}"/>
+
+    <Grid>
+        <Grid.Resources>
+            <FrameworkElement x:Key="ProxyElement" DataContext="{Binding}"/>
+        </Grid.Resources>
+        
+        <ContentControl Visibility="Collapsed" Content="{StaticResource ProxyElement}"/>
+        <controls:TransitioningContentControl cal:View.Model="{Binding Path=ActiveItem}" Transition="Custom" CustomVisualStatesName="RightAndScaleTransition"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ContentControl">
+            <controls:TransitioningContentControl.CustomVisualStates>
+                <VisualState x:Name="RightAndScaleTransition">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="CurrentContentPresentationSite">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PreviousContentPresentationSite">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="CurrentContentPresentationSite">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseInOut" />
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseInOut" />
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="CurrentContentPresentationSite">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseInOut" />
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <QuinticEase EasingMode="EaseInOut" />
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="CurrentContentPresentationSite">
+                            <DiscretePointKeyFrame KeyTime="0" Value="{Binding Path=DataContext.AnimationOriginPoint, Source={StaticResource ProxyElement}}"/>
+                        </PointAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </controls:TransitioningContentControl.CustomVisualStates>
+        </controls:TransitioningContentControl>
+    </Grid>
 </UserControl>

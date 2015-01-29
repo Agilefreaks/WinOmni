@@ -15,6 +15,8 @@
 
         IObservable<T> Get(string id);
 
+        IObservable<T> Get(Func<T, bool> match);
+
         IObservable<IEnumerable<T>> GetAll();
 
         IObservable<IEnumerable<T>> GetAll(Func<T, bool> filter);

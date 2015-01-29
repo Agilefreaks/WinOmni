@@ -177,15 +177,6 @@
   <data name="MasterClippingListHeaderLocal" xml:space="preserve">
     <value>Dispositivo</value>
   </data>
-  <data name="MasterEventListHeaderAll" xml:space="preserve">
-    <value>Todos</value>
-  </data>
-  <data name="MasterEventListHeaderCalls" xml:space="preserve">
-    <value>Chamadas Recebidas</value>
-  </data>
-  <data name="MasterEventListHeaderSms" xml:space="preserve">
-    <value>Mensagens Recebidas</value>
-  </data>
   <data name="ButtonBrowse" xml:space="preserve">
     <value>Explorar</value>
   </data>
@@ -239,9 +230,6 @@
   </data>
   <data name="MasterClippingListDisplayName" xml:space="preserve">
     <value>Cortes</value>
-  </data>
-  <data name="MasterEventListDisplayName" xml:space="preserve">
-    <value>Notificações</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
     <value>Omnipaste está ainda em execução. Para abrir a janela novamente, faça duplo clique no ícone.</value>
@@ -432,5 +420,11 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   </data>
   <data name="ActivityTypeFilterText" xml:space="preserve">
     <value>Filtre cartões por tipo:</value>
+  </data>
+  <data name="ConversationFilterText" xml:space="preserve">
+    <value>Filtrar contatos:</value>
+  </data>
+  <data name="Starred" xml:space="preserve">
+    <value>Favorito</value>
   </data>
 </root>

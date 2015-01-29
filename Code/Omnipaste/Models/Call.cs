@@ -1,8 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
-    using OmniUI.Models;
     using PhoneCalls.Models;
 
     public class Call : BaseModel, IConversationItem

@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
     using Omnipaste.EventAggregatorMessages;
-    using OmniUI.Models;
 
     public interface ISMSMessageFactory
     {
