@@ -137,16 +137,12 @@
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationContainerTests.cs" />
-    <Compile Include="Event\EventViewModelTests.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverterTests.cs" />
     <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringNullOrEmptyToVisibilityConverterTests.cs" />
     <Compile Include="Loading\ActivationFailedViewModelTests.cs" />
     <Compile Include="Loading\LoadingViewModelTests.cs" />
     <Compile Include="Loading\UserTokenViewModelTests.cs" />
-    <Compile Include="MasterEventList\AllEventList\AllEventListViewModelTests.cs" />
-    <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModelTests.cs" />
-    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModelTests.cs" />
     <Compile Include="Models\ContactInfoTests.cs" />
     <Compile Include="Models\UserContactInfoTests.cs" />
     <Compile Include="NotificationList\NotificationListViewModelTests.cs" />

@@ -79,7 +79,7 @@
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
                            typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
-                           typeof(ActivityWorkspace), typeof(EventsWorkspace), typeof(ClippingWorkspace),
+                           typeof(ActivityWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
                        };
         }

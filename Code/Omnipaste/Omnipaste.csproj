@@ -465,7 +465,6 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\EventsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
@@ -479,10 +478,8 @@
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
-    <Compile Include="Workspaces\EventsWorkspace.cs" />
     <Compile Include="Workspaces\IActivityWorkspace.cs" />
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IEventsWorkspace.cs" />
     <Compile Include="Workspaces\SingleItemWorkspace.cs" />
     <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
       <SubType>Designer</SubType>
@@ -594,13 +591,6 @@
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
     <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
-    <Compile Include="Event\EventViewModel.cs" />
-    <Compile Include="MasterEventList\AllEventList\AllEventListViewModel.cs" />
-    <Compile Include="MasterEventList\AllEventList\IAllEventListViewModel.cs" />
-    <Compile Include="Event\IEventViewModel.cs" />
-    <Compile Include="MasterEventList\Calling\CallingViewModel.cs" />
-    <Compile Include="MasterEventList\Calling\ICallingViewModel.cs" />
-    <Compile Include="MasterEventList\IMasterEventListViewModel.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
@@ -610,12 +600,6 @@
     <Compile Include="MasterClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
-    <Compile Include="MasterEventList\EventList\IEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingCallEventList\IIncomingCallEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingCallEventList\IncomingCallEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingSmsEventList\IIncomingSmsEventListViewModel.cs" />
-    <Compile Include="MasterEventList\IncomingSmsEventList\IncomingSmsEventListViewModel.cs" />
-    <Compile Include="MasterEventList\MasterEventListViewModel.cs" />
     <Compile Include="Clipping\ClippingViewModel.cs" />
     <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
@@ -751,35 +735,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Event\EventView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Loading\AndroidInstallGuide\AndroidInstallGuideView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\Calling\CallingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventList\Empty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterEventList\EventList\EventList\NotEmpty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterEventList\MasterEventListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

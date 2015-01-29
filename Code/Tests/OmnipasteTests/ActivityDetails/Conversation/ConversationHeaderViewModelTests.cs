@@ -14,7 +14,6 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.Models;
-    using OmniUI.Presenters;
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
