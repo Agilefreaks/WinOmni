@@ -1,4 +1,46 @@
-﻿**Version 1.3 (19.01.2015)**
+﻿**Version 1.3.4 (29.01.2015)**
+
+**Bug fixes:**
+
+- fixed notifications not being received after switching to other network connection
+
+----------
+
+**Version 1.3.3 (28.01.2015)**
+
+**Features:**
+
+- scroll on top of activity list when activity is created
+
+**Improvements:**
+
+- displayed hand cursor only when hovering an activity
+- added active/inactive states for activity search box
+
+**Bug fixes:**
+
+- fixed color code for delete header
+- fixed color code for call initiated/calling header
+
+----------
+
+**Version 1.3.2 (21.01.2015)**
+
+**Bug fixes:**
+
+- fixed spelling mistakes
+
+----------
+
+**Version 1.3.1 (20.01.2015)**
+
+**Bug fixes:**
+
+- fixed shortcut keys not working after switching between screens
+
+----------
+
+**Version 1.3 (19.01.2015)**
 
 **Bug fixes:**
 
