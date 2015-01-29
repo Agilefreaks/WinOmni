@@ -304,11 +304,12 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
-    <Compile Include="Conversation\ConversationInfoViewModelFactory.cs" />
-    <Compile Include="Conversation\ConversationListViewModel.cs" />
-    <Compile Include="Conversation\IConversationInfoViewModel.cs" />
-    <Compile Include="Conversation\IConversationInfoViewModelFactory.cs" />
-    <Compile Include="Conversation\IConversationListViewModel.cs" />
+    <Compile Include="ContactList\ContactInfoViewModel.cs" />
+    <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\ContactListViewModel.cs" />
+    <Compile Include="ContactList\IContactInfoViewModel.cs" />
+    <Compile Include="ContactList\IContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\IContactListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Models\ContactInfo.cs" />
@@ -451,6 +452,8 @@
     <Compile Include="Services\Repositories\ClippingRepository.cs" />
     <Compile Include="Services\Repositories\ICallRepository.cs" />
     <Compile Include="Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Services\Repositories\IContactRepository.cs" />
+    <Compile Include="Services\Repositories\ContactRepository.cs" />
     <Compile Include="Services\Repositories\IMessageRepository.cs" />
     <Compile Include="Services\Repositories\InMemoryRepository.cs" />
     <Compile Include="Services\Repositories\IRepository.cs" />
@@ -698,11 +701,11 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="Conversation\ConversationInfoView.xaml">
+    <Page Include="ContactList\ContactInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Conversation\ConversationListView.xaml">
+    <Page Include="ContactList\ContactListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

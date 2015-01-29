@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Workspaces
 {
-    using Omnipaste.Conversation;
+    using Omnipaste.ContactList;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
     using OmniUI.Workspace;
@@ -9,7 +9,7 @@
 
     public class MessageWorkspace : MasterDetailsWorkspace, IMessageWorkspace
     {
-        public MessageWorkspace(IConversationListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
+        public MessageWorkspace(IContactListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
             : base(masterScreen, detailsConductor)
         {
         }

@@ -11,7 +11,7 @@
     using OmniCommon.Settings;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
-    using Omnipaste.Conversation;
+    using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.Models;
@@ -78,11 +78,11 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository), typeof(ContactRepository),
                            typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(MessageWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory),
-                           typeof(ConversationInfoViewModelFactory)
+                           typeof(ContactInfoViewModelFactory)
                        };
         }
     }

@@ -39,6 +39,8 @@
 
         private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
 
+        private Mock<IContactRepository> _mockContactRepository;
+
         [SetUp]
         public void SetUp()
         {
@@ -53,6 +55,7 @@
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
+            _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new EntitySupervisor
                            {
                                ClipboardHandler = _mockClipboardHandler.Object,
@@ -62,7 +65,8 @@
                                MessageRepository = _mockMessageRepository.Object,
                                CallRepository = _mockCallRepository.Object,
                                UpdaterService = _mockUpdaterService.Object,
-                               UpdateInfoRepository = _mockUpdateInfoRepository.Object
+                               UpdateInfoRepository = _mockUpdateInfoRepository.Object,
+                               ContactRepository = _mockContactRepository.Object
                            };
         }
 
@@ -88,18 +92,60 @@
         }
 
         [Test]
-        public void OnNewEvent_WhenEventIsIncomingCall_AlwayStoresCall()
+        public void OnPhoneCallReceived_WhenEventIsIncomingCall_AlwayStoresCall()
         {
             const string Id = "42";
             var phoneCall = new PhoneCall { Id = Id };
             var phoneCallObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(phoneCall)));
             _mockPhoneCallReceivedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<PhoneCall>>()))
                 .Returns<IObserver<PhoneCall>>(o => phoneCallObservable.Subscribe(o));
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(new ContactInfo())));
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
             
             _subject.Start();
             _testScheduler.Start(() => phoneCallObservable);
             
             _mockCallRepository.Verify(m => m.Save(It.Is<Call>(c => c.Id == Id)));
+        }
+
+        [Test]
+        public void OnPhoneCallReceived_WhenContactIsNotSavedLocally_AlwayStoresCall()
+        {
+            const string PhoneNumber = "42";
+            var phoneCall = new PhoneCall { Number = PhoneNumber };
+            var phoneCallObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<PhoneCall>>(100, Notification.CreateOnNext(phoneCall)));
+            _mockPhoneCallReceivedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<PhoneCall>>()))
+                .Returns<IObserver<PhoneCall>>(o => phoneCallObservable.Subscribe(o));
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(null as ContactInfo)));
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+            
+            _subject.Start();
+            _testScheduler.Start(() => phoneCallObservable);
+
+            _mockContactRepository.Verify(m => m.Save(It.Is<ContactInfo>(c => c.Phone == PhoneNumber)));
+        }
+
+        [Test]
+        public void OnSmsMessageCreated_WhenContactIsNotSavedLocally_AlwayStoresContact()
+        {
+            const string Phone = "42";
+            var smsMessage = new SmsMessage { PhoneNumber = Phone };
+            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(smsMessage)));
+            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessage>>()))
+                .Returns<IObserver<SmsMessage>>(o => smsMessageObservable.Subscribe(o));
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(null as ContactInfo)));
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+
+            _subject.Start();
+            _testScheduler.Start(() => smsMessageObservable);
+
+            _mockContactRepository.Verify(m => m.Save(It.Is<ContactInfo>(c => c.Phone == Phone)));
         }
 
         [Test]
@@ -110,6 +156,10 @@
             var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(smsMessage)));
             _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessage>>()))
                 .Returns<IObserver<SmsMessage>>(o => smsMessageObservable.Subscribe(o));
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(new ContactInfo())));
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
 
             _subject.Start();
             _testScheduler.Start(() => smsMessageObservable);
