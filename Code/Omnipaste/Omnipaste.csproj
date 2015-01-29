@@ -311,6 +311,8 @@
     <Compile Include="Conversation\IConversationListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\CheckboxHelper.cs" />
+    <Compile Include="Models\ContactInfo.cs" />
+    <Compile Include="Models\IContactInfo.cs" />
     <Compile Include="Models\IConversationItem.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />

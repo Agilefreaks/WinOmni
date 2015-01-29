@@ -6,7 +6,6 @@
     using Omnipaste.Activity;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
-    using OmniUI.Models;
 
     [TestFixture]
     public class ActivityViewModelFactoryTests

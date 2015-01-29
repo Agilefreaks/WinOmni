@@ -1,8 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Helpers;
-    using OmniUI.Models;
     using SMS.Models;
 
     public class Message : BaseModel, IConversationItem

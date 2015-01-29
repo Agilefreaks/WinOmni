@@ -1,8 +1,8 @@
-﻿namespace OmniUI.Models
+﻿namespace Omnipaste.Models
 {
     using System;
 
-    public class ContactInfo : IContactInfo
+    public class ContactInfo : BaseModel, IContactInfo
     {
         #region Constants
 

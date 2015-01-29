@@ -1,4 +1,4 @@
-﻿namespace OmniUI.Models
+﻿namespace Omnipaste.Models
 {
     using System;
 

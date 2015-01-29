@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ActivityDetails.Conversation
 {
     using Caliburn.Micro;
-    using OmniUI.Models;
+    using Omnipaste.Models;
 
     public interface IConversationContentViewModel : IConductor, IActivate, IDeactivate
     {

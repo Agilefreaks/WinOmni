@@ -3,8 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using Omnipaste.Models;
-    using OmniUI.Models;
-
+    
     public static class ObservableExtensionMethods
     {
         public static IObservable<RepositoryOperation<T>> Created<T>(

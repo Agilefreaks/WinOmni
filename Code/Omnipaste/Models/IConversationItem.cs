@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
     using System;
-    using OmniUI.Models;
 
     public interface IConversationItem
     {

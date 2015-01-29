@@ -9,7 +9,6 @@
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
-    using OmniUI.Models;
 
     [TestFixture]
     public class NotificationViewModelFactoryTests

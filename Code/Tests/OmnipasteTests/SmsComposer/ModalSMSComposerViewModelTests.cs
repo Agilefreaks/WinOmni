@@ -10,7 +10,6 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.SMSComposer;
-    using OmniUI.Models;
     using SMS.Resources.v1;
 
     [TestFixture]

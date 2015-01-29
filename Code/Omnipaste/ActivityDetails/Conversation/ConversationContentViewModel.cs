@@ -11,8 +11,7 @@
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.List;
-    using OmniUI.Models;
-
+    
     public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IDetailsViewModel>,
                                                 IConversationContentViewModel
     {

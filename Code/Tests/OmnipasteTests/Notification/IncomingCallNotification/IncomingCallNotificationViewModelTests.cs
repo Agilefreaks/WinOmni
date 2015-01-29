@@ -11,7 +11,6 @@
     using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
-    using OmniUI.Models;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]

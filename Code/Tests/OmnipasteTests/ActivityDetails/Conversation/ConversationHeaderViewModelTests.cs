@@ -13,7 +13,6 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Models;
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 

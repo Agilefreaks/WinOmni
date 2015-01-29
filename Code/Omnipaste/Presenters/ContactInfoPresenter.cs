@@ -5,8 +5,8 @@
     using System.Windows.Media.Imaging;
     using Caliburn.Micro;
     using OmniCommon.Helpers;
+    using Omnipaste.Models;
     using OmniUI.Helpers;
-    using OmniUI.Models;
     using OmniUI.Properties;
     using Action = System.Action;
 

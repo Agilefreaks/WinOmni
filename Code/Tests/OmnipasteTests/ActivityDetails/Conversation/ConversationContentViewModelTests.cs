@@ -17,7 +17,6 @@
     using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Models;
 
     [TestFixture]
     public class ConversationContentViewModelTests

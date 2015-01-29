@@ -2,7 +2,7 @@ namespace Omnipaste.Presenters
 {
     using System.ComponentModel;
     using System.Windows.Media;
-    using OmniUI.Models;
+    using Omnipaste.Models;
 
     public interface IContactInfoPresenter : INotifyPropertyChanged
     {
