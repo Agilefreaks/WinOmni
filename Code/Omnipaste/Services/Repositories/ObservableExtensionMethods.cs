@@ -2,7 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using OmniUI.Models;
 
     public static class ObservableExtensionMethods

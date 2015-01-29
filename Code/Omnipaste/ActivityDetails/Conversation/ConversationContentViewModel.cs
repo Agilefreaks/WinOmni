@@ -7,7 +7,7 @@
     using Ninject;
     using Omnipaste.ActivityDetails.Conversation.Call;
     using Omnipaste.ActivityDetails.Conversation.Message;
-    using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.List;

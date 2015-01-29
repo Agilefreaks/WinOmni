@@ -304,8 +304,14 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
+    <Compile Include="Conversation\ConversationInfoViewModelFactory.cs" />
+    <Compile Include="Conversation\ConversationListViewModel.cs" />
+    <Compile Include="Conversation\IConversationInfoViewModel.cs" />
+    <Compile Include="Conversation\IConversationInfoViewModelFactory.cs" />
+    <Compile Include="Conversation\IConversationListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
-    <Compile Include="DetailsViewModel\IConversationItem.cs" />
+    <Compile Include="Framework\CheckboxHelper.cs" />
+    <Compile Include="Models\IConversationItem.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
@@ -368,6 +374,10 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Presenters\ContactInfoPresenter.cs" />
+    <Compile Include="Presenters\ConversationItemPresenter.cs" />
+    <Compile Include="Presenters\ConversationPresenter.cs" />
+    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -465,6 +475,7 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
+    <Compile Include="Workspaces\MessageMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
@@ -480,6 +491,8 @@
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
     <Compile Include="Workspaces\IActivityWorkspace.cs" />
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
+    <Compile Include="Workspaces\IMessageWorkspace.cs" />
+    <Compile Include="Workspaces\MessageWorkspace.cs" />
     <Compile Include="Workspaces\SingleItemWorkspace.cs" />
     <Page Include="ActivityDetails\ActivityDetailsContentView.xaml">
       <SubType>Designer</SubType>
@@ -683,6 +696,14 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
+    <Page Include="Conversation\ConversationInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversation\ConversationListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Loading\Congratulations\CongratulationsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

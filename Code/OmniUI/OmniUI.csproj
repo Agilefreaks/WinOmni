@@ -114,9 +114,7 @@
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Models\ContactInfo.cs" />
-    <Compile Include="Presenters\ContactInfoPresenter.cs" />
     <Compile Include="Models\IContactInfo.cs" />
-    <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Framework\Commands\ICommand.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>

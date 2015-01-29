@@ -37,6 +37,7 @@
     <SolidColorBrush x:Key="DeletedItemHeaderBackgroundBrush" Color="{DynamicResource DeletedItemHeaderBackgroundColor}"/>
     <SolidColorBrush x:Key="CallingBackgroundBrush" Color="{DynamicResource CallingBackgroundColor}"/>
     <SolidColorBrush x:Key="ConfirmationMessageBrush" Color="{DynamicResource ConfirmationMessageColor}"/>
+    <SolidColorBrush x:Key="FavoriteBrush" Color="{DynamicResource FavoriteColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>

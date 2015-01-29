@@ -1,7 +1,6 @@
-﻿namespace Omnipaste.DetailsViewModel
+﻿namespace Omnipaste.Models
 {
     using System;
-    using Omnipaste.Models;
     using OmniUI.Models;
 
     public interface IConversationItem

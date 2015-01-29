@@ -6,11 +6,9 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Presenters;
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 

@@ -11,6 +11,7 @@
     using OmniCommon.Settings;
     using Omnipaste.Activity;
     using Omnipaste.ActivityDetails;
+    using Omnipaste.Conversation;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
     using Omnipaste.Models;
@@ -53,7 +54,7 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<EventsMenuEntryViewModel>().InSingletonScope();
+            Kernel.Bind<IMainMenuEntryViewModel>().To<MessageMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
             Kernel.Bind<ITitleBarItemViewModel>().To<NewVersionTitleBarItemViewModel>().InSingletonScope();
@@ -79,8 +80,9 @@
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository),
                            typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
-                           typeof(ActivityWorkspace), typeof(ClippingWorkspace),
-                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory)
+                           typeof(ActivityWorkspace), typeof(MessageWorkspace), typeof(ClippingWorkspace),
+                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory),
+                           typeof(ConversationInfoViewModelFactory)
                        };
         }
     }

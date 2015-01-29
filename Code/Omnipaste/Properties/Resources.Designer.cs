@@ -442,6 +442,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter conversations by:.
+        /// </summary>
+        public static string ConversationFilterText {
+            get {
+                return ResourceManager.GetString("ConversationFilterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Once copied, you&apos;ll have this text available on your computer&apos;s clipboard. 
         ///You can even paste it on Facebook. The possibilities are endless..
         /// </summary>
@@ -925,6 +934,15 @@ namespace Omnipaste.Properties {
         public static string SMSLabel {
             get {
                 return ResourceManager.GetString("SMSLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starred.
+        /// </summary>
+        public static string Starred {
+            get {
+                return ResourceManager.GetString("Starred", resourceCulture);
             }
         }
         
