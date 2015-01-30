@@ -10,7 +10,6 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
     using Omnipaste.Activity;
-    using Omnipaste.ActivityDetails;
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
@@ -30,6 +29,7 @@
     using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.TitleBar;
+    using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI;
     using OmniUI.Flyout;
@@ -81,7 +81,7 @@
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository), typeof(ContactRepository),
                            typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(MessageWorkspace), typeof(ClippingWorkspace),
-                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(ActivityDetailsViewModelFactory),
+                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ContactInfoViewModelFactory)
                        };
         }

@@ -1,0 +1,9 @@
+﻿namespace Omnipaste.WorkspaceDetails
+{
+    using Omnipaste.Presenters;
+
+    public interface IWorkspaceDetailsViewModelFactory
+    {
+        IWorkspaceDetailsViewModel Create(ActivityPresenter activity);
+    }
+}

@@ -26,7 +26,7 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IActivityDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
@@ -34,7 +34,7 @@
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IActivityDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new ActivityViewModel(_mockUiRefreshService.Object)
                            {
@@ -94,7 +94,7 @@
 
             _subject.ShowDetails();
 
-            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IActivityDetailsViewModel>()), Times.Once());
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
         }
 
         [Test]
@@ -136,7 +136,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(true);
@@ -156,7 +156,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
@@ -176,7 +176,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
@@ -196,7 +196,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IActivityDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);

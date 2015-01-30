@@ -4,13 +4,13 @@ namespace Omnipaste.Activity
     using System.Windows.Input;
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.ActivityDetails;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
+    using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.ExtensionMethods;
 
@@ -18,7 +18,7 @@ namespace Omnipaste.Activity
     {
         #region Fields
 
-        private IActivityDetailsViewModel _detailsViewModel;
+        private IWorkspaceDetailsViewModel _detailsViewModel;
 
         private ContentTypeEnum _contentType;
 
@@ -39,7 +39,7 @@ namespace Omnipaste.Activity
         #region Public Properties
 
         [Inject]
-        public IActivityDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+        public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }

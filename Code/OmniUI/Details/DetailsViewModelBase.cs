@@ -2,6 +2,28 @@
 {
     using Caliburn.Micro;
 
+    public abstract class DetailsViewModelBase : Screen, IDetailsViewModel
+    {
+        private object _model;
+
+        public virtual object Model
+        {
+            get
+            {
+                return _model;
+            }
+            set
+            {
+                if (Equals(value, _model))
+                {
+                    return;
+                }
+                _model = value;
+                NotifyOfPropertyChange(() => Model);
+            }
+        }
+    }
+
     public abstract class DetailsViewModelBase<TModel> : Screen, IDetailsViewModel<TModel>
         where TModel : class
     {

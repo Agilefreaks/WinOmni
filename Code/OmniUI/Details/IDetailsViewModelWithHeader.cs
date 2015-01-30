@@ -1,10 +1,8 @@
 ﻿namespace OmniUI.Details
 {
-    using Caliburn.Micro;
-
-    public interface IDetailsViewModelWithHeader<out THeader, out TContent> : IScreen
-        where THeader : IScreen
-        where TContent : IScreen
+    public interface IDetailsViewModelWithHeader<out THeader, out TContent> : IDetailsViewModel
+        where THeader : IDetailsViewModel
+        where TContent : IDetailsViewModel
     {
         TContent ContentViewModel { get; }
 
