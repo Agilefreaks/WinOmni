@@ -71,7 +71,6 @@
         <Setter Property="MinWidth" Value="{StaticResource CircleButtonSize}"/>
         <Setter Property="MinHeight" Value="{StaticResource CircleButtonSize}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Margin" Value="25,0,0,0"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -106,7 +105,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
     <Style x:Key="SmallCheckBoxStyle" TargetType="{x:Type CheckBox}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Template">

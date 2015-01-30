@@ -25,4 +25,10 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    
+    <Style x:Key="MasterListContainerStyle" TargetType="{x:Type Grid}">
+        <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}" />
+        <Setter Property="Width" Value="{DynamicResource NarrowContainerWidth}"/>
+        <Setter Property="Margin" Value="4,0"/>
+    </Style>
 </ResourceDictionary>

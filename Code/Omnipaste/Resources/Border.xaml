@@ -12,9 +12,6 @@
     </Style>
 
     <Style x:Key="ListScreenContainerStyle" TargetType="Border">
-        <Setter Property="Width" Value="{StaticResource NarrowContainerWidth}"/>
-        <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
-        <Setter Property="Margin" Value="4,0"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ScreenBorderBrush}"/>
     </Style>
@@ -100,5 +97,14 @@
         <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}"/>
         <Setter Property="BorderThickness" Value="5,0,5,5"/>
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
+    </Style>
+    
+    <Style x:Key="ContactInfoBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Height" Value="70"/>
+        <Setter Property="Padding" Value="18,0"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PassiveUiElementsBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 </ResourceDictionary>
