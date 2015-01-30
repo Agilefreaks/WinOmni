@@ -9,11 +9,11 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
-    using Omnipaste.ActivityDetails;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
+    using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.Workspace;
 

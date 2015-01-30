@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.WorkspaceDetails
 {
     using System;
-    using Ninject;
+    using Microsoft.Practices.ServiceLocation;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.WorkspaceDetails.Clipping;
@@ -10,8 +10,12 @@
 
     public class WorkspaceDetailsViewModelFactory : IWorkspaceDetailsViewModelFactory
     {
-        [Inject]
-        public IKernel Kernel { get; set; }
+        private readonly IServiceLocator _serviceLocator;
+        
+        public WorkspaceDetailsViewModelFactory(IServiceLocator serviceLocator)
+        {
+            _serviceLocator = serviceLocator;
+        }
 
         public IWorkspaceDetailsViewModel Create(ActivityPresenter activity)
         {
@@ -19,22 +23,29 @@
             switch (activity.Type)
             {
                 case ActivityTypeEnum.Clipping:
-                    result = Kernel.Get<IClippingDetailsViewModel>();
+                    result = _serviceLocator.GetInstance<IClippingDetailsViewModel>();
                     result.Model = activity;
                     break;
                 case ActivityTypeEnum.Message:
                 case ActivityTypeEnum.Call:
-                    result = Kernel.Get<IConversationViewModel>();
-                    result.Model = activity;
+                    result = Create(new ContactInfoPresenter(activity.ExtraData.ContactInfo as ContactInfo));
                     break;
                 case ActivityTypeEnum.Version:
-                    result = Kernel.Get<IVersionDetailsViewModel>();
+                    result = _serviceLocator.GetInstance<IVersionDetailsViewModel>();
                     result.Model = activity;
                     break;
                 default:
                     throw new Exception("Unknown type");
             }
             
+            return result;
+        }
+
+        public IWorkspaceDetailsViewModel Create(ContactInfoPresenter contactInfoPresenter)
+        {
+            var result = _serviceLocator.GetInstance<IConversationViewModel>();
+            result.Model = contactInfoPresenter;
+
             return result;
         }
     }

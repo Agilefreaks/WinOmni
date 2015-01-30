@@ -36,7 +36,7 @@
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
 
-            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel() { Model = presenter });
+            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel { Model = presenter });
 
             _subject = new ContactListViewModel(_mockContactRepository.Object, _mockContactInfoViewModelFactory.Object);
         }
@@ -188,8 +188,6 @@
             _subject.FilterText = "t";
 
             _subject.FilteredItems.Count.Should().Be(2);
-            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.ContactInfo.Should().Be(contacts[0]);
-            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(1)).Model.ContactInfo.Should().Be(contacts[1]);
         }
     }
 }

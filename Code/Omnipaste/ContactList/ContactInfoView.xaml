@@ -9,6 +9,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <Border Style="{DynamicResource ContactInfoBorderStyle}">
+        <Border.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
+        </Border.InputBindings>
+        
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

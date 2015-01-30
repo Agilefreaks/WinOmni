@@ -4,7 +4,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.SMSComposer;
 
-    public class ConversationContainerViewModel : WorkspaceDetailsContentViewModel<ActivityPresenter>, IConversationContainerViewModel
+    public class ConversationContainerViewModel : WorkspaceDetailsContentViewModel<ContactInfoPresenter>, IConversationContainerViewModel
     {
         #region Public Properties
 
@@ -21,9 +21,9 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            ConversationContentViewModel.ContactInfo = Model.ExtraData.ContactInfo;
+            ConversationContentViewModel.Model = Model;
             ConversationContentViewModel.Activate();
-            SMSComposer.ContactInfo = Model.ExtraData.ContactInfo;
+            SMSComposer.ContactInfo = Model.ContactInfo;
             SMSComposer.Activate();
         }
 

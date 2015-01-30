@@ -12,7 +12,7 @@
             <TextBox Text="{Binding Path=Model.Time, Converter={StaticResource HumanizedStringConverter}}" DockPanel.Dock="Right" 
                      Style="{DynamicResource ActivityContentTextBoxStyle}" FontSize="{DynamicResource ActivityLabelFontSize}" 
                      FontWeight="SemiBold" Foreground="{DynamicResource CallLabelBrush}" Background="{Binding Path=Background, ElementName=ContentBorder}"/>
-            <Rectangle MinWidth="{DynamicResource CircleButtonSize}"  MinHeight="{DynamicResource CircleButtonSize}"
+            <Rectangle MinWidth="{DynamicResource CircleButtonSize}" MinHeight="{DynamicResource CircleButtonSize}"
                        Fill="{DynamicResource CallBrush}" Margin="0,0,13,0" HorizontalAlignment="Center">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>

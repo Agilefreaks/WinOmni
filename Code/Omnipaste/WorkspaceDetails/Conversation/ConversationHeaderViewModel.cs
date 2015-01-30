@@ -12,7 +12,7 @@
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
-    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ActivityPresenter>, IConversationHeaderViewModel
+    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>, IConversationHeaderViewModel
     {
         #region Static Fields
 
@@ -26,8 +26,6 @@
 
         private IDisposable _callSubscription;
 
-        private IContactInfoPresenter _contactInfo;
-
         private ConversationHeaderStateEnum _state;
 
         #endregion
@@ -37,38 +35,8 @@
         [Inject]
         public ICallRepository CallRepository { get; set; }
 
-        public IContactInfoPresenter ContactInfo
-        {
-            get
-            {
-                return _contactInfo;
-            }
-            set
-            {
-                if (Equals(value, _contactInfo))
-                {
-                    return;
-                }
-                _contactInfo = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
-
-        public override ActivityPresenter Model
-        {
-            get
-            {
-                return base.Model;
-            }
-            set
-            {
-                base.Model = value;
-                ContactInfo = new ContactInfoPresenter(value.ExtraData.ContactInfo);
-            }
-        }
 
         [Inject]
         public IPhoneCalls PhoneCalls { get; set; }
@@ -108,7 +76,7 @@
             _callSubscription =
                 Observable.Timer(DelayCallDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
-                    .Select(_ => PhoneCalls.Call(Model.ExtraData.ContactInfo.Phone as string))
+                    .Select(_ => PhoneCalls.Call(Model.ContactInfo.Phone))
                     .Switch()
                     .Select(SaveCallLocally)
                     .Switch()
@@ -128,7 +96,6 @@
 
         public void Delete()
         {
-            Model.IsDeleted = true;
             UpdateConversationItems(CallRepository, item => item.IsDeleted = true);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
             State = ConversationHeaderStateEnum.Deleted;
@@ -136,7 +103,6 @@
 
         public void UndoDelete()
         {
-            Model.IsDeleted = false;
             UpdateConversationItems(CallRepository, item => item.IsDeleted = false);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
             State = ConversationHeaderStateEnum.Normal;
@@ -161,7 +127,7 @@
 
         private void DeleteConversationItems<T>(IRepository<T> repository) where T : BaseModel, IConversationItem
         {
-            repository.GetByContact(ContactInfo.ContactInfo)
+            repository.GetByContact(Model.ContactInfo)
                 .SubscribeAndHandleErrors(
                     items =>
                     items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete(c.UniqueId).RunToCompletion()));
@@ -186,7 +152,7 @@
         private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)
             where T : BaseModel, IConversationItem
         {
-            repository.GetByContact(ContactInfo.ContactInfo)
+            repository.GetByContact(Model.ContactInfo)
                 .SubscribeAndHandleErrors(
                     items => items.ToList().ForEach(
                         i =>

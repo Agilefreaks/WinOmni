@@ -12,11 +12,12 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ActivityDetails.Conversation;
-    using Omnipaste.ActivityDetails.Conversation.Call;
-    using Omnipaste.ActivityDetails.Conversation.Message;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
+    using Omnipaste.WorkspaceDetails.Conversation;
+    using Omnipaste.WorkspaceDetails.Conversation.Call;
+    using Omnipaste.WorkspaceDetails.Conversation.Message;
 
     [TestFixture]
     public class ConversationContentViewModelTests
@@ -58,7 +59,7 @@
         public void OnActivate_Always_AddsACallViewModelForEachCallInTheStoreForTheCurrentContactInfo()
         {
             var contactInfo = new ContactInfo();
-            _subject.ContactInfo = contactInfo;
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var call1 = new Call();
             var call2 = new Call();
             var calls = new[] { call1, call2 };
@@ -81,7 +82,7 @@
         public void ACallAppearsInTheCallStore_TheCallContactInfoHasTheSamePhoneNumberAsTheCurrentContactInfo_AddsACallViewModel()
         {
             var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.ContactInfo = new ContactInfo { Phone = "123" };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call()))),
                 new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, callFromContact))));
@@ -98,7 +99,7 @@
         public void OnActivate_Always_AddsAMessageViewModelForEachMessageInTheStoreForTheCurrentContactInfo()
         {
             var contactInfo = new ContactInfo();
-            _subject.ContactInfo = contactInfo;
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var message1 = new Message();
             var message2 = new Message();
             var messages = new [] { message1, message2 };
@@ -121,7 +122,7 @@
         public void AMessageAppearsInTheMessageStore_TheMessageContactInfoHasTheSamePhoneNumberAsTheCurrentContactInfo_AddsAMessageViewModel()
         {
             var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.ContactInfo = new ContactInfo { Phone = "123" };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var messageObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<RepositoryOperation<Message>>>(100, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, new Message()))),
                 new Recorded<Notification<RepositoryOperation<Message>>>(200, Notification.CreateOnNext(new RepositoryOperation<Message>(RepositoryMethodEnum.Create, messageFromContact))));
@@ -138,7 +139,7 @@
         public void OnActivate_Always_OrdersItemsForMessagesAndCallsAccordingToTheirTime()
         {
             var contactInfo = new ContactInfo();
-            _subject.ContactInfo = contactInfo;
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var baseTime = DateTime.Now;
             var call1 = new Call { Time = baseTime };
             var call2 = new Call { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
@@ -157,7 +158,7 @@
         public void OnActivate_PreviousActivationOccured_DoesNotAddViewModelsMultipleTimes()
         {
             var contactInfo = new ContactInfo();
-            _subject.ContactInfo = contactInfo;
+            _subject.Model = new ContactInfoPresenter(contactInfo);
             var call1 = new Call();
             var call2 = new Call();
             var calls = new[] { call1, call2 };

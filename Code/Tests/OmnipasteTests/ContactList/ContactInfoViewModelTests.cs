@@ -8,6 +8,9 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
+    using Omnipaste.WorkspaceDetails;
+    using Omnipaste.Workspaces;
+    using OmniUI.Workspace;
 
     [TestFixture]
     public class ContactInfoViewModelTests
@@ -20,17 +23,21 @@
 
         private Mock<IContactRepository> _mockContactRepository;
 
+        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+
         [SetUp]
         public void SetUp()
         {
             _contactInfo = new ContactInfo { FirstName = "test", LastName = "test", IsStarred = false };
             _contactInfoPresenter = new ContactInfoPresenter(_contactInfo);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
 
             _subject = new ContactInfoViewModel
                            {
                                Model = _contactInfoPresenter,
-                               ContactRepository = _mockContactRepository.Object
+                               ContactRepository = _mockContactRepository.Object,
+                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
                            };
         }
 
@@ -63,6 +70,19 @@
             _contactInfoPresenter.IsStarred = false;
 
             _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactInfo>()), Times.Never());
+        }
+
+        [Test]
+        public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
+        {
+            var mockWorkspace = new Mock<IMessageWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
         }
     }
 }

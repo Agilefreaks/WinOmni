@@ -5,5 +5,7 @@
     public interface IWorkspaceDetailsViewModelFactory
     {
         IWorkspaceDetailsViewModel Create(ActivityPresenter activity);
+        
+        IWorkspaceDetailsViewModel Create(ContactInfoPresenter activity);
     }
 }

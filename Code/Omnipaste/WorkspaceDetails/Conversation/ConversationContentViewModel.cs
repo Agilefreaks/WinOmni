@@ -6,6 +6,7 @@
     using Castle.Core.Internal;
     using Ninject;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
@@ -17,11 +18,11 @@
     {
         #region Fields
 
-        private ContactInfo _contactInfo;
-
         private IDisposable _itemAddedObservable;
 
         private IDisposable _itemRemovedObservable;
+
+        private ContactInfoPresenter _model;
 
         #endregion
 
@@ -29,23 +30,6 @@
 
         [Inject]
         public ICallRepository CallRepository { get; set; }
-
-        public ContactInfo ContactInfo
-        {
-            get
-            {
-                return _contactInfo;
-            }
-            set
-            {
-                if (Equals(value, _contactInfo))
-                {
-                    return;
-                }
-                _contactInfo = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         [Inject]
         public IKernel Kernel { get; set; }
@@ -62,6 +46,23 @@
             get
             {
                 return true;
+            }
+        }
+
+        public ContactInfoPresenter Model
+        {
+            get
+            {
+                return _model;
+            }
+            set
+            {
+                if (Equals(value, _model))
+                {
+                    return;
+                }
+                _model = value;
+                NotifyOfPropertyChange(() => Model);
             }
         }
 
@@ -89,11 +90,11 @@
         {
             return
                 MessageRepository.OperationObservable.Created()
-                    .ForContact(ContactInfo)
+                    .ForContact(Model.ContactInfo)
                     .Select(o => o.Item)
                     .Merge(
                         CallRepository.OperationObservable.Created()
-                            .ForContact(ContactInfo)
+                            .ForContact(Model.ContactInfo)
                             .Select(o => o.Item)
                             .Cast<IConversationItem>());
         }
@@ -102,19 +103,19 @@
         {
             return
                 MessageRepository.OperationObservable.Deleted()
-                    .ForContact(ContactInfo)
+                    .ForContact(Model.ContactInfo)
                     .Select(o => o.Item)
                     .Merge(
                         CallRepository.OperationObservable.Deleted()
-                            .ForContact(ContactInfo)
+                            .ForContact(Model.ContactInfo)
                             .Select(o => o.Item)
                             .Cast<IConversationItem>());
         }
 
         protected override void OnActivate()
         {
-            MessageRepository.GetByContact(ContactInfo)
-                .Merge(CallRepository.GetByContact(ContactInfo).Select(i => i.Cast<IConversationItem>()))
+            MessageRepository.GetByContact(Model.ContactInfo)
+                .Merge(CallRepository.GetByContact(Model.ContactInfo).Select(i => i.Cast<IConversationItem>()))
                 .Buffer(2)
                 .Subscribe(
                     itemLists =>
