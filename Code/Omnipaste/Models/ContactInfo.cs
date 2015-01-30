@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class ContactInfo : BaseModel, IContactInfo
+    public class ContactInfo : BaseModel
     {
         #region Constants
 
@@ -39,6 +39,8 @@
 
         public string Phone { get; set; }
 
+        public bool IsStarred { get; set; }
+        
         #endregion
 
         public override string ToString()

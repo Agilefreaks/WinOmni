@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ContactList;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
 
     [TestFixture]
@@ -25,7 +26,7 @@
         [Test]
         public void Create_Always_AssignsModelOnResult()
         {
-            var contactInfoPresenter = new ContactInfoPresenter();
+            var contactInfoPresenter = new ContactInfoPresenter(new ContactInfo());
             var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
             _mockServiceLocator.Setup(m => m.GetInstance<IContactInfoViewModel>())
                 .Returns(mockContactInfoViewModel.Object);

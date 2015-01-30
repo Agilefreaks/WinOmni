@@ -23,7 +23,7 @@
             
             <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Margin="0,0,8,0" Width="40" Height="40" />
 
-            <CheckBox Grid.Column="1" x:Name="ShowStarred" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
+            <CheckBox Grid.Column="1" IsChecked="{Binding Path=Model.IsStarred, Mode=TwoWay}" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
                 <framework:CheckboxHelper.CheckedIcon>
                     <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
                 </framework:CheckboxHelper.CheckedIcon>

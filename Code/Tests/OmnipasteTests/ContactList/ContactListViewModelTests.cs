@@ -83,5 +83,113 @@
 
             _subject.Items.Count.Should().Be(1);
         }
+
+        [Test]
+        public void ShowStarred_ChangesToTrue_FiltersItemsThatAreStarred()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1", IsStarred = true }, new ContactInfo { Phone = "2", IsStarred = false} };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.ShowStarred = true;
+
+            _subject.FilteredItems.Count.Should().Be(1);
+        }
+
+        [Test]
+        public void ShowStarred_ChangesToFalse_ShowsAllItems()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1", IsStarred = true }, new ContactInfo { Phone = "2", IsStarred = false } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.ShowStarred = false;
+
+            _subject.FilteredItems.Count.Should().Be(contacts.Count);
+        }
+
+        [Test]
+        public void FilterText_ChangesToEmpty_ShowsAllItems()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1" }, new ContactInfo { Phone = "2" } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = string.Empty;
+
+            _subject.FilteredItems.Count.Should().Be(contacts.Count);
+        }
+
+        [Test]
+        public void FilterText_MatchesPhoneNumber_ShowsMatchingItems()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1" }, new ContactInfo { Phone = "2" } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = "1";
+
+            _subject.FilteredItems.Count.Should().Be(1);
+            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.ContactInfo.Should().Be(contacts.First());
+        }
+
+        [Test]
+        public void FilterText_MatchesName_ShowsMatchingItems()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" }, new ContactInfo { LastName = "T2" }, new ContactInfo { FirstName = "some" } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = "t";
+
+            _subject.FilteredItems.Count.Should().Be(2);
+            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.ContactInfo.Should().Be(contacts[0]);
+            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(1)).Model.ContactInfo.Should().Be(contacts[1]);
+        }
     }
 }

@@ -25,7 +25,15 @@
                 {
                     return;
                 }
+                if (_model != null && IsActive)
+                {
+                    UnhookModel(_model);
+                }
                 _model = value;
+                if (_model != null && IsActive)
+                {
+                    HookModel(_model);
+                }
                 NotifyOfPropertyChange();
             }
         }
@@ -47,5 +55,33 @@
         }
 
         #endregion
+
+        protected override void OnActivate()
+        {
+            if (_model != null)
+            {
+                HookModel(_model);
+            }
+            
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            if (_model != null)
+            {
+                UnhookModel(_model);
+            }
+
+            base.OnDeactivate(close);
+        }
+
+        protected virtual void UnhookModel(TModel model)
+        {
+        }
+
+        protected virtual void HookModel(TModel model)
+        {
+        }
     }
 }

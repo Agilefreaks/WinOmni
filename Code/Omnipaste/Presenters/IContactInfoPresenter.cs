@@ -10,8 +10,10 @@ namespace Omnipaste.Presenters
 
         ImageSource Image { get; set; }
 
-        IContactInfo ContactInfo { get; }
+        ContactInfo ContactInfo { get; }
 
         bool IsSelected { get; set; }
+
+        bool IsStarred { get; set; }
     }
 }

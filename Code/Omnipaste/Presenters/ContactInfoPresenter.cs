@@ -36,12 +36,7 @@
 
         #region Constructors and Destructors
 
-        public ContactInfoPresenter()
-        {
-            ContactInfo = new ContactInfo();
-        }
-
-        public ContactInfoPresenter(IContactInfo contactInfo)
+        public ContactInfoPresenter(ContactInfo contactInfo)
         {
             ContactInfo = contactInfo;
         }
@@ -50,7 +45,7 @@
 
         #region Public Properties
 
-        public IContactInfo ContactInfo { get; private set; }
+        public ContactInfo ContactInfo { get; private set; }
 
         public string Identifier
         {
@@ -110,6 +105,23 @@
                 }
                 _isSelected = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsStarred
+        {
+            get
+            {
+                return ContactInfo.IsStarred;
+            }
+            set
+            {
+                if (value.Equals(ContactInfo.IsStarred))
+                {
+                    return;
+                }
+                ContactInfo.IsStarred = value;
+                NotifyOfPropertyChange(() => IsStarred);
             }
         }
 
