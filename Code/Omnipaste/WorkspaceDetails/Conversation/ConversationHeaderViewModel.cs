@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
+    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -152,14 +153,15 @@
         private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)
             where T : BaseModel, IConversationItem
         {
-            repository.GetByContact(Model.ContactInfo)
-                .SubscribeAndHandleErrors(
-                    items => items.ToList().ForEach(
-                        i =>
-                            {
-                                update(i);
-                                repository.Save(i).RunToCompletion();
-                            }));
+            repository.GetByContact(Model.ContactInfo).SelectMany(
+                items => items.Select(
+                    i =>
+                        {
+                            update(i);
+                            return repository.Save(i);
+                        }))
+                        .Switch()
+                        .SubscribeAndHandleErrors();
         }
 
         #endregion
