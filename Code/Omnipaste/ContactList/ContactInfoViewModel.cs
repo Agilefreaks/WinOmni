@@ -7,10 +7,12 @@
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+    using Omnipaste.DetailsViewModel;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
@@ -24,6 +26,8 @@
         private string _lastActivityInfo;
 
         private readonly List<IDisposable> _subscriptions;
+
+        private DateTime? _lastActivityTime;
 
         public ContactInfoViewModel()
         {
@@ -42,6 +46,9 @@
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
+        [Inject]
+        public IUiRefreshService UiRefreshService { get; set; }
 
         public Command ClickCommand { get; set; }
 
@@ -62,6 +69,23 @@
             }
         }
 
+        public DateTime? LastActivityTime
+        {
+            get
+            {
+                return _lastActivityTime;
+            }
+            set
+            {
+                if (value.Equals(_lastActivityTime))
+                {
+                    return;
+                }
+                _lastActivityTime = value;
+                NotifyOfPropertyChange(() => LastActivityTime);
+            }
+        }
+
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
@@ -74,6 +98,7 @@
             _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Create).SubscribeAndHandleErrors(UpdateView));
             _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Update).SubscribeAndHandleErrors(UpdateView));
             _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Delete).SubscribeAndHandleErrors(UpdateView));
+            _subscriptions.Add(UiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi()));
         }
 
         public void OnUnloaded()
@@ -126,9 +151,15 @@
                     .Switch();
         }
 
+        private void RefreshUi()
+        {
+            NotifyOfPropertyChange(() => LastActivityTime);
+        }
+
         private void UpdateView(IConversationItem item)
         {
             LastActivityInfo = GetActivityInfo(item);
+            LastActivityTime = item.Time;
         }
 
         private void SaveChanges()

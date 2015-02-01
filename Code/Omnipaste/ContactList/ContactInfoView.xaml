@@ -60,7 +60,7 @@
             </StackPanel>
 
             <TextBlock Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Right" Style="{StaticResource ActivityTimeStampStyle}"
-                           Text="10 minutes ago" />
+                           Text="{Binding Path=LastActivityTime, Converter={StaticResource HumanizedStringConverter},ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </Grid>
     </Border>
 </UserControl>

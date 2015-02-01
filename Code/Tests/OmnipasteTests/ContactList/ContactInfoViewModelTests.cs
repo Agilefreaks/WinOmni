@@ -13,6 +13,7 @@
     using Omnipaste.ContactList;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
@@ -33,6 +34,8 @@
 
         private Mock<ICallRepository> _mockCallRepository;
 
+        private Mock<IUiRefreshService> _mockUiRefreshService;
+
         private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private TestScheduler _testScheduler;
@@ -49,6 +52,7 @@
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
 
             _subject = new ContactInfoViewModel
@@ -57,6 +61,7 @@
                                ContactRepository = _mockContactRepository.Object,
                                MessageRepository = _mockMessageRepository.Object,
                                CallRepository = _mockCallRepository.Object,
+                               UiRefreshService = _mockUiRefreshService.Object,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
                            };
         }
@@ -134,6 +139,30 @@
             _testScheduler.AdvanceBy(1000);
 
             _subject.LastActivityInfo.Should().Be(message.Content);
+        }
+
+        [Test]
+        public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
+        {
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.LastActivityTime.Value.Should().Be(message.Time);
         }
 
         [Test]
