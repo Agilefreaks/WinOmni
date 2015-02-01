@@ -46,13 +46,17 @@
             </StackPanel>
             
             <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                <Rectangle Width="13" Height="13" Fill="{DynamicResource CallBrush}">
+                <Rectangle Width="13" Height="13" 
+                           Visibility="{Binding Path=HasNotViewedCalls, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Fill="{DynamicResource CallBrush}">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
                     </Rectangle.OpacityMask>
                 </Rectangle>
 
-                <Rectangle Width="13" Height="13" Fill="{DynamicResource MessageBrush}" Margin="8,0,0,0">
+                <Rectangle Width="13" Height="13" 
+                           Visibility="{Binding Path=HasNotViewedMessages, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Fill="{DynamicResource MessageBrush}" Margin="8,0,0,0">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
                     </Rectangle.OpacityMask>

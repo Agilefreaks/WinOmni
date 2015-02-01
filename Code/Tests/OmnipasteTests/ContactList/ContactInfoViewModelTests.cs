@@ -142,6 +142,54 @@
         }
 
         [Test]
+        public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
+        {
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.HasNotViewedMessages.Should().Be(false);
+        }
+
+        [Test]
+        public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
+        {
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.HasNotViewedMessages.Should().Be(true);
+        }
+
+        [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
@@ -211,6 +259,54 @@
             _testScheduler.AdvanceBy(1000);
 
             _subject.LastActivityInfo.Should().Be(Omnipaste.Properties.Resources.OutgoingCallLabel);
+        }
+
+        [Test]
+        public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
+        {
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true };
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.HasNotViewedCalls.Should().Be(false);
+        }
+
+        [Test]
+        public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
+        {
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false };
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.HasNotViewedCalls.Should().Be(true);
         }
 
         [Test]

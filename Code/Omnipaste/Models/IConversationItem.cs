@@ -15,5 +15,7 @@
         DateTime Time { get; }
 
         string UniqueId { get; }
+
+        bool WasViewed { get; set; }
     }
 }

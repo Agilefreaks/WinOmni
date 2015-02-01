@@ -29,6 +29,10 @@
 
         private DateTime? _lastActivityTime;
 
+        private bool _hasNotViewedCalls;
+
+        private bool _hasNotViewedMessages;
+
         public ContactInfoViewModel()
         {
             ClickCommand = new Command(ShowDetails);
@@ -86,6 +90,40 @@
             }
         }
 
+        public bool HasNotViewedCalls
+        {
+            get
+            {
+                return _hasNotViewedCalls;
+            }
+            set
+            {
+                if (value.Equals(_hasNotViewedCalls))
+                {
+                    return;
+                }
+                _hasNotViewedCalls = value;
+                NotifyOfPropertyChange(() => HasNotViewedCalls);
+            }
+        }
+
+        public bool HasNotViewedMessages
+        {
+            get
+            {
+                return _hasNotViewedMessages;
+            }
+            set
+            {
+                if (value.Equals(_hasNotViewedMessages))
+                {
+                    return;
+                }
+                _hasNotViewedMessages = value;
+                NotifyOfPropertyChange(() => HasNotViewedMessages);
+            }
+        }
+
         public void ShowDetails()
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
@@ -130,7 +168,8 @@
             return
                 MessageRepository.GetByContact(Model.ContactInfo)
                     .Select(messages => messages.Where(m => !m.IsDeleted).Cast<IConversationItem>())
-                    .Merge(CallRepository.GetByContact(Model.ContactInfo).Select(calls => calls.Where(m => !m.IsDeleted)))
+                    .Do(messages => HasNotViewedMessages = messages.Any(message => !message.WasViewed))
+                    .Merge(CallRepository.GetByContact(Model.ContactInfo).Select(calls => calls.Where(m => !m.IsDeleted)).Do(calls => HasNotViewedCalls = calls.Any(call => !call.WasViewed)))
                     .Buffer(2)
                     .Select(
                         itemLists =>
