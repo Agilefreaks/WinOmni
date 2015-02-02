@@ -2,9 +2,8 @@
 {
     using OmniApi.Models;
     using Omnipaste.Models;
-    using OmniUI.Models;
     using SMS.Resources.v1;
-
+    
     public class InlineSMSComposerViewModel : SMSComposerViewModel, IInlineSMSComposerViewModel
     {
         #region Constructors and Destructors

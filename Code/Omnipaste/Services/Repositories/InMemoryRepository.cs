@@ -40,6 +40,11 @@ namespace Omnipaste.Services.Repositories
             return Async(() => GetSynchronous(id));
         }
 
+        public IObservable<T> Get(Func<T, bool> match)
+        {
+            return Async(() => GetSynchronous(match));
+        }
+
         public IObservable<IEnumerable<T>> GetAll()
         {
             return GetAll(_ => true);
@@ -68,6 +73,14 @@ namespace Omnipaste.Services.Repositories
             lock (_items)
             {
                 return _items.GetValueOrDefault(id);
+            }
+        }
+
+        public T GetSynchronous(Func<T, bool> match)
+        {
+            lock (_items)
+            {
+                return _items.Values.FirstOrDefault(match);
             }
         }
 

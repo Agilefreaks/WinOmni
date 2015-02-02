@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Activity
 {
-    using OmniUI.Presenters;
+    using Omnipaste.Presenters;
 
     public interface IContactRelatedActivityViewModel : IActivityViewModel
     {

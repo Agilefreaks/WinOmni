@@ -37,6 +37,7 @@
     <SolidColorBrush x:Key="DeletedItemHeaderBackgroundBrush" Color="{DynamicResource DeletedItemHeaderBackgroundColor}"/>
     <SolidColorBrush x:Key="CallingBackgroundBrush" Color="{DynamicResource CallingBackgroundColor}"/>
     <SolidColorBrush x:Key="ConfirmationMessageBrush" Color="{DynamicResource ConfirmationMessageColor}"/>
+    <SolidColorBrush x:Key="FavoriteBrush" Color="{DynamicResource FavoriteColor}"/>
 
     <SolidColorBrush x:Key="NavigationMenuBrush" Color="{DynamicResource SideMenuColor}"/>
     <SolidColorBrush x:Key="NavigationMenuActiveItemBrush" Color="{DynamicResource SideMenuActiveItemColor}"/>
@@ -373,4 +374,33 @@
         <GradientStop Color="Black" Offset="0.7"/>
         <GradientStop Color="#00000000" Offset="1"/>
     </LinearGradientBrush>
+
+    <VisualBrush x:Key="StarBrush">
+        <VisualBrush.Visual>
+            <Canvas Width="16" Height="15">
+                <Canvas.Resources>
+                    <PathGeometry x:Key="clipPath2999" Figures="M 0 12 13 12 13 0 0 0 0 12 z" FillRule="NonZero"/>
+                </Canvas.Resources>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <MatrixTransform Matrix="1.25 0 0 -1.25 0 15.00025"/>
+                    </Canvas.RenderTransform>
+                    <Canvas>
+                        <Canvas>
+                            <Canvas>
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="12.3753" Y="7.0628"/>
+                                </Canvas.RenderTransform>
+                                <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 0 0 C -0.116 0.134 -0.237 0.178 -0.337 0.207 -0.44 0.234 -1.818 0.45 -1.915 0.451 l -1.606 0.262 c -0.032 -0.001 -0.104 0.019 -0.165 0.064 -0.061 0.045 -0.1 0.107 -0.107 0.137 L -4.576 2.499 C -4.608 2.607 -5.319 4.071 -5.393 4.176 -5.459 4.272 -5.608 4.43 -5.876 4.437 -6.141 4.431 -6.291 4.273 -6.358 4.176 -6.432 4.069 -7.047 2.8 -7.077 2.693 L -7.957 0.914 C -7.964 0.884 -8.004 0.822 -8.064 0.777 -8.124 0.732 -8.196 0.712 -8.228 0.713 l -1.53 -0.25 C -9.889 0.461 -11.37 0.231 -11.518 0.171 -11.59 0.14 -11.675 0.09 -11.751 0 c -0.075 -0.087 -0.128 -0.223 -0.124 -0.344 0.003 -0.195 0.088 -0.313 0.156 -0.396 0.074 -0.084 1.258 -1.006 1.343 -1.063 l 1.129 -0.881 c 0.049 -0.02 0.135 -0.167 0.128 -0.265 0 -0.024 -0.003 -0.044 -0.008 -0.058 l -0.267 -1.567 c -0.029 -0.097 -0.361 -1.277 -0.361 -1.393 0.002 -0.096 0.013 -0.222 0.113 -0.363 0.097 -0.145 0.313 -0.236 0.459 -0.227 0.278 0.015 0.394 0.121 0.53 0.223 l 2.658 1.484 c 0.022 0.019 0.077 0.042 0.139 0.042 0.061 0 0.113 -0.021 0.135 -0.04 l 2.802 -1.5 c 0.137 -0.099 0.252 -0.201 0.522 -0.215 l 0.021 0 c 0.14 0 0.335 0.082 0.431 0.22 0.103 0.14 0.116 0.268 0.116 0.363 0 0.123 -0.329 1.682 -0.365 1.788 l -0.402 1.213 c -0.006 0.014 -0.009 0.035 -0.009 0.06 -0.007 0.092 0.069 0.222 0.114 0.241 l 1.436 1.124 c 0.085 0.055 0.951 0.73 1.023 0.814 0.07 0.083 0.154 0.201 0.156 0.396 C 0.129 -0.223 0.075 -0.087 0 0 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </VisualBrush.Visual>
+    </VisualBrush>
 </ResourceDictionary>

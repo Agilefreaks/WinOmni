@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Omnipaste.WorkspaceDetails.Conversation.ConversationHeader.Calling"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource CallingBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="40" Height="40" Margin="0,0,10,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Style="{DynamicResource ActivityContentTextStyle}" Foreground="{DynamicResource CallBrush}">
+                    <Run Text="{x:Static properties:Resources.Calling}" />
+                    <Run Text="{Binding Path=Model.Name, Mode=OneWay}" FontWeight="Bold"></Run>
+                    </TextBlock>
+                    <TextBlock Text="{x:Static properties:Resources.CallingGuide}" Style="{DynamicResource ActivityContentTextStyle}" Foreground="{DynamicResource CallBrush}" FontStyle="Italic" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource CallBrush}" />
+    </Grid>
+</UserControl>

@@ -177,15 +177,6 @@
   <data name="MasterClippingListHeaderLocal" xml:space="preserve">
     <value>Local</value>
   </data>
-  <data name="MasterEventListHeaderAll" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="MasterEventListHeaderCalls" xml:space="preserve">
-    <value>Incoming Calls</value>
-  </data>
-  <data name="MasterEventListHeaderSms" xml:space="preserve">
-    <value>Incoming Messages</value>
-  </data>
   <data name="ButtonBrowse" xml:space="preserve">
     <value>Browse</value>
   </data>
@@ -239,9 +230,6 @@
   </data>
   <data name="MasterClippingListDisplayName" xml:space="preserve">
     <value>Clippings</value>
-  </data>
-  <data name="MasterEventListDisplayName" xml:space="preserve">
-    <value>Notifications</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
     <value>Omnipaste is still running. To open the window again, double-click the icon.</value>
@@ -432,5 +420,11 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   </data>
   <data name="ActivityTypeFilterText" xml:space="preserve">
     <value>Filter cards by type:</value>
+  </data>
+  <data name="Starred" xml:space="preserve">
+    <value>Starred</value>
+  </data>
+  <data name="ConversationFilterText" xml:space="preserve">
+    <value>Filter conversations by:</value>
   </data>
 </root>

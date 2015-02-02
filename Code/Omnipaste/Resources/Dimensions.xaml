@@ -21,6 +21,7 @@
     <system:Double x:Key="CircleButtonSize">13</system:Double>
     <system:Double x:Key="DefaultWorkspaceWidth">1246</system:Double>
     <system:Double x:Key="DefaultScrollThumbSize">6</system:Double>
+    <system:Double x:Key="ContactInfoWidth">431</system:Double>
 
     <Thickness x:Key="ActivityHeaderMargin">22,0</Thickness>
 </ResourceDictionary>

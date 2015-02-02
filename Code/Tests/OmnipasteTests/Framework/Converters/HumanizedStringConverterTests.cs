@@ -18,6 +18,12 @@
         }
 
         [Test]
+        public void Conver_ValueIsNull_ReturnsEmptyString()
+        {
+            _subject.Convert(null, null, null, null).Should().Be(string.Empty);
+        }
+
+        [Test]
         public void Convert_ValueIsCamelCaseString_ReturnsHumanizedString()
         {
             _subject.Convert("SomeCamelCaseString", typeof(string), null, CultureInfo.InvariantCulture)
@@ -53,6 +59,15 @@
         public void Convert_ValueIsCurrentDateTime_ReturnsApproximateTimeAgo()
         {
             var dateTime = DateTime.UtcNow - TimeSpan.FromDays(5);
+            _subject.Convert(dateTime, typeof(string), null, CultureInfo.InvariantCulture)
+                .Should()
+                .Be("5 days ago");
+        }
+
+        [Test]
+        public void Convert_ValueIsNullableDateTime_ReturnsApproximateTimeAgo()
+        {
+            DateTime? dateTime = DateTime.UtcNow - TimeSpan.FromDays(5);
             _subject.Convert(dateTime, typeof(string), null, CultureInfo.InvariantCulture)
                 .Should()
                 .Be("5 days ago");

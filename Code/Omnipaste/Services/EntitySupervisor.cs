@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive;
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
@@ -11,11 +12,18 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Handlers;
+    using PhoneCalls.Models;
     using SMS.Handlers;
+    using SMS.Models;
 
     public class EntitySupervisor : IEntitySupervisor
     {
         private readonly IList<IDisposable> _subscriptions;
+
+        public EntitySupervisor()
+        {
+            _subscriptions = new List<IDisposable>();
+        }
 
         [Inject]
         public IClipboardHandler ClipboardHandler { get; set; }
@@ -41,10 +49,8 @@
         [Inject]
         public IUpdateInfoRepository UpdateInfoRepository { get; set; }
 
-        public EntitySupervisor()
-        {
-            _subscriptions = new List<IDisposable>();
-        }
+        [Inject]
+        public IContactRepository ContactRepository { get; set; }
 
         public void Start()
         {
@@ -52,19 +58,22 @@
 
             _subscriptions.Add(
                 ClipboardHandler.SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Default)
-                .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
-
-            _subscriptions.Add(
-                PhoneCallReceivedHandler.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(phoneCall => CallRepository.Save(new Call(phoneCall))));
+                    .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
 
             _subscriptions.Add(
-                SmsMessageCreatedHandler
+                PhoneCallReceivedHandler.Select(StorePhoneCall)
+                    .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(smsMessage => MessageRepository.Save(new Message(smsMessage))));
+                    .SubscribeAndHandleErrors());
+
+            _subscriptions.Add(
+                SmsMessageCreatedHandler.Select(StoreMessage)
+                    .Switch()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors());
 
             _subscriptions.Add(
                 UpdaterService.UpdateObservable.SubscribeOn(SchedulerProvider.Default)
@@ -76,6 +85,39 @@
         {
             _subscriptions.ForEach(s => s.Dispose());
             _subscriptions.Clear();
+        }
+
+        private IObservable<Unit> StoreMessage(SmsMessage smsMessage)
+        {
+            var message = new Message(smsMessage);
+            return
+                ContactRepository.Get(c => c.Phone == message.ContactInfo.Phone)
+                    .Select(
+                        contact =>
+                            {
+                                return contact == null
+                                           ? ContactRepository.Save(message.ContactInfo).Select(_ => Unit.Default)
+                                           : Observable.Return(Unit.Default, SchedulerProvider.Default);
+                            })
+                    .Select(_ => MessageRepository.Save(message).Select(__ => Unit.Default))
+                    .Switch();
+        }
+
+        private IObservable<Unit> StorePhoneCall(PhoneCall phoneCall)
+        {
+            var call = new Call(phoneCall);
+            return
+                ContactRepository.Get(c => c.Phone == call.ContactInfo.Phone)
+                    .Select(
+                        contact =>
+                            {
+                                return contact == null
+                                           ? ContactRepository.Save(call.ContactInfo).Select(_ => Unit.Default)
+                                           : Observable.Return(Unit.Default, SchedulerProvider.Default);
+                            })
+                    .Switch()
+                    .Select(_ => CallRepository.Save(call).Select(__ => Unit.Default))
+                    .Switch();
         }
     }
 }

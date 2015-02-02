@@ -2,7 +2,6 @@
 {
     using System;
     using OmniCommon.Models;
-    using OmniUI.Models;
 
     public class UserContactInfo : ContactInfo
     {

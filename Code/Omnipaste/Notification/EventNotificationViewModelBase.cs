@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.Notification
 {
     using Caliburn.Micro;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Models;
 
     public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationItem>,
                                                            IConversationNotificationViewModel

@@ -1,8 +1,10 @@
 ﻿namespace OmnipasteTests.Models
 {
+    using System;
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniUI.Models;
+    using OmniCommon.Helpers;
+    using Omnipaste.Models;
 
     [TestFixture]
     public class ContactInfoTests
@@ -12,7 +14,14 @@
         [SetUp]
         public void Setup()
         {
+            TimeHelper.UtcNow = new DateTime(2015, 1, 1);
             _subject = new ContactInfo();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            TimeHelper.Reset();
         }
 
         [Test]
@@ -31,6 +40,18 @@
         public void Ctor_NoArgumentsGiven_SetsPhoneToEmptyString()
         {
             _subject.Phone.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void Ctor_Always_AssignsUniqueId()
+        {
+            _subject.UniqueId.Should().NotBeNullOrEmpty();
+        }
+
+        [Test]
+        public void Ctor_Always_AssignsTime()
+        {
+            _subject.Time.Should().Be(TimeHelper.UtcNow);
         }
 
         [Test]

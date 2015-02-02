@@ -82,6 +82,7 @@
             ViewLocator.LocateForModelType = Framework.ViewLocator.LocateForModelType;
             
             var locator = new NinjectServiceLocator(_kernel);
+            _kernel.Bind<IServiceLocator>().ToConstant(locator);
             ServiceLocator.SetLocatorProvider(() => locator);
         }
 

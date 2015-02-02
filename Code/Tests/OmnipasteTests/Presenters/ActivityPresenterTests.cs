@@ -10,7 +10,6 @@
     using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;
-    using OmniUI.Models;
 
     [TestFixture]
     public class ActivityPresenterTests
