@@ -107,7 +107,7 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
-            var mockWorkspace = new Mock<IMessageWorkspace>();
+            var mockWorkspace = new Mock<IPeopleWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             _subject.Parent = mockWorkspace.Object;
