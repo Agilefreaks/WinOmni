@@ -6,65 +6,76 @@
              xmlns:framework="clr-namespace:Omnipaste.Framework"
              xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:converters="clr-namespace:Omnipaste.ContactList.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Border Style="{DynamicResource ContactInfoBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
-        <Border.InputBindings>
-            <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
-        </Border.InputBindings>
+    <UserControl.Resources>
+        <converters:ContactInfoBackroundBrushConverter x:Key="ContactInfoBackroundBrushConverter"/>
+        <converters:ContactInfoBorderBrushConverter x:Key="ContactInfoBorderBrushConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Border BorderThickness="0,1,0,1" BorderBrush="{Binding Path=DetailsViewModel.IsActive, Converter={StaticResource ContactInfoBorderBrushConverter}}" />
+        <Border Background="{Binding Path=DetailsViewModel.IsActive, Converter={StaticResource ContactInfoBackroundBrushConverter}}" Opacity="0.05" />
         
-        <Grid VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            
-            <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Margin="0,0,8,0" Width="40" Height="40" />
+        <Border Style="{DynamicResource ContactInfoBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
+            </Border.InputBindings>
 
-            <CheckBox Grid.Column="1" IsChecked="{Binding Path=Model.IsStarred, Mode=TwoWay}" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
-                <framework:CheckboxHelper.CheckedIcon>
-                    <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
-                </framework:CheckboxHelper.CheckedIcon>
-                <framework:CheckboxHelper.UncheckedIcon>
-                    <Rectangle Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
-                </framework:CheckboxHelper.UncheckedIcon>
-            </CheckBox>
-            
-            <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Left">
-                <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Margin="0,0,8,0" Width="40" Height="40" />
+
+                <CheckBox Grid.Column="1" IsChecked="{Binding Path=Model.IsStarred, Mode=TwoWay}" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
+                    <framework:CheckboxHelper.CheckedIcon>
+                        <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
+                    </framework:CheckboxHelper.CheckedIcon>
+                    <framework:CheckboxHelper.UncheckedIcon>
+                        <Rectangle Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
+                    </framework:CheckboxHelper.UncheckedIcon>
+                </CheckBox>
+
+                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
                                                    Foreground="{DynamicResource ActivityContentBrush}" TextWrapping="Wrap" />
 
-                <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
+                    <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
                     FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" FontStyle="Italic"/>
-            </StackPanel>
-            
-            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                <Rectangle Width="13" Height="13" 
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Rectangle Width="13" Height="13" 
                            Visibility="{Binding Path=HasNotViewedCalls, Converter={StaticResource BooleanToVisibilityConverter}}"
                            Fill="{DynamicResource CallBrush}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
-                    </Rectangle.OpacityMask>
-                </Rectangle>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
 
-                <Rectangle Width="13" Height="13" 
+                    <Rectangle Width="13" Height="13" 
                            Visibility="{Binding Path=HasNotViewedMessages, Converter={StaticResource BooleanToVisibilityConverter}}"
                            Fill="{DynamicResource MessageBrush}" Margin="8,0,0,0">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </StackPanel>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Uniform" Visual="{DynamicResource circle_icon}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
 
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Right" Style="{StaticResource ActivityTimeStampStyle}"
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Right" Style="{StaticResource ActivityTimeStampStyle}"
                            Text="{Binding Path=LastActivityTime, Converter={StaticResource HumanizedStringConverter},ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
-        </Grid>
-    </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

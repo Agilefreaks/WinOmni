@@ -102,9 +102,8 @@
     <Style x:Key="ContactInfoBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="Height" Value="70"/>
         <Setter Property="Padding" Value="18,0"/>
-        <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource PassiveUiElementsBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="MaxWidth" Value="{DynamicResource ContactInfoWidth}"/>
     </Style>
 </ResourceDictionary>

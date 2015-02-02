@@ -38,7 +38,6 @@
                 </DockPanel>
             </StackPanel>
         </Border>
-        <Border Grid.Row="0" VerticalAlignment="Bottom" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource MessageBrush}" />
         
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
             <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}" BorderThickness="0">

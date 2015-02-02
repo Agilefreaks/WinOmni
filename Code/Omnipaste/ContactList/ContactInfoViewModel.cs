@@ -7,7 +7,6 @@
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
@@ -21,8 +20,6 @@
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
-        private IDetailsViewModel _detailsViewModel;
-
         private string _lastActivityInfo;
 
         private readonly List<IDisposable> _subscriptions;
@@ -32,6 +29,8 @@
         private bool _hasNotViewedCalls;
 
         private bool _hasNotViewedMessages;
+
+        private IDetailsViewModel _detailsViewModel;
 
         public ContactInfoViewModel()
         {
@@ -124,9 +123,26 @@
             }
         }
 
+        public IDetailsViewModel DetailsViewModel
+        {
+            get
+            {
+                return _detailsViewModel;
+            }
+            set
+            {
+                if (Equals(value, _detailsViewModel))
+                {
+                    return;
+                }
+                _detailsViewModel = value;
+                NotifyOfPropertyChange(() => DetailsViewModel);
+            }
+        }
+
         public void ShowDetails()
         {
-            _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            DetailsViewModel = DetailsViewModel ?? DetailsViewModelFactory.Create(Model);
             this.GetParentOfType<IMessageWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 

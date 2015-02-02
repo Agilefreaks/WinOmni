@@ -249,6 +249,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
+    <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
