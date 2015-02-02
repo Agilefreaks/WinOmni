@@ -427,4 +427,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="Starred" xml:space="preserve">
     <value>Favorito</value>
   </data>
+  <data name="People" xml:space="preserve">
+    <value>Pessoas</value>
+  </data>
 </root>

@@ -7,9 +7,9 @@
 
     [UseView(typeof(WorkspaceView))]
 
-    public class MessageWorkspace : MasterDetailsWorkspace, IMessageWorkspace
+    public class PeopleWorkspace : MasterDetailsWorkspace, IPeopleWorkspace
     {
-        public MessageWorkspace(IContactListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
+        public PeopleWorkspace(IContactListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
             : base(masterScreen, detailsConductor)
         {
         }
@@ -18,7 +18,7 @@
         {
             get
             {
-                return Resources.Messages;
+                return Resources.People;
             }
         }
     }

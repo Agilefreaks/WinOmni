@@ -427,4 +427,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="ConversationFilterText" xml:space="preserve">
     <value>Filter contacts:</value>
   </data>
+  <data name="People" xml:space="preserve">
+    <value>People</value>
+  </data>
 </root>

@@ -143,7 +143,7 @@
         public void ShowDetails()
         {
             DetailsViewModel = DetailsViewModel ?? DetailsViewModelFactory.Create(Model);
-            this.GetParentOfType<IMessageWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
+            this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 
         public void OnLoaded()

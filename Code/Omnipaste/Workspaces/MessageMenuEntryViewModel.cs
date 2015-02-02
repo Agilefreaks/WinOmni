@@ -5,7 +5,7 @@ namespace Omnipaste.Workspaces
     using OmniUI.Workspace;
 
     [UseView(typeof(MainMenuEntryView))]
-    public class MessageMenuEntryViewModel : WorkspaceMainMenuEntry<IMessageWorkspace>, IMainMenuEntryViewModel
+    public class MessageMenuEntryViewModel : WorkspaceMainMenuEntry<IPeopleWorkspace>, IMainMenuEntryViewModel
     {
         public override string Icon
         {

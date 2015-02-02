@@ -427,4 +427,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="Starred" xml:space="preserve">
     <value>Favorite</value>
   </data>
+  <data name="People" xml:space="preserve">
+    <value>Persoane</value>
+  </data>
 </root>

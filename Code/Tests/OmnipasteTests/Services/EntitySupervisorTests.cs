@@ -102,7 +102,7 @@
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(new ContactInfo())));
-            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+            _mockContactRepository.Setup(m => m.GetByPhoneNumber(It.IsAny<string>())).Returns(contactObservable);
             
             _subject.Start();
             _testScheduler.Start(() => phoneCallObservable);
@@ -121,7 +121,7 @@
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(null as ContactInfo)));
-            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+            _mockContactRepository.Setup(m => m.GetByPhoneNumber(It.IsAny<string>())).Returns(contactObservable);
             
             _subject.Start();
             _testScheduler.Start(() => phoneCallObservable);
@@ -140,7 +140,7 @@
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(null as ContactInfo)));
-            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+            _mockContactRepository.Setup(m => m.GetByPhoneNumber(It.IsAny<string>())).Returns(contactObservable);
 
             _subject.Start();
             _testScheduler.Start(() => smsMessageObservable);
@@ -159,7 +159,7 @@
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(new ContactInfo())));
-            _mockContactRepository.Setup(m => m.Get(It.IsAny<Func<ContactInfo, bool>>())).Returns(contactObservable);
+            _mockContactRepository.Setup(m => m.GetByPhoneNumber(It.IsAny<string>())).Returns(contactObservable);
 
             _subject.Start();
             _testScheduler.Start(() => smsMessageObservable);
