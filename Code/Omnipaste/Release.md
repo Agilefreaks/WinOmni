@@ -1,4 +1,12 @@
-﻿**Version 1.3.5 (02.02.2015)**
+﻿**Version 1.3.6 (02.02.2015)**
+
+**Improvements:**
+
+- added better phone number matching for grouping calls/messages by contact
+
+----------
+
+**Version 1.3.5 (02.02.2015)**
 
 **Features:**
 
