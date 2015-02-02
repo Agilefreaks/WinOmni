@@ -487,8 +487,8 @@
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
     <Compile Include="Workspaces\IActivityWorkspace.cs" />
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IMessageWorkspace.cs" />
-    <Compile Include="Workspaces\MessageWorkspace.cs" />
+    <Compile Include="Workspaces\IPeopleWorkspace.cs" />
+    <Compile Include="Workspaces\PeopleWorkspace.cs" />
     <Compile Include="Workspaces\SingleItemWorkspace.cs" />
     <Page Include="WorkspaceDetails\WorkspaceDetailsContentView.xaml">
       <SubType>Designer</SubType>

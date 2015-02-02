@@ -18,7 +18,7 @@
             <StackPanel>
                 <DockPanel VerticalAlignment="Center">
                     <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />
-                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.Messages}" Foreground="{DynamicResource ActivityContentBrush}"
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.People}" Foreground="{DynamicResource ActivityContentBrush}"
                                FontFamily="{DynamicResource HeaderTitleFont}" FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap"
                                VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35"/>
                 </DockPanel>
