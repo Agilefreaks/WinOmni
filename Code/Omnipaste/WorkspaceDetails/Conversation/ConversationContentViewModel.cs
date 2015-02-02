@@ -3,8 +3,11 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
+    using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
@@ -36,6 +39,9 @@
 
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
+
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
 
         #endregion
 
@@ -121,8 +127,39 @@
                     itemLists =>
                     itemLists.SelectMany(i => i.ToList())
                         .OrderBy(conversationItem => conversationItem.Time)
-                        .ForEach(AddItem));
+                        .ForEach(DisplayItem));
             base.OnActivate();
+        }
+
+        private void DisplayItem(IConversationItem item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+            
+            AddItem(item);
+            
+            if (item.WasViewed)
+            {
+                return;
+            }
+
+            item.WasViewed = true;
+            EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
+            var call = item as Models.Call;
+            if (call != null)
+            {
+                Subscriptions.Add(CallRepository.Save(call).SubscribeAndHandleErrors());
+            }
+            else
+            {
+                var message = item as Models.Message;
+                if (message != null)
+                {
+                    Subscriptions.Add(MessageRepository.Save(message).SubscribeAndHandleErrors());
+                }
+            }
         }
 
         protected override void OnDeactivate(bool close)

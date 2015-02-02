@@ -12,6 +12,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
@@ -28,6 +29,8 @@
 
         private Mock<ICallRepository> _mockCallRepository;
 
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         private TestScheduler _testScheduler;
 
         [SetUp]
@@ -41,11 +44,13 @@
             mockingKernel.Bind<IMessageViewModel>().ToMethod(context => CreateMock<IMessageViewModel>());
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockEventAggregator = new Mock<IEventAggregator> { DefaultValue = DefaultValue.Mock };
             _subject = new ConversationContentViewModel
                            {
                                Kernel = mockingKernel,
                                MessageRepository = _mockMessageRepository.Object,
-                               CallRepository = _mockCallRepository.Object
+                               CallRepository = _mockCallRepository.Object,
+                               EventAggregator = _mockEventAggregator.Object
                            };
         }
 
@@ -76,6 +81,72 @@
             _testScheduler.Start();
 
             _subject.Items.Count().Should().Be(2);
+        }
+
+        [Test]
+        public void Activate_WhenCallWasNotViewed_MarksCallAsViewed()
+        {
+            var contactInfo = new ContactInfo();
+            _subject.Model = new ContactInfoPresenter(contactInfo);
+            var call = new Call { UniqueId = "42" };
+            var calls = new[] { call };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(Enumerable.Empty<Message>())));
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call>(calls).AsEnumerable())));
+            _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            call.WasViewed.Should().BeTrue();
+        }
+
+        [Test]
+        public void Activate_WhenCallWasNotViewed_DismissesNotificationForCall()
+        {
+            var contactInfo = new ContactInfo();
+            _subject.Model = new ContactInfoPresenter(contactInfo);
+            var call = new Call { UniqueId = "42" };
+            var calls = new[] { call };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(Enumerable.Empty<Message>())));
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call>(calls).AsEnumerable())));
+            _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(n => n.Identifier == call.UniqueId), It.IsAny<Action<Action>>()));
+        }
+
+        [Test]
+        public void Activate_WhenCallWasNotViewed_SavesCall()
+        {
+            var contactInfo = new ContactInfo();
+            _subject.Model = new ContactInfoPresenter(contactInfo);
+            var call = new Call { UniqueId = "42" };
+            var calls = new[] { call };
+            var messageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(Enumerable.Empty<Message>())));
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(100, Notification.CreateOnNext(new List<Call>(calls).AsEnumerable())));
+            _mockMessageRepository.Setup(x => x.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
+            _mockCallRepository.Setup(x => x.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            _mockCallRepository.Verify(m => m.Save(call));
         }
 
         [Test]

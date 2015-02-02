@@ -9,7 +9,6 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -28,18 +27,14 @@
 
         private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
-
         [SetUp]
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
-            _mockEventAggregator = new Mock<IEventAggregator>();
             _subject = new ActivityViewModel(_mockUiRefreshService.Object)
                            {
-                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
-                               EventAggregator = _mockEventAggregator.Object
+                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
@@ -95,37 +90,6 @@
             _subject.ShowDetails();
 
             mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
-        }
-
-        [Test]
-        public void ShowDetails_Always_SetsModelWasViewedToTrue()
-        {
-            var activity = new ActivityPresenter(new ClippingModel { WasViewed = true});
-            _subject.Model = activity;
-            var mockWorkspace = new Mock<IActivityWorkspace>();
-            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
-            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            _subject.Parent = mockWorkspace.Object;
-
-            _subject.ShowDetails();
-
-            _subject.Model.WasViewed.Should().BeTrue();
-        }
-
-        [Test]
-        public void ShowDetails_WhenModelWasNotViewed_DismissesNotificationForActivity()
-        {
-            const string Identifier = "42";
-            var activity = new ActivityPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
-            _subject.Model = activity;
-            var mockWorkspace = new Mock<IActivityWorkspace>();
-            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
-            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            _subject.Parent = mockWorkspace.Object;
-
-            _subject.ShowDetails();
-
-            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(o => Identifier.Equals(o.Identifier)), It.IsAny<Action<Action>>()));
         }
 
         [Test]
