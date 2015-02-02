@@ -255,12 +255,6 @@
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Deleted.xaml.cs">
-      <DependentUpon>Deleted.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Normal.xaml.cs">
-      <DependentUpon>Normal.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WorkspaceDetails\Conversation\Call\CallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Conversation\Call\ICallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
@@ -283,9 +277,6 @@
     <Compile Include="WorkspaceDetails\Conversation\ConversationContainerViewModel.cs" />
     <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\Conversation\ConversationViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Message\MessageView.xaml.cs">
-      <DependentUpon>MessageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WorkspaceDetails\Conversation\Message\MessageViewModel.cs" />
     <Compile Include="WorkspaceDetails\Version\IVersionDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\Version\IVersionDetailsHeaderViewModel.cs" />
