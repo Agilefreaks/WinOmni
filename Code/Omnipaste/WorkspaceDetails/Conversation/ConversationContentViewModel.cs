@@ -131,22 +131,35 @@
             base.OnActivate();
         }
 
+       
+        protected override void OnDeactivate(bool close)
+        {
+            DisposeItemAddedObservable();
+            DisposeItemRemovedObservable();
+            Items.ToList().Select(vm => vm.Model as IConversationItem).Where(model => model != null).ForEach(RemoveItem);
+
+            base.OnDeactivate(true);
+        }
+
         private void DisplayItem(IConversationItem item)
         {
             if (item == null)
             {
                 return;
             }
-            
-            AddItem(item);
-            
-            if (item.WasViewed)
-            {
-                return;
-            }
 
+            AddItem(item);
+
+            if (!item.WasViewed)
+            {
+                MarkConversationItemAsViewed(item);
+                DismissConversationItemNotification(item);
+            }
+        }
+
+        private void MarkConversationItemAsViewed(IConversationItem item)
+        {
             item.WasViewed = true;
-            EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
             var call = item as Models.Call;
             if (call != null)
             {
@@ -162,13 +175,9 @@
             }
         }
 
-        protected override void OnDeactivate(bool close)
+        private void DismissConversationItemNotification(IConversationItem item)
         {
-            DisposeItemAddedObservable();
-            DisposeItemRemovedObservable();
-            Items.ToList().Select(vm => vm.Model as IConversationItem).Where(model => model != null).ForEach(RemoveItem);
-
-            base.OnDeactivate(true);
+            EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
         }
 
         private void DisposeItemAddedObservable()

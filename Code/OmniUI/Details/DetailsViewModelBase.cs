@@ -25,15 +25,10 @@
                 {
                     return;
                 }
-                if (_model != null && IsActive)
-                {
-                    UnhookModel(_model);
-                }
+                
+                TryUnhookModel(_model);
                 _model = value;
-                if (_model != null && IsActive)
-                {
-                    HookModel(_model);
-                }
+                TryHookModel(_model);
                 NotifyOfPropertyChange();
             }
         }
@@ -58,20 +53,14 @@
 
         protected override void OnActivate()
         {
-            if (_model != null)
-            {
-                HookModel(_model);
-            }
-            
+            TryHookModel(_model);
+
             base.OnActivate();
         }
 
         protected override void OnDeactivate(bool close)
         {
-            if (_model != null)
-            {
-                UnhookModel(_model);
-            }
+            TryUnhookModel(_model);
 
             base.OnDeactivate(close);
         }
@@ -82,6 +71,22 @@
 
         protected virtual void HookModel(TModel model)
         {
+        }
+
+        private void TryHookModel(TModel model)
+        {
+            if (model != null && IsActive)
+            {
+                HookModel(model);
+            }
+        }
+
+        private void TryUnhookModel(TModel model)
+        {
+            if (model != null)
+            {
+                UnhookModel(model);
+            }
         }
     }
 }

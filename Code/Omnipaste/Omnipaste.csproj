@@ -379,8 +379,6 @@
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
     <Compile Include="Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Presenters\ConversationItemPresenter.cs" />
-    <Compile Include="Presenters\ConversationPresenter.cs" />
     <Compile Include="Presenters\IContactInfoPresenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>

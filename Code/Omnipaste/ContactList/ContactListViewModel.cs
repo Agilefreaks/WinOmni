@@ -6,7 +6,6 @@ namespace Omnipaste.ContactList
     using System.Linq;
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
