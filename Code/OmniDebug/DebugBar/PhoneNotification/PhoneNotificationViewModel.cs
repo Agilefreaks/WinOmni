@@ -69,7 +69,7 @@
                     {
                         Id = id,
                         ContactName = NotificationContactName,
-                        Number = NotificationContactName,
+                        Number = NotificationPhoneNumber,
                         State = PhoneCallState.Starting,
                         Type = PhoneCallType.Incoming
                     });
