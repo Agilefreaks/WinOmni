@@ -1,4 +1,16 @@
-﻿**Version 1.3.4 (29.01.2015)**
+﻿**Version 1.3.5 (02.02.2015)**
+
+**Features:**
+
+- added Messages screen where conversations are grouped by contact
+- added ability to filter contacts by name/phone number
+- added ability to add contact to favorites
+- added ability to filter favorite contacts
+- displayed last message text / last call details on contact
+
+----------
+
+**Version 1.3.4 (29.01.2015)**
 
 **Bug fixes:**
 
