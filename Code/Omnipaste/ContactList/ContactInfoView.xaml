@@ -47,14 +47,18 @@
                     </framework:CheckboxHelper.UncheckedIcon>
                 </CheckBox>
 
-                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
-                                                   Foreground="{DynamicResource ActivityContentBrush}" TextWrapping="Wrap" />
+                <ContentControl Grid.Column="2" HorizontalAlignment="Stretch" Style="{DynamicResource FadingContentControlStyle}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
+                                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                   Foreground="{DynamicResource ActivityContentBrush}" />
 
-                    <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
-                    FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" FontStyle="Italic"/>
-                </StackPanel>
-
+                        <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
+                                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                   FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" FontStyle="Italic"/>
+                    </StackPanel>
+                </ContentControl>
+                
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
                     <Rectangle Width="13" Height="13" 
                            Visibility="{Binding Path=HasNotViewedCalls, Converter={StaticResource BooleanToVisibilityConverter}}"
