@@ -213,8 +213,16 @@
 
         private void UpdateView(IConversationItem item)
         {
-            LastActivityInfo = GetActivityInfo(item);
-            LastActivityTime = item.Time;
+            if (item == null)
+            {
+                LastActivityInfo = string.Empty;
+                LastActivityTime = null;
+            }
+            else
+            {
+                LastActivityInfo = GetActivityInfo(item);
+                LastActivityTime = item.Time;
+            }
         }
 
         private void SaveChanges()

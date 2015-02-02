@@ -338,5 +338,42 @@
 
             _subject.LastActivityInfo.Should().Be(message.Content);
         }
+
+        [Test]
+        public void MessageIsDeleted_AfterLoaded_SetsLastActivityInfoToEmptyString()
+        {
+            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test" };
+            var messageOperationObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<Message>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message))));
+            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
+            var messageObservable1 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
+            var messageObservable2 =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Message>>>(
+                        100,
+                        Notification.CreateOnNext(Enumerable.Empty<Message>())));
+            var results = new[] { messageObservable1, messageObservable2 };
+            var index = 0;
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(() => results[index++]);
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<Call>>>(
+                        100,
+                        Notification.CreateOnNext(Enumerable.Empty<Call>())));
+            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            _subject.OnLoaded();
+
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.LastActivityInfo.Should().Be(string.Empty);
+        }
     }
 }
