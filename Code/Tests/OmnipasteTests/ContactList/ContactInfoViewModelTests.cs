@@ -47,7 +47,7 @@
             SchedulerProvider.Default = _testScheduler;
             SchedulerProvider.Dispatcher = _testScheduler;
 
-            _contactInfo = new ContactInfo { FirstName = "test", LastName = "test", IsStarred = false };
+            _contactInfo = new ContactInfo { FirstName = "test", LastName = "test", IsStarred = false, Phone = "42" };
             _contactInfoPresenter = new ContactInfoPresenter(_contactInfo);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
@@ -120,13 +120,13 @@
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -144,13 +144,13 @@
         [Test]
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -168,13 +168,13 @@
         [Test]
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -192,13 +192,13 @@
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -216,13 +216,13 @@
         [Test]
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test" };
+            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Remote };
+            var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -240,13 +240,13 @@
         [Test]
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test" };
+            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Local };
+            var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Local, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -264,13 +264,13 @@
         [Test]
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -288,13 +288,13 @@
         [Test]
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test" };
+            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Message>>>(
                         100,
                         Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false };
+            var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<Call>>>(
@@ -312,7 +312,7 @@
         [Test]
         public void MessageIsSaved_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test" };
+            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Message>>>(
@@ -342,7 +342,7 @@
         [Test]
         public void MessageIsDeleted_AfterLoaded_SetsLastActivityInfoToEmptyString()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test" };
+            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<Message>>>(

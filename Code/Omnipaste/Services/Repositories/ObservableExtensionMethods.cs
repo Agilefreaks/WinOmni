@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Helpers;
     using Omnipaste.Models;
     
     public static class ObservableExtensionMethods
@@ -28,7 +29,7 @@
             this IObservable<RepositoryOperation<T>> operationObservable,
             ContactInfo contactInfo) where T : IConversationItem
         {
-            return operationObservable.Where(o => o.Item.ContactInfo.Phone == contactInfo.Phone);
+            return operationObservable.Where(o => PhoneNumberMatcher.IsMatch(o.Item.ContactInfo.Phone, contactInfo.Phone));
         }
 
         public static IObservable<RepositoryOperation<T>> OnMethod<T>(

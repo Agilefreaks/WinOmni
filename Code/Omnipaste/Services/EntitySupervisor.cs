@@ -91,7 +91,7 @@
         {
             var message = new Message(smsMessage);
             return
-                ContactRepository.Get(c => c.Phone == message.ContactInfo.Phone)
+                ContactRepository.GetByPhoneNumber(message.ContactInfo.Phone)
                     .Select(
                         contact =>
                             {
@@ -107,7 +107,7 @@
         {
             var call = new Call(phoneCall);
             return
-                ContactRepository.Get(c => c.Phone == call.ContactInfo.Phone)
+                ContactRepository.GetByPhoneNumber(call.ContactInfo.Phone)
                     .Select(
                         contact =>
                             {
