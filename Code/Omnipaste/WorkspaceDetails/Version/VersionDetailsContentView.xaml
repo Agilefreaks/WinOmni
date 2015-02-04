@@ -44,5 +44,6 @@
                                   HorizontalAlignment="Stretch"
                                   Margin="5"
                                   HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                  IsSelectionEnabled="False"
                                   Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
 </UserControl>
