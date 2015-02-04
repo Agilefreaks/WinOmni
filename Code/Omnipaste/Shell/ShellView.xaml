@@ -4,7 +4,10 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         WindowStartupLocation="CenterScreen"
-        Style="{DynamicResource ShellWindowStyle}">
+        Style="{DynamicResource ShellWindowStyle}"
+        WindowStyle="SingleBorderWindow">
+        <!--The WindowStyle property is set after the style tag as the resource as it did not work as expected:
+            the window's minimize/maximize animations were disabled as if the WindowStyle was set to none-->
     
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl ItemsSource="{Binding Path=Flyouts}">

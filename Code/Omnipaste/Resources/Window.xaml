@@ -7,7 +7,6 @@
         <Setter Property="Icon" Value="/Icon.ico"/>
         <Setter Property="ShowIconOnTitleBar" Value="False"/>
         <Setter Property="ResizeMode" Value="CanResize"/>
-        <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
         <Setter Property="MinHeight" Value="{StaticResource MinWindowHeight}"/>
         <Setter Property="MinWidth" Value="{StaticResource MinWindowWidth}"/>
         <Setter Property="WindowTitleBrush" Value="{DynamicResource WindowBorderBrush}"/>
