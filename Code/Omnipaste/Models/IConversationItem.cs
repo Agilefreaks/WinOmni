@@ -1,8 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
-
-    public interface IConversationItem
+    public interface IConversationItem : IModel
     {
         string Id { get; set; }
 
@@ -11,11 +9,5 @@
         SourceType Source { get; }
 
         string Content { get; }
-
-        DateTime Time { get; }
-
-        string UniqueId { get; }
-
-        bool WasViewed { get; set; }
     }
 }

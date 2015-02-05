@@ -1,16 +1,18 @@
 ﻿namespace Omnipaste.ContactList
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
@@ -22,7 +24,7 @@
     {
         private string _lastActivityInfo;
 
-        private readonly List<IDisposable> _subscriptions;
+        private readonly CompositeDisposable _subscriptions;
 
         private DateTime? _lastActivityTime;
 
@@ -32,20 +34,16 @@
 
         private IDetailsViewModel _detailsViewModel;
 
+        private IConversationItem _lastActivity;
+
         public ContactInfoViewModel()
         {
             ClickCommand = new Command(ShowDetails);
-            _subscriptions = new List<IDisposable>();
+            _subscriptions = new CompositeDisposable();
         }
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
-
-        [Inject]
-        public IMessageRepository MessageRepository { get; set; }
-
-        [Inject]
-        public ICallRepository CallRepository { get; set; }
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
@@ -53,7 +51,29 @@
         [Inject]
         public IUiRefreshService UiRefreshService { get; set; }
 
+        [Inject]
+        public IConversationProvider ConversationProvider { get; set; }
+
         public Command ClickCommand { get; set; }
+
+        public IConversationItem LastActivity
+        {
+            get
+            {
+                return _lastActivity;
+            }
+            set
+            {
+                if (Equals(value, _lastActivity))
+                {
+                    return;
+                }
+                _lastActivity = value;
+                NotifyOfPropertyChange();
+                LastActivityInfo = GetActivityInfo(_lastActivity);
+                LastActivityTime = _lastActivity == null ? (DateTime?)null : _lastActivity.Time;
+            }
+        }
 
         public string LastActivityInfo
         {
@@ -148,17 +168,14 @@
 
         public void OnLoaded()
         {
-            _subscriptions.Add(GetLastConversationItem().SubscribeAndHandleErrors(UpdateView));
-            _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Create).SubscribeAndHandleErrors(UpdateView));
-            _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Update).SubscribeAndHandleErrors(UpdateView));
-            _subscriptions.Add(GetConversationOperationObservable(RepositoryMethodEnum.Delete).SubscribeAndHandleErrors(UpdateView));
+            UpdateConversationStatus();
+            _subscriptions.Add(ConversationProvider.ForContact(Model.ContactInfo).Updated.SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
             _subscriptions.Add(UiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi()));
         }
 
         public void OnUnloaded()
         {
-            _subscriptions.ForEach(s => s.Dispose());
-            _subscriptions.Clear();
+            _subscriptions.Dispose();
         }
         
         protected override void HookModel(ContactInfoPresenter model)
@@ -179,31 +196,20 @@
             }
         }
 
-        private IObservable<IConversationItem> GetLastConversationItem()
+        private void UpdateConversationStatus()
         {
-            return
-                MessageRepository.GetByContact(Model.ContactInfo)
-                    .Select(messages => messages.Where(m => !m.IsDeleted).Cast<IConversationItem>())
-                    .Do(messages => HasNotViewedMessages = messages.Any(message => !message.WasViewed))
-                    .Merge(CallRepository.GetByContact(Model.ContactInfo).Select(calls => calls.Where(m => !m.IsDeleted)).Do(calls => HasNotViewedCalls = calls.Any(call => !call.WasViewed)))
-                    .Buffer(2)
-                    .Select(
-                        itemLists =>
-                        itemLists.SelectMany(i => i.ToList())
-                            .OrderByDescending(conversationItem => conversationItem.Time)
-                            .FirstOrDefault());
-        }
-
-        private IObservable<IConversationItem> GetConversationOperationObservable(RepositoryMethodEnum method)
-        {
-            var observable1 = MessageRepository.OperationObservable.OnMethod(method);
-            var observable2 = CallRepository.OperationObservable.OnMethod(method);
-            return
-                observable1.ForContact(Model.ContactInfo)
-                    .Select(o => o.Item)
-                    .Merge(observable2.ForContact(Model.ContactInfo).Select(o => o.Item).Cast<IConversationItem>())
-                    .Select(_ => GetLastConversationItem())
-                    .Switch();
+            _subscriptions.Add(ConversationProvider.ForContact(Model.ContactInfo)
+                    .GetItems()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(
+                        items =>
+                        {
+                            var conversationItems = items.Where(item => !item.IsDeleted).ToList();
+                            HasNotViewedCalls = conversationItems.OfType<Call>().Any(item => !item.WasViewed);
+                            HasNotViewedMessages = conversationItems.OfType<Message>().Any(item => !item.WasViewed);
+                            LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
+                        }));
         }
 
         private void RefreshUi()
@@ -211,26 +217,12 @@
             NotifyOfPropertyChange(() => LastActivityTime);
         }
 
-        private void UpdateView(IConversationItem item)
-        {
-            if (item == null)
-            {
-                LastActivityInfo = string.Empty;
-                LastActivityTime = null;
-            }
-            else
-            {
-                LastActivityInfo = GetActivityInfo(item);
-                LastActivityTime = item.Time;
-            }
-        }
-
         private void SaveChanges()
         {
             ContactRepository.Save(Model.ContactInfo).RunToCompletion();
         }
 
-        private string GetActivityInfo(IConversationItem item)
+        private static string GetActivityInfo(IConversationItem item)
         {
             var result = string.Empty;
 
@@ -241,8 +233,8 @@
             else if (item is Call)
             {
                 result = item.Source == SourceType.Local
-                             ? Properties.Resources.OutgoingCallLabel
-                             : Properties.Resources.IncommingCallLabel;
+                             ? Resources.OutgoingCallLabel
+                             : Resources.IncommingCallLabel;
             }
 
             return result;

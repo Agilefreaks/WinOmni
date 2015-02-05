@@ -30,15 +30,15 @@
 
         private Mock<IContactRepository> _mockContactRepository;
 
-        private Mock<IMessageRepository> _mockMessageRepository;
-
-        private Mock<ICallRepository> _mockCallRepository;
-
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
         private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private TestScheduler _testScheduler;
+
+        private Mock<IConversationProvider> _mockConversationProvider;
+
+        private Mock<IConversationContext> _mockConversation;
 
         [SetUp]
         public void SetUp()
@@ -50,19 +50,18 @@
             _contactInfo = new ContactInfo { FirstName = "test", LastName = "test", IsStarred = false, Phone = "42" };
             _contactInfoPresenter = new ContactInfoPresenter(_contactInfo);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
-            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
-
+            _mockConversationProvider = new Mock<IConversationProvider>();
+            _mockConversation = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
+            _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactInfo>())).Returns(_mockConversation.Object);
             _subject = new ContactInfoViewModel
                            {
                                Model = _contactInfoPresenter,
                                ContactRepository = _mockContactRepository.Object,
-                               MessageRepository = _mockMessageRepository.Object,
-                               CallRepository = _mockCallRepository.Object,
                                UiRefreshService = _mockUiRefreshService.Object,
-                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
+                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
+                               ConversationProvider = _mockConversationProvider.Object
                            };
         }
 
@@ -121,19 +120,8 @@
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -145,19 +133,8 @@
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -169,19 +146,8 @@
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -193,19 +159,8 @@
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -217,19 +172,8 @@
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
             var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -241,19 +185,8 @@
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
             var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Local, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -265,19 +198,8 @@
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -289,19 +211,8 @@
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
             var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Call> { call }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            SetupConversation(message, call);
 
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
@@ -310,28 +221,16 @@
         }
 
         [Test]
-        public void MessageIsSaved_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
+        public void MessageIsAddedToConversation_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
         {
             var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(
+                    new Recorded<Notification<IConversationItem>>(
                         200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<Message>(RepositoryMethodEnum.Create, message))));
-            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
-            var messageObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
-                        100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(messageObservable);
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(Enumerable.Empty<Call>())));
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+                        Notification.CreateOnNext(message as IConversationItem)));
+            _mockConversation.SetupGet(x => x.Updated).Returns(messageOperationObservable);
+            SetupConversation(message);
             _subject.OnLoaded();
 
             _testScheduler.AdvanceBy(1000);
@@ -340,40 +239,43 @@
         }
 
         [Test]
-        public void MessageIsDeleted_AfterLoaded_SetsLastActivityInfoToEmptyString()
+        public void MessageIsDeletedFromConversation_AfterLoaded_SetsLastActivityInfoToEmptyString()
         {
             var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
-            var messageOperationObservable =
+            var observable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(
+                    new Recorded<Notification<IConversationItem>>(
                         200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<Message>(RepositoryMethodEnum.Delete, message))));
-            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(messageOperationObservable);
-            var messageObservable1 =
+                        Notification.CreateOnNext(message as IConversationItem)));
+            _mockConversation.SetupGet(x => x.Updated).Returns(observable);
+            var observable1 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
+                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
                         100,
-                        Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            var messageObservable2 =
+                        Notification.CreateOnNext(new List<IConversationItem> { message }.AsEnumerable())));
+            var observable2 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(
+                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
                         100,
-                        Notification.CreateOnNext(Enumerable.Empty<Message>())));
-            var results = new[] { messageObservable1, messageObservable2 };
+                        Notification.CreateOnNext(Enumerable.Empty<IConversationItem>())));
+            var results = new[] { observable1, observable2 };
             var index = 0;
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(() => results[index++]);
-            var callObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Call>>>(
-                        100,
-                        Notification.CreateOnNext(Enumerable.Empty<Call>())));
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<Call, bool>>())).Returns(callObservable);
+            _mockConversation.Setup(x => x.GetItems()).Returns(() => results[index++]);
             _subject.OnLoaded();
 
             _testScheduler.AdvanceBy(1000);
 
             _subject.LastActivityInfo.Should().Be(string.Empty);
+        }
+
+        private void SetupConversation(params IConversationItem[] items)
+        {
+            var observable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
+                        100,
+                        Notification.CreateOnNext(items.AsEnumerable())));
+            _mockConversation.Setup(x => x.GetItems()).Returns(observable);
         }
     }
 }

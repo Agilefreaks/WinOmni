@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
@@ -32,16 +31,13 @@
         #region Public Properties
 
         [Inject]
-        public ICallRepository CallRepository { get; set; }
-
-        [Inject]
         public IKernel Kernel { get; set; }
 
         [Inject]
-        public IMessageRepository MessageRepository { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         [Inject]
-        public IEventAggregator EventAggregator { get; set; }
+        public IConversationProvider ConversationProvider { get; set; }
 
         #endregion
 
@@ -94,44 +90,23 @@
 
         protected override IObservable<IConversationItem> GetItemAddedObservable()
         {
-            return
-                MessageRepository.OperationObservable.Created()
-                    .ForContact(Model.ContactInfo)
-                    .Select(o => o.Item)
-                    .Merge(
-                        CallRepository.OperationObservable.Created()
-                            .ForContact(Model.ContactInfo)
-                            .Select(o => o.Item)
-                            .Cast<IConversationItem>());
+            return ConversationProvider.ForContact(Model.ContactInfo).ItemAdded;
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()
         {
-            return
-                MessageRepository.OperationObservable.Deleted()
-                    .ForContact(Model.ContactInfo)
-                    .Select(o => o.Item)
-                    .Merge(
-                        CallRepository.OperationObservable.Deleted()
-                            .ForContact(Model.ContactInfo)
-                            .Select(o => o.Item)
-                            .Cast<IConversationItem>());
+            return ConversationProvider.ForContact(Model.ContactInfo).ItemRemoved;
         }
 
         protected override void OnActivate()
         {
-            MessageRepository.GetByContact(Model.ContactInfo)
-                .Merge(CallRepository.GetByContact(Model.ContactInfo).Select(i => i.Cast<IConversationItem>()))
-                .Buffer(2)
-                .Subscribe(
-                    itemLists =>
-                    itemLists.SelectMany(i => i.ToList())
-                        .OrderBy(conversationItem => conversationItem.Time)
-                        .ForEach(DisplayItem));
+            ConversationProvider.ForContact(Model.ContactInfo)
+                .GetItems()
+                .SubscribeAndHandleErrors(
+                    items => items.OrderBy(conversationItem => conversationItem.Time).ForEach(DisplayItem));
             base.OnActivate();
         }
 
-       
         protected override void OnDeactivate(bool close)
         {
             DisposeItemAddedObservable();
@@ -160,19 +135,7 @@
         private void MarkConversationItemAsViewed(IConversationItem item)
         {
             item.WasViewed = true;
-            var call = item as Models.Call;
-            if (call != null)
-            {
-                Subscriptions.Add(CallRepository.Save(call).SubscribeAndHandleErrors());
-            }
-            else
-            {
-                var message = item as Models.Message;
-                if (message != null)
-                {
-                    Subscriptions.Add(MessageRepository.Save(message).SubscribeAndHandleErrors());
-                }
-            }
+            ConversationProvider.ForContact(Model.ContactInfo).Save(item);
         }
 
         private void DismissConversationItemNotification(IConversationItem item)

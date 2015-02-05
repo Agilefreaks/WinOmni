@@ -3,7 +3,7 @@
     using System;
     using OmniCommon.Helpers;
 
-    public class BaseModel
+    public class BaseModel : IModel
     {
         #region Constructors and Destructors
 

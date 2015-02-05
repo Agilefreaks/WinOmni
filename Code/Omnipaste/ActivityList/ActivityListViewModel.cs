@@ -197,7 +197,7 @@ namespace Omnipaste.ActivityList
             base.OnActivate();
             Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
         }
-        
+
         protected override IObservable<IEnumerable<ActivityPresenter>> GetFetchItemsObservable()
         {
             return

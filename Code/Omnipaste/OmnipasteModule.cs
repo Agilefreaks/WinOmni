@@ -82,7 +82,7 @@
                            typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
                            typeof(ActivityWorkspace), typeof(PeopleWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
-                           typeof(ContactInfoViewModelFactory)
+                           typeof(ContactInfoViewModelFactory), typeof(ConversationProvider)
                        };
         }
     }

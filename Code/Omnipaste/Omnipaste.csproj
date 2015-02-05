@@ -254,6 +254,10 @@
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
+    <Compile Include="Models\IModel.cs" />
+    <Compile Include="Services\Repositories\ConversationProvider.cs" />
+    <Compile Include="Services\Repositories\IConversationContext.cs" />
+    <Compile Include="Services\Repositories\IConversationProvider.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
