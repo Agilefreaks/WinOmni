@@ -1,32 +1,40 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using Caliburn.Micro;
-    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
-    using OmniUI.Details;
     using OmniUI.List;
 
-    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IDetailsViewModel>,
+    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IConversationItemViewModel>,
                                                 IConversationContentViewModel
     {
         #region Fields
-
-        private IDisposable _itemAddedObservable;
-
-        private IDisposable _itemRemovedObservable;
+        
+        private readonly IConversationProvider _conversationProvider;
 
         private ContactInfoPresenter _model;
 
+        private IConversationContext _conversationContext;
+
         #endregion
+
+        public ConversationContentViewModel(IConversationProvider conversationProvider)
+        {
+            _conversationProvider = conversationProvider;
+
+            FilteredItems.SortDescriptions.Add(new SortDescription(default(IConversationItemViewModel).GetPropertyName(vm => vm.Time), ListSortDirection.Ascending));
+        }
 
         #region Public Properties
 
@@ -35,9 +43,6 @@
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
-
-        [Inject]
-        public IConversationProvider ConversationProvider { get; set; }
 
         #endregion
 
@@ -72,9 +77,16 @@
 
         #region Methods
 
-        protected override IDetailsViewModel CreateViewModel(IConversationItem model)
+        protected override void OnActivate()
         {
-            IDetailsViewModel result;
+            _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
+
+            base.OnActivate();
+        }
+
+        protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
+        {
+            IConversationItemViewModel result;
             if (model is Models.Call)
             {
                 result = Kernel.Get<ICallViewModel>();
@@ -90,40 +102,27 @@
 
         protected override IObservable<IConversationItem> GetItemAddedObservable()
         {
-            return ConversationProvider.ForContact(Model.ContactInfo).ItemAdded;
+            return _conversationContext.ItemAdded;
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()
         {
-            return ConversationProvider.ForContact(Model.ContactInfo).ItemRemoved;
+            return _conversationContext.ItemRemoved;
         }
 
-        protected override void OnActivate()
+        protected override IObservable<IEnumerable<IConversationItem>> GetFetchItemsObservable()
         {
-            ConversationProvider.ForContact(Model.ContactInfo)
-                .GetItems()
-                .SubscribeAndHandleErrors(
-                    items => items.OrderBy(conversationItem => conversationItem.Time).ForEach(DisplayItem));
-            base.OnActivate();
+            return _conversationContext.GetItems();
         }
 
-        protected override void OnDeactivate(bool close)
-        {
-            DisposeItemAddedObservable();
-            DisposeItemRemovedObservable();
-            Items.ToList().Select(vm => vm.Model as IConversationItem).Where(model => model != null).ForEach(RemoveItem);
-
-            base.OnDeactivate(true);
-        }
-
-        private void DisplayItem(IConversationItem item)
+        public override void AddItem(IConversationItem item)
         {
             if (item == null)
             {
                 return;
             }
 
-            AddItem(item);
+            base.AddItem(item);
 
             if (!item.WasViewed)
             {
@@ -135,30 +134,12 @@
         private void MarkConversationItemAsViewed(IConversationItem item)
         {
             item.WasViewed = true;
-            ConversationProvider.ForContact(Model.ContactInfo).Save(item);
+            _conversationContext.SaveItem(item).SubscribeAndHandleErrors();
         }
 
         private void DismissConversationItemNotification(IConversationItem item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
-        }
-
-        private void DisposeItemAddedObservable()
-        {
-            if (_itemAddedObservable != null)
-            {
-                _itemAddedObservable.Dispose();
-                _itemAddedObservable = null;
-            }
-        }
-
-        private void DisposeItemRemovedObservable()
-        {
-            if (_itemRemovedObservable != null)
-            {
-                _itemRemovedObservable.Dispose();
-                _itemRemovedObservable = null;
-            }
         }
 
         #endregion

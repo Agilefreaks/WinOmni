@@ -190,6 +190,7 @@
     <Compile Include="Services\ConfigurationServiceTests.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitorTests.cs" />
     <Compile Include="Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitorTests.cs" />
+    <Compile Include="Services\Providers\MergedConversationContextTests.cs" />
     <Compile Include="Services\ProxyConfigurationTests.cs" />
     <Compile Include="Services\Repositories\CallRepositoryTests.cs" />
     <Compile Include="Services\Repositories\ContactRepositoryTests.cs" />

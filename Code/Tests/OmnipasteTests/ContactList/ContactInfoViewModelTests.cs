@@ -14,6 +14,7 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
+    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;

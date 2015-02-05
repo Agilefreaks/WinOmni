@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation.Message
 {
+    using System;
     using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
@@ -15,5 +16,13 @@
         }
 
         #endregion
+
+        public DateTime Time
+        {
+            get
+            {
+                return Model.Time;
+            }
+        }
     }
 }

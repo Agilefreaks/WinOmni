@@ -17,6 +17,6 @@ namespace Omnipaste.Services.Repositories
 
         IObservable<IEnumerable<IConversationItem>> GetItems();
 
-        IObservable<Unit> Save(IConversationItem item);
+        IObservable<Unit> SaveItem(IConversationItem item);
     }
 }
