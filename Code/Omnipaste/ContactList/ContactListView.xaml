@@ -43,7 +43,7 @@
             <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}" BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ContentControl cal:View.Model="{Binding}" Style="{DynamicResource AnimatedContentControlStyle}" />
+                        <ContentControl cal:View.Model="{Binding}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>
