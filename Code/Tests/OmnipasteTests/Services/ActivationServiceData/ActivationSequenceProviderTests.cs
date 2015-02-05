@@ -20,19 +20,35 @@
         }
 
         [Test]
-        public void GetLocalActivationCode_Success_ShouldBeGetDeviceId()
+        public void VerifyAuthSettings_Success_ShouldBeVerifySettings()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Successful)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyAuthSettings>(SimpleStepStateEnum.Successful)
+                .Should()
+                .Be<VerifySettings>();
+        }
+
+        [Test]
+        public void VerifyAuthSettings_Failure_ShouldBeGetActivationCodeFromArguments()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifyAuthSettings>(SimpleStepStateEnum.Failed)
+                .Should()
+                .Be<GetActivationCodeFromArguments>();
+        }
+
+        [Test]
+        public void VerifySettings_Success_ShouldBeGetDeviceId()
+        {
+            _sequence.Transitions.GetTargetTypeForTransition<VerifySettings>(SimpleStepStateEnum.Successful)
                 .Should()
                 .Be<GetDeviceId>();
         }
 
         [Test]
-        public void GetLocalActivationCode_Failure_ShouldBeGetActivationCodeFromArguments()
+        public void VerifySettings_Fail_ShouldBeResetApplicationState()
         {
-            _sequence.Transitions.GetTargetTypeForTransition<GetLocalActivationCode>(SimpleStepStateEnum.Failed)
+            _sequence.Transitions.GetTargetTypeForTransition<VerifySettings>(SimpleStepStateEnum.Failed)
                 .Should()
-                .Be<GetActivationCodeFromArguments>();
+                .Be<ResetApplicationState>();
         }
 
         [Test]
@@ -326,7 +342,7 @@
         {
             _sequence.Transitions.GetTargetTypeForTransition<VerifyConnectivity>(SimpleStepStateEnum.Successful)
                 .Should()
-                .Be<GetLocalActivationCode>();
+                .Be<VerifyAuthSettings>();
         }
 
         [Test]

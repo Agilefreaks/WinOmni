@@ -26,5 +26,10 @@
         {
             return exception != null && exception.StatusCode == statusCode;
         }
+
+        public static bool IsHttpError(this Exception exception, HttpStatusCode statusCode)
+        {
+            return GetApiException(exception).HasStatusCode(statusCode);
+        }
     }
 }

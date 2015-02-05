@@ -252,6 +252,8 @@
     <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
@@ -671,7 +673,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUser.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetLocalActivationCode.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyAuthSettings.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />

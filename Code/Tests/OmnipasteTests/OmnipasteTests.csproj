@@ -91,6 +91,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Refit">
+      <HintPath>..\..\..\Libs\Refit\Refit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -162,8 +165,10 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceIdTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDeviceTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationStateTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivityTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettingsTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClippingTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDeviceTests.cs" />
     <Compile Include="Services\Commands\CommandServiceTests.cs" />
@@ -174,7 +179,7 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUserTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationTests.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetLocalActivationCodeTests.cs" />
+    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyAuthSettingsTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfigurationTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniServiceTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevicesTests.cs" />

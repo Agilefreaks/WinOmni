@@ -12,6 +12,9 @@
         [Post("/user/devices")]
         IObservable<Device> Create([Body] Device device, [Header("Authorization")] string token);
 
+        [Get("/user/devices/{id}")]
+        IObservable<Device> Get([AliasAs("id")] string id, [Header("Authorization")] string token);
+
         [Get("/user/devices")]
         IObservable<List<Device>> GetAll([Header("Authorization")] string token);
 
