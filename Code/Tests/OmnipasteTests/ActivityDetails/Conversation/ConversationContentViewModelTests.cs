@@ -58,11 +58,10 @@
             _mockConversationProvider.Setup(x => x.ForContact(It.IsAny<ContactInfo>()))
                 .Returns(_mockConversation.Object);
             _mockEventAggregator = new Mock<IEventAggregator> { DefaultValue = DefaultValue.Mock };
-            _subject = new ConversationContentViewModel
+            _subject = new ConversationContentViewModel(_mockConversationProvider.Object)
                            {
                                Kernel = mockingKernel,
-                               EventAggregator = _mockEventAggregator.Object,
-                               ConversationProvider = _mockConversationProvider.Object
+                               EventAggregator = _mockEventAggregator.Object
                            };
         }
 
@@ -126,7 +125,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _mockConversationProvider.Verify(m => m.SaveItem(call));
+            _mockConversation.Verify(m => m.SaveItem(call));
         }
 
         [Test]
@@ -158,7 +157,7 @@
             _testScheduler.Start();
 
             callFromContact.WasViewed.Should().BeTrue();
-            _mockConversationProvider.Verify(m => m.SaveItem(callFromContact));
+            _mockConversation.Verify(m => m.SaveItem(callFromContact));
         }
 
         [Test]
@@ -189,7 +188,7 @@
             _testScheduler.Start();
 
             messageFromContact.WasViewed.Should().BeTrue();
-            _mockConversationProvider.Verify(m => m.SaveItem(messageFromContact));
+            _mockConversation.Verify(m => m.SaveItem(messageFromContact));
         }
 
         [Test]

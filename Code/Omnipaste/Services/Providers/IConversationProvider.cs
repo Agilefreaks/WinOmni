@@ -1,7 +1,5 @@
 namespace Omnipaste.Services.Providers
 {
-    using System;
-    using System.Reactive;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
@@ -10,7 +8,5 @@ namespace Omnipaste.Services.Providers
         IConversationContext ForContact(ContactInfo contactInfo);
 
         IConversationContext All();
-
-        IObservable<Unit> SaveItem(IConversationItem item);
     }
 }

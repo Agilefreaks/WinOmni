@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive;
     using System.Reactive.Linq;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
@@ -59,6 +60,26 @@
         }
 
         public abstract IObservable<IEnumerable<IConversationItem>> GetItems();
+
+        public virtual IObservable<Unit> SaveItem(IConversationItem item)
+        {
+            var call = item as Call;
+            var result = Observable.Return(new Unit());
+            if (call != null)
+            {
+                result = CallRepository.Save(call).Select(_ => new Unit());
+            }
+            else
+            {
+                var message = item as Message;
+                if (message != null)
+                {
+                    result = MessageRepository.Save(message).Select(_ => new Unit());
+                }
+            }
+
+            return result;
+        }
 
         protected abstract IObservable<IConversationItem> GetObservableForContactAndOperation(
             RepositoryMethodEnum method);

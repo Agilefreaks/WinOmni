@@ -11,6 +11,7 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
+    using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
     using OmniUI.List;
@@ -19,13 +20,19 @@
                                                 IConversationContentViewModel
     {
         #region Fields
+        
+        private readonly IConversationProvider _conversationProvider;
 
         private ContactInfoPresenter _model;
 
+        private IConversationContext _conversationContext;
+
         #endregion
 
-        public ConversationContentViewModel()
+        public ConversationContentViewModel(IConversationProvider conversationProvider)
         {
+            _conversationProvider = conversationProvider;
+
             FilteredItems.SortDescriptions.Add(new SortDescription(default(IConversationItemViewModel).GetPropertyName(vm => vm.Time), ListSortDirection.Ascending));
         }
 
@@ -36,9 +43,6 @@
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
-
-        [Inject]
-        public IConversationProvider ConversationProvider { get; set; }
 
         #endregion
 
@@ -73,6 +77,13 @@
 
         #region Methods
 
+        protected override void OnActivate()
+        {
+            _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
+
+            base.OnActivate();
+        }
+
         protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
         {
             IConversationItemViewModel result;
@@ -91,17 +102,17 @@
 
         protected override IObservable<IConversationItem> GetItemAddedObservable()
         {
-            return ConversationProvider.ForContact(Model.ContactInfo).ItemAdded;
+            return _conversationContext.ItemAdded;
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()
         {
-            return ConversationProvider.ForContact(Model.ContactInfo).ItemRemoved;
+            return _conversationContext.ItemRemoved;
         }
 
         protected override IObservable<IEnumerable<IConversationItem>> GetFetchItemsObservable()
         {
-            return ConversationProvider.ForContact(Model.ContactInfo).GetItems();
+            return _conversationContext.GetItems();
         }
 
         public override void AddItem(IConversationItem item)
@@ -123,7 +134,7 @@
         private void MarkConversationItemAsViewed(IConversationItem item)
         {
             item.WasViewed = true;
-            ConversationProvider.SaveItem(item).SubscribeAndHandleErrors();
+            _conversationContext.SaveItem(item).SubscribeAndHandleErrors();
         }
 
         private void DismissConversationItemNotification(IConversationItem item)
