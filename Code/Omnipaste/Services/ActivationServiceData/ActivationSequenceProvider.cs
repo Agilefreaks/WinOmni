@@ -22,10 +22,11 @@
 
             var transitions =
                 TransitionCollection.Builder()
-                    .RegisterTransition<VerifyConnectivity, GetLocalActivationCode, FixProxyConfiguration>()
+                    .RegisterTransition<VerifyConnectivity, VerifyAuthSettings, FixProxyConfiguration>()
+                    .RegisterTransition<VerifyAuthSettings, VerifySettings, GetActivationCodeFromArguments>()
+                    .RegisterTransition<VerifySettings, GetDeviceId, ResetApplicationState>()
                     .RegisterTransition<FixProxyConfiguration, VerifyConnectivity, ShowConnectionTroubleshooter>()
                     .RegisterTransition<ShowConnectionTroubleshooter, VerifyConnectivity, VerifyConnectivity>()
-                    .RegisterTransition<GetLocalActivationCode, GetDeviceId, GetActivationCodeFromArguments>()
                     .RegisterTransition<GetActivationCodeFromArguments, GetRemoteConfiguration, GetActivationCodeFromUser>()
                     .RegisterTransition<GetActivationCodeFromUser, GetRemoteConfiguration, GetActivationCodeFromUser>()
                     .RegisterTransition<GetRemoteConfiguration, SaveConfiguration, GetActivationCodeFromUser>()
@@ -48,6 +49,7 @@
                     .RegisterTransition<WaitForCloudClipping, Finished, Failed>()
                     .RegisterTransition<ShowCreateClipping, WaitForLocalClipping, Failed>()
                     .RegisterTransition<WaitForLocalClipping, Finished, Failed>()
+                    .RegisterTransition<ResetApplicationState, VerifyConnectivity, Failed>()
                     .Build();
 
             _activationSequence = new ActivationSequence

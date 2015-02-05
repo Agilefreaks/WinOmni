@@ -47,6 +47,11 @@
             return ResourceApi.GetAll(AccessToken);
         }
 
+        public IObservable<Device> Get(string deviceId)
+        {
+            return ResourceApi.Get(deviceId, AccessToken);
+        }
+
         public IObservable<EmptyModel> Remove(string deviceId)
         {
             return ResourceApi.Remove(deviceId, AccessToken);

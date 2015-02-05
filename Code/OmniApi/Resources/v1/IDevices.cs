@@ -20,6 +20,8 @@
 
         IObservable<List<Device>> GetAll();
 
+        IObservable<Device> Get(string deviceId);
+
         #endregion
     }
 }
