@@ -13,4 +13,5 @@
     <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
     <converters:NonWhiteSpaceStringConverter x:Key="NonWhiteSpaceStringConverter"/>
     <converters2:ViewedSizeConverter x:Key="ViewedSizeConverter"/>
+    <converters1:StringToUriConverter x:Key="StringToUriConverter"/>
 </ResourceDictionary>

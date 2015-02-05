@@ -430,4 +430,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="People" xml:space="preserve">
     <value>People</value>
   </data>
+  <data name="DiscussRelease" xml:space="preserve">
+    <value>Discuss this release on</value>
+  </data>
 </root>
