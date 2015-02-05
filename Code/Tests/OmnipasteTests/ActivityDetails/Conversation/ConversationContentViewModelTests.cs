@@ -21,7 +21,6 @@
     using Omnipaste.WorkspaceDetails.Conversation;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
-    using OmniUI.Details;
 
     [TestFixture]
     public class ConversationContentViewModelTests
@@ -147,6 +146,22 @@
         }
 
         [Test]
+        public void ACallAppearsInTheConversation_Always_MarksCallAsViewed()
+        {
+            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var callObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemAdded).Returns(callObservable);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            callFromContact.WasViewed.Should().BeTrue();
+            _mockConversationProvider.Verify(m => m.SaveItem(callFromContact));
+        }
+
+        [Test]
         public void OnActivate_Always_AddsAMessageViewModelForEachMessageInTheConversation()
         {
             var contactInfo = new ContactInfo();
@@ -159,6 +174,22 @@
             _testScheduler.Start();
 
             _subject.Items.Count().Should().Be(2);
+        }
+
+        [Test]
+        public void AMessageAppearsInTheConversation_Always_MarksMessageAsViewed()
+        {
+            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var observable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.Start();
+
+            messageFromContact.WasViewed.Should().BeTrue();
+            _mockConversationProvider.Verify(m => m.SaveItem(messageFromContact));
         }
 
         [Test]

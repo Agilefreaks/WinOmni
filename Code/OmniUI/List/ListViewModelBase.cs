@@ -90,7 +90,7 @@ namespace OmniUI.List
             base.ActivateItem(item);
         }
 
-        public void AddItem(TModel model)
+        public virtual void AddItem(TModel model)
         {
             var viewModel = CreateViewModel(model);
             ActivateItem(viewModel);

@@ -1,13 +1,11 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
@@ -101,26 +99,19 @@
             return ConversationProvider.ForContact(Model.ContactInfo).ItemRemoved;
         }
 
-        protected override void OnActivate()
+        protected override IObservable<IEnumerable<IConversationItem>> GetFetchItemsObservable()
         {
-            Subscriptions.Add(
-                ConversationProvider.ForContact(Model.ContactInfo)
-                    .GetItems()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(items => items.ForEach(DisplayItem)));
-
-            base.OnActivate();
+            return ConversationProvider.ForContact(Model.ContactInfo).GetItems();
         }
 
-        private void DisplayItem(IConversationItem item)
+        public override void AddItem(IConversationItem item)
         {
             if (item == null)
             {
                 return;
             }
 
-            AddItem(item);
+            base.AddItem(item);
 
             if (!item.WasViewed)
             {
