@@ -4,6 +4,8 @@
     {
         public string Id { get; set; }
 
+        public string DeviceId { get; set; }
+
         public string Content { get; set; }
 
         public string PhoneNumber { get; set; }

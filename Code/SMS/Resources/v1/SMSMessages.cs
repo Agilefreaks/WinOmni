@@ -32,6 +32,7 @@
                               {
                                   Content = message,
                                   PhoneNumber = phoneNumber,
+                                  DeviceId = ConfigurationService.DeviceId,
                                   Type = SmsMessageType.Outgoing,
                                   State = SmsMessageState.Sending
                               };

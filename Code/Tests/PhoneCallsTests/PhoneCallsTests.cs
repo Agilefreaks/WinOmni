@@ -53,10 +53,12 @@
         public void EndCall_Always_PatchesTheGivenCallWithTheStateEnding()
         {
             const string CallId = "someCallId";
+            const string DeviceId = "42";
+            _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
 
             _subject.EndCall(CallId);
 
-            var expectedPayload = new { State = PhoneCallState.Ending };
+            var expectedPayload = new { DeviceId = DeviceId, State = PhoneCallState.Ending };
             _mockPhoneCallsAPI.Verify(
                 x =>
                 x.Patch(
