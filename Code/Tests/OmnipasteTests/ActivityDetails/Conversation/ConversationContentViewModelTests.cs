@@ -54,7 +54,7 @@
             mockingKernel.Bind<IMessageViewModel>()
                 .ToMethod(
                     context => new MessageViewModel(_mockUiRefreshService.Object, _mockConfigurationService.Object));
-            _mockConversationProvider = new Mock<IConversationProvider>();
+            _mockConversationProvider = new Mock<IConversationProvider> { DefaultValue = DefaultValue.Mock };
             _mockConversation = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
             _mockConversationProvider.Setup(x => x.ForContact(It.IsAny<ContactInfo>()))
                 .Returns(_mockConversation.Object);
@@ -127,7 +127,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _mockConversation.Verify(m => m.Save(call));
+            _mockConversationProvider.Verify(m => m.SaveItem(call));
         }
 
         [Test]

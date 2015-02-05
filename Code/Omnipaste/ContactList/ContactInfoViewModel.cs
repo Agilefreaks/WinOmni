@@ -199,18 +199,19 @@
 
         private void UpdateConversationStatus()
         {
-            _subscriptions.Add(ConversationProvider.ForContact(Model.ContactInfo)
+            _subscriptions.Add(
+                ConversationProvider.ForContact(Model.ContactInfo)
                     .GetItems()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(
                         items =>
-                        {
-                            var conversationItems = items.Where(item => !item.IsDeleted).ToList();
-                            HasNotViewedCalls = conversationItems.OfType<Call>().Any(item => !item.WasViewed);
-                            HasNotViewedMessages = conversationItems.OfType<Message>().Any(item => !item.WasViewed);
-                            LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
-                        }));
+                            {
+                                var conversationItems = items.Where(item => !item.IsDeleted).ToList();
+                                HasNotViewedCalls = conversationItems.OfType<Call>().Any(item => !item.WasViewed);
+                                HasNotViewedMessages = conversationItems.OfType<Message>().Any(item => !item.WasViewed);
+                                LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
+                            }));
         }
 
         private void RefreshUi()

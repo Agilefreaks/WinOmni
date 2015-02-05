@@ -2,11 +2,12 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Linq;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
@@ -20,10 +21,6 @@
                                                 IConversationContentViewModel
     {
         #region Fields
-
-        private IDisposable _itemAddedObservable;
-
-        private IDisposable _itemRemovedObservable;
 
         private ContactInfoPresenter _model;
 
@@ -106,20 +103,14 @@
 
         protected override void OnActivate()
         {
-            ConversationProvider.ForContact(Model.ContactInfo)
-                .GetItems()
-                .SubscribeAndHandleErrors(
-                    items => items.ForEach(DisplayItem));
+            Subscriptions.Add(
+                ConversationProvider.ForContact(Model.ContactInfo)
+                    .GetItems()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(items => items.ForEach(DisplayItem)));
+
             base.OnActivate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            DisposeItemAddedObservable();
-            DisposeItemRemovedObservable();
-            Items.ToList().Select(vm => vm.Model as IConversationItem).Where(model => model != null).ForEach(RemoveItem);
-
-            base.OnDeactivate(true);
         }
 
         private void DisplayItem(IConversationItem item)
@@ -141,30 +132,12 @@
         private void MarkConversationItemAsViewed(IConversationItem item)
         {
             item.WasViewed = true;
-            ConversationProvider.ForContact(Model.ContactInfo).Save(item);
+            ConversationProvider.SaveItem(item).SubscribeAndHandleErrors();
         }
 
         private void DismissConversationItemNotification(IConversationItem item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
-        }
-
-        private void DisposeItemAddedObservable()
-        {
-            if (_itemAddedObservable != null)
-            {
-                _itemAddedObservable.Dispose();
-                _itemAddedObservable = null;
-            }
-        }
-
-        private void DisposeItemRemovedObservable()
-        {
-            if (_itemRemovedObservable != null)
-            {
-                _itemRemovedObservable.Dispose();
-                _itemRemovedObservable = null;
-            }
         }
 
         #endregion

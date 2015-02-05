@@ -116,6 +116,12 @@ namespace OmniUI.List
             DeactivateItem(viewModel, true);
         }
 
+        public void RefreshItem(TModel entity)
+        {
+            RemoveItem(entity);
+            AddItem(entity);
+        }
+
         #endregion
 
         #region Methods

@@ -2,11 +2,17 @@ namespace Omnipaste.ContactList
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
+    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Helpers;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
@@ -14,16 +20,21 @@ namespace Omnipaste.ContactList
     {
         private readonly IContactRepository _contactRepository;
 
+        private readonly IConversationProvider _conversationProvider;
+
         private readonly IContactInfoViewModelFactory _contactInfoViewModelFactory;
 
         private bool _showStarred;
 
         private string _filterText;
 
-        public ContactListViewModel(IContactRepository contactRepository, IContactInfoViewModelFactory contactInfoViewModelFactory)
+        public ContactListViewModel(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
         {
             _contactRepository = contactRepository;
+            _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
+
+            FilteredItems.SortDescriptions.Add(new SortDescription(default(IContactInfoViewModel).GetPropertyName(vm => vm.LastActivityTime), ListSortDirection.Ascending));
         }
 
         public bool ShowStarred
@@ -67,24 +78,28 @@ namespace Omnipaste.ContactList
             var contactInfoPresenter = viewModel.Model;
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
+
         protected override void OnActivate()
         {
             base.OnActivate();
-            Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
-        }
+            Subscriptions.Add(
+                GetItemUpdatedObservable()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(UpdateViewModel));
 
-        private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
-        {
-            return _contactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
-        }
-
-        private void UpdateViewModel(ContactInfoPresenter obj)
-        {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.Identifier == obj.Identifier);
-            if (viewModel != null)
-            {
-                viewModel.Model = obj;
-            }
+            Subscriptions.Add(_conversationProvider.All().ItemAdded
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(
+                        conversationItem =>
+                            {
+                                var contactPresenter = GetContactFor(conversationItem);
+                                if (contactPresenter != null)
+                                {
+                                    RefreshItem(contactPresenter);
+                                }
+                            }));
         }
 
         protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
@@ -103,6 +118,28 @@ namespace Omnipaste.ContactList
         protected override IContactInfoViewModel CreateViewModel(ContactInfoPresenter model)
         {
             return _contactInfoViewModelFactory.Create(model);
+        }
+        
+        private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
+        {
+            return _contactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
+        }
+
+        private ContactInfoPresenter GetContactFor(IConversationItem conversationItem)
+        {
+            return
+                Items.Select(vm => vm.Model)
+                    .FirstOrDefault(
+                        model => PhoneNumberMatcher.IsMatch(model.ContactInfo.Phone, conversationItem.ContactInfo.Phone));
+        }
+
+        private void UpdateViewModel(ContactInfoPresenter obj)
+        {
+            var viewModel = Items.FirstOrDefault(vm => vm.Model.Identifier == obj.Identifier);
+            if (viewModel != null)
+            {
+                viewModel.Model = obj;
+            }
         }
 
         private bool MatchesFilterText(IContactInfoPresenter model)

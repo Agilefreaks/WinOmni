@@ -255,7 +255,10 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Models\IModel.cs" />
+    <Compile Include="Services\Providers\ContactConversationContext.cs" />
+    <Compile Include="Services\Providers\ConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationProvider.cs" />
+    <Compile Include="Services\Providers\MergedConversationContext.cs" />
     <Compile Include="Services\Repositories\IConversationContext.cs" />
     <Compile Include="Services\Providers\IConversationProvider.cs" />
     <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />

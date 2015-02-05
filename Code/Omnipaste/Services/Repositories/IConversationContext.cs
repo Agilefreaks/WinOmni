@@ -2,7 +2,6 @@ namespace Omnipaste.Services.Repositories
 {
     using System;
     using System.Collections.Generic;
-    using System.Reactive;
     using Omnipaste.Models;
 
     public interface IConversationContext
@@ -16,7 +15,5 @@ namespace Omnipaste.Services.Repositories
         IObservable<IConversationItem> Updated { get; }
 
         IObservable<IEnumerable<IConversationItem>> GetItems();
-
-        IObservable<Unit> Save(IConversationItem item);
     }
 }
