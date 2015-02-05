@@ -19,7 +19,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ItemsControl ItemsSource="{Binding Path=Items}" AlternationCount="2">
+            <ItemsControl ItemsSource="{Binding Path=FilteredItems}" AlternationCount="2">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ContentControl Style="{DynamicResource AnimatedContentControlStyle}" VerticalContentAlignment="Bottom">

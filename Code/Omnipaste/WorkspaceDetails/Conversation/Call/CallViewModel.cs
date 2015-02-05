@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation.Call
 {
+    using System;
     using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
@@ -23,6 +24,14 @@
                 return Model.Source == SourceType.Remote
                            ? Properties.Resources.IncommingCallLabel
                            : Properties.Resources.OutgoingCallLabel;
+            }
+        }
+
+        public DateTime Time
+        {
+            get
+            {
+                return Model.Time;
             }
         }
     }

@@ -1,22 +1,22 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System;
+    using System.ComponentModel;
     using System.Linq;
     using Caliburn.Micro;
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
-    using OmniUI.Details;
     using OmniUI.List;
 
-    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IDetailsViewModel>,
+    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IConversationItemViewModel>,
                                                 IConversationContentViewModel
     {
         #region Fields
@@ -28,6 +28,11 @@
         private ContactInfoPresenter _model;
 
         #endregion
+
+        public ConversationContentViewModel()
+        {
+            FilteredItems.SortDescriptions.Add(new SortDescription(default(IConversationItemViewModel).GetPropertyName(vm => vm.Time), ListSortDirection.Ascending));
+        }
 
         #region Public Properties
 
@@ -73,9 +78,9 @@
 
         #region Methods
 
-        protected override IDetailsViewModel CreateViewModel(IConversationItem model)
+        protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
         {
-            IDetailsViewModel result;
+            IConversationItemViewModel result;
             if (model is Models.Call)
             {
                 result = Kernel.Get<ICallViewModel>();
@@ -104,7 +109,7 @@
             ConversationProvider.ForContact(Model.ContactInfo)
                 .GetItems()
                 .SubscribeAndHandleErrors(
-                    items => items.OrderBy(conversationItem => conversationItem.Time).ForEach(DisplayItem));
+                    items => items.ForEach(DisplayItem));
             base.OnActivate();
         }
 

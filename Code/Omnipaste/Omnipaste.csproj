@@ -258,6 +258,7 @@
     <Compile Include="Services\Providers\ConversationProvider.cs" />
     <Compile Include="Services\Repositories\IConversationContext.cs" />
     <Compile Include="Services\Providers\IConversationProvider.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
