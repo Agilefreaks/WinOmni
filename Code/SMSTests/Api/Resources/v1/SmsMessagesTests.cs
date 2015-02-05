@@ -34,6 +34,8 @@
         {
             const string PhoneNumber = "1234";
             const string Message = "test";
+            const string DeviceId = "42";
+            _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
 
             _subject.Send(PhoneNumber, Message);
 
@@ -42,7 +44,7 @@
                 m.Create(
                     It.Is<SmsMessage>(
                         message =>
-                        message.PhoneNumber == PhoneNumber && message.Content == Message
+                        message.PhoneNumber == PhoneNumber && message.Content == Message && message.DeviceId == DeviceId
                         && message.Type == SmsMessageType.Outgoing && message.State == SmsMessageState.Sending),
                     It.IsAny<string>()));
         }
