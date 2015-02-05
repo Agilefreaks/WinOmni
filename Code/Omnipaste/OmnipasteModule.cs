@@ -24,6 +24,7 @@
     using Omnipaste.Services.Monitors.Power;
     using Omnipaste.Services.Monitors.ProxyConfiguration;
     using Omnipaste.Services.Monitors.User;
+    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.Shell;
     using Omnipaste.Shell.SessionInfo;

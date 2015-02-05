@@ -14,6 +14,7 @@
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation;
     using Omnipaste.WorkspaceDetails.Conversation.Call;

@@ -1,12 +1,12 @@
-﻿namespace Omnipaste.Services.Repositories
+﻿namespace Omnipaste.Services.Providers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
-    using OmniCommon.ExtensionMethods;
     using Omnipaste.Models;
+    using Omnipaste.Services.Repositories;
 
     public class ConversationProvider : IConversationProvider
     {
