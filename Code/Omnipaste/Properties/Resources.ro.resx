@@ -430,4 +430,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="People" xml:space="preserve">
     <value>Persoane</value>
   </data>
+  <data name="DiscussRelease" xml:space="preserve">
+    <value>Discută despre noua versiune pe</value>
+  </data>
 </root>

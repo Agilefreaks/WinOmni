@@ -488,6 +488,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discuss this release on.
+        /// </summary>
+        public static string DiscussRelease {
+            get {
+                return ResourceManager.GetString("DiscussRelease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dismis.
         /// </summary>
         public static string Dismiss {

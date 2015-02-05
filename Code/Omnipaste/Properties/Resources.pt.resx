@@ -430,4 +430,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="People" xml:space="preserve">
     <value>Pessoas</value>
   </data>
+  <data name="DiscussRelease" xml:space="preserve">
+    <value>Discutir esta versão em</value>
+  </data>
 </root>

@@ -4,6 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:omnipaste="clr-namespace:Omnipaste"
+             xmlns:system="clr-namespace:System;assembly=System"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -40,10 +45,42 @@
 
     </UserControl.Resources>
 
-    <FlowDocumentScrollViewer VerticalAlignment="Stretch" Padding="20,0,0,0"
+    <StackPanel>
+        <RichTextBox Style="{DynamicResource ActivityContentRichTextBoxStyle}" Margin="20,0"
+                 Visibility="{Binding Path=WasInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="{x:Static properties:Resources.DiscussRelease}" />
+
+                    <Bold>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.FacebookUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Facebook
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.TwitterUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Twitter
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.UserVoiceUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Uservoice
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                    </Bold>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <FlowDocumentScrollViewer VerticalAlignment="Stretch" Padding="20,10,0,0"
                                   HorizontalAlignment="Stretch"
                                   Margin="5"
                                   HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                                   IsSelectionEnabled="False"
                                   Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
+    </StackPanel>
 </UserControl>
