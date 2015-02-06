@@ -16,8 +16,8 @@
 
         #region Constructors and Destructors
 
-        public ContactRelatedActivityViewModel(IUiRefreshService uiRefreshService)
-            : base(uiRefreshService)
+        public ContactRelatedActivityViewModel(IUiRefreshService uiRefreshService, ISessionManager sessionManager)
+            : base(uiRefreshService, sessionManager)
         {
         }
 

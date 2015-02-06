@@ -8,6 +8,10 @@
 
         IObservable<EventArgs> SessionDestroyedObservable { get; }
 
+        IObservable<SessionItemChangeEventArgs> ItemChangedObservable { get; }
+
+        object this[string key] { get; set; }
+
         #endregion
 
         #region Public Methods and Operators

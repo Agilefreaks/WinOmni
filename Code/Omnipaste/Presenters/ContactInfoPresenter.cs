@@ -30,8 +30,6 @@
 
         private ImageSource _image;
 
-        private bool _isSelected;
-
         #endregion
 
         #region Constructors and Destructors
@@ -87,23 +85,6 @@
                     return;
                 }
                 _image = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-            set
-            {
-                if (value.Equals(_isSelected))
-                {
-                    return;
-                }
-                _isSelected = value;
                 NotifyOfPropertyChange();
             }
         }

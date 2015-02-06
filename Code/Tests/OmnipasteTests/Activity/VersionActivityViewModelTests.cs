@@ -14,13 +14,16 @@
 
         private Mock<IUpdaterService> _mockUpdaterService;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void SetUp()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService>();
             _mockUpdaterService = new Mock<IUpdaterService>();
+            _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
 
-            _subject = new VersionActivityViewModel(_mockUiRefreshService.Object, _mockUpdaterService.Object);
+            _subject = new VersionActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object, _mockUpdaterService.Object);
         }
 
         [Test]

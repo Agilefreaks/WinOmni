@@ -63,5 +63,35 @@
 
             _mockDevices.Verify(x => x.Remove(deviceId));
         }
+
+        [Test]
+        public void Indexer_WhenValueWasNotPreviouslySet_ReturnsNull()
+        {
+            _subject["test"].Should().BeNull();
+        }
+
+        [Test]
+        public void Indexer_WhenValueWasPreviouslySet_ReturnsValue()
+        {
+            const string Value = "42";
+            _subject["test"] = Value;
+
+            _subject["test"].Should().Be(Value);
+        }
+
+        [Test]
+        public void Indexer_OnSet_NotifiesItemChangedObservers()
+        {
+            const string Value = "42";
+            const string Key = "test";
+            SessionItemChangeEventArgs arguments = null;
+            _subject.ItemChangedObservable.Subscribe(args => arguments = args);
+            _subject[Key] = Value;
+
+            arguments.Should().NotBeNull();
+            arguments.Key.Should().Be(Key);
+            arguments.OldValue.Should().BeNull();
+            arguments.NewValue.Should().Be(Value);
+        }
     }
 }

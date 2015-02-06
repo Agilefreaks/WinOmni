@@ -8,8 +8,8 @@ namespace Omnipaste.Activity
     {
         private readonly IUpdaterService _updateService;
 
-        public VersionActivityViewModel(IUiRefreshService uiRefreshService, IUpdaterService updateService)
-            : base(uiRefreshService)
+        public VersionActivityViewModel(IUiRefreshService uiRefreshService, ISessionManager sessionManager, IUpdaterService updateService)
+            : base(uiRefreshService, sessionManager)
         {
             _updateService = updateService;
         }

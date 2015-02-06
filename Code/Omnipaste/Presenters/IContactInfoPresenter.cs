@@ -12,8 +12,6 @@ namespace Omnipaste.Presenters
 
         ContactInfo ContactInfo { get; }
 
-        bool IsSelected { get; set; }
-
         bool IsStarred { get; set; }
     }
 }

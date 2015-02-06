@@ -37,6 +37,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void Setup()
         {
@@ -50,8 +52,9 @@
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
+            _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
 
-            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object) { Model = presenter });
+            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>())).Returns<ActivityPresenter>(presenter => new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = presenter });
 
             _subject = new ActivityListViewModel(
                 _mockClippingRepository.Object,
@@ -293,8 +296,8 @@
             var activityPresenter1 = new ActivityPresenter(new Call());
             var activityPresenter2 = new ActivityPresenter(new Message());
             ((IActivate)_subject).Activate();
-            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
-            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter1 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter2 });
 
             _subject.FilterText = "sms de la";
 
@@ -309,8 +312,8 @@
             var activityPresenter1 = new ActivityPresenter(new Message { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } });
             var activityPresenter2 = new ActivityPresenter(new Message { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } });
             ((IActivate)_subject).Activate();
-            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter1 });
-            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object) { Model = activityPresenter2 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter1 });
+            _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter2 });
 
             _subject.FilterText = "JAnE DoE sms";
 
@@ -320,10 +323,10 @@
 
         private void AddItemsForAllActivityTypes()
         {
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new ClippingModel()) });
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model = new ActivityPresenter(new Call()) });
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model= new ActivityPresenter(new Message()) });
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object) { Model= new ActivityPresenter(new UpdateInfo()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new ClippingModel()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new Call()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new Message()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new UpdateInfo()) });
         }
     }
 }

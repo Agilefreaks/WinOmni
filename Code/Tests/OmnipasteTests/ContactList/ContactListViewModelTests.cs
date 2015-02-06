@@ -15,6 +15,7 @@
     using Omnipaste.ContactList;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation;
@@ -32,6 +33,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void SetUp()
         {
@@ -42,8 +45,9 @@
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
             _mockConversationProvider = new Mock<IConversationProvider> { DefaultValue = DefaultValue.Mock };
-            
-            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel { Model = presenter });
+            _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
+            _mockSessionManager.SetupAllProperties();
+            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
 
             _subject = new ContactListViewModel(_mockContactRepository.Object, _mockConversationProvider.Object, _mockContactInfoViewModelFactory.Object);
         }
