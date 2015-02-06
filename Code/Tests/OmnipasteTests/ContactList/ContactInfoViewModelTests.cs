@@ -41,6 +41,8 @@
 
         private Mock<IConversationContext> _mockConversation;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void SetUp()
         {
@@ -56,7 +58,9 @@
             _mockConversationProvider = new Mock<IConversationProvider>();
             _mockConversation = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
             _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactInfo>())).Returns(_mockConversation.Object);
-            _subject = new ContactInfoViewModel
+            _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
+            _mockSessionManager.SetupAllProperties();
+            _subject = new ContactInfoViewModel(_mockSessionManager.Object)
                            {
                                Model = _contactInfoPresenter,
                                ContactRepository = _mockContactRepository.Object,
@@ -71,6 +75,24 @@
         {
             SchedulerProvider.Default = null;
             SchedulerProvider.Dispatcher = null;
+        }
+
+        [Test]
+        public void IsSelected_WhenSessionSelectedContactIsSameAsContactInfoId_ReturnsTrue()
+        {
+            _mockSessionManager.SetupGet(m => m[ContactInfoViewModel.SessionSelectionKey])
+                .Returns(_contactInfo.UniqueId);
+
+            _subject.IsSelected.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsSelected_WhenSessionSelectedContactIsNotSameAsContactInfoId_ReturnsFalse()
+        {
+            _mockSessionManager.SetupGet(m => m[ContactInfoViewModel.SessionSelectionKey])
+                .Returns("other");
+
+            _subject.IsSelected.Should().BeFalse();
         }
 
         [Test]
@@ -115,6 +137,19 @@
             _subject.ShowDetails();
 
             mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
+        }
+
+        [Test]
+        public void ShowDetails_Always_StoresSelectedContactInfoInSession()
+        {
+            var mockWorkspace = new Mock<IPeopleWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            _subject.Parent = mockWorkspace.Object;
+            
+            _subject.ShowDetails();
+
+            _mockSessionManager.VerifySet(m => m[ContactInfoViewModel.SessionSelectionKey] = _contactInfo.UniqueId);
         }
 
         [Test]

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Subjects;
     using Ninject;
     using OmniApi.Resources.v1;
@@ -14,6 +15,10 @@
 
         private readonly Subject<EventArgs> _sessionDestroyedObservable;
 
+        private readonly Subject<SessionItemChangeEventArgs> _itemChangedObservable;
+
+        private readonly Dictionary<string, object> _data;
+
         #endregion
 
         #region Constructors and Destructors
@@ -21,6 +26,8 @@
         public SessionManager()
         {
             _sessionDestroyedObservable = new Subject<EventArgs>();
+            _itemChangedObservable = new Subject<SessionItemChangeEventArgs>();
+            _data = new Dictionary<string, object>();
         }
 
         #endregion
@@ -38,6 +45,29 @@
             get
             {
                 return _sessionDestroyedObservable;
+            }
+        }
+
+        public IObservable<SessionItemChangeEventArgs> ItemChangedObservable
+        {
+            get
+            {
+                return _itemChangedObservable;
+            }
+        }
+
+        public object this[string key]
+        {
+            get
+            {
+                return _data.ContainsKey(key) ? _data[key] : null;
+            }
+
+            set
+            {
+                var changedArgs = new SessionItemChangeEventArgs(key, value, this[key]);
+                _data[key] = value;
+                _itemChangedObservable.OnNext(changedArgs);
             }
         }
 

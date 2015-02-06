@@ -20,9 +20,14 @@
     using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
+    using Message = Omnipaste.Models.Message;
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
+        public const string SessionSelectionKey = "PeopleWorkspace_SelectedContact";
+
+        private readonly ISessionManager _sessionManager;
+
         private string _lastActivityInfo;
 
         private readonly CompositeDisposable _subscriptions;
@@ -36,9 +41,10 @@
         private IDetailsViewModel _detailsViewModel;
 
         private IConversationItem _lastActivity;
-
-        public ContactInfoViewModel()
+        
+        public ContactInfoViewModel(ISessionManager sessionManager)
         {
+            _sessionManager = sessionManager;
             ClickCommand = new Command(ShowDetails);
             _subscriptions = new CompositeDisposable();
         }
@@ -56,6 +62,14 @@
         public IConversationProvider ConversationProvider { get; set; }
 
         public Command ClickCommand { get; set; }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return Model.ContactInfo.UniqueId == _sessionManager[SessionSelectionKey] as string;
+            }
+        }
 
         public IConversationItem LastActivity
         {
@@ -164,14 +178,30 @@
         public void ShowDetails()
         {
             DetailsViewModel = DetailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            _sessionManager[SessionSelectionKey] = Model.ContactInfo.UniqueId;
+            
             this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 
         public void OnLoaded()
         {
             UpdateConversationStatus();
-            _subscriptions.Add(ConversationProvider.ForContact(Model.ContactInfo).Updated.SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
-            _subscriptions.Add(UiRefreshService.RefreshObservable.SubscribeAndHandleErrors(_ => RefreshUi()));
+            _subscriptions.Add(
+                ConversationProvider.ForContact(Model.ContactInfo)
+                    .Updated.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
+            
+            _subscriptions.Add(
+                UiRefreshService.RefreshObservable.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(_ => RefreshUi()));
+            
+            _subscriptions.Add(
+                _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(arg => NotifyOfPropertyChange(() => IsSelected)));
         }
 
         public void OnUnloaded()
