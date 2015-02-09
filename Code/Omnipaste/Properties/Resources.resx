@@ -307,10 +307,10 @@
     <value>Connection Error</value>
   </data>
   <data name="SentFromOmnipaste" xml:space="preserve">
-    <value>via Omnipaste</value>
+    <value>via Omnipasteapp</value>
   </data>
   <data name="EnableSMSBranding" xml:space="preserve">
-    <value>Add "via Omnipaste" to SMS</value>
+    <value>Add "via Omnipasteapp" to SMS</value>
   </data>
   <data name="AuthenticationRequired" xml:space="preserve">
     <value>Authentication code required</value>
