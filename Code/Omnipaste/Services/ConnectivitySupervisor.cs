@@ -2,12 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Reactive;
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Microsoft.Win32;
     using Ninject;
     using Omni;
+    using OmniCommon;
     using OmniCommon.Models;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -73,6 +73,7 @@
 
         public void Start()
         {
+            SimpleLogger.Log("Starting connectivity supervisor");
             Stop();
             
             _eventObservers.Add(
@@ -104,12 +105,15 @@
                 CredentialsMonitor.SettingObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(OnCredentialsChanged));
+            SimpleLogger.Log("Started connectivity supervisor");
         }
 
         public void Stop()
         {
+            SimpleLogger.Log("Stopping connectivity supervisor");
             _eventObservers.ForEach(observer => observer.Dispose());
             _eventObservers.Clear();
+            SimpleLogger.Log("Stopped connectivity supervisor");
         }
 
         #endregion
@@ -118,8 +122,10 @@
 
         private void OnConnectionLost()
         {
+            SimpleLogger.Log("Monitor requested reconnect");
             if (_omniService.State != OmniServiceStatusEnum.Started || _omniService.InTransition)
             {
+                SimpleLogger.Log("OmniService not started or in transition, reconnect canceled");
                 return;
             }
 
@@ -128,6 +134,7 @@
 
         private void OnCredentialsChanged(OmnipasteCredentials credentials)
         {
+            SimpleLogger.Log("User credentials changed");
             StopOmniService();
         }
 
@@ -136,6 +143,7 @@
             switch (newState)
             {
                 case InternetConnectivityStatusEnum.Disconnected:
+                    SimpleLogger.Log("Lost internet connection");
                     OnConnectionLost();
                     break;
             }
@@ -146,9 +154,11 @@
             switch (newMode)
             {
                 case PowerModes.Resume:
+                    SimpleLogger.Log("Resuming from power mode event.");
                     RestartOmniService();
                     break;
                 case PowerModes.Suspend:
+                    SimpleLogger.Log("Stopping from power mode event");
                     StopOmniService();
                     break;
             }
@@ -156,6 +166,7 @@
 
         private void OnProxyConfigurationChanged(ProxyConfiguration newProxyConfiguration)
         {
+            SimpleLogger.Log("Proxy configuration changed");
             OnConnectionLost();
         }
 
@@ -164,9 +175,11 @@
             switch (eventType)
             {
                 case UserEventTypeEnum.Connect:
+                    SimpleLogger.Log("User requested connect");
                     RestartOmniService();
                     break;
                 case UserEventTypeEnum.Disconnect:
+                    SimpleLogger.Log("User requested disconnect");
                     StopOmniService();
                     break;
             }
@@ -174,19 +187,31 @@
 
         private void RestartOmniService()
         {
-            if (_connectObserver != null) return;
+            SimpleLogger.Log("Restarting OmniService");
+            if (_connectObserver != null)
+            {
+                SimpleLogger.Log("A reconnect process was already started");
+                return;
+            }
 
             _connectObserver =
-                Observable.Defer(() => _omniService.Stop())
+                Observable.Defer(
+                    () => _omniService.Stop())
                     .Select(_ => _omniService.Start())
                     .Switch()
                     .Do(
                         _ =>
                             {
+                                SimpleLogger.Log("Successfully restarted OmniService, stoping reconnect process.");
                                 _connectObserver.Dispose();
                                 _connectObserver = null;
                             })
-                    .RetryUntil(_ => _omniService.State != OmniServiceStatusEnum.Started, DefaultReconnectInterval)
+                    .RetryUntil(
+                        _ =>
+                            {
+                                SimpleLogger.Log("Verifying if should retry to reconnect.");
+                                return _omniService.State != OmniServiceStatusEnum.Started;
+                            }, DefaultReconnectInterval)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors();
@@ -202,6 +227,7 @@
             switch (newState)
             {
                 case WebSocketConnectionStatusEnum.Disconnected:
+                    SimpleLogger.Log("Websocket connection lost");
                     OnConnectionLost();
                     break;
             }
