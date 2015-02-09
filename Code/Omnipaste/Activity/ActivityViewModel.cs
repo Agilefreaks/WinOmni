@@ -1,8 +1,11 @@
 namespace Omnipaste.Activity
 {
     using System;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
     using System.Windows.Input;
     using Ninject;
+    using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
@@ -16,6 +19,12 @@ namespace Omnipaste.Activity
     {
         #region Fields
 
+        public const string SessionSelectionKey = "ActivityWorkspace_SelectedActivity";
+
+        private readonly CompositeDisposable _subscriptions;
+
+        private readonly ISessionManager _sessionManager;
+
         private IWorkspaceDetailsViewModel _detailsViewModel;
 
         private ContentTypeEnum _contentType;
@@ -26,9 +35,11 @@ namespace Omnipaste.Activity
 
         #region Constructors and Destructors
 
-        public ActivityViewModel(IUiRefreshService uiRefreshService)
+        public ActivityViewModel(IUiRefreshService uiRefreshService, ISessionManager sessionManager)
             : base(uiRefreshService)
         {
+            _sessionManager = sessionManager;
+            _subscriptions = new CompositeDisposable();
             ClickCommand = new Command(ShowDetails);
         }
 
@@ -40,6 +51,14 @@ namespace Omnipaste.Activity
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         public ICommand ClickCommand { get; set; }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
+            }
+        }
 
         public override ActivityPresenter Model
         {
@@ -105,8 +124,28 @@ namespace Omnipaste.Activity
         {
             _detailsViewModel = _detailsViewModel ?? DetailsViewModelFactory.Create(Model);
             _detailsViewModel.Deactivated += OnDetailsClosed;
+            _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
+
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
             UpdateContentInfo();
+        }
+
+        protected override void OnActivate()
+        {
+            _subscriptions.Add(
+                _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(arg => UpdateContentInfo()));
+
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            _subscriptions.Dispose();
+
+            base.OnDeactivate(close);
         }
 
         #endregion
@@ -150,7 +189,7 @@ namespace Omnipaste.Activity
             if (Model == null) return;
 
             var contentInfo = new ActivityContentInfo { ContentType = Model.Type };
-            if (_detailsViewModel != null && _detailsViewModel.IsActive)
+            if (IsSelected)
             {
                 contentInfo.ContentState = ContentStateEnum.Viewing;
             }

@@ -27,23 +27,46 @@
 
         private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
+        private Mock<ISessionManager> _mockSessionManager;
+
         [SetUp]
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
-            _subject = new ActivityViewModel(_mockUiRefreshService.Object)
+            _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
+            _subject = new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object)
                            {
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
+            SchedulerProvider.Dispatcher = _testScheduler;
         }
 
         [TearDown]
         public void TearDown()
         {
             SchedulerProvider.Default = null;
+            SchedulerProvider.Dispatcher = null;
+        }
+
+        [Test]
+        public void IsSelected_WhenValueIsCurrentModelUniqueId_ReturnsTrue()
+        {
+            _subject.Model = new ActivityPresenter(new Call());
+            _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns(_subject.Model.BackingModel.UniqueId);
+
+            _subject.IsSelected.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsSelected_WhenValueIsOtherThanCurrentModelUniqueId_ReturnsFalse()
+        {
+            _subject.Model = new ActivityPresenter(new Call());
+            _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns("other");
+
+            _subject.IsSelected.Should().BeFalse();
         }
 
         [Test]
@@ -82,6 +105,7 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
+            _subject.Model = new ActivityPresenter(new Call());
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -90,6 +114,20 @@
             _subject.ShowDetails();
 
             mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
+        }
+
+        [Test]
+        public void ShowDetails_Always_SavesCurrentItemAsSelection()
+        {
+            _subject.Model = new ActivityPresenter(new Call());
+            var mockWorkspace = new Mock<IActivityWorkspace>();
+            var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
+            mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
+            _subject.Parent = mockWorkspace.Object;
+
+            _subject.ShowDetails();
+
+            _mockSessionManager.VerifySet(m => m[ActivityViewModel.SessionSelectionKey] = _subject.Model.BackingModel.UniqueId);
         }
 
         [Test]
@@ -103,7 +141,8 @@
             var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
-            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(true);
+            _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey])
+                .Returns(activity.BackingModel.UniqueId);
 
             _subject.Parent = mockWorkspace.Object;
 
@@ -123,7 +162,8 @@
             var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
                 .Returns(mockActivityDetailsViewModel.Object);
-            mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
+            _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey])
+                .Returns("other");
 
             _subject.Parent = mockWorkspace.Object;
 
