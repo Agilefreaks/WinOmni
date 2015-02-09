@@ -319,10 +319,10 @@
     <value>Eroare de conexiune</value>
   </data>
   <data name="EnableSMSBranding" xml:space="preserve">
-    <value>Adăugați "via Omnipaste" la SMS</value>
+    <value>Adăugați "via Omnipasteapp" la SMS</value>
   </data>
   <data name="SentFromOmnipaste" xml:space="preserve">
-    <value>via Omnipaste</value>
+    <value>via Omnipasteapp</value>
   </data>
   <data name="Connected" xml:space="preserve">
     <value>Conectat</value>

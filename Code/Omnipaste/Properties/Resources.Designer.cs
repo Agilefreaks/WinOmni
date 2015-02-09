@@ -515,7 +515,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add &quot;via Omnipaste&quot; to SMS.
+        ///   Looks up a localized string similar to Add &quot;via Omnipasteapp&quot; to SMS.
         /// </summary>
         public static string EnableSMSBranding {
             get {
@@ -848,7 +848,7 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to via Omnipaste.
+        ///   Looks up a localized string similar to via Omnipasteapp.
         /// </summary>
         public static string SentFromOmnipaste {
             get {
