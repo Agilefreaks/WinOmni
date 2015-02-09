@@ -1,4 +1,28 @@
-﻿**Version 1.3.6 (02.02.2015)**
+﻿**Version 1.3.7 (09.02.2015)**
+
+**Improvements:**
+
+- updated the app so as to use the system provided window animations when minimizing/restoring the main window
+- added better handling for cases when a device is no longer trusted/ the user logged of
+- current contact/activity selection is saved when switching between different screens
+
+----------
+
+**Features:**
+
+- added links to social networks on the release log screen so that users can comment on the release
+- contacts are now ordered by the last time an interaction with them was detected
+
+----------
+
+**Bug fixes:**
+
+- fixed a bug which would sometimes crash the app if the user would try to select some text in the release notes activity
+
+----------
+
+
+**Version 1.3.6 (02.02.2015)**
 
 **Improvements:**
 
