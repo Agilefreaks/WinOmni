@@ -192,9 +192,9 @@ namespace Omnipaste.ActivityList
             RefreshItems();
         }
 
-        protected override void OnActivate()
+        protected override void OnInitialize()
         {
-            base.OnActivate();
+            base.OnInitialize();
             Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
         }
 

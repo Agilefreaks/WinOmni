@@ -4,6 +4,7 @@ namespace OmniUI.List
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
@@ -22,7 +23,7 @@ namespace OmniUI.List
 
         #region Fields
 
-        protected readonly List<IDisposable> Subscriptions;
+        protected readonly CompositeDisposable Subscriptions;
 
         private readonly ListCollectionView _filteredItems;
 
@@ -34,7 +35,7 @@ namespace OmniUI.List
 
         protected ListViewModelBase()
         {
-            Subscriptions = new List<IDisposable>();
+            Subscriptions = new CompositeDisposable();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel)vm);
@@ -116,7 +117,9 @@ namespace OmniUI.List
             DeactivateItem(viewModel, true);
         }
 
-        public void RefreshItem(TModel entity)
+        //This is used as opposed to CollectionViewSource.Refresh to update the position of an item in a collection view when an item is changed.
+        //This is done because calling Refresh would result in re-creating the associated views for all the other visible items in the collection.
+        public void RefreshViewForItem(TModel entity)
         {
             RemoveItem(entity);
             AddItem(entity);
@@ -181,9 +184,9 @@ namespace OmniUI.List
             return Items.Count == MaxItemCount;
         }
 
-        protected override void OnActivate()
+        protected override void OnInitialize()
         {
-            base.OnActivate();
+            base.OnInitialize();
             Subscriptions.Add(
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -203,15 +206,12 @@ namespace OmniUI.List
 
         protected override void OnDeactivate(bool close)
         {
-            DisposeSubscriptions();
+            if (close)
+            {
+                Subscriptions.Dispose();
+            }
 
-            base.OnDeactivate(true);
-        }
-
-        private void DisposeSubscriptions()
-        {
-            Subscriptions.ForEach(s => s.Dispose());
-            Subscriptions.Clear();
+            base.OnDeactivate(close);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

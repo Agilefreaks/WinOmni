@@ -77,11 +77,10 @@
 
         #region Methods
 
-        protected override void OnActivate()
+        protected override void OnInitialize()
         {
             _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
-
-            base.OnActivate();
+            base.OnInitialize();
         }
 
         protected override IConversationItemViewModel CreateViewModel(IConversationItem model)

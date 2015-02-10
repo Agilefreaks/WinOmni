@@ -79,9 +79,9 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        protected override void OnActivate()
+        protected override void OnInitialize()
         {
-            base.OnActivate();
+            base.OnInitialize();
             Subscriptions.Add(
                 GetItemUpdatedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -91,15 +91,7 @@ namespace Omnipaste.ContactList
             Subscriptions.Add(_conversationProvider.All().ItemAdded
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(
-                        conversationItem =>
-                            {
-                                var contactPresenter = GetContactFor(conversationItem);
-                                if (contactPresenter != null)
-                                {
-                                    RefreshItem(contactPresenter);
-                                }
-                            }));
+                    .SubscribeAndHandleErrors(OnConversationItemCreated));
         }
 
         protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
@@ -119,7 +111,12 @@ namespace Omnipaste.ContactList
         {
             return _contactInfoViewModelFactory.Create(model);
         }
-        
+
+        private static bool IsMatch(string filter, string value)
+        {
+            return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
+        }
+
         private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
         {
             return _contactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
@@ -155,9 +152,14 @@ namespace Omnipaste.ContactList
             return !ShowStarred || model.IsStarred;
         }
 
-        private bool IsMatch(string filter, string value)
+        private void OnConversationItemCreated(IConversationItem conversationItem)
         {
-            return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
+            var contactPresenter = GetContactFor(conversationItem);
+            if (contactPresenter != null)
+            {
+                RefreshViewForItem(contactPresenter);
+            }
         }
+
     }
 }
