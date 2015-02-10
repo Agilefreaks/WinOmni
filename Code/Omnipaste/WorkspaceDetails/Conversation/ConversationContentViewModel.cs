@@ -73,6 +73,17 @@
             }
         }
 
+        public override void AddItem(IConversationItem item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            base.AddItem(item);
+            HandleNotViewedItem(item);
+        }
+
         #endregion
 
         #region Methods
@@ -114,19 +125,12 @@
             return _conversationContext.GetItems();
         }
 
-        public override void AddItem(IConversationItem item)
+        protected override void OnActivate()
         {
-            if (item == null)
+            base.OnActivate();
+            foreach (var item in Items)
             {
-                return;
-            }
-
-            base.AddItem(item);
-
-            if (!item.WasViewed)
-            {
-                MarkConversationItemAsViewed(item);
-                DismissConversationItemNotification(item);
+                HandleNotViewedItem((IConversationItem)item.Model);
             }
         }
 
@@ -139,6 +143,16 @@
         private void DismissConversationItemNotification(IConversationItem item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
+        }
+
+        private void HandleNotViewedItem(IConversationItem item)
+        {
+            if (item.WasViewed || !IsActive)
+            {
+                return;
+            }
+            MarkConversationItemAsViewed(item);
+            DismissConversationItemNotification(item);
         }
 
         #endregion
