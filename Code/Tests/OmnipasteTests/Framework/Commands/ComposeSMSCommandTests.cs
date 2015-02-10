@@ -8,6 +8,7 @@
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.WorkspaceDetails.Conversation;
     using Omnipaste.Workspaces;
@@ -28,6 +29,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<IShellViewModel> _mockShellViewModel;
+
         [SetUp]
         public void Setup()
         {
@@ -35,14 +38,25 @@
             _mockWorkspaceConductor = new Mock<IWorkspaceConductor>();
             _mockPeopleWorkspace = new Mock<IPeopleWorkspace> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockShellViewModel = new Mock<IShellViewModel>();
             _subject = new ComposeSMSCommand(_contactInfo)
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
                                PeopleWorkspace = _mockPeopleWorkspace.Object,
-                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object
+                               DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
+                               ShellViewModel = _mockShellViewModel.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Dispatcher = _testScheduler;
+        }
+
+        [Test]
+        public void Execute_Always_ShowsTheShellViewModel()
+        {
+            _subject.Execute().Subscribe(_ => { });
+            _testScheduler.Start();
+
+            _mockShellViewModel.Verify(x => x.Show(), Times.Once());
         }
 
         [Test]

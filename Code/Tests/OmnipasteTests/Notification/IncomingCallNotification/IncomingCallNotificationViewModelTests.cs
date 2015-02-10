@@ -68,7 +68,7 @@
             
             await _subject.ReplyWithSMS();
 
-            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo == contactInfo)));
+            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo.ContactInfo == contactInfo)));
         }
     }
 }

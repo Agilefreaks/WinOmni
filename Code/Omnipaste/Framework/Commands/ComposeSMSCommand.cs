@@ -5,8 +5,8 @@
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.Framework.Commands;
@@ -36,6 +36,9 @@
         [Inject]
         public IWorkspaceConductor WorkspaceConductor { get; set; }
 
+        [Inject]
+        public IShellViewModel ShellViewModel { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -45,6 +48,7 @@
             return Observable.Start(
                 () =>
                     {
+                        ShellViewModel.Show();
                         WorkspaceConductor.ActivateItem(PeopleWorkspace);
                         var detailsViewModel = DetailsViewModelFactory.Create(ContactInfo);
                         PeopleWorkspace.DetailsConductor.ActivateItem(detailsViewModel);
