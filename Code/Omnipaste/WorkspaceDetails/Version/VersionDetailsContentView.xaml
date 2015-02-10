@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:omnipaste="clr-namespace:Omnipaste"
-             xmlns:system="clr-namespace:System;assembly=System"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -45,9 +44,9 @@
 
     </UserControl.Resources>
 
-    <StackPanel>
-        <RichTextBox Style="{DynamicResource ActivityContentRichTextBoxStyle}" Margin="20,0"
-                 Visibility="{Binding Path=WasInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <DockPanel LastChildFill="True">
+        <RichTextBox DockPanel.Dock="Top" Style="{DynamicResource ActivityContentRichTextBoxStyle}" Margin="20,0"
+                     Visibility="{Binding Path=WasInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="{x:Static properties:Resources.DiscussRelease}" />
@@ -76,11 +75,10 @@
             </FlowDocument>
         </RichTextBox>
 
-        <FlowDocumentScrollViewer VerticalAlignment="Stretch" Padding="20,10,0,0"
-                                  HorizontalAlignment="Stretch"
-                                  Margin="5"
-                                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                                  IsSelectionEnabled="False"
-                                  Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
-    </StackPanel>
+        <FlowDocumentScrollViewer  HorizontalAlignment="Stretch"
+                                   Margin="5"
+                                   HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                   IsSelectionEnabled="False"
+                                   Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
+    </DockPanel>
 </UserControl>
