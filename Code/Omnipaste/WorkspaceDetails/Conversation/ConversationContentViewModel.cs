@@ -77,11 +77,21 @@
 
         #region Methods
 
-        protected override void OnActivate()
+        protected override void AddItem(IConversationItem item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            base.AddItem(item);
+            HandleNotViewedItem(item);
+        }
+
+        protected override void OnInitialize()
         {
             _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
-
-            base.OnActivate();
+            base.OnInitialize();
         }
 
         protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
@@ -115,19 +125,12 @@
             return _conversationContext.GetItems();
         }
 
-        public override void AddItem(IConversationItem item)
+        protected override void OnActivate()
         {
-            if (item == null)
+            base.OnActivate();
+            foreach (var item in Items)
             {
-                return;
-            }
-
-            base.AddItem(item);
-
-            if (!item.WasViewed)
-            {
-                MarkConversationItemAsViewed(item);
-                DismissConversationItemNotification(item);
+                HandleNotViewedItem((IConversationItem)item.Model);
             }
         }
 
@@ -140,6 +143,16 @@
         private void DismissConversationItemNotification(IConversationItem item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
+        }
+
+        private void HandleNotViewedItem(IConversationItem item)
+        {
+            if (item.WasViewed || !IsActive)
+            {
+                return;
+            }
+            MarkConversationItemAsViewed(item);
+            DismissConversationItemNotification(item);
         }
 
         #endregion

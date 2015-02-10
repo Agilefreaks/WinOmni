@@ -25,11 +25,11 @@
 
         #region Public Methods and Operators
 
-        public IObservable<TResult> Execute<TResult>(ICommand<TResult> command)
+        public IObservable<TResult> Execute<TResult>(IObservableCommand<TResult> command)
         {
             _kernel.Inject(command);
 
-            return Observable.Defer(command.Execute);
+            return command.Execute();
         }
 
         #endregion

@@ -38,6 +38,7 @@
 
         protected override void OnActivate()
         {
+            RefreshUi();
             AddUiRefreshSubscription();
             base.OnActivate();
         }

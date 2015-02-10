@@ -4,7 +4,7 @@
     {
         string Id { get; set; }
 
-        ContactInfo ContactInfo { get; }
+        ContactInfo ContactInfo { get; set; }
 
         SourceType Source { get; }
 

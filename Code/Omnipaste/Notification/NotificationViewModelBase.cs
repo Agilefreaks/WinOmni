@@ -22,8 +22,6 @@
 
         private ViewModelStatusEnum _state = ViewModelStatusEnum.Closed;
 
-        private object _identifier;
-
         #endregion
 
         #region Public Properties

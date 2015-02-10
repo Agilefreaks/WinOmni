@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Notification.IncomingCallNotification
 {
-    using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Properties;
+    using OmniUI.Services;
     using PhoneCalls.Resources.v1;
 
     public class IncomingCallNotificationViewModel : ConversationNotificationViewModelBase, IIncomingCallNotificationViewModel
@@ -18,8 +18,8 @@
 
         #region Constructors and Destructors
 
-        public IncomingCallNotificationViewModel(IEventAggregator eventAggregator)
-            : base(eventAggregator)
+        public IncomingCallNotificationViewModel(ICommandService commandService)
+            : base(commandService)
         {
             EndCallButtonText = Resources.IncommingCallNotificationEndCall;
             CanEndCall = true;

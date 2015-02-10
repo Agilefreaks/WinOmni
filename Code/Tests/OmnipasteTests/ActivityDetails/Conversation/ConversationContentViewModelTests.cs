@@ -87,7 +87,7 @@
         }
 
         [Test]
-        public void Activate_WhenCallWasNotViewed_MarksCallAsViewed()
+        public void OnActivate_WhenCallWasNotViewed_MarksCallAsViewed()
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
@@ -101,7 +101,7 @@
         }
 
         [Test]
-        public void Activate_WhenCallWasNotViewed_DismissesNotificationForCall()
+        public void OnActivate_WhenCallWasNotViewed_DismissesNotificationForCall()
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
@@ -115,7 +115,7 @@
         }
 
         [Test]
-        public void Activate_WhenCallWasNotViewed_SavesCall()
+        public void OnActivate_WhenCallWasNotViewed_SavesCall()
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
@@ -129,7 +129,7 @@
         }
 
         [Test]
-        public void ACallAppearsInTheConversation_Always_AddsACallViewModel()
+        public void ACallAppearsInTheConversation_ViewModelWasActivated_AddsACallViewModel()
         {
             var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
@@ -145,7 +145,7 @@
         }
 
         [Test]
-        public void ACallAppearsInTheConversation_Always_MarksCallAsViewed()
+        public void ACallAppearsInTheConversation_ViewModelIsActive_MarksCallAsViewed()
         {
             var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
@@ -176,7 +176,7 @@
         }
 
         [Test]
-        public void AMessageAppearsInTheConversation_Always_MarksMessageAsViewed()
+        public void AMessageAppearsInTheConversation_ViewModelIsActive_MarksMessageAsViewed()
         {
             var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
@@ -192,7 +192,7 @@
         }
 
         [Test]
-        public void AMessageAppearsInTheConversation_Always_AddsAMessageViewModel()
+        public void AMessageAppearsInTheConversation_ViewModelWasActivated_AddsAMessageViewModel()
         {
             var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
@@ -247,6 +247,38 @@
             _testScheduler.AdvanceBy(150);
 
             _subject.Items.Count().Should().Be(2);
+        }
+
+        [Test]
+        public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_AddsACorrespondingChildViewModel()
+        {
+            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var observable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+
+            ((IActivate)_subject).Activate();
+            ((IDeactivate)_subject).Deactivate(false);
+            _testScheduler.Start();
+
+            _subject.Items.Any(item => item.Model == callFromContact).Should().BeTrue();
+        }
+
+        [Test]
+        public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_DoesNotMarkTheItemAsViewed()
+        {
+            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var observable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+
+            ((IActivate)_subject).Activate();
+            ((IDeactivate)_subject).Deactivate(false);
+            _testScheduler.Start();
+
+            callFromContact.WasViewed.Should().BeFalse();
         }
 
         private void SetupGetConversationItems(params IConversationItem[] items)

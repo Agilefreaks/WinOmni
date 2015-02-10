@@ -3,12 +3,12 @@
     using System;
     using System.ComponentModel;
     using System.Linq;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -30,7 +30,7 @@
 
         private string _lastActivityInfo;
 
-        private readonly CompositeDisposable _subscriptions;
+        private readonly ISubscriptionsManager _subscriptionsManager;
 
         private DateTime? _lastActivityTime;
 
@@ -38,15 +38,13 @@
 
         private bool _hasNotViewedMessages;
 
-        private IDetailsViewModel _detailsViewModel;
-
         private IConversationItem _lastActivity;
-        
+
         public ContactInfoViewModel(ISessionManager sessionManager)
         {
+            _subscriptionsManager = new SubscriptionsManager();
             _sessionManager = sessionManager;
             ClickCommand = new Command(ShowDetails);
-            _subscriptions = new CompositeDisposable();
         }
 
         [Inject]
@@ -158,46 +156,30 @@
             }
         }
 
-        public IDetailsViewModel DetailsViewModel
-        {
-            get
-            {
-                return _detailsViewModel;
-            }
-            set
-            {
-                if (Equals(value, _detailsViewModel))
-                {
-                    return;
-                }
-                _detailsViewModel = value;
-                NotifyOfPropertyChange(() => DetailsViewModel);
-            }
-        }
-
         public void ShowDetails()
         {
-            DetailsViewModel = DetailsViewModel ?? DetailsViewModelFactory.Create(Model);
+            var detailsViewModel = DetailsViewModelFactory.Create(Model);
             _sessionManager[SessionSelectionKey] = Model.ContactInfo.UniqueId;
-            
-            this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
+
+            this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
 
         public void OnLoaded()
         {
+            RefreshUi();
             UpdateConversationStatus();
-            _subscriptions.Add(
+            _subscriptionsManager.Add(
                 ConversationProvider.ForContact(Model.ContactInfo)
                     .Updated.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
             
-            _subscriptions.Add(
+            _subscriptionsManager.Add(
                 UiRefreshService.RefreshObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => RefreshUi()));
             
-            _subscriptions.Add(
+            _subscriptionsManager.Add(
                 _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
@@ -206,7 +188,7 @@
 
         public void OnUnloaded()
         {
-            _subscriptions.Dispose();
+            _subscriptionsManager.ClearAll();
         }
         
         protected override void HookModel(ContactInfoPresenter model)
@@ -229,7 +211,7 @@
 
         private void UpdateConversationStatus()
         {
-            _subscriptions.Add(
+            _subscriptionsManager.Add(
                 ConversationProvider.ForContact(Model.ContactInfo)
                     .GetItems()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -247,6 +229,7 @@
         private void RefreshUi()
         {
             NotifyOfPropertyChange(() => LastActivityTime);
+            NotifyOfPropertyChange(() => IsSelected);
         }
 
         private void SaveChanges()

@@ -28,9 +28,9 @@
     {
         #region Fields
 
-        private Window _view;
-
         private readonly IDisposable _sessionObserver;
+
+        private Window _view;
 
         #endregion
 
@@ -41,9 +41,9 @@
             EventAggregator = eventAggregator;
             EventAggregator.Subscribe(this);
 
-            _sessionObserver = sessionManager.SessionDestroyedObservable
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(eventArgs => Configure());
+            _sessionObserver =
+                sessionManager.SessionDestroyedObservable.ObserveOn(SchedulerProvider.Dispatcher)
+                    .SubscribeAndHandleErrors(eventArgs => Configure());
 
             DisplayName = Resources.AplicationName;
         }
@@ -52,19 +52,19 @@
 
         #region Public Properties
 
-        public IEventAggregator EventAggregator { get; set; }
-
         [Inject]
         public IActivationService ActivationService { get; set; }
-        
-        [Inject]
-        public INotificationListViewModel NotificationListViewModel { get; set; }
 
         [Inject]
         public IContextMenuViewModel ContextMenuViewModel { get; set; }
 
         [Inject]
+        public IActivityWorkspace DefaultWorkspace { get; set; }
+
+        [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
+
+        public IEventAggregator EventAggregator { get; set; }
 
         [Inject]
         public IEnumerable<IFlyoutViewModel> Flyouts { get; set; }
@@ -73,19 +73,19 @@
         public ILoadingViewModel LoadingViewModel { get; set; }
 
         [Inject]
+        public INotificationListViewModel NotificationListViewModel { get; set; }
+
+        [Inject]
         public ISideMenuViewModel SideMenuViewModel { get; set; }
 
         [Inject]
-        public IWindowHandleProvider WindowHandleProvider { get; set; }
+        public IEnumerable<ITitleBarItemViewModel> TitleBarItems { get; set; }
 
         [Inject]
         public IUiRefreshService UiRefreshService { get; set; }
 
         [Inject]
-        public IActivityWorkspace DefaultWorkspace { get; set; }
-
-        [Inject]
-        public IEnumerable<ITitleBarItemViewModel> TitleBarItems { get; set; }
+        public IWindowHandleProvider WindowHandleProvider { get; set; }
 
         #endregion
 
@@ -128,13 +128,15 @@
         {
             if (_view != null)
             {
-                _view.Dispatcher.Invoke(() =>
-                {
-                    _view.Show();
-                    _view.ShowInTaskbar = true;
-                    _view.Visibility = Visibility.Visible;
-                    _view.Activate();
-                });
+                _view.Dispatcher.Invoke(
+                    () =>
+                        {
+                            _view.Show();
+                            _view.ShowInTaskbar = true;
+                            _view.Visibility = Visibility.Visible;
+                            _view.WindowState = WindowState.Normal;
+                            _view.Activate();
+                        });
             }
 
             UiRefreshService.Start();
@@ -166,6 +168,19 @@
                 .RunToCompletion(OnActivationFinished, OnActivationFailed, DispatcherProvider.Current);
         }
 
+        private IntPtr GetHandle()
+        {
+            var handle = new IntPtr();
+            Execute.OnUIThread(
+                () =>
+                    {
+                        var windowInteropHelper = new WindowInteropHelper(_view);
+                        handle = windowInteropHelper.Handle;
+                    });
+
+            return handle;
+        }
+
         private void OnActivationFailed(Exception exception)
         {
             EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = exception });
@@ -175,25 +190,13 @@
         {
             if (finalStep is Failed)
             {
-                EventAggregator.PublishOnUIThread(new ActivationFailedMessage { Exception = finalStep.Parameter.Value as Exception });
+                EventAggregator.PublishOnUIThread(
+                    new ActivationFailedMessage { Exception = finalStep.Parameter.Value as Exception });
             }
             else
             {
                 DialogViewModel.DeactivateItem(LoadingViewModel, true);
             }
-        }
-
-        private IntPtr GetHandle()
-        {
-            var handle = new IntPtr();
-            Execute.OnUIThread(
-                () =>
-                {
-                    var windowInteropHelper = new WindowInteropHelper(_view);
-                    handle = windowInteropHelper.Handle;
-                });
-
-            return handle;
         }
 
         #endregion
