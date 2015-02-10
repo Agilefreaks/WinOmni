@@ -5,6 +5,6 @@
 
     public interface ICommandService
     {
-        IObservable<TResult> Execute<TResult>(ICommand<TResult> command);
+        IObservable<TResult> Execute<TResult>(IObservableCommand<TResult> command);
     }
 }

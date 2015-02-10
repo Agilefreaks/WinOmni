@@ -251,6 +251,7 @@
   <ItemGroup>
     <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
+    <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
@@ -377,7 +378,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SourceType.cs" />
     <Compile Include="Models\UserContactInfo.cs" />
-    <Compile Include="Notification\EventNotificationViewModelBase.cs" />
+    <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />

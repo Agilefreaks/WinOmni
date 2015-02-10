@@ -93,12 +93,9 @@
             return
                 ContactRepository.GetByPhoneNumber(message.ContactInfo.Phone)
                     .Select(
-                        contact =>
-                            {
-                                return contact == null
-                                           ? ContactRepository.Save(message.ContactInfo).Select(_ => Unit.Default)
-                                           : Observable.Return(Unit.Default, SchedulerProvider.Default);
-                            })
+                        contact => contact == null
+                                       ? ContactRepository.Save(message.ContactInfo).Select(_ => Unit.Default)
+                                       : Observable.Return(Unit.Default, SchedulerProvider.Default))
                     .Select(_ => MessageRepository.Save(message).Select(__ => Unit.Default))
                     .Switch();
         }
@@ -109,12 +106,9 @@
             return
                 ContactRepository.GetByPhoneNumber(call.ContactInfo.Phone)
                     .Select(
-                        contact =>
-                            {
-                                return contact == null
-                                           ? ContactRepository.Save(call.ContactInfo).Select(_ => Unit.Default)
-                                           : Observable.Return(Unit.Default, SchedulerProvider.Default);
-                            })
+                        contact => contact == null
+                                       ? ContactRepository.Save(call.ContactInfo).Select(_ => Unit.Default)
+                                       : Observable.Return(Unit.Default, SchedulerProvider.Default))
                     .Switch()
                     .Select(_ => CallRepository.Save(call).Select(__ => Unit.Default))
                     .Switch();

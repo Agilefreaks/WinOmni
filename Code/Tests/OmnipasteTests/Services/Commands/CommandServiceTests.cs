@@ -32,7 +32,7 @@
         {
         }
 
-        public class TestCommand : ICommand<TestResult>
+        public class TestCommand : IObservableCommand<TestResult>
         {
             private readonly IObservable<TestResult> _result;
 

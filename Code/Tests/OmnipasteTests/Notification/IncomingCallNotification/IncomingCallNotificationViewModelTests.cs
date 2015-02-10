@@ -1,16 +1,19 @@
 ﻿namespace OmnipasteTests.Notification.IncomingCallNotification
 {
+    using System.Reactive;
+    using System.Reactive.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Threading;
-    using Caliburn.Micro;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
+    using OmniUI.Services;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]
@@ -22,9 +25,9 @@
 
         private Mock<IPhoneCalls> _mockPhoneCalls;
 
-        private Mock<IEventAggregator> _mockEventAggregator;
-
         private Mock<IApplicationService> _mockApplicationService;
+
+        private Mock<ICommandService> _mockCommandService;
 
         [SetUp]
         public void SetUp()
@@ -33,8 +36,8 @@
             _mockPhoneCalls = _kernel.GetMock<IPhoneCalls>();
             _mockPhoneCalls.DefaultValue = DefaultValue.Mock;
             
-            _mockEventAggregator = _kernel.GetMock<IEventAggregator>();
-            _kernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object).InSingletonScope();
+            _mockCommandService = _kernel.GetMock<ICommandService>();
+            _kernel.Bind<ICommandService>().ToConstant(_mockCommandService.Object).InSingletonScope();
 
             _mockApplicationService = _kernel.GetMock<IApplicationService>();
             _mockApplicationService.Setup(s => s.Dispatcher).Returns(Dispatcher.CurrentDispatcher);
@@ -56,12 +59,16 @@
         }
 
         [Test]
-        public void ReplyWithSms_CallsPhonesSendSms()
+        public async Task ReplyWithSms_CallsPhonesSendSms()
         {
-            _subject.Resource = new Call { ContactInfo = new ContactInfo { Phone = "1234567"  } };
-            _subject.ReplyWithSMS();
+            var contactInfo = new ContactInfo { Phone = "1234567"  };
+            _subject.Resource = new Call { ContactInfo = contactInfo };
+            _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>()))
+                .Returns(Observable.Return(new Unit()));
+            
+            await _subject.ReplyWithSMS();
 
-            _mockEventAggregator.Verify(ea => ea.Publish(It.Is<SendSmsMessage>(m => m.Recipient == "1234567" && m.Message == ""), It.IsAny<System.Action<System.Action>>()));
+            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo == contactInfo)));
         }
     }
 }

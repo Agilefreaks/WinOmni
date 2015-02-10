@@ -6,6 +6,6 @@
     {
         IWorkspaceDetailsViewModel Create(ActivityPresenter activity);
         
-        IWorkspaceDetailsViewModel Create(ContactInfoPresenter activity);
+        IWorkspaceDetailsViewModel Create(IContactInfoPresenter activity);
     }
 }

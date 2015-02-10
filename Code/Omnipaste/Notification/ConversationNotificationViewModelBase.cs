@@ -1,13 +1,18 @@
 ﻿namespace Omnipaste.Notification
 {
-    using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
+    using System.Reactive.Threading.Tasks;
+    using System.Threading.Tasks;
+    using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
+    using OmniUI.Services;
 
     public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationItem>,
-                                                           IConversationNotificationViewModel
+                                                                  IConversationNotificationViewModel
     {
         #region Fields
+
+        private readonly ICommandService _commandService;
 
         private bool _canReplyWithSms = true;
 
@@ -15,9 +20,9 @@
 
         #region Constructors and Destructors
 
-        protected ConversationNotificationViewModelBase(IEventAggregator eventAggregator)
+        protected ConversationNotificationViewModelBase(ICommandService commandService)
         {
-            EventAggregator = eventAggregator;
+            _commandService = commandService;
         }
 
         #endregion
@@ -41,13 +46,21 @@
             }
         }
 
-        public IEventAggregator EventAggregator { get; set; }
+        public override object Identifier
+        {
+            get
+            {
+                return Resource.UniqueId;
+            }
+        }
 
         public override string Line1
         {
             get
             {
-                return string.IsNullOrWhiteSpace(Resource.ContactInfo.Name) ? Resource.ContactInfo.Phone : Resource.ContactInfo.Name;
+                return string.IsNullOrWhiteSpace(Resource.ContactInfo.Name)
+                           ? Resource.ContactInfo.Phone
+                           : Resource.ContactInfo.Name;
             }
         }
 
@@ -59,22 +72,17 @@
             }
         }
 
-        public override object Identifier
-        {
-            get
-            {
-                return Resource.UniqueId;
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
-        public void ReplyWithSMS()
+        public async Task ReplyWithSMS()
         {
             CanReplyWithSMS = false;
-            EventAggregator.PublishOnUIThread(new SendSmsMessage { Recipient = Resource.ContactInfo.Phone, Message = "" });
+
+            var command = new ComposeSMSCommand(new ContactInfoPresenter(Resource.ContactInfo));
+            await _commandService.Execute(command).ToTask();
+
             Dismiss();
         }
 

@@ -1,14 +1,14 @@
 ﻿namespace Omnipaste.Notification.IncomingSmsNotification
 {
-    using Caliburn.Micro;
     using Omnipaste.Properties;
+    using OmniUI.Services;
 
     public class IncomingSmsNotificationViewModel : ConversationNotificationViewModelBase, IIncomingSmsNotificationViewModel
     {
         #region Constructors and Destructors
 
-        public IncomingSmsNotificationViewModel(IEventAggregator eventAggregator)
-            : base(eventAggregator)
+        public IncomingSmsNotificationViewModel(ICommandService commandService)
+            : base(commandService)
         {
         }
 

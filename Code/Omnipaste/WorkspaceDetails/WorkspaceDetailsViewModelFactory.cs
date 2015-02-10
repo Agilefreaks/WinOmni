@@ -41,7 +41,7 @@
             return result;
         }
 
-        public IWorkspaceDetailsViewModel Create(ContactInfoPresenter contactInfoPresenter)
+        public IWorkspaceDetailsViewModel Create(IContactInfoPresenter contactInfoPresenter)
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
             result.Model = contactInfoPresenter;

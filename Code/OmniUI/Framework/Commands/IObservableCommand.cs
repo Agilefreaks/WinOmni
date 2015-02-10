@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface ICommand<out TResult>
+    public interface IObservableCommand<out TResult>
     {
         IObservable<TResult> Execute();
     }
