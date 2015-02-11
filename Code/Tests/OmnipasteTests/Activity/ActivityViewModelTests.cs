@@ -75,11 +75,11 @@
             var refreshUiObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(new Unit())));
             _mockUiRefreshService.Setup(x => x.RefreshObservable).Returns(refreshUiObservable);
+            ((IActivate)_subject).Activate();
             var callCount = 0;
             _subject.PropertyChanged += (sender, eventArgs) =>
                 { if (eventArgs.PropertyName == "Model") callCount++; };
 
-            ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
             callCount.Should().Be(1);
@@ -91,12 +91,12 @@
             var refreshUiObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<Unit>>(100, Notification.CreateOnNext(new Unit())));
             _mockUiRefreshService.Setup(x => x.RefreshObservable).Returns(refreshUiObservable);
+            ((IActivate)_subject).Activate();
+            ((IDeactivate)_subject).Deactivate(true);
             var callCount = 0;
             _subject.PropertyChanged += (sender, eventArgs) =>
                 { if (eventArgs.PropertyName == "Model") callCount++; };
 
-            ((IActivate)_subject).Activate();
-            ((IDeactivate)_subject).Deactivate(true);
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
             callCount.Should().Be(0);

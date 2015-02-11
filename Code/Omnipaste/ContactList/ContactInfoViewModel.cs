@@ -166,6 +166,7 @@
 
         public void OnLoaded()
         {
+            RefreshUi();
             UpdateConversationStatus();
             _subscriptionsManager.Add(
                 ConversationProvider.ForContact(Model.ContactInfo)
@@ -228,6 +229,7 @@
         private void RefreshUi()
         {
             NotifyOfPropertyChange(() => LastActivityTime);
+            NotifyOfPropertyChange(() => IsSelected);
         }
 
         private void SaveChanges()
