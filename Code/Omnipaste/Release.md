@@ -1,17 +1,25 @@
-﻿**Version 1.3.7 (09.02.2015)**
+﻿**Version 1.3.8 (11.02.2015)**
+
+**Improvements:**
+
+- added some minor usability improvements to the way switching between workspaces works
+
+----------
+
+**Version 1.3.7 (09.02.2015)**
+
+**Features:**
+
+- added links to social networks on the release log screen so that users can comment on the release
+- contacts are now ordered by the last time an interaction with them was detected
+
+----------
 
 **Improvements:**
 
 - updated the app so as to use the system provided window animations when minimizing/restoring the main window
 - added better handling for cases when a device is no longer trusted/ the user logged of
 - current contact/activity selection is saved when switching between different screens
-
-----------
-
-**Features:**
-
-- added links to social networks on the release log screen so that users can comment on the release
-- contacts are now ordered by the last time an interaction with them was detected
 
 ----------
 
