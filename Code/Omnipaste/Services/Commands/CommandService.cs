@@ -29,7 +29,7 @@
         {
             _kernel.Inject(command);
 
-            return Observable.Defer(command.Execute);
+            return command.Execute();
         }
 
         #endregion

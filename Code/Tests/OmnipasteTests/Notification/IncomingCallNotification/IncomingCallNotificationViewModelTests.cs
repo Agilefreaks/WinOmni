@@ -2,12 +2,14 @@
 {
     using System.Reactive;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
+    using System.Reactive.Threading.Tasks;
     using System.Windows.Threading;
+    using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
@@ -59,16 +61,18 @@
         }
 
         [Test]
-        public async Task ReplyWithSms_CallsPhonesSendSms()
+        public void ReplyWithSms_Always_ExecutesComposeSMSCommand()
         {
             var contactInfo = new ContactInfo { Phone = "1234567"  };
             _subject.Resource = new Call { ContactInfo = contactInfo };
             _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>()))
                 .Returns(Observable.Return(new Unit()));
-            
-            await _subject.ReplyWithSMS();
+            var testScheduler = new TestScheduler();
+            SchedulerProvider.Dispatcher = testScheduler;
 
-            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo.ContactInfo == contactInfo)));
+            testScheduler.Start(() => _subject.ReplyWithSMS().ToObservable());
+
+            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo == contactInfo)));
         }
     }
 }

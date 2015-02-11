@@ -73,7 +73,11 @@
             }
         }
 
-        public override void AddItem(IConversationItem item)
+        #endregion
+
+        #region Methods
+
+        protected override void AddItem(IConversationItem item)
         {
             if (item == null)
             {
@@ -83,10 +87,6 @@
             base.AddItem(item);
             HandleNotViewedItem(item);
         }
-
-        #endregion
-
-        #region Methods
 
         protected override void OnInitialize()
         {

@@ -110,6 +110,7 @@
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Interfaces\IMenuEntryViewModel.cs" />
+    <Compile Include="List\IListViewModel.cs" />
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Framework\Commands\IObservableCommand.cs" />

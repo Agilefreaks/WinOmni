@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.ContactList
 {
-    using Caliburn.Micro;
+    using OmniUI.List;
 
-    public interface IContactListViewModel : IScreen
+    public interface IContactListViewModel : IListViewModel<IContactInfoViewModel>
     {
     }
 }

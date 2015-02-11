@@ -12,7 +12,7 @@ namespace OmniUI.List
     using OmniCommon.Helpers;
     using OmniUI.Details;
 
-    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive
+    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive, IListViewModel<TViewModel>
         where TViewModel : class, IDetailsViewModel
     {
         #region Constants
@@ -91,23 +91,22 @@ namespace OmniUI.List
             base.ActivateItem(item);
         }
 
-        public virtual void AddItem(TModel model)
-        {
-            var viewModel = CreateViewModel(model);
-            ActivateItem(viewModel);
-        }
-
-        public void AddItems(IEnumerable<TModel> models)
-        {
-            models.ToList().ForEach(AddItem);
-        }
-
         public virtual void RefreshItems()
         {
             _filteredItems.Refresh();
         }
 
-        public void RemoveItem(TModel entity)
+        #endregion
+
+        #region Methods
+
+        protected virtual void AddItem(TModel model)
+        {
+            var viewModel = CreateViewModel(model);
+            ActivateItem(viewModel);
+        }
+
+        protected void RemoveItem(TModel entity)
         {
             var viewModel = GetViewModel(entity);
             if (viewModel == null)
@@ -119,15 +118,11 @@ namespace OmniUI.List
 
         //This is used as opposed to CollectionViewSource.Refresh to update the position of an item in a collection view when an item is changed.
         //This is done because calling Refresh would result in re-creating the associated views for all the other visible items in the collection.
-        public void RefreshViewForItem(TModel entity)
+        protected void RefreshViewForItem(TModel entity)
         {
             RemoveItem(entity);
             AddItem(entity);
         }
-
-        #endregion
-
-        #region Methods
 
         protected virtual bool CanShow(TViewModel viewModel)
         {
@@ -212,6 +207,11 @@ namespace OmniUI.List
             }
 
             base.OnDeactivate(close);
+        }
+
+        private void AddItems(IEnumerable<TModel> models)
+        {
+            models.ToList().ForEach(AddItem);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

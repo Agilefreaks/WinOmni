@@ -1,10 +1,11 @@
 ﻿namespace Omnipaste.Notification
 {
+    using System.Reactive.Linq;
     using System.Reactive.Threading.Tasks;
     using System.Threading.Tasks;
+    using OmniCommon.Helpers;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using OmniUI.Services;
 
     public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationItem>,
@@ -80,8 +81,8 @@
         {
             CanReplyWithSMS = false;
 
-            var command = new ComposeSMSCommand(new ContactInfoPresenter(Resource.ContactInfo));
-            await _commandService.Execute(command).ToTask();
+            var command = new ComposeSMSCommand(Resource.ContactInfo);
+            await _commandService.Execute(command).SubscribeOn(SchedulerProvider.Dispatcher).ToTask();
 
             Dismiss();
         }
