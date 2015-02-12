@@ -41,6 +41,8 @@
 
         string WebBaseUrl { get; }
 
+        bool LoggingEnabled { get; }
+
         #endregion
 
         #region Public Indexers

@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationProperties.cs" />
     <Compile Include="DataProviders\IArgumentsDataProvider.cs" />
+    <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="Handlers\IResourceHandler.cs" />
     <Compile Include="Handlers\ResourceHandler.cs" />
     <Compile Include="Helpers\ImmediateDispatcherProvider.cs" />
@@ -97,10 +98,12 @@
     <Compile Include="Helpers\TimeHelper.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
     <Compile Include="Interfaces\IHandler.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IWebProxyFactory.cs" />
     <Compile Include="Interfaces\IWindowHandleProvider.cs" />
     <Compile Include="Helpers\SchedulerProvider.cs" />
+    <Compile Include="Logging\NullLoger.cs" />
     <Compile Include="Models\KeyPair.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Settings\OmnipasteCredentials.cs" />

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Ninject;
+    using Ninject.Activation;
     using OmniApi.Support;
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
@@ -13,12 +14,14 @@
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
+    using Omnipaste.Framework;
     using Omnipaste.Models;
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
+    using Omnipaste.Services.ExceptionReporters;
     using Omnipaste.Services.Monitors.Credentials;
     using Omnipaste.Services.Monitors.Internet;
     using Omnipaste.Services.Monitors.Power;
@@ -65,8 +68,9 @@
             Kernel.Bind<IProxyConfigurationDetector>().To<SocksProxyConfigurationDetector>();
             Kernel.Bind<IWorkspaceConductor>().ToMethod(context => context.Kernel.Get<IShellViewModel>());
 
-            Kernel.Bind<IExceptionReporter>().To<BugFreakExceptionReporter>().InSingletonScope();
+            Kernel.Bind<IExceptionReporter>().ToMethod(GetExceptionReporter).InSingletonScope();
             Kernel.Bind<IUpdateManager>().ToConstant(new NAppUpdateManager());
+            Kernel.Bind<ILogger>().ToConstant(NLogAdapter.Instance).InSingletonScope();
         }
 
         protected override IEnumerable<Type> GenerateSingletonTypesList()
@@ -85,6 +89,14 @@
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ContactInfoViewModelFactory), typeof(ConversationProvider)
                        };
+        }
+
+        private static CompositeExceptionReporter GetExceptionReporter(IContext context)
+        {
+            var bugFreakExceptionReporter = context.Kernel.Get<BugFreakExceptionReporter>();
+            var logExceptionReporter = context.Kernel.Get<LogExceptionReporter>();
+
+            return new CompositeExceptionReporter(bugFreakExceptionReporter, logExceptionReporter);
         }
     }
 }

@@ -192,6 +192,15 @@
             }
         }
 
+        public bool LoggingEnabled
+        {
+            get
+            {
+                bool result;
+                return bool.TryParse(this[ConfigurationProperties.EnableLogging], out result) && result;
+            }
+        }
+
         public IObservable<SettingsChangedData> SettingsChangedObservable
         {
             get

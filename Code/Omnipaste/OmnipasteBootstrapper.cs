@@ -130,7 +130,7 @@
                 _kernel.Load(new DebugModule());
             }
 
-            SimpleLogger.EnableLog = argumentsDataProvider.EnableLog;
+            SimpleLogger.EnableLog = argumentsDataProvider.EnableLog || configurationService.LoggingEnabled;
 
             SetupBugFreakAdditionalData();
             StartBackgroundServices();

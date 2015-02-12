@@ -7,6 +7,7 @@ namespace Omnipaste.Services
     using NAppUpdate.Framework;
     using NAppUpdate.Framework.Sources;
     using NAppUpdate.Framework.Tasks;
+    using OmniCommon;
     using OmniCommon.Helpers;
 
     public class NAppUpdateManager : IUpdateManager
@@ -56,9 +57,11 @@ namespace Omnipaste.Services
             return Observable.Start(
                 () =>
                     {
+                        SimpleLogger.Log("Checking if new update available");
                         _updateManager.CleanUp();
                         _updateManager.CheckForUpdates();
                         var result = (updateAvailableCheck ?? (() => _updateManager.UpdatesAvailable > 0))();
+                        SimpleLogger.Log("Update available: " + result);
 
                         return result;
                     }, SchedulerProvider.Default);
@@ -98,6 +101,7 @@ namespace Omnipaste.Services
             return Observable.Start(
                 () =>
                     {
+                        SimpleLogger.Log("Downloading new update");
                         _updateManager.PrepareUpdates();
                         onSuccess();
 

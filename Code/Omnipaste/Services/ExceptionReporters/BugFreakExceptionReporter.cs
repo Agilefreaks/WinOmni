@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Services
+﻿namespace Omnipaste.Services.ExceptionReporters
 {
     using System;
     using BugFreak;

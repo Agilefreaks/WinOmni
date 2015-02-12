@@ -168,6 +168,7 @@
         {
             try
             {
+                SimpleLogger.Log("Cleaning temporary files");
                 if (Directory.Exists(InstallerTemporaryFolder))
                 {
                     Directory.Delete(InstallerTemporaryFolder, true);
@@ -181,6 +182,7 @@
 
         public void InstallNewVersion(bool startMinimized = false)
         {
+            SimpleLogger.Log("Starting local installer");
             ExternalProcessHelper.Start(new ProcessStartInfo
             {
                 FileName = MSIExec,
@@ -199,6 +201,7 @@
                     .SubscribeAndHandleErrors(
                         _ =>
                         {
+                            SimpleLogger.Log("System is idle.");
                             DisposeSystemIdleObserver();
                             InstallNewVersion(true);
                         });
@@ -212,6 +215,11 @@
                         var newInstallerVersion = GetRemoteInstallerVersion();
                         var localInstallerVersion = GetLocalInstallerVersion();
                         var installedVersion = GetInstalledVersion();
+                        SimpleLogger.Log(
+                            "Checking if remote version is new: remote {0}, local {1}, installed {2}",
+                            newInstallerVersion,
+                            localInstallerVersion,
+                            installedVersion);
 
                         return newInstallerVersion != null && newInstallerVersion > installedVersion
                                && (localInstallerVersion == null || newInstallerVersion > localInstallerVersion);
@@ -226,6 +234,10 @@
                     {
                         var installedVersion = GetInstalledVersion();
                         var localInstallerVersion = GetLocalInstallerVersion();
+                        SimpleLogger.Log(
+                            "Checking if local version is new: local {0}, installed {1}",
+                            localInstallerVersion,
+                            installedVersion);
 
                         return localInstallerVersion != null && localInstallerVersion > installedVersion;
                     },
@@ -234,18 +246,22 @@
 
         public void Start()
         {
+            SimpleLogger.Log("Starting updater service");
             _proxyConfigurationSubscription =
                 ConfigurationService.SettingsChangedObservable.SubscribeToSettingChange<ProxyConfiguration>(
                     ConfigurationProperties.ProxyConfiguration,
                     OnConfigurationChanged);
             if (NewLocalInstallerAvailable())
             {
+                SimpleLogger.Log("New local installer detected");
                 InstallNewVersion(_argumentsDataProvider.Minimized);
                 _updateCheckSubscription = Disposable.Empty;
             }
             else
             {
+                SimpleLogger.Log("No local installer detected");
                 CleanTemporaryFiles();
+                SimpleLogger.Log("Starting update check subscription");
                 _updateCheckSubscription =
                     AreUpdatesAvailable(UpdateCheckInterval)
                         .Where(updateAvailable => updateAvailable)
@@ -259,29 +275,55 @@
             {
                 NotifyNewVersion(true);
             }
+            SimpleLogger.Log("Started updater service");
         }
 
         private void OnDownloadSuccess()
         {
+            SimpleLogger.Log("Successfully downloaded new version.");
             MoveUpdatesToTempFolder();
             NotifyNewVersion();
         }
 
         public void Stop()
         {
+            SimpleLogger.Log("Stopping updater service");
             DisposeProxyConfigurationSubscription();
             DisposeUpdateCheckSubscription();
+            SimpleLogger.Log("Stopped updater service");
         }
 
         public void OnConfigurationChanged(ProxyConfiguration proxyConfiguration)
         {
+            SimpleLogger.Log("Proxy configuration changed");
             SetUpdateSource();
         }
 
         #endregion
 
         #region Methods
-        
+
+        private static Version GetInstalledVersion()
+        {
+            return ApplicationVersionProvider.GetVersion();
+        }
+
+        private static T ExecuteAndHandleErrorsWithDefault<T>(Func<T> executeFunc, T defaultValue)
+        {
+            T result;
+            try
+            {
+                result = executeFunc();
+            }
+            catch (Exception exception)
+            {
+                result = defaultValue;
+                ExceptionReporter.Instance.Report(exception);
+            }
+
+            return result;
+        }
+
         private void DisposeSystemIdleObserver()
         {
             if (_systemIdleObserver == null)
@@ -370,6 +412,7 @@
         {
             var proxy = _webProxyFactory.CreateFromAppConfiguration();
             _updateManager.UpdateSource = new SimpleWebSource(FeedUrl) { Proxy = proxy };
+            SimpleLogger.Log(string.Format("Updated update manager update source."));
         }
 
         private Version GetLocalInstallerVersion()
@@ -380,27 +423,6 @@
         private Version GetRemoteInstallerVersion()
         {
             return RemoteInstallerVersionProvider.GetVersion(_updateManager, InstallerName);
-        }
-
-        private Version GetInstalledVersion()
-        {
-            return ApplicationVersionProvider.GetVersion();
-        }
-
-        private T ExecuteAndHandleErrorsWithDefault<T>(Func<T> executeFunc, T defaultValue)
-        {
-            T result;
-            try
-            {
-                result = executeFunc();
-            }
-            catch (Exception exception)
-            {
-                result = defaultValue;
-                ExceptionReporter.Instance.Report(exception);
-            }
-
-            return result;
         }
 
         #endregion

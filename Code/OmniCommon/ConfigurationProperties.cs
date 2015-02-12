@@ -41,5 +41,7 @@
         public static string SMSSuffixEnabled = "SMSSuffixEnabled";
 
         public static string OmnipasteCredentials = "OmnipasteCredentials";
+
+        public static string EnableLogging = "EnableLogging";
     }
 }

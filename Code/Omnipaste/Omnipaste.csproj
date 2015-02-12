@@ -183,6 +183,9 @@
       <HintPath>..\packages\ninject.extensions.conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Org.Mentalis">
       <HintPath>..\..\Libs\SocksWebProxy\Org.Mentalis.dll</HintPath>
     </Reference>
@@ -253,11 +256,14 @@
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
     <Compile Include="Framework\ISubscriptionsManager.cs" />
+    <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Models\IModel.cs" />
+    <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
+    <Compile Include="Services\ExceptionReporters\LogExceptionReporter.cs" />
     <Compile Include="Services\Providers\ContactConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationProvider.cs" />
@@ -412,7 +418,7 @@
     <Compile Include="Services\Providers\ApplicationVersionProvider.cs" />
     <Compile Include="Services\Commands\CommandService.cs" />
     <Compile Include="Services\ConnectivitySupervisor.cs" />
-    <Compile Include="Services\BugFreakExceptionReporter.cs" />
+    <Compile Include="Services\ExceptionReporters\BugFreakExceptionReporter.cs" />
     <Compile Include="Services\EntitySupervisor.cs" />
     <Compile Include="Services\Providers\IApplicationVersionProvider.cs" />
     <Compile Include="Services\IConnectivitySupervisor.cs" />
