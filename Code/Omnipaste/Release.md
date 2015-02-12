@@ -1,4 +1,12 @@
-﻿**Version 1.3.8 (11.02.2015)**
+﻿**Version 1.3.9 (12.02.2015)**
+
+**Improvements:**
+
+- added better exception handling
+
+----------
+
+**Version 1.3.8 (11.02.2015)**
 
 **Improvements:**
 
