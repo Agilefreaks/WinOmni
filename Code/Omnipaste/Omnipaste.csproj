@@ -615,7 +615,6 @@
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
