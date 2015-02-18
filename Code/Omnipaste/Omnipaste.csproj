@@ -499,9 +499,7 @@
     <Compile Include="Services\UpdaterService.cs" />
     <Compile Include="SMSComposer\IInlineSMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityMenuEntryViewModel.cs" />
-    <Compile Include="SMSComposer\IModalSMSComposerViewModel.cs" />
     <Compile Include="SMSComposer\InlineSMSComposerViewModel.cs" />
-    <Compile Include="SMSComposer\ModalSMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
@@ -917,22 +915,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SMSComposer\InlineSMSComposerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Composing.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Sending.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Sent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
