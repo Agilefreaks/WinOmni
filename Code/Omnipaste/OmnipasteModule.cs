@@ -11,6 +11,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
     using Omnipaste.Activity;
+    using Omnipaste.ClippingList;
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
@@ -87,7 +88,7 @@
                            typeof(UpdateInfoRepository), typeof(MessageRepository),
                            typeof(ActivityWorkspace), typeof(PeopleWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
-                           typeof(ContactInfoViewModelFactory), typeof(ConversationProvider)
+                           typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider)
                        };
         }
 

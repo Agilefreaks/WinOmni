@@ -252,6 +252,15 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
+    <Compile Include="ClippingList\ClippingListViewModel.cs" />
+    <Compile Include="ClippingList\ClippingViewModel.cs" />
+    <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
+    <Compile Include="ClippingList\Converters\ContactInfoBorderBrushConverter.cs" />
+    <Compile Include="ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
+    <Compile Include="ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="ClippingList\IClippingViewModel.cs" />
+    <Compile Include="ClippingList\IClippingViewModelFactory.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
@@ -259,6 +268,7 @@
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Models\IModel.cs" />
@@ -505,7 +515,14 @@
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
     <Compile Include="Workspaces\IPeopleWorkspace.cs" />
     <Compile Include="Workspaces\PeopleWorkspace.cs" />
-    <Compile Include="Workspaces\SingleItemWorkspace.cs" />
+    <Page Include="ClippingList\ClippingListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClippingList\ClippingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkspaceDetails\WorkspaceDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -614,18 +631,6 @@
     <Compile Include="DataProviders\ArgumentsDataProvider.cs" />
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
-    <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
-    <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\AllClippingList\IAllClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\ClippingList\IClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\IMasterClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\CloudClippingList\ICloudClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\LocalClippingList\ILocalClippingListViewModel.cs" />
-    <Compile Include="MasterClippingList\LocalClippingList\LocalClippingListViewModel.cs" />
-    <Compile Include="Clipping\ClippingViewModel.cs" />
-    <Compile Include="Clipping\IClippingViewModel.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
     <Compile Include="Framework\Behaviours\BalloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
@@ -744,26 +749,6 @@
     <Page Include="Loading\CreateClipping\CreateClippingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MasterClippingList\ClippingList\ClippingListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterClippingList\ClippingList\ClippingList\Empty.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterClippingList\ClippingList\ClippingList\NotEmpty.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MasterClippingList\MasterClippingListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Clipping\ClippingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Loading\ActivationFailed\ActivationFailedView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -962,10 +947,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Workspaces\DetailsConductorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Workspaces\SingleItemWorkspaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

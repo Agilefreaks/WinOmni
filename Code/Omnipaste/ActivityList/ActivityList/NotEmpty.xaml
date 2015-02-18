@@ -26,7 +26,7 @@
                     <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.ActivityTypeFilterText}" FontSize="{DynamicResource FilterButtonFontSize}" 
                                FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.MasterClippingListDisplayName}" Margin="0"/>
+                        <CheckBox x:Name="ShowClippings" Style="{DynamicResource ClippingsCheckBoxStyle}" Content="{x:Static properties:Resources.Clippings}" Margin="0"/>
                         <CheckBox x:Name="ShowCalls" Style="{DynamicResource CallsCheckBoxStyle}" Content="{x:Static properties:Resources.Calls}"/>
                         <CheckBox x:Name="ShowMessages" Style="{DynamicResource MessagesCheckBoxStyle}" Content="{x:Static properties:Resources.Messages}"/>
                     </StackPanel>

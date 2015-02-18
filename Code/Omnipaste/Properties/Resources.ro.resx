@@ -225,7 +225,7 @@
   <data name="SmsComposerTitle" xml:space="preserve">
     <value>Trimite SMS</value>
   </data>
-  <data name="MasterClippingListDisplayName" xml:space="preserve">
+  <data name="Clippings" xml:space="preserve">
     <value>Clipping-uri</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
@@ -432,5 +432,14 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   </data>
   <data name="DiscussRelease" xml:space="preserve">
     <value>Discută despre noua versiune pe</value>
+  </data>
+  <data name="ClippingTypeFilterText" xml:space="preserve">
+    <value>Filtrează clipping-uri:</value>
+  </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
   </data>
 </root>

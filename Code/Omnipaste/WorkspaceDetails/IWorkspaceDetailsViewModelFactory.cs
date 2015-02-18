@@ -4,8 +4,10 @@
 
     public interface IWorkspaceDetailsViewModelFactory
     {
-        IWorkspaceDetailsViewModel Create(ActivityPresenter activity);
+        IWorkspaceDetailsViewModel Create(ActivityPresenter activityPresenter);
         
-        IWorkspaceDetailsViewModel Create(IContactInfoPresenter activity);
+        IWorkspaceDetailsViewModel Create(IContactInfoPresenter contactInfoPresenter);
+
+        IWorkspaceDetailsViewModel Create(ClippingPresenter clippingPresenter);
     }
 }

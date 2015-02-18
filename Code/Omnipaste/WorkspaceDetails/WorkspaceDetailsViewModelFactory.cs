@@ -11,33 +11,32 @@
     public class WorkspaceDetailsViewModelFactory : IWorkspaceDetailsViewModelFactory
     {
         private readonly IServiceLocator _serviceLocator;
-        
+
         public WorkspaceDetailsViewModelFactory(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }
 
-        public IWorkspaceDetailsViewModel Create(ActivityPresenter activity)
+        public IWorkspaceDetailsViewModel Create(ActivityPresenter activityPresenter)
         {
             IWorkspaceDetailsViewModel result;
-            switch (activity.Type)
+            switch (activityPresenter.Type)
             {
                 case ActivityTypeEnum.Clipping:
-                    result = _serviceLocator.GetInstance<IClippingDetailsViewModel>();
-                    result.Model = activity;
+                    result = Create(new ClippingPresenter(activityPresenter.BackingModel as ClippingModel));
                     break;
                 case ActivityTypeEnum.Message:
                 case ActivityTypeEnum.Call:
-                    result = Create(new ContactInfoPresenter(activity.ExtraData.ContactInfo as ContactInfo));
+                    result = Create(new ContactInfoPresenter(activityPresenter.ExtraData.ContactInfo as ContactInfo));
                     break;
                 case ActivityTypeEnum.Version:
                     result = _serviceLocator.GetInstance<IVersionDetailsViewModel>();
-                    result.Model = activity;
+                    result.Model = activityPresenter;
                     break;
                 default:
                     throw new Exception("Unknown type");
             }
-            
+
             return result;
         }
 
@@ -45,6 +44,14 @@
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
             result.Model = contactInfoPresenter;
+
+            return result;
+        }
+
+        public IWorkspaceDetailsViewModel Create(ClippingPresenter clippingPresenter)
+        {
+            var result = _serviceLocator.GetInstance<IClippingDetailsViewModel>();
+            result.Model = clippingPresenter;
 
             return result;
         }

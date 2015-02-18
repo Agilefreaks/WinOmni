@@ -99,11 +99,11 @@
         <Setter Property="Background" Value="{DynamicResource ContentBackgroundBrush}"/>
     </Style>
     
-    <Style x:Key="ContactInfoBorderStyle" TargetType="{x:Type Border}">
+    <Style x:Key="ListItemBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="Height" Value="70"/>
         <Setter Property="Padding" Value="18,0"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="MaxWidth" Value="{DynamicResource ContactInfoWidth}"/>
+        <Setter Property="MaxWidth" Value="{DynamicResource NarrowContainerWidth}"/>
     </Style>
 </ResourceDictionary>

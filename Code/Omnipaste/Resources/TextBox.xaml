@@ -9,7 +9,7 @@
     </Style>
 
     <Style TargetType="TextBox" x:Key="ActivityContentTextBoxStyle">
-        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
+        <Setter Property="FontSize" Value="{DynamicResource MediumFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
         <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -48,7 +48,7 @@
                             </Rectangle>
 
                             <TextBox Grid.Column="1" Name="SearchTextBox" VerticalAlignment="Center" BorderThickness="0" FontFamily="{DynamicResource ActivityContentFont}" 
-                                     FontSize="{DynamicResource ActivityContentFontSize}" Background="Transparent" Margin="0"
+                                     FontSize="{DynamicResource MediumFontSize}" Background="Transparent" Margin="0"
                                      Text="{Binding Path=Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <Rectangle Grid.Column="2" Name="ResultIndicatorIcon" DockPanel.Dock="Right" Width="10" Height="13" Fill="{DynamicResource ActivityContentBrush}" Opacity="0">
@@ -130,7 +130,7 @@
     </Style>
 
     <Style TargetType="RichTextBox" x:Key="ActivityContentRichTextBoxStyle">
-        <Setter Property="FontSize" Value="{DynamicResource ActivityContentFontSize}"/>
+        <Setter Property="FontSize" Value="{DynamicResource MediumFontSize}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
         <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>

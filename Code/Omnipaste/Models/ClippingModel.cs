@@ -10,6 +10,8 @@
 
         public string DeviceId { get; set; }
 
+        public bool IsStarred { get; set; }
+
         public Clipping.ClippingTypeEnum Type { get; set; }
 
         public Clipping.ClippingSourceEnum Source { get; set; }

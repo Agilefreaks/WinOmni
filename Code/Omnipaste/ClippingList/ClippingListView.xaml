@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Omnipaste.ClippingList.ClippingListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:framework="clr-namespace:Omnipaste.Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Height="150" Padding="18,42,18,37">
+            <StackPanel>
+                <DockPanel VerticalAlignment="Center">
+                    <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.Clippings}" Foreground="{DynamicResource ActivityContentBrush}"
+                               FontFamily="{DynamicResource HeaderTitleFont}" FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap"
+                               VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom" Margin="0,16,0,0">
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.ClippingTypeFilterText}" FontSize="{DynamicResource FilterButtonFontSize}" 
+                               FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox x:Name="ShowCloudClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Cloud}" Margin="0,0,10,0">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Fill" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Fill" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
+
+                        <CheckBox x:Name="ShowLocalClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Local}" Margin="0,0,10,0">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Fill" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Fill" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
+
+                        <CheckBox x:Name="ShowStarred" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Starred}">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="15" Height="15"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="15" Height="15"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
+            <ScrollViewer>
+                <i:Interaction.Behaviors>
+                    <behaviors:ScrollBehavior Collection="{Binding Path=FilteredItems}" ScrollDirection="Top" />
+                </i:Interaction.Behaviors>
+
+                <Grid>
+                    <ItemsControl ItemsSource="{Binding Path=FilteredItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl cal:View.Model="{Binding}" HorizontalAlignment="Stretch"  Style="{DynamicResource AnimatedContentControlStyle}"
+                                                VerticalContentAlignment="Top" Tag="{Binding Path=Model.IsDeleted}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+
+</UserControl>

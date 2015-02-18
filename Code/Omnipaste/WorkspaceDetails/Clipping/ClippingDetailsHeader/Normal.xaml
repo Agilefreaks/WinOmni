@@ -29,10 +29,10 @@
                 <TextBlock Text="{x:Static properties:Resources.ClippingDetailsHeaderTitle}" 
                        Margin="13,0,0,0" VerticalAlignment="Center"
                        FontFamily="{DynamicResource ActivityContentFont}" 
-                       FontSize="{DynamicResource ActivityContentFontSize}" 
+                       FontSize="{DynamicResource MediumFontSize}" 
                        Foreground="{DynamicResource LabelBrush}"/>
                 <TextBlock x:Name="Model_Device" FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"
-                       FontSize="{DynamicResource ActivityContentFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
+                       FontSize="{DynamicResource MediumFontSize}" Foreground="{DynamicResource ActivityContentBrush}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button Style="{DynamicResource ShapeButtonWithOuterHighlight}" Margin="0,0,14,0"
