@@ -128,6 +128,9 @@
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
     <Compile Include="Activity\VersionActivityViewModelTests.cs" />
+    <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
+    <Compile Include="ClippingList\ClippingViewModelFactoryTests.cs" />
+    <Compile Include="ClippingList\ClippingViewModelTests.cs" />
     <Compile Include="ContactList\ContactInfoViewModelFactoryTests.cs" />
     <Compile Include="ContactList\ContactInfoViewModelTests.cs" />
     <Compile Include="ContactList\ContactListViewModelTests.cs" />
@@ -209,6 +212,7 @@
     <Compile Include="Models\SMSMessageFactoryTests.cs" />
     <Compile Include="Models\SMSMessageTests.cs" />
     <Compile Include="WorkspaceDetails\Clippings\ClippingDetailsContentViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactoryTests.cs" />
     <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
   </ItemGroup>
   <ItemGroup>

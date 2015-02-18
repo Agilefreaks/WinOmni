@@ -228,7 +228,7 @@
   <data name="SmsComposerTitle" xml:space="preserve">
     <value>Send SMS</value>
   </data>
-  <data name="MasterClippingListDisplayName" xml:space="preserve">
+  <data name="Clippings" xml:space="preserve">
     <value>Clippings</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
@@ -432,5 +432,11 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   </data>
   <data name="DiscussRelease" xml:space="preserve">
     <value>Discuss this release on</value>
+  </data>
+  <data name="ClippingTypeFilterText" xml:space="preserve">
+    <value>Filter clippings:</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

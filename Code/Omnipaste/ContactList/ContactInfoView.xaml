@@ -19,7 +19,7 @@
         <Border BorderThickness="0,1,0,1" BorderBrush="{Binding Path=IsSelected, Converter={StaticResource ContactInfoBorderBrushConverter}}" />
         <Border Background="{Binding Path=IsSelected, Converter={StaticResource ContactInfoBackroundBrushConverter}}" Opacity="0.05" />
         
-        <Border Style="{DynamicResource ContactInfoBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
+        <Border Style="{DynamicResource ListItemBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
             <Border.InputBindings>
                 <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
             </Border.InputBindings>

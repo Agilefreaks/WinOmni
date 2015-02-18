@@ -252,6 +252,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClippingList\ClippingListViewModel.cs" />
+    <Compile Include="ClippingList\ClippingViewModel.cs" />
+    <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
+    <Compile Include="ClippingList\Converters\ContactInfoBorderBrushConverter.cs" />
+    <Compile Include="ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
+    <Compile Include="ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="ClippingList\IClippingViewModel.cs" />
+    <Compile Include="ClippingList\IClippingViewModelFactory.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
@@ -259,6 +267,7 @@
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Models\IModel.cs" />
@@ -509,6 +518,14 @@
     <Compile Include="Workspaces\IClippingWorkspace.cs" />
     <Compile Include="Workspaces\IPeopleWorkspace.cs" />
     <Compile Include="Workspaces\PeopleWorkspace.cs" />
+    <Page Include="ClippingList\ClippingListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClippingList\ClippingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkspaceDetails\WorkspaceDetailsContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

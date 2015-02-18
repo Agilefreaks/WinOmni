@@ -334,6 +334,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clippings.
+        /// </summary>
+        public static string Clippings {
+            get {
+                return ResourceManager.GetString("Clippings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter clippings:.
+        /// </summary>
+        public static string ClippingTypeFilterText {
+            get {
+                return ResourceManager.GetString("ClippingTypeFilterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can now copy and paste text across devices. Try that now by copying some text from your Android device.
         /// </summary>
         public static string CongratulationsContent {
@@ -650,15 +668,6 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clippings.
-        /// </summary>
-        public static string MasterClippingListDisplayName {
-            get {
-                return ResourceManager.GetString("MasterClippingListDisplayName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MasterClippingListHeaderAll {
@@ -961,6 +970,15 @@ namespace Omnipaste.Properties {
         public static string Starred {
             get {
                 return ResourceManager.GetString("Starred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
