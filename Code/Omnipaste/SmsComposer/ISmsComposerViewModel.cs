@@ -5,11 +5,9 @@
 
     public interface ISMSComposerViewModel : IScreen
     {
-        bool CanSend { get; }
-
-        SMSMessage Model { get; set; }
-
         ContactInfo ContactInfo { get; set; }
+
+        string Message { get; set; }
 
         void Send();
     }

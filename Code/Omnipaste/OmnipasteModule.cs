@@ -84,7 +84,7 @@
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository), typeof(ContactRepository),
-                           typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(SMSMessageFactory),
+                           typeof(UpdateInfoRepository), typeof(MessageRepository),
                            typeof(ActivityWorkspace), typeof(PeopleWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ContactInfoViewModelFactory), typeof(ConversationProvider)

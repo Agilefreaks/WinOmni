@@ -13,10 +13,10 @@
                 Height="110" Margin="11,0">
         <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Top">
-                <TextBox x:Name="Model_Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap"
-                                 IsEnabled="{Binding Path=CanEditText}" Width="468" Height="60" Margin="11,11,8,11" VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap"
+                                 IsEnabled="{Binding Path=CanSend}" Width="468" Height="60" Margin="11,11,8,11" VerticalScrollBarVisibility="Auto">
                     <i:Interaction.Behaviors>
-                        <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanEditText}" />
+                        <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanSend}" />
                         <behaviours:AddNewLineBehavior ModifierKey="Shift" Key="Enter" TextToAdd="{x:Static system:Environment.NewLine}"/>
                         <behaviors:HotKeyCommandBehavior Key="Enter" Command="{Binding Path=SendCommand}" />
                     </i:Interaction.Behaviors>

@@ -486,8 +486,6 @@
       <DependentUpon>SessionInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
-    <Compile Include="Models\ISMSMessageFactory.cs" />
-    <Compile Include="Models\SMSMessageFactory.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />

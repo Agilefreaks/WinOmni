@@ -1,64 +1,49 @@
 ﻿namespace Omnipaste.SMSComposer
 {
     using System;
-    using System.ComponentModel;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
-    using OmniApi.Models;
     using OmniCommon.Helpers;
+    using OmniCommon.Interfaces;
     using Omnipaste.Dialog;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
+    using Omnipaste.Properties;
+    using SMS.Models;
     using SMS.Resources.v1;
-    
+
     public class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
         #region Fields
 
         private readonly ISMSMessages _smsMessages;
 
-        protected readonly ISMSMessageFactory SMSMessageFactory;
+        private readonly IConfigurationService _configurationService;
 
         private bool _isSending;
-
-        private SMSMessage _model;
 
         private Command _sendCommand;
 
         private ContactInfo _contactInfo;
 
+        private string _message;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public SMSComposerViewModel(ISMSMessages smsMessages, ISMSMessageFactory smsMessageFactory)
+        public SMSComposerViewModel(ISMSMessages smsMessages, IConfigurationService configurationService)
         {
             _smsMessages = smsMessages;
-            SMSMessageFactory = smsMessageFactory;
+            _configurationService = configurationService;
             SendCommand = new Command(Send);
         }
 
         #endregion
 
         #region Public Properties
-
-        public virtual bool CanSend
-        {
-            get
-            {
-                return !IsSending && !string.IsNullOrEmpty(Model.Recipient) && !string.IsNullOrEmpty(Model.Message);
-            }
-        }
-
-        public bool CanEditText
-        {
-            get
-            {
-                return !IsSending;
-            }
-        }
 
         [Inject]
         public IDialogViewModel DialogViewModel { get; set; }
@@ -78,31 +63,19 @@
                 _isSending = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CanSend);
-                NotifyOfPropertyChange(() => CanEditText);
+            }
+        }
+
+        public bool CanSend
+        {
+            get
+            {
+                return !IsSending;
             }
         }
 
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
-
-        public SMSMessage Model
-        {
-            get
-            {
-                return _model;
-            }
-            set
-            {
-                if (_model != null)
-                {
-                    _model.PropertyChanged -= ModelPropertyChanged;
-                }
-
-                _model = value;
-                _model.PropertyChanged += ModelPropertyChanged;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public Command SendCommand
         {
@@ -138,6 +111,23 @@
             }
         }
 
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                if (value == _message)
+                {
+                    return;
+                }
+                _message = value;
+                NotifyOfPropertyChange(() => Message);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -145,7 +135,7 @@
         public virtual void Send()
         {
             IsSending = true;
-            _smsMessages.Send(Model.Recipient, Model.Message)
+            _smsMessages.Send(ContactInfo.Phone, Message)
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);
@@ -157,7 +147,7 @@
 
         protected override void OnActivate()
         {
-            Model = SMSMessageFactory.Create(ContactInfo);
+            StartNewMessage();
             base.OnActivate();
         }
 
@@ -166,17 +156,18 @@
             IsSending = false;
         }
 
-        protected virtual void OnSentSMS(EmptyModel model)
+        protected virtual void OnSentSMS(SmsMessage model)
         {
             IsSending = false;
-            MessageRepository.Save(Model.BaseModel);
-            NotifyOfPropertyChange(() => CanSend);
-            Model = SMSMessageFactory.Create(ContactInfo);
+            MessageRepository.Save(new Models.Message(model));
+            StartNewMessage();
         }
 
-        private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void StartNewMessage()
         {
-            NotifyOfPropertyChange(() => CanSend);
+            Message = _configurationService.IsSMSSuffixEnabled
+                          ? string.Format("{0}{1}", Environment.NewLine, Resources.SentFromOmnipaste)
+                          : string.Empty;
         }
 
         #endregion
