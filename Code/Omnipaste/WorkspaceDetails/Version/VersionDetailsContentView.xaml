@@ -44,8 +44,8 @@
 
     </UserControl.Resources>
 
-    <DockPanel LastChildFill="True">
-        <RichTextBox DockPanel.Dock="Top" Style="{DynamicResource ActivityContentRichTextBoxStyle}" Margin="20,0"
+    <DockPanel LastChildFill="True" Margin="20,0,0,0">
+        <RichTextBox DockPanel.Dock="Top" Style="{DynamicResource ActivityContentRichTextBoxStyle}"
                      Visibility="{Binding Path=WasInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
             <FlowDocument>
                 <Paragraph>
