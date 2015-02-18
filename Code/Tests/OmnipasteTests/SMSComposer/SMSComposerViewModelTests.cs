@@ -14,9 +14,9 @@
     using SMS.Resources.v1;
 
     [TestFixture]
-    public class InlineSMSComposerViewModelTests
+    public class SMSComposerViewModelTests
     {
-        private IInlineSMSComposerViewModel _subject;
+        private ISMSComposerViewModel _subject;
 
         private Mock<ISMSMessageFactory> _mockSMSMessageFactory;
 
@@ -32,7 +32,7 @@
             _mockSMSMessageFactory = new Mock<ISMSMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockSMSMessages = new Mock<ISMSMessages>();
             _mockMessageRepository = new Mock<IMessageRepository>();
-            _subject = new InlineSMSComposerViewModel(_mockSMSMessages.Object, _mockSMSMessageFactory.Object)
+            _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockSMSMessageFactory.Object)
                            {
                                MessageRepository = _mockMessageRepository.Object
                            };

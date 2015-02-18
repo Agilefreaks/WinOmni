@@ -12,8 +12,8 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using SMS.Resources.v1;
-
-    public abstract class SMSComposerViewModel : Screen, ISMSComposerViewModel
+    
+    public class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
         #region Fields
 
@@ -27,11 +27,13 @@
 
         private Command _sendCommand;
 
+        private ContactInfo _contactInfo;
+
         #endregion
 
         #region Constructors and Destructors
 
-        protected SMSComposerViewModel(ISMSMessages smsMessages, ISMSMessageFactory smsMessageFactory)
+        public SMSComposerViewModel(ISMSMessages smsMessages, ISMSMessageFactory smsMessageFactory)
         {
             _smsMessages = smsMessages;
             SMSMessageFactory = smsMessageFactory;
@@ -119,6 +121,23 @@
             }
         }
 
+        public ContactInfo ContactInfo
+        {
+            get
+            {
+                return _contactInfo;
+            }
+            set
+            {
+                if (Equals(value, _contactInfo))
+                {
+                    return;
+                }
+                _contactInfo = value;
+                NotifyOfPropertyChange(() => ContactInfo);
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -136,6 +155,12 @@
 
         #region Methods
 
+        protected override void OnActivate()
+        {
+            Model = SMSMessageFactory.Create(ContactInfo);
+            base.OnActivate();
+        }
+
         protected virtual void OnSendSMSError(Exception exception)
         {
             IsSending = false;
@@ -146,6 +171,7 @@
             IsSending = false;
             MessageRepository.Save(Model.BaseModel);
             NotifyOfPropertyChange(() => CanSend);
+            Model = SMSMessageFactory.Create(ContactInfo);
         }
 
         private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)

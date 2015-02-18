@@ -12,7 +12,7 @@
         public IConversationContentViewModel ConversationContentViewModel { get; set; }
 
         [Inject]
-        public IInlineSMSComposerViewModel SMSComposer { get; set; }
+        public ISMSComposerViewModel SMSComposer { get; set; }
 
         #endregion
 

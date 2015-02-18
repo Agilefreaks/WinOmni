@@ -497,9 +497,9 @@
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
-    <Compile Include="SMSComposer\IInlineSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityMenuEntryViewModel.cs" />
-    <Compile Include="SMSComposer\InlineSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
@@ -656,8 +656,6 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
-    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
-    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\Monitors\Internet\ConnectivityHelper.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitor.cs" />
@@ -914,7 +912,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SMSComposer\InlineSMSComposerView.xaml">
+    <Page Include="SMSComposer\SMSComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

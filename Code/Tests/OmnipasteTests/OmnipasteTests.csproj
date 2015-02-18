@@ -205,7 +205,7 @@
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModelTests.cs" />
-    <Compile Include="SMSComposer\InlineSMSComposerViewModelTests.cs" />
+    <Compile Include="SMSComposer\SMSComposerViewModelTests.cs" />
     <Compile Include="Models\SMSMessageFactoryTests.cs" />
     <Compile Include="Models\SMSMessageTests.cs" />
     <Compile Include="WorkspaceDetails\Clippings\ClippingDetailsContentViewModelTests.cs" />
