@@ -1,7 +1,6 @@
 ﻿namespace OmniDebug.Services
 {
     using System;
-    using OmniApi.Models;
     using SMS.Models;
     using SMS.Resources.v1;
 
@@ -15,7 +14,7 @@
             _originalResource = originalResource;
         }
 
-        public IObservable<EmptyModel> Send(string phoneNumber, string message)
+        public IObservable<SmsMessage> Send(string phoneNumber, string message)
         {
             return _originalResource.Send(phoneNumber, message);
         }

@@ -1,7 +1,6 @@
 ﻿namespace SMS.Resources.v1
 {
     using System;
-    using OmniApi.Models;
     using Refit;
     using SMS.Models;
 
@@ -11,6 +10,6 @@
         IObservable<SmsMessage> Get([AliasAs("id")] string id, [Header("Authorization")] string token);
         
         [Post("/sms_messages")]
-        IObservable<EmptyModel> Create([Body] object payload, [Header("Authorization")] string token);
+        IObservable<SmsMessage> Create([Body] object payload, [Header("Authorization")] string token);
     }
 }

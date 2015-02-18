@@ -5,18 +5,10 @@
 
     public interface ISMSComposerViewModel : IScreen
     {
-        #region Public Properties
+        ContactInfo ContactInfo { get; set; }
 
-        bool CanSend { get; }
-
-        SMSMessage Model { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
+        string Message { get; set; }
 
         void Send();
-
-        #endregion
     }
 }
