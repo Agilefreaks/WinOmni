@@ -1,4 +1,12 @@
-﻿**Version 1.3.9 (12.02.2015)**
+﻿**Version 1.3.10 (19.02.2015)**
+
+**Improvements:**
+
+- added global exception logging
+
+----------
+
+**Version 1.3.9 (12.02.2015)**
 
 **Improvements:**
 
