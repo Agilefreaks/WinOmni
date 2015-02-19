@@ -264,6 +264,7 @@
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
     <Compile Include="Services\ExceptionReporters\LogExceptionReporter.cs" />
+    <Compile Include="Services\GlobalExceptionLogger.cs" />
     <Compile Include="Services\Providers\ContactConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationProvider.cs" />
