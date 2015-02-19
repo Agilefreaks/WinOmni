@@ -123,6 +123,8 @@
                 Application.Current);
             ExceptionReporter.Instance = _kernel.Get<IExceptionReporter>();
 
+            GlobalExceptionLogger.Hook();
+            
             Humanizer.Configuration.Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy();
 
             if (configurationService.DebugMode)
