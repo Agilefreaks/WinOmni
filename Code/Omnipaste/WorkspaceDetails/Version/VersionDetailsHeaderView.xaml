@@ -21,7 +21,7 @@
             <TextBlock Text="{x:Static properties:Resources.VersionDetailsHeaderTitle}" 
                        Margin="13,0,0,0" 
                        FontFamily="{DynamicResource ActivityContentFont}" 
-                       FontSize="{DynamicResource ActivityContentFontSize}" 
+                       FontSize="{DynamicResource MediumFontSize}" 
                        Foreground="{DynamicResource ActivityContentBrush}"/>
         </StackPanel>
         <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource VersionBrush}" 

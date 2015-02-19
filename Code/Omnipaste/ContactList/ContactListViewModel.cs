@@ -160,6 +160,5 @@ namespace Omnipaste.ContactList
                 RefreshViewForItem(contactPresenter);
             }
         }
-
     }
 }

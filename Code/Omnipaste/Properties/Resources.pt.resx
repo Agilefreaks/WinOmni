@@ -228,7 +228,7 @@
   <data name="SmsComposerTitle" xml:space="preserve">
     <value>Enviar Mensagem</value>
   </data>
-  <data name="MasterClippingListDisplayName" xml:space="preserve">
+  <data name="Clippings" xml:space="preserve">
     <value>Cortes</value>
   </data>
   <data name="ShellBallonContent" xml:space="preserve">
@@ -432,5 +432,14 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   </data>
   <data name="DiscussRelease" xml:space="preserve">
     <value>Discutir esta versão em</value>
+  </data>
+  <data name="ClippingTypeFilterText" xml:space="preserve">
+    <value>Filtre cortes:</value>
+  </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Nuvem</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
   </data>
 </root>

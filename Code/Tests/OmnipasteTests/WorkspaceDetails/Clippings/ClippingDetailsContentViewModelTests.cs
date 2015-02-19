@@ -36,7 +36,7 @@
         public void Activate_WhenModelWasNotViewed_DismissesNotificationForActivity()
         {
             const string Identifier = "42";
-            var activity = new ActivityPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -47,7 +47,7 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SetsModelWasViewedToTrue()
         {
-            var activity = new ActivityPresenter(new ClippingModel { WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingModel { WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -58,12 +58,12 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SavesModel()
         {
-            var activity = new ActivityPresenter(new ClippingModel { WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingModel { WasViewed = false });
             _subject.Model = activity;
             
             ((IActivate)_subject).Activate();
 
-            _mockClippingRepository.Verify(m => m.Save(activity.BackingModel as ClippingModel));
+            _mockClippingRepository.Verify(m => m.Save(activity.BackingModel));
         }
     }
 }

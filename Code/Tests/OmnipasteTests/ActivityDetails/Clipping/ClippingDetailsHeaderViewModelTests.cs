@@ -22,7 +22,7 @@
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ClippingDetailsHeaderViewModel
                            {
-                               Model = new ActivityPresenter(new ClippingModel { UniqueId = "42" }),
+                               Model = new ClippingPresenter(new ClippingModel { UniqueId = "42" }),
                                ClippingRepository = _mockClippingRepository.Object
                            };
         }
