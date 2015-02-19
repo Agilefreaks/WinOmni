@@ -7,6 +7,7 @@
              xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:framework="clr-namespace:Omnipaste.Framework"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
@@ -26,6 +27,32 @@
                     <TextBlock DockPanel.Dock="Left" Text="{x:Static properties:Resources.ClippingTypeFilterText}" FontSize="{DynamicResource FilterButtonFontSize}" 
                                FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox x:Name="ShowCloudClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.FromCloud}" Margin="0,0,10,0">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Uniform" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
+
+                        <CheckBox x:Name="ShowLocalClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.FromLocal}" Margin="0,0,10,0">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Uniform" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
+
+                        <CheckBox x:Name="ShowStarred" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Starred}">
+                            <framework:CheckboxHelper.CheckedIcon>
+                                <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="15" Height="15"/>
+                            </framework:CheckboxHelper.CheckedIcon>
+                            <framework:CheckboxHelper.UncheckedIcon>
+                                <Rectangle Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="15" Height="15"/>
+                            </framework:CheckboxHelper.UncheckedIcon>
+                        </CheckBox>
                     </StackPanel>
                 </DockPanel>
             </StackPanel>

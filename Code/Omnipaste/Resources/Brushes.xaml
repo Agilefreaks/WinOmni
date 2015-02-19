@@ -403,4 +403,74 @@
             </Canvas>
         </VisualBrush.Visual>
     </VisualBrush>
+    
+    <VisualBrush x:Key="CloudIconBrush">
+        <VisualBrush.Visual>
+            <Viewbox Stretch="Uniform">
+                <Canvas Width="21.25" Height="15">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="0" Y="0"/>
+                    </Canvas.RenderTransform>
+                    <Canvas.Resources>
+                        <PathGeometry x:Key="clipPath3350" Figures="M 0 12 17 12 17 0 0 0 0 12 Z" FillRule="NonZero"/>
+                    </Canvas.Resources>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="1.25 0 0 -1.25 0 15"/>
+                        </Canvas.RenderTransform>
+                        <Canvas>
+                            <Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="13.2015" Y="0.5002"/>
+                                    </Canvas.RenderTransform>
+                                    <Path StrokeThickness="1" Stroke="#FFE7E6E6" StrokeMiterLimit="10" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 0 0 C 1.819 0 3.298 1.493 3.298 3.329 3.299 4.75 2.382 6.021 1.072 6.477 1.091 6.634 1.108 6.813 1.108 6.947 1.108 9.182 -0.694 11 -2.908 11 -4.313 11 -5.609 10.254 -6.333 9.064 -6.78 9.369 -7.307 9.533 -7.858 9.533 c -1.506 0 -2.731 -1.236 -2.731 -2.756 0 -0.164 0.014 -0.327 0.042 -0.486 C -11.834 5.815 -12.702 4.582 -12.702 3.168 -12.702 1.362 -11.283 0 -9.403 0 L 0 0 Z" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                            </Canvas>
+                        </Canvas>
+                    </Canvas>
+                </Canvas>
+            </Viewbox>
+        </VisualBrush.Visual>
+    </VisualBrush>
+    
+    <VisualBrush x:Key="LocalIconBrush">
+        <VisualBrush.Visual>
+            <Viewbox Stretch="Uniform">
+                <Canvas Width="21" Height="16">
+                    <Canvas.Resources>
+                        <PathGeometry x:Key="clipPath2999" Figures="M 0 13 17 13 17 0 0 0 0 13 z" FillRule="NonZero"/>
+                    </Canvas.Resources>
+                    <Canvas>
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="1.25 0 0 -1.25 0 16.25"/>
+                        </Canvas.RenderTransform>
+                        <Canvas>
+                            <Canvas>
+                                <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                                    <Path.Data>
+                                        <PathGeometry Figures="m 16.5 12.5 -16 0 0 -9.794 16 0 0 9.794 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="10.8571" Y="0.5"/>
+                                    </Canvas.RenderTransform>
+                                    <Path StrokeThickness="1" Stroke="#FFE6E6E6" StrokeMiterLimit="10" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 0 0 -4.714 0" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                            </Canvas>
+                        </Canvas>
+                    </Canvas>
+                </Canvas>
+            </Viewbox>
+        </VisualBrush.Visual>
+    </VisualBrush>
 </ResourceDictionary>

@@ -252,6 +252,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
