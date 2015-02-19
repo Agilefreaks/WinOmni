@@ -487,8 +487,6 @@
       <DependentUpon>SessionInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
-    <Compile Include="Models\ISMSMessageFactory.cs" />
-    <Compile Include="Models\SMSMessageFactory.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
@@ -498,11 +496,9 @@
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
-    <Compile Include="SMSComposer\IInlineSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityMenuEntryViewModel.cs" />
-    <Compile Include="SMSComposer\IModalSMSComposerViewModel.cs" />
-    <Compile Include="SMSComposer\InlineSMSComposerViewModel.cs" />
-    <Compile Include="SMSComposer\ModalSMSComposerViewModel.cs" />
+    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Workspaces\ActivityWorkspace.cs" />
     <Compile Include="Workspaces\ClippingWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
@@ -620,7 +616,6 @@
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
     <Compile Include="MasterClippingList\AllClippingList\AllClippingListViewModel.cs" />
-    <Compile Include="EventAggregatorMessages\SendSmsMessage.cs" />
     <Compile Include="MasterClippingList\MasterClippingListViewModel.cs" />
     <Compile Include="MasterClippingList\ClippingList\ClippingListViewModelBase.cs" />
     <Compile Include="MasterClippingList\CloudClippingList\CloudClippingListViewModel.cs" />
@@ -659,8 +654,6 @@
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
-    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
-    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
     <Compile Include="Services\Monitors\Internet\ConnectivityHelper.cs" />
     <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitor.cs" />
@@ -917,23 +910,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SMSComposer\InlineSMSComposerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Composing.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Sending.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SMSComposer\ModalSMSComposer\Sent.xaml">
+    <Page Include="SMSComposer\SMSComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
