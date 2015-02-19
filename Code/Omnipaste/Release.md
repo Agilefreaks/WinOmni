@@ -1,4 +1,13 @@
-﻿**Version 1.3.9 (12.02.2015)**
+﻿**Version 1.3.10 (19.02.2015)**
+
+**Bug fixes:**
+
+- fixed issue with time for outgoing messages that was set to a value prior to the time the message was sent
+- fixed issue with release log text not being left aligned
+
+----------
+
+**Version 1.3.9 (12.02.2015)**
 
 **Improvements:**
 
