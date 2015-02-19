@@ -29,19 +29,19 @@
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                         <CheckBox x:Name="ShowCloudClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Cloud}" Margin="0,0,10,0">
                             <framework:CheckboxHelper.CheckedIcon>
-                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Uniform" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Fill" OpacityMask="{DynamicResource CloudIconBrush}"/>
                             </framework:CheckboxHelper.CheckedIcon>
                             <framework:CheckboxHelper.UncheckedIcon>
-                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource CloudIconBrush}"/>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Fill" OpacityMask="{DynamicResource CloudIconBrush}"/>
                             </framework:CheckboxHelper.UncheckedIcon>
                         </CheckBox>
 
                         <CheckBox x:Name="ShowLocalClippings" Style="{DynamicResource CheckboxWithIconStyle}" Content="{x:Static properties:Resources.Local}" Margin="0,0,10,0">
                             <framework:CheckboxHelper.CheckedIcon>
-                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Uniform" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ClippingBrush}" Stretch="Fill" OpacityMask="{DynamicResource LocalIconBrush}"/>
                             </framework:CheckboxHelper.CheckedIcon>
                             <framework:CheckboxHelper.UncheckedIcon>
-                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource LocalIconBrush}"/>
+                                <Rectangle Width="17" Height="12" Fill="{DynamicResource ButtonBorderBrush}" Stretch="Fill" OpacityMask="{DynamicResource LocalIconBrush}"/>
                             </framework:CheckboxHelper.UncheckedIcon>
                         </CheckBox>
 
