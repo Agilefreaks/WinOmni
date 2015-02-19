@@ -1,4 +1,12 @@
-﻿**Version 1.3.10 (19.02.2015)**
+﻿**Version 1.3.11 (19.02.2015)**
+
+**Features:**
+
+- implemented new Clipping screen
+
+----------
+
+**Version 1.3.10 (19.02.2015)**
 
 **Bug fixes:**
 
