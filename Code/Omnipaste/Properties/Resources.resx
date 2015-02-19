@@ -439,4 +439,10 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="String1" xml:space="preserve">
     <value />
   </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
 </root>

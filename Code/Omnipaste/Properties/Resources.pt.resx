@@ -436,4 +436,10 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="ClippingTypeFilterText" xml:space="preserve">
     <value>Filtre cortes:</value>
   </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Nuvem</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
 </root>

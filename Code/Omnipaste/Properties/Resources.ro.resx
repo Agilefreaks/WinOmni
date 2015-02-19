@@ -436,4 +436,10 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="ClippingTypeFilterText" xml:space="preserve">
     <value>Filtrează clipping-uri:</value>
   </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
 </root>

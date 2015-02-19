@@ -352,6 +352,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cloud.
+        /// </summary>
+        public static string Cloud {
+            get {
+                return ResourceManager.GetString("Cloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can now copy and paste text across devices. Try that now by copying some text from your Android device.
         /// </summary>
         public static string CongratulationsContent {
@@ -664,6 +673,15 @@ namespace Omnipaste.Properties {
         public static string LoadingLabel {
             get {
                 return ResourceManager.GetString("LoadingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
             }
         }
         
