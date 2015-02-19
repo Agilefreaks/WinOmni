@@ -38,8 +38,8 @@
                 </CheckBox>
 
                 <ContentControl Grid.Column="1" Style="{DynamicResource FadingContentControlStyle}" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Path=Model.Content, Converter={StaticResource NonWhiteSpaceStringConverter}}" 
-                       FontFamily="{DynamicResource ActivityContentFont}" FontSize="14" TextTrimming="None" TextWrapping="NoWrap" />
+                    <TextBlock Text="{Binding Path=Model.Content, Converter={StaticResource NonWhiteSpaceStringConverter}}" MaxHeight="{DynamicResource MediumFontLineHeight}"
+                       FontSize="{DynamicResource MediumFontSize}" FontFamily="{DynamicResource ActivityContentFont}" TextTrimming="None" TextWrapping="NoWrap" />
                 </ContentControl>
 
                 <Rectangle Grid.Column="2" Width="13" Height="13" 

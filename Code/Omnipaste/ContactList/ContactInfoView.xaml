@@ -49,13 +49,13 @@
 
                 <ContentControl Grid.Column="2" HorizontalAlignment="Stretch" Style="{DynamicResource FadingContentControlStyle}">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource ActivityContentFontSize}"
+                        <TextBlock Text="{Binding Path=Model.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource MediumFontSize}"
                                    TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
                                    Foreground="{DynamicResource ActivityContentBrush}" />
 
                         <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
                                    TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
-                                   FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource ActivityContentFontSize}" FontStyle="Italic"/>
+                                   FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource MediumFontSize}" FontStyle="Italic"/>
                     </StackPanel>
                 </ContentControl>
                 
