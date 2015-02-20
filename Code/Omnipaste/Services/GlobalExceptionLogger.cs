@@ -13,7 +13,6 @@
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             Application.Current.DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
-            Dispatcher.CurrentDispatcher.UnhandledException += CurrentDispatcherOnUnhandledException;
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args)
@@ -29,11 +28,6 @@
         private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs args)
         {
             SimpleLogger.Log("Unhandled TASK SCHEDULER Exception: " + args.Exception);
-        }
-
-        private static void CurrentDispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
-        {
-            SimpleLogger.Log("Unhandled CurrentDispatcher Exception: " + args.Exception);
         }
     }
 }
