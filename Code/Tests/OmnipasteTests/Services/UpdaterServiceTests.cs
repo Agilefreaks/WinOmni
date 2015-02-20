@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Reactive;
     using FluentAssertions;
@@ -131,6 +132,20 @@
         }
 
         [Test]
+        public void Start_WhenNewLocalInstallerIsAvailable_NotifiesNewVersionAvailable()
+        {
+            _mockLocalInstallerVersionProvider.Setup(m => m.GetVersion(It.IsAny<string>())).Returns(new Version(2, 0, 0));
+            _mockApplicationVersionProvider.Setup(m => m.GetVersion()).Returns(new Version(1, 0, 0));
+            var testObserver = _testScheduler.CreateObserver<UpdateInfo>();
+            _subject.UpdateObservable.Subscribe(testObserver);
+
+            _subject.Start();
+
+            testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
+            testObserver.Messages.First().Value.Value.WasInstalled.Should().Be(false);
+        }
+
+        [Test]
         public void Start_WhenAppStartedAfterUpdate_NotifiesUpdateListenersThatUpdateWasInstalled()
         {
             _mockArgumentsDataProvider.SetupGet(m => m.Updated).Returns(true);
@@ -143,7 +158,7 @@
         }
 
         [Test]
-        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailable_InitiatesDownload()
+        public void Start_WhenNewRemoteVersionIsAvailable_InitiatesDownload()
         {
             var updatesAvailableObservable =
                 _testScheduler.CreateColdObservable(
@@ -159,7 +174,7 @@
         }
 
         [Test]
-        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailable_DownloadsUpdateOnlyOnce()
+        public void Start_WhenNewRemoteVersionIsAvailable_DownloadsUpdateOnlyOnce()
         {
             var updatesAvailableObservable =
                 _testScheduler.CreateColdObservable(
@@ -180,7 +195,7 @@
         }
 
         [Test]
-        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailableAndSystemIsIdle_StartsInstaller()
+        public void Start_WhenNewRemoteVersionIsAvailableAndSystemIsIdle_StartsInstaller()
         {
             var updatesAvailableObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)));
             _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>())).Returns(updatesAvailableObservable);
@@ -196,7 +211,7 @@
         }
 
         [Test]
-        public void Start_WhenThereAreNoLocalUpdatesAndNewRemoteVersionIsAvailable_NotifiesUpdateAvailableListeners()
+        public void Start_WhenAndNewRemoteVersionIsAvailable_NotifiesUpdateAvailableListeners()
         {
             var updatesAvailableObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<bool>>(100, Notification.CreateOnNext(true)));
             _mockUpdateManager.Setup(m => m.AreUpdatesAvailable(It.IsAny<Func<bool>>())).Returns(updatesAvailableObservable);

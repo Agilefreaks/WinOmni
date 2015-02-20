@@ -257,8 +257,12 @@
             if (NewLocalInstallerAvailable())
             {
                 SimpleLogger.Log("New local installer detected");
-                InstallNewVersion(_argumentsDataProvider.Minimized);
-                _updateCheckSubscription = Disposable.Empty;
+                NotifyNewVersion();
+                _updateCheckSubscription =
+                    Observable.Start(() => InstallNewVersionWhenIdle(_systemIdleThreshold))
+                        .SubscribeOn(SchedulerProvider.Default)
+                        .ObserveOn(SchedulerProvider.Dispatcher)
+                        .SubscribeAndHandleErrors();
             }
             else
             {
@@ -270,6 +274,7 @@
                         .Where(updateAvailable => updateAvailable)
                         .Select(_ => _updateManager.DownloadUpdates(OnDownloadSuccess))
                         .Switch()
+                        .SubscribeOn(SchedulerProvider.Default)
                         .ObserveOn(SchedulerProvider.Dispatcher)
                         .SubscribeAndHandleErrors(_ => InstallNewVersionWhenIdle(_systemIdleThreshold));
             }
