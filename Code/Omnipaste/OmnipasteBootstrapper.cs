@@ -20,10 +20,12 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
+    using Omnipaste.Helpers;
     using Omnipaste.Services;
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
+    using OmniUI.Helpers;
     using PhoneCalls;
     using SMS;
     using ViewLocator = Caliburn.Micro.ViewLocator;
@@ -98,10 +100,7 @@
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            var allStartedServices = GetAllInstances(typeof(IStartable)).Cast<IStartable>()
-                .Concat(_backgroundServices).Distinct();
-            allStartedServices.ForEach(s => s.Stop());
-            _kernel.Get<IOmniService>().Dispose();
+            ApplicationHelper.Instance.StopBackgroundProcesses();
 
             base.OnExit(sender, e);
         }
@@ -150,10 +149,9 @@
 
         private void StartBackgroundServices()
         {
-            //Since the service implements IStartable it will be started as soon as it's activated
-            _backgroundServices.Add(_kernel.Get<IConnectivitySupervisor>());
-            _backgroundServices.Add(_kernel.Get<IUpdaterService>());
-            _backgroundServices.Add(_kernel.Get<IEntitySupervisor>());
+            ApplicationHelper.Instance.StartBackgroundService<IConnectivitySupervisor>();
+            ApplicationHelper.Instance.StartBackgroundService<IUpdaterService>();
+            ApplicationHelper.Instance.StartBackgroundService<IEntitySupervisor>();
         }
 
         #endregion

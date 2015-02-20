@@ -25,7 +25,7 @@
         private Mock<IOmniService> _mockOmniService;
         private Mock<IConfigurationService> _mockConfigurationService;
 
-        private Mock<IApplicationHelper> _mockApplicationHelper;
+        private Mock<IResourceHelper> _mockResourceHelper;
 
         [SetUp]
         public void SetUp()
@@ -38,10 +38,10 @@
             _mockOmniService.SetupGet(x => x.StatusChangedObservable).Returns(_scheduler.CreateColdObservable<OmniServiceStatusEnum>());
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService.SetupGet(x => x.SettingsChangedObservable).Returns(_scheduler.CreateColdObservable<SettingsChangedData>());
-            _mockApplicationHelper = new Mock<IApplicationHelper>();
-            _mockApplicationHelper.Setup(x => x.FindResource(ContactInfoPresenter.UserPlaceholderBrush))
+            _mockResourceHelper = new Mock<IResourceHelper>();
+            _mockResourceHelper.Setup(x => x.GetByKey(ContactInfoPresenter.UserPlaceholderBrush))
                 .Returns(new DrawingBrush(new DrawingGroup()));
-            ApplicationHelper.Instance = _mockApplicationHelper.Object;
+            ResourceHelper.Instance = _mockResourceHelper.Object;
 
             _subject = new SessionInfoViewModel(_mockOmniService.Object, _mockConfigurationService.Object);
         }
@@ -51,7 +51,7 @@
         {
             SchedulerProvider.Default = null;
             SchedulerProvider.Dispatcher = null;
-            ApplicationHelper.Instance = null;
+            ResourceHelper.Instance = null;
         }
 
         [Test]

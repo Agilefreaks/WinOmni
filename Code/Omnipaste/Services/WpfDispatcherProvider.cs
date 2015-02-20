@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Services
 {
     using OmniCommon.Helpers;
-    using OmniUI.Helpers;
+    using Omnipaste.Helpers;
 
     public class WpfDispatcherProvider : IDispatcherProvider
     {

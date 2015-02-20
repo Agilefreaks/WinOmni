@@ -267,6 +267,8 @@
     <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
+    <Compile Include="Helpers\ApplicationHelper.cs" />
+    <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />

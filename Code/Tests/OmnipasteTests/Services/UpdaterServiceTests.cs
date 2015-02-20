@@ -44,6 +44,8 @@
 
         private TestScheduler _testScheduler;
 
+        private Mock<IApplicationHelper> _mockApplicationHelper;
+
         [SetUp]
         public void Setup()
         {
@@ -60,12 +62,13 @@
             _mockLocalInstallerVersionProvider = new Mock<ILocalInstallerVersionProvider>();
             _mockRemoteInstallerVersionProvider = new Mock<IRemoteInstallerVersionProvider>();
             _mockApplicationVersionProvider = new Mock<IApplicationVersionProvider>();
+            _mockApplicationHelper = new Mock<IApplicationHelper>();
 
             ExternalProcessHelper.Instance = _mockProcessHelper.Object;
             LocalInstallerVersionProvider.Instance = _mockLocalInstallerVersionProvider.Object;
             RemoteInstallerVersionProvider.Instance = _mockRemoteInstallerVersionProvider.Object;
             ApplicationVersionProvider.Instance = _mockApplicationVersionProvider.Object;
-
+            ApplicationHelper.Instance = _mockApplicationHelper.Object;
             _createInstance =
                 () =>
                 new UpdaterService(
@@ -283,6 +286,14 @@
             _mockLocalInstallerVersionProvider.Setup(m => m.GetVersion(It.IsAny<string>())).Returns(new Version(2, 0, 0));
 
             _subject.NewRemoteInstallerAvailable().Should().BeTrue();
+        }
+
+        [Test]
+        public void InstallNewVersion_Always_StopsAllBackgroundProcesses()
+        {
+            _subject.InstallNewVersion();
+
+            _mockApplicationHelper.Verify(m => m.StopBackgroundProcesses());
         }
     }
 }

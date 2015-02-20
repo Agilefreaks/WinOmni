@@ -1,10 +1,13 @@
 ﻿namespace OmniTests
 {
     using System;
+    using System.Linq;
     using System.Reactive;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Threading;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -83,6 +86,12 @@
             _subject = _kernel.Get<IOmniService>();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            SchedulerProvider.Default = null;
+        }
+
         [Test]
         public void Start_WhenAllTasksSucceed_CompletesAfterSendingAUnit()
         {
@@ -147,6 +156,16 @@
         }
 
         [Test]
+        public void Start_AfterDispose_WillReturnError()
+        {
+            _subject.Dispose();
+
+            var testObserver = _scheduler.Start(() => _subject.Start());
+
+            testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnError);
+        }
+
+        [Test]
         public void Stop_AfterBeingStarted_CallsDeactivateDeviceWithTheDeviceId()
         {
             SetupOmniServiceForStart();
@@ -194,6 +213,16 @@
         }
 
         [Test]
+        public void Stop_AfterDispose_WillReturnError()
+        {
+            _subject.Dispose();
+
+            var testObserver = _scheduler.Start(() => _subject.Stop());
+
+            testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnError);
+        }
+
+        [Test]
         public void Dispose_ServiceStoppedAndATransitionIsNotInProgress_WillReplaceTheStatusChangedObservableWithANullSubject()
         {
             SchedulerProvider.Default = Scheduler.Default;
@@ -204,7 +233,7 @@
         }
 
         [Test]
-        public void Dispose_ServiceNotStoppedAndATransitionIsNotInProgress_WillReplaceTheStatusChangedObservableWithANullSubject()
+        public void Dispose_ServiceNotStoppedAndATransitionIsNotInProgress_StopsHandlers()
         {
             SetupOmniServiceForStart();
             _scheduler.Start(_subject.Start);
@@ -232,47 +261,47 @@
         }
 
         [Test]
-        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotChangeTheStatusChangedObservable()
+        public void Dispose_ServiceNotStoppedTransitionIsInProgress_WaitsForTransitionToChangeStatusObservable()
         {
-            _subject.Start().SubscribeAndHandleErrors();
+            SetupOmniServiceForStart();
+            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
 
-            _subject.Dispose();
-
+            var disposeTask = Task.Factory.StartNew(() => _subject.Dispose());
             _subject.StatusChangedObservable.Should().BeOfType<ReplaySubject<OmniServiceStatusEnum>>();
+
+            _scheduler.AdvanceBy(1000);
+            disposeTask.Wait();
+
+            _subject.StatusChangedObservable.Should().BeOfType<NullSubject<OmniServiceStatusEnum>>();
         }
 
         [Test]
-        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotStopHandlers()
+        public void Dispose_ServiceNotStoppedTransitionIsInProgress_WaitsForTransitionToDeactivateDevice()
         {
-            _subject.Start().SubscribeAndHandleErrors();
+            SetupOmniServiceForStart();
+            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
 
-            _subject.Dispose();
+            var disposeTask = Task.Factory.StartNew(() => _subject.Dispose());
+            _mockDevices.Verify(x => x.Deactivate(It.IsAny<string>()), Times.Never());
 
-            _someHandler.Verify(x => x.Stop(), Times.Never());
-        }
+            _scheduler.AdvanceBy(1000);
+            disposeTask.Wait();
 
-        [Test]
-        public void Dispose_ServiceNotStoppedAndATransitionIsInProgress_WillNotDeactivateTheDevice()
-        {
-            _subject.Start().SubscribeAndHandleErrors();
-
-            _subject.Dispose();
-
-            _someHandler.Verify(x => x.Stop(), Times.Never());
+            _mockDevices.Verify(x => x.Deactivate(It.IsAny<string>()), Times.Once());
         }
 
         private void SetupOmniServiceForStart()
         {
             var openWebsocketConnection =
                 _scheduler.CreateColdObservable(
-                    new Recorded<Notification<string>>(0, Notification.CreateOnNext(_registrationId)),
-                    new Recorded<Notification<string>>(0, Notification.CreateOnCompleted<string>()));
+                    new Recorded<Notification<string>>(100, Notification.CreateOnNext(_registrationId)),
+                    new Recorded<Notification<string>>(200, Notification.CreateOnCompleted<string>()));
             _mockWebsocketConnection.Setup(m => m.Connect()).Returns(openWebsocketConnection);
             _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
             var activateDevice =
                 _scheduler.CreateColdObservable(
-                    new Recorded<Notification<EmptyModel>>(0, Notification.CreateOnNext(new EmptyModel())),
-                    new Recorded<Notification<EmptyModel>>(0, Notification.CreateOnCompleted<EmptyModel>()));
+                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
+                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             _mockDevices.Setup(m => m.Activate(_registrationId, DeviceId)).Returns(activateDevice);
         }
     }

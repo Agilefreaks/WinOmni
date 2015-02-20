@@ -51,6 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -104,8 +108,6 @@
     <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
     <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
-    <Compile Include="Helpers\ApplicationHelper.cs" />
-    <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\IResourceHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />

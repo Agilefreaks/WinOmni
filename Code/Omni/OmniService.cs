@@ -34,6 +34,10 @@
 
         private OmniServiceStatusEnum _state;
 
+        private bool _isDisposing;
+
+        private readonly Subject<bool> _inTransitionSubject;
+
         #endregion
 
         #region Constructors and Destructors
@@ -41,6 +45,7 @@
         public OmniService()
         {
             _statusChangedSubject = new ReplaySubject<OmniServiceStatusEnum>(1);
+            _inTransitionSubject = new Subject<bool>();
             State = OmniServiceStatusEnum.Stopped;
         }
 
@@ -62,6 +67,14 @@
             }
         }
 
+        public IObservable<bool> InTransitionObservable
+        {
+            get
+            {
+                return _inTransitionSubject;
+            }
+        }
+        
         [Inject]
         public IKernel Kernel { get; set; }
 
@@ -108,10 +121,17 @@
 
         public void Dispose()
         {
-            if (!InTransition)
+            _isDisposing = true;
+            if (InTransition)
             {
-                _statusChangedSubject = new NullSubject<OmniServiceStatusEnum>();
-                Stop().RunToCompletionSynchronous();
+                InTransitionObservable.Take(1).Wait();
+            }
+
+            _statusChangedSubject = new NullSubject<OmniServiceStatusEnum>();
+
+            if (State != OmniServiceStatusEnum.Stopped)
+            {
+                StopCore().RunToCompletionSynchronous();
             }
         }
 
@@ -156,7 +176,9 @@
             if (previousValue == NoSwitchInProgress)
             {
                 SimpleLogger.Log("No lock already in place; returning true");
+
                 result = true;
+                _inTransitionSubject.OnNext(InTransition);
             }
             else
             {
@@ -185,6 +207,7 @@
         {
             SimpleLogger.Log("Release service state");
             Interlocked.Exchange(ref _migrationState, NoSwitchInProgress);
+            _inTransitionSubject.OnNext(InTransition);
         }
 
         private IObservable<Unit> StartCore()
@@ -251,7 +274,13 @@
         {
             SimpleLogger.Log("Call to switch state with: " + newState);
             IObservable<Unit> result;
-            if (newState == State)
+            
+            if (_isDisposing)
+            {
+                SimpleLogger.Log("OmniService is disposing.");
+                result = Observable.Throw<Unit>(new Exception("Disposing"), SchedulerProvider.Default);
+            }
+            else if (newState == State)
             {
                 SimpleLogger.Log("Same state found; doing nothing");
                 result = Observable.Return(new Unit(), SchedulerProvider.Default);

@@ -9,6 +9,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Helpers;
     using OmniUI.Helpers;
 
     public class ApplicationService : IApplicationService

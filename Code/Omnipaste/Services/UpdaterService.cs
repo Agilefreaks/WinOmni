@@ -183,6 +183,9 @@
         public void InstallNewVersion(bool startMinimized = false)
         {
             SimpleLogger.Log("Starting local installer");
+            
+            ApplicationHelper.Instance.StopBackgroundProcesses();
+
             ExternalProcessHelper.Start(new ProcessStartInfo
             {
                 FileName = MSIExec,

@@ -1,5 +1,7 @@
 ﻿namespace OmniUI.Helpers
 {
+    using System.Windows;
+
     public class ResourceHelper : IResourceHelper
     {
         private static IResourceHelper _instance;
@@ -18,7 +20,7 @@
 
         object IResourceHelper.GetByKey(string key)
         {
-            return ApplicationHelper.Instance.FindResource(key);
+            return Application.Current.FindResource(key);
         }
 
         public static object GetByKey(string key)
