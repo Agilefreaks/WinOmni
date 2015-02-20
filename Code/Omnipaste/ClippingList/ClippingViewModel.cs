@@ -90,7 +90,7 @@
                 _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(arg => NotifyOfPropertyChange(() => IsSelected)));
+                    .SubscribeAndHandleErrors(arg => NotifyOfPropertyChange(() => IsSelected)));
         }
 
         protected override void OnDeactivate(bool close)

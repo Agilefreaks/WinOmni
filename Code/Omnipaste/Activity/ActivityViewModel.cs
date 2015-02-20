@@ -5,6 +5,7 @@ namespace Omnipaste.Activity
     using System.Windows.Input;
     using Caliburn.Micro;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Framework;
@@ -141,7 +142,7 @@ namespace Omnipaste.Activity
                 _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(arg => UpdateContentInfo()));
+                    .SubscribeAndHandleErrors(arg => UpdateContentInfo()));
 
             base.OnActivate();
         }

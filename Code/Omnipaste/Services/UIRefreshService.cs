@@ -4,6 +4,7 @@
     using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
 
     public class UiRefreshService : IUiRefreshService
@@ -48,7 +49,7 @@
                 Observable.Timer(TimeSpan.Zero, _uiRefreshInterval)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .Subscribe(_ => _refreshSubject.OnNext(new Unit()));
+                    .SubscribeAndHandleErrors(_ => _refreshSubject.OnNext(new Unit()));
         }
 
         public void Stop()
