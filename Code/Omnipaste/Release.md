@@ -1,4 +1,13 @@
-﻿**Version 1.3.12 (19.02.2015)**
+﻿**Version 1.3.13 (21.02.2015)**
+
+**Bug fixes:**
+
+- fixed interaction between installer and app while updating that caused app to crash
+- fixed registration issue that prevented user from using the app
+
+----------
+
+**Version 1.3.12 (19.02.2015)**
 
 **Improvements:**
 
