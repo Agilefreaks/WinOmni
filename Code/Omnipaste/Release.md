@@ -1,4 +1,12 @@
-﻿**Version 1.3.13 (21.02.2015)**
+﻿**Version 1.3.14 (24.02.2015)**
+
+**Bug fixes:**
+
+- Fixed false threat warning of Norton Internet Security
+
+----------
+
+**Version 1.3.13 (21.02.2015)**
 
 **Bug fixes:**
 
