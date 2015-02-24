@@ -64,8 +64,6 @@
       <Custom Action="SetIsCleanInstall" Before="CostFinalize">(NOT Installed) AND (NOT WIX_UPGRADE_DETECTED)</Custom>
       <Custom Action="SetAppToStart" After="CostFinalize"/>
       <Custom Action="SetStartAppArguments" After="CostFinalize"/>
-      <Custom Action="AssignCustomActionDataForUnistallClickOnce" After="CostFinalize"/>
-      <Custom Action="UninstallClickOnce" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="LaunchApplication" After="InstallFinalize">(NOT Installed) AND (NOT UI_RAN)</Custom>
     </InstallExecuteSequence>
 	</Product>

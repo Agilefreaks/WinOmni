@@ -631,7 +631,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ApplicationDeploymentHelper.cs" />
     <Compile Include="DataProviders\ArgumentsDataProvider.cs" />
     <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
     <Compile Include="DataProviders\IArgumentsProvider.cs" />
