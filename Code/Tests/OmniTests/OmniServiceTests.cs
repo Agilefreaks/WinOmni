@@ -17,7 +17,6 @@
     using Omni;
     using OmniApi.Models;
     using OmniApi.Resources.v1;
-    using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -264,13 +263,15 @@
         public void Dispose_ServiceNotStoppedTransitionIsInProgress_WaitsForTransitionToChangeStatusObservable()
         {
             SetupOmniServiceForStart();
-            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
+            var observable = _subject.Start();
 
-            var disposeTask = Task.Factory.StartNew(() => _subject.Dispose());
+            var disposeThread = new Thread(() => _subject.Dispose());
+            disposeThread.Start();
             _subject.StatusChangedObservable.Should().BeOfType<ReplaySubject<OmniServiceStatusEnum>>();
 
+            _scheduler.Start(() => observable);
             _scheduler.AdvanceBy(1000);
-            disposeTask.Wait();
+            disposeThread.Join();
 
             _subject.StatusChangedObservable.Should().BeOfType<NullSubject<OmniServiceStatusEnum>>();
         }
@@ -279,13 +280,15 @@
         public void Dispose_ServiceNotStoppedTransitionIsInProgress_WaitsForTransitionToDeactivateDevice()
         {
             SetupOmniServiceForStart();
-            _subject.Start().Subscribe(_scheduler.CreateObserver<Unit>());
+            var observable = _subject.Start();
 
-            var disposeTask = Task.Factory.StartNew(() => _subject.Dispose());
+            var disposeThread = new Thread(() => _subject.Dispose());
+            disposeThread.Start();
             _mockDevices.Verify(x => x.Deactivate(It.IsAny<string>()), Times.Never());
 
+            _scheduler.Start(() => observable);
             _scheduler.AdvanceBy(1000);
-            disposeTask.Wait();
+            disposeThread.Join();
 
             _mockDevices.Verify(x => x.Deactivate(It.IsAny<string>()), Times.Once());
         }
@@ -303,6 +306,12 @@
                     new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
                     new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
             _mockDevices.Setup(m => m.Activate(_registrationId, DeviceId)).Returns(activateDevice);
+
+            var deactivateDevice =
+                _scheduler.CreateColdObservable(
+                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
+                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+            _mockDevices.Setup(m => m.Deactivate(DeviceId)).Returns(deactivateDevice);
         }
     }
 }
