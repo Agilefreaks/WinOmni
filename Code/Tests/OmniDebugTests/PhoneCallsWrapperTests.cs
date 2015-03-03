@@ -25,8 +25,8 @@
         [Test]
         public void GetWithId_AfterFirstCallingMockGet_ReturnsTheGivenPhoneCallObject()
         {
-            var mockObserver = new Mock<IObserver<PhoneCall>>();
-            var phoneCall = new PhoneCall { Id = "42" };
+            var mockObserver = new Mock<IObserver<PhoneCallDto>>();
+            var phoneCall = new PhoneCallDto { Id = "42" };
 
             _subject.MockGet(phoneCall.Id, phoneCall);
             _subject.Get(phoneCall.Id).Subscribe(mockObserver.Object);
@@ -38,7 +38,7 @@
         public void GetWithId_WithoutFirstCallingMockGet_ReturnsTheObservableFromTheGivenPhoneCallLObject()
         {
             const string Id = "42";
-            var mockObservable = new Mock<IObservable<PhoneCall>>();
+            var mockObservable = new Mock<IObservable<PhoneCallDto>>();
             _mockPhoneCalls.Setup(x => x.Get(Id)).Returns(mockObservable.Object);
 
             _subject.Get(Id).Should().Be(mockObservable.Object);

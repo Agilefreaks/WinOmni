@@ -8,10 +8,10 @@
     {
         public ContactList()
         {
-            Contacts = new List<Contact>();
+            Contacts = new List<ContactDto>();
         }
 
         [JsonConverter(typeof(EncryptionConverter))]
-        public List<Contact> Contacts { get; set; }
+        public List<ContactDto> Contacts { get; set; }
     }
 }

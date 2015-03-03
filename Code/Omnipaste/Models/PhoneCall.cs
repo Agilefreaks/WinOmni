@@ -3,30 +3,22 @@
     using Omnipaste.Helpers;
     using PhoneCalls.Models;
 
-    public class Call : BaseModel, IConversationItem
+    public class PhoneCall : BaseModel, IConversationItem
     {
         #region Constructors and Destructors
 
-        public Call()
+        public PhoneCall()
         {
             ContactInfo = new ContactInfo();
             Content = string.Empty;
             Source = SourceType.Local;
         }
 
-        public Call(PhoneCall phoneCall)
+        public PhoneCall(PhoneCallDto phoneCallDto)
             : this()
         {
-            string firstName, lastName;
-            NameParser.Parse(phoneCall.ContactName, out firstName, out lastName);
-            Id = phoneCall.Id;
+            Id = phoneCallDto.Id;
             Source = SourceType.Remote;
-            ContactInfo = new ContactInfo
-                              {
-                                  FirstName = firstName, 
-                                  LastName = lastName, 
-                                  Phone = phoneCall.Number
-                              };
         }
 
         #endregion

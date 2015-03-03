@@ -1,6 +1,6 @@
-namespace Contacts.Models
+﻿namespace Omnipaste.Models
 {
-    public class ContactPhoneNumber
+    public class PhoneNumber
     {
         public string Number { get; set; }
 

@@ -7,7 +7,7 @@
     {
         INotificationViewModel Create(ClippingModel clipping);
 
-        INotificationViewModel Create(Call call);
+        INotificationViewModel Create(PhoneCall phoneCall);
 
         INotificationViewModel Create(SmsMessage smsMessage);
     }

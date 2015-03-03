@@ -41,14 +41,14 @@
             Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
         }
 
-        public ActivityPresenter(Call call)
+        public ActivityPresenter(PhoneCall phoneCall)
             : this()
         {
-            BackingModel = call;
-            Content = call.Content ?? string.Empty;
+            BackingModel = phoneCall;
+            Content = phoneCall.Content ?? string.Empty;
             Type = ActivityTypeEnum.Call;
             Device = Resources.FromCloud;
-            ExtraData.ContactInfo = call.ContactInfo;
+            ExtraData.ContactInfo = phoneCall.ContactInfo;
         }
 
         public ActivityPresenter(SmsMessage smsMessage)

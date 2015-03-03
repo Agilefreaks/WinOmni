@@ -1,6 +1,7 @@
 ﻿namespace Contacts.Api.Resources.v1
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using global::Contacts.Models;
     using OmniApi.Resources;
@@ -20,10 +21,15 @@
 
         #region Public Methods and Operators
 
-        public IObservable<ContactList> Get(string identifier)
+        public IObservable<ContactDto> Get(string id)
         {
-            return ResourceApi.Get(identifier, AccessToken);
+            return ResourceApi.Get(id, AccessToken);
         }
+
+        public IObservable<List<ContactDto>> GetUpdates(DateTime from)
+        {
+            return ResourceApi.GetUpdates(from.ToString("s"), AccessToken);
+        } 
 
         #endregion
 

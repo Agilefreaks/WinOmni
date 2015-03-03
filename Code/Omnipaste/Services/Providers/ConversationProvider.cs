@@ -5,24 +5,24 @@
 
     public class ConversationProvider : IConversationProvider
     {
-        private readonly ICallRepository _callRepository;
+        private readonly IPhoneCallRepository _phoneCallRepository;
 
         private readonly IMessageRepository _messageRepository;
 
-        public ConversationProvider(IMessageRepository messageRepository, ICallRepository callRepository)
+        public ConversationProvider(IMessageRepository messageRepository, IPhoneCallRepository phoneCallRepository)
         {
             _messageRepository = messageRepository;
-            _callRepository = callRepository;
+            _phoneCallRepository = phoneCallRepository;
         }
 
         public IConversationContext ForContact(ContactInfo contactInfo)
         {
-            return new ContactConversationContext(_messageRepository, _callRepository, contactInfo);
+            return new ContactConversationContext(_messageRepository, _phoneCallRepository, contactInfo);
         }
 
         public IConversationContext All()
         {
-            return new MergedConversationContext(_messageRepository, _callRepository);
+            return new MergedConversationContext(_messageRepository, _phoneCallRepository);
         }
     }
 }

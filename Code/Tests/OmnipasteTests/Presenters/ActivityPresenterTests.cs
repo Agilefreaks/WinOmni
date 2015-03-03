@@ -51,7 +51,7 @@
         [Test]
         public void CtorWithCall_Always_SetsTypeToCall()
         {
-            var call = new Call();
+            var call = new PhoneCall();
 
             new ActivityPresenter(call).Type.Should().Be(ActivityTypeEnum.Call);
         }
@@ -59,43 +59,43 @@
         [Test]
         public void CtorWithCall_Always_SetsDeviceToCloud()
         {
-            new ActivityPresenter(new Call()).Device.Should().Be(Resources.FromCloud);
+            new ActivityPresenter(new PhoneCall()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
         public void CtorWithCall_TypeIsCall_SetsContentAnEmptyString()
         {
-            new ActivityPresenter(new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Contact" } }).Content
+            new ActivityPresenter(new PhoneCall { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "ContactDto" } }).Content
                 .Should().Be(string.Empty);
         }
 
         [Test]
         public void CtorWithCall_Always_SetsContactInfo()
         {
-            var call = new Call { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
+            var call = new PhoneCall { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", PhoneNumbers = new[] { new PhoneNumber { Number = "07xxxxxx" } } } };
 
             ContactInfo contactInfo = new ActivityPresenter(call).ExtraData.ContactInfo;
 
             contactInfo.Name.Should().Be("Some Name");
-            contactInfo.Phone.Should().Be("07xxxxxx");
+            contactInfo.PhoneNumber.Should().Be("07xxxxxx");
         }
 
         [Test]
         public void CtorWithCall_Always_SetsTheEventUniqueIdInExtraData()
         {
             const string Id = "42";
-            (new ActivityPresenter(new Call { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new ActivityPresenter(new PhoneCall { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
         public void CtorWithMessage_Always_SetsContactInfo()
         {
-            var message = new TestSmsMessage { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
+            var message = new TestSmsMessage { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", PhoneNumbers = new[] { new PhoneNumber { Number = "07xxxxxx" } } } };
 
             ContactInfo contactInfo = new ActivityPresenter(message).ExtraData.ContactInfo;
 
             contactInfo.Name.Should().Be("Some Name");
-            contactInfo.Phone.Should().Be("07xxxxxx");
+            contactInfo.PhoneNumber.Should().Be("07xxxxxx");
         }
 
         [Test]
@@ -136,7 +136,7 @@
         public void ToString_Always_ReturnsAStringContainingTheTypeOfTheActivity()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var subject = new ActivityPresenter(new Call());
+            var subject = new ActivityPresenter(new PhoneCall());
 
             subject.ToString().Should().Contain("Apel de la:");
         }
@@ -144,7 +144,7 @@
         [Test]
         public void ToString_Always_ReturnsAStringContainingTheContentOfTheActivity()
         {
-            var subject = new ActivityPresenter(new Call { Content = "someContent" });
+            var subject = new ActivityPresenter(new PhoneCall { Content = "someContent" });
 
             subject.ToString().Should().Contain("someContent");
         }
@@ -156,7 +156,10 @@
                                           {
                                               FirstName = "someFirstName",
                                               LastName = "someLastName",
-                                              Phone = "0987"
+                                              PhoneNumbers = new []
+                                                                 {
+                                                                     new PhoneNumber{ Number = "0987" }
+                                                                 }
                                           };
             var subject = new ActivityPresenter(new TestSmsMessage { ContactInfo = contactInfo });
             

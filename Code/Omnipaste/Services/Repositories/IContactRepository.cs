@@ -6,5 +6,7 @@
     public interface IContactRepository : IRepository<ContactInfo>
     {
         IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber);
+
+        IObservable<ContactInfo> GetOrCreateByPhoneNumber(string phoneNumber);
     }
 }

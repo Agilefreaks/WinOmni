@@ -9,8 +9,8 @@ namespace Omnipaste.Services.Providers
 
     public class MergedConversationContext : ConversationContext
     {
-        public MergedConversationContext(IMessageRepository messageRepository, ICallRepository callRepository)
-            : base(messageRepository, callRepository)
+        public MergedConversationContext(IMessageRepository messageRepository, IPhoneCallRepository phoneCallRepository)
+            : base(messageRepository, phoneCallRepository)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Omnipaste.Services.Providers
             return
                 Observable.When(
                     MessageRepository.GetAll()
-                        .And(CallRepository.GetAll())
+                        .And(PhoneCallRepository.GetAll())
                         .Then((messages, calls) => messages.Cast<IConversationItem>().Concat(calls)));
         }
 
@@ -30,7 +30,7 @@ namespace Omnipaste.Services.Providers
                 MessageRepository.OperationObservable.OnMethod(method)
                     .Select(o => o.Item)
                     .Merge(
-                        CallRepository.OperationObservable.OnMethod(method)
+                        PhoneCallRepository.OperationObservable.OnMethod(method)
                             .Select(o => o.Item)
                             .Cast<IConversationItem>());
         }

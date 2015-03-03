@@ -5,9 +5,9 @@
     using OmniApi.Models;
     using OmniCommon.Interfaces;
 
-    public interface IPhoneCalls : IResource<PhoneCall>
+    public interface IPhoneCalls : IResource<PhoneCallDto>
     {
-        IObservable<PhoneCall> Call(string phoneNumber);
+        IObservable<PhoneCallDto> Call(string phoneNumber, int? contactId = null);
 
         IObservable<EmptyModel> EndCall(string callId);
     }

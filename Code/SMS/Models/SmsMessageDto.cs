@@ -10,8 +10,8 @@
 
         public string PhoneNumber { get; set; }
 
-        public string ContactName { get; set; }
-
+        public int ContactId { get; set; }
+        
         public string Type { get; set; }
 
         public string State { get; set; }

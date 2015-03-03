@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.WorkspaceDetails.Conversation.Call
+﻿namespace Omnipaste.WorkspaceDetails.Conversation.PhoneCall
 {
     using System;
     using OmniCommon.Interfaces;
@@ -6,11 +6,11 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
 
-    public class CallViewModel : ConversationItemViewModel<Call>, ICallViewModel
+    public class PhoneCallViewModel : ConversationItemViewModel<PhoneCall>, IPhoneCallViewModel
     {
         #region Constructors and Destructors
 
-        public CallViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)
+        public PhoneCallViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)
             : base(uiRefreshService, configurationService)
         {
         }

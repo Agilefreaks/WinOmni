@@ -65,10 +65,9 @@
             var id = Guid.NewGuid().ToString();
             _phoneCallsWrapper.MockGet(
                 id,
-                new PhoneCall
+                new PhoneCallDto
                     {
                         Id = id,
-                        ContactName = NotificationContactName,
                         Number = NotificationPhoneNumber,
                         State = PhoneCallState.Starting,
                         Type = PhoneCallType.Incoming

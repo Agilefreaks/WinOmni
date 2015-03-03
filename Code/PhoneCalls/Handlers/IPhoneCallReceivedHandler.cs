@@ -3,7 +3,7 @@
     using OmniCommon.Handlers;
     using PhoneCalls.Models;
 
-    public interface IPhoneCallReceivedHandler : IResourceHandler<PhoneCall>
+    public interface IPhoneCallReceivedHandler : IResourceHandler<PhoneCallDto>
     {
     }
 }

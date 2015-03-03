@@ -22,7 +22,7 @@ namespace Omnipaste.ActivityList
 
         private readonly IMessageRepository _messageRepository;
 
-        private readonly ICallRepository _callRepository;
+        private readonly IPhoneCallRepository _phoneCallRepository;
 
         private readonly IUpdateInfoRepository _updateInfoRepository;
 
@@ -45,13 +45,13 @@ namespace Omnipaste.ActivityList
         public ActivityListViewModel(
             IClippingRepository clippingRepository,
             IMessageRepository messageRepository,
-            ICallRepository callRepository,
+            IPhoneCallRepository phoneCallRepository,
             IUpdateInfoRepository updateInfoRepository,
             IActivityViewModelFactory activityViewModelFactory)
         {
             _clippingRepository = clippingRepository;
             _messageRepository = messageRepository;
-            _callRepository = callRepository;
+            _phoneCallRepository = phoneCallRepository;
             _activityViewModelFactory = activityViewModelFactory;
             _updateInfoRepository = updateInfoRepository;
             _allowedActivityTypes = ActivityTypeEnum.All;
@@ -203,7 +203,7 @@ namespace Omnipaste.ActivityList
             return
                 _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item)))
                     .Merge(_messageRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
-                    .Merge(_callRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
+                    .Merge(_phoneCallRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
                     .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))));
         }
 
@@ -215,7 +215,7 @@ namespace Omnipaste.ActivityList
                     .Merge(_messageRepository.OperationObservable.Created()
                             .Where(operation => operation.Item.Source == SourceType.Remote)
                             .Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_callRepository.OperationObservable.Created()
+                    .Merge(_phoneCallRepository.OperationObservable.Created()
                             .Where(operation => operation.Item.Source == SourceType.Remote)
                             .Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
@@ -225,7 +225,7 @@ namespace Omnipaste.ActivityList
         {
             return _clippingRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item))
                     .Merge(_messageRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_callRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_phoneCallRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_updateInfoRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)));
         }
 
@@ -234,7 +234,7 @@ namespace Omnipaste.ActivityList
             return
                 _clippingRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
                     .Merge(_messageRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
-                    .Merge(_callRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                    .Merge(_phoneCallRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
                     .Merge(_updateInfoRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Version, o.Item.UniqueId)));
         }
 

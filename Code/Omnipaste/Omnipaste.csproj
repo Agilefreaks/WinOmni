@@ -252,6 +252,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\IPhoneCallFactory.cs" />
+    <Compile Include="Factories\IRemoteSmsMessageFactory.cs" />
+    <Compile Include="Factories\ISmsMessageFactory.cs" />
+    <Compile Include="Factories\PhoneCallFactory.cs" />
+    <Compile Include="Factories\RemoteSmsMessageFactory.cs" />
     <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
@@ -272,6 +277,7 @@
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Models\LocalSmsMessage.cs" />
+    <Compile Include="Models\PhoneNumber.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
@@ -292,8 +298,8 @@
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\CallViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\ICallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Call\PhoneCallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\Call\IPhoneCallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModel.cs" />
@@ -367,7 +373,7 @@
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Call.cs" />
+    <Compile Include="Models\PhoneCall.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
@@ -473,9 +479,9 @@
     <Compile Include="Services\NAppUpdateManager.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\Providers\RemoteInstallerVersionProvider.cs" />
-    <Compile Include="Services\Repositories\CallRepository.cs" />
+    <Compile Include="Services\Repositories\PhoneCallRepository.cs" />
     <Compile Include="Services\Repositories\ClippingRepository.cs" />
-    <Compile Include="Services\Repositories\ICallRepository.cs" />
+    <Compile Include="Services\Repositories\IPhoneCallRepository.cs" />
     <Compile Include="Services\Repositories\IClippingRepository.cs" />
     <Compile Include="Services\Repositories\IContactRepository.cs" />
     <Compile Include="Services\Repositories\ContactRepository.cs" />
@@ -543,7 +549,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorkspaceDetails\Conversation\Call\CallView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\Call\PhoneCallView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

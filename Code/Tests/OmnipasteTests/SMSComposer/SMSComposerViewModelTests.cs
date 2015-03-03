@@ -37,7 +37,12 @@
             _mockSMSMessages = new Mock<ISMSMessages>();
             _mockMessageRepository = new Mock<IMessageRepository>();
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _contactInfo = new ContactInfo { Phone = "1234", FirstName = "F", LastName = "L" };
+            _contactInfo = new ContactInfo
+                               {
+                                   PhoneNumbers = new[] { new PhoneNumber { Number = "1234" } },
+                                   FirstName = "F",
+                                   LastName = "L"
+                               };
             _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockConfigurationService.Object)
                            {
                                ContactInfo = _contactInfo,

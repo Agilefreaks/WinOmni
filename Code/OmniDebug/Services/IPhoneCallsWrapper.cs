@@ -5,6 +5,6 @@
 
     public interface IPhoneCallsWrapper : IPhoneCalls
     {
-        void MockGet(string id, PhoneCall phoneCall);
+        void MockGet(string id, PhoneCallDto phoneCallDto);
     }
 }

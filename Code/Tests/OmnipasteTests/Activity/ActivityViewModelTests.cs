@@ -62,7 +62,7 @@
         [Test]
         public void IsSelected_WhenValueIsCurrentModelUniqueId_ReturnsTrue()
         {
-            _subject.Model = new ActivityPresenter(new Call());
+            _subject.Model = new ActivityPresenter(new PhoneCall());
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns(_subject.Model.BackingModel.UniqueId);
 
             _subject.IsSelected.Should().BeTrue();
@@ -71,7 +71,7 @@
         [Test]
         public void IsSelected_WhenValueIsOtherThanCurrentModelUniqueId_ReturnsFalse()
         {
-            _subject.Model = new ActivityPresenter(new Call());
+            _subject.Model = new ActivityPresenter(new PhoneCall());
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns("other");
 
             _subject.IsSelected.Should().BeFalse();
@@ -113,7 +113,7 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
-            _subject.Model = new ActivityPresenter(new Call());
+            _subject.Model = new ActivityPresenter(new PhoneCall());
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -127,7 +127,7 @@
         [Test]
         public void ShowDetails_Always_SavesCurrentItemAsSelection()
         {
-            _subject.Model = new ActivityPresenter(new Call());
+            _subject.Model = new ActivityPresenter(new PhoneCall());
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);

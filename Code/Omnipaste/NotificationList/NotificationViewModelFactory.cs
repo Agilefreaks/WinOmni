@@ -37,10 +37,10 @@
             return result;
         }
 
-        public INotificationViewModel Create(Call call)
+        public INotificationViewModel Create(PhoneCall phoneCall)
         {
             var result = Kernel.Get<IIncomingCallNotificationViewModel>();
-            result.Resource = call;
+            result.Resource = phoneCall;
 
             return result;
         }

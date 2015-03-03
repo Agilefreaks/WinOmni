@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.Models
 {
     using System;
-    using System.Security.Cryptography;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
@@ -9,7 +8,7 @@
     using PhoneCalls.Models;
 
     [TestFixture]
-    public class CallTests
+    public class PhoneCallTests
     {
         [TearDown]
         public void TearDown()
@@ -20,14 +19,14 @@
         [Test]
         public void CtorWithCall_AlwaysAssignsAUniqueId()
         {
-            new Call(new PhoneCall()).UniqueId.Should().NotBeNullOrEmpty();
+            new PhoneCall(new PhoneCallDto()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
         public void CtorWithCall_AlwaysCopiesId()
         {
             const string Id = "42";
-            new Call(new PhoneCall { Id = Id }).Id.Should().Be(Id);
+            new PhoneCall(new PhoneCallDto { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
@@ -35,13 +34,13 @@
         {
             var dateTime = new DateTime(2014, 1,1);
             TimeHelper.UtcNow = dateTime;
-            new Call(new PhoneCall()).Time.Should().Be(dateTime);
+            new PhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime);
         }
 
         [Test]
         public void CtorWithCall_Always_SetsSourceToRemote()
         {
-            new Call(new PhoneCall()).Source.Should().Be(SourceType.Remote);
+            new PhoneCall(new PhoneCallDto()).Source.Should().Be(SourceType.Remote);
         }
     }
 }

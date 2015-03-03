@@ -89,7 +89,6 @@
                     {
                         Id = id,
                         Content = NotificationContent,
-                        ContactName = NotificationContactName,
                         PhoneNumber = NotificationPhoneNumber,
                         State = SmsMessageState.Received,
                         Type = SmsMessageType.Incoming

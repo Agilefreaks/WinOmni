@@ -29,7 +29,7 @@
             this IObservable<RepositoryOperation<T>> operationObservable,
             ContactInfo contactInfo) where T : IConversationItem
         {
-            return operationObservable.Where(o => PhoneNumberMatcher.IsMatch(o.Item.ContactInfo.Phone, contactInfo.Phone));
+            return operationObservable.Where(o => o.Item.ContactInfo.UniqueId == contactInfo.UniqueId);
         }
 
         public static IObservable<RepositoryOperation<T>> OnMethod<T>(

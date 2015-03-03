@@ -6,7 +6,7 @@ namespace PhoneCalls.Handlers
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
-    public class PhoneCallReceivedHandler : ResourceHandler<PhoneCall>, IPhoneCallReceivedHandler
+    public class PhoneCallReceivedHandler : ResourceHandler<PhoneCallDto>, IPhoneCallReceivedHandler
     {
         private readonly IPhoneCalls _phoneCalls;
 
@@ -23,7 +23,7 @@ namespace PhoneCalls.Handlers
             }
         }
 
-        protected override IObservable<PhoneCall> CreateResult(OmniMessage value)
+        protected override IObservable<PhoneCallDto> CreateResult(OmniMessage value)
         {
             var id = value.GetPayload("id");
             return _phoneCalls.Get(id);

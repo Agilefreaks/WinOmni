@@ -12,8 +12,11 @@
         {
             Kernel.Bind<IContacts>().To<Contacts>().InSingletonScope();
 
-            Kernel.Bind<IContactsHandler>().To<ContactsHandler>().InSingletonScope();
-            Kernel.Bind<IHandler>().ToMethod(context => context.Kernel.Get<IContactsHandler>());
+            Kernel.Bind<IContactCreatedHandler>().To<ContactCreatedHandler>().InSingletonScope();
+            Kernel.Bind<IContactsUpdatedHandler>().To<ContactsUpdatedHandler>().InSingletonScope();
+
+            Kernel.Bind<IHandler>().ToMethod(context => context.Kernel.Get<IContactCreatedHandler>());
+            Kernel.Bind<IHandler>().ToMethod(context => context.Kernel.Get<IContactsUpdatedHandler>());
         }
     }
 }

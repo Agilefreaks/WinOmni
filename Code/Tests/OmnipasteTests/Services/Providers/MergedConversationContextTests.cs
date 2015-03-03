@@ -24,7 +24,7 @@
 
         private Mock<IMessageRepository> _mockMessageRepository;
 
-        private Mock<ICallRepository> _mockCallRepository;
+        private Mock<IPhoneCallRepository> _mockCallRepository;
 
         [SetUp]
         public void SetUp()
@@ -33,7 +33,7 @@
             SchedulerProvider.Default = _testScheduler;
 
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object);
         }
 
@@ -48,8 +48,8 @@
         {
             var message = new TestSmsMessage();
             _mockMessageRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<SmsMessage> { message }, _testScheduler));
-            var call = new Call();
-            _mockCallRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<Call> { call }));
+            var call = new PhoneCall();
+            _mockCallRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<PhoneCall> { call }));
 
             var testObserver = _testScheduler.Start(() => _subject.GetItems());
 

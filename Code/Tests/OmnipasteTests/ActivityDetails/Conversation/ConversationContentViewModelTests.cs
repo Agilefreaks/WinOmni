@@ -19,9 +19,8 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation;
-    using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
-    using OmnipasteTests.Helpers;
+    using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
 
     [TestFixture]
     public class ConversationContentViewModelTests
@@ -49,8 +48,8 @@
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             var mockingKernel = new MoqMockingKernel();
-            mockingKernel.Bind<ICallViewModel>()
-                .ToMethod(context => new CallViewModel(_mockUiRefreshService.Object, _mockConfigurationService.Object));
+            mockingKernel.Bind<IPhoneCallViewModel>()
+                .ToMethod(context => new PhoneCallViewModel(_mockUiRefreshService.Object, _mockConfigurationService.Object));
             mockingKernel.Bind<IMessageViewModel>()
                 .ToMethod(
                     context => new MessageViewModel(_mockUiRefreshService.Object, _mockConfigurationService.Object));
@@ -77,8 +76,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new Call();
-            var call2 = new Call();
+            var call1 = new PhoneCall();
+            var call2 = new PhoneCall();
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();
@@ -92,7 +91,7 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new Call { UniqueId = "42" };
+            var call = new PhoneCall { UniqueId = "42" };
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -106,7 +105,7 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new Call { UniqueId = "42" };
+            var call = new PhoneCall { UniqueId = "42" };
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -120,7 +119,7 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new Call { UniqueId = "42" };
+            var call = new PhoneCall { UniqueId = "42" };
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -132,8 +131,8 @@
         [Test]
         public void ACallAppearsInTheConversation_ViewModelWasActivated_AddsACallViewModel()
         {
-            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(callObservable);
@@ -148,8 +147,8 @@
         [Test]
         public void ACallAppearsInTheConversation_ViewModelIsActive_MarksCallAsViewed()
         {
-            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(callObservable);
@@ -179,8 +178,8 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelIsActive_MarksMessageAsViewed()
         {
-            var messageFromContact = new RemoteSmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var messageFromContact = new RemoteSmsMessage { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
@@ -195,8 +194,8 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelWasActivated_AddsAMessageViewModel()
         {
-            var messageFromContact = new LocalSmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var messageFromContact = new LocalSmsMessage { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
@@ -214,8 +213,8 @@
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
             var baseTime = DateTime.Now;
-            var call1 = new Call { Time = baseTime };
-            var call2 = new Call { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
+            var call1 = new PhoneCall { Time = baseTime };
+            var call2 = new PhoneCall { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
             var message1 = new LocalSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
             var message2 = new RemoteSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
             SetupGetConversationItems(call1, call2, message1, message2);
@@ -237,8 +236,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new Call();
-            var call2 = new Call();
+            var call1 = new PhoneCall();
+            var call2 = new PhoneCall();
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();
@@ -253,8 +252,8 @@
         [Test]
         public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_AddsACorrespondingChildViewModel()
         {
-            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
@@ -269,8 +268,8 @@
         [Test]
         public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_DoesNotMarkTheItemAsViewed()
         {
-            var callFromContact = new Call { ContactInfo = new ContactInfo { Phone = "123" } };
-            _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
+            var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
+            _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
             _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);

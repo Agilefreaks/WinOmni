@@ -60,7 +60,7 @@
             get
             {
                 return string.IsNullOrWhiteSpace(Resource.ContactInfo.Name)
-                           ? Resource.ContactInfo.Phone
+                           ? Resource.ContactInfo.PhoneNumber
                            : Resource.ContactInfo.Name;
             }
         }

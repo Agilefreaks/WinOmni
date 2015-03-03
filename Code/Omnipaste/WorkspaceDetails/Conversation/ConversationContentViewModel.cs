@@ -12,8 +12,8 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
+    using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
     using OmniUI.List;
 
     public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IConversationItemViewModel>,
@@ -97,9 +97,9 @@
         protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
         {
             IConversationItemViewModel result;
-            if (model is Models.Call)
+            if (model is Models.PhoneCall)
             {
-                result = Kernel.Get<ICallViewModel>();
+                result = Kernel.Get<IPhoneCallViewModel>();
             }
             else
             {

@@ -9,20 +9,13 @@
 
         protected SmsMessage()
         {
+            ContactInfo = new ContactInfo();
         }
 
         protected SmsMessage(SmsMessageDto smsMessageDto) : this()
         {
             Id = smsMessageDto.Id;
             Content = smsMessageDto.Content;
-            string firstName, lastName;
-            NameParser.Parse(smsMessageDto.ContactName, out firstName, out lastName);
-            ContactInfo = new ContactInfo
-                              {
-                                  FirstName = firstName,
-                                  LastName = lastName,
-                                  Phone = smsMessageDto.PhoneNumber
-                              };
         }
 
         #endregion

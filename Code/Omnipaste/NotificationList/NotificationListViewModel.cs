@@ -31,7 +31,7 @@
 
         private readonly IClippingRepository _clippingRepository;
 
-        private readonly ICallRepository _callRepository;
+        private readonly IPhoneCallRepository _phoneCallRepository;
 
         private readonly IMessageRepository _messageRepository;
 
@@ -47,13 +47,13 @@
 
         #region Constructors and Destructors
 
-        public NotificationListViewModel(IClippingRepository clippingRepository, ICallRepository callRepository, IMessageRepository messageRepository, IEventAggregator eventAggregator)
+        public NotificationListViewModel(IClippingRepository clippingRepository, IPhoneCallRepository phoneCallRepository, IMessageRepository messageRepository, IEventAggregator eventAggregator)
         {
             Notifications = new ObservableCollection<INotificationViewModel>();
             Notifications.CollectionChanged += NotificationsCollectionChanged;
 
             _clippingRepository = clippingRepository;
-            _callRepository = callRepository;
+            _phoneCallRepository = phoneCallRepository;
             _messageRepository = messageRepository;
 
             Height = double.NaN;
@@ -170,7 +170,7 @@
         private void CreateNotificationsFromIncomingCalls()
         {
             _callSubscription =
-                _callRepository.OperationObservable.Created()
+                _phoneCallRepository.OperationObservable.Created()
                     .Select(o => o.Item)
                     .Where(item => item.Source == SourceType.Remote)
                     .ObserveOn(SchedulerProvider.Dispatcher)

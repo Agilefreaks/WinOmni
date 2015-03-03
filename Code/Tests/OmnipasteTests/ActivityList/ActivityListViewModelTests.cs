@@ -33,7 +33,7 @@
 
         private Mock<IClippingRepository> _mockClippingRepository;
 
-        private Mock<ICallRepository> _mockCallRepository;
+        private Mock<IPhoneCallRepository> _mockCallRepository;
 
         private Mock<IMessageRepository> _mockMessageRepository;
 
@@ -48,7 +48,7 @@
             SchedulerProvider.Default = _testScheduler;
             SchedulerProvider.Dispatcher = _testScheduler;
 
-            _mockCallRepository = new Mock<ICallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
@@ -134,11 +134,11 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var repositoryOperation = new RepositoryOperation<Call>(RepositoryMethodEnum.Create, new Call { Source = SourceType.Remote });
+            var repositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Create, new PhoneCall { Source = SourceType.Remote });
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(repositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(repositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             ((IActivate)_subject).Activate();
 
@@ -151,13 +151,13 @@
         public void UpdatingACall_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewCall()
         {
             const string UniqueId = "42";
-            var call = new Call { UniqueId = UniqueId, Source = SourceType.Remote };
-            var modifiedCall = new Call { UniqueId = UniqueId, Content = "Test" };
+            var call = new PhoneCall { UniqueId = UniqueId, Source = SourceType.Remote };
+            var modifiedCall = new PhoneCall { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Call>>>(100, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Create, call))),
-                    new Recorded<Notification<RepositoryOperation<Call>>>(200, Notification.CreateOnNext(new RepositoryOperation<Call>(RepositoryMethodEnum.Update, modifiedCall))),
-                    new Recorded<Notification<RepositoryOperation<Call>>>(300, Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Create, call))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Update, modifiedCall))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callObservable);
             ((IActivate)_subject).Activate();
 
@@ -295,7 +295,7 @@
         public void ChangingFilterText_Always_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new Call());
+            var activityPresenter1 = new ActivityPresenter(new PhoneCall());
             var activityPresenter2 = new ActivityPresenter(new TestSmsMessage());
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter1 });
@@ -326,7 +326,7 @@
         private void AddItemsForAllActivityTypes()
         {
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new ClippingModel()) });
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new Call()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new PhoneCall()) });
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new TestSmsMessage()) });
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new UpdateInfo()) });
         }

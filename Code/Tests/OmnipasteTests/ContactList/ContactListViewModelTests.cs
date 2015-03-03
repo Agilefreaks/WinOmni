@@ -62,7 +62,7 @@
         [Test]
         public void Activate_Always_PopulatesListWithStoredContacts()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1" }, new ContactInfo { Phone = "2" } };
+            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<ContactInfo>>>(
@@ -82,7 +82,7 @@
         [Test]
         public void ContactIsSaved_AfterActivate_AddsContactToList()
         {
-            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Create, new ContactInfo { Phone = "42" });
+            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Create, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(100, Notification.CreateOnNext(repositoryOperation)),
@@ -98,7 +98,7 @@
         [Test]
         public void ShowStarred_ChangesToTrue_FiltersItemsThatAreStarred()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1", IsStarred = true }, new ContactInfo { Phone = "2", IsStarred = false} };
+            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<ContactInfo>>>(
@@ -119,7 +119,7 @@
         [Test]
         public void ShowStarred_ChangesToFalse_ShowsAllItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1", IsStarred = true }, new ContactInfo { Phone = "2", IsStarred = false } };
+            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<ContactInfo>>>(
@@ -140,7 +140,7 @@
         [Test]
         public void FilterText_ChangesToEmpty_ShowsAllItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1" }, new ContactInfo { Phone = "2" } };
+            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<ContactInfo>>>(
@@ -161,7 +161,7 @@
         [Test]
         public void FilterText_MatchesPhoneNumber_ShowsMatchingItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { Phone = "1" }, new ContactInfo { Phone = "2" } };
+            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<ContactInfo>>>(
@@ -204,8 +204,8 @@
         [Test]
         public void OnConversationItemAdded_WhenContactExists_RemovesItemFromList()
         {
-            var contactInfo = new ContactInfo { Phone = "42" };
-            var call = new Call { ContactInfo = contactInfo };
+            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
+            var call = new PhoneCall { ContactInfo = contactInfo };
             _mockContactRepository.Setup(m => m.GetAll())
                 .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
             var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
@@ -224,8 +224,8 @@
         [Test]
         public void OnConversationItemAdded_AfterActivate_AddsItemToList()
         {
-            var contactInfo = new ContactInfo { Phone = "42" };
-            var call = new Call { ContactInfo = contactInfo };
+            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
+            var call = new PhoneCall { ContactInfo = contactInfo };
             _mockContactRepository.Setup(m => m.GetAll())
                 .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
             var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };

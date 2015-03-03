@@ -125,7 +125,7 @@
 
         protected virtual string GetIdentifier()
         {
-            return string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.Phone : ContactInfo.Name;
+            return string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.PhoneNumber : ContactInfo.Name;
         }
 
         private static ImageSource GetDefaultUserImage()

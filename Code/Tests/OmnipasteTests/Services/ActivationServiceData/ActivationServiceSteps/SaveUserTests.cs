@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using System.Reactive.Linq;
     using FluentAssertions;
     using Moq;
@@ -43,7 +44,8 @@
                 FirstName = "First",
                 LastName = "Last",
                 Email = "test@user.com",
-                ImageUrl = "http://image.com"
+                ImageUrl = "http://image.com",
+                ContactsUpdatedAt = DateTime.Now
             };
             _subject.Parameter = new DependencyParameter
             {

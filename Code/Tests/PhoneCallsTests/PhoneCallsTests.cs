@@ -42,7 +42,7 @@
             _mockPhoneCallsAPI.Verify(
                 x =>
                 x.Create(
-                    It.Is<PhoneCall>(
+                    It.Is<PhoneCallDto>(
                         phoneCall =>
                         phoneCall.Number == PhoneNumber && phoneCall.State == PhoneCallState.Starting
                         && phoneCall.Type == PhoneCallType.Outgoing),

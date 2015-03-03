@@ -12,7 +12,7 @@
     [TestFixture]
     public class CallRepositoryTests
     {
-        private CallRepository _subject;
+        private PhoneCallRepository _subject;
 
         private TestScheduler _testScheduler;
 
@@ -22,7 +22,7 @@
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
 
-            _subject = new CallRepository();
+            _subject = new PhoneCallRepository();
         }
 
         [TearDown]
@@ -35,11 +35,34 @@
         public void GetByContact_Always_ReturnsCallsForContact()
         {
             var phoneNumber = "0722123123";
-            var call1 = new Call { UniqueId = "42", ContactInfo = new ContactInfo { Phone = phoneNumber } };
-            var call2 = new Call { UniqueId = "1", ContactInfo = new ContactInfo { Phone = "5987120439217094" } };
+            var phoneNumbers = new[] { new PhoneNumber { Number = phoneNumber } };
+            var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
+            var call1 = new PhoneCall
+                            {
+                                UniqueId = "42",
+                                ContactInfo =
+                                    contactInfo
+                            };
+            var call2 = new PhoneCall
+                            {
+                                UniqueId = "1",
+                                ContactInfo =
+                                    new ContactInfo
+                                        {
+                                            PhoneNumbers =
+                                                new[]
+                                                    {
+                                                        new PhoneNumber
+                                                            {
+                                                                Number =
+                                                                    "5987120439217094"
+                                                            }
+                                                    }
+                                        }
+                            };
             var observable = _subject.Save(call1)
                 .Select(_ => _subject.Save(call2))
-                .Select(_ => _subject.GetByContact(new ContactInfo { Phone = phoneNumber }))
+                .Select(_ => _subject.GetByContact(contactInfo))
                 .Switch();
 
             var result = _testScheduler.Start(() => observable);
@@ -52,11 +75,29 @@
         public void GetByContact_WhenCallPhoneNumberContainsPrefix_ReturnsCallForContact()
         {
             var phoneNumber = "0722123123";
-            var call1 = new Call { UniqueId = "42", ContactInfo = new ContactInfo { Phone = "+40" + phoneNumber } };
-            var call2 = new Call { UniqueId = "1", ContactInfo = new ContactInfo { Phone = "5987120439217094" } };
+            var phoneNumbers = new[] { new PhoneNumber { Number = "+40" + phoneNumber } };
+            var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
+            var call1 = new PhoneCall { UniqueId = "42", ContactInfo = contactInfo };
+            var call2 = new PhoneCall
+                            {
+                                UniqueId = "1",
+                                ContactInfo =
+                                    new ContactInfo
+                                        {
+                                            PhoneNumbers =
+                                                new[]
+                                                    {
+                                                        new PhoneNumber
+                                                            {
+                                                                Number =
+                                                                    "5987120439217094"
+                                                            }
+                                                    }
+                                        }
+                            };
             var observable = _subject.Save(call1)
                 .Select(_ => _subject.SaveSynchronous(call2))
-                .Select(_ => _subject.GetByContact(new ContactInfo { Phone = phoneNumber }))
+                .Select(_ => _subject.GetByContact(contactInfo))
                 .Switch();
 
             var result = _testScheduler.Start(() => observable);

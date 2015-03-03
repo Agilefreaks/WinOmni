@@ -135,7 +135,7 @@
         public virtual void Send()
         {
             IsSending = true;
-            _smsMessages.Send(ContactInfo.Phone, Message)
+            _smsMessages.Send(ContactInfo.PhoneNumber, Message)
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);

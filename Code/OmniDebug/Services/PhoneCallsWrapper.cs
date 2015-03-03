@@ -5,7 +5,7 @@
     using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
-    public class PhoneCallsWrapper : ResourceWrapperBase<PhoneCall>, IPhoneCallsWrapper
+    public class PhoneCallsWrapper : ResourceWrapperBase<PhoneCallDto>, IPhoneCallsWrapper
     {
         private readonly IPhoneCalls _originalResource;
 
@@ -15,7 +15,7 @@
             _originalResource = originalResource;
         }
 
-        public IObservable<PhoneCall> Call(string phoneNumber)
+        public IObservable<PhoneCallDto> Call(string phoneNumber, int? contactId = null)
         {
             return _originalResource.Call(phoneNumber);
         }

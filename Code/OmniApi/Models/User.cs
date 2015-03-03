@@ -1,5 +1,7 @@
 ﻿namespace OmniApi.Models
 {
+    using System;
+
     public class User
     {
         #region Constructors and Destructors
@@ -25,6 +27,8 @@
         public string ImageUrl { get; set; }
 
         public bool ViaOmnipaste { get; set; }
+
+        public DateTime ContactsUpdatedAt { get; set; }
 
         #endregion
     }

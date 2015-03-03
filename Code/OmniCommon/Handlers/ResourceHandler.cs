@@ -23,7 +23,7 @@
         public virtual void Start(IObservable<OmniMessage> omniMessageObservable)
         {
             Stop();
-            _subscription = omniMessageObservable.Where(m => m.Type == HandledMessageType).Subscribe(this);
+            _subscription = omniMessageObservable.Where(m => HandledMessageType.Contains(m.Type)).Subscribe(this);
         }
 
         public virtual void Stop()

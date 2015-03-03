@@ -12,5 +12,7 @@
         public string ImageUrl { get; set; }
 
         public string Email { get; set; }
+
+        public DateTime ContactsUpdatedAt { get; set; }
     }
 }

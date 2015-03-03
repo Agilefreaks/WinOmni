@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -34,7 +33,7 @@
         #region Public Properties
 
         [Inject]
-        public ICallRepository CallRepository { get; set; }
+        public IPhoneCallRepository PhoneCallRepository { get; set; }
 
         [Inject]
         public IMessageRepository MessageRepository { get; set; }
@@ -77,7 +76,7 @@
             _callSubscription =
                 Observable.Timer(DelayCallDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
-                    .Select(_ => PhoneCalls.Call(Model.ContactInfo.Phone))
+                    .Select(_ => PhoneCalls.Call(Model.ContactInfo.PhoneNumber, Model.ContactInfo.ContactId))
                     .Switch()
                     .Select(SaveCallLocally)
                     .Switch()
@@ -97,14 +96,14 @@
 
         public void Delete()
         {
-            UpdateConversationItems(CallRepository, item => item.IsDeleted = true);
+            UpdateConversationItems(PhoneCallRepository, item => item.IsDeleted = true);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
             State = ConversationHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            UpdateConversationItems(CallRepository, item => item.IsDeleted = false);
+            UpdateConversationItems(PhoneCallRepository, item => item.IsDeleted = false);
             UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
             State = ConversationHeaderStateEnum.Normal;
         }
@@ -121,7 +120,7 @@
 
         protected override void OnDeactivate(bool close)
         {
-            DeleteConversationItems(CallRepository);
+            DeleteConversationItems(PhoneCallRepository);
             DeleteConversationItems(MessageRepository);
             base.OnDeactivate(close);
         }
@@ -145,9 +144,13 @@
             _callSubscription = null;
         }
 
-        private IObservable<RepositoryOperation<Models.Call>> SaveCallLocally(PhoneCall call)
+        private IObservable<RepositoryOperation<Models.PhoneCall>> SaveCallLocally(PhoneCallDto call)
         {
-            return CallRepository.Save(new Models.Call(call) { Source = SourceType.Local });
+            return PhoneCallRepository.Save(new Models.PhoneCall(call)
+                                                {
+                                                    Source = SourceType.Local,
+                                                    ContactInfo = Model.ContactInfo
+                                                });
         }
 
         private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)

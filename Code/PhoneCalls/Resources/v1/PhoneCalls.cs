@@ -21,20 +21,21 @@
 
         #region Public Methods and Operators
 
-        public IObservable<PhoneCall> Get(string id)
+        public IObservable<PhoneCallDto> Get(string id)
         {
             return ResourceApi.Get(id, AccessToken);
         }
 
-        public IObservable<PhoneCall> Call(string phoneNumber)
+        public IObservable<PhoneCallDto> Call(string phoneNumber, int? contactId = null)
         {
             return
                 ResourceApi.Create(
-                    new PhoneCall
+                    new PhoneCallDto
                         {
                             Number = phoneNumber,
                             State = PhoneCallState.Starting,
-                            Type = PhoneCallType.Outgoing
+                            Type = PhoneCallType.Outgoing,
+                            ContactId = contactId
                         },
                     AccessToken);
         }

@@ -219,7 +219,7 @@
                         items =>
                             {
                                 var conversationItems = items.Where(item => !item.IsDeleted).ToList();
-                                HasNotViewedCalls = conversationItems.OfType<Call>().Any(item => !item.WasViewed);
+                                HasNotViewedCalls = conversationItems.OfType<PhoneCall>().Any(item => !item.WasViewed);
                                 HasNotViewedMessages = conversationItems.OfType<SmsMessage>().Any(item => !item.WasViewed);
                                 LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
                             }));
@@ -244,7 +244,7 @@
             {
                 result = item.Content;
             }
-            else if (item is Call)
+            else if (item is PhoneCall)
             {
                 result = item.Source == SourceType.Local
                              ? Resources.OutgoingCallLabel

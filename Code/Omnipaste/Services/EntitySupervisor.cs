@@ -6,15 +6,16 @@
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
+    using Contacts.Handlers;
+    using Contacts.Models;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Handlers;
-    using PhoneCalls.Models;
     using SMS.Handlers;
-    using SMS.Models;
 
     public class EntitySupervisor : IEntitySupervisor
     {
@@ -26,6 +27,9 @@
         }
 
         [Inject]
+        public IRemoteSmsMessageFactory RemoteSmsMessageFactory { get; set; }
+
+        [Inject]
         public IClipboardHandler ClipboardHandler { get; set; }
 
         [Inject]
@@ -35,13 +39,11 @@
         public IPhoneCallReceivedHandler PhoneCallReceivedHandler { get; set; }
 
         [Inject]
-        public ICallRepository CallRepository { get; set; }
+        public IPhoneCallFactory PhoneCallFactory { get; set; }
 
         [Inject]
         public ISmsMessageCreatedHandler SmsMessageCreatedHandler { get; set; }
-
-        [Inject]
-        public IMessageRepository MessageRepository { get; set; }
+        
 
         [Inject]
         public IUpdaterService UpdaterService { get; set; }
@@ -51,6 +53,12 @@
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
+
+        [Inject]
+        public IContactCreatedHandler ContactCreatedHandler { get; set; }
+
+        [Inject]
+        public IContactsUpdatedHandler ContactsUpdatedHandler { get; set; }
 
         public void Start()
         {
@@ -62,14 +70,14 @@
                     .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
 
             _subscriptions.Add(
-                PhoneCallReceivedHandler.Select(StorePhoneCall)
+                PhoneCallReceivedHandler.Select(PhoneCallFactory.Create)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors());
 
             _subscriptions.Add(
-                SmsMessageCreatedHandler.Select(StoreMessage)
+                SmsMessageCreatedHandler.Select(RemoteSmsMessageFactory.Create)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
@@ -79,6 +87,18 @@
                 UpdaterService.UpdateObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(updateInfo => UpdateInfoRepository.Save(updateInfo)));
+
+            _subscriptions.Add(
+                ContactCreatedHandler.SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(c => StoreContact(c)));
+
+            _subscriptions.Add(
+                ContactsUpdatedHandler
+                    .SelectMany(cl => cl)
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Default)
+                    .SubscribeAndHandleErrors(c => StoreContact(c)));
         }
 
         public void Stop()
@@ -87,34 +107,10 @@
             _subscriptions.Clear();
         }
 
-        private IObservable<Unit> StoreMessage(SmsMessageDto smsMessageDto)
+        private IObservable<Unit> StoreContact(ContactDto contactDto)
         {
-            var message = new RemoteSmsMessage(smsMessageDto);
-            return
-                ContactRepository.GetByPhoneNumber(message.ContactInfo.Phone)
-                    .Select(contact => HandleContact(message, contact))
-                    .Switch()
-                    .Select(_ => MessageRepository.Save(message).Select(__ => Unit.Default))
-                    .Switch();
-        }
-
-        private IObservable<Unit> StorePhoneCall(PhoneCall phoneCall)
-        {
-            var call = new Call(phoneCall);
-            return
-                ContactRepository.GetByPhoneNumber(call.ContactInfo.Phone)
-                    .Select(contact => HandleContact(call, contact))
-                    .Switch()
-                    .Select(_ => CallRepository.Save(call).Select(__ => Unit.Default))
-                    .Switch();
-        }
-
-        private IObservable<Unit> HandleContact(IConversationItem item, ContactInfo contactInfo)
-        {
-            return contactInfo == null
-                       ? ContactRepository.Save(item.ContactInfo).Select(_ => Unit.Default)
-                       : Observable.Start(() => item.ContactInfo = contactInfo, SchedulerProvider.Default)
-                             .Select(_ => Unit.Default);
+            var contactInfo = new ContactInfo(contactDto);
+            return ContactRepository.Save(contactInfo).Select(_ => Unit.Default);
         }
     }
 }

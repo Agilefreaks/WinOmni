@@ -42,10 +42,10 @@
         [Test]
         public void WhenAClippingMessageArrives_SubscriberOnNextIsCalled()
         {
-            var observer = new Mock<IObserver<PhoneCall>>();
+            var observer = new Mock<IObserver<PhoneCallDto>>();
             var omniMessageObservable = new Subject<OmniMessage>();
             const string Id = "42";
-            var phoneCall = new PhoneCall { Id = Id };
+            var phoneCall = new PhoneCallDto { Id = Id };
             _mockPhoneCalls.Setup(c => c.Get("42")).Returns(Observable.Return(phoneCall));
             _subject.Start(omniMessageObservable);
             _subject.Subscribe(observer.Object);
@@ -62,14 +62,14 @@
         [Test]
         public void WhenOtherMessageArrive_SubscriberOnNextIsNotCalled()
         {
-            var observer = new Mock<IObserver<PhoneCall>>();
+            var observer = new Mock<IObserver<PhoneCallDto>>();
             var observable = new Subject<OmniMessage>();
 
             _subject.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage { Type = "other" });
 
-            observer.Verify(o => o.OnNext(It.IsAny<PhoneCall>()), Times.Never);
+            observer.Verify(o => o.OnNext(It.IsAny<PhoneCallDto>()), Times.Never);
         }
     }
 }

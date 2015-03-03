@@ -15,8 +15,8 @@
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
+    using Omnipaste.Factories;
     using Omnipaste.Framework;
-    using Omnipaste.Models;
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
@@ -84,11 +84,12 @@
                            typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(CallRepository), typeof(ContactRepository),
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository),
                            typeof(UpdateInfoRepository), typeof(MessageRepository),
                            typeof(ActivityWorkspace), typeof(PeopleWorkspace), typeof(ClippingWorkspace),
                            typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
-                           typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider)
+                           typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
+                           typeof(RemoteSmsMessageFactory), typeof(PhoneCallFactory)
                        };
         }
 

@@ -17,14 +17,14 @@
 
         private IObservable<IConversationItem> _updated;
 
-        protected readonly ICallRepository CallRepository;
+        protected readonly IPhoneCallRepository PhoneCallRepository;
 
         protected readonly IMessageRepository MessageRepository;
 
-        protected ConversationContext(IMessageRepository messageRepository, ICallRepository callRepository)
+        protected ConversationContext(IMessageRepository messageRepository, IPhoneCallRepository phoneCallRepository)
         {
             MessageRepository = messageRepository;
-            CallRepository = callRepository;
+            PhoneCallRepository = phoneCallRepository;
         }
 
         public IObservable<IConversationItem> ItemUpdated
@@ -63,11 +63,11 @@
 
         public virtual IObservable<Unit> SaveItem(IConversationItem item)
         {
-            var call = item as Call;
+            var call = item as PhoneCall;
             var result = Observable.Return(new Unit());
             if (call != null)
             {
-                result = CallRepository.Save(call).Select(_ => new Unit());
+                result = PhoneCallRepository.Save(call).Select(_ => new Unit());
             }
             else
             {

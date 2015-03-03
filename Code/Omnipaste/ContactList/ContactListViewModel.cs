@@ -9,7 +9,6 @@ namespace Omnipaste.ContactList
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
@@ -35,6 +34,14 @@ namespace Omnipaste.ContactList
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
             FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Ascending));
+        }
+
+        public override int MaxItemCount
+        {
+            get
+            {
+                return 0;
+            }
         }
 
         public bool ShowStarred
@@ -127,7 +134,7 @@ namespace Omnipaste.ContactList
             return
                 Items.Select(vm => vm.Model)
                     .FirstOrDefault(
-                        model => PhoneNumberMatcher.IsMatch(model.ContactInfo.Phone, conversationItem.ContactInfo.Phone));
+                        model => conversationItem.ContactInfo.UniqueId == model.ContactInfo.UniqueId);
         }
 
         private void UpdateViewModel(ContactInfoPresenter obj)
@@ -144,7 +151,7 @@ namespace Omnipaste.ContactList
             return (model != null)
                    && (string.IsNullOrWhiteSpace(FilterText)
                        || IsMatch(FilterText, model.ContactInfo.Name)
-                       || IsMatch(FilterText, model.ContactInfo.Phone));
+                       || model.ContactInfo.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
         }
 
         private bool MatchesFilter(IContactInfoPresenter model)

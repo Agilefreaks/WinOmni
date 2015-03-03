@@ -2,7 +2,7 @@
 {
     using Omnipaste.Models;
 
-    public interface ICallRepository : IRepository<Call>
+    public interface IPhoneCallRepository : IRepository<PhoneCall>
     {
     }
 }

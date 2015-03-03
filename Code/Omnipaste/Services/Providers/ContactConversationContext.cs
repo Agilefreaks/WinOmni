@@ -13,9 +13,9 @@ namespace Omnipaste.Services.Providers
 
         public ContactConversationContext(
             IMessageRepository messageRepository,
-            ICallRepository callRepository,
+            IPhoneCallRepository phoneCallRepository,
             ContactInfo contactInfo)
-            : base(messageRepository, callRepository)
+            : base(messageRepository, phoneCallRepository)
         {
             _contactInfo = contactInfo;
         }
@@ -25,7 +25,7 @@ namespace Omnipaste.Services.Providers
             return
                 Observable.When(
                     MessageRepository.GetByContact(_contactInfo)
-                        .And(CallRepository.GetByContact(_contactInfo))
+                        .And(PhoneCallRepository.GetByContact(_contactInfo))
                         .Then((messages, calls) => messages.Cast<IConversationItem>().Concat(calls)));
         }
 
@@ -37,7 +37,7 @@ namespace Omnipaste.Services.Providers
                     .ForContact(_contactInfo)
                     .Select(o => o.Item)
                     .Merge(
-                        CallRepository.OperationObservable.OnMethod(method)
+                        PhoneCallRepository.OperationObservable.OnMethod(method)
                             .ForContact(_contactInfo)
                             .Select(o => o.Item)
                             .Cast<IConversationItem>());

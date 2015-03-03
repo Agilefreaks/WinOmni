@@ -65,7 +65,7 @@
   <ItemGroup>
     <Compile Include="Handlers\IPhoneCallReceivedHandler.cs" />
     <Compile Include="Handlers\PhoneCallReceivedHandler.cs" />
-    <Compile Include="Models\PhoneCall.cs" />
+    <Compile Include="Models\PhoneCallDto.cs" />
     <Compile Include="Models\PhoneCallState.cs" />
     <Compile Include="Models\PhoneCallType.cs" />
     <Compile Include="PhoneCallsModule.cs" />

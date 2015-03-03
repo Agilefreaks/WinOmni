@@ -15,12 +15,6 @@ namespace OmniUI.List
     public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive, IListViewModel<TViewModel>
         where TViewModel : class, IDetailsViewModel
     {
-        #region Constants
-
-        public const int MaxItemCount = 42;
-
-        #endregion
-
         #region Fields
 
         protected readonly CompositeDisposable Subscriptions;
@@ -44,6 +38,14 @@ namespace OmniUI.List
         #endregion
 
         #region Public Properties
+
+        public virtual int MaxItemCount
+        {
+            get
+            {
+                return 42;
+            }
+        }
 
         public ListCollectionView FilteredItems
         {
@@ -176,7 +178,7 @@ namespace OmniUI.List
 
         protected virtual bool MaxItemsLimitReached()
         {
-            return Items.Count == MaxItemCount;
+            return MaxItemCount != 0 && Items.Count == MaxItemCount;
         }
 
         protected override void OnInitialize()
