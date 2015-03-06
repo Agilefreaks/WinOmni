@@ -85,7 +85,7 @@
             var id = Guid.NewGuid().ToString();
             _smsMessagesWrapper.MockGet(
                 id,
-                new SmsMessage
+                new SmsMessageDto
                     {
                         Id = id,
                         Content = NotificationContent,

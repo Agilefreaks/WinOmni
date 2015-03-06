@@ -20,7 +20,6 @@
     using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
-    using Message = Omnipaste.Models.Message;
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
@@ -221,7 +220,7 @@
                             {
                                 var conversationItems = items.Where(item => !item.IsDeleted).ToList();
                                 HasNotViewedCalls = conversationItems.OfType<Call>().Any(item => !item.WasViewed);
-                                HasNotViewedMessages = conversationItems.OfType<Message>().Any(item => !item.WasViewed);
+                                HasNotViewedMessages = conversationItems.OfType<SmsMessage>().Any(item => !item.WasViewed);
                                 LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
                             }));
         }
@@ -241,7 +240,7 @@
         {
             var result = string.Empty;
 
-            if (item is Message)
+            if (item is SmsMessage)
             {
                 result = item.Content;
             }

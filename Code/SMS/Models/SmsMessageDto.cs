@@ -1,6 +1,6 @@
 ﻿namespace SMS.Models
 {
-    public class SmsMessage
+    public class SmsMessageDto
     {
         public string Id { get; set; }
 

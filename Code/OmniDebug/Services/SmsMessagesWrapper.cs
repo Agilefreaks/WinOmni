@@ -4,7 +4,7 @@
     using SMS.Models;
     using SMS.Resources.v1;
 
-    public class SmsMessagesWrapper : ResourceWrapperBase<SmsMessage>, ISmsMessagesWrapper
+    public class SmsMessagesWrapper : ResourceWrapperBase<SmsMessageDto>, ISmsMessagesWrapper
     {
         private readonly ISMSMessages _originalResource;
 
@@ -14,7 +14,7 @@
             _originalResource = originalResource;
         }
 
-        public IObservable<SmsMessage> Send(string phoneNumber, string message)
+        public IObservable<SmsMessageDto> Send(string phoneNumber, string message)
         {
             return _originalResource.Send(phoneNumber, message);
         }

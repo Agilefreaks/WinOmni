@@ -3,7 +3,7 @@
     using Omnipaste.Models;
     using OmniUI.Details;
 
-    public interface IMessageViewModel : IConversationItemViewModel, IDetailsViewModel<Message>
+    public interface IMessageViewModel : IConversationItemViewModel, IDetailsViewModel<SmsMessage>
     {
     }
 }

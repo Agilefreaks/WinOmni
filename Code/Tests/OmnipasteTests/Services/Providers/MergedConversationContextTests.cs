@@ -44,8 +44,8 @@
         [Test]
         public void GetItems_Always_ReturnsMessagesAndCalls()
         {
-            var message = new Message();
-            _mockMessageRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<Message> { message }, _testScheduler));
+            var message = new SmsMessage();
+            _mockMessageRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<SmsMessage> { message }, _testScheduler));
             var call = new Call();
             _mockCallRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<Call> { call }));
 

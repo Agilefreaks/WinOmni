@@ -87,9 +87,9 @@
             _subscriptions.Clear();
         }
 
-        private IObservable<Unit> StoreMessage(SmsMessage smsMessage)
+        private IObservable<Unit> StoreMessage(SmsMessageDto smsMessageDto)
         {
-            var message = new Message(smsMessage);
+            var message = new SmsMessage(smsMessageDto);
             return
                 ContactRepository.GetByPhoneNumber(message.ContactInfo.Phone)
                     .Select(contact => HandleContact(message, contact))

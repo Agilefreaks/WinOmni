@@ -9,6 +9,6 @@
 
         INotificationViewModel Create(Call call);
 
-        INotificationViewModel Create(Message message);
+        INotificationViewModel Create(SmsMessage smsMessage);
     }
 }

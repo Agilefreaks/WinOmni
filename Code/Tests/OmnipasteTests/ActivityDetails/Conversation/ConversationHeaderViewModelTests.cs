@@ -182,11 +182,11 @@
         [Test]
         public void Delete_WhenMessagesExistForContact_DeletesEachMessage()
         {
-            var message = new Message { UniqueId = "42" };
+            var message = new SmsMessage { UniqueId = "42" };
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(getMessageObservable);
+                    new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<SmsMessage, bool>>())).Returns(getMessageObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
@@ -222,11 +222,11 @@
         [Test]
         public void UndoDelete_WhenMessagesWereDeleted_RestoresMessages()
         {
-            var message = new Message { UniqueId = "42", IsDeleted = true };
+            var message = new SmsMessage { UniqueId = "42", IsDeleted = true };
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<Message>>>(100, Notification.CreateOnNext(new List<Message> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<Message, bool>>())).Returns(getMessageObservable);
+                    new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<SmsMessage, bool>>())).Returns(getMessageObservable);
 
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);

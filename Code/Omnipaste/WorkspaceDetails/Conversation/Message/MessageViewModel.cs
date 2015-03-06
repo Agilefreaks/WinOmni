@@ -6,7 +6,7 @@
     using Omnipaste.Models;
     using Omnipaste.Services;
 
-    public class MessageViewModel : ConversationItemViewModel<Message>, IMessageViewModel
+    public class MessageViewModel : ConversationItemViewModel<SmsMessage>, IMessageViewModel
     {
         #region Constructors and Destructors
 

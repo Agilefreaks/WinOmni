@@ -165,8 +165,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var message1 = new Message();
-            var message2 = new Message();
+            var message1 = new SmsMessage();
+            var message2 = new SmsMessage();
             SetupGetConversationItems(message1, message2);
 
             ((IActivate)_subject).Activate();
@@ -178,7 +178,7 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelIsActive_MarksMessageAsViewed()
         {
-            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            var messageFromContact = new SmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
@@ -194,7 +194,7 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelWasActivated_AddsAMessageViewModel()
         {
-            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            var messageFromContact = new SmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
@@ -215,8 +215,8 @@
             var baseTime = DateTime.Now;
             var call1 = new Call { Time = baseTime };
             var call2 = new Call { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
-            var message1 = new Message { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
-            var message2 = new Message { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
+            var message1 = new SmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
+            var message2 = new SmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
             SetupGetConversationItems(call1, call2, message1, message2);
 
             ((IActivate)_subject).Activate();

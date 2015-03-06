@@ -396,7 +396,7 @@
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Models\ClippingModel.cs" />
-    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\SmsMessage.cs" />
     <Compile Include="Models\SourceType.cs" />
     <Compile Include="Models\UserContactInfo.cs" />
     <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
@@ -657,7 +657,6 @@
     <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SMSComposer\SmsComposerStatusEnum.cs" />
-    <Compile Include="Models\SMSMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />

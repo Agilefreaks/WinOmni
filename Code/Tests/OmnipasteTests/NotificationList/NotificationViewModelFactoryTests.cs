@@ -58,7 +58,7 @@
         public void Create_WithMessageAndNoContactNamePresent_SetsThePhoneAndContentProperties()
         {
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
-                new Message { ContactInfo = new ContactInfo { Phone = "1234567" }, Content = "SmsContent" });
+                new SmsMessage { ContactInfo = new ContactInfo { Phone = "1234567" }, Content = "SmsContent" });
 
             notificationViewModel.Line1.Should().Be("1234567");
             notificationViewModel.Line2.Should().Be("SmsContent");
@@ -68,7 +68,7 @@
         public void Create_WithEventOfTypeIncomingSmsAndContactNamePresent_SetsTheContactNameAndContentProperties()
         {
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(
-                new Message { ContactInfo = new ContactInfo { Phone = "1234567", FirstName = "Test", LastName = "Contact" }, Content = "SmsContent" });
+                new SmsMessage { ContactInfo = new ContactInfo { Phone = "1234567", FirstName = "Test", LastName = "Contact" }, Content = "SmsContent" });
 
             notificationViewModel.Line1.Should().Be("Test Contact");
             notificationViewModel.Line2.Should().Be("SmsContent");

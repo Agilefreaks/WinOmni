@@ -45,10 +45,10 @@
             return result;
         }
 
-        public INotificationViewModel Create(Message message)
+        public INotificationViewModel Create(SmsMessage smsMessage)
         {
             var result = Kernel.Get<IIncomingSmsNotificationViewModel>();
-            result.Resource = message;
+            result.Resource = smsMessage;
 
             return result;
         }

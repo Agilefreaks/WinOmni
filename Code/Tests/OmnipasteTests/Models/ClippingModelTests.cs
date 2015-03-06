@@ -43,13 +43,13 @@
         {
             var dateTime = new DateTime(2014, 1, 1);
             TimeHelper.UtcNow = dateTime;
-            new Message(new SmsMessage()).Time.Should().Be(dateTime);
+            new SmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime);
         }
 
         [Test]
         public void CtorWithCall_Always_SetsSourceToRemote()
         {
-            new Message(new SmsMessage()).Source.Should().Be(SourceType.Remote);
+            new SmsMessage(new SmsMessageDto()).Source.Should().Be(SourceType.Remote);
         }
     }
 }

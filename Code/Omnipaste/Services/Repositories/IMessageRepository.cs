@@ -2,7 +2,7 @@
 {
     using Omnipaste.Models;
 
-    public interface IMessageRepository : IRepository<Message>
+    public interface IMessageRepository : IRepository<SmsMessage>
     {
     }
 }

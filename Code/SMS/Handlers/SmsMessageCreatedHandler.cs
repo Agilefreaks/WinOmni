@@ -6,7 +6,7 @@
     using SMS.Models;
     using SMS.Resources.v1;
 
-    public class SmsMessageCreatedHandler : ResourceHandler<SmsMessage>, ISmsMessageCreatedHandler
+    public class SmsMessageCreatedHandler : ResourceHandler<SmsMessageDto>, ISmsMessageCreatedHandler
     {
         private readonly ISMSMessages _smsMessages;
 
@@ -23,7 +23,7 @@
             _smsMessages = smsMessages;
         }
 
-        protected override IObservable<SmsMessage> CreateResult(OmniMessage value)
+        protected override IObservable<SmsMessageDto> CreateResult(OmniMessage value)
         {
             var id = value.GetPayload("id");
             return _smsMessages.Get(id);

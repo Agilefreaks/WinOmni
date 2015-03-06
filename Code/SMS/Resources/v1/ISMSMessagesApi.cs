@@ -7,9 +7,9 @@
     public interface ISMSMessagesApi
     {
         [Get("/sms_messages/{id}")]
-        IObservable<SmsMessage> Get([AliasAs("id")] string id, [Header("Authorization")] string token);
+        IObservable<SmsMessageDto> Get([AliasAs("id")] string id, [Header("Authorization")] string token);
         
         [Post("/sms_messages")]
-        IObservable<SmsMessage> Create([Body] object payload, [Header("Authorization")] string token);
+        IObservable<SmsMessageDto> Create([Body] object payload, [Header("Authorization")] string token);
     }
 }

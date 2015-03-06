@@ -1,86 +1,46 @@
 ﻿namespace OmnipasteTests.Models
 {
+    using System;
     using FluentAssertions;
     using NUnit.Framework;
+    using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using SMS.Models;
 
     [TestFixture]
-    public class SMSMessageTests
+    public class SmsMessageTests
     {
-        private SMSMessage _subject;
-
-        [SetUp]
-        public void SetUp()
+        [TearDown]
+        public void TearDown()
         {
-            _subject = new SMSMessage(new Message());
+            TimeHelper.Reset();
         }
 
         [Test]
-        public void CharactersRemaining_WhenMessageLengthIsZero_Returns160()
+        public void CtorWithMessage_AlwaysAssignsAUniqueId()
         {
-            _subject.CharactersRemaining.Should().Be(160);
+            new SmsMessage(new SmsMessageDto()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
-        public void CharactersRemaining_WhenMessageLengthIs160_Returns0()
+        public void CtorWithMessage_AlwaysCopiesId()
         {
-            _subject.Message = new string('x', 160);
-
-            _subject.CharactersRemaining.Should().Be(0);
+            const string Id = "42";
+            new SmsMessage(new SmsMessageDto { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
-        public void CharactersRemaining_WhenMessageLengthIsMultipleOf160_Returns0()
+        public void CtorWithMessage_Always_AssignsTime()
         {
-            _subject.Message = new string('x', 320);
-
-            _subject.CharactersRemaining.Should().Be(0);
+            var dateTime = new DateTime(2014, 1, 1);
+            TimeHelper.UtcNow = dateTime;
+            new SmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime);
         }
 
         [Test]
-        public void CharactersRemaining_WhenMessageLengthIs1_Returns159()
+        public void CtorWithMessage_Always_SetsSourceToRemote()
         {
-            _subject.Message = "x";
-
-            _subject.CharactersRemaining.Should().Be(159);
-        }
-
-        [Test]
-        public void CharactersRemaining_WhenMessageLengthIs161_Returns159()
-        {
-            _subject.Message = new string('x', 161);
-
-            _subject.CharactersRemaining.Should().Be(159);
-        }
-
-        [Test]
-        public void MaxCharacters_WhenLengthIs0_Returns160()
-        {
-            _subject.MaxCharacters.Should().Be(160);
-        }
-
-        [Test]
-        public void MaxCharacters_WhenLengthIs1_Returns160()
-        {
-            _subject.Message = "x";
-
-            _subject.MaxCharacters.Should().Be(160);
-        }
-
-        [Test]
-        public void MaxCharacters_WhenLengthIs160_Returns160()
-        {
-            _subject.Message = new string('x', 160);
-
-            _subject.MaxCharacters.Should().Be(160);
-        }
-
-        [Test]
-        public void MaxCharacters_WhenLengthIs161_Returns320()
-        {
-            _subject.Message = new string('x', 161);
-
-            _subject.MaxCharacters.Should().Be(320);
+            new SmsMessage(new SmsMessageDto()).Source.Should().Be(SourceType.Remote);
         }
     }
 }
