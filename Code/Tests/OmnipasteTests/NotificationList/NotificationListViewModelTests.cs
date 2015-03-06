@@ -220,9 +220,8 @@
                         Notification.CreateOnNext(
                             new RepositoryOperation<SmsMessage>(
                                 RepositoryMethodEnum.Create,
-                                new SmsMessage
+                                new RemoteSmsMessage
                                     {
-                                        Source = SourceType.Remote,
                                         ContactInfo = new ContactInfo { Phone = "phone number" }
                                     }))));
 

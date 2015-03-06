@@ -159,7 +159,7 @@
         protected virtual void OnSentSMS(SmsMessageDto model)
         {
             IsSending = false;
-            MessageRepository.Save(new Models.SmsMessage(model));
+            MessageRepository.Save(new LocalSmsMessage(model));
             StartNewMessage();
         }
 

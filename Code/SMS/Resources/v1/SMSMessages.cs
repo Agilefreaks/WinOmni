@@ -2,7 +2,6 @@
 {
     using System;
     using System.Net.Http;
-    using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;

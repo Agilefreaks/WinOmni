@@ -21,10 +21,10 @@
     {
         public const string SessionSelectionKey = "ClippingWorkspace_SelectedClipping";
 
+        private readonly ISessionManager _sessionManager;
+
         private readonly ISubscriptionsManager _subscriptionsManager;
 
-        private readonly ISessionManager _sessionManager;
-        
         private bool _hasNotViewedClippings;
 
         public ClippingViewModel(ISessionManager sessionManager)
@@ -41,14 +41,6 @@
         public IClippingRepository ClippingRepository { get; set; }
 
         public Command ClickCommand { get; set; }
-
-        public DateTime Time
-        {
-            get
-            {
-                return Model.Time;
-            }
-        }
 
         public bool IsSelected
         {
@@ -74,6 +66,18 @@
                 NotifyOfPropertyChange(() => HasNotViewedClippings);
             }
         }
+
+        #region IClippingViewModel Members
+
+        public DateTime Time
+        {
+            get
+            {
+                return Model.Time;
+            }
+        }
+
+        #endregion
 
         public void ShowDetails()
         {

@@ -50,7 +50,7 @@
 
             _subject.Execute().Wait();
 
-            _mockConfigurationService.VerifySet(x => x.ProxyConfiguration);
+            _mockConfigurationService.VerifySet(x => x.ProxyConfiguration = It.IsAny<ProxyConfiguration>());
         }
 
         [Test]
@@ -162,7 +162,7 @@
 
             _subject.Execute().Wait();
 
-            _mockConfigurationService.VerifySet(x => x.ProxyConfiguration);
+            _mockConfigurationService.VerifySet(x => x.ProxyConfiguration = It.IsAny<ProxyConfiguration>());
         }
 
         [Test]

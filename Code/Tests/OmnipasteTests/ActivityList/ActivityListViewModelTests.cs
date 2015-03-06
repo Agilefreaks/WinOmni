@@ -17,6 +17,8 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using OmnipasteTests.Helpers;
+    using SMS.Models;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -168,7 +170,7 @@
         [Test]
         public void ReceivingAMessage_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var message = new SmsMessage{ Source = SourceType.Remote};
+            var message = new RemoteSmsMessage();
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<SmsMessage>>>(100, Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Create, message))),
@@ -185,8 +187,8 @@
         public void UpdatingAMessage_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewMessage()
         {
             const string UniqueId = "42";
-            var message = new SmsMessage { UniqueId = UniqueId, Source = SourceType.Remote };
-            var modifiedMessage = new SmsMessage { UniqueId = UniqueId, Content = "Test", Source = SourceType.Remote };
+            var message = new RemoteSmsMessage { UniqueId = UniqueId };
+            var modifiedMessage = new RemoteSmsMessage { UniqueId = UniqueId, Content = "Test" };
             var messageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<SmsMessage>>>(100, Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Create, message))),
@@ -294,7 +296,7 @@
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
             var activityPresenter1 = new ActivityPresenter(new Call());
-            var activityPresenter2 = new ActivityPresenter(new SmsMessage());
+            var activityPresenter2 = new ActivityPresenter(new TestSmsMessage());
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter2 });
@@ -309,8 +311,8 @@
         public void ChangingFilterText_TextIsMadeUpOfMultipleWords_UpdatesFilteredItemsSoAsToShowOnlyItemsWhoseModelsHaveAllTheWordsInTheFilterTextInTheirStringRepresentation()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ro-RO");
-            var activityPresenter1 = new ActivityPresenter(new SmsMessage { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } });
-            var activityPresenter2 = new ActivityPresenter(new SmsMessage { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } });
+            var activityPresenter1 = new ActivityPresenter(new TestSmsMessage { ContactInfo = new ContactInfo { FirstName = "John", LastName = "Doe" } });
+            var activityPresenter2 = new ActivityPresenter(new TestSmsMessage { ContactInfo = new ContactInfo { FirstName = "Jane", LastName = "Doe" } });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter1 });
             _subject.ActivateItem(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = activityPresenter2 });
@@ -325,7 +327,7 @@
         {
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new ClippingModel()) });
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new Call()) });
-            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new SmsMessage()) });
+            _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new TestSmsMessage()) });
             _subject.Items.Add(new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object) { Model = new ActivityPresenter(new UpdateInfo()) });
         }
     }

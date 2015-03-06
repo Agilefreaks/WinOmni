@@ -10,6 +10,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using OmnipasteTests.Helpers;
 
     [TestFixture]
     public class ActivityPresenterTests
@@ -89,7 +90,7 @@
         [Test]
         public void CtorWithMessage_Always_SetsContactInfo()
         {
-            var message = new SmsMessage { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
+            var message = new TestSmsMessage { ContactInfo = new ContactInfo { FirstName = "Some", LastName = "Name", Phone = "07xxxxxx" } };
 
             ContactInfo contactInfo = new ActivityPresenter(message).ExtraData.ContactInfo;
 
@@ -101,13 +102,13 @@
         public void CtorWithMessage_Always_SetsTheEventUniqueIdInExtraData()
         {
             const string Id = "42";
-            (new ActivityPresenter(new SmsMessage { UniqueId = Id }).SourceId).Should().Be(Id);
+            (new ActivityPresenter(new TestSmsMessage { UniqueId = Id }).SourceId).Should().Be(Id);
         }
 
         [Test]
         public void CtorWithMessage_Always_SetsDeviceToCloud()
         {
-            new ActivityPresenter(new SmsMessage()).Device.Should().Be(Resources.FromCloud);
+            new ActivityPresenter(new TestSmsMessage()).Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
@@ -157,7 +158,7 @@
                                               LastName = "someLastName",
                                               Phone = "0987"
                                           };
-            var subject = new ActivityPresenter(new SmsMessage { ContactInfo = contactInfo });
+            var subject = new ActivityPresenter(new TestSmsMessage { ContactInfo = contactInfo });
             
             subject.ToString().Should().Contain("someFirstName someLastName 0987");
         }

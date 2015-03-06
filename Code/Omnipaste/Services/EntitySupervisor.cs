@@ -89,7 +89,7 @@
 
         private IObservable<Unit> StoreMessage(SmsMessageDto smsMessageDto)
         {
-            var message = new SmsMessage(smsMessageDto);
+            var message = new RemoteSmsMessage(smsMessageDto);
             return
                 ContactRepository.GetByPhoneNumber(message.ContactInfo.Phone)
                     .Select(contact => HandleContact(message, contact))

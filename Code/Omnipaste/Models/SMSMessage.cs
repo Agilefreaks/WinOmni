@@ -3,22 +3,17 @@
     using Omnipaste.Helpers;
     using SMS.Models;
 
-    public class SmsMessage : BaseModel, IConversationItem
+    public abstract class SmsMessage : BaseModel, IConversationItem
     {
         #region Constructors and Destructors
 
-        public SmsMessage()
+        protected SmsMessage()
         {
-            ContactInfo = new ContactInfo();
-            Content = string.Empty;
-            Source = SourceType.Local;
         }
 
-        public SmsMessage(SmsMessageDto smsMessageDto)
-            : this()
+        protected SmsMessage(SmsMessageDto smsMessageDto) : this()
         {
             Id = smsMessageDto.Id;
-            Source = SourceType.Remote;
             Content = smsMessageDto.Content;
             string firstName, lastName;
             NameParser.Parse(smsMessageDto.ContactName, out firstName, out lastName);
@@ -40,7 +35,7 @@
 
         public string Content { get; set; }
 
-        public SourceType Source { get; set; }
+        public abstract SourceType Source { get; }
 
         #endregion
     }

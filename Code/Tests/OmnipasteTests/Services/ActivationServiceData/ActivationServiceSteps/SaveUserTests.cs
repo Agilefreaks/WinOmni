@@ -8,6 +8,7 @@
     using OmniCommon;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -31,7 +32,7 @@
             
             _subject.Execute().Wait();
 
-            _mockConfigurationService.VerifySet(x => x.UserInfo);
+            _mockConfigurationService.VerifySet(x => x.UserInfo = It.IsAny<UserInfo>());
         }
         
         [Test]
@@ -49,8 +50,8 @@
                 Value = user
             };
             UserInfo userInfo = null;
-            _mockConfigurationService.SetupSet(x => x.UserInfo)
-                .Callback(data => userInfo = data);
+            _mockConfigurationService.SetupSet(x => x.UserInfo = It.IsAny<UserInfo>())
+                .Callback<UserInfo>(data => userInfo = data);
 
             _subject.Execute().Wait();
 

@@ -123,8 +123,8 @@
             var mockProxy = new Mock<IWebProxy>();
             IUpdateSource newUpdateSource = null;
             _mockWebProxyFactory.Setup(x => x.CreateFromAppConfiguration()).Returns(mockProxy.Object);
-            _mockUpdateManager.SetupSet(m => m.UpdateSource)
-                .Callback(updateSource => newUpdateSource = updateSource);
+            _mockUpdateManager.SetupSet(m => m.UpdateSource = It.IsAny<IUpdateSource>())
+                .Callback<IUpdateSource>(updateSource => newUpdateSource = updateSource);
 
             _createInstance();
 
