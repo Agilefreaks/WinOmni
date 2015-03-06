@@ -5,6 +5,6 @@ namespace OmniDebug.Services
 
     public interface ISmsMessagesWrapper : ISMSMessages
     {
-        void MockGet(string id, SmsMessage phoneCall);
+        void MockGet(string id, SmsMessageDto phoneCall);
     }
 }

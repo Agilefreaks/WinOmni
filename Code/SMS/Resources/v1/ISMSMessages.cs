@@ -4,8 +4,8 @@
     using OmniCommon.Interfaces;
     using SMS.Models;
 
-    public interface ISMSMessages : IResource<SmsMessage>
+    public interface ISMSMessages : IResource<SmsMessageDto>
     {
-        IObservable<SmsMessage> Send(string phoneNumber, string message);
+        IObservable<SmsMessageDto> Send(string phoneNumber, string message);
     }
 }

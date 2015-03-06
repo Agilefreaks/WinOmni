@@ -11,9 +11,17 @@
         [Test]
         public void GetPropertyName_WhenObjectIsNull_ReturnsCorrectName()
         {
-            var testModel = new BaseModel();
-            
+            var testModel = new TestModel();
+
             testModel.GetPropertyName(t => t.IsDeleted).Should().Be("IsDeleted");
         }
+
+        #region Nested type: TestModel
+
+        public class TestModel : BaseModel
+        {
+        }
+
+        #endregion
     }
 }

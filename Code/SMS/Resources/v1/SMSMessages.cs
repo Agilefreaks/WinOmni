@@ -2,7 +2,6 @@
 {
     using System;
     using System.Net.Http;
-    using OmniApi.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
@@ -21,14 +20,14 @@
 
         #region Public Methods and Operators
 
-        public IObservable<SmsMessage> Get(string id)
+        public IObservable<SmsMessageDto> Get(string id)
         {
             return ResourceApi.Get(id, AccessToken);
         }
 
-        public IObservable<SmsMessage> Send(string phoneNumber, string message)
+        public IObservable<SmsMessageDto> Send(string phoneNumber, string message)
         {
-            var payload = new SmsMessage
+            var payload = new SmsMessageDto
                               {
                                   Content = message,
                                   PhoneNumber = phoneNumber,

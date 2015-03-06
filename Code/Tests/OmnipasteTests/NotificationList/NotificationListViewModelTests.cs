@@ -43,7 +43,7 @@
 
         private ITestableObservable<RepositoryOperation<Call>> _testableCallsObservable;
 
-        private ITestableObservable<RepositoryOperation<Message>> _testableMessagesObservable;
+        private ITestableObservable<RepositoryOperation<SmsMessage>> _testableMessagesObservable;
 
         private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
 
@@ -144,7 +144,7 @@
         public void WhenAMessageIsSaved_CreatesNewNotificationViewModel()
         {
             var mockIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<Message>()))
+            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<SmsMessage>()))
                 .Returns(mockIncomingCallNotificationViewModel.Object);
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(_testableMessagesObservable);
             _subject.Activate();
@@ -215,14 +215,13 @@
                                     }))));
             _testableMessagesObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<Message>>>(
+                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<Message>(
+                            new RepositoryOperation<SmsMessage>(
                                 RepositoryMethodEnum.Create,
-                                new Message
+                                new RemoteSmsMessage
                                     {
-                                        Source = SourceType.Remote,
                                         ContactInfo = new ContactInfo { Phone = "phone number" }
                                     }))));
 

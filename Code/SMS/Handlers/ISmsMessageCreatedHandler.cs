@@ -3,7 +3,7 @@
     using OmniCommon.Handlers;
     using SMS.Models;
 
-    public interface ISmsMessageCreatedHandler : IResourceHandler<SmsMessage>
+    public interface ISmsMessageCreatedHandler : IResourceHandler<SmsMessageDto>
     {
     }
 }

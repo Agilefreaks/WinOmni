@@ -12,20 +12,11 @@
     using OmniCommon.Interfaces;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Behaviours;
+    using Action = System.Action;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel
     {
         private readonly IEventAggregator _eventAggregator;
-
-        #region Fields
-
-        private readonly IDisposable _statusChangedObserver;
-
-        private BalloonNotificationInfo _balloonInfo;
-
-        private string _iconSource;
-
-        #endregion
 
         #region Constructors and Destructors
 
@@ -44,11 +35,30 @@
 
         #endregion
 
+        #region IContextMenuViewModel Members
+
+        public void Handle(ApplicationClosingMessage message)
+        {
+            Visibility = Visibility.Hidden;
+        }
+
+        #endregion
+
+        #region Fields
+
+        private readonly IDisposable _statusChangedObserver;
+
+        private BalloonNotificationInfo _balloonInfo;
+
+        private string _iconSource;
+
+        #endregion
+
         #region Public Properties
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }
-        
+
         [Inject]
         public IApplicationService ApplicationService { get; set; }
 
@@ -122,7 +132,7 @@
 
         public void Exit()
         {
-            System.Action closeApp = () => ApplicationService.ShutDown();
+            Action closeApp = () => ApplicationService.ShutDown();
             var dispatcher = DispatcherProvider.Current;
             Task.Delay(TimeSpan.FromMilliseconds(500)).ContinueWith(_ => dispatcher.Dispatch(closeApp));
         }
@@ -141,10 +151,5 @@
         }
 
         #endregion
-
-        public void Handle(ApplicationClosingMessage message)
-        {
-            Visibility = Visibility.Hidden;
-        }
     }
 }

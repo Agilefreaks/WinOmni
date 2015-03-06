@@ -52,6 +52,14 @@
         }
 
         [Test]
+        public void ActivityType_Always_ReturnTheModelType()
+        {
+            _subject.Model = new ActivityPresenter(new ClippingModel());
+
+            _subject.ActivityType.Should().Be(_subject.Model.Type);
+        }
+
+        [Test]
         public void IsSelected_WhenValueIsCurrentModelUniqueId_ReturnsTrue()
         {
             _subject.Model = new ActivityPresenter(new Call());

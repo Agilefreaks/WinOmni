@@ -1,115 +1,41 @@
 ﻿namespace Omnipaste.Models
 {
-    using System;
-    using Caliburn.Micro;
+    using Omnipaste.Helpers;
+    using SMS.Models;
 
-    public class SMSMessage : PropertyChangedBase
+    public abstract class SmsMessage : BaseModel, IConversationItem
     {
-        #region Constants
-
-        private const int MessageLimit = 160;
-
-        #endregion
-
-        #region Fields
-
-        private readonly Message _message;
-
-        #endregion
-
         #region Constructors and Destructors
 
-        public SMSMessage()
+        protected SmsMessage()
         {
-            _message = new Message();
         }
 
-        public SMSMessage(Message message)
+        protected SmsMessage(SmsMessageDto smsMessageDto) : this()
         {
-            _message = message;
+            Id = smsMessageDto.Id;
+            Content = smsMessageDto.Content;
+            string firstName, lastName;
+            NameParser.Parse(smsMessageDto.ContactName, out firstName, out lastName);
+            ContactInfo = new ContactInfo
+                              {
+                                  FirstName = firstName,
+                                  LastName = lastName,
+                                  Phone = smsMessageDto.PhoneNumber
+                              };
         }
 
         #endregion
 
         #region Public Properties
 
-        public Message BaseModel
-        {
-            get
-            {
-                return _message;
-            }
-        }
+        public string Id { get; set; }
 
-        public int CharactersRemaining
-        {
-            get
-            {
-                var totalMessageLength = Message.Length;
-                var currentMessageLength = totalMessageLength % MessageLimit;
-                var charactersRemaining = 0;
-                if (totalMessageLength == 0 || currentMessageLength != 0)
-                {
-                    charactersRemaining = MessageLimit - (currentMessageLength);
-                }
+        public ContactInfo ContactInfo { get; set; }
 
-                return charactersRemaining;
-            }
-        }
+        public string Content { get; set; }
 
-        public string LimitMessage
-        {
-            get
-            {
-                return string.Format("{0}/{1}", CharactersRemaining, MaxCharacters);
-            }
-        }
-
-        public int MaxCharacters
-        {
-            get
-            {
-                var result = MessageLimit;
-                if (Message.Length != 0)
-                {
-                    result = (int)Math.Ceiling(((double)Message.Length) / MessageLimit) * MessageLimit;
-                }
-                return result;
-            }
-        }
-
-        public string Message
-        {
-            get
-            {
-                return _message.Content;
-            }
-            set
-            {
-                if (_message.Content != value)
-                {
-                    _message.Content = value;
-                    NotifyOfPropertyChange();
-                    NotifyOfPropertyChange(() => LimitMessage);
-                }
-            }
-        }
-
-        public string Recipient
-        {
-            get
-            {
-                return _message.ContactInfo.Phone;
-            }
-            set
-            {
-                if (_message.ContactInfo.Phone != value)
-                {
-                    _message.ContactInfo.Phone = value;
-                    NotifyOfPropertyChange();
-                }
-            }
-        }
+        public abstract SourceType Source { get; }
 
         #endregion
     }

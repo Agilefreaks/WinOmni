@@ -141,10 +141,13 @@
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Helpers\NameParserTests.cs" />
     <Compile Include="Helpers\PhoneNumberMatcherTests.cs" />
+    <Compile Include="Helpers\TestSmsMessage.cs" />
     <Compile Include="Helpers\TextParserTests.cs" />
     <Compile Include="Models\CallTests.cs" />
     <Compile Include="Models\ClippingModelTests.cs" />
-    <Compile Include="Models\MessageTests.cs" />
+    <Compile Include="Models\RemoteSmsMessageTests.cs" />
+    <Compile Include="Models\LocalSmsMessageTests.cs" />
+    <Compile Include="Models\SmsMessageTests.cs" />
     <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationContainerTests.cs" />
@@ -208,7 +211,6 @@
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModelTests.cs" />
     <Compile Include="SMSComposer\SMSComposerViewModelTests.cs" />
-    <Compile Include="Models\SMSMessageTests.cs" />
     <Compile Include="WorkspaceDetails\Clippings\ClippingDetailsContentViewModelTests.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactoryTests.cs" />
     <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />

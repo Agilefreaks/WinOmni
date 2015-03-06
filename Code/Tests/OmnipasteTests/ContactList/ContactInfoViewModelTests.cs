@@ -18,6 +18,7 @@
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
+    using OmnipasteTests.Helpers;
     using OmniUI.Workspace;
 
     [TestFixture]
@@ -155,7 +156,7 @@
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -168,7 +169,7 @@
         [Test]
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -181,7 +182,7 @@
         [Test]
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -194,7 +195,7 @@
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -207,7 +208,7 @@
         [Test]
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Remote, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -220,7 +221,7 @@
         [Test]
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2014, 1, 1), Source = SourceType.Local, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -233,7 +234,7 @@
         [Test]
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -246,7 +247,7 @@
         [Test]
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
-            var message = new Message { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var call = new Call { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false, ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             SetupConversation(message, call);
 
@@ -259,7 +260,7 @@
         [Test]
         public void MessageIsAddedToConversation_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationItem>>(
@@ -277,7 +278,7 @@
         [Test]
         public void MessageIsDeletedFromConversation_AfterLoaded_SetsLastActivityInfoToEmptyString()
         {
-            var message = new Message { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
+            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { Phone = _contactInfo.Phone } };
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationItem>>(

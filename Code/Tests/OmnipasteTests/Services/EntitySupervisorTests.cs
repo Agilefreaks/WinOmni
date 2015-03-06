@@ -133,10 +133,10 @@
         public void OnSmsMessageCreated_WhenContactIsNotSavedLocally_AlwayStoresContact()
         {
             const string Phone = "42";
-            var smsMessage = new SmsMessage { PhoneNumber = Phone };
-            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(smsMessage)));
-            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessage>>()))
-                .Returns<IObserver<SmsMessage>>(o => smsMessageObservable.Subscribe(o));
+            var smsMessage = new SmsMessageDto { PhoneNumber = Phone };
+            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessageDto>>(100, Notification.CreateOnNext(smsMessage)));
+            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessageDto>>()))
+                .Returns<IObserver<SmsMessageDto>>(o => smsMessageObservable.Subscribe(o));
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(null as ContactInfo)));
@@ -152,10 +152,10 @@
         public void OnSmsMessageCreated_Alway_AlwayStoresMessage()
         {
             const string Id = "42";
-            var smsMessage = new SmsMessage { Id = Id };
-            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(smsMessage)));
-            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessage>>()))
-                .Returns<IObserver<SmsMessage>>(o => smsMessageObservable.Subscribe(o));
+            var smsMessage = new SmsMessageDto { Id = Id };
+            var smsMessageObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<SmsMessageDto>>(100, Notification.CreateOnNext(smsMessage)));
+            _mockSmsMessageCreatedHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<SmsMessageDto>>()))
+                .Returns<IObserver<SmsMessageDto>>(o => smsMessageObservable.Subscribe(o));
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(new ContactInfo())));
@@ -164,7 +164,7 @@
             _subject.Start();
             _testScheduler.Start(() => smsMessageObservable);
             
-            _mockMessageRepository.Verify(m => m.Save(It.Is<Message>(c => c.Id == Id)));
+            _mockMessageRepository.Verify(m => m.Save(It.Is<SmsMessage>(c => c.Id == Id)));
         }
 
         [Test]

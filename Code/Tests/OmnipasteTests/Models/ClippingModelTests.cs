@@ -37,19 +37,5 @@
 
             subject.IsLink.Should().BeTrue();
         }
-
-        [Test]
-        public void CtorWithClipping_Always_AssignsTime()
-        {
-            var dateTime = new DateTime(2014, 1, 1);
-            TimeHelper.UtcNow = dateTime;
-            new Message(new SmsMessage()).Time.Should().Be(dateTime);
-        }
-
-        [Test]
-        public void CtorWithCall_Always_SetsSourceToRemote()
-        {
-            new Message(new SmsMessage()).Source.Should().Be(SourceType.Remote);
-        }
     }
 }

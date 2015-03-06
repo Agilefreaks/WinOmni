@@ -71,7 +71,7 @@
             }
             else
             {
-                var message = item as Message;
+                var message = item as SmsMessage;
                 if (message != null)
                 {
                     result = MessageRepository.Save(message).Select(_ => new Unit());

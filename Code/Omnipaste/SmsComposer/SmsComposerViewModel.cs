@@ -156,10 +156,10 @@
             IsSending = false;
         }
 
-        protected virtual void OnSentSMS(SmsMessage model)
+        protected virtual void OnSentSMS(SmsMessageDto model)
         {
             IsSending = false;
-            MessageRepository.Save(new Models.Message(model));
+            MessageRepository.Save(new LocalSmsMessage(model));
             StartNewMessage();
         }
 

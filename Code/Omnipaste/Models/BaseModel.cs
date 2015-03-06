@@ -3,11 +3,11 @@
     using System;
     using OmniCommon.Helpers;
 
-    public class BaseModel : IModel
+    public abstract class BaseModel : IModel
     {
         #region Constructors and Destructors
 
-        public BaseModel()
+        protected BaseModel()
         {
             UniqueId = Guid.NewGuid().ToString();
             Time = TimeHelper.UtcNow;

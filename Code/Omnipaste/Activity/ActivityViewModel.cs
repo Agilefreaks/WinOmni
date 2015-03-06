@@ -27,8 +27,6 @@ namespace Omnipaste.Activity
 
         private readonly ISessionManager _sessionManager;
 
-        private ContentTypeEnum _contentType;
-
         private ActivityContentInfo _contentInfo;
 
         #endregion
@@ -69,25 +67,16 @@ namespace Omnipaste.Activity
             set
             {
                 base.Model = value;
-                UpdateState();
+                NotifyOfPropertyChange(() => ActivityType);
                 UpdateContentInfo();
             }
         }
 
-        public ContentTypeEnum ContentType
+        public ActivityTypeEnum ActivityType
         {
             get
             {
-                return _contentType;
-            }
-            set
-            {
-                if (value == _contentType)
-                {
-                    return;
-                }
-                _contentType = value;
-                NotifyOfPropertyChange();
+                return Model.Type;
             }
         }
 
@@ -157,32 +146,6 @@ namespace Omnipaste.Activity
         #endregion
 
         #region Methods
-
-        private void UpdateState()
-        {
-            if (Model == null)
-            {
-                ContentType = ContentTypeEnum.Normal;
-            }
-            else
-            {
-                switch (Model.Type)
-                {
-                    case ActivityTypeEnum.Call:
-                        ContentType = ContentTypeEnum.Call;
-                        break;
-                    case ActivityTypeEnum.Message:
-                        ContentType = ContentTypeEnum.Message;
-                        break;
-                    case ActivityTypeEnum.Version:
-                        ContentType = ContentTypeEnum.Version;
-                        break;
-                    default:
-                        ContentType = ContentTypeEnum.Normal;
-                        break;
-                }
-            }
-        }
 
         private void UpdateContentInfo()
         {

@@ -42,7 +42,7 @@
             _mockResourceApi.Verify(
                 m =>
                 m.Create(
-                    It.Is<SmsMessage>(
+                    It.Is<SmsMessageDto>(
                         message =>
                         message.PhoneNumber == PhoneNumber && message.Content == Message && message.DeviceId == DeviceId
                         && message.Type == SmsMessageType.Outgoing && message.State == SmsMessageState.Sending),

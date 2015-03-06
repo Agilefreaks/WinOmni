@@ -34,7 +34,7 @@ namespace Omnipaste.ContactList
             _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription(default(IContactInfoViewModel).GetPropertyName(vm => vm.LastActivityTime), ListSortDirection.Ascending));
+            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Ascending));
         }
 
         public bool ShowStarred

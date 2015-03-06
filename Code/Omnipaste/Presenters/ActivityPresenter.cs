@@ -9,7 +9,6 @@
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
-    using Message = Omnipaste.Models.Message;
 
     public class ActivityPresenter : PropertyChangedBase
     {
@@ -52,14 +51,14 @@
             ExtraData.ContactInfo = call.ContactInfo;
         }
 
-        public ActivityPresenter(Message message)
+        public ActivityPresenter(SmsMessage smsMessage)
             : this()
         {
-            BackingModel = message;
-            Content = message.Content ?? string.Empty;
+            BackingModel = smsMessage;
+            Content = smsMessage.Content ?? string.Empty;
             Type = ActivityTypeEnum.Message;
             Device = Resources.FromCloud;
-            ExtraData.ContactInfo = message.ContactInfo;
+            ExtraData.ContactInfo = smsMessage.ContactInfo;
         }
 
         public ActivityPresenter(UpdateInfo updateInfo)

@@ -252,6 +252,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModel.cs" />
@@ -270,6 +271,8 @@
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Models\LocalSmsMessage.cs" />
+    <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
@@ -321,7 +324,6 @@
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityContentInfo.cs" />
     <Compile Include="Activity\ContentStateEnum.cs" />
-    <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
@@ -349,9 +351,8 @@
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Commands\ClippingCommands.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
-    <Compile Include="Framework\Converters\ControlToCenterPointConverter.cs" />
-    <Compile Include="Framework\Converters\ControlToXRadiusConverter.cs" />
-    <Compile Include="Framework\Converters\ControlToYRadiusConverter.cs" />
+    <Compile Include="Framework\Converters\ValuesToCenterPointConverter.cs" />
+    <Compile Include="Framework\Converters\ValueToRadiusConverter.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
     <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
@@ -396,7 +397,7 @@
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
     <Compile Include="Models\ClippingModel.cs" />
-    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\SmsMessage.cs" />
     <Compile Include="Models\SourceType.cs" />
     <Compile Include="Models\UserContactInfo.cs" />
     <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
@@ -618,7 +619,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Normal.xaml">
+    <Page Include="Activity\Activity\Clipping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -657,7 +658,6 @@
     <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
     <Compile Include="SMSComposer\SmsComposerStatusEnum.cs" />
-    <Compile Include="Models\SMSMessage.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />

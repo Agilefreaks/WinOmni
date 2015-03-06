@@ -21,6 +21,7 @@
     using Omnipaste.WorkspaceDetails.Conversation;
     using Omnipaste.WorkspaceDetails.Conversation.Call;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
+    using OmnipasteTests.Helpers;
 
     [TestFixture]
     public class ConversationContentViewModelTests
@@ -111,7 +112,7 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(n => n.Identifier == call.UniqueId), It.IsAny<Action<Action>>()));
+            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(n => (string)n.Identifier == call.UniqueId), It.IsAny<Action<Action>>()));
         }
 
         [Test]
@@ -165,8 +166,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var message1 = new Message();
-            var message2 = new Message();
+            var message1 = new RemoteSmsMessage();
+            var message2 = new LocalSmsMessage();
             SetupGetConversationItems(message1, message2);
 
             ((IActivate)_subject).Activate();
@@ -178,7 +179,7 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelIsActive_MarksMessageAsViewed()
         {
-            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            var messageFromContact = new RemoteSmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
@@ -194,7 +195,7 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelWasActivated_AddsAMessageViewModel()
         {
-            var messageFromContact = new Message { ContactInfo = new ContactInfo { Phone = "123" } };
+            var messageFromContact = new LocalSmsMessage { ContactInfo = new ContactInfo { Phone = "123" } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { Phone = "123" });
             var observable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
@@ -215,8 +216,8 @@
             var baseTime = DateTime.Now;
             var call1 = new Call { Time = baseTime };
             var call2 = new Call { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
-            var message1 = new Message { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
-            var message2 = new Message { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
+            var message1 = new LocalSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
+            var message2 = new RemoteSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
             SetupGetConversationItems(call1, call2, message1, message2);
 
             ((IActivate)_subject).Activate();

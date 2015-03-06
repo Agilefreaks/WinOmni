@@ -77,8 +77,8 @@
         public void SendSMS_Always_SetsTheModelToANewSMSMessageAfterSending()
         {
             var sendObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<SmsMessage>>(100, Notification.CreateOnNext(new SmsMessage())),
-                new Recorded<Notification<SmsMessage>>(200, Notification.CreateOnCompleted<SmsMessage>()));
+                new Recorded<Notification<SmsMessageDto>>(100, Notification.CreateOnNext(new SmsMessageDto())),
+                new Recorded<Notification<SmsMessageDto>>(200, Notification.CreateOnCompleted<SmsMessageDto>()));
             _subject.Message = "test";
             _mockSMSMessages.Setup(x => x.Send("1234", "test")).Returns(sendObservable);
 
@@ -92,14 +92,14 @@
         public void SendSMS_Always_AddsTheSentSMSToTheMessageStore()
         {
             const string Content = "Test";
-            var sendObservable = Observable.Return(new SmsMessage { Content = Content }, _testScheduler);
+            var sendObservable = Observable.Return(new SmsMessageDto { Content = Content }, _testScheduler);
             _mockSMSMessages.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<string>())).Returns(sendObservable);
             _subject.Message = Content;
 
             _subject.Send();
             _testScheduler.Start();
 
-            _mockMessageRepository.Verify(x => x.Save(It.Is<Message>(m => m.Content == Content)));
+            _mockMessageRepository.Verify(x => x.Save(It.Is<SmsMessage>(m => m.Content == Content)));
         }
     }
 }
