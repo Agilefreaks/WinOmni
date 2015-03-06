@@ -33,7 +33,7 @@
         {
             _conversationProvider = conversationProvider;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription(default(IConversationItemViewModel).GetPropertyName(vm => vm.Time), ListSortDirection.Ascending));
+            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IConversationItemViewModel, DateTime>(vm => vm.Time), ListSortDirection.Ascending));
         }
 
         #region Public Properties
