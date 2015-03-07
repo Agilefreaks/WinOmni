@@ -7,7 +7,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Threading;
-    using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -88,6 +87,7 @@
         [TearDown]
         public void TearDown()
         {
+            _scheduler.Stop();
             SchedulerProvider.Default = null;
         }
 
