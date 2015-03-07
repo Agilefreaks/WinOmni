@@ -4,13 +4,7 @@
 
     public class ContactInfo : BaseModel
     {
-        #region Constants
-
         public const string NamePartSeparator = " ";
-
-        #endregion
-
-        #region Constructors and Destructors
 
         public ContactInfo()
         {
@@ -18,10 +12,6 @@
             LastName = string.Empty;
             Phone = string.Empty;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string FirstName { get; set; }
 
@@ -40,8 +30,6 @@
         public string Phone { get; set; }
 
         public bool IsStarred { get; set; }
-        
-        #endregion
 
         public override string ToString()
         {

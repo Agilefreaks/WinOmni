@@ -3,33 +3,35 @@
                     xmlns:converters="clr-namespace:Omnipaste.Framework.Converters">
 
     <Style x:Key="ImageInCircle" TargetType="Control">
-        <Setter Property="Width" Value="28"/>
-        <Setter Property="Height" Value="28"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Width" Value="28" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <ControlTemplate.Resources>
-                        <converters:ControlToCenterPointConverter x:Key="ControlToCenterPointConverter"/>
-                        <converters:ControlToXRadiusConverter x:Key="ControlToXRadiusConverter"/>
-                        <converters:ControlToYRadiusConverter x:Key="ControlToYRadiusConverter"/>
+                        <converters:ControlToCenterPointConverter x:Key="ControlToCenterPointConverter" />
+                        <converters:ControlToXRadiusConverter x:Key="ControlToXRadiusConverter" />
+                        <converters:ControlToYRadiusConverter x:Key="ControlToYRadiusConverter" />
                     </ControlTemplate.Resources>
-                    <Image Source="{TemplateBinding Tag}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Stretch="UniformToFill">
+                    <Image Source="{TemplateBinding Tag}" Width="{TemplateBinding Width}"
+                           Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Stretch="UniformToFill">
                         <Image.Clip>
-                            <EllipseGeometry Center="{Binding Path=., RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ControlToCenterPointConverter}}" 
-                                             RadiusX="{Binding Path=., RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ControlToXRadiusConverter}}" 
-                                             RadiusY="{Binding Path=., RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ControlToYRadiusConverter}}"/>
+                            <EllipseGeometry
+                                Center="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Control}}, Converter={StaticResource ControlToCenterPointConverter}}"
+                                RadiusX="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Control}}, Converter={StaticResource ControlToXRadiusConverter}}"
+                                RadiusY="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Control}}, Converter={StaticResource ControlToYRadiusConverter}}" />
                         </Image.Clip>
                     </Image>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+
     <Style x:Key="SideUserImageStyle" TargetType="Control" BasedOn="{StaticResource ImageInCircle}">
-        <Setter Property="Height" Value="60"/>
-        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Width" Value="60" />
     </Style>
 </ResourceDictionary>
