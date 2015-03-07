@@ -2,11 +2,12 @@ namespace Omnipaste.Activity
 {
     using System;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
 
     public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<ActivityPresenter>
     {
-        ContentTypeEnum ContentType { get; set; }
+        ActivityTypeEnum ActivityType { get; }
 
         ActivityContentInfo ContentInfo { get; set; }
 

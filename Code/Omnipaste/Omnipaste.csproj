@@ -325,7 +325,6 @@
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityContentInfo.cs" />
     <Compile Include="Activity\ContentStateEnum.cs" />
-    <Compile Include="Activity\ContentTypeEnum.cs" />
     <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
@@ -622,7 +621,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Normal.xaml">
+    <Page Include="Activity\Activity\Clipping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
