@@ -27,8 +27,6 @@ namespace Omnipaste.Activity
 
         private readonly ISessionManager _sessionManager;
 
-        private ActivityTypeEnum _activityType;
-
         private ActivityContentInfo _contentInfo;
 
         #endregion

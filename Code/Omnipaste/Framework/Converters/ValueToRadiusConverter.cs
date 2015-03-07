@@ -2,23 +2,15 @@
 {
     using System;
     using System.Globalization;
-    using System.Windows.Controls;
     using System.Windows.Data;
 
-    public class ControlToYRadiusConverter : IValueConverter
+    public class ValueToRadiusConverter : IValueConverter
     {
         #region Public Methods and Operators
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var control = value as Control;
-            double yRadius = 0;
-            if (control != null)
-            {
-                yRadius = control.Height / 2;
-            }
-
-            return yRadius;
+            return (value as double?) / 2 ?? 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
