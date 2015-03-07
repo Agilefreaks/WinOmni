@@ -49,7 +49,7 @@
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"
                         BorderBrush="{Binding Path=ContentInfo, Converter={StaticResource ActivityBorderBrushConverter}}"
                         Style="{DynamicResource ActivityContentBorder}">
-                        <ContentControl cal:View.Context="{Binding Path=ContentType}" cal:View.Model="{Binding}" />
+                        <ContentControl cal:View.Context="{Binding Path=ActivityType}" cal:View.Model="{Binding}" />
                     </Border>
                     <Ellipse Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIconBorder}"/>
                     <Rectangle Grid.Column="0" Grid.Row="1" Style="{DynamicResource ActivityIcon}" 
