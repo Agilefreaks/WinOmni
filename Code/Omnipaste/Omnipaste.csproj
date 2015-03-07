@@ -252,6 +252,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\BindingProxy.cs" />
+    <Compile Include="Framework\Converters\DatabindingDebugConverter.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModel.cs" />
