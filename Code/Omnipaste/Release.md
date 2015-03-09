@@ -1,4 +1,17 @@
-﻿**Version 1.3.14 (24.02.2015)**
+﻿**Version 1.3.15 (09.03.2015)**
+
+**Bug fixes:**
+
+- Fixed conversations local conversations appearing as from remote
+
+**Improvements:**
+
+- Removes all old code related to click-once install
+
+
+----------
+
+**Version 1.3.14 (24.02.2015)**
 
 **Bug fixes:**
 
