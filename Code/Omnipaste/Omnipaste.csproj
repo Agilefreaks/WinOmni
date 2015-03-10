@@ -303,9 +303,10 @@
     <Compile Include="Services\Providers\ConversationProvider.cs" />
     <Compile Include="Services\Providers\MergedConversationContext.cs" />
     <Compile Include="Services\Repositories\BaseRepository.cs" />
+    <Compile Include="Services\Repositories\BlobCacheExtensions.cs" />
     <Compile Include="Services\Repositories\IConversationContext.cs" />
     <Compile Include="Services\Providers\IConversationProvider.cs" />
-    <Compile Include="Services\Repositories\SercureRepository.cs" />
+    <Compile Include="Services\Repositories\SecurePermanentRepository.cs" />
     <Compile Include="Services\SessionItemChangeEventArgs.cs" />
     <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
