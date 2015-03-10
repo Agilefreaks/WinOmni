@@ -85,7 +85,7 @@
                 .Returns(contactInfoObservable);
             var remoteSmsMessage = new RemoteSmsMessage();
             var smsMessageObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<RepositoryOperation<SmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Create, remoteSmsMessage))));
+                new Recorded<System.Reactive.Notification<RepositoryOperation<SmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
             _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<SmsMessage>())).Returns(smsMessageObservable);
 
             var result = _scheduler.Start(() => _subject.Create(smsMessageDto));

@@ -43,10 +43,16 @@ namespace Contacts.Api.Resources.v1
             Client = client;
         }
 
-        public virtual IObservable<ContactList> Get(string identifier,string token)
+        public virtual IObservable<ContactDto> Get(string id,string token)
         {
-            var arguments = new object[] { identifier,token };
-            return (IObservable<ContactList>) methodImpls["Get"](Client, arguments);
+            var arguments = new object[] { id,token };
+            return (IObservable<ContactDto>) methodImpls["Get"](Client, arguments);
+        }
+
+        public virtual IObservable<List<ContactDto>> GetUpdates(string from,string token)
+        {
+            var arguments = new object[] { from,token };
+            return (IObservable<List<ContactDto>>) methodImpls["GetUpdates"](Client, arguments);
         }
 
     }

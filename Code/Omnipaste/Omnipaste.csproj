@@ -45,7 +45,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <NuGetPackageImportStamp>6312d629</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>30489e90</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -113,6 +113,12 @@
     <ManifestTimestampUrl>http://timestamp.comodoca.com/authenticode</ManifestTimestampUrl>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Akavache">
+      <HintPath>..\packages\akavache.core.4.1.0\lib\net45\Akavache.dll</HintPath>
+    </Reference>
+    <Reference Include="Akavache.Sqlite3">
+      <HintPath>..\packages\akavache.sqlite3.4.1.0\lib\Portable-Net45+Win8+WP8+Wpa81\Akavache.Sqlite3.dll</HintPath>
+    </Reference>
     <Reference Include="BugFreak.WPF, Version=1.0.1.11, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BugFreak.WPF.1.0.1.13\lib\net35-Client\BugFreak.WPF.dll</HintPath>
@@ -192,6 +198,12 @@
     </Reference>
     <Reference Include="SocksWebProxy">
       <HintPath>..\..\Libs\SocksWebProxy\SocksWebProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\packages\Splat.1.3.3\lib\Net45\Splat.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCL.raw">
+      <HintPath>..\packages\SQLitePCL.raw_basic.0.7.0\lib\net45\SQLitePCL.raw.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
@@ -276,13 +288,14 @@
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\LocalSmsMessage.cs" />
     <Compile Include="Models\PhoneNumber.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
-    <Compile Include="Models\IModel.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
     <Compile Include="Services\ExceptionReporters\LogExceptionReporter.cs" />
     <Compile Include="Services\GlobalExceptionLogger.cs" />
@@ -290,16 +303,19 @@
     <Compile Include="Services\Providers\ConversationContext.cs" />
     <Compile Include="Services\Providers\ConversationProvider.cs" />
     <Compile Include="Services\Providers\MergedConversationContext.cs" />
+    <Compile Include="Services\Repositories\BaseRepository.cs" />
+    <Compile Include="Services\Repositories\BlobCacheExtensions.cs" />
     <Compile Include="Services\Repositories\IConversationContext.cs" />
     <Compile Include="Services\Providers\IConversationProvider.cs" />
+    <Compile Include="Services\Repositories\SecurePermanentRepository.cs" />
     <Compile Include="Services\SessionItemChangeEventArgs.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\IPhoneCallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\PhoneCallViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\IPhoneCallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModel.cs" />
@@ -372,7 +388,6 @@
     <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
-    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\PhoneCall.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
@@ -490,7 +505,7 @@
     <Compile Include="Services\Repositories\IRepository.cs" />
     <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
     <Compile Include="Services\Repositories\MessageRepository.cs" />
-    <Compile Include="Services\Repositories\ObservableExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryObservableExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
     <Compile Include="Services\Repositories\RepositoryOperation.cs" />
@@ -549,7 +564,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorkspaceDetails\Conversation\Call\PhoneCallView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1089,7 +1104,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="WorkspaceDetails\Conversation\Call\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>
@@ -1103,4 +1120,11 @@
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
+  <Import Project="..\packages\SQLitePCL.raw_basic.0.7.0\build\net45\SQLitePCL.raw_basic.targets" Condition="Exists('..\packages\SQLitePCL.raw_basic.0.7.0\build\net45\SQLitePCL.raw_basic.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SQLitePCL.raw_basic.0.7.0\build\net45\SQLitePCL.raw_basic.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.raw_basic.0.7.0\build\net45\SQLitePCL.raw_basic.targets'))" />
+  </Target>
 </Project>

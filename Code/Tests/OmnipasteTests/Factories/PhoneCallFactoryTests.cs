@@ -85,7 +85,7 @@
                 .Returns(contactInfoObservable);
             var phoneCall = new PhoneCall();
             var phoneCallObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<RepositoryOperation<PhoneCall>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Create, phoneCall))));
+                new Recorded<System.Reactive.Notification<RepositoryOperation<PhoneCall>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
             _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<PhoneCall>()))
                 .Returns(phoneCallObservable);
 

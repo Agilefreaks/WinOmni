@@ -18,7 +18,6 @@
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails.Conversation;
 
     [TestFixture]
     public class ContactListViewModelTests
@@ -82,7 +81,7 @@
         [Test]
         public void ContactIsSaved_AfterActivate_AddsContactToList()
         {
-            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Create, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
+            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Changed, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(100, Notification.CreateOnNext(repositoryOperation)),
@@ -209,7 +208,7 @@
             _mockContactRepository.Setup(m => m.GetAll())
                 .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
             var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            mockConversationContext.Setup(m => m.ItemAdded).Returns(Observable.Return(call, _testScheduler));
+            mockConversationContext.Setup(m => m.ItemChanged).Returns(Observable.Return(call, _testScheduler));
             _mockConversationProvider.Setup(m => m.All()).Returns(mockConversationContext.Object);
             var eventArgs = new List<NotifyCollectionChangedEventArgs>();
             _subject.Items.CollectionChanged += (sender, args) => { eventArgs.Add(args); };
@@ -229,7 +228,7 @@
             _mockContactRepository.Setup(m => m.GetAll())
                 .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
             var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            mockConversationContext.Setup(m => m.ItemAdded).Returns(Observable.Return(call, _testScheduler));
+            mockConversationContext.Setup(m => m.ItemChanged).Returns(Observable.Return(call, _testScheduler));
             _mockConversationProvider.Setup(m => m.All()).Returns(mockConversationContext.Object);
             var eventArgs = new List<NotifyCollectionChangedEventArgs>();
             _subject.Items.CollectionChanged += (sender, args) => { eventArgs.Add(args); };

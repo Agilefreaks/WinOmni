@@ -61,7 +61,8 @@
             Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<MessageMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
+            Kernel.Bind<ISecondaryMenuEntryViewModel>()
+                .ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
             Kernel.Bind<ITitleBarItemViewModel>().To<NewVersionTitleBarItemViewModel>().InSingletonScope();
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
@@ -79,15 +80,14 @@
             return new[]
                        {
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
-                           typeof(NotificationViewModelFactory), typeof(ConnectivityHelper),
-                           typeof(SessionInfoViewModel), typeof(ActivationSequenceProvider),
-                           typeof(WebProxyFactory), typeof(SystemPowerHelper),
-                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), 
-                           typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), 
+                           typeof(NotificationViewModelFactory), typeof(ConnectivityHelper), typeof(SessionInfoViewModel),
+                           typeof(ActivationSequenceProvider), typeof(WebProxyFactory), typeof(SystemPowerHelper),
+                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
+                           typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository),
-                           typeof(UpdateInfoRepository), typeof(MessageRepository),
-                           typeof(ActivityWorkspace), typeof(PeopleWorkspace), typeof(ClippingWorkspace),
-                           typeof(CredentialsMonitor), typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
+                           typeof(UpdateInfoRepository), typeof(MessageRepository), typeof(ActivityWorkspace),
+                           typeof(PeopleWorkspace), typeof(ClippingWorkspace), typeof(CredentialsMonitor),
+                           typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
                            typeof(RemoteSmsMessageFactory), typeof(PhoneCallFactory)
                        };

@@ -5,18 +5,12 @@
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     
-    public static class ObservableExtensionMethods
+    public static class RepositoryObservableExtensionMethods
     {
-        public static IObservable<RepositoryOperation<T>> Created<T>(
+        public static IObservable<RepositoryOperation<T>> Changed<T>(
             this IObservable<RepositoryOperation<T>> operationObservable)
         {
-            return operationObservable.OnMethod(RepositoryMethodEnum.Create);
-        }
-
-        public static IObservable<RepositoryOperation<T>> Updated<T>(
-            this IObservable<RepositoryOperation<T>> operationObservable)
-        {
-            return operationObservable.OnMethod(RepositoryMethodEnum.Update);
+            return operationObservable.OnMethod(RepositoryMethodEnum.Changed);
         }
 
         public static IObservable<RepositoryOperation<T>> Deleted<T>(

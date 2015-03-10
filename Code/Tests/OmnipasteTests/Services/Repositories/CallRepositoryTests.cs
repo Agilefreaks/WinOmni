@@ -34,8 +34,8 @@
         [Test]
         public void GetByContact_Always_ReturnsCallsForContact()
         {
-            var phoneNumber = "0722123123";
-            var phoneNumbers = new[] { new PhoneNumber { Number = phoneNumber } };
+            const string PhoneNumber = "0722123123";
+            var phoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } };
             var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
             var call1 = new PhoneCall
                             {
@@ -74,8 +74,8 @@
         [Test]
         public void GetByContact_WhenCallPhoneNumberContainsPrefix_ReturnsCallForContact()
         {
-            var phoneNumber = "0722123123";
-            var phoneNumbers = new[] { new PhoneNumber { Number = "+40" + phoneNumber } };
+            const string PhoneNumber = "0722123123";
+            var phoneNumbers = new[] { new PhoneNumber { Number = "+40" + PhoneNumber } };
             var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
             var call1 = new PhoneCall { UniqueId = "42", ContactInfo = contactInfo };
             var call2 = new PhoneCall

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
@@ -77,24 +78,18 @@
 
         #region Methods
 
-        protected override void AddItem(IConversationItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            base.AddItem(item);
-            HandleNotViewedItem(item);
-        }
-
         protected override void OnInitialize()
         {
             _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
             base.OnInitialize();
         }
 
-        protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
+        protected override IConversationItemViewModel ChangeViewModel(IConversationItem model)
+        {
+            return UpdateViewModel(model) ?? CreateViewModel(model);
+        }
+
+        private IConversationItemViewModel CreateViewModel(IConversationItem model)
         {
             IConversationItemViewModel result;
             if (model is Models.PhoneCall)
@@ -106,13 +101,23 @@
                 result = Kernel.Get<IMessageViewModel>();
             }
             result.Model = model;
+            HandleNotViewedItem(model);
 
             return result;
         }
 
-        protected override IObservable<IConversationItem> GetItemAddedObservable()
+        private IConversationItemViewModel UpdateViewModel(IConversationItem model)
         {
-            return _conversationContext.ItemAdded;
+            IConversationItemViewModel result =
+                (IConversationItemViewModel)Items.OfType<IPhoneCallViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source) ??
+                Items.OfType<IMessageViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source);
+
+            return result;
+        }
+
+        protected override IObservable<IConversationItem> GetItemChangedObservable()
+        {
+            return _conversationContext.ItemChanged;
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()

@@ -5,7 +5,7 @@
 
     public abstract class BaseModel : IModel
     {
-        #region Constructors and Destructors
+        private DateTime _time;
 
         protected BaseModel()
         {
@@ -13,13 +13,21 @@
             Time = TimeHelper.UtcNow;
         }
 
-        #endregion
-
-        #region Public Properties
+        #region IModel Members
 
         public bool IsDeleted { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime Time
+        {
+            get
+            {
+                return _time;
+            }
+            set
+            {
+                _time = value.ToUniversalTime();
+            }
+        }
 
         public string UniqueId { get; set; }
 

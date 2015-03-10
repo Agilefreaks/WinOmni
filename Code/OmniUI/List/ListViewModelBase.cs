@@ -12,19 +12,10 @@ namespace OmniUI.List
     using OmniCommon.Helpers;
     using OmniUI.Details;
 
-    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive, IListViewModel<TViewModel>
+    public abstract class ListViewModelBase<TPresenter, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
+                                                                  IListViewModel<TViewModel>
         where TViewModel : class, IDetailsViewModel
     {
-        #region Fields
-
-        protected readonly CompositeDisposable Subscriptions;
-
-        private readonly ListCollectionView _filteredItems;
-
-        private ListViewModelStatusEnum _status;
-
-        #endregion
-
         #region Constructors and Destructors
 
         protected ListViewModelBase()
@@ -34,6 +25,22 @@ namespace OmniUI.List
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel)vm);
         }
+
+        #endregion
+
+        #region Properties
+
+        protected virtual bool InsertItemsAtBottom { get; set; }
+
+        #endregion
+
+        #region Fields
+
+        protected readonly CompositeDisposable Subscriptions;
+
+        private readonly ListCollectionView _filteredItems;
+
+        private ListViewModelStatusEnum _status;
 
         #endregion
 
@@ -75,12 +82,6 @@ namespace OmniUI.List
 
         #endregion
 
-        #region Properties
-
-        protected virtual bool InsertItemsAtBottom { get; set; }
-
-        #endregion
-
         #region Public Methods and Operators
 
         public override void ActivateItem(TViewModel item)
@@ -102,13 +103,13 @@ namespace OmniUI.List
 
         #region Methods
 
-        protected virtual void AddItem(TModel model)
+        protected virtual void ChangeItem(TPresenter presenter)
         {
-            var viewModel = CreateViewModel(model);
+            var viewModel = ChangeViewModel(presenter);
             ActivateItem(viewModel);
         }
 
-        protected void RemoveItem(TModel entity)
+        protected void RemoveItem(TPresenter entity)
         {
             var viewModel = GetViewModel(entity);
             if (viewModel == null)
@@ -118,20 +119,12 @@ namespace OmniUI.List
             DeactivateItem(viewModel, true);
         }
 
-        //This is used as opposed to CollectionViewSource.Refresh to update the position of an item in a collection view when an item is changed.
-        //This is done because calling Refresh would result in re-creating the associated views for all the other visible items in the collection.
-        protected void RefreshViewForItem(TModel entity)
-        {
-            RemoveItem(entity);
-            AddItem(entity);
-        }
-
         protected virtual bool CanShow(TViewModel viewModel)
         {
             return true;
         }
 
-        protected abstract TViewModel CreateViewModel(TModel model);
+        protected abstract TViewModel ChangeViewModel(TPresenter model);
 
         protected override TViewModel EnsureItem(TViewModel newItem)
         {
@@ -156,22 +149,22 @@ namespace OmniUI.List
             return base.EnsureItem(newItem);
         }
 
-        protected virtual IObservable<IEnumerable<TModel>> GetFetchItemsObservable()
+        protected virtual IObservable<IEnumerable<TPresenter>> GetFetchItemsObservable()
         {
-            return Observable.Empty<IEnumerable<TModel>>(SchedulerProvider.Default);
+            return Observable.Empty<IEnumerable<TPresenter>>(SchedulerProvider.Default);
         }
 
-        protected virtual IObservable<TModel> GetItemAddedObservable()
+        protected virtual IObservable<TPresenter> GetItemChangedObservable()
         {
-            return Observable.Empty<TModel>(SchedulerProvider.Default);
+            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
         }
 
-        protected virtual IObservable<TModel> GetItemRemovedObservable()
+        protected virtual IObservable<TPresenter> GetItemRemovedObservable()
         {
-            return Observable.Empty<TModel>(SchedulerProvider.Default);
+            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
         }
 
-        protected TViewModel GetViewModel(TModel entity)
+        protected TViewModel GetViewModel(TPresenter entity)
         {
             return Items.FirstOrDefault(vm => Equals(vm.Model, entity));
         }
@@ -190,10 +183,10 @@ namespace OmniUI.List
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(AddItems));
             Subscriptions.Add(
-                GetItemAddedObservable()
+                GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(AddItem));
+                    .SubscribeAndHandleErrors(ChangeItem));
             Subscriptions.Add(
                 GetItemRemovedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -211,9 +204,9 @@ namespace OmniUI.List
             base.OnDeactivate(close);
         }
 
-        private void AddItems(IEnumerable<TModel> models)
+        private void AddItems(IEnumerable<TPresenter> models)
         {
-            models.ToList().ForEach(AddItem);
+            models.ToList().ForEach(ChangeItem);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

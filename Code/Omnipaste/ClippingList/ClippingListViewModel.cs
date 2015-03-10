@@ -3,38 +3,39 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Globalization;
     using System.Linq;
     using System.Reactive.Linq;
     using Clipboard.Models;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ClippingListViewModel : ListViewModelBase<ClippingPresenter, IClippingViewModel>, IClippingListViewModel
+    public class ClippingListViewModel : ListViewModelBase<ClippingPresenter, IClippingViewModel>,
+                                         IClippingListViewModel
     {
         private readonly IClippingRepository _clippingRepository;
 
         private readonly IClippingViewModelFactory _clippingViewModelFactory;
 
-        private string _filterText;
+        private ClippingFilterTypeEnum _clippingTypeFilter;
 
-        private bool _showLocalClippings;
+        private string _filterText;
 
         private bool _showCloudClippings;
 
-        private ClippingFilterTypeEnum _clippingTypeFilter;
+        private bool _showLocalClippings;
 
         private bool _showStarred;
 
-        public ClippingListViewModel(IClippingRepository clippingRepository, IClippingViewModelFactory clippingViewModelFactory)
+        public ClippingListViewModel(
+            IClippingRepository clippingRepository,
+            IClippingViewModelFactory clippingViewModelFactory)
         {
             _clippingRepository = clippingRepository;
             _clippingViewModelFactory = clippingViewModelFactory;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
+            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IClippingViewModel, DateTime>(vm => vm.Time), ListSortDirection.Descending));
         }
 
         public string FilterText
@@ -109,16 +110,6 @@
             }
         }
 
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-            Subscriptions.Add(
-                GetItemUpdatedObservable()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(UpdateViewModel));
-        }
-
         protected override IObservable<IEnumerable<ClippingPresenter>> GetFetchItemsObservable()
         {
             return
@@ -126,30 +117,25 @@
                     .Select(clippings => clippings.Select(clipping => new ClippingPresenter(clipping)));
         }
 
-        protected override IObservable<ClippingPresenter> GetItemAddedObservable()
+        protected override IObservable<ClippingPresenter> GetItemChangedObservable()
         {
-            return _clippingRepository.OperationObservable.Created().Select(o => new ClippingPresenter(o.Item));
-        }
-
-        private IObservable<ClippingPresenter> GetItemUpdatedObservable()
-        {
-            return _clippingRepository.OperationObservable.Updated().Select(o => new ClippingPresenter(o.Item));
+            return _clippingRepository.OperationObservable.Changed().Select(o => new ClippingPresenter(o.Item));
         }
 
         protected override IObservable<ClippingPresenter> GetItemRemovedObservable()
         {
-            return _clippingRepository.OperationObservable.Deleted().Select(o => GetClippingViewModel(o.Item.UniqueId));
+            return _clippingRepository.OperationObservable.Deleted().Select(o => GetClippingPresenter(o.Item.UniqueId));
         }
 
-        protected override IClippingViewModel CreateViewModel(ClippingPresenter model)
+        protected override IClippingViewModel ChangeViewModel(ClippingPresenter model)
         {
-            return _clippingViewModelFactory.Create(model);
+            return UpdateViewModel(model) ?? _clippingViewModelFactory.Create(model);
         }
 
         private void UpdateFilter()
         {
             _clippingTypeFilter = ClippingFilterTypeEnum.None;
-            
+
             if (ShowLocalClippings)
             {
                 _clippingTypeFilter |= ClippingFilterTypeEnum.Local;
@@ -195,18 +181,20 @@
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Cloud));
         }
 
-        private ClippingPresenter GetClippingViewModel(string uniqueId)
+        private ClippingPresenter GetClippingPresenter(string uniqueId)
         {
             return Items.Select(vm => vm.Model).FirstOrDefault(clipping => clipping.UniqueId == uniqueId);
         }
 
-        private void UpdateViewModel(ClippingPresenter obj)
+        private IClippingViewModel UpdateViewModel(ClippingPresenter obj)
         {
             var viewModel = Items.FirstOrDefault(vm => vm.Model.UniqueId == obj.UniqueId);
             if (viewModel != null)
             {
                 viewModel.Model = obj;
             }
+
+            return viewModel;
         }
     }
 }

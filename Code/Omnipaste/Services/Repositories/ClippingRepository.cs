@@ -4,5 +4,9 @@
 
     public class ClippingRepository : InMemoryRepository<ClippingModel>, IClippingRepository
     {
+//        public ClippingRepository()
+//            : base("clippings")
+//        {
+//        }
     }
 }

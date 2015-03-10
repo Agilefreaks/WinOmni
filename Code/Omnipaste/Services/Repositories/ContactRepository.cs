@@ -8,18 +8,31 @@
 
     public class ContactRepository : InMemoryRepository<ContactInfo>, IContactRepository
     {
+        #region IContactRepository Members
+
         public IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber)
         {
-            return Get(contact => contact.PhoneNumbers.Any(pn => PhoneNumberMatcher.IsMatch(pn.Number, phoneNumber))); 
+            return Get(contact => contact.PhoneNumbers.Any(pn => PhoneNumberMatcher.IsMatch(pn.Number, phoneNumber)));
         }
 
         public IObservable<ContactInfo> GetOrCreateByPhoneNumber(string phoneNumber)
         {
             return
                 GetByPhoneNumber(phoneNumber)
-                    .Catch(
-                        Save(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = phoneNumber } } })
-                            .Select(o => o.Item));
+                    .Catch<ContactInfo, Exception>(
+                        e =>
+                            {
+                                return
+                                    Save(
+                                        new ContactInfo
+                                            {
+                                                PhoneNumbers =
+                                                    new[] { new PhoneNumber { Number = phoneNumber } }
+                                            })
+                                        .Select(o => o.Item);
+                            });
         }
+
+        #endregion
     }
 }
