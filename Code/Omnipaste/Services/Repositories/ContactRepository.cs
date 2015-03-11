@@ -15,11 +15,11 @@
 
         public IObservable<ContactInfo> GetOrCreateByPhoneNumber(string phoneNumber)
         {
-            return GetByPhoneNumber(phoneNumber).Select(c => 
-                c != null 
-                    ? Observable.Repeat(c, 1) 
-                    : Save(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = phoneNumber } } }).Select(o => o.Item)
-                ).Switch();
+            return
+                GetByPhoneNumber(phoneNumber)
+                    .Catch(
+                        Save(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = phoneNumber } } })
+                            .Select(o => o.Item));
         }
     }
 }

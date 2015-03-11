@@ -80,7 +80,7 @@ namespace Omnipaste.Services.Repositories
         {
             lock (_items)
             {
-                return _items.Values.FirstOrDefault(match);
+                return _items.Values.First(match);
             }
         }
 
