@@ -34,7 +34,7 @@
         {
             var dateTime = new DateTime(2014, 1,1);
             TimeHelper.UtcNow = dateTime;
-            new PhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime);
+            new PhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
 
         [Test]

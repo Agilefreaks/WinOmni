@@ -19,11 +19,11 @@ namespace Omnipaste.ActivityList
     {
         private readonly IActivityViewModelFactory _activityViewModelFactory;
 
-        private readonly ICallRepository _callRepository;
-
         private readonly IClippingRepository _clippingRepository;
 
         private readonly IMessageRepository _messageRepository;
+
+        private readonly IPhoneCallRepository _phoneCallRepository;
 
         private readonly IUpdateInfoRepository _updateInfoRepository;
 
@@ -191,7 +191,7 @@ namespace Omnipaste.ActivityList
                                 items.Where(item => item.Source == SourceType.Remote)
                                     .Select(item => new ActivityPresenter(item))))
                     .Merge(
-                        _callRepository.GetAll()
+                        _phoneCallRepository.GetAll()
                             .Select(
                                 items =>
                                 items.Where(item => item.Source == SourceType.Remote)
@@ -204,12 +204,13 @@ namespace Omnipaste.ActivityList
         protected override IObservable<ActivityPresenter> GetItemChangedObservable()
         {
             return
-                _clippingRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item))
+                _clippingRepository.OperationObservable.Changed()
+                    .Select(o => new ActivityPresenter(o.Item))
                     .Merge(_messageRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_callRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_updateInfoRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)));
-                    .Merge(_phoneCallRepository.OperationObservable.Created()
-                    .Merge(_phoneCallRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(
+                        _phoneCallRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(
+                        _updateInfoRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)));
         }
 
         protected override IObservable<ActivityPresenter> GetItemRemovedObservable()
@@ -217,11 +218,14 @@ namespace Omnipaste.ActivityList
             return
                 _clippingRepository.OperationObservable.Deleted()
                     .Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
-                    .Merge(_phoneCallRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                    .Merge(
+                        _phoneCallRepository.OperationObservable.Deleted()
+                            .Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                    .Merge(
                         _messageRepository.OperationObservable.Deleted()
                             .Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
                     .Merge(
-                        _callRepository.OperationObservable.Deleted()
+                        _phoneCallRepository.OperationObservable.Deleted()
                             .Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
                     .Merge(
                         _updateInfoRepository.OperationObservable.Deleted()

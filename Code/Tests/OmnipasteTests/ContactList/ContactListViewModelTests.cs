@@ -81,7 +81,7 @@
         [Test]
         public void ContactIsSaved_AfterActivate_AddsContactToList()
         {
-            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Change, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
+            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Changed, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
             var contactObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(100, Notification.CreateOnNext(repositoryOperation)),

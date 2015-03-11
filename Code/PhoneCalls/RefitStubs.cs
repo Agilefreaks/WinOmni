@@ -44,16 +44,16 @@ namespace PhoneCalls.Resources.v1
             Client = client;
         }
 
-        public virtual IObservable<PhoneCall> Get(string id,string token)
+        public virtual IObservable<PhoneCallDto> Get(string id,string token)
         {
             var arguments = new object[] { id,token };
-            return (IObservable<PhoneCall>) methodImpls["Get"](Client, arguments);
+            return (IObservable<PhoneCallDto>) methodImpls["Get"](Client, arguments);
         }
 
-        public virtual IObservable<PhoneCall> Create(PhoneCall payload,string token)
+        public virtual IObservable<PhoneCallDto> Create(PhoneCallDto payload,string token)
         {
             var arguments = new object[] { payload,token };
-            return (IObservable<PhoneCall>) methodImpls["Create"](Client, arguments);
+            return (IObservable<PhoneCallDto>) methodImpls["Create"](Client, arguments);
         }
 
         public virtual IObservable<EmptyModel> Patch(string id,object payload,string token)

@@ -21,11 +21,10 @@
     {
         private Mock<IActivityViewModelFactory> _mockActivityViewModelFactory;
 
-        private Mock<ICallRepository> _mockCallRepository;
+        private Mock<IPhoneCallRepository> _mockCallRepository;
 
         private Mock<IClippingRepository> _mockClippingRepository;
 
-        private Mock<IPhoneCallRepository> _mockCallRepository;
         private Mock<IMessageRepository> _mockMessageRepository;
 
         private Mock<ISessionManager> _mockSessionManager;
@@ -155,17 +154,11 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var repositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Change, new PhoneCall { Source = SourceType.Remote });
-                RepositoryMethodEnum.Changed,
-                new Call { Source = SourceType.Remote });
+            var repositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Remote });
             var eventObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(repositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-                        Notification.CreateOnNext(repositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<Call>>>(
-                        200,
-                        Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             ((IActivate)_subject).Activate();
 
@@ -182,16 +175,9 @@
             var modifiedCall = new PhoneCall { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Change, call))),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Update, modifiedCall))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, call))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, modifiedCall))),
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-                    new Recorded<Notification<RepositoryOperation<Call>>>(
-                        200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<Call>(RepositoryMethodEnum.Changed, modifiedCall))),
-                    new Recorded<Notification<RepositoryOperation<Call>>>(
-                        300,
-                        Notification.CreateOnCompleted<RepositoryOperation<Call>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callObservable);
             ((IActivate)_subject).Activate();
 

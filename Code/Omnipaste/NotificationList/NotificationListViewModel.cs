@@ -170,7 +170,7 @@
         private void CreateNotificationsFromIncomingCalls()
         {
             _callSubscription =
-                _phoneCallRepository.OperationObservable.Created()
+                _phoneCallRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
                     .Where(item => item.Source == SourceType.Remote)
                     .ObserveOn(SchedulerProvider.Dispatcher)
