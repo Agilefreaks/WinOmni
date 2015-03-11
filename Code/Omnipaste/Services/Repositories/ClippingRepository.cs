@@ -2,11 +2,11 @@
 {
     using Omnipaste.Models;
 
-    public class ClippingRepository : SecurePermanentRepository<ClippingModel>, IClippingRepository
+    public class ClippingRepository : InMemoryRepository<ClippingModel>, IClippingRepository
     {
-        public ClippingRepository()
-            : base("clippings")
-        {
-        }
+//        public ClippingRepository()
+//            : base("clippings")
+//        {
+//        }
     }
 }

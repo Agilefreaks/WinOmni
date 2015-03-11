@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
@@ -77,17 +78,6 @@
 
         #region Methods
 
-        protected override void ChangeItem(IConversationItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            base.ChangeItem(item);
-            HandleNotViewedItem(item);
-        }
-
         protected override void OnInitialize()
         {
             _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
@@ -95,6 +85,11 @@
         }
 
         protected override IConversationItemViewModel ChangeViewModel(IConversationItem model)
+        {
+            return UpdateViewModel(model) ?? CreateViewModel(model);
+        }
+
+        private IConversationItemViewModel CreateViewModel(IConversationItem model)
         {
             IConversationItemViewModel result;
             if (model is Models.PhoneCall)
@@ -106,6 +101,16 @@
                 result = Kernel.Get<IMessageViewModel>();
             }
             result.Model = model;
+            HandleNotViewedItem(model);
+
+            return result;
+        }
+
+        private IConversationItemViewModel UpdateViewModel(IConversationItem model)
+        {
+            IConversationItemViewModel result =
+                (IConversationItemViewModel)Items.OfType<IPhoneCallViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source) ??
+                Items.OfType<IMessageViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source);
 
             return result;
         }

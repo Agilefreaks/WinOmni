@@ -309,13 +309,13 @@
     <Compile Include="Services\Providers\IConversationProvider.cs" />
     <Compile Include="Services\Repositories\SecurePermanentRepository.cs" />
     <Compile Include="Services\SessionItemChangeEventArgs.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\IPhoneCallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\PhoneCallViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Call\IPhoneCallViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModel.cs" />
@@ -564,7 +564,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorkspaceDetails\Conversation\Call\PhoneCallView.xaml">
+    <Page Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1104,7 +1104,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="WorkspaceDetails\Conversation\Call\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>

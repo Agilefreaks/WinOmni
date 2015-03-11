@@ -150,7 +150,7 @@
             _clippingsSubscription =
                 _clippingRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud)
+                    .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud && item.WasViewed == false)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(
                         clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
@@ -161,7 +161,7 @@
             _messageSubscription =
                 _messageRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == SourceType.Remote)
+                    .Where(item => item.Source == SourceType.Remote && item.WasViewed == false)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(
                         message => Notifications.Add(NotificationViewModelFactory.Create(message)));
@@ -172,7 +172,7 @@
             _callSubscription =
                 _phoneCallRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == SourceType.Remote)
+                    .Where(item => item.Source == SourceType.Remote && item.WasViewed == false)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(call => Notifications.Add(NotificationViewModelFactory.Create(call)));
         }

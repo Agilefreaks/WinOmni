@@ -78,8 +78,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new PhoneCall();
-            var call2 = new PhoneCall();
+            var call1 = new PhoneCall { Id = "42" };
+            var call2 = new PhoneCall { Id = "43" };
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();
@@ -231,8 +231,8 @@
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
             var baseTime = DateTime.Now;
-            var call1 = new PhoneCall { Time = baseTime };
-            var call2 = new PhoneCall { Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
+            var call1 = new PhoneCall { Id = "42", Time = baseTime };
+            var call2 = new PhoneCall { Id = "43", Time = baseTime.Add(TimeSpan.FromSeconds(10)) };
             var message1 = new LocalSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(5)) };
             var message2 = new RemoteSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(15)) };
             SetupGetConversationItems(call1, call2, message1, message2);
@@ -254,8 +254,8 @@
         {
             var contactInfo = new ContactInfo();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new PhoneCall();
-            var call2 = new PhoneCall();
+            var call1 = new PhoneCall { Id = "42" };
+            var call2 = new PhoneCall { Id = "43" };
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();

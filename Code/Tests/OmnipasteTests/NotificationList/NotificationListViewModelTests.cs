@@ -19,12 +19,132 @@
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.IncomingCallNotification;
+    using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class NotificationListViewModelTests
     {
+        #region Methods
+
+        private void SetupTestScheduler()
+        {
+            _testScheduler = new TestScheduler();
+            _incommingClipping = new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud };
+            _viewedClipping = new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud, WasViewed = true };
+            _testableClippingsObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _incommingClipping))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                        250,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ClippingModel>(
+                                RepositoryMethodEnum.Changed,
+                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                        300,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _viewedClipping))));
+
+            _incommingPhoneCall = new PhoneCall
+                                      {
+                                          Source = SourceType.Remote,
+                                          ContactInfo =
+                                              new ContactInfo
+                                                  {
+                                                      PhoneNumbers =
+                                                          new[]
+                                                              {
+                                                                  new PhoneNumber
+                                                                      {
+                                                                          Number =
+                                                                              "phone number"
+                                                                      }
+                                                              }
+                                                  }
+                                      };
+            _viewedPhoneCall = new PhoneCall
+                                   {
+                                       Source = SourceType.Remote,
+                                       ContactInfo =
+                                           new ContactInfo
+                                               {
+                                                   PhoneNumbers =
+                                                       new[]
+                                                           {
+                                                               new PhoneNumber
+                                                                   {
+                                                                       Number =
+                                                                           "phone number"
+                                                                   }
+                                                           }
+                                               },
+                                       WasViewed = true
+                                   };
+            _testableCallsObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, _incommingPhoneCall))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                        250,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, _viewedPhoneCall))));
+            var remoteSmsMessage = new RemoteSmsMessage
+                                       {
+                                           ContactInfo =
+                                               new ContactInfo
+                                                   {
+                                                       PhoneNumbers =
+                                                           new[]
+                                                               {
+                                                                   new PhoneNumber
+                                                                       {
+                                                                           Number
+                                                                               =
+                                                                               "phone number"
+                                                                       }
+                                                               }
+                                                   }
+                                       };
+            var viewedSmsMessage = new RemoteSmsMessage
+                                       {
+                                           WasViewed = true,
+                                           ContactInfo =
+                                               new ContactInfo
+                                                   {
+                                                       PhoneNumbers =
+                                                           new[]
+                                                               {
+                                                                   new PhoneNumber
+                                                                       {
+                                                                           Number
+                                                                               =
+                                                                               "phone number"
+                                                                       }
+                                                               }
+                                                   }
+                                       };
+            _testableMessagesObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
+                        200,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))),
+                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
+                        250,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, viewedSmsMessage))));
+            SchedulerProvider.Dispatcher = _testScheduler;
+        }
+
+        #endregion
+
         #region Fields
 
         private Mock<IClippingRepository> _mockClippingRepository;
@@ -50,6 +170,14 @@
         private Mock<IApplicationService> _mockApplicationService;
 
         private Mock<IEventAggregator> _mockEventAggregator;
+
+        private PhoneCall _incommingPhoneCall;
+
+        private PhoneCall _viewedPhoneCall;
+
+        private ClippingModel _incommingClipping;
+
+        private ClippingModel _viewedClipping;
 
         #endregion
 
@@ -77,7 +205,7 @@
             _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
             _mockEventAggregator = new Mock<IEventAggregator>();
             _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
-            
+
             _subject = _mockingKernel.Get<INotificationListViewModel>();
         }
 
@@ -100,58 +228,51 @@
         }
 
         [Test]
-        public void WhenNewCloudClippingIsSaved_AddsNewNotificationViewModel()
-        {
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<ClippingModel>()))
-                .Returns(new Mock<IClippingNotificationViewModel>().Object);
-            _mockClippingRepository.Setup(m => m.OperationObservable).Returns(_testableClippingsObservable);
-            _subject.Activate();
-
-            _testScheduler.Start();
-
-            _subject.Notifications.Count.Should().Be(1);
-        }
-
-        [Test]
         public void WhenNewCloudClippingIsSaved_CreatesNewNotificationViewModel()
         {
-            var mockClippingNotificationViewModel = new Mock<IClippingNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<ClippingModel>()))
-                .Returns(mockClippingNotificationViewModel.Object);
+            var firstClippingViewModel = new Mock<IClippingNotificationViewModel>();
+            var secondClippingViewModel = new Mock<IClippingNotificationViewModel>();
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<ClippingModel>()))
+                .Returns(firstClippingViewModel.Object)
+                .Returns(secondClippingViewModel.Object);
             _mockClippingRepository.Setup(m => m.OperationObservable).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().Should().Be(mockClippingNotificationViewModel.Object);
+            _subject.Notifications.Should().OnlyContain(cvm => cvm == firstClippingViewModel.Object);
         }
 
         [Test]
         public void WhenACallIsSaved_CreatesNewNotificationViewModel()
         {
-            var mockIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<PhoneCall>()))
-                .Returns(mockIncomingCallNotificationViewModel.Object);
+            var firstIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
+            var secondIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<PhoneCall>()))
+                .Returns(firstIncomingCallNotificationViewModel.Object)
+                .Returns(secondIncomingCallNotificationViewModel.Object);
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(_testableCallsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().Should().Be(mockIncomingCallNotificationViewModel.Object);
+            _subject.Notifications.Should().OnlyContain(icvm => icvm == firstIncomingCallNotificationViewModel.Object);
         }
 
         [Test]
         public void WhenAMessageIsSaved_CreatesNewNotificationViewModel()
         {
-            var mockIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.Setup(f => f.Create(It.IsAny<SmsMessage>()))
-                .Returns(mockIncomingCallNotificationViewModel.Object);
+            var firstIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
+            var secondIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<SmsMessage>()))
+                .Returns(firstIncomingSmsNotificationViewModel.Object)
+                .Returns(secondIncomingSmsNotificationViewModel.Object);
             _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(_testableMessagesObservable);
             _subject.Activate();
 
             _testScheduler.Start();
 
-            _subject.Notifications.First().Should().Be(mockIncomingCallNotificationViewModel.Object);
+            _subject.Notifications.Should().OnlyContain(isn => isn == firstIncomingSmsNotificationViewModel.Object);
         }
 
         [Test]
@@ -177,55 +298,6 @@
             _subject.Handle(new DismissNotification(42));
 
             mockNotification.Verify(m => m.Dismiss(), Times.Never());
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void SetupTestScheduler()
-        {
-            _testScheduler = new TestScheduler();
-            _testableClippingsObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
-                        200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(
-                                RepositoryMethodEnum.Changed,
-                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
-                        250,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(
-                                RepositoryMethodEnum.Changed,
-                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))));
-
-            _testableCallsObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
-                        200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<PhoneCall>(
-                                RepositoryMethodEnum.Changed,
-                                new PhoneCall
-                                    {
-                                        Source = SourceType.Remote,
-                                        ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "phone number" } } }
-                                    }))));
-            _testableMessagesObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
-                        200,
-                        Notification.CreateOnNext(
-                            new RepositoryOperation<SmsMessage>(
-                                RepositoryMethodEnum.Changed,
-                                new RemoteSmsMessage
-                                    {
-                                        ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "phone number" } } }
-                                    }))));
-
-            SchedulerProvider.Dispatcher = _testScheduler;
         }
 
         #endregion
