@@ -1,4 +1,13 @@
-﻿**Version 1.3.16 (11.03.2015)**
+﻿**Version 1.3.17 (11.03.2015)**
+
+**Features:**
+
+- Contact images are now displayed.
+- Improved caller id functionality
+
+----------
+
+**Version 1.3.16 (11.03.2015)**
 
 **Features:**
 
