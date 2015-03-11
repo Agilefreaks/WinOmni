@@ -5,22 +5,19 @@
 
     public abstract class SmsMessage : BaseModel, IConversationItem
     {
-        #region Constructors and Destructors
-
         protected SmsMessage()
         {
             ContactInfo = new ContactInfo();
         }
 
-        protected SmsMessage(SmsMessageDto smsMessageDto) : this()
+        protected SmsMessage(SmsMessageDto smsMessageDto)
+            : this()
         {
             Id = smsMessageDto.Id;
             Content = smsMessageDto.Content;
         }
 
-        #endregion
-
-        #region Public Properties
+        #region IConversationItem Members
 
         public string Id { get; set; }
 

@@ -8,7 +8,7 @@
     public abstract class BaseRepository<T> : IRepository<T>
         where T : BaseModel
     {
-        protected readonly Subject<RepositoryOperation<T>> _subject =  new Subject<RepositoryOperation<T>>();
+        protected readonly Subject<RepositoryOperation<T>> Subject =  new Subject<RepositoryOperation<T>>();
 
         #region IRepository<T> Members
 
@@ -16,7 +16,7 @@
         {
             get
             {
-                return _subject;
+                return Subject;
             }
         }
 

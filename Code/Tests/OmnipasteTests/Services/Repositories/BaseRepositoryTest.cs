@@ -51,32 +51,7 @@
             var testObservable = _testScheduler.Start(() => _subject.Save(testModel));
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[0].Value.Value.RepositoryMethod.Should().Be(RepositoryMethodEnum.Create);
-        }
-
-        [Test]
-        public void Save_Always_NotifiesOperation()
-        {
-            var testModel = new TestModel { UniqueId = "42" };
-            var results = new List<RepositoryOperation<TestModel>>();
-            _subject.OperationObservable.Subscribe(ro => results.Add(ro));
-
-            _testScheduler.Start(() => _subject.Save(testModel));
-
-            results[0].RepositoryMethod.Should().Be(RepositoryMethodEnum.Create);
-        }
-
-        [Test]
-        public void Save_WhenItemWasPreviouslySaved_NotifiesUpdateOperation()
-        {
-            var testModel = new TestModel { UniqueId = "42" };
-            var sameTestModel = new TestModel { UniqueId = "42", IsDeleted = true };
-            var results = new List<RepositoryOperation<TestModel>>();
-            _subject.OperationObservable.Subscribe(ro => results.Add(ro));
-
-            _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Save(sameTestModel)).Switch());
-
-            results[1].RepositoryMethod.Should().Be(RepositoryMethodEnum.Update);
+            testObservable.Messages[0].Value.Value.RepositoryMethod.Should().Be(RepositoryMethodEnum.Changed);
         }
 
         [Test]
@@ -134,6 +109,18 @@
                 () => _subject.Save(testModel).Select(_ => _subject.Delete(testModel.UniqueId)).Switch());
 
             results[1].RepositoryMethod.Should().Be(RepositoryMethodEnum.Delete);
+        }
+
+        [Test]
+        public void Get_WithExistingId_WillReturnTheModel()
+        {
+            var testModel = new TestModel { UniqueId = "42" };
+            _testScheduler.Start();
+            
+            var testableObserver = _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Get("42")).Switch());
+
+            testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages[0].Value.Value.UniqueId.Should().Be("42");
         }
     }
 }

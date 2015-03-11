@@ -288,13 +288,14 @@
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\LocalSmsMessage.cs" />
     <Compile Include="Models\PhoneNumber.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
-    <Compile Include="Models\IModel.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
     <Compile Include="Services\ExceptionReporters\LogExceptionReporter.cs" />
     <Compile Include="Services\GlobalExceptionLogger.cs" />
@@ -387,7 +388,6 @@
     <Compile Include="Models\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
-    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\PhoneCall.cs" />
     <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
@@ -505,7 +505,7 @@
     <Compile Include="Services\Repositories\IRepository.cs" />
     <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
     <Compile Include="Services\Repositories\MessageRepository.cs" />
-    <Compile Include="Services\Repositories\ObservableExtensionMethods.cs" />
+    <Compile Include="Services\Repositories\RepositoryObservableExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
     <Compile Include="Services\Repositories\RepositoryOperation.cs" />

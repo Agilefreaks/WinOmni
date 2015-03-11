@@ -192,13 +192,13 @@
                         200,
                         Notification.CreateOnNext(
                             new RepositoryOperation<ClippingModel>(
-                                RepositoryMethodEnum.Create,
+                                RepositoryMethodEnum.Changed,
                                 new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud }))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         250,
                         Notification.CreateOnNext(
                             new RepositoryOperation<ClippingModel>(
-                                RepositoryMethodEnum.Create,
+                                RepositoryMethodEnum.Changed,
                                 new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))));
 
             _testableCallsObservable =
@@ -207,7 +207,7 @@
                         200,
                         Notification.CreateOnNext(
                             new RepositoryOperation<PhoneCall>(
-                                RepositoryMethodEnum.Create,
+                                RepositoryMethodEnum.Changed,
                                 new PhoneCall
                                     {
                                         Source = SourceType.Remote,
@@ -219,7 +219,7 @@
                         200,
                         Notification.CreateOnNext(
                             new RepositoryOperation<SmsMessage>(
-                                RepositoryMethodEnum.Create,
+                                RepositoryMethodEnum.Changed,
                                 new RemoteSmsMessage
                                     {
                                         ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "phone number" } } }

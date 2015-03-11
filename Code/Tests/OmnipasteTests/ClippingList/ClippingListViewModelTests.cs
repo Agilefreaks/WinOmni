@@ -57,7 +57,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, new ClippingModel()))),
+                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, new ClippingModel()))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
@@ -75,7 +75,7 @@
             var clippingModel = new ClippingModel { UniqueId = SourceId };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Delete, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
@@ -95,8 +95,8 @@
             var modifiedClipping = new ClippingModel { UniqueId = SourceId, Content = "Test" };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Create, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Update, modifiedClipping))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, modifiedClipping))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();

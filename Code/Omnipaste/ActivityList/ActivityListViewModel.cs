@@ -14,19 +14,18 @@ namespace Omnipaste.ActivityList
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ActivityListViewModel : ListViewModelBase<ActivityPresenter, IActivityViewModel>, IActivityListViewModel
+    public class ActivityListViewModel : ListViewModelBase<ActivityPresenter, IActivityViewModel>,
+                                         IActivityListViewModel
     {
-        #region Fields
+        private readonly IActivityViewModelFactory _activityViewModelFactory;
+
+        private readonly ICallRepository _callRepository;
 
         private readonly IClippingRepository _clippingRepository;
 
         private readonly IMessageRepository _messageRepository;
 
-        private readonly IPhoneCallRepository _phoneCallRepository;
-
         private readonly IUpdateInfoRepository _updateInfoRepository;
-
-        private readonly IActivityViewModelFactory _activityViewModelFactory;
 
         private ActivityTypeEnum _allowedActivityTypes;
 
@@ -37,10 +36,6 @@ namespace Omnipaste.ActivityList
         private bool _showClippings;
 
         private bool _showMessages;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         public ActivityListViewModel(
             IClippingRepository clippingRepository,
@@ -55,20 +50,8 @@ namespace Omnipaste.ActivityList
             _activityViewModelFactory = activityViewModelFactory;
             _updateInfoRepository = updateInfoRepository;
             _allowedActivityTypes = ActivityTypeEnum.All;
-            
+
             FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        public override string DisplayName
-        {
-            get
-            {
-                return Resources.Activity;
-            }
         }
 
         public string FilterText
@@ -143,22 +126,26 @@ namespace Omnipaste.ActivityList
             }
         }
 
-        #endregion
+        #region IActivityListViewModel Members
 
-        #region Public Methods and Operators
+        public override string DisplayName
+        {
+            get
+            {
+                return Resources.Activity;
+            }
+        }
+
+        #endregion
 
         public void ShowVideoTutorial()
         {
             ExternalProcessHelper.ShowVideoTutorial();
         }
 
-        #endregion
-
-        #region Methods
-
-        protected override IActivityViewModel CreateViewModel(ActivityPresenter model)
+        protected override IActivityViewModel ChangeViewModel(ActivityPresenter model)
         {
-            return _activityViewModelFactory.Create(model);
+            return UpdateViewModel(model) ?? _activityViewModelFactory.Create(model);
         }
 
         protected override bool CanShow(IActivityViewModel viewModel)
@@ -192,50 +179,53 @@ namespace Omnipaste.ActivityList
             RefreshItems();
         }
 
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-            Subscriptions.Add(GetItemUpdatedObservable().SubscribeAndHandleErrors(UpdateViewModel));
-        }
-
         protected override IObservable<IEnumerable<ActivityPresenter>> GetFetchItemsObservable()
         {
             return
-                _clippingRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item)))
-                    .Merge(_messageRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
-                    .Merge(_phoneCallRepository.GetAll().Select(items => items.Where(item => item.Source == SourceType.Remote).Select(item => new ActivityPresenter(item))))
-                    .Merge(_updateInfoRepository.GetAll().Select(items => items.Select(item => new ActivityPresenter(item))));
+                _clippingRepository.GetAll()
+                    .Select(items => items.Select(item => new ActivityPresenter(item)))
+                    .Merge(
+                        _messageRepository.GetAll()
+                            .Select(
+                                items =>
+                                items.Where(item => item.Source == SourceType.Remote)
+                                    .Select(item => new ActivityPresenter(item))))
+                    .Merge(
+                        _callRepository.GetAll()
+                            .Select(
+                                items =>
+                                items.Where(item => item.Source == SourceType.Remote)
+                                    .Select(item => new ActivityPresenter(item))))
+                    .Merge(
+                        _updateInfoRepository.GetAll()
+                            .Select(items => items.Select(item => new ActivityPresenter(item))));
         }
 
-        protected override IObservable<ActivityPresenter> GetItemAddedObservable()
+        protected override IObservable<ActivityPresenter> GetItemChangedObservable()
         {
             return
-                _clippingRepository.OperationObservable.Created()
-                            .Select(o => new ActivityPresenter(o.Item))
-                    .Merge(_messageRepository.OperationObservable.Created()
-                            .Where(operation => operation.Item.Source == SourceType.Remote)
-                            .Select(o => new ActivityPresenter(o.Item)))
+                _clippingRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item))
+                    .Merge(_messageRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_callRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_updateInfoRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)));
                     .Merge(_phoneCallRepository.OperationObservable.Created()
-                            .Where(operation => operation.Item.Source == SourceType.Remote)
-                            .Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_updateInfoRepository.OperationObservable.Created().Select(o => new ActivityPresenter(o.Item)));
-        }
-
-        protected IObservable<ActivityPresenter> GetItemUpdatedObservable()
-        {
-            return _clippingRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item))
-                    .Merge(_messageRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
                     .Merge(_phoneCallRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_updateInfoRepository.OperationObservable.Updated().Select(o => new ActivityPresenter(o.Item)));
         }
 
         protected override IObservable<ActivityPresenter> GetItemRemovedObservable()
         {
             return
-                _clippingRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
-                    .Merge(_messageRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
+                _clippingRepository.OperationObservable.Deleted()
+                    .Select(o => GetActivity(ActivityTypeEnum.Clipping, o.Item.UniqueId))
                     .Merge(_phoneCallRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
-                    .Merge(_updateInfoRepository.OperationObservable.Deleted().Select(o => GetActivity(ActivityTypeEnum.Version, o.Item.UniqueId)));
+                        _messageRepository.OperationObservable.Deleted()
+                            .Select(o => GetActivity(ActivityTypeEnum.Message, o.Item.UniqueId)))
+                    .Merge(
+                        _callRepository.OperationObservable.Deleted()
+                            .Select(o => GetActivity(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                    .Merge(
+                        _updateInfoRepository.OperationObservable.Deleted()
+                            .Select(o => GetActivity(ActivityTypeEnum.Version, o.Item.UniqueId)));
         }
 
         private ActivityPresenter GetActivity(ActivityTypeEnum type, string id)
@@ -256,21 +246,23 @@ namespace Omnipaste.ActivityList
             return string.IsNullOrWhiteSpace(FilterText)
                    || FilterText.Split(' ')
                           .Select(filterPart => filterPart.RemoveDiacritics())
-                          .All(filterPart => viewModel.Model.ToString()
+                          .All(
+                              filterPart =>
+                              viewModel.Model.ToString()
                                   .RemoveDiacritics()
                                   .IndexOf(filterPart, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
-        private void UpdateViewModel(ActivityPresenter newModel)
+        private IActivityViewModel UpdateViewModel(ActivityPresenter presenter)
         {
-            var currentModel = GetActivity(newModel.Type, newModel.SourceId);
+            var currentModel = GetActivity(presenter.Type, presenter.SourceId);
             var activityViewModel = GetViewModel(currentModel);
             if (activityViewModel != null)
             {
-                activityViewModel.Model = newModel;
+                activityViewModel.Model = presenter;
             }
-        }
 
-        #endregion
+            return activityViewModel;
+        }
     }
 }

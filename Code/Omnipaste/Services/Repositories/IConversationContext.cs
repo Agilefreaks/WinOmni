@@ -7,9 +7,7 @@ namespace Omnipaste.Services.Repositories
 
     public interface IConversationContext
     {
-        IObservable<IConversationItem> ItemUpdated { get; }
-
-        IObservable<IConversationItem> ItemAdded { get; }
+        IObservable<IConversationItem> ItemChanged { get; }
 
         IObservable<IConversationItem> ItemRemoved { get; }
 

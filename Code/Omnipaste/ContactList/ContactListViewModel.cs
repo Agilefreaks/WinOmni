@@ -89,13 +89,8 @@ namespace Omnipaste.ContactList
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Subscriptions.Add(
-                GetItemUpdatedObservable()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(UpdateViewModel));
 
-            Subscriptions.Add(_conversationProvider.All().ItemAdded
+            Subscriptions.Add(_conversationProvider.All().ItemChanged
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(OnConversationItemCreated));
@@ -108,25 +103,20 @@ namespace Omnipaste.ContactList
                     .Select(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
         }
 
-        protected override IObservable<ContactInfoPresenter> GetItemAddedObservable()
+        protected override IObservable<ContactInfoPresenter> GetItemChangedObservable()
         {
-            return _contactRepository.OperationObservable.Created()
+            return _contactRepository.OperationObservable.Changed()
                 .Select(o => new ContactInfoPresenter(o.Item));
         }
 
-        protected override IContactInfoViewModel CreateViewModel(ContactInfoPresenter model)
+        protected override IContactInfoViewModel ChangeViewModel(ContactInfoPresenter model)
         {
-            return _contactInfoViewModelFactory.Create(model);
+            return UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create(model);
         }
 
         private static bool IsMatch(string filter, string value)
         {
             return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
-        }
-
-        private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
-        {
-            return _contactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
         }
 
         private ContactInfoPresenter GetContactFor(IConversationItem conversationItem)
@@ -137,13 +127,15 @@ namespace Omnipaste.ContactList
                         model => conversationItem.ContactInfo.UniqueId == model.ContactInfo.UniqueId);
         }
 
-        private void UpdateViewModel(ContactInfoPresenter obj)
+        private IContactInfoViewModel UpdateViewModel(ContactInfoPresenter obj)
         {
             var viewModel = Items.FirstOrDefault(vm => vm.Model.Identifier == obj.Identifier);
             if (viewModel != null)
             {
                 viewModel.Model = obj;
             }
+
+            return viewModel;
         }
 
         private bool MatchesFilterText(IContactInfoPresenter model)

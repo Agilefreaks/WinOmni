@@ -77,14 +77,14 @@
 
         #region Methods
 
-        protected override void AddItem(IConversationItem item)
+        protected override void ChangeItem(IConversationItem item)
         {
             if (item == null)
             {
                 return;
             }
 
-            base.AddItem(item);
+            base.ChangeItem(item);
             HandleNotViewedItem(item);
         }
 
@@ -94,7 +94,7 @@
             base.OnInitialize();
         }
 
-        protected override IConversationItemViewModel CreateViewModel(IConversationItem model)
+        protected override IConversationItemViewModel ChangeViewModel(IConversationItem model)
         {
             IConversationItemViewModel result;
             if (model is Models.PhoneCall)
@@ -110,9 +110,9 @@
             return result;
         }
 
-        protected override IObservable<IConversationItem> GetItemAddedObservable()
+        protected override IObservable<IConversationItem> GetItemChangedObservable()
         {
-            return _conversationContext.ItemAdded;
+            return _conversationContext.ItemChanged;
         }
 
         protected override IObservable<IConversationItem> GetItemRemovedObservable()

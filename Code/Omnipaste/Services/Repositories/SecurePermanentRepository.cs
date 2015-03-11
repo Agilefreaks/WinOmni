@@ -47,31 +47,23 @@
         public override IObservable<RepositoryOperation<T>> Save(T item)
         {
             return
-                _blobCache.GetObjectOrDefault<T>(item.UniqueId)
-                    .Zip(
-                        _blobCache.InsertObject(item.UniqueId, item),
-                        (existing, _) =>
-                            {
-                                var method = existing == default(T) ? RepositoryMethodEnum.Create : RepositoryMethodEnum.Update;
-                                var repositoryOperation = new RepositoryOperation<T>(method, item);
-                                _subject.OnNext(repositoryOperation);
-                                return repositoryOperation;
-                            });
+                _blobCache.InsertObject(item.UniqueId, item)
+                    .Select(_ => RepositoryOperation<T>.Empty())
+                    .Concat(Observable.Return(BuildRepositoryOperation(RepositoryMethodEnum.Changed, item)))
+                    .TakeLast(1);
         }
 
         public override IObservable<RepositoryOperation<T>> Delete(string id)
         {
-            return _blobCache.Invalidate(id).Select(_ =>
-                {
-                    var repositoryOperation = new RepositoryOperation<T>(RepositoryMethodEnum.Delete, null);
-                    _subject.OnNext(repositoryOperation);
-                    return repositoryOperation;
-                });
+            return _blobCache.Invalidate(id)
+                .Select(_ => RepositoryOperation<T>.Empty())
+                .Concat(Observable.Return(BuildRepositoryOperation(RepositoryMethodEnum.Delete, null)))
+                .TakeLast(1);
         }
 
         public override IObservable<T> Get(string id)
         {
-            throw new NotImplementedException();
+            return _blobCache.GetObject<T>(id);
         }
 
         public override IObservable<T> Get(Func<T, bool> match)
@@ -87,6 +79,13 @@
         public override IObservable<IEnumerable<T>> GetAll(Func<T, bool> filter)
         {
             throw new NotImplementedException();
+        }
+
+        private RepositoryOperation<T> BuildRepositoryOperation(RepositoryMethodEnum method, T item)
+        {
+            var repositoryOperation = new RepositoryOperation<T>(method, item);
+            Subject.OnNext(repositoryOperation);
+            return repositoryOperation;
         }
     }
 }

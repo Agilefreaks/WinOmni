@@ -253,7 +253,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
                         100,
-                        Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Create, new PhoneCall()))),
+                        Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall()))),
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
                         200,
                         Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));

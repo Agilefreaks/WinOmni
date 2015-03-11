@@ -25,19 +25,19 @@
     [TestFixture]
     public class ConversationContentViewModelTests
     {
-        private ConversationContentViewModel _subject;
-
-        private Mock<IEventAggregator> _mockEventAggregator;
-
-        private TestScheduler _testScheduler;
-
-        private Mock<IConversationProvider> _mockConversationProvider;
+        private Mock<IConfigurationService> _mockConfigurationService;
 
         private Mock<IConversationContext> _mockConversation;
 
+        private Mock<IConversationProvider> _mockConversationProvider;
+
+        private Mock<IEventAggregator> _mockEventAggregator;
+
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
-        private Mock<IConfigurationService> _mockConfigurationService;
+        private ConversationContentViewModel _subject;
+
+        private TestScheduler _testScheduler;
 
         [SetUp]
         public void Setup()
@@ -61,7 +61,9 @@
             _subject = new ConversationContentViewModel(_mockConversationProvider.Object)
                            {
                                Kernel = mockingKernel,
-                               EventAggregator = _mockEventAggregator.Object
+                               EventAggregator =
+                                   _mockEventAggregator
+                                   .Object
                            };
         }
 
@@ -111,7 +113,11 @@
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
 
-            _mockEventAggregator.Verify(m => m.Publish(It.Is<DismissNotification>(n => (string)n.Identifier == call.UniqueId), It.IsAny<Action<Action>>()));
+            _mockEventAggregator.Verify(
+                m =>
+                m.Publish(
+                    It.Is<DismissNotification>(n => (string)n.Identifier == call.UniqueId),
+                    It.IsAny<Action<Action>>()));
         }
 
         [Test]
@@ -133,9 +139,12 @@
         {
             var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(callObservable);
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(callObservable);
 
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
@@ -149,9 +158,12 @@
         {
             var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var callObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(callObservable);
+            var callObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(callObservable);
 
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
@@ -180,9 +192,12 @@
         {
             var messageFromContact = new RemoteSmsMessage { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var observable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+            var observable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(messageFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(observable);
 
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
@@ -196,9 +211,12 @@
         {
             var messageFromContact = new LocalSmsMessage { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var observable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(messageFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+            var observable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(messageFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(observable);
 
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
@@ -221,7 +239,7 @@
 
             ((IActivate)_subject).Activate();
             _testScheduler.Start();
-            
+
             _subject.RefreshItems();
             var items = _subject.FilteredItems.Cast<IConversationItemViewModel>().ToList();
             items.Count.Should().Be(4);
@@ -254,9 +272,12 @@
         {
             var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var observable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+            var observable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(observable);
 
             ((IActivate)_subject).Activate();
             ((IDeactivate)_subject).Deactivate(false);
@@ -270,9 +291,12 @@
         {
             var callFromContact = new PhoneCall { ContactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } } };
             _subject.Model = new ContactInfoPresenter(new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "123" } } });
-            var observable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IConversationItem>>(200, Notification.CreateOnNext(callFromContact as IConversationItem)));
-            _mockConversation.SetupGet(x => x.ItemAdded).Returns(observable);
+            var observable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IConversationItem>>(
+                        200,
+                        Notification.CreateOnNext(callFromContact as IConversationItem)));
+            _mockConversation.SetupGet(x => x.ItemChanged).Returns(observable);
 
             ((IActivate)_subject).Activate();
             ((IDeactivate)_subject).Deactivate(false);

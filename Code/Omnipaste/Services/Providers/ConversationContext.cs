@@ -9,8 +9,6 @@
 
     public abstract class ConversationContext : IConversationContext
     {
-        private IObservable<IConversationItem> _itemAdded;
-
         private IObservable<IConversationItem> _itemRemoved;
 
         private IObservable<IConversationItem> _itemUpdated;
@@ -27,19 +25,11 @@
             PhoneCallRepository = phoneCallRepository;
         }
 
-        public IObservable<IConversationItem> ItemUpdated
+        public IObservable<IConversationItem> ItemChanged
         {
             get
             {
-                return _itemUpdated ?? (_itemUpdated = GetObservableForContactAndOperation(RepositoryMethodEnum.Update));
-            }
-        }
-
-        public IObservable<IConversationItem> ItemAdded
-        {
-            get
-            {
-                return _itemAdded ?? (_itemAdded = GetObservableForContactAndOperation(RepositoryMethodEnum.Create));
+                return _itemUpdated ?? (_itemUpdated = GetObservableForContactAndOperation(RepositoryMethodEnum.Changed));
             }
         }
 
@@ -55,7 +45,7 @@
         {
             get
             {
-                return _updated ?? (_updated = ItemAdded.Merge(ItemUpdated).Merge(ItemRemoved));
+                return _updated ?? (_updated = ItemChanged.Merge(ItemRemoved));
             }
         }
 

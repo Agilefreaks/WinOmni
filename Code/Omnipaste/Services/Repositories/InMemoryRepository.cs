@@ -5,7 +5,6 @@ namespace Omnipaste.Services.Repositories
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
-    using System.Reactive.Subjects;
     using Caliburn.Micro;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
@@ -67,11 +66,9 @@ namespace Omnipaste.Services.Repositories
 
         public RepositoryOperation<T> SaveSynchronous(T item)
         {
-            var value = _items.GetValueOrDefault(item.UniqueId);
-            var operation = value == null ? RepositoryMethodEnum.Create : RepositoryMethodEnum.Update;
-            var result = new RepositoryOperation<T>(operation, item);
+            var result = new RepositoryOperation<T>(RepositoryMethodEnum.Changed, item);
             _items.AddOrUpdate(item.UniqueId, item, (key, existingValue) => item);
-            _subject.OnNext(result);
+            Subject.OnNext(result);
 
             return result;
         }
@@ -82,7 +79,7 @@ namespace Omnipaste.Services.Repositories
             T removedValue;
             _items.TryRemove(id, out removedValue);
             var result = new RepositoryOperation<T>(RepositoryMethodEnum.Delete, targetItem);
-            _subject.OnNext(result);
+            Subject.OnNext(result);
 
             return result;
         }

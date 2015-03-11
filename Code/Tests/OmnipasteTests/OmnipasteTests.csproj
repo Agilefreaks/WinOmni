@@ -227,7 +227,7 @@
     <Compile Include="Services\Repositories\CallRepositoryTests.cs" />
     <Compile Include="Services\Repositories\ContactRepositoryTests.cs" />
     <Compile Include="Services\Repositories\InMemoryRepositoryTests.cs" />
-    <Compile Include="Services\Repositories\ObservableExtensionMethodsTests.cs" />
+    <Compile Include="Services\Repositories\RepositoryObservableExtensionMethodsTests.cs" />
     <Compile Include="Services\Repositories\SecurePermanentRepositoryTest.cs" />
     <Compile Include="Helpers\TestModel.cs" />
     <Compile Include="Services\SessionManagerTests.cs" />

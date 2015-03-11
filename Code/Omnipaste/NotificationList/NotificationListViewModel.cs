@@ -148,7 +148,7 @@
         private void CreateNotificationsFromIncomingClippings()
         {
             _clippingsSubscription =
-                _clippingRepository.OperationObservable.Created()
+                _clippingRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
                     .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud)
                     .ObserveOn(SchedulerProvider.Dispatcher)
@@ -159,7 +159,7 @@
         private void CreateNotificationsFromIncomingMessages()
         {
             _messageSubscription =
-                _messageRepository.OperationObservable.Created()
+                _messageRepository.OperationObservable.Changed()
                     .Select(o => o.Item)
                     .Where(item => item.Source == SourceType.Remote)
                     .ObserveOn(SchedulerProvider.Dispatcher)
