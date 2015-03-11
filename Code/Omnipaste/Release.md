@@ -1,4 +1,13 @@
-﻿**Version 1.3.15 (09.03.2015)**
+﻿**Version 1.3.16 (11.03.2015)**
+
+**Features:**
+
+- You can now access all your contacts from the People screen
+
+
+----------
+
+**Version 1.3.15 (09.03.2015)**
 
 **Bug fixes:**
 
