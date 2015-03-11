@@ -18,6 +18,8 @@
 
         private readonly IUsers _users;
 
+        private IDisposable _firstRunSubscription;
+
         public ContactsUpdatedHandler(
             IConfigurationService configurationService,
             IContacts contactsResource,
@@ -48,10 +50,21 @@
             base.Start(omniMessageObservable);
 
             var userInfo = _configurationService.UserInfo;
-            var firstSyncSubscription = _users.Get()
+
+            _firstRunSubscription = _users.Get()
                 .Where(u => u.ContactsUpdatedAt > userInfo.ContactsUpdatedAt)
                 .Select(u => new OmniMessage())
                 .Subscribe(this);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (_firstRunSubscription != null)
+            {
+                _firstRunSubscription.Dispose();
+            }
         }
 
         protected override IObservable<List<ContactDto>> CreateResult(OmniMessage value)

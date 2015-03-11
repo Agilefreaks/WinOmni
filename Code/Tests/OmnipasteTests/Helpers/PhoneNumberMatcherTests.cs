@@ -30,5 +30,17 @@
         {
             PhoneNumberMatcher.IsMatch("+40766123123", "0766123123").Should().BeTrue();
         }
+
+        [Test]
+        public void IsMatch_WhenPhoneNumber1ContainsExtraSpaces_ReturnsTrue()   
+        {
+            PhoneNumberMatcher.IsMatch("+4 0766 12 31 23", "0766123123").Should().BeTrue();
+        }
+
+        [Test]
+        public void IsMatch_WhenPhoneNumber1ContainsParantheses_ReturnsTrue()
+        {
+            PhoneNumberMatcher.IsMatch("(+4 0766) 12 31 23", "0766123123").Should().BeTrue();
+        }
     }
 }

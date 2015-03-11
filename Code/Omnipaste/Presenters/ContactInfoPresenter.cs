@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Presenters
 {
     using System;
+    using System.IO;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Caliburn.Micro;
@@ -120,12 +121,40 @@
 
         protected virtual ImageSource GetContactImage()
         {
-            return ContactInfo.ImageUri != null ? GetImageSourceFromUri(ContactInfo.ImageUri) : GetDefaultUserImage();
+            ImageSource result;
+
+            if (!string.IsNullOrEmpty(ContactInfo.Image))
+            {
+                result = GetImageFromStoredData(ContactInfo.Image);
+            }
+            else if (ContactInfo.ImageUri != null)
+            {
+                result = GetImageSourceFromUri(ContactInfo.ImageUri);
+            }
+            else
+            {
+                result = GetDefaultUserImage();
+            }
+
+            return result;
         }
 
         protected virtual string GetIdentifier()
         {
             return string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.PhoneNumber : ContactInfo.Name;
+        }
+
+        private static BitmapImage GetImageFromStoredData(string imageData)
+        {
+            var imageBytes = Convert.FromBase64String(imageData);
+            var memoryStream = new MemoryStream(imageBytes);
+            
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.StreamSource = memoryStream;
+            image.EndInit();
+
+            return image;
         }
 
         private static ImageSource GetDefaultUserImage()
