@@ -9,6 +9,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.SMSComposer;
@@ -25,7 +26,7 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IMessageRepository> _mockMessageRepository;
+        private Mock<ISmsMessageFactory> _mockSmsMessageFactory;
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -35,7 +36,7 @@
         public void Setup()
         {
             _mockSMSMessages = new Mock<ISMSMessages>();
-            _mockMessageRepository = new Mock<IMessageRepository>();
+            _mockSmsMessageFactory = new Mock<ISmsMessageFactory>();
             _mockConfigurationService = new Mock<IConfigurationService>();
             _contactInfo = new ContactInfo
                                {
@@ -46,7 +47,7 @@
             _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockConfigurationService.Object)
                            {
                                ContactInfo = _contactInfo,
-                               MessageRepository = _mockMessageRepository.Object
+                               SmsMessageFactory = _mockSmsMessageFactory.Object
                            };
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
@@ -79,32 +80,37 @@
         }
 
         [Test]
-        public void SendSMS_Always_SetsTheModelToANewSMSMessageAfterSending()
+        public void Send_Always_SetsTheModelToANewSMSMessageAfterSending()
         {
             var sendObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<SmsMessageDto>>(100, Notification.CreateOnNext(new SmsMessageDto())),
                 new Recorded<Notification<SmsMessageDto>>(200, Notification.CreateOnCompleted<SmsMessageDto>()));
+            var createObservable = _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<LocalSmsMessage>>(100, Notification.CreateOnNext(new LocalSmsMessage())));
             _subject.Message = "test";
             _mockSMSMessages.Setup(x => x.Send("1234", "test")).Returns(sendObservable);
+            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessage>(It.IsAny<SmsMessageDto>())).Returns(createObservable);
 
             _subject.Send();
             _testScheduler.Start();
 
             _mockSMSMessages.Verify(x => x.Send("1234", "test"), Times.Once());
+            _subject.Message.Should().Be("");
         }
 
         [Test]
-        public void SendSMS_Always_AddsTheSentSMSToTheMessageStore()
+        public void Send_Always_CallsSmsFactoryCreateWithLocalSms()
         {
             const string Content = "Test";
             var sendObservable = Observable.Return(new SmsMessageDto { Content = Content }, _testScheduler);
             _mockSMSMessages.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<string>())).Returns(sendObservable);
+            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessage>(It.IsAny<SmsMessageDto>())).Returns(Observable.Empty<LocalSmsMessage>());
             _subject.Message = Content;
 
             _subject.Send();
             _testScheduler.Start();
 
-            _mockMessageRepository.Verify(x => x.Save(It.Is<SmsMessage>(m => m.Content == Content)));
+            _mockSmsMessageFactory.Verify(x => x.Create<LocalSmsMessage>(It.Is<SmsMessageDto>(m => m.Content == Content)));
         }
     }
 }

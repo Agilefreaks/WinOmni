@@ -4,9 +4,8 @@
     using Omnipaste.Models;
     using SMS.Models;
 
-    public interface ISmsMessageFactory<out T>
-        where T : SmsMessage
+    public interface ISmsMessageFactory
     {
-        IObservable<T> Create(SmsMessageDto smsMessage);
+        IObservable<T> Create<T>(SmsMessageDto smsMessageDto) where T : SmsMessage;
     }
 }

@@ -21,8 +21,6 @@
     [TestFixture]
     public class EntitySupervisorTests
     {
-        private Mock<IPhoneCallRepository> _mockCallRepository;
-
         private Mock<IClipboardHandler> _mockClipboardHandler;
 
         private Mock<IClippingRepository> _mockClippingRepository;
@@ -45,7 +43,7 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IRemoteSmsMessageFactory> _mockRemoteSmsMessageFacotry;
+        private Mock<ISmsMessageFactory> _mockSmsMessageFactory;
 
         private Mock<IPhoneCallFactory> _mockPhoneCallFactory;
 
@@ -60,12 +58,11 @@
             _mockPhoneCallReceivedHandler = new Mock<IPhoneCallReceivedHandler> { DefaultValue = DefaultValue.Mock };
             _mockSmsMessageCreatedHandler = new Mock<ISmsMessageCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockContactCreatedHandler = new Mock<IContactCreatedHandler> { DefaultValue = DefaultValue.Mock };
-            _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactsUpdatedHandler = new Mock<IContactsUpdatedHandler> { DefaultValue = DefaultValue.Mock };
-            _mockRemoteSmsMessageFacotry = new Mock<IRemoteSmsMessageFactory> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessageFactory = new Mock<ISmsMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
 
             _subject = new EntitySupervisor
@@ -79,7 +76,7 @@
                                UpdateInfoRepository = _mockUpdateInfoRepository.Object,
                                ContactRepository = _mockContactRepository.Object,
                                ContactsUpdatedHandler = _mockContactsUpdatedHandler.Object,
-                               RemoteSmsMessageFactory = _mockRemoteSmsMessageFacotry.Object,
+                               SmsMessageFactory = _mockSmsMessageFactory.Object,
                                PhoneCallFactory = _mockPhoneCallFactory.Object
                            };
         }

@@ -265,10 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factories\IPhoneCallFactory.cs" />
-    <Compile Include="Factories\IRemoteSmsMessageFactory.cs" />
     <Compile Include="Factories\ISmsMessageFactory.cs" />
     <Compile Include="Factories\PhoneCallFactory.cs" />
-    <Compile Include="Factories\RemoteSmsMessageFactory.cs" />
+    <Compile Include="Factories\SmsMessageFactory.cs" />
     <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />

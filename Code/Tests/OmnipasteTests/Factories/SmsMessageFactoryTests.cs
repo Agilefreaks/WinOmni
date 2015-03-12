@@ -14,11 +14,11 @@
     using SMS.Models;
 
     [TestFixture]
-    public class RemoteSmsMessageFactoryTests
+    public class SmsMessageFactoryTests
     {
         private MoqMockingKernel _kernel;
 
-        private IRemoteSmsMessageFactory _subject;
+        private ISmsMessageFactory _subject;
 
         private TestScheduler _scheduler;
 
@@ -36,8 +36,8 @@
             _kernel.Bind<IMessageRepository>().ToConstant(_mockMessageRepository.Object);
             _kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
 
-            _kernel.Bind<IRemoteSmsMessageFactory>().To<RemoteSmsMessageFactory>();
-            _subject = _kernel.Get<IRemoteSmsMessageFactory>();
+            _kernel.Bind<ISmsMessageFactory>().To<SmsMessageFactory>();
+            _subject = _kernel.Get<ISmsMessageFactory>();
 
             _scheduler = new TestScheduler();
             SchedulerProvider.Default = _scheduler;
@@ -54,7 +54,7 @@
         {
             var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
 
-            _scheduler.Start(() => _subject.Create(smsMessageDto));
+            _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
             _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumber(smsMessageDto.PhoneNumber), Times.Once);
         }
@@ -67,7 +67,7 @@
             var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
 
-            _scheduler.Start(() => _subject.Create(smsMessageDto));
+            _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
             _mockContactRepository.Verify(cr => cr.UpdateLastActivityTime(contactInfo, null), Times.Once);            
         }
@@ -84,7 +84,7 @@
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
                 .Returns(contactInfoObservable);
 
-            _scheduler.Start(() => _subject.Create(smsMessageDto));
+            _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
             _mockMessageRepository.Verify(cr => cr.Save(It.IsAny<RemoteSmsMessage>()), Times.Once);
         }
@@ -101,7 +101,7 @@
             var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<RepositoryOperation<SmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
             _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<SmsMessage>())).Returns(smsMessageObservable);
 
-            var result = _scheduler.Start(() => _subject.Create(smsMessageDto));
+            var result = _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
             result.Messages.First().Value.Value.Should().Be(remoteSmsMessage);
         }

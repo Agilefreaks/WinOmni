@@ -27,7 +27,7 @@
         }
 
         [Inject]
-        public IRemoteSmsMessageFactory RemoteSmsMessageFactory { get; set; }
+        public ISmsMessageFactory SmsMessageFactory { get; set; }
 
         [Inject]
         public IClipboardHandler ClipboardHandler { get; set; }
@@ -77,7 +77,7 @@
                     .SubscribeAndHandleErrors());
 
             _subscriptions.Add(
-                SmsMessageCreatedHandler.Select(RemoteSmsMessageFactory.Create)
+                SmsMessageCreatedHandler.Select(SmsMessageFactory.Create<RemoteSmsMessage>)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)

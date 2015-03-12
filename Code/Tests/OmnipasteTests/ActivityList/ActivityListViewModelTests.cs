@@ -154,10 +154,12 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var repositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Remote });
+            var remoteRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Remote });
+            var localRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Local });
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(repositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(150, Notification.CreateOnNext(localRepositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
             _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
             ((IActivate)_subject).Activate();
@@ -172,7 +174,7 @@
         {
             const string UniqueId = "42";
             var call = new PhoneCall { UniqueId = UniqueId, Source = SourceType.Remote };
-            var modifiedCall = new PhoneCall { UniqueId = UniqueId, Content = "Test" };
+            var modifiedCall = new PhoneCall { UniqueId = UniqueId, Content = "Test", Source = SourceType.Remote };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, call))),

@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.Models
 {
-    using Omnipaste.Helpers;
     using SMS.Models;
 
     public abstract class SmsMessage : BaseModel, IConversationItem
@@ -28,5 +27,11 @@
         public abstract SourceType Source { get; }
 
         #endregion
+
+        public SmsMessage SetContactInfo(ContactInfo contact)
+        {
+            ContactInfo = contact;
+            return this;
+        }
     }
 }

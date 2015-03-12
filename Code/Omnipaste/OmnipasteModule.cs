@@ -89,7 +89,7 @@
                            typeof(PeopleWorkspace), typeof(ClippingWorkspace), typeof(CredentialsMonitor),
                            typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
-                           typeof(RemoteSmsMessageFactory), typeof(PhoneCallFactory)
+                           typeof(SmsMessageFactory), typeof(PhoneCallFactory)
                        };
         }
 

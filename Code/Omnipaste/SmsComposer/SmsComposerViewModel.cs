@@ -6,10 +6,9 @@
     using Ninject;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Dialog;
+    using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Services.Repositories;
     using Omnipaste.Properties;
     using SMS.Models;
     using SMS.Resources.v1;
@@ -46,7 +45,7 @@
         #region Public Properties
 
         [Inject]
-        public IDialogViewModel DialogViewModel { get; set; }
+        public ISmsMessageFactory SmsMessageFactory { get; set; } 
 
         public bool IsSending
         {
@@ -73,9 +72,6 @@
                 return !IsSending;
             }
         }
-
-        [Inject]
-        public IMessageRepository MessageRepository { get; set; }
 
         public Command SendCommand
         {
@@ -135,7 +131,10 @@
         public virtual void Send()
         {
             IsSending = true;
-            _smsMessages.Send(ContactInfo.PhoneNumber, Message)
+            _smsMessages
+                .Send(ContactInfo.PhoneNumber, Message)
+                .Select(SmsMessageFactory.Create<LocalSmsMessage>)
+                .Switch()
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);
@@ -151,15 +150,14 @@
             base.OnActivate();
         }
 
-        protected virtual void OnSendSMSError(Exception exception)
+        protected void OnSendSMSError(Exception exception)
         {
             IsSending = false;
         }
 
-        protected virtual void OnSentSMS(SmsMessageDto model)
+        protected void OnSentSMS(LocalSmsMessage smsMessage)
         {
             IsSending = false;
-            MessageRepository.Save(new LocalSmsMessage(model));
             StartNewMessage();
         }
 
