@@ -4,6 +4,8 @@
 
     public interface IModel
     {
+        string Id { get; set; }
+
         bool IsDeleted { get; set; }
 
         DateTime Time { get; set; }

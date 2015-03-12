@@ -32,7 +32,7 @@
         [Test]
         public void Execute_UrlShortenerServiceFails_SetsANormalUriOnTheResult()
         {
-            var userInfo = new UserInfo { Email = "test@email.com" };
+            var userInfo = UserInfo.BeginBuild().WithEmail("test@email.com").Build();
             _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             taskCompletionSource.SetException(new Exception("test"));
@@ -47,7 +47,7 @@
         [Test]
         public void Execute_UrlShortenerSucceeds_SetsTheObtainedUriOnTheResult()
         {
-            var userInfo = new UserInfo { Email = "test@email.com" };
+            var userInfo = UserInfo.BeginBuild().WithEmail("test@email.com").Build();
             _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
             var taskCompletionSource = new TaskCompletionSource<Uri>();
             var shortUrl = new Uri("http://google.com");

@@ -55,7 +55,7 @@
         [Test]
         public void ContactsUpdatedArrve_WeGetContactsBasedOnContactsUpdatedAtDate()
         {
-            var userInfo = new UserInfo { ContactsUpdatedAt = DateTime.Now };
+            var userInfo = UserInfo.BeginBuild().WithContactsUpdatedAt(DateTime.Now).Build();
             _mockConfigurationService.Setup(cs => cs.UserInfo).Returns(userInfo);
             var userObservable =
                 _testScheduler.CreateColdObservable(
@@ -72,23 +72,26 @@
         [Test]
         public void OnCompleted_UpdatesTheContactsUpdatedAtPropertyOnUserInfo()
         {
-            TimeHelper.UtcNow = DateTime.Now;
-            var lastContactsUpdateDate = TimeHelper.UtcNow.AddYears(-1);
-            var userInfo = new UserInfo { ContactsUpdatedAt = lastContactsUpdateDate };
-            _mockConfigurationService.Setup(cs => cs.UserInfo).Returns(userInfo);
+            using (TimeHelper.Freez())
+            {
+                TimeHelper.UtcNow = DateTime.Now;
+                var lastContactsUpdateDate = TimeHelper.UtcNow.AddYears(-1);
+                var userInfo = UserInfo.BeginBuild().WithContactsUpdatedAt(lastContactsUpdateDate).Build();
+                _mockConfigurationService.Setup(cs => cs.UserInfo).Returns(userInfo);
 
-            var _testScheduler = new TestScheduler();
-            SchedulerProvider.Default = _testScheduler;
-            var remoteUser = new User { ContactsUpdatedAt = TimeHelper.UtcNow };
-            var userObservable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<User>>(100, Notification.CreateOnNext(remoteUser)));
-            _mockUsers.Setup(m => m.Get()).Returns(userObservable);
+                var testScheduler = new TestScheduler();
+                SchedulerProvider.Default = testScheduler;
+                var remoteUser = new User { ContactsUpdatedAt = TimeHelper.UtcNow };
+                var userObservable =
+                    testScheduler.CreateColdObservable(
+                        new Recorded<Notification<User>>(100, Notification.CreateOnNext(remoteUser)));
+                _mockUsers.Setup(m => m.Get()).Returns(userObservable);
 
-            _subject.OnCompleted();
-            _testScheduler.Start(() => userObservable);
+                _subject.OnCompleted();
+                testScheduler.Start(() => userObservable);
 
-            userInfo.ContactsUpdatedAt.Should().Be(TimeHelper.UtcNow);
+                _mockConfigurationService.VerifySet(u => u.UserInfo = It.Is<UserInfo>(ui => ui.ContactsUpdatedAt == TimeHelper.UtcNow));                
+            }
         }
     }
 }

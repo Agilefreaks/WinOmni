@@ -4,13 +4,11 @@ namespace Omnipaste.Presenters
     using System.Windows.Media;
     using Omnipaste.Models;
 
-    public interface IContactInfoPresenter : INotifyPropertyChanged
+    public interface IContactInfoPresenter : IPresenter<ContactInfo>, INotifyPropertyChanged
     {
         string Identifier { get; set; }
 
         ImageSource Image { get; set; }
-
-        ContactInfo ContactInfo { get; }
 
         bool IsStarred { get; set; }
     }

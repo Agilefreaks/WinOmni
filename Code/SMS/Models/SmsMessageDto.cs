@@ -10,7 +10,7 @@
 
         public string PhoneNumber { get; set; }
 
-        public int ContactId { get; set; }
+        public int? ContactId { get; set; }
         
         public string Type { get; set; }
 

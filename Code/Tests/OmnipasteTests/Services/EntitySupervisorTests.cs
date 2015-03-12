@@ -27,8 +27,6 @@
 
         private Mock<IContactCreatedHandler> _mockContactCreatedHandler;
 
-        private Mock<IContactRepository> _mockContactRepository;
-
         private Mock<IContactsUpdatedHandler> _mockContactsUpdatedHandler;
         
         private Mock<IPhoneCallReceivedHandler> _mockPhoneCallReceivedHandler;
@@ -47,6 +45,8 @@
 
         private Mock<IPhoneCallFactory> _mockPhoneCallFactory;
 
+        private Mock<IContactFactory> _mockContactFactory;
+
         [SetUp]
         public void SetUp()
         {
@@ -60,24 +60,24 @@
             _mockContactCreatedHandler = new Mock<IContactCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
-            _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactsUpdatedHandler = new Mock<IContactsUpdatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockSmsMessageFactory = new Mock<ISmsMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
+            _mockContactFactory = new Mock<IContactFactory> { DefaultValue = DefaultValue.Mock };
 
             _subject = new EntitySupervisor
                            {
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
+                               UpdaterService = _mockUpdaterService.Object,
+                               UpdateInfoRepository = _mockUpdateInfoRepository.Object,
                                PhoneCallReceivedHandler = _mockPhoneCallReceivedHandler.Object,
                                SmsMessageCreatedHandler = _mockSmsMessageCreatedHandler.Object,
                                ContactCreatedHandler = _mockContactCreatedHandler.Object,
-                               UpdaterService = _mockUpdaterService.Object,
-                               UpdateInfoRepository = _mockUpdateInfoRepository.Object,
-                               ContactRepository = _mockContactRepository.Object,
                                ContactsUpdatedHandler = _mockContactsUpdatedHandler.Object,
                                SmsMessageFactory = _mockSmsMessageFactory.Object,
-                               PhoneCallFactory = _mockPhoneCallFactory.Object
+                               PhoneCallFactory = _mockPhoneCallFactory.Object,
+                               ContactFactory = _mockContactFactory.Object
                            };
         }
 
@@ -133,7 +133,7 @@
             _subject.Start();
             _testScheduler.Start(() => contactObservable);
 
-            _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactInfo>()));
+            _mockContactFactory.Verify(m => m.Create(It.Is<ContactDto>(c => c == contact)));
         }
 
         [Test]
@@ -149,7 +149,7 @@
             _subject.Start();
             _testScheduler.Start(() => contactListObservable);
 
-            _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactInfo>()), Times.Exactly(2));
+            _mockContactFactory.Verify(m => m.Create(It.IsAny<ContactDto>()), Times.Exactly(2));
         }
     }
 }

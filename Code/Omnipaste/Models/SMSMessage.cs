@@ -1,12 +1,13 @@
 ﻿namespace Omnipaste.Models
 {
+    using System;
     using SMS.Models;
 
-    public abstract class SmsMessage : BaseModel, IConversationItem
+    public abstract class SmsMessage : ConversationBaseModel
     {
         protected SmsMessage()
         {
-            ContactInfo = new ContactInfo();
+            Content = string.Empty;
         }
 
         protected SmsMessage(SmsMessageDto smsMessageDto)
@@ -16,21 +17,13 @@
             Content = smsMessageDto.Content;
         }
 
-        #region IConversationItem Members
-
-        public string Id { get; set; }
-
-        public ContactInfo ContactInfo { get; set; }
-
         public string Content { get; set; }
 
         public abstract SourceType Source { get; }
 
-        #endregion
-
-        public SmsMessage SetContactInfo(ContactInfo contact)
+        public SmsMessage SetContactInfoUniqueId(String contactInfoUniqueId)
         {
-            ContactInfo = contact;
+            ContactInfoUniqueId = contactInfoUniqueId;
             return this;
         }
     }

@@ -53,7 +53,8 @@
         {
             get
             {
-                return _configurationContainer.GetObject<UserInfo>(ConfigurationProperties.UserInfo);
+                var userInfo = _configurationContainer.GetObject<UserInfo>(ConfigurationProperties.UserInfo);
+                return userInfo;
             }
 
             set

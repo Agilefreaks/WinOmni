@@ -158,6 +158,7 @@
     <Compile Include="ContactList\ContactInfoViewModelTests.cs" />
     <Compile Include="ContactList\ContactListViewModelTests.cs" />
     <Compile Include="ExtensionMethods\PropertyExtensionMethodsTests.cs" />
+    <Compile Include="Factories\ContactFactoryTests.cs" />
     <Compile Include="Factories\PhoneCallFactoryTests.cs" />
     <Compile Include="Factories\SmsMessageFactoryTests.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommandTests.cs" />
@@ -173,7 +174,6 @@
     <Compile Include="Models\RemoteSmsMessageTests.cs" />
     <Compile Include="Models\LocalSmsMessageTests.cs" />
     <Compile Include="Models\SmsMessageTests.cs" />
-    <Compile Include="Presenters\ActivityPresenterTests.cs" />
     <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
     <Compile Include="DataProviders\DPAPIConfigurationContainerTests.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverterTests.cs" />
@@ -188,6 +188,11 @@
     <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
     <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModelTests.cs" />
     <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
+    <Compile Include="Presenters\ActivityPresenterTests.cs" />
+    <Compile Include="Presenters\Factories\ActivityPresenterFactoryTests.cs" />
+    <Compile Include="Presenters\Factories\ConversationPresenterFactoryTests.cs" />
+    <Compile Include="Presenters\Factories\PhoneCallPresenterFactoryTests.cs" />
+    <Compile Include="Presenters\Factories\SmsMessagePresenterFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippingTests.cs" />
@@ -223,10 +228,10 @@
     <Compile Include="Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitorTests.cs" />
     <Compile Include="Services\Providers\MergedConversationContextTests.cs" />
     <Compile Include="Services\ProxyConfigurationTests.cs" />
-    <Compile Include="Services\Repositories\BaseRepositoryTest.cs" />
-    <Compile Include="Services\Repositories\CallRepositoryTests.cs" />
+    <Compile Include="Services\Repositories\BaseRepositoryTests.cs" />
     <Compile Include="Services\Repositories\ContactRepositoryTests.cs" />
     <Compile Include="Services\Repositories\InMemoryRepositoryTests.cs" />
+    <Compile Include="Services\Repositories\PhoneCallRepositoryTests.cs" />
     <Compile Include="Services\Repositories\RepositoryObservableExtensionMethodsTests.cs" />
     <Compile Include="Services\Repositories\SecurePermanentRepositoryTest.cs" />
     <Compile Include="Helpers\TestModel.cs" />

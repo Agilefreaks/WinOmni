@@ -15,7 +15,7 @@
     [TestFixture]
     public class ConfigurationServiceTests
     {
-        private Mock<IConfigurationContainer> _mockConfigurationProvider;
+        private Mock<IConfigurationContainer> _mockConfigurationContainer;
 
         private IConfigurationService _subject;
 
@@ -24,8 +24,8 @@
         [SetUp]
         public void SetUp()
         {
-            _mockConfigurationProvider = new Mock<IConfigurationContainer>();
-            _subject = new ConfigurationService(_mockConfigurationProvider.Object);
+            _mockConfigurationContainer = new Mock<IConfigurationContainer>();
+            _subject = new ConfigurationService(_mockConfigurationContainer.Object);
             _testScheduler = new TestScheduler();
         }
 
@@ -34,8 +34,8 @@
         {
             _subject.SaveAuthSettings(new OmnipasteCredentials("token", "refresh token"));
 
-            _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
-            _mockConfigurationProvider.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
+            _mockConfigurationContainer.Verify(cp => cp.SetValue(ConfigurationProperties.AccessToken, "token"));
+            _mockConfigurationContainer.Verify(cp => cp.SetValue(ConfigurationProperties.RefreshToken, "refresh token"));
         }
 
         [Test]
@@ -43,9 +43,9 @@
         {
             _subject.ClearSettings();
 
-            _mockConfigurationProvider.Verify(provider => provider.ClearAll(), Times.Once());
+            _mockConfigurationContainer.Verify(provider => provider.ClearAll(), Times.Once());
         }
-        
+
         [Test]
         public void ClearSettings_Always_EmitsASettingsChangedDataEventForUserInfo()
         {
@@ -77,7 +77,7 @@
         [Test]
         public void GetDeviceIdentifier_WhenTereIsAnExistingIdentifierSaved_ReturnsTheExistingIdentifier()
         {
-            _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns("123456");
+            _mockConfigurationContainer.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns("123456");
 
             var deviceIdentifier = _subject.DeviceIdentifier;
 
@@ -87,7 +87,7 @@
         [Test]
         public void GetDeviceIdentifier_WhenThereIsNoIdentifierSaved_ReturnsNull()
         {
-            _mockConfigurationProvider.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns((string)null);
+            _mockConfigurationContainer.Setup(cp => cp.GetValue("DeviceIdentifier")).Returns((string)null);
 
             var deviceIdentifier = _subject.DeviceIdentifier;
 
@@ -97,7 +97,7 @@
         [Test]
         public void GetProxyConfiguration_ConfigurationProviderDoesNotContainAProxyConfiguration_ReturnsEmptyProxyConfiguration()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
                 .Returns((string)null);
 
             var proxyConfiguration = _subject.ProxyConfiguration;
@@ -108,7 +108,7 @@
         [Test]
         public void GetProxyConfiguration_ConfigurationProviderHasInvalidData_ReturnsEmptyProxyConfiguration()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration))
                 .Returns("some-garbled-data");
 
             var proxyConfiguration = _subject.ProxyConfiguration;
@@ -128,13 +128,13 @@
                                              Port = 12,
                                              Type = ProxyTypeEnum.Socks4
                                          };
-            _mockConfigurationProvider.Setup(
+            _mockConfigurationContainer.Setup(
                 x => x.SetValue(ConfigurationProperties.ProxyConfiguration, It.IsAny<string>()))
                 .Callback<string, string>((key, value) => valueSet = value);
 
             _subject.ProxyConfiguration = proxyConfiguration;
             valueSet.Should().NotBeNull();
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.ProxyConfiguration)).Returns(valueSet);
 
             _subject.ProxyConfiguration.Should().Be(proxyConfiguration);
         }
@@ -143,21 +143,21 @@
         public void GetUserInfo_WhenUserInfoWasPreviouslySaved_ReturnsUserInfo()
         {
             string valueSet = null;
-            var userInfo = new UserInfo
-            {
-                Email = "test@user.com",
-                FirstName = "First",
-                LastName = "Last",
-                ImageUrl = "http://example.com"
-            };
+            var userInfo =
+                UserInfo.BeginBuild()
+                    .WithEmail("test@user.com")
+                    .WithFirstName("First")
+                    .WithLastName("Last")
+                    .WithImageUrl("http://example.com")
+                    .Build();
 
-            _mockConfigurationProvider.Setup(
+            _mockConfigurationContainer.Setup(
                 x => x.SetValue(ConfigurationProperties.UserInfo, It.IsAny<string>()))
                 .Callback<string, string>((key, value) => valueSet = value);
 
             _subject.UserInfo = userInfo;
             valueSet.Should().NotBeNull();
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.UserInfo)).Returns(valueSet);
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.UserInfo)).Returns(valueSet);
 
             _subject.UserInfo.Should().NotBe(userInfo);
             _subject.UserInfo.Email.Should().Be(userInfo.Email);
@@ -176,13 +176,13 @@
                 Private = "private"
             };
 
-            _mockConfigurationProvider.Setup(
+            _mockConfigurationContainer.Setup(
                 x => x.SetValue(ConfigurationProperties.DeviceKeyPair, It.IsAny<string>()))
                 .Callback<string, string>((key, value) => valueSet = value);
 
             _subject.DeviceKeyPair = keyPair;
             valueSet.Should().NotBeNull();
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceKeyPair)).Returns(valueSet);
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.DeviceKeyPair)).Returns(valueSet);
 
             _subject.DeviceKeyPair.Should().NotBe(keyPair);
             _subject.DeviceKeyPair.Public.Should().Be(keyPair.Public);
@@ -192,7 +192,7 @@
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasAInvalidEntry_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("test");
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("test");
 
             _subject.IsSMSSuffixEnabled.Should().BeTrue();
         }
@@ -200,7 +200,7 @@
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasAFalseEntryStored_ReturnsFalse()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("false");
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("false");
 
             _subject.IsSMSSuffixEnabled.Should().BeFalse();
         }
@@ -208,7 +208,7 @@
         [Test]
         public void IsSMSSuffixEnabled_ConfigurationProviderHasATrueEntryStored_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("true");
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.SMSSuffixEnabled)).Returns("true");
 
             _subject.IsSMSSuffixEnabled.Should().BeTrue();
         }
@@ -218,7 +218,7 @@
         {
             _subject.IsSMSSuffixEnabled = true;
 
-            _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
+            _mockConfigurationContainer.Verify(x => x.SetValue(ConfigurationProperties.SMSSuffixEnabled, "True"));
         }
 
         [Test]
@@ -226,7 +226,7 @@
         {
             _subject.DeviceIdentifier = "someId";
 
-            _mockConfigurationProvider.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
+            _mockConfigurationContainer.Verify(x => x.SetValue(ConfigurationProperties.DeviceIdentifier, "someId"));
         }
 
         [Test]
@@ -245,7 +245,7 @@
         [Test]
         public void IsNewDevice_NoDeviceIdIsStored_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns(string.Empty);
 
             _subject.IsNewDevice.Should().BeTrue();
@@ -254,7 +254,7 @@
         [Test]
         public void IsNewDevice_ADeviceIdIsStoredAndNoDeviceIdChangesHaveOccured_ReturnsFalse()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns("someId");
 
             _subject.IsNewDevice.Should().BeFalse();
@@ -263,7 +263,7 @@
         [Test]
         public void IsNewDevice_ADeviceIdIsStoredButACallToSaveANewDeviceIdHasBeenMade_ReturnsTrue()
         {
-            _mockConfigurationProvider.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
+            _mockConfigurationContainer.Setup(x => x.GetValue(ConfigurationProperties.DeviceId))
                 .Returns("someId");
             _subject.DeviceId = "someNewId";
 

@@ -7,6 +7,8 @@
 
     public class ContactInfo : BaseModel
     {
+        private DateTime? _lastActivityTime;
+
         public const string NamePartSeparator = " ";
 
         public ContactInfo()
@@ -58,11 +60,33 @@
 
         public bool IsStarred { get; set; }
 
-        public DateTime? LastActivityTime { get; set; }
+        public DateTime? LastActivityTime
+        {
+            get
+            {
+                return _lastActivityTime;
+            }
+            set
+            {
+                _lastActivityTime = value.HasValue ? value.Value.ToUniversalTime() : (DateTime?)null;
+            }
+        }
 
         public override string ToString()
         {
             return string.Join(NamePartSeparator, Name, PhoneNumber);
+        }
+
+        public ContactInfo SetUniqueId(string uniqueId)
+        {
+            UniqueId = uniqueId;
+            return this;
+        }
+
+        public ContactInfo SetLastActivityTime(DateTime? lastActivityTime)
+        {
+            LastActivityTime = lastActivityTime;
+            return this;
         }
     }
 }

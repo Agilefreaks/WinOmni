@@ -1,11 +1,13 @@
 ﻿namespace OmnipasteTests.WorkspaceDetails
 {
+    using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Practices.ServiceLocation;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.WorkspaceDetails.Clipping;
 
@@ -16,17 +18,27 @@
 
         private Mock<IServiceLocator> _mockServiceLocator;
 
+        private Mock<IPhoneCallPresenterFactory> _mockPhoneCallPresenterFactory;
+
+        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+
+        private ActivityPresenterFactory _activityPresenterFactory;
+
         [SetUp]
         public void SetUp()
         {
             _mockServiceLocator = new Mock<IServiceLocator> { DefaultValue = DefaultValue.Mock };
+            _mockPhoneCallPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
+            _activityPresenterFactory = new ActivityPresenterFactory(_mockPhoneCallPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+
             _subject = new WorkspaceDetailsViewModelFactory(_mockServiceLocator.Object);
         }
 
         [Test]
         public void CreateWithActivityPresenter_WhenActivityIsClipping_ReturnsClippingDetailsViewModel()
         {
-            var result = _subject.Create(new ActivityPresenter(new ClippingModel { Content = "test" }));
+            var result = _subject.Create(_activityPresenterFactory.Create(new ClippingModel { Content = "test" }).Wait());
 
             result.Should().BeAssignableTo<IClippingDetailsViewModel>();
         }
@@ -40,7 +52,7 @@
             _mockServiceLocator.Setup(m => m.GetInstance<IClippingDetailsViewModel>())
                 .Returns(mockDetailsViewModel.Object);
             
-            var result = _subject.Create(new ActivityPresenter(clippingModel));
+            var result = _subject.Create(_activityPresenterFactory.Create(clippingModel).Wait());
 
             ((ClippingPresenter)result.Model).BackingModel.Should().Be(clippingModel);
         }

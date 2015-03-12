@@ -1,31 +1,43 @@
 ﻿namespace Omnipaste.Services.Providers
 {
     using System;
-    using System.Collections.Generic;
     using System.Reactive;
     using System.Reactive.Linq;
-    using Omnipaste.Models;
+    using Omnipaste.Presenters;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Repositories;
 
     public abstract class ConversationContext : IConversationContext
     {
-        private IObservable<IConversationItem> _itemRemoved;
-
-        private IObservable<IConversationItem> _itemChanged;
-
-        private IObservable<IConversationItem> _updated;
-
         protected readonly IPhoneCallRepository PhoneCallRepository;
 
-        protected readonly IMessageRepository MessageRepository;
+        protected readonly IPhoneCallPresenterFactory PhoneCallPresenterFactory;
 
-        protected ConversationContext(IMessageRepository messageRepository, IPhoneCallRepository phoneCallRepository)
+        protected readonly ISmsMessagePresenterFactory SMSMessagePresenterFactory;
+
+        protected readonly ISmsMessageRepository SmsMessageRepository;
+
+        private IObservable<IConversationPresenter> _itemChanged;
+
+        private IObservable<IConversationPresenter> _itemRemoved;
+
+        private IObservable<IConversationPresenter> _updated;
+
+        protected ConversationContext(
+            ISmsMessageRepository smsMessageRepository,
+            IPhoneCallRepository phoneCallRepository,
+            IPhoneCallPresenterFactory phoneCallPresenterFactory,
+            ISmsMessagePresenterFactory smsMessagePresenterFactory)
         {
-            MessageRepository = messageRepository;
+            SmsMessageRepository = smsMessageRepository;
             PhoneCallRepository = phoneCallRepository;
+            PhoneCallPresenterFactory = phoneCallPresenterFactory;
+            SMSMessagePresenterFactory = smsMessagePresenterFactory;
         }
 
-        public IObservable<IConversationItem> ItemChanged
+        #region IConversationContext Members
+
+        public IObservable<IConversationPresenter> ItemChanged
         {
             get
             {
@@ -33,7 +45,7 @@
             }
         }
 
-        public IObservable<IConversationItem> ItemRemoved
+        public IObservable<IConversationPresenter> ItemRemoved
         {
             get
             {
@@ -41,7 +53,7 @@
             }
         }
 
-        public IObservable<IConversationItem> Updated
+        public IObservable<IConversationPresenter> Updated
         {
             get
             {
@@ -49,29 +61,30 @@
             }
         }
 
-        public abstract IObservable<IEnumerable<IConversationItem>> GetItems();
+        public abstract IObservable<IConversationPresenter> GetItems();
 
-        public virtual IObservable<Unit> SaveItem(IConversationItem item)
+        public virtual IObservable<Unit> SaveItem(IConversationPresenter item)
         {
-            var call = item as PhoneCall;
+            var call = item as PhoneCallPresenter;
             var result = Observable.Return(new Unit());
             if (call != null)
             {
-                result = PhoneCallRepository.Save(call).Select(_ => new Unit());
+                result = PhoneCallRepository.Save(call.BackingModel).Select(_ => new Unit());
             }
             else
             {
-                var message = item as SmsMessage;
+                var message = item as SmsMessagePresenter;
                 if (message != null)
                 {
-                    result = MessageRepository.Save(message).Select(_ => new Unit());
+                    result = SmsMessageRepository.Save(message.BackingModel).Select(_ => new Unit());
                 }
             }
 
             return result;
         }
 
-        protected abstract IObservable<IConversationItem> GetObservableForOperation(
-            RepositoryMethodEnum method);
+        #endregion
+
+        protected abstract IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method);
     }
 }

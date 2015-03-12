@@ -1,7 +1,6 @@
 namespace OmniUI.List
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Disposables;
@@ -149,9 +148,9 @@ namespace OmniUI.List
             return base.EnsureItem(newItem);
         }
 
-        protected virtual IObservable<IEnumerable<TPresenter>> GetFetchItemsObservable()
+        protected virtual IObservable<TPresenter> GetFetchItemsObservable()
         {
-            return Observable.Empty<IEnumerable<TPresenter>>(SchedulerProvider.Default);
+            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
         }
 
         protected virtual IObservable<TPresenter> GetItemChangedObservable()
@@ -181,7 +180,7 @@ namespace OmniUI.List
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(AddItems));
+                    .SubscribeAndHandleErrors(ChangeItem));
             Subscriptions.Add(
                 GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -202,11 +201,6 @@ namespace OmniUI.List
             }
 
             base.OnDeactivate(close);
-        }
-
-        private void AddItems(IEnumerable<TPresenter> models)
-        {
-            models.ToList().ForEach(ChangeItem);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

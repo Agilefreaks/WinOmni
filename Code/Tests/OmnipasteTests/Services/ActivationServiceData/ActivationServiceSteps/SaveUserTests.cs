@@ -7,9 +7,9 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniCommon;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -45,7 +45,8 @@
                 LastName = "Last",
                 Email = "test@user.com",
                 ImageUrl = "http://image.com",
-                ContactsUpdatedAt = DateTime.Now
+                ContactsUpdatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             _subject.Parameter = new DependencyParameter
             {
@@ -61,6 +62,7 @@
             userInfo.LastName.Should().Be(user.LastName);
             userInfo.Email.Should().Be(user.Email);
             userInfo.ImageUrl.Should().Be(user.ImageUrl);
+            userInfo.UpdatedAt.Should().NotBe(new DateTime());
         }
 
         [Test]
@@ -107,6 +109,39 @@
             _subject.Execute().Wait();
 
             _mockConfigurationService.VerifySet(x => x.IsSMSSuffixEnabled = It.IsAny<bool>(), Times.Never());
+        }
+
+        [Test]
+        public void Execute_WhenUpdatedAtIsNotTheSameAsLocal_UpdatesInfo()
+        {
+            using (TimeHelper.Freez())
+            {
+                var user = new User { FirstName = "Crocobaur", UpdatedAt = TimeHelper.UtcNow };
+                var userInfo = new UserInfo { FirstName = "Croco", UpdatedAt = TimeHelper.UtcNow.AddDays(-1) };
+                _mockConfigurationService.Setup(m => m.UserInfo).Returns(userInfo);
+                _subject.Parameter = new DependencyParameter { Value = user };
+
+                _subject.Execute().Wait();
+
+                _mockConfigurationService.VerifySet(
+                    x => x.UserInfo = It.Is<UserInfo>(ui => ui.FirstName == "Crocobaur"));
+            }
+        }
+
+        [Test]
+        public void Execute_Never_OverwritesContactsUpdatedAt()
+        {
+            using (TimeHelper.Freez())
+            {
+                _subject.Parameter = new DependencyParameter { Value = new User() };
+                var userInfo = new UserInfo().SetContactsUpdatedAt(TimeHelper.UtcNow);
+                _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
+
+                _subject.Execute().Wait();
+
+                _mockConfigurationService.VerifySet(
+                    x => x.UserInfo = It.Is<UserInfo>(ui => ui.ContactsUpdatedAt == TimeHelper.UtcNow));
+            }
         }
     }
 }

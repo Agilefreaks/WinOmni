@@ -4,26 +4,25 @@
     using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
 
-    public class PhoneCallViewModel : ConversationItemViewModel<PhoneCall>, IPhoneCallViewModel
+    public class PhoneCallViewModel : ConversationItemViewModel<PhoneCallPresenter>, IPhoneCallViewModel
     {
-        #region Constructors and Destructors
 
         public PhoneCallViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)
             : base(uiRefreshService, configurationService)
         {
         }
 
-        #endregion
-
         public string Title
         {
             get
             {
                 return Model.Source == SourceType.Remote
-                           ? Properties.Resources.IncommingCallLabel
-                           : Properties.Resources.OutgoingCallLabel;
+                           ? Resources.IncommingCallLabel
+                           : Resources.OutgoingCallLabel;
             }
         }
 

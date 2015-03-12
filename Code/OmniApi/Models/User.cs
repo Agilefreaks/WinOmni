@@ -30,6 +30,8 @@
 
         public DateTime ContactsUpdatedAt { get; set; }
 
+        public DateTime UpdatedAt { get; set; }
+
         #endregion
     }
 }

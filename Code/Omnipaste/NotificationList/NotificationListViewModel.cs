@@ -27,13 +27,62 @@
 
         #endregion
 
+        public NotificationListViewModel(
+            IClippingRepository clippingRepository,
+            IPhoneCallRepository phoneCallRepository,
+            ISmsMessageRepository smsMessageRepository,
+            IEventAggregator eventAggregator)
+        {
+            Notifications = new ObservableCollection<INotificationViewModel>();
+            Notifications.CollectionChanged += NotificationsCollectionChanged;
+
+            _clippingRepository = clippingRepository;
+            _phoneCallRepository = phoneCallRepository;
+            _smsMessageRepository = smsMessageRepository;
+
+            Height = double.NaN;
+
+            eventAggregator.Subscribe(this);
+        }
+
+        #region INotificationListViewModel Members
+
+        #region Public Methods and Operators
+
+        public void Show()
+        {
+            Height = SystemParameters.WorkArea.Height;
+            WindowManager.ShowPopup(
+                this,
+                null,
+                new Dictionary<string, object>
+                    {
+                        { "Placement", PlacementMode.Absolute },
+                        {
+                            "HorizontalOffset",
+                            SystemParameters.WorkArea.Right - NotificationWindowWidth
+                        },
+                        { "VerticalOffset", SystemParameters.WorkArea.Top },
+                        { "TopMost", true }
+                    });
+        }
+
+        #endregion
+
+        public void Handle(DismissNotification message)
+        {
+            Notifications.Where(n => n.Identifier.Equals(message.Identifier)).ForEach(n => n.Dismiss());
+        }
+
+        #endregion
+
         #region Fields
 
         private readonly IClippingRepository _clippingRepository;
 
         private readonly IPhoneCallRepository _phoneCallRepository;
 
-        private readonly IMessageRepository _messageRepository;
+        private readonly ISmsMessageRepository _smsMessageRepository;
 
         private double _height;
 
@@ -42,24 +91,6 @@
         private IDisposable _callSubscription;
 
         private IDisposable _messageSubscription;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotificationListViewModel(IClippingRepository clippingRepository, IPhoneCallRepository phoneCallRepository, IMessageRepository messageRepository, IEventAggregator eventAggregator)
-        {
-            Notifications = new ObservableCollection<INotificationViewModel>();
-            Notifications.CollectionChanged += NotificationsCollectionChanged;
-
-            _clippingRepository = clippingRepository;
-            _phoneCallRepository = phoneCallRepository;
-            _messageRepository = messageRepository;
-
-            Height = double.NaN;
-
-            eventAggregator.Subscribe(this);
-        }
 
         #endregion
 
@@ -89,25 +120,6 @@
 
         [Inject]
         public IWindowManager WindowManager { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public void Show()
-        {
-            Height = SystemParameters.WorkArea.Height;
-            WindowManager.ShowPopup(
-                this,
-                null,
-                new Dictionary<string, object>
-                    {
-                        { "Placement", PlacementMode.Absolute },
-                        { "HorizontalOffset", SystemParameters.WorkArea.Right - NotificationWindowWidth },
-                        { "VerticalOffset", SystemParameters.WorkArea.Top },
-                        { "TopMost", true }
-                    });
-        }
 
         #endregion
 
@@ -148,33 +160,44 @@
         private void CreateNotificationsFromIncomingClippings()
         {
             _clippingsSubscription =
-                _clippingRepository.OperationObservable.Changed()
+                _clippingRepository.GetOperationObservable()
+                    .Changed()
                     .Select(o => o.Item)
                     .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud && item.WasViewed == false)
+                    .Select(item => NotificationViewModelFactory.Create(item))
+                    .Switch()
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(
-                        clipping => Notifications.Add(NotificationViewModelFactory.Create(clipping)));
+                    .SubscribeAndHandleErrors(clipping => Notifications.Add(clipping));
         }
 
         private void CreateNotificationsFromIncomingMessages()
         {
             _messageSubscription =
-                _messageRepository.OperationObservable.Changed()
+                _smsMessageRepository.GetOperationObservable()
+                    .Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == SourceType.Remote && item.WasViewed == false)
+                    .OfType<RemoteSmsMessage>()
+                    .Where(item => item.WasViewed == false)
+                    .Select(item => NotificationViewModelFactory.Create(item))
+                    .Switch()
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(
-                        message => Notifications.Add(NotificationViewModelFactory.Create(message)));
+                        message =>
+                        Notifications.Add(message));
         }
 
         private void CreateNotificationsFromIncomingCalls()
         {
             _callSubscription =
-                _phoneCallRepository.OperationObservable.Changed()
+                _phoneCallRepository.GetOperationObservable()
+                    .Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == SourceType.Remote && item.WasViewed == false)
+                    .OfType<RemotePhoneCall>()
+                    .Where(item => item.WasViewed == false)
+                    .Select(item => NotificationViewModelFactory.Create(item))
+                    .Switch()
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(call => Notifications.Add(NotificationViewModelFactory.Create(call)));
+                    .SubscribeAndHandleErrors(call => Notifications.Add(call));
         }
 
         private void NotificationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -198,10 +221,5 @@
         }
 
         #endregion
-
-        public void Handle(DismissNotification message)
-        {
-            Notifications.Where(n => n.Identifier.Equals(message.Identifier)).ForEach(n => n.Dismiss());
-        }
     }
 }

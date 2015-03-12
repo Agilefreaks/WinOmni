@@ -3,7 +3,6 @@
     using System;
     using System.Windows;
     using Omnipaste.Helpers;
-    using OmniUI.Helpers;
 
     public partial class App
     {

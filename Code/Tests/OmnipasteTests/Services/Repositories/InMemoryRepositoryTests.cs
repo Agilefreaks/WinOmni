@@ -5,13 +5,13 @@
     using OmnipasteTests.Helpers;
 
     [TestFixture]
-    public class InMemoryRepositoryTests : BaseRepositoryTest
+    public class InMemoryRepositoryTests : BaseRepositoryTests
     {
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            _subject = new TestModelRepository();
+            Subject = new TestModelRepository();
         }
 
         #region Nested type: TestModelRepository

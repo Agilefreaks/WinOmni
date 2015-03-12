@@ -57,7 +57,7 @@
         [Test]
         public void WhenSettingsChangedObservablesTriggersOnNext_Always_UpdatesUserInfo()
         {
-            var newUserInfo = new UserInfo { FirstName = "Test", LastName = "Last" };
+            var newUserInfo = UserInfo.BeginBuild().WithFirstName("Test").WithLastName("Last");
             var settingsChangedObservable = _scheduler.CreateColdObservable(
                 new Recorded<Notification<SettingsChangedData>>(100,
                     Notification.CreateOnNext(new SettingsChangedData { SettingName = ConfigurationProperties.UserInfo, NewValue = newUserInfo })),

@@ -80,7 +80,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(100, Notification.CreateOnNext(repositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(200, Notification.CreateOnCompleted<RepositoryOperation<ContactInfo>>()));
-            _mockContactRepository.SetupGet(m => m.OperationObservable).Returns(contactObservable);
+            _mockContactRepository.Setup(m => m.GetOperationObservable()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -170,7 +170,7 @@
             _subject.FilterText = "1";
 
             _subject.FilteredItems.Count.Should().Be(1);
-            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.ContactInfo.Should().Be(contacts.First());
+            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.BackingModel.Should().Be(contacts.First());
         }
 
         [Test]

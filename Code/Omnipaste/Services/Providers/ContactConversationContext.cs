@@ -1,10 +1,11 @@
 namespace Omnipaste.Services.Providers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Repositories;
 
     public class ContactConversationContext : ConversationContext
@@ -12,35 +13,38 @@ namespace Omnipaste.Services.Providers
         private readonly ContactInfo _contactInfo;
 
         public ContactConversationContext(
-            IMessageRepository messageRepository,
+            ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
+            IPhoneCallPresenterFactory phoneCallPresenterFactory,
+            ISmsMessagePresenterFactory smsMessagePresenterFactory,
             ContactInfo contactInfo)
-            : base(messageRepository, phoneCallRepository)
+            : base(smsMessageRepository, phoneCallRepository, phoneCallPresenterFactory, smsMessagePresenterFactory)
         {
             _contactInfo = contactInfo;
         }
 
-        public override IObservable<IEnumerable<IConversationItem>> GetItems()
+        public override IObservable<IConversationPresenter> GetItems()
         {
             return
-                Observable.When(
-                    MessageRepository.GetByContact(_contactInfo)
-                        .And(PhoneCallRepository.GetByContact(_contactInfo))
-                        .Then((messages, calls) => messages.Cast<IConversationItem>().Concat(calls)));
+                SmsMessageRepository.GetForContact(_contactInfo)
+                    .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m))).Merge()
+                    .Merge(
+                        PhoneCallRepository.GetForContact(_contactInfo)
+                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))).Merge());
         }
 
-        protected override IObservable<IConversationItem> GetObservableForOperation(
-            RepositoryMethodEnum method)
+        protected override IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method)
         {
             return
-                MessageRepository.OperationObservable.OnMethod(method)
+                SmsMessageRepository.GetOperationObservable()
+                    .OnMethod(method)
                     .ForContact(_contactInfo)
-                    .Select(o => o.Item)
+                    .Select(o => SMSMessagePresenterFactory.Create(o.Item)).Merge()
                     .Merge(
-                        PhoneCallRepository.OperationObservable.OnMethod(method)
+                        PhoneCallRepository.GetOperationObservable()
+                            .OnMethod(method)
                             .ForContact(_contactInfo)
-                            .Select(o => o.Item)
-                            .Cast<IConversationItem>());
+                            .Select(o => PhoneCallPresenterFactory.Create(o.Item)).Merge());
         }
     }
 }

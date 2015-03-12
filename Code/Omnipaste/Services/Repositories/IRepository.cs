@@ -4,10 +4,27 @@
     using System.Collections.Generic;
     using Omnipaste.Models;
 
+    public interface IReporsitory
+    {
+        IObservable<RepositoryOperation<T>> GetOperationObservable<T>() where T : BaseModel;
+
+        IObservable<RepositoryOperation<T>> Save<T>(T item) where T : BaseModel;
+
+        IObservable<RepositoryOperation<T>> Delete<T>(string id) where T : BaseModel;
+
+        IObservable<T> Get<T>(string id) where T : BaseModel;
+
+        IObservable<T> Get<T>(Func<T, bool> match) where T : BaseModel;
+
+        IObservable<IEnumerable<T>> GetAll<T>() where T : BaseModel;
+
+        IObservable<IEnumerable<T>> GetAll<T>(Func<T, bool> filter) where T : BaseModel;
+    }
+
     public interface IRepository<T>
         where T : BaseModel
     {
-        IObservable<RepositoryOperation<T>> OperationObservable { get; }
+        IObservable<RepositoryOperation<T>> GetOperationObservable();
 
         IObservable<RepositoryOperation<T>> Save(T item);
 

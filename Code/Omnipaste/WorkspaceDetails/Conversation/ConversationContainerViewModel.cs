@@ -23,7 +23,7 @@
             base.OnActivate();
             ConversationContentViewModel.Model = Model;
             ConversationContentViewModel.Activate();
-            SMSComposer.ContactInfo = Model.ContactInfo;
+            SMSComposer.ContactInfo = Model.BackingModel;
             SMSComposer.Activate();
         }
 

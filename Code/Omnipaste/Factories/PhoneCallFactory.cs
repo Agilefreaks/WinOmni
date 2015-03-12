@@ -22,12 +22,12 @@ namespace Omnipaste.Factories
         public IObservable<T> Create<T>(PhoneCallDto phoneCallDto)
             where T : PhoneCall
         {
-            PhoneCall phoneCall = (T)Activator.CreateInstance(typeof(T), phoneCallDto);
+            var phoneCall = (T)Activator.CreateInstance(typeof(T), phoneCallDto);
             return
                 ContactRepository.GetOrCreateByPhoneNumber(phoneCallDto.Number)
                     .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
                     .Switch()
-                    .Select(contact => _phoneCallRepository.Save(phoneCall.SetContactInfo(contact)))
+                    .Select(contact => _phoneCallRepository.Save((T)phoneCall.SetContactInfoUniqueId(contact.UniqueId)))
                     .Switch()
                     .Select(e => e.Item)
                     .Cast<T>();

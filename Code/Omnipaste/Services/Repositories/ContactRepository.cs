@@ -3,12 +3,16 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using OmniCommon.Helpers;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
 
-    public class ContactRepository : InMemoryRepository<ContactInfo>, IContactRepository
+    public class ContactRepository : SecurePermanentRepository<ContactInfo>, IContactRepository
     {
+        public ContactRepository()
+            : base("contacts", null)
+        {
+        }
+
         #region IContactRepository Members
 
         public IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber)
@@ -34,9 +38,11 @@
                             });
         }
 
-        public IObservable<ContactInfo> UpdateLastActivityTime(ContactInfo contactInfo, DateTime? lastActivityTime = null)
+        public IObservable<ContactInfo> UpdateLastActivityTime(
+            ContactInfo contactInfo,
+            DateTime? lastActivityTime = null)
         {
-            contactInfo.LastActivityTime = TimeHelper.UtcNow;
+            contactInfo.LastActivityTime = DateTime.Now;
             return Save(contactInfo).Select(o => o.Item);
         }
 

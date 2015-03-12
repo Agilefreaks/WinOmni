@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -12,17 +13,17 @@
     using Omnipaste.Services.Repositories;
     using OmnipasteTests.Helpers;
 
-    public abstract class BaseRepositoryTest
+    public abstract class BaseRepositoryTests
     {
-        protected BaseRepository<TestModel> _subject;
+        protected BaseRepository<TestModel> Subject;
 
-        private TestScheduler _testScheduler;
+        protected TestScheduler TestScheduler;
 
         [SetUp]
         public virtual void SetUp()
         {
-            _testScheduler = new TestScheduler();
-            SchedulerProvider.Default = _testScheduler;
+            TestScheduler = new TestScheduler();
+            SchedulerProvider.Default = TestScheduler;
         }
 
         [TearDown]
@@ -37,7 +38,7 @@
             var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable =
-                _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.GetAll()).Switch());
+                TestScheduler.Start(() => Subject.Save(testModel).Select(_ => Subject.GetAll()).Switch());
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testObservable.Messages[0].Value.Value.First().UniqueId.Should().Be(testModel.UniqueId);
@@ -48,8 +49,9 @@
         {
             var testModel = new TestModel { UniqueId = "42" };
 
-            var testObservable = _testScheduler.Start(() => _subject.Save(testModel));
+            var testObservable = TestScheduler.Start(() => Subject.Save(testModel));
 
+            testObservable.Messages.Should().HaveCount(2);
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testObservable.Messages[0].Value.Value.RepositoryMethod.Should().Be(RepositoryMethodEnum.Changed);
         }
@@ -61,8 +63,8 @@
             var testModel = new TestModel { UniqueId = UniqueId };
 
             var testObservable =
-                _testScheduler.Start(
-                    () => _subject.Save(testModel).Select(_ => _subject.Get(c => c.UniqueId == UniqueId)).Switch());
+                TestScheduler.Start(
+                    () => Subject.Save(testModel).Select(_ => Subject.Get(c => c.UniqueId == UniqueId)).Switch());
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testObservable.Messages[0].Value.Value.UniqueId.Should().Be(testModel.UniqueId);
@@ -74,7 +76,7 @@
             var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable =
-                _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Get(c => false)).Switch());
+                TestScheduler.Start(() => Subject.Save(testModel).Select(_ => Subject.Get(c => false)).Switch());
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnError);
         }
@@ -84,17 +86,16 @@
         {
             var testModel = new TestModel { UniqueId = "42" };
 
-            var testObservable =
-                _testScheduler.Start(
-                    () =>
-                    _subject.Save(testModel)
-                        .Select(_ => _subject.Delete(testModel.UniqueId))
-                        .Switch()
-                        .Select(_ => _subject.GetAll())
-                        .Switch());
+            var testObserver = TestScheduler.CreateObserver<IEnumerable<TestModel>>();
 
-            testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[0].Value.Value.Should().BeEmpty();
+            TestScheduler.Schedule(() => Subject.Save(testModel));
+            TestScheduler.Schedule(() => Subject.Delete(testModel.UniqueId).Subscribe());
+            TestScheduler.Schedule(() => Subject.GetAll().Subscribe(testObserver));
+
+            TestScheduler.Start();
+
+            testObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
+            testObserver.Messages[0].Value.Value.Should().BeEmpty();
         }
 
         [Test]
@@ -102,21 +103,23 @@
         {
             var testModel = new TestModel { UniqueId = "42" };
             var results = new List<RepositoryOperation<TestModel>>();
-            _subject.OperationObservable.Subscribe(ro => results.Add(ro));
+            Subject.GetOperationObservable().Subscribe(ro => results.Add(ro));
 
-            _testScheduler.Start(
-                () => _subject.Save(testModel).Select(_ => _subject.Delete(testModel.UniqueId)).Switch());
+            TestScheduler.Schedule(() => Subject.Save(testModel));
+            TestScheduler.Schedule(() => Subject.Delete(testModel.UniqueId).Subscribe());
+
+            TestScheduler.Start();
 
             results[1].RepositoryMethod.Should().Be(RepositoryMethodEnum.Delete);
+            results[1].GetItem<TestModel>().UniqueId.Should().Be(testModel.UniqueId);
         }
 
         [Test]
         public void Get_WithExistingId_WillReturnTheModel()
         {
             var testModel = new TestModel { UniqueId = "42" };
-            _testScheduler.Start();
             
-            var testableObserver = _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Get("42")).Switch());
+            var testableObserver = TestScheduler.Start(() => Subject.Save(testModel).Select(_ => Subject.Get("42")).Switch());
 
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testableObserver.Messages[0].Value.Value.UniqueId.Should().Be("42");
