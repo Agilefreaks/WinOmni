@@ -543,6 +543,9 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
+    <Compile Include="Workspaces\GroupMessagesMainMenuEntryView.xaml.cs">
+      <DependentUpon>GroupMessagesMainMenuEntryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workspaces\GroupMessagesMainMenuEntryViewModel.cs" />
     <Compile Include="Workspaces\GroupMessagesWorkspace.cs" />
     <Compile Include="Workspaces\IGroupMessagesMainMenuEntryViewModel.cs" />
@@ -993,6 +996,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Workspaces\DetailsConductorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Workspaces\GroupMessagesMainMenuEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

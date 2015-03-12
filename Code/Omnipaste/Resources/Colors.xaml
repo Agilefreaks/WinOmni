@@ -36,7 +36,8 @@
     <Color x:Key="AlternativeContentBackgroundColor">#fafcfa</Color>
     <Color x:Key="CallFadedColor">#EBFDFF</Color>
     <Color x:Key="CallLabelColor">#69DDED</Color>
-    <Color x:Key="HolidayMenuEntryBackgroundColor">#F6F6F6</Color>
+    <Color x:Key="NewMessageMenuEntryBackgroundColor">#56B723</Color>
+    <Color x:Key="NewMessageMenuEntryForegroundColor">#FFFFFF</Color>
     <Color x:Key="ButtonBorderColor">#FFE6E5E5</Color>
     <Color x:Key="ScrollBarColor">#999999</Color>
     <Color x:Key="InactiveButtonColor">#e7e6e6</Color>

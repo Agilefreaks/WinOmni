@@ -17,7 +17,7 @@
         {
             get
             {
-                return "New message";
+                return "+ New message";
             }
         }
 
