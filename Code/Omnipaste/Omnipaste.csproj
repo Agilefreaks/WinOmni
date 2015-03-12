@@ -289,8 +289,10 @@
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\IModel.cs" />
+    <Compile Include="Models\LocalPhoneCall.cs" />
     <Compile Include="Models\LocalSmsMessage.cs" />
     <Compile Include="Models\PhoneNumber.cs" />
+    <Compile Include="Models\RemotePhoneCall.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />

@@ -10,6 +10,22 @@
     [TestFixture]
     public class PhoneCallTests
     {
+        private class TestPhoneCall : PhoneCall
+        {
+            public TestPhoneCall(PhoneCallDto phoneCallDto)
+                : base(phoneCallDto)
+            {
+            }
+
+            public override SourceType Source
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
         [TearDown]
         public void TearDown()
         {
@@ -19,14 +35,14 @@
         [Test]
         public void CtorWithCall_AlwaysAssignsAUniqueId()
         {
-            new PhoneCall(new PhoneCallDto()).UniqueId.Should().NotBeNullOrEmpty();
+            new TestPhoneCall(new PhoneCallDto()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
         public void CtorWithCall_AlwaysCopiesId()
         {
             const string Id = "42";
-            new PhoneCall(new PhoneCallDto { Id = Id }).Id.Should().Be(Id);
+            new TestPhoneCall(new PhoneCallDto { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
@@ -34,13 +50,7 @@
         {
             var dateTime = new DateTime(2014, 1,1);
             TimeHelper.UtcNow = dateTime;
-            new PhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
-        }
-
-        [Test]
-        public void CtorWithCall_Always_SetsSourceToRemote()
-        {
-            new PhoneCall(new PhoneCallDto()).Source.Should().Be(SourceType.Remote);
+            new TestPhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
     }
 }

@@ -47,7 +47,7 @@
         [Test]
         public void Ctor_Always_AssignsTime()
         {
-            _subject.Time.Should().Be(TimeHelper.UtcNow);
+            _subject.Time.Should().Be(TimeHelper.UtcNow.ToUniversalTime());
         }
 
         [Test]

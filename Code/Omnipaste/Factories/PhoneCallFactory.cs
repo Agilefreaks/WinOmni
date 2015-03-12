@@ -19,15 +19,18 @@ namespace Omnipaste.Factories
             _phoneCallRepository = phoneCallRepository;
         }
 
-        public IObservable<PhoneCall> Create(PhoneCallDto phoneCallDto)
+        public IObservable<T> Create<T>(PhoneCallDto phoneCallDto)
+            where T : PhoneCall
         {
+            PhoneCall phoneCall = (T)Activator.CreateInstance(typeof(T), phoneCallDto);
             return
                 ContactRepository.GetOrCreateByPhoneNumber(phoneCallDto.Number)
                     .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
                     .Switch()
-                    .Select(contact => _phoneCallRepository.Save(new PhoneCall(phoneCallDto) { ContactInfo = contact }))
+                    .Select(contact => _phoneCallRepository.Save(phoneCall.SetContactInfo(contact)))
                     .Switch()
-                    .Select(e => e.Item);
+                    .Select(e => e.Item)
+                    .Cast<T>();
 
         }
     }

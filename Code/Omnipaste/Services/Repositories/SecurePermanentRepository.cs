@@ -68,7 +68,7 @@
 
         public override IObservable<T> Get(Func<T, bool> match)
         {
-            return _blobCache.GetAllObjects<T>().Select(all => all.FirstOrDefault(match));
+            return _blobCache.GetAllObjects<T>().Select(all => all.First(match));
         }
 
         public override IObservable<IEnumerable<T>> GetAll()

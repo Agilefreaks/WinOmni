@@ -206,8 +206,8 @@ namespace Omnipaste.ActivityList
             return
                 _clippingRepository.OperationObservable.Changed()
                     .Select(o => new ActivityPresenter(o.Item))
-                    .Merge(_messageRepository.OperationObservable.Changed().Where(o => o.Item.Source == SourceType.Remote).Select(o => new ActivityPresenter(o.Item)))
-                    .Merge(_phoneCallRepository.OperationObservable.Changed().Where(o => o.Item.Source == SourceType.Remote).Select(o => new ActivityPresenter(o.Item)))
+                    .Merge(_messageRepository.OperationObservable.Changed().Select(e => e.Item).OfType<RemoteSmsMessage>().Select(o => new ActivityPresenter(o)))
+                    .Merge(_phoneCallRepository.OperationObservable.Changed().Select(e => e.Item).OfType<RemotePhoneCall>().Select(o => new ActivityPresenter(o)))
                     .Merge(_updateInfoRepository.OperationObservable.Changed().Select(o => new ActivityPresenter(o.Item)));
         }
 

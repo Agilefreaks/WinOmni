@@ -44,7 +44,7 @@
             var notificationViewModel =
                 (IncomingCallNotificationViewModel)
                 _subject.Create(
-                    new PhoneCall
+                    new RemotePhoneCall
                         {
                             ContactInfo =
                                 new ContactInfo
@@ -60,7 +60,7 @@
         [Test]
         public void Create_WithCall_SetsTheEventOnTheViewModelAsTheResource()
         {
-            var call = new PhoneCall();
+            var call = new RemotePhoneCall();
             var viewModel = (IConversationNotificationViewModel)_subject.Create(call);
 
             viewModel.Resource.Should().Be(call);

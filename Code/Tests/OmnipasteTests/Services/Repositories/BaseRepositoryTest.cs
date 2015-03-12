@@ -69,15 +69,14 @@
         }
 
         [Test]
-        public void GetWithFunc_WhenItemDoesNotExist_ReturnsNull()
+        public void GetWithFunc_WhenItemDoesNotExist_ReturnsError()
         {
             var testModel = new TestModel { UniqueId = "42" };
 
             var testObservable =
                 _testScheduler.Start(() => _subject.Save(testModel).Select(_ => _subject.Get(c => false)).Switch());
 
-            testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[0].Value.Value.Should().Be(null);
+            testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnError);
         }
 
         [Test]

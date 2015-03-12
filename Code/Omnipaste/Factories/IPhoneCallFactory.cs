@@ -6,6 +6,6 @@
 
     public interface IPhoneCallFactory
     {
-        IObservable<PhoneCall> Create(PhoneCallDto phoneCallDto);
+        IObservable<T> Create<T>(PhoneCallDto phoneCallDto) where T : PhoneCall;
     }
 }

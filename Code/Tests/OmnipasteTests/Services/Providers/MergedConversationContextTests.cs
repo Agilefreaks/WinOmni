@@ -13,7 +13,6 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmnipasteTests.Helpers;
-    using SMS.Models;
 
     [TestFixture]
     public class MergedConversationContextTests
@@ -48,7 +47,7 @@
         {
             var message = new TestSmsMessage();
             _mockMessageRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<SmsMessage> { message }, _testScheduler));
-            var call = new PhoneCall();
+            var call = new LocalPhoneCall();
             _mockCallRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<PhoneCall> { call }));
 
             var testObserver = _testScheduler.Start(() => _subject.GetItems());

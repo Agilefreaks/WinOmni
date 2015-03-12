@@ -9,6 +9,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
@@ -24,7 +25,9 @@
 
         private Mock<IPhoneCalls> _mockPhoneCalls;
 
-        private Mock<IPhoneCallRepository> _mockCallRepository;
+        private Mock<IPhoneCallRepository> _mockPhoneCallRepository;
+
+        private Mock<IPhoneCallFactory> _mockPhoneCallFactory;
 
         private Mock<IMessageRepository> _mockMessageRepository;
 
@@ -38,13 +41,15 @@
             SchedulerProvider.Dispatcher = _testScheduler;
 
             _mockPhoneCalls = new Mock<IPhoneCalls> { DefaultValue = DefaultValue.Mock };
-            _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockPhoneCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
+            _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
 
             _subject = new ConversationHeaderViewModel
                            {
                                PhoneCalls = _mockPhoneCalls.Object,
-                               PhoneCallRepository = _mockCallRepository.Object,
+                               PhoneCallRepository = _mockPhoneCallRepository.Object,
+                               PhoneCallFactory = _mockPhoneCallFactory.Object,
                                MessageRepository = _mockMessageRepository.Object,
                                Model = new ContactInfoPresenter(new ContactInfo())
                            };
@@ -141,7 +146,11 @@
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
+            var phoneFactoryObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<LocalPhoneCall>>(110, Notification.CreateOnNext(new LocalPhoneCall())),
+                new Recorded<Notification<LocalPhoneCall>>(200, Notification.CreateOnCompleted<LocalPhoneCall>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>(), It.IsAny<int?>())).Returns(callObservable);
+            _mockPhoneCallFactory.Setup(m => m.Create<LocalPhoneCall>(It.IsAny<PhoneCallDto>())).Returns(phoneFactoryObservable);
             SetupSaveCallObservable();
 
             _subject.Call();
@@ -151,7 +160,7 @@
         }
 
         [Test]
-        public void Call_AfterCreatingTheCall_SavesTheCallInfoLocally()
+        public void Call_AfterCreatingTheCall_CallsPhoneFactoryCreate()
         {
             var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
@@ -164,7 +173,7 @@
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
-            _mockCallRepository.Verify(x => x.Save(It.Is<PhoneCall>(pc => pc.ContactInfo == contactInfo)), Times.Once());
+            _mockPhoneCallFactory.Verify(x => x.Create<LocalPhoneCall>(It.IsAny<PhoneCallDto>()), Times.Once());
         }
 
         [Test]
@@ -178,16 +187,16 @@
         [Test]
         public void Delete_WhenCallsExistForContact_UpdatesIsDeletedForCall()
         {
-            var call = new PhoneCall { UniqueId = "42" };
+            var call = new LocalPhoneCall { UniqueId = "42" };
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
+            _mockPhoneCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockCallRepository.Verify(m => m.Save(call));
+            _mockPhoneCallRepository.Verify(m => m.Save(call));
             call.IsDeleted.Should().BeTrue();
         }
 
@@ -218,16 +227,16 @@
         [Test]
         public void UndoDelete_WhenCallsWereDeleted_RestoresCalls()
         {
-            var call = new PhoneCall { UniqueId = "42", IsDeleted = true };
+            var call = new LocalPhoneCall { UniqueId = "42", IsDeleted = true };
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
+            _mockPhoneCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
             
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockCallRepository.Verify(m => m.Save(call));
+            _mockPhoneCallRepository.Verify(m => m.Save(call));
             call.IsDeleted.Should().BeFalse();
         }
 
@@ -253,11 +262,11 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
                         100,
-                        Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall()))),
+                        Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new LocalPhoneCall()))),
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
                         200,
                         Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-            _mockCallRepository.Setup(x => x.Save(It.IsAny<PhoneCall>())).Returns(saveObservable);
+            _mockPhoneCallRepository.Setup(x => x.Save(It.IsAny<PhoneCall>())).Returns(saveObservable);
         }
     }
 }

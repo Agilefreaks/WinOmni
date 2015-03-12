@@ -37,13 +37,13 @@
             const string PhoneNumber = "0722123123";
             var phoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } };
             var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
-            var call1 = new PhoneCall
+            var call1 = new LocalPhoneCall
                             {
                                 UniqueId = "42",
-                                ContactInfo =
-                                    contactInfo
+                                ContactInfo = contactInfo
+                                    
                             };
-            var call2 = new PhoneCall
+            var call2 = new LocalPhoneCall
                             {
                                 UniqueId = "1",
                                 ContactInfo =
@@ -77,8 +77,8 @@
             const string PhoneNumber = "0722123123";
             var phoneNumbers = new[] { new PhoneNumber { Number = "+40" + PhoneNumber } };
             var contactInfo = new ContactInfo { PhoneNumbers = phoneNumbers };
-            var call1 = new PhoneCall { UniqueId = "42", ContactInfo = contactInfo };
-            var call2 = new PhoneCall
+            var call1 = new LocalPhoneCall { UniqueId = "42", ContactInfo = contactInfo };
+            var call2 = new LocalPhoneCall
                             {
                                 UniqueId = "1",
                                 ContactInfo =

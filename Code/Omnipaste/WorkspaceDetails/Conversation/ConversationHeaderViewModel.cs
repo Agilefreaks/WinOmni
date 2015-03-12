@@ -6,10 +6,10 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
-    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>, IConversationHeaderViewModel
@@ -31,6 +31,9 @@
         #endregion
 
         #region Public Properties
+
+        [Inject]
+        public IPhoneCallFactory PhoneCallFactory { get; set; }
 
         [Inject]
         public IPhoneCallRepository PhoneCallRepository { get; set; }
@@ -78,7 +81,7 @@
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
                     .Select(_ => PhoneCalls.Call(Model.ContactInfo.PhoneNumber, Model.ContactInfo.ContactId))
                     .Switch()
-                    .Select(SaveCallLocally)
+                    .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCall>(phoneCallDto))
                     .Switch()
                     .Delay(CallingDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Normal)
@@ -142,15 +145,6 @@
 
             _callSubscription.Dispose();
             _callSubscription = null;
-        }
-
-        private IObservable<RepositoryOperation<Models.PhoneCall>> SaveCallLocally(PhoneCallDto call)
-        {
-            return PhoneCallRepository.Save(new Models.PhoneCall(call)
-                                                {
-                                                    Source = SourceType.Local,
-                                                    ContactInfo = Model.ContactInfo
-                                                });
         }
 
         private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)

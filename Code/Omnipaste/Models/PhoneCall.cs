@@ -1,38 +1,37 @@
 ﻿namespace Omnipaste.Models
 {
-    using Omnipaste.Helpers;
     using PhoneCalls.Models;
 
-    public class PhoneCall : BaseModel, IConversationItem
+    public abstract class PhoneCall : BaseModel, IConversationItem
     {
-        #region Constructors and Destructors
-
-        public PhoneCall()
+        protected PhoneCall()
         {
             ContactInfo = new ContactInfo();
             Content = string.Empty;
-            Source = SourceType.Local;
         }
 
-        public PhoneCall(PhoneCallDto phoneCallDto)
+        protected PhoneCall(PhoneCallDto phoneCallDto)
             : this()
         {
             Id = phoneCallDto.Id;
-            Source = SourceType.Remote;
         }
 
-        #endregion
-
-        #region Public Properties
+        #region IConversationItem Members
 
         public string Id { get; set; }
 
         public ContactInfo ContactInfo { get; set; }
 
-        public SourceType Source { get; set; }
+        public abstract SourceType Source { get; }
 
         public string Content { get; set; }
 
         #endregion
+
+        public PhoneCall SetContactInfo(ContactInfo contact)
+        {
+            ContactInfo = contact;
+            return this;
+        }
     }
 }

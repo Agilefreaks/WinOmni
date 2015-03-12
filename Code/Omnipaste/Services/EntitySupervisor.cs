@@ -70,7 +70,7 @@
                     .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
 
             _subscriptions.Add(
-                PhoneCallReceivedHandler.Select(PhoneCallFactory.Create)
+                PhoneCallReceivedHandler.Select(PhoneCallFactory.Create<RemotePhoneCall>)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)

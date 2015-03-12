@@ -157,7 +157,7 @@
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
             var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -170,7 +170,7 @@
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
             var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -183,7 +183,7 @@
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
             var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -193,23 +193,10 @@
         }
 
         [Test]
-        public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityTimeWithMessageTime()
-        {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            SetupConversation(message, call);
-
-            _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
-
-            _subject.LastActivityTime.Value.Should().Be(message.Time);
-        }
-
-        [Test]
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
             var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2014, 1, 1), Source = SourceType.Remote, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2014, 1, 1), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -222,7 +209,7 @@
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
             var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2014, 1, 1), Source = SourceType.Local, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new LocalPhoneCall { Time = new DateTime(2014, 1, 1), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -235,7 +222,7 @@
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
             var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = true, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), WasViewed = true, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -248,7 +235,7 @@
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
             var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new PhoneCall { Time = new DateTime(2013, 12, 31), Source = SourceType.Remote, WasViewed = false, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), WasViewed = false, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -265,7 +252,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationItem>>(
                         200,
-                        Notification.CreateOnNext(message as IConversationItem)));
+                        Notification.CreateOnNext((IConversationItem)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(messageOperationObservable);
             SetupConversation(message);
             _subject.OnLoaded();
@@ -283,7 +270,7 @@
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationItem>>(
                         200,
-                        Notification.CreateOnNext(message as IConversationItem)));
+                        Notification.CreateOnNext((IConversationItem)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(observable);
             var observable1 =
                 _testScheduler.CreateColdObservable(

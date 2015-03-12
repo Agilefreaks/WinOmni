@@ -31,19 +31,11 @@
         }
 
         [Test]
-        public void CtorWithMessage_Always_AssignsTime()
+        public void CtorWithSmsMessage_Always_AssignsTime()
         {
             var dateTime = new DateTime(2014, 1, 1);
             TimeHelper.UtcNow = dateTime;
-            new TestSmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime);
-        }
-
-        [Test]
-        public void CtorWithClipping_Always_AssignsTime()
-        {
-            var dateTime = new DateTime(2014, 1, 1);
-            TimeHelper.UtcNow = dateTime;
-            new TestSmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime);
+            new TestSmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
     }
 }

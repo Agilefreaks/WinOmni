@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.Factories
 {
     using System.Linq;
+    using System.Reactive;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -54,7 +55,7 @@
         {
             var phoneCallDto = new PhoneCallDto();
 
-            _scheduler.Start(() => _subject.Create(phoneCallDto));
+            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
             _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumber(phoneCallDto.Number), Times.Once);
         }
@@ -65,10 +66,10 @@
             var phoneCallDto = new PhoneCallDto { Number = "42" };
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+                new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(m => m.GetOrCreateByPhoneNumber("42")).Returns(contactInfoObservable);
 
-            _scheduler.Start(() => _subject.Create(phoneCallDto));
+            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
             _mockContactRepository.Verify(cr => cr.UpdateLastActivityTime(contactInfo, null), Times.Once);
         }
@@ -79,12 +80,12 @@
             var phoneCallDto = new PhoneCallDto();
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+                new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
                 .Returns(contactInfoObservable);
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
                 .Returns(contactInfoObservable);
-            _scheduler.Start(() => _subject.Create(phoneCallDto));
+            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
             _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<PhoneCall>()), Times.Once);
         }
@@ -94,14 +95,14 @@
         {
             var phoneCallDto = new PhoneCallDto();
             var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
-            var phoneCall = new PhoneCall();
-            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<RepositoryOperation<PhoneCall>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
+            var phoneCall = new LocalPhoneCall();
+            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
             _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<PhoneCall>())).Returns(phoneCallObservable);
 
-            var result = _scheduler.Start(() => _subject.Create(phoneCallDto));
+            var result = _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
             result.Messages.First().Value.Value.Should().Be(phoneCall);
         }

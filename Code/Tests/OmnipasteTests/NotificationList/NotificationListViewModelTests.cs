@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.NotificationList
 {
     using System;
-    using System.Linq;
     using System.Reactive;
     using Caliburn.Micro;
     using Clipboard.Models;
@@ -50,9 +49,8 @@
                         Notification.CreateOnNext(
                             new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _viewedClipping))));
 
-            _incommingPhoneCall = new PhoneCall
+            _incommingPhoneCall = new RemotePhoneCall
                                       {
-                                          Source = SourceType.Remote,
                                           ContactInfo =
                                               new ContactInfo
                                                   {
@@ -67,9 +65,8 @@
                                                               }
                                                   }
                                       };
-            _viewedPhoneCall = new PhoneCall
+            _viewedPhoneCall = new RemotePhoneCall
                                    {
-                                       Source = SourceType.Remote,
                                        ContactInfo =
                                            new ContactInfo
                                                {

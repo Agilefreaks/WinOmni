@@ -17,6 +17,7 @@
         }
 
         public ContactInfo(ContactDto contactDto)
+            : this()
         {
             UniqueId = contactDto.Id;
             ContactId = contactDto.ContactId;

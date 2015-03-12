@@ -154,8 +154,8 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var remoteRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Remote });
-            var localRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new PhoneCall { Source = SourceType.Local });
+            var remoteRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new RemotePhoneCall());
+            var localRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new LocalPhoneCall());
             var eventObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
@@ -173,8 +173,8 @@
         public void UpdatingACall_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewCall()
         {
             const string UniqueId = "42";
-            var call = new PhoneCall { UniqueId = UniqueId, Source = SourceType.Remote };
-            var modifiedCall = new PhoneCall { UniqueId = UniqueId, Content = "Test", Source = SourceType.Remote };
+            var call = new RemotePhoneCall { UniqueId = UniqueId };
+            var modifiedCall = new RemotePhoneCall { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, call))),

@@ -53,7 +53,7 @@
         public void EndCall_EndsThePhoneCallCorespondingToTheAssociatedResource()
         {
             const string ResourceId = "someId";
-            _subject.Resource = new PhoneCall { Id = ResourceId };
+            _subject.Resource = new RemotePhoneCall { Id = ResourceId };
             
             _subject.EndCall();
 
@@ -64,7 +64,7 @@
         public void ReplyWithSms_Always_ExecutesComposeSMSCommand()
         {
             var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567" } }  };
-            _subject.Resource = new PhoneCall { ContactInfo = contactInfo };
+            _subject.Resource = new RemotePhoneCall { ContactInfo = contactInfo };
             _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>()))
                 .Returns(Observable.Return(new Unit()));
             var testScheduler = new TestScheduler();
