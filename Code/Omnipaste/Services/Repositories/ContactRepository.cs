@@ -7,8 +7,13 @@
     using Omnipaste.Helpers;
     using Omnipaste.Models;
 
-    public class ContactRepository : InMemoryRepository<ContactInfo>, IContactRepository
+    public class ContactRepository : SecurePermanentRepository<ContactInfo>, IContactRepository
     {
+        public ContactRepository()
+            : base("contacts")
+        {
+        }
+
         #region IContactRepository Members
 
         public IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber)
@@ -34,7 +39,9 @@
                             });
         }
 
-        public IObservable<ContactInfo> UpdateLastActivityTime(ContactInfo contactInfo, DateTime? lastActivityTime = null)
+        public IObservable<ContactInfo> UpdateLastActivityTime(
+            ContactInfo contactInfo,
+            DateTime? lastActivityTime = null)
         {
             contactInfo.LastActivityTime = TimeHelper.UtcNow;
             return Save(contactInfo).Select(o => o.Item);

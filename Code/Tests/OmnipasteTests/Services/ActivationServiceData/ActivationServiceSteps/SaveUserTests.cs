@@ -7,9 +7,9 @@
     using NUnit.Framework;
     using OmniApi.Models;
     using OmniCommon;
+    using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
 
@@ -107,6 +107,22 @@
             _subject.Execute().Wait();
 
             _mockConfigurationService.VerifySet(x => x.IsSMSSuffixEnabled = It.IsAny<bool>(), Times.Never());
+        }
+
+        [Test]
+        public void Execute_Never_OverwritesContactsUpdatedAt()
+        {
+            using (TimeHelper.Freez())
+            {
+                _subject.Parameter = new DependencyParameter { Value = new User() };
+                var userInfo = new UserInfo().SetContactsUpdatedAt(TimeHelper.UtcNow);
+                _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
+
+                _subject.Execute().Wait();
+
+                _mockConfigurationService.VerifySet(
+                    x => x.UserInfo = It.Is<UserInfo>(ui => ui.ContactsUpdatedAt == TimeHelper.UtcNow));
+            }
         }
     }
 }

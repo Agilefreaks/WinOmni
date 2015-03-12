@@ -13,6 +13,8 @@
     [TestFixture]
     public class ContactRepositoryTests
     {
+        private const string PhoneNumber = "0722123123";
+
         private ContactRepository _subject;
 
         private TestScheduler _testScheduler;
@@ -35,7 +37,6 @@
         [Test]
         public void GetByPhoneNumber_Always_ReturnsContact()
         {
-            var phoneNumber = "0722123123";
             var contact1 = new ContactInfo
             {
                 UniqueId = "42",
@@ -64,18 +65,17 @@
             };
             var observable = _subject.Save(contact1)
                 .Select(_ => _subject.Save(contact2))
-                .Select(_ => _subject.GetByPhoneNumber(phoneNumber))
+                .Select(_ => _subject.GetByPhoneNumber(PhoneNumber))
                 .Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            result.Messages.First().Value.Value.Should().Be(contact1);
+            result.Messages.First().Value.Value.UniqueId.Should().Be(contact1.UniqueId);
         }
 
         [Test]
         public void GetByPhoneNumber_WhenCallPhoneNumberContainsPrefix_ReturnsCallForContact()
         {
-            var phoneNumber = "0722123123";
             var contact1 = new ContactInfo
                                {
                                    UniqueId = "42",
@@ -104,19 +104,17 @@
                                };
             var observable = _subject.Save(contact1)
                 .Select(_ => _subject.Save(contact2))
-                .Select(_ => _subject.GetByPhoneNumber(phoneNumber))
+                .Select(_ => _subject.GetByPhoneNumber(PhoneNumber))
                 .Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            result.Messages.First().Value.Value.Should().Be(contact1);
+            result.Messages.First().Value.Value.UniqueId.Should().Be(contact1.UniqueId);
         }
 
         [Test]
         public void GetOrCreateByPhoneNumber_WhenTheContactExists_ReturnsTheContact()
         {
-            var phoneNumber = "0722123123";
-
             var contact1 = new ContactInfo
             {
                 UniqueId = "42",
@@ -132,25 +130,20 @@
             };
 
             var observable = _subject.Save(contact1)
-                .Select(_ => _subject.GetOrCreateByPhoneNumber(phoneNumber))
+                .Select(_ => _subject.GetOrCreateByPhoneNumber(PhoneNumber))
                 .Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            result.Messages.First().Value.Value.Should().Be(contact1);
+            result.Messages.First().Value.Value.UniqueId.Should().Be(contact1.UniqueId);
         }
 
         [Test]
         public void GetOrCreateByPhoneNumber_WhenThereIsNoContactStored_WillSaveTheContact()
         {
-            var phoneNumber = "0722123123";
+            var result = _testScheduler.Start(() => _subject.GetOrCreateByPhoneNumber(PhoneNumber).Select(_ => _subject.GetByPhoneNumber(PhoneNumber)).Switch());
             
-            var observable = _subject.GetOrCreateByPhoneNumber(phoneNumber);
-            _testScheduler.Start(() => observable);
-            
-            var testObservable = _subject.GetByPhoneNumber(phoneNumber);
-            var result = _testScheduler.Start(() => testObservable);
-            result.Messages.First().Value.Value.PhoneNumber.Should().Be(phoneNumber);
+            result.Messages.First().Value.Value.PhoneNumber.Should().Be(PhoneNumber);
         }
     }
 }

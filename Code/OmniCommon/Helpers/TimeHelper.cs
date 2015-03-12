@@ -1,16 +1,11 @@
 ﻿namespace OmniCommon.Helpers
 {
     using System;
+    using System.Reactive.Disposables;
 
     public class TimeHelper
     {
-        #region Static Fields
-
         private static DateTime? _utcNow;
-
-        #endregion
-
-        #region Public Properties
 
         public static DateTime UtcNow
         {
@@ -24,15 +19,15 @@
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         public static void Reset()
         {
             _utcNow = null;
         }
 
-        #endregion
+        public static IDisposable Freez()
+        {
+            UtcNow = DateTime.UtcNow;
+            return Disposable.Create(Reset);
+        }
     }
 }

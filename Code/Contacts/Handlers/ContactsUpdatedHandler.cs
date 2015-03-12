@@ -81,8 +81,7 @@
         private void UpdateUserInfo()
         {
             var userInfo = _configurationService.UserInfo;
-            _users.Get().Subscribe(u => userInfo.ContactsUpdatedAt = u.ContactsUpdatedAt);
-            _configurationService.UserInfo = userInfo;
+            _users.Get().Subscribe(u => _configurationService.UserInfo = userInfo.SetContactsUpdatedAt(u.ContactsUpdatedAt));
         }
     }
 }
