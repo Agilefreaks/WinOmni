@@ -47,7 +47,7 @@
         public override IObservable<RepositoryOperation<T>> Save(T item)
         {
             return
-                _blobCache.InsertObject(item.UniqueId, item)
+                _blobCache.InsertObject(item.UniqueId, item, new TimeSpan(1, 0, 0, 0))
                     .Select(_ => RepositoryOperation<T>.Empty())
                     .Concat(Observable.Return(BuildRepositoryOperation(RepositoryMethodEnum.Changed, item)))
                     .TakeLast(1);
