@@ -119,14 +119,6 @@ namespace OmniUI.List
             DeactivateItem(viewModel, true);
         }
 
-        //This is used as opposed to CollectionViewSource.Refresh to update the position of an item in a collection view when an item is changed.
-        //This is done because calling Refresh would result in re-creating the associated views for all the other visible items in the collection.
-        protected void RefreshViewForItem(TPresenter entity)
-        {
-            RemoveItem(entity);
-            ChangeItem(entity);
-        }
-
         protected virtual bool CanShow(TViewModel viewModel)
         {
             return true;

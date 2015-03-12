@@ -6,8 +6,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Clipboard.Models;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
+    using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
@@ -36,7 +35,7 @@
             _clippingRepository = clippingRepository;
             _clippingViewModelFactory = clippingViewModelFactory;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
+            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IClippingViewModel, DateTime>(vm => vm.Time), ListSortDirection.Descending));
         }
 
         public string FilterText

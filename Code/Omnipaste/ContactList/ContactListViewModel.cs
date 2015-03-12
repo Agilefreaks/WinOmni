@@ -33,7 +33,7 @@ namespace Omnipaste.ContactList
             _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Ascending));
+            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Descending));
         }
 
         public override int MaxItemCount
@@ -86,16 +86,6 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-
-            Subscriptions.Add(_conversationProvider.All().ItemChanged
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(OnConversationItemCreated));
-        }
-
         protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
         {
             return
@@ -111,7 +101,8 @@ namespace Omnipaste.ContactList
 
         protected override IContactInfoViewModel ChangeViewModel(ContactInfoPresenter model)
         {
-            return UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create(model);
+            var contactInfoViewModel = UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create(model);
+            return contactInfoViewModel;
         }
 
         private static bool IsMatch(string filter, string value)
@@ -119,20 +110,14 @@ namespace Omnipaste.ContactList
             return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
         }
 
-        private ContactInfoPresenter GetContactFor(IConversationItem conversationItem)
-        {
-            return
-                Items.Select(vm => vm.Model)
-                    .FirstOrDefault(
-                        model => conversationItem.ContactInfo.UniqueId == model.ContactInfo.UniqueId);
-        }
-
         private IContactInfoViewModel UpdateViewModel(ContactInfoPresenter obj)
         {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.Identifier == obj.Identifier);
+            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactInfo.UniqueId == obj.ContactInfo.UniqueId);
             if (viewModel != null)
             {
                 viewModel.Model = obj;
+                FilteredItems.EditItem(viewModel);
+                FilteredItems.CommitEdit();
             }
 
             return viewModel;
@@ -149,15 +134,6 @@ namespace Omnipaste.ContactList
         private bool MatchesFilter(IContactInfoPresenter model)
         {
             return !ShowStarred || model.IsStarred;
-        }
-
-        private void OnConversationItemCreated(IConversationItem conversationItem)
-        {
-            var contactPresenter = GetContactFor(conversationItem);
-            if (contactPresenter != null)
-            {
-                RefreshViewForItem(contactPresenter);
-            }
         }
     }
 }
