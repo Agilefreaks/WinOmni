@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using OmniCommon.Helpers;
@@ -19,11 +20,14 @@
 
         private ImageSource _image;
 
+        private readonly ContactInfo _contactInfo;
+
         public ContactInfoPresenter(ContactInfo contactInfo)
             : base(contactInfo)
         {
+            _contactInfo = contactInfo;
         }
-
+        
         public string Name
         {
             get
@@ -32,17 +36,19 @@
             }
         }
 
-        #region IContactInfoPresenter Members
+        public ContactInfo ContactInfo
+        {
+            get
+            {
+                return _contactInfo;
+            }
+        }
 
         public string Identifier
         {
             get
             {
-                if (_identifier == null)
-                {
-                    UpdateContactIdentifier();
-                }
-
+                UpdateContactIdentifier();
                 return _identifier;
             }
             set
@@ -91,8 +97,29 @@
             }
         }
 
-        #endregion
+        public string PhoneNumber
+        {
+            get
+            {
+                return ContactInfo.PhoneNumber;
+            }
 
+            set
+            {
+                if (ContactInfo.PhoneNumbers.Any())
+                {
+                    ContactInfo.PhoneNumbers.First().Number = value;
+                }
+                else
+                {
+                    ContactInfo.PhoneNumbers.Add(new PhoneNumber { Number = value });
+                }
+
+                NotifyOfPropertyChange(() => PhoneNumber);
+                NotifyOfPropertyChange(() => Identifier);
+            }
+        }
+        
         protected virtual ImageSource GetContactImage()
         {
             ImageSource result;
@@ -150,8 +177,14 @@
         private void UpdateContactIdentifier()
         {
             var identifier = GetIdentifier();
-            _identifier = string.IsNullOrWhiteSpace(identifier) ? DefaultContactIdentifier : identifier;
-            NotifyOfPropertyChange(() => Identifier);
+            
+            identifier = string.IsNullOrWhiteSpace(identifier) ? DefaultContactIdentifier : identifier;
+            if (_identifier != identifier)
+            {
+                _identifier = identifier;
+                NotifyOfPropertyChange(() => Identifier);
+            }
+            
         }
 
         private void UpdateContactImage()

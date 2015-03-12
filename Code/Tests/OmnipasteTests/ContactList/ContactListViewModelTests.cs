@@ -8,9 +8,12 @@
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
+    using Ninject;
+    using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
+    using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -40,9 +43,16 @@
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
-            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
-
-            _subject = new ContactListViewModel(_mockContactRepository.Object, _mockContactInfoViewModelFactory.Object);
+            _mockContactInfoViewModelFactory.Setup(
+                x => x.Create<IContactInfoViewModel>(It.IsAny<ContactInfoPresenter>()))
+                .Returns<ContactInfoPresenter>(
+                    presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
+            
+            MoqMockingKernel kernel = new MoqMockingKernel();
+            kernel.Bind<IContactListViewModel>().To<ContactListViewModel>();
+            kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
+            kernel.Bind<IContactInfoViewModelFactory>().ToConstant(_mockContactInfoViewModelFactory.Object);
+            _subject = (ContactListViewModel)kernel.Get<IContactListViewModel>();
         }
 
         [TearDown]
@@ -67,7 +77,7 @@
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
 
             ((IActivate)_subject).Activate();
-            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start();
 
             _subject.Items.Count.Should().Be(contacts.Count);
         }

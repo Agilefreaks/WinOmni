@@ -1,6 +1,8 @@
 ﻿namespace SMS.Resources.v1
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
@@ -36,6 +38,21 @@
                                   State = SmsMessageState.Sending
                               };
 
+            return ResourceApi.Create(payload, AccessToken);
+        }
+
+        public IObservable<SmsMessageDto> Send(IList<string> phoneNumbers, string message)
+        {
+
+            var payload =
+                new 
+                    {
+                        Content = message,
+                        PhoneNumberList = phoneNumbers.ToArray(),
+                        Type = SmsMessageType.Outgoing,
+                        State = SmsMessageState.Sending
+                    };
+            
             return ResourceApi.Create(payload, AccessToken);
         }
 

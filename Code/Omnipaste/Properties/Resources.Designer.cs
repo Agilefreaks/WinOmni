@@ -605,6 +605,24 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to + New message.
+        /// </summary>
+        public static string GroupMessage {
+            get {
+                return ResourceManager.GetString("GroupMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipients.
+        /// </summary>
+        public static string GroupMessageRecipientsLabel {
+            get {
+                return ResourceManager.GetString("GroupMessageRecipientsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incoming Link.
         /// </summary>
         public static string HyperlinkNotificationTitle {
@@ -799,6 +817,15 @@ namespace Omnipaste.Properties {
         public static string People {
             get {
                 return ResourceManager.GetString("People", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We didn&apos;t find a contact. Do you want to add it now?.
+        /// </summary>
+        public static string PeopleNoContact {
+            get {
+                return ResourceManager.GetString("PeopleNoContact", resourceCulture);
             }
         }
         

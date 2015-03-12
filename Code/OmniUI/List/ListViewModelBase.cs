@@ -7,6 +7,7 @@ namespace OmniUI.List
     using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniUI.Details;
@@ -89,13 +90,14 @@ namespace OmniUI.List
             {
                 DeactivateItem(Items.Last(), true);
             }
-
+            
             base.ActivateItem(item);
         }
 
         public virtual void RefreshItems()
         {
             _filteredItems.Refresh();
+            Status = FilteredItems.Count == 0 ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
         }
 
         #endregion
@@ -180,7 +182,7 @@ namespace OmniUI.List
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(ChangeItem));
+                    .Subscribe(ChangeItem));
             Subscriptions.Add(
                 GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)

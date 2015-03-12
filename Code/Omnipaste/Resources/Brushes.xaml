@@ -33,7 +33,8 @@
     <SolidColorBrush x:Key="AlternativeContentBackgroundBrush" Color="{DynamicResource AlternativeContentBackgroundColor}"/>
     <SolidColorBrush x:Key="CallFadedBrush" Color="{DynamicResource CallFadedColor}"/>
     <SolidColorBrush x:Key="CallLabelBrush" Color="{DynamicResource CallLabelColor}"/>
-    <SolidColorBrush x:Key="HolidayMenuEntryBackgroundBrush" Color="{DynamicResource HolidayMenuEntryBackgroundColor}"/>
+    <SolidColorBrush x:Key="NewMessageMenuEntryBackgroundBrush" Color="{DynamicResource NewMessageMenuEntryBackgroundColor}"/>
+    <SolidColorBrush x:Key="NewMessageMenuEntryForegroundBrush" Color="{DynamicResource NewMessageMenuEntryForegroundColor}"/>
     <SolidColorBrush x:Key="DeletedItemHeaderBackgroundBrush" Color="{DynamicResource DeletedItemHeaderBackgroundColor}"/>
     <SolidColorBrush x:Key="CallingBackgroundBrush" Color="{DynamicResource CallingBackgroundColor}"/>
     <SolidColorBrush x:Key="ConfirmationMessageBrush" Color="{DynamicResource ConfirmationMessageColor}"/>

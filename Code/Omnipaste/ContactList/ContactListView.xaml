@@ -8,7 +8,6 @@
              xmlns:framework="clr-namespace:Omnipaste.Framework"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-
     <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,24 +39,7 @@
         </Border>
         
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
-            <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}" BorderThickness="0">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ContentControl cal:View.Model="{Binding}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter x:Name="contentPresenter"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+            <ContentControl cal:View.Context="{Binding Path=Status}" cal:View.Model="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </Grid>
 </UserControl>

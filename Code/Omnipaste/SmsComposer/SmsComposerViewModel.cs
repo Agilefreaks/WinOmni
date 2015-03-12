@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.SMSComposer
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
@@ -9,8 +11,8 @@
     using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Properties;
-    using SMS.Models;
     using SMS.Resources.v1;
 
     public class SMSComposerViewModel : Screen, ISMSComposerViewModel
@@ -24,8 +26,6 @@
         private bool _isSending;
 
         private Command _sendCommand;
-
-        private ContactInfo _contactInfo;
 
         private string _message;
 
@@ -90,23 +90,6 @@
             }
         }
 
-        public ContactInfo ContactInfo
-        {
-            get
-            {
-                return _contactInfo;
-            }
-            set
-            {
-                if (Equals(value, _contactInfo))
-                {
-                    return;
-                }
-                _contactInfo = value;
-                NotifyOfPropertyChange(() => ContactInfo);
-            }
-        }
-
         public string Message
         {
             get
@@ -124,6 +107,8 @@
             }
         }
 
+        public IList<ContactInfoPresenter> Recipients { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -131,8 +116,8 @@
         public virtual void Send()
         {
             IsSending = true;
-            _smsMessages
-                .Send(ContactInfo.PhoneNumber, Message)
+
+            _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
                 .Select(SmsMessageFactory.Create<LocalSmsMessage>)
                 .Switch()
                 .SubscribeOn(SchedulerProvider.Default)

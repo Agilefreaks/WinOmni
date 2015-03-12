@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ContactList
+﻿namespace Omnipaste.ContactList.ContactInfo
 {
     using System;
     using System.ComponentModel;
@@ -16,9 +16,9 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Workspace;
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
@@ -36,12 +36,24 @@
 
         private IConversationPresenter _lastActivity;
 
+        private bool _isSelected;
+
+        public ContactInfoStatusEnum State
+        {
+            get
+            {
+                return _isSelected ? ContactInfoStatusEnum.Selected : ContactInfoStatusEnum.Normal;
+            }
+        }
+
         public ContactInfoViewModel(ISessionManager sessionManager)
         {
             _subscriptionsManager = new SubscriptionsManager();
             _sessionManager = sessionManager;
-            ClickCommand = new Command(ShowDetails);
+            ClickCommand = new Command(ToggleSelection);
         }
+
+
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
@@ -57,11 +69,22 @@
 
         public Command ClickCommand { get; set; }
 
+
         public bool IsSelected
         {
             get
             {
-                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
+                return _isSelected;
+            }
+            set
+            {
+                if (value.Equals(_isSelected))
+                {
+                    return;
+                }
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+                NotifyOfPropertyChange(() => State);
             }
         }
 
@@ -147,7 +170,7 @@
             var detailsViewModel = DetailsViewModelFactory.Create(Model);
             _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
 
-            this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
+            this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
 
         public void OnLoaded()
@@ -250,6 +273,11 @@
             }
 
             return result;
+        }
+
+        private void ToggleSelection()
+        {
+            IsSelected = !IsSelected;
         }
     }
 }

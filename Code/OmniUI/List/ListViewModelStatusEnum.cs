@@ -4,6 +4,8 @@ namespace OmniUI.List
     {
         Empty,
 
-        NotEmpty
+        NotEmpty,
+
+        EmptyFilter
     }
 }

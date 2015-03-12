@@ -1,7 +1,11 @@
 ﻿namespace Omnipaste.WorkspaceDetails
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using Microsoft.Practices.ServiceLocation;
+    using Omnipaste.WorkspaceDetails.GroupMessage;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.WorkspaceDetails.Clipping;
@@ -44,6 +48,14 @@
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
             result.Model = contactInfoPresenter;
+
+            return result;
+        }
+
+        public IWorkspaceDetailsViewModel Create(IEnumerable<ContactInfoPresenter> contactInfoPresenterList)
+        {
+            var result = _serviceLocator.GetInstance<IGroupMessageDetailsViewModel>();
+            result.Recipients = (ObservableCollection<ContactInfoPresenter>)contactInfoPresenterList;
 
             return result;
         }

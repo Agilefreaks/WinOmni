@@ -153,4 +153,25 @@
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Margin" Value="0,16,0,0"/>
     </Style>
+    
+    <Style x:Key="CheckedListItemBorder" TargetType="Ellipse">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Fill" Value="{DynamicResource GrayNormalBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="CheckedListItem" TargetType="Rectangle">
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Fill" Value="{DynamicResource WhiteBrush}" />
+        <Setter Property="OpacityMask">
+            <Setter.Value>
+                <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_check}"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>

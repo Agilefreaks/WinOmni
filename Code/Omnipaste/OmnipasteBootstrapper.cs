@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using BugFreak;
     using Caliburn.Micro;
-    using Castle.Core.Internal;
     using Clipboard;
     using CommonServiceLocator.NinjectAdapter.Unofficial;
     using Contacts;
+    using Humanizer.Configuration;
     using Humanizer.DateTimeHumanizeStrategy;
     using Microsoft.Practices.ServiceLocation;
     using Ninject;
@@ -25,10 +24,8 @@
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
-    using OmniUI.Helpers;
     using PhoneCalls;
     using SMS;
-    using ViewLocator = Caliburn.Micro.ViewLocator;
 
     public class OmnipasteBootstrapper : BootstrapperBase
     {
@@ -124,7 +121,7 @@
 
             GlobalExceptionLogger.Hook();
             
-            Humanizer.Configuration.Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy();
+            Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy();
 
             if (configurationService.DebugMode)
             {

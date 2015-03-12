@@ -11,7 +11,7 @@
     [TestFixture]
     public class ContactInfoViewModelFactoryTests
     {
-        private ContactInfoViewModelFactory _subject;
+        private IContactInfoViewModelFactory _subject;
 
         private Mock<IServiceLocator> _mockServiceLocator;
 
@@ -31,7 +31,7 @@
             _mockServiceLocator.Setup(m => m.GetInstance<IContactInfoViewModel>())
                 .Returns(mockContactInfoViewModel.Object);
             
-            var result = _subject.Create(contactInfoPresenter);
+            var result = _subject.Create<IContactInfoViewModel>(contactInfoPresenter);
 
             result.Should().Be(mockContactInfoViewModel.Object);
             mockContactInfoViewModel.VerifySet(m => m.Model = contactInfoPresenter);
