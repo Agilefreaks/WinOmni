@@ -19,6 +19,7 @@
     using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Workspace;
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
@@ -147,7 +148,7 @@
             var detailsViewModel = DetailsViewModelFactory.Create(Model);
             _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
 
-            this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
+            this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
 
         public void OnLoaded()
