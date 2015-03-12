@@ -11,7 +11,7 @@
     {
         private IObservable<IConversationItem> _itemRemoved;
 
-        private IObservable<IConversationItem> _itemUpdated;
+        private IObservable<IConversationItem> _itemChanged;
 
         private IObservable<IConversationItem> _updated;
 
@@ -29,7 +29,7 @@
         {
             get
             {
-                return _itemUpdated ?? (_itemUpdated = GetObservableForContactAndOperation(RepositoryMethodEnum.Changed));
+                return _itemChanged ?? (_itemChanged = GetObservableForOperation(RepositoryMethodEnum.Changed));
             }
         }
 
@@ -37,7 +37,7 @@
         {
             get
             {
-                return _itemRemoved ?? (_itemRemoved = GetObservableForContactAndOperation(RepositoryMethodEnum.Delete));
+                return _itemRemoved ?? (_itemRemoved = GetObservableForOperation(RepositoryMethodEnum.Delete));
             }
         }
 
@@ -71,7 +71,7 @@
             return result;
         }
 
-        protected abstract IObservable<IConversationItem> GetObservableForContactAndOperation(
+        protected abstract IObservable<IConversationItem> GetObservableForOperation(
             RepositoryMethodEnum method);
     }
 }

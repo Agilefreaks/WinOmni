@@ -23,8 +23,7 @@ namespace Omnipaste.Services.Providers
                         .Then((messages, calls) => messages.Cast<IConversationItem>().Concat(calls)));
         }
 
-        protected override IObservable<IConversationItem> GetObservableForContactAndOperation(
-            RepositoryMethodEnum method)
+        protected override IObservable<IConversationItem> GetObservableForOperation(RepositoryMethodEnum method)
         {
             return
                 MessageRepository.OperationObservable.OnMethod(method)

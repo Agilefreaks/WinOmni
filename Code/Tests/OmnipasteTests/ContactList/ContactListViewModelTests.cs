@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -16,7 +14,6 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
-    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
@@ -27,8 +24,6 @@
         private Mock<IContactRepository> _mockContactRepository;
 
         private Mock<IContactInfoViewModelFactory> _mockContactInfoViewModelFactory;
-
-        private Mock<IConversationProvider> _mockConversationProvider;
 
         private TestScheduler _testScheduler;
 
@@ -43,12 +38,11 @@
             
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
-            _mockConversationProvider = new Mock<IConversationProvider> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
             _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
 
-            _subject = new ContactListViewModel(_mockContactRepository.Object, _mockConversationProvider.Object, _mockContactInfoViewModelFactory.Object);
+            _subject = new ContactListViewModel(_mockContactRepository.Object, _mockContactInfoViewModelFactory.Object);
         }
 
         [TearDown]
@@ -198,46 +192,6 @@
             _subject.FilterText = "t";
 
             _subject.FilteredItems.Count.Should().Be(2);
-        }
-
-        [Test]
-        public void OnConversationItemAdded_WhenContactExists_RemovesItemFromList()
-        {
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
-            var call = new PhoneCall { ContactInfo = contactInfo };
-            _mockContactRepository.Setup(m => m.GetAll())
-                .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
-            var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            mockConversationContext.Setup(m => m.ItemChanged).Returns(Observable.Return(call, _testScheduler));
-            _mockConversationProvider.Setup(m => m.All()).Returns(mockConversationContext.Object);
-            var eventArgs = new List<NotifyCollectionChangedEventArgs>();
-            _subject.Items.CollectionChanged += (sender, args) => { eventArgs.Add(args); };
-
-            ((IActivate)_subject).Activate();
-            _testScheduler.Start();
-
-            eventArgs[1].Action.Should().Be(NotifyCollectionChangedAction.Remove);
-            eventArgs[1].OldItems.Cast<IContactInfoViewModel>().First().Model.ContactInfo.Should().Be(contactInfo);
-        }
-
-        [Test]
-        public void OnConversationItemAdded_AfterActivate_AddsItemToList()
-        {
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
-            var call = new PhoneCall { ContactInfo = contactInfo };
-            _mockContactRepository.Setup(m => m.GetAll())
-                .Returns(Observable.Return(new List<ContactInfo> { contactInfo }.AsEnumerable(), _testScheduler));
-            var mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            mockConversationContext.Setup(m => m.ItemChanged).Returns(Observable.Return(call, _testScheduler));
-            _mockConversationProvider.Setup(m => m.All()).Returns(mockConversationContext.Object);
-            var eventArgs = new List<NotifyCollectionChangedEventArgs>();
-            _subject.Items.CollectionChanged += (sender, args) => { eventArgs.Add(args); };
-
-            ((IActivate)_subject).Activate();
-            _testScheduler.Start();
-
-            eventArgs[2].Action.Should().Be(NotifyCollectionChangedAction.Add);
-            eventArgs[2].NewItems.Cast<IContactInfoViewModel>().First().Model.ContactInfo.Should().Be(contactInfo);
         }
     }
 }

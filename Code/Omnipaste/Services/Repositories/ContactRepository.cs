@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
+    using OmniCommon.Helpers;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
 
@@ -31,6 +32,12 @@
                                             })
                                         .Select(o => o.Item);
                             });
+        }
+
+        public IObservable<ContactInfo> UpdateLastActivityTime(ContactInfo contactInfo, DateTime? lastActivityTime = null)
+        {
+            contactInfo.LastActivityTime = TimeHelper.UtcNow;
+            return Save(contactInfo).Select(o => o.Item);
         }
 
         #endregion

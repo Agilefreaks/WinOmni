@@ -23,8 +23,9 @@ namespace Omnipaste.Factories
         {
             return
                 ContactRepository.GetOrCreateByPhoneNumber(phoneCallDto.Number)
-                    .Select(contact => new PhoneCall(phoneCallDto) { ContactInfo = contact })
-                    .Select(pc => _phoneCallRepository.Save(pc))
+                    .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
+                    .Switch()
+                    .Select(contact => _phoneCallRepository.Save(new PhoneCall(phoneCallDto) { ContactInfo = contact }))
                     .Switch()
                     .Select(e => e.Item);
 

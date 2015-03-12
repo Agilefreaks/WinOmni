@@ -8,5 +8,7 @@
         IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber);
 
         IObservable<ContactInfo> GetOrCreateByPhoneNumber(string phoneNumber);
+
+        IObservable<ContactInfo> UpdateLastActivityTime(ContactInfo contactInfo, DateTime? lastActivityTime = null);
     }
 }

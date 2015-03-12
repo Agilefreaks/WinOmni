@@ -31,8 +31,6 @@
 
         private readonly ISubscriptionsManager _subscriptionsManager;
 
-        private DateTime? _lastActivityTime;
-
         private bool _hasNotViewedCalls;
 
         private bool _hasNotViewedMessages;
@@ -83,7 +81,6 @@
                 _lastActivity = value;
                 NotifyOfPropertyChange();
                 LastActivityInfo = GetActivityInfo(_lastActivity);
-                LastActivityTime = _lastActivity == null ? (DateTime?)null : _lastActivity.Time;
             }
         }
 
@@ -108,16 +105,7 @@
         {
             get
             {
-                return _lastActivityTime;
-            }
-            set
-            {
-                if (value.Equals(_lastActivityTime))
-                {
-                    return;
-                }
-                _lastActivityTime = value;
-                NotifyOfPropertyChange(() => LastActivityTime);
+                return Model.ContactInfo.LastActivityTime;
             }
         }
 

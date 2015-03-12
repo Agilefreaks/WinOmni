@@ -50,13 +50,26 @@
         }
 
         [Test]
-        public void Create_WhenContactDoesntExist_SavesTheContact()
+        public void Create_Always_GetOrCreateByPhoneNumberContact()
         {
-            var smsMessageDto = new SmsMessageDto();
+            var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
 
             _scheduler.Start(() => _subject.Create(smsMessageDto));
 
             _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumber(smsMessageDto.PhoneNumber), Times.Once);
+        }
+
+        [Test]
+        public void Create_Always_UpdatesLastActivityTimeOnTheContact()
+        {
+            var smsMessageDto = new SmsMessageDto();
+            var contactInfo = new ContactInfo();
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
+
+            _scheduler.Start(() => _subject.Create(smsMessageDto));
+
+            _mockContactRepository.Verify(cr => cr.UpdateLastActivityTime(contactInfo, null), Times.Once);            
         }
 
         [Test]
@@ -67,6 +80,8 @@
             var contactInfoObservable = _scheduler.CreateColdObservable(
                 new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
+                .Returns(contactInfoObservable);
+            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
                 .Returns(contactInfoObservable);
 
             _scheduler.Start(() => _subject.Create(smsMessageDto));
@@ -79,13 +94,11 @@
         {
             var smsMessageDto = new SmsMessageDto();
             var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
-                .Returns(contactInfoObservable);
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
+            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
             var remoteSmsMessage = new RemoteSmsMessage();
-            var smsMessageObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<RepositoryOperation<SmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
+            var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<RepositoryOperation<SmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
             _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<SmsMessage>())).Returns(smsMessageObservable);
 
             var result = _scheduler.Start(() => _subject.Create(smsMessageDto));

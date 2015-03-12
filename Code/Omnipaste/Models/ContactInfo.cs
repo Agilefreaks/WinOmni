@@ -7,13 +7,7 @@
 
     public class ContactInfo : BaseModel
     {
-        #region Constants
-
         public const string NamePartSeparator = " ";
-
-        #endregion
-
-        #region Constructors and Destructors
 
         public ContactInfo()
         {
@@ -29,14 +23,9 @@
             FirstName = contactDto.FirstName;
             LastName = contactDto.LastName;
             Image = contactDto.Image;
-            PhoneNumbers = contactDto.PhoneNumbers
-                .Select(pn => new PhoneNumber { Number = pn.Number, Type = pn.Type })
-                .ToList();
+            PhoneNumbers =
+                contactDto.PhoneNumbers.Select(pn => new PhoneNumber { Number = pn.Number, Type = pn.Type }).ToList();
         }
-
-        #endregion
-
-        #region Public Properties
 
         public int ContactId { get; set; }
 
@@ -55,7 +44,7 @@
                 return string.Join(NamePartSeparator, FirstName, LastName);
             }
         }
-        
+
         public string PhoneNumber
         {
             get
@@ -68,7 +57,7 @@
 
         public bool IsStarred { get; set; }
 
-        #endregion
+        public DateTime? LastActivityTime { get; set; }
 
         public override string ToString()
         {

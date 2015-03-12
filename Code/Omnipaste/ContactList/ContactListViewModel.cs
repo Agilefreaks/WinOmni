@@ -6,12 +6,8 @@ namespace Omnipaste.ContactList
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Linq;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
-    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
@@ -19,18 +15,15 @@ namespace Omnipaste.ContactList
     {
         private readonly IContactRepository _contactRepository;
 
-        private readonly IConversationProvider _conversationProvider;
-
         private readonly IContactInfoViewModelFactory _contactInfoViewModelFactory;
 
         private bool _showStarred;
 
         private string _filterText;
 
-        public ContactListViewModel(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
+        public ContactListViewModel(IContactRepository contactRepository, IContactInfoViewModelFactory contactInfoViewModelFactory)
         {
             _contactRepository = contactRepository;
-            _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
             FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Descending));

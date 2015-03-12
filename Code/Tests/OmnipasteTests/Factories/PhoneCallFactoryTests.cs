@@ -36,7 +36,7 @@
             _kernel.Bind<IPhoneCallFactory>().To<PhoneCallFactory>();
             _kernel.Bind<IPhoneCallRepository>().ToConstant(_mockPhoneCallRepository.Object);
             _kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
-            
+
             _subject = _kernel.Get<IPhoneCallFactory>();
 
             _scheduler = new TestScheduler();
@@ -45,12 +45,12 @@
 
         [TearDown]
         public void TearDown()
-        {   
+        {
             SchedulerProvider.Default = null;
         }
 
         [Test]
-        public void Create_WhenContactDoesntExist_SavesTheContact()
+        public void Create_Always_CallsGetOrCreateByPhoneNumberContact()
         {
             var phoneCallDto = new PhoneCallDto();
 
@@ -60,7 +60,21 @@
         }
 
         [Test]
-        public void Create_Always_SavesTheSmsMessage()
+        public void Create_Always_UpdatesLastActivityTimeOnTheContact()
+        {
+            var phoneCallDto = new PhoneCallDto { Number = "42" };
+            var contactInfo = new ContactInfo();
+            var contactInfoObservable = _scheduler.CreateColdObservable(
+                new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+            _mockContactRepository.Setup(m => m.GetOrCreateByPhoneNumber("42")).Returns(contactInfoObservable);
+
+            _scheduler.Start(() => _subject.Create(phoneCallDto));
+
+            _mockContactRepository.Verify(cr => cr.UpdateLastActivityTime(contactInfo, null), Times.Once);
+        }
+
+        [Test]
+        public void Create_Always_SavesPhoneCall()
         {
             var phoneCallDto = new PhoneCallDto();
             var contactInfo = new ContactInfo();
@@ -68,7 +82,8 @@
                 new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
                 .Returns(contactInfoObservable);
-
+            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
+                .Returns(contactInfoObservable);
             _scheduler.Start(() => _subject.Create(phoneCallDto));
 
             _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<PhoneCall>()), Times.Once);
@@ -79,15 +94,12 @@
         {
             var phoneCallDto = new PhoneCallDto();
             var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
-                .Returns(contactInfoObservable);
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
+            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
             var phoneCall = new PhoneCall();
-            var phoneCallObservable = _scheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<RepositoryOperation<PhoneCall>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
-            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<PhoneCall>()))
-                .Returns(phoneCallObservable);
+            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<RepositoryOperation<PhoneCall>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
+            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<PhoneCall>())).Returns(phoneCallObservable);
 
             var result = _scheduler.Start(() => _subject.Create(phoneCallDto));
 

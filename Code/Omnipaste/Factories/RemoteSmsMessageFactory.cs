@@ -23,8 +23,9 @@
         {
             return
                 ContactRepository.GetOrCreateByPhoneNumber(smsMessage.PhoneNumber)
-                    .Select(ci => new RemoteSmsMessage(smsMessage) { ContactInfo = ci })
-                    .Select(m => _messageRepository.Save(m))
+                    .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
+                    .Switch()
+                    .Select(contact => _messageRepository.Save(new RemoteSmsMessage(smsMessage) { ContactInfo = contact }))
                     .Switch()
                     .Select(e => e.Item)
                     .Cast<RemoteSmsMessage>();

@@ -6,7 +6,7 @@
 
     public interface IContactInfoViewModel : IDetailsViewModel<ContactInfoPresenter>
     {
-        DateTime? LastActivityTime { get; set; }
+        DateTime? LastActivityTime { get; }
 
         void ShowDetails();
     }
