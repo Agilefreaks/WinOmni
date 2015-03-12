@@ -1,7 +1,10 @@
 ﻿namespace OmnipasteTests.Services.Repositories
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -144,6 +147,20 @@
             var result = _testScheduler.Start(() => _subject.GetOrCreateByPhoneNumber(PhoneNumber).Select(_ => _subject.GetByPhoneNumber(PhoneNumber)).Switch());
             
             result.Messages.First().Value.Value.PhoneNumber.Should().Be(PhoneNumber);
+        }
+
+        [Test]
+        public void Save_WillNotExpire()
+        {
+            var testableObserver = _testScheduler.CreateObserver<ContactInfo>();
+            _testScheduler.Schedule(() => _subject.Save(new ContactInfo { UniqueId = "42" }));
+            _testScheduler.Schedule(new TimeSpan(0, 23, 59, 0), () => _subject.Get("42").Subscribe(testableObserver));
+            _testScheduler.Schedule(new TimeSpan(1, 0, 0, 1), () => _subject.Get("42").Subscribe(testableObserver));
+
+            _testScheduler.Start();
+
+            testableObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
+            testableObserver.Messages.Last().Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
     }
 }

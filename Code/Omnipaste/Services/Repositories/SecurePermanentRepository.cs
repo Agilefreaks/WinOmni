@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reactive;
     using System.Reactive.Linq;
     using Akavache;
     using Akavache.Sqlite3;
@@ -16,6 +17,8 @@
     {
         private readonly IBlobCache _blobCache;
 
+        public TimeSpan? DefaultExpireIn { get; set; }
+
         protected SecurePermanentRepository(String blobName)
         {
             _blobCache = ModeDetector.InUnitTestRunner()
@@ -24,6 +27,7 @@
                                    Path.Combine(GetDefaultLocalMachineCacheDirectory(), blobName),
                                    new EncryptionProvider(),
                                    SchedulerProvider.Default);
+            DefaultExpireIn = new TimeSpan(1, 0, 0, 0);
         }
 
         private string GetDefaultLocalMachineCacheDirectory()
@@ -46,8 +50,9 @@
 
         public override IObservable<RepositoryOperation<T>> Save(T item)
         {
+            var insertObject = DefaultExpireIn.HasValue ? _blobCache.InsertObject(item.UniqueId, item, DefaultExpireIn.Value) : _blobCache.InsertObject(item.UniqueId, item);
             return
-                _blobCache.InsertObject(item.UniqueId, item, new TimeSpan(1, 0, 0, 0))
+                insertObject
                     .Select(_ => RepositoryOperation<T>.Empty())
                     .Concat(Observable.Return(BuildRepositoryOperation(RepositoryMethodEnum.Changed, item)))
                     .TakeLast(1);

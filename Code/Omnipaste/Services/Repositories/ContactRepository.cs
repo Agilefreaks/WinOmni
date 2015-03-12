@@ -12,6 +12,7 @@
         public ContactRepository()
             : base("contacts")
         {
+            DefaultExpireIn = null;
         }
 
         #region IContactRepository Members
