@@ -31,5 +31,12 @@
             _contactSelection = contactSelectionViewModel;
             _conversation = conversationViewModel;
         }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            ContactSelection.Activate();
+        }
     }
 }
