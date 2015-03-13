@@ -4,7 +4,7 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
 
-    public class ContactSelectionViewModel : ContactListViewModel, IContactSelectionViewModel
+    public class ContactSelectionViewModel : ContactListViewModelBase<IContactInfoViewModel>, IContactSelectionViewModel
     {
         public ContactSelectionViewModel(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
             : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
