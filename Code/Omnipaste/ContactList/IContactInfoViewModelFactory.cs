@@ -1,9 +1,11 @@
 ﻿namespace Omnipaste.ContactList
 {
     using Omnipaste.Presenters;
+    using OmniUI.Details;
 
     public interface IContactInfoViewModelFactory
     {
-        IContactInfoViewModel Create(ContactInfoPresenter contactInfoPresenter);
+        T Create<T>(ContactInfoPresenter contactInfoPresenter) 
+            where T : IDetailsViewModel<ContactInfoPresenter>;
     }
 }

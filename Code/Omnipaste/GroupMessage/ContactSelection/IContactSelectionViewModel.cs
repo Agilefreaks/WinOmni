@@ -3,7 +3,7 @@
     using Omnipaste.ContactList;
     using OmniUI.List;
 
-    public interface IContactSelectionViewModel : IListViewModel<IContactInfoViewModel>
+    public interface IContactSelectionViewModel : IListViewModel<IContactInfoSelectionViewModel>
     {
     }
 }

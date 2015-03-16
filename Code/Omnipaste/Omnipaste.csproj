@@ -264,7 +264,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionViewModel.cs" />
     <Compile Include="ContactList\ContactListViewModelBase.cs" />
+    <Compile Include="ContactList\IContactInfoSelectionViewModel.cs" />
     <Compile Include="Factories\ContactFactory.cs" />
     <Compile Include="Factories\IContactFactory.cs" />
     <Compile Include="Factories\IPhoneCallFactory.cs" />
@@ -303,6 +305,8 @@
     <Compile Include="Models\RemotePhoneCall.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
+    <Compile Include="Presenters\GroupMessagePresenter.cs" />
+    <Compile Include="Presenters\IGroupMessagePresenter.cs" />
     <Compile Include="Presenters\Factories\ActivityPresenterFactory.cs" />
     <Compile Include="Presenters\Factories\ConversationPresenterFactory.cs" />
     <Compile Include="Presenters\Factories\IActivityPresenterFactory.cs" />
@@ -579,6 +583,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     <Page Include="GroupMessage\ContactSelection\ContactSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

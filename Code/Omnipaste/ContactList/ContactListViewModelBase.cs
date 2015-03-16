@@ -118,7 +118,7 @@ namespace Omnipaste.ContactList
 
         protected override TContactViewModel CreateViewModel(ContactInfoPresenter model)
         {
-            return (TContactViewModel)_contactInfoViewModelFactory.Create(model);
+            return _contactInfoViewModelFactory.Create<TContactViewModel>(model);
         }
 
         private static bool IsMatch(string filter, string value)

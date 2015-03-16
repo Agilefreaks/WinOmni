@@ -11,6 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
+    using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -40,7 +41,7 @@
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
-            _mockContactInfoViewModelFactory.Setup(x => x.Create(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
+            _mockContactInfoViewModelFactory.Setup(x => x.Create<ContactInfoViewModel>(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
 
             _subject = new ContactListViewModel(_mockContactRepository.Object, _mockContactInfoViewModelFactory.Object);
         }

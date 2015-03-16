@@ -11,7 +11,7 @@ namespace OmnipasteTests.ContactList
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
+    using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;

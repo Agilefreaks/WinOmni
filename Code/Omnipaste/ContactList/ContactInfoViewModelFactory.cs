@@ -2,6 +2,7 @@ namespace Omnipaste.ContactList
 {
     using Microsoft.Practices.ServiceLocation;
     using Omnipaste.Presenters;
+    using OmniUI.Details;
 
     public class ContactInfoViewModelFactory : IContactInfoViewModelFactory
     {
@@ -12,9 +13,10 @@ namespace Omnipaste.ContactList
             _serviceLocator = serviceLocator;
         }
 
-        public IContactInfoViewModel Create(ContactInfoPresenter contactInfoPresenter)
+        public T Create<T>(ContactInfoPresenter contactInfoPresenter)
+            where T : IDetailsViewModel<ContactInfoPresenter>
         {
-            var viewModel = _serviceLocator.GetInstance<IContactInfoViewModel>();
+            var viewModel = _serviceLocator.GetInstance<T>();
             viewModel.Model = contactInfoPresenter;
 
             return viewModel;
