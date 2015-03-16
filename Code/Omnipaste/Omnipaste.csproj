@@ -586,6 +586,7 @@
     <Page Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GroupMessage\ContactSelection\ContactSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

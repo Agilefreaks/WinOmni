@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.GroupMessage.ContactSelection
 {
     using Omnipaste.ContactList;
-    using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
 

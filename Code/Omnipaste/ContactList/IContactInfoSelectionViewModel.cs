@@ -7,5 +7,7 @@
     public interface IContactInfoSelectionViewModel : IDetailsViewModel<ContactInfoPresenter>
     {
         DateTime? LastActivityTime { get; set; }
+
+        bool IsSelected { get; set; }
     }
 }

@@ -18,7 +18,7 @@
         <Border BorderThickness="0,1,0,1" BorderBrush="{Binding Path=IsSelected, Converter={StaticResource ContactInfoBorderBrushConverter}}" />
         <Border Background="{Binding Path=IsSelected, Converter={StaticResource ContactInfoBackroundBrushConverter}}" Opacity="0.05" />
 
-        <Border Style="{DynamicResource ListItemBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
+        <Border Style="{DynamicResource ListItemBorderStyle}">
             <Border.InputBindings>
                 <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
             </Border.InputBindings>
@@ -37,14 +37,7 @@
 
                 <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Margin="0,0,8,0" Width="40" Height="40" />
 
-                <CheckBox Grid.Column="1" IsChecked="{Binding Path=Model.IsStarred, Mode=TwoWay}" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
-                    <framework:CheckboxHelper.CheckedIcon>
-                        <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
-                    </framework:CheckboxHelper.CheckedIcon>
-                    <framework:CheckboxHelper.UncheckedIcon>
-                        <Rectangle Fill="{DynamicResource ButtonBorderBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>
-                    </framework:CheckboxHelper.UncheckedIcon>
-                </CheckBox>
+                <CheckBox Grid.Column="1" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}" VerticalAlignment="Top" Margin="0,3,8,0" />
 
                 <ContentControl Grid.Column="2" HorizontalAlignment="Stretch" Style="{DynamicResource FadingContentControlStyle}">
                     <StackPanel Orientation="Vertical">

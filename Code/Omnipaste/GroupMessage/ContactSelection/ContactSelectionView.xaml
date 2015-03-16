@@ -39,7 +39,9 @@
         </Border>
 
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
-            <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}" BorderThickness="0">
+            <ListView ItemsSource="{Binding Path=FilteredItems}" 
+                      Style="{StaticResource VirtualisedMetroListView}" 
+                      BorderThickness="0" SelectionMode="Multiple">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ContentControl cal:View.Model="{Binding}" />
