@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ContactList
+﻿namespace Omnipaste.ContactList.ContactInfo
 {
     using System;
     using System.ComponentModel;
@@ -16,7 +16,6 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
     using OmniUI.Workspace;

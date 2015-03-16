@@ -379,7 +379,7 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
-    <Compile Include="ContactList\ContactInfoViewModel.cs" />
+    <Compile Include="ContactList\ContactInfo\ContactInfoViewModel.cs" />
     <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
     <Compile Include="ContactList\ContactListViewModel.cs" />
     <Compile Include="ContactList\IContactInfoViewModel.cs" />
@@ -772,7 +772,7 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="ContactList\ContactInfoView.xaml">
+    <Page Include="ContactList\ContactInfo\ContactInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
