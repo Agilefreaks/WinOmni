@@ -445,4 +445,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="SettingsRefreshContacts" xml:space="preserve">
     <value>Atualizar Contatos</value>
   </data>
+  <data name="GroupMessageRecipientsLabel" xml:space="preserve">
+    <value>Destinatários</value>
+  </data>
 </root>

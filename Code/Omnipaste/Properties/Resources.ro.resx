@@ -445,4 +445,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="SettingsRefreshContacts" xml:space="preserve">
     <value>Actualizează Contactele</value>
   </data>
+  <data name="GroupMessageRecipientsLabel" xml:space="preserve">
+    <value>Destinatari</value>
+  </data>
 </root>

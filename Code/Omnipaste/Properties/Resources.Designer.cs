@@ -605,6 +605,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recipients.
+        /// </summary>
+        public static string GroupMessageRecipientsLabel {
+            get {
+                return ResourceManager.GetString("GroupMessageRecipientsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incoming Link.
         /// </summary>
         public static string HyperlinkNotificationTitle {

@@ -445,4 +445,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="SettingsRefreshContacts" xml:space="preserve">
     <value>Refresh Contacts</value>
   </data>
+  <data name="GroupMessageRecipientsLabel" xml:space="preserve">
+    <value>Recipients</value>
+  </data>
 </root>
