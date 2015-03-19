@@ -291,6 +291,12 @@
     <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="GroupMessage\ContactSelection\ContactSelectionViewModel.cs" />
     <Compile Include="GroupMessage\ContactSelection\IContactSelectionViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageContentViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageDetailsViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageContentViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageHeaderViewModel.cs" />
+    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageDetailsViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageViewModel.cs" />
     <Compile Include="GroupMessage\IGroupMessageViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
@@ -588,6 +594,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GroupMessage\ContactSelection\ContactSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GroupMessage\GroupMessageDetails\GroupMessageContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

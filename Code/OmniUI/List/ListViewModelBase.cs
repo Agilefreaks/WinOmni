@@ -7,6 +7,7 @@ namespace OmniUI.List
     using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniUI.Details;
@@ -89,7 +90,7 @@ namespace OmniUI.List
             {
                 DeactivateItem(Items.Last(), true);
             }
-
+            
             base.ActivateItem(item);
         }
 
@@ -201,6 +202,11 @@ namespace OmniUI.List
             }
 
             base.OnDeactivate(close);
+        }
+
+        protected virtual void ItemsAdded()
+        {
+            
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

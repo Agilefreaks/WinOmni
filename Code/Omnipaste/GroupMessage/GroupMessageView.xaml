@@ -12,6 +12,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ContentControl cal:View.Model="{Binding Path=ContactSelection}"></ContentControl>
-        <ContentControl Grid.Column="1" cal:View.Model="{Binding Path=Conversation}"></ContentControl>
+        <ContentControl Grid.Column="1" cal:View.Model="{Binding Path=GroupMessageDetails}"></ContentControl>
     </Grid>
 </UserControl>

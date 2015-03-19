@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.SMSComposer
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
@@ -9,6 +11,7 @@
     using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
+    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using SMS.Models;
     using SMS.Resources.v1;
@@ -124,6 +127,8 @@
             }
         }
 
+        public IList<ContactInfoPresenter> Recipients { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -131,10 +136,12 @@
         public virtual void Send()
         {
             IsSending = true;
-            _smsMessages
-                .Send(ContactInfo.PhoneNumber, Message)
-                .Select(SmsMessageFactory.Create<LocalSmsMessage>)
-                .Switch()
+
+            var createObservable = Recipients != null
+                                       ? _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
+                                       : _smsMessages.Send(ContactInfo.PhoneNumber, Message);
+            
+            createObservable.Select(SmsMessageFactory.Create<LocalSmsMessage>)
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);
