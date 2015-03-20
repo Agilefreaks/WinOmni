@@ -1,4 +1,5 @@
-﻿namespace OmnipasteTests.ContactList
+﻿/* TODO
+namespace OmnipasteTests.ContactList
 {
     using System;
     using System.Collections.Generic;
@@ -250,9 +251,9 @@
             var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IConversationItem>>(
+                    new Recorded<Notification<IConversationPresenter>>(
                         200,
-                        Notification.CreateOnNext((IConversationItem)message)));
+                        Notification.CreateOnNext((IConversationPresenter)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(messageOperationObservable);
             SetupConversation(message);
             _subject.OnLoaded();
@@ -268,20 +269,20 @@
             var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
             var observable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IConversationItem>>(
+                    new Recorded<Notification<IConversationPresenter>>(
                         200,
-                        Notification.CreateOnNext((IConversationItem)message)));
+                        Notification.CreateOnNext((IConversationPresenter)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(observable);
             var observable1 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
+                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
                         100,
-                        Notification.CreateOnNext(new List<IConversationItem> { message }.AsEnumerable())));
+                        Notification.CreateOnNext(new List<IConversationPresenter> { message }.AsEnumerable())));
             var observable2 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
+                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
                         100,
-                        Notification.CreateOnNext(Enumerable.Empty<IConversationItem>())));
+                        Notification.CreateOnNext(Enumerable.Empty<IConversationPresenter>())));
             var results = new[] { observable1, observable2 };
             var index = 0;
             _mockConversation.Setup(x => x.GetItems()).Returns(() => results[index++]);
@@ -292,14 +293,15 @@
             _subject.LastActivityInfo.Should().Be(string.Empty);
         }
 
-        private void SetupConversation(params IConversationItem[] items)
+        private void SetupConversation(params IConversationPresenter[] items)
         {
             var observable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationItem>>>(
+                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
                         100,
                         Notification.CreateOnNext(items.AsEnumerable())));
             _mockConversation.Setup(x => x.GetItems()).Returns(observable);
         }
     }
 }
+*/

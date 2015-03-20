@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -13,8 +14,10 @@
     using Omnipaste.ActivityList;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using Splat;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -25,7 +28,9 @@
 
         private Mock<IClippingRepository> _mockClippingRepository;
 
-        private Mock<IMessageRepository> _mockMessageRepository;
+        private Mock<ISmsMessageRepository> _mockMessageRepository;
+
+        private Mock<IActivityPresenterFactory> _mockActivityPresenterFactory;
 
         private Mock<ISessionManager> _mockSessionManager;
 
@@ -45,7 +50,8 @@
             SchedulerProvider.Dispatcher = _testScheduler;
 
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
-            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockActivityPresenterFactory = new Mock<IActivityPresenterFactory> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
@@ -61,10 +67,11 @@
                         });
 
             _subject = new ActivityListViewModel(
-                _mockClippingRepository.Object,
-                _mockMessageRepository.Object,
-                _mockCallRepository.Object,
-                _mockUpdateInfoRepository.Object,
+                _mockClippingRepository.Object, 
+                _mockMessageRepository.Object, 
+                _mockCallRepository.Object, 
+                _mockUpdateInfoRepository.Object, 
+                _mockActivityPresenterFactory.Object, 
                 _mockActivityViewModelFactory.Object);
         }
 
@@ -78,16 +85,18 @@
         [Test]
         public void ReceivingAClipping_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
+            var clippingModel = new ClippingModel();
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, new ClippingModel()))),
+                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
+            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -113,10 +122,10 @@
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
+            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
             ((IActivate)_subject).Activate();
 
-            _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(0);
@@ -141,27 +150,28 @@
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
+            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
+            SetupClippingActivityPresenterFactory<ClippingPresenter>(modifiedClipping);
             ((IActivate)_subject).Activate();
 
-            _testScheduler.Start();
             _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.Should().Be(modifiedClipping);
+            _subject.Items.First().Model.BackingModel.BackingModel.Should().Be(modifiedClipping);
         }
 
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var remoteRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new RemotePhoneCall());
-            var localRepositoryOperation = new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new LocalPhoneCall());
+            var remotePhoneCall = new RemotePhoneCall();
+            var remoteRepositoryOperation = new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, remotePhoneCall);
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(150, Notification.CreateOnNext(localRepositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(eventObservable);
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
+            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(eventObservable);
+            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(remotePhoneCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -177,16 +187,40 @@
             var modifiedCall = new RemotePhoneCall { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, call))),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, modifiedCall))),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(callObservable);
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, call))),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, modifiedCall))),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
+            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(callObservable);
+            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(call);
+            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(modifiedCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.Should().Be(modifiedCall);
+            _subject.Items.First().Model.BackingModel.BackingModel.Should().Be(modifiedCall);
         }
+
+        private void SetupClippingActivityPresenterFactory<TPresenter>(ClippingModel model)
+            where TPresenter : Presenter
+        {
+            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
+            var mock = new Mock<ActivityPresenter>();
+
+            mock.SetupGet(m => m.BackingModel).Returns(presenter);
+            mock.SetupGet(m => m.Type).Returns(ActivityTypeEnum.Clipping);
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+        }
+
+        private void SetupPhoneCallActivityPresenterFactory<TPresenter>(PhoneCall model)
+            where TPresenter : Presenter
+        {
+            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
+            var mock = new Mock<ActivityPresenter>();
+
+            mock.SetupGet(m => m.BackingModel).Returns(presenter);
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+        }
+
     }
 }

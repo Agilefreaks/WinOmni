@@ -87,7 +87,7 @@
                 .Returns(contactInfoObservable);
             _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
-            _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<PhoneCall>()), Times.Once);
+            _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<LocalPhoneCall>()), Times.Once);
         }
 
         [Test]
@@ -99,8 +99,8 @@
             _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
             var phoneCall = new LocalPhoneCall();
-            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<PhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
-            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<PhoneCall>())).Returns(phoneCallObservable);
+            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<LocalPhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<LocalPhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
+            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<LocalPhoneCall>())).Returns(phoneCallObservable);
 
             var result = _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 

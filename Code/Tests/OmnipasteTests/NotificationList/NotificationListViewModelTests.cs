@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Clipboard.Models;
     using FluentAssertions;
@@ -49,39 +50,8 @@
                         Notification.CreateOnNext(
                             new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _viewedClipping))));
 
-            _incommingPhoneCall = new RemotePhoneCall
-                                      {
-                                          ContactInfo =
-                                              new ContactInfo
-                                                  {
-                                                      PhoneNumbers =
-                                                          new[]
-                                                              {
-                                                                  new PhoneNumber
-                                                                      {
-                                                                          Number =
-                                                                              "phone number"
-                                                                      }
-                                                              }
-                                                  }
-                                      };
-            _viewedPhoneCall = new RemotePhoneCall
-                                   {
-                                       ContactInfo =
-                                           new ContactInfo
-                                               {
-                                                   PhoneNumbers =
-                                                       new[]
-                                                           {
-                                                               new PhoneNumber
-                                                                   {
-                                                                       Number =
-                                                                           "phone number"
-                                                                   }
-                                                           }
-                                               },
-                                       WasViewed = true
-                                   };
+            _incommingPhoneCall = new RemotePhoneCall();
+            _viewedPhoneCall = new RemotePhoneCall { WasViewed = true };
             _testableCallsObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
@@ -92,41 +62,8 @@
                         250,
                         Notification.CreateOnNext(
                             new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, _viewedPhoneCall))));
-            var remoteSmsMessage = new RemoteSmsMessage
-                                       {
-                                           ContactInfo =
-                                               new ContactInfo
-                                                   {
-                                                       PhoneNumbers =
-                                                           new[]
-                                                               {
-                                                                   new PhoneNumber
-                                                                       {
-                                                                           Number
-                                                                               =
-                                                                               "phone number"
-                                                                       }
-                                                               }
-                                                   }
-                                       };
-            var viewedSmsMessage = new RemoteSmsMessage
-                                       {
-                                           WasViewed = true,
-                                           ContactInfo =
-                                               new ContactInfo
-                                                   {
-                                                       PhoneNumbers =
-                                                           new[]
-                                                               {
-                                                                   new PhoneNumber
-                                                                       {
-                                                                           Number
-                                                                               =
-                                                                               "phone number"
-                                                                       }
-                                                               }
-                                                   }
-                                       };
+            var remoteSmsMessage = new RemoteSmsMessage();
+            var viewedSmsMessage = new RemoteSmsMessage { WasViewed = true };
             _testableMessagesObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
@@ -142,13 +79,11 @@
 
         #endregion
 
-        #region Fields
-
         private Mock<IClippingRepository> _mockClippingRepository;
 
         private Mock<IPhoneCallRepository> _mockCallRepository;
 
-        private Mock<IMessageRepository> _mockMessageRepository;
+        private Mock<ISmsMessageRepository> _mockMessageRepository;
 
         private MoqMockingKernel _mockingKernel;
 
@@ -176,10 +111,6 @@
 
         private ClippingModel _viewedClipping;
 
-        #endregion
-
-        #region Public Methods and Operators
-
         [SetUp]
         public void Setup()
         {
@@ -193,8 +124,8 @@
             _mockingKernel.Bind<IClippingRepository>().ToConstant(_mockClippingRepository.Object);
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockingKernel.Bind<IPhoneCallRepository>().ToConstant(_mockCallRepository.Object);
-            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockingKernel.Bind<IMessageRepository>().ToConstant(_mockMessageRepository.Object);
+            _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockingKernel.Bind<ISmsMessageRepository>().ToConstant(_mockMessageRepository.Object);
             _mockingKernel.Bind<INotificationListViewModel>().To<NotificationListViewModel>();
             _mockApplicationService = _mockingKernel.GetMock<IApplicationService>();
             _mockingKernel.Bind<IApplicationService>().ToConstant(_mockApplicationService.Object);
@@ -230,9 +161,9 @@
             var firstClippingViewModel = new Mock<IClippingNotificationViewModel>();
             var secondClippingViewModel = new Mock<IClippingNotificationViewModel>();
             _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<ClippingModel>()))
-                .Returns(firstClippingViewModel.Object)
-                .Returns(secondClippingViewModel.Object);
-            _mockClippingRepository.Setup(m => m.OperationObservable).Returns(_testableClippingsObservable);
+                .Returns(Observable.Return(firstClippingViewModel.Object))
+                .Returns(Observable.Return(secondClippingViewModel.Object));
+            _mockClippingRepository.Setup(m => m.GetOperationObservable()).Returns(_testableClippingsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -245,10 +176,10 @@
         {
             var firstIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
             var secondIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<PhoneCall>()))
-                .Returns(firstIncomingCallNotificationViewModel.Object)
-                .Returns(secondIncomingCallNotificationViewModel.Object);
-            _mockCallRepository.SetupGet(m => m.OperationObservable).Returns(_testableCallsObservable);
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemotePhoneCall>()))
+                .Returns(Observable.Return(firstIncomingCallNotificationViewModel.Object))
+                .Returns(Observable.Return(secondIncomingCallNotificationViewModel.Object));
+            _mockCallRepository.Setup(m => m.GetOperationObservable()).Returns(_testableCallsObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -261,10 +192,10 @@
         {
             var firstIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
             var secondIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
-            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<SmsMessage>()))
-                .Returns(firstIncomingSmsNotificationViewModel.Object)
-                .Returns(secondIncomingSmsNotificationViewModel.Object);
-            _mockMessageRepository.SetupGet(m => m.OperationObservable).Returns(_testableMessagesObservable);
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemoteSmsMessage>()))
+                .Returns(Observable.Return(firstIncomingSmsNotificationViewModel.Object))
+                .Returns(Observable.Return(secondIncomingSmsNotificationViewModel.Object));
+            _mockMessageRepository.Setup(m => m.GetOperationObservable()).Returns(_testableMessagesObservable);
             _subject.Activate();
 
             _testScheduler.Start();
@@ -296,7 +227,5 @@
 
             mockNotification.Verify(m => m.Dismiss(), Times.Never());
         }
-
-        #endregion
     }
 }

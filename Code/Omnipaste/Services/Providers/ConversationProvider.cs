@@ -1,28 +1,43 @@
 ﻿namespace Omnipaste.Services.Providers
 {
     using Omnipaste.Models;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Repositories;
 
     public class ConversationProvider : IConversationProvider
     {
         private readonly IPhoneCallRepository _phoneCallRepository;
 
-        private readonly IMessageRepository _messageRepository;
+        private readonly IPhoneCallPresenterFactory _phoneCallPresenterFactory;
 
-        public ConversationProvider(IMessageRepository messageRepository, IPhoneCallRepository phoneCallRepository)
+        private readonly ISmsMessagePresenterFactory _smsMessagePresenterFactory;
+
+        private readonly ISmsMessageRepository _smsMessageRepository;
+
+        public ConversationProvider(
+            ISmsMessageRepository smsMessageRepository,
+            IPhoneCallRepository phoneCallRepository,
+            IPhoneCallPresenterFactory phoneCallPresenterFactory,
+            ISmsMessagePresenterFactory smsMessagePresenterFactory)
         {
-            _messageRepository = messageRepository;
+            _smsMessageRepository = smsMessageRepository;
             _phoneCallRepository = phoneCallRepository;
+            _phoneCallPresenterFactory = phoneCallPresenterFactory;
+            _smsMessagePresenterFactory = smsMessagePresenterFactory;
         }
+
+        #region IConversationProvider Members
 
         public IConversationContext ForContact(ContactInfo contactInfo)
         {
-            return new ContactConversationContext(_messageRepository, _phoneCallRepository, contactInfo);
+            return new ContactConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory, contactInfo);
         }
 
         public IConversationContext All()
         {
-            return new MergedConversationContext(_messageRepository, _phoneCallRepository);
+            return new MergedConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory);
         }
+
+        #endregion
     }
 }

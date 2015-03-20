@@ -1,20 +1,19 @@
 namespace Omnipaste.Services.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Reactive;
-    using Omnipaste.Models;
+    using Omnipaste.Presenters;
 
     public interface IConversationContext
     {
-        IObservable<IConversationItem> ItemChanged { get; }
+        IObservable<IConversationPresenter> ItemChanged { get; }
 
-        IObservable<IConversationItem> ItemRemoved { get; }
+        IObservable<IConversationPresenter> ItemRemoved { get; }
 
-        IObservable<IConversationItem> Updated { get; }
+        IObservable<IConversationPresenter> Updated { get; }
 
-        IObservable<IEnumerable<IConversationItem>> GetItems();
+        IObservable<IConversationPresenter> GetItems();
 
-        IObservable<Unit> SaveItem(IConversationItem item);
+        IObservable<Unit> SaveItem(IConversationPresenter item);
     }
 }

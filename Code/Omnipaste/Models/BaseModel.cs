@@ -15,6 +15,8 @@
 
         #region IModel Members
 
+        public string Id { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public DateTime Time

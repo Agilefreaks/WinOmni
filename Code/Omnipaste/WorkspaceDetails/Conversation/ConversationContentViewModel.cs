@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
@@ -17,7 +17,7 @@
     using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
     using OmniUI.List;
 
-    public class ConversationContentViewModel : ListViewModelBase<IConversationItem, IConversationItemViewModel>,
+    public class ConversationContentViewModel : ListViewModelBase<IConversationPresenter, IConversationItemViewModel>,
                                                 IConversationContentViewModel
     {
         #region Fields
@@ -80,19 +80,19 @@
 
         protected override void OnInitialize()
         {
-            _conversationContext = _conversationProvider.ForContact(Model.ContactInfo);
+            _conversationContext = _conversationProvider.ForContact(Model.BackingModel);
             base.OnInitialize();
         }
 
-        protected override IConversationItemViewModel ChangeViewModel(IConversationItem model)
+        protected override IConversationItemViewModel ChangeViewModel(IConversationPresenter model)
         {
             return UpdateViewModel(model) ?? CreateViewModel(model);
         }
 
-        private IConversationItemViewModel CreateViewModel(IConversationItem model)
+        private IConversationItemViewModel CreateViewModel(IConversationPresenter model)
         {
             IConversationItemViewModel result;
-            if (model is Models.PhoneCall)
+            if (model is PhoneCallPresenter)
             {
                 result = Kernel.Get<IPhoneCallViewModel>();
             }
@@ -106,7 +106,7 @@
             return result;
         }
 
-        private IConversationItemViewModel UpdateViewModel(IConversationItem model)
+        private IConversationItemViewModel UpdateViewModel(IConversationPresenter model)
         {
             IConversationItemViewModel result =
                 (IConversationItemViewModel)Items.OfType<IPhoneCallViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source) ??
@@ -115,19 +115,19 @@
             return result;
         }
 
-        protected override IObservable<IConversationItem> GetItemChangedObservable()
+        protected override IObservable<IConversationPresenter> GetItemChangedObservable()
         {
             return _conversationContext.ItemChanged;
         }
 
-        protected override IObservable<IConversationItem> GetItemRemovedObservable()
+        protected override IObservable<IConversationPresenter> GetItemRemovedObservable()
         {
             return _conversationContext.ItemRemoved;
         }
 
-        protected override IObservable<IEnumerable<IConversationItem>> GetFetchItemsObservable()
+        protected override IObservable<IObservable<IConversationPresenter>> GetFetchItemsObservable()
         {
-            return _conversationContext.GetItems();
+            return _conversationContext.GetItems().Select(Observable.Return);
         }
 
         protected override void OnActivate()
@@ -135,22 +135,22 @@
             base.OnActivate();
             foreach (var item in Items)
             {
-                HandleNotViewedItem((IConversationItem)item.Model);
+                HandleNotViewedItem((IConversationPresenter)item.Model);
             }
         }
 
-        private void MarkConversationItemAsViewed(IConversationItem item)
+        private void MarkConversationItemAsViewed(IConversationPresenter item)
         {
             item.WasViewed = true;
             _conversationContext.SaveItem(item).SubscribeAndHandleErrors();
         }
 
-        private void DismissConversationItemNotification(IConversationItem item)
+        private void DismissConversationItemNotification(IConversationPresenter item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
         }
 
-        private void HandleNotViewedItem(IConversationItem item)
+        private void HandleNotViewedItem(IConversationPresenter item)
         {
             if (item.WasViewed || !IsActive)
             {

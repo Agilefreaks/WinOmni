@@ -4,8 +4,6 @@
 
     public class ClippingModel : BaseModel
     {
-        public string Id { get; set; }
-
         public string Content { get; set; }
 
         public string DeviceId { get; set; }

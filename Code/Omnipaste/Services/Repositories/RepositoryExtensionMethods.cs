@@ -6,10 +6,10 @@
 
     public static class RepositoryExtensionMethods
     {
-        public static IObservable<IEnumerable<T>> GetByContact<T>(this IRepository<T> repository, ContactInfo contactInfo)
-            where T : BaseModel, IConversationItem
+        public static IObservable<IEnumerable<T>> GetByContact<T>(this IConversationRepository repository, ContactInfo contactInfo)
+            where T : ConversationBaseModel
         {
-            return repository.GetAll(item => item.ContactInfo.UniqueId == contactInfo.UniqueId);
+            return repository.GetAll<T>(item => item.ContactInfoUniqueId == contactInfo.UniqueId);
         }
     }
 }

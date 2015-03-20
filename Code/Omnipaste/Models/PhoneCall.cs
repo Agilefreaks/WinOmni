@@ -1,12 +1,12 @@
 ﻿namespace Omnipaste.Models
 {
+    using System;
     using PhoneCalls.Models;
 
-    public abstract class PhoneCall : BaseModel, IConversationItem
+    public abstract class PhoneCall : ConversationBaseModel
     {
         protected PhoneCall()
         {
-            ContactInfo = new ContactInfo();
             Content = string.Empty;
         }
 
@@ -16,21 +16,13 @@
             Id = phoneCallDto.Id;
         }
 
-        #region IConversationItem Members
-
-        public string Id { get; set; }
-
-        public ContactInfo ContactInfo { get; set; }
-
         public abstract SourceType Source { get; }
 
         public string Content { get; set; }
 
-        #endregion
-
-        public PhoneCall SetContactInfo(ContactInfo contact)
+        public PhoneCall SetContactInfoUniqueId(String contactInfoUniqueId)
         {
-            ContactInfo = contact;
+            ContactInfoUniqueId = contactInfoUniqueId;
             return this;
         }
     }

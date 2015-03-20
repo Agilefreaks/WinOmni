@@ -1,20 +1,58 @@
 namespace Omnipaste.Services.Repositories
 {
-    public class RepositoryOperation<T>
+    using System;
+
+    public class RepositoryOperation
     {
-        public RepositoryOperation(RepositoryMethodEnum repositoryMethod, T item)
+        public RepositoryMethodEnum RepositoryMethod { get; set; }
+
+        private object Item { get; set; }
+
+        public RepositoryOperation(RepositoryMethodEnum repositoryMethod)
         {
             RepositoryMethod = repositoryMethod;
+        }
+
+        protected RepositoryOperation()
+        {
+        }
+
+        public T GetItem<T>()
+        {
+            return (T) Item;
+        }
+
+        public void SetItem<T>(T item)
+        {
             Item = item;
+        }
+    }
+
+    public class RepositoryOperation<T> : RepositoryOperation
+    {
+        public RepositoryOperation(RepositoryMethodEnum repositoryMethod, T item)
+            : base (repositoryMethod)
+        {
+            RepositoryMethod = repositoryMethod;
+            SetItem(item);
         }
 
         private RepositoryOperation()
         {
         }
 
-        public RepositoryMethodEnum RepositoryMethod { get; set; }
+        public T Item
+        {
+            get
+            {
+                return GetItem<T>();
+            }
 
-        public T Item { get; set; }
+            set
+            {
+                SetItem(value);
+            }
+        }
 
         public static RepositoryOperation<T> Empty()
         {

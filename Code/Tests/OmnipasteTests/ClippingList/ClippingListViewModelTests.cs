@@ -60,7 +60,7 @@
                             new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, new ClippingModel()))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceBy(1000);
@@ -78,7 +78,7 @@
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Delete, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
             _testScheduler.Start();
@@ -98,7 +98,7 @@
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, modifiedClipping))),
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
-            _mockClippingRepository.SetupGet(x => x.OperationObservable).Returns(clippingOperationObservable);
+            _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
             _testScheduler.Start();

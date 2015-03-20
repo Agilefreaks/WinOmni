@@ -1,7 +1,6 @@
 namespace Omnipaste.ContactList
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
@@ -79,16 +78,16 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
+        protected override IObservable<IObservable<ContactInfoPresenter>> GetFetchItemsObservable()
         {
             return
                 _contactRepository.GetAll()
-                    .Select(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
+                    .SelectMany(contacts => contacts.Select(contact => Observable.Return(new ContactInfoPresenter(contact))));
         }
 
         protected override IObservable<ContactInfoPresenter> GetItemChangedObservable()
         {
-            return _contactRepository.OperationObservable.Changed()
+            return _contactRepository.GetOperationObservable().Changed()
                 .Select(o => new ContactInfoPresenter(o.Item));
         }
 
@@ -105,7 +104,7 @@ namespace Omnipaste.ContactList
 
         private IContactInfoViewModel UpdateViewModel(ContactInfoPresenter obj)
         {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactInfo.UniqueId == obj.ContactInfo.UniqueId);
+            var viewModel = Items.FirstOrDefault(vm => vm.Model.BackingModel.UniqueId == obj.BackingModel.UniqueId);
             if (viewModel != null)
             {
                 viewModel.Model = obj;
@@ -120,8 +119,8 @@ namespace Omnipaste.ContactList
         {
             return (model != null)
                    && (string.IsNullOrWhiteSpace(FilterText)
-                       || IsMatch(FilterText, model.ContactInfo.Name)
-                       || model.ContactInfo.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
+                       || IsMatch(FilterText, model.BackingModel.Name)
+                       || model.BackingModel.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
         }
 
         private bool MatchesFilter(IContactInfoPresenter model)

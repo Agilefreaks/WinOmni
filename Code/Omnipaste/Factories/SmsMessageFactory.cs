@@ -9,25 +9,25 @@
 
     public class SmsMessageFactory : ISmsMessageFactory
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly ISmsMessageRepository _smsMessageRepository;
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
 
-        public SmsMessageFactory(IMessageRepository messageRepository)
+        public SmsMessageFactory(ISmsMessageRepository smsMessageRepository)
         {
-            _messageRepository = messageRepository;
+            _smsMessageRepository = smsMessageRepository;
         }
 
         public IObservable<T> Create<T>(SmsMessageDto smsMessageDto)
             where T : SmsMessage
         {
-            SmsMessage smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
+            var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
             return
                 ContactRepository.GetOrCreateByPhoneNumber(smsMessageDto.PhoneNumber)
                     .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
                     .Switch()
-                    .Select(contact => _messageRepository.Save(smsMessage.SetContactInfo(contact)))
+                    .Select(contact => _smsMessageRepository.Save((T)smsMessage.SetContactInfoUniqueId(contact.UniqueId)))
                     .Switch()
                     .Select(e => e.Item)
                     .Cast<T>();

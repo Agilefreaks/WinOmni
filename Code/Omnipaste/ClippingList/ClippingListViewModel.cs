@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.ClippingList
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Reactive.Linq;
@@ -110,21 +109,21 @@
             }
         }
 
-        protected override IObservable<IEnumerable<ClippingPresenter>> GetFetchItemsObservable()
+        protected override IObservable<IObservable<ClippingPresenter>> GetFetchItemsObservable()
         {
             return
                 _clippingRepository.GetAll()
-                    .Select(clippings => clippings.Select(clipping => new ClippingPresenter(clipping)));
+                    .SelectMany(clippings => clippings.Select(clipping => Observable.Return(new ClippingPresenter(clipping))));
         }
 
         protected override IObservable<ClippingPresenter> GetItemChangedObservable()
         {
-            return _clippingRepository.OperationObservable.Changed().Select(o => new ClippingPresenter(o.Item));
+            return _clippingRepository.GetOperationObservable().Changed().Select(o => new ClippingPresenter(o.Item));
         }
 
         protected override IObservable<ClippingPresenter> GetItemRemovedObservable()
         {
-            return _clippingRepository.OperationObservable.Deleted().Select(o => GetClippingPresenter(o.Item.UniqueId));
+            return _clippingRepository.GetOperationObservable().Deleted().Select(o => GetClippingPresenter(o.Item.UniqueId));
         }
 
         protected override IClippingViewModel ChangeViewModel(ClippingPresenter model)

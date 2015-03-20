@@ -2,55 +2,70 @@
 {
     using System;
     using System.Collections.Generic;
-    using Ninject;
-    using Omnipaste.Notification;
+    using System.Reactive.Linq;
     using Clipboard.Models;
+    using Ninject;
     using Omnipaste.Models;
+    using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.HyperlinkNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.IncomingSmsNotification;
+    using Omnipaste.Presenters;
+    using Omnipaste.Presenters.Factories;
 
     public class NotificationViewModelFactory : INotificationViewModelFactory
     {
-        [Inject]
+        private readonly IConversationPresenterFactory _conversationPresenterFactory;
+
         public IKernel Kernel { get; set; }
 
         private readonly IDictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
 
-        public NotificationViewModelFactory(IKernel kernel)
+        public NotificationViewModelFactory(IKernel kernel, IConversationPresenterFactory conversationPresenterFactory)
         {
             Kernel = kernel;
-
-            _clippingNotificationConstructors = new Dictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>>();
-            _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>());
-            _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>());
-            _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>());
-            _clippingNotificationConstructors.Add(Clipping.ClippingTypeEnum.PhoneNumber, () => Kernel.Get<IClippingNotificationViewModel>());
+            
+            _conversationPresenterFactory = conversationPresenterFactory;
+            _clippingNotificationConstructors = new Dictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>>()
+                                                    {
+                                                        { Clipping.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>() },
+                                                        { Clipping.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>() },
+                                                        { Clipping.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>() },
+                                                        { Clipping.ClippingTypeEnum.PhoneNumber, () => Kernel.Get<IClippingNotificationViewModel>() }
+                                                    };
         }
 
-        public INotificationViewModel Create(ClippingModel clipping)
+        public IObservable<INotificationViewModel> Create(ClippingModel clipping)
         {
             var result = _clippingNotificationConstructors[clipping.Type]();
             result.Resource = clipping;
 
-            return result;
+            return Observable.Return(result);
         }
 
-        public INotificationViewModel Create(PhoneCall phoneCall)
+        public IObservable<INotificationViewModel> Create(RemotePhoneCall phoneCall)
         {
             var result = Kernel.Get<IIncomingCallNotificationViewModel>();
-            result.Resource = phoneCall;
 
-            return result;
+            return _conversationPresenterFactory.Create<RemotePhoneCallPresenter, RemotePhoneCall>(phoneCall).Select(
+                p =>
+                    {
+                        result.Resource = p;
+                        return result;
+                    });;
         }
 
-        public INotificationViewModel Create(SmsMessage smsMessage)
+        public IObservable<INotificationViewModel> Create(RemoteSmsMessage smsMessage)
         {
             var result = Kernel.Get<IIncomingSmsNotificationViewModel>();
-            result.Resource = smsMessage;
 
-            return result;
+            return _conversationPresenterFactory.Create<RemoteSmsMessagePresenter, RemoteSmsMessage>(smsMessage).Select(
+                m =>
+                    {
+                        result.Resource = m;
+                        return result;
+                    });
         }
     }
 }

@@ -6,17 +6,11 @@
     using Omnipaste.Services;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>
-        where TModel : class, IConversationItem
+        where TModel : class, IConversationPresenter
     {
-        #region Fields
-
         private readonly ContactInfoPresenter _currentUserInfo;
 
         private ContactInfoPresenter _contactInfo;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         protected ConversationItemViewModel(
             IUiRefreshService uiRefreshService,
@@ -25,10 +19,6 @@
         {
             _currentUserInfo = new ContactInfoPresenter(new UserContactInfo(configurationService.UserInfo));
         }
-
-        #endregion
-
-        #region Public Properties
 
         public ContactInfoPresenter ContactInfo
         {
@@ -58,10 +48,8 @@
                 base.Model = value;
                 ContactInfo = value.Source == SourceType.Local
                                   ? _currentUserInfo
-                                  : new ContactInfoPresenter(value.ContactInfo);
+                                  : value.ContactInfoPresenter;
             }
         }
-
-        #endregion
     }
 }

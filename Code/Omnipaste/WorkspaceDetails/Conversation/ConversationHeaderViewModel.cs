@@ -12,7 +12,8 @@
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Resources.v1;
 
-    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>, IConversationHeaderViewModel
+    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>,
+                                               IConversationHeaderViewModel
     {
         #region Static Fields
 
@@ -39,7 +40,7 @@
         public IPhoneCallRepository PhoneCallRepository { get; set; }
 
         [Inject]
-        public IMessageRepository MessageRepository { get; set; }
+        public ISmsMessageRepository SmsMessageRepository { get; set; }
 
         [Inject]
         public IPhoneCalls PhoneCalls { get; set; }
@@ -79,7 +80,7 @@
             _callSubscription =
                 Observable.Timer(DelayCallDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
-                    .Select(_ => PhoneCalls.Call(Model.ContactInfo.PhoneNumber, Model.ContactInfo.ContactId))
+                    .Select(_ => PhoneCalls.Call(Model.BackingModel.PhoneNumber, Model.BackingModel.ContactId))
                     .Switch()
                     .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCall>(phoneCallDto))
                     .Switch()
@@ -99,15 +100,15 @@
 
         public void Delete()
         {
-            UpdateConversationItems(PhoneCallRepository, item => item.IsDeleted = true);
-            UpdateConversationItems(MessageRepository, item => item.IsDeleted = true);
+            UpdateConversationItems<Models.PhoneCall>(PhoneCallRepository, true);
+            UpdateConversationItems<SmsMessage>(SmsMessageRepository, true);
             State = ConversationHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            UpdateConversationItems(PhoneCallRepository, item => item.IsDeleted = false);
-            UpdateConversationItems(MessageRepository, item => item.IsDeleted = false);
+            UpdateConversationItems<Models.PhoneCall>(PhoneCallRepository, false);
+            UpdateConversationItems<SmsMessage>(SmsMessageRepository, false);
             State = ConversationHeaderStateEnum.Normal;
         }
 
@@ -123,17 +124,17 @@
 
         protected override void OnDeactivate(bool close)
         {
-            DeleteConversationItems(PhoneCallRepository);
-            DeleteConversationItems(MessageRepository);
+            DeleteConversationItems<Models.PhoneCall>(PhoneCallRepository);
+            DeleteConversationItems<SmsMessage>(SmsMessageRepository);
             base.OnDeactivate(close);
         }
 
-        private void DeleteConversationItems<T>(IRepository<T> repository) where T : BaseModel, IConversationItem
+        private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationBaseModel
         {
-            repository.GetByContact(Model.ContactInfo)
+            repository.GetByContact<T>(Model.BackingModel)
                 .SubscribeAndHandleErrors(
                     items =>
-                    items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete(c.UniqueId).RunToCompletion()));
+                    items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete<T>(c.UniqueId).RunToCompletion()));
         }
 
         private void DisposeCallSubscription()
@@ -147,18 +148,16 @@
             _callSubscription = null;
         }
 
-        private void UpdateConversationItems<T>(IRepository<T> repository, Action<T> update)
-            where T : BaseModel, IConversationItem
+        private void UpdateConversationItems<T>(IConversationRepository repository, bool isDeleted)
+            where T : ConversationBaseModel
         {
-            repository.GetByContact(Model.ContactInfo).SelectMany(
+            repository.GetByContact<T>(Model.BackingModel).SelectMany(
                 items => items.Select(
-                    i =>
+                    item =>
                         {
-                            update(i);
-                            return repository.Save(i);
-                        }))
-                        .Switch()
-                        .SubscribeAndHandleErrors();
+                            item.IsDeleted = isDeleted;
+                            return repository.Save(item);
+                        })).Switch().SubscribeAndHandleErrors();
         }
 
         #endregion

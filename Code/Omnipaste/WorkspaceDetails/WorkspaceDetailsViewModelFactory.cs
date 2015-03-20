@@ -23,11 +23,11 @@
             switch (activityPresenter.Type)
             {
                 case ActivityTypeEnum.Clipping:
-                    result = Create(new ClippingPresenter(activityPresenter.BackingModel as ClippingModel));
+                    result = Create(activityPresenter.BackingModel as ClippingPresenter);
                     break;
                 case ActivityTypeEnum.Message:
                 case ActivityTypeEnum.Call:
-                    result = Create(new ContactInfoPresenter(activityPresenter.ExtraData.ContactInfo as ContactInfo));
+                    result = Create(activityPresenter.ExtraData.ContactInfo as ContactInfoPresenter);
                     break;
                 case ActivityTypeEnum.Version:
                     result = _serviceLocator.GetInstance<IVersionDetailsViewModel>();

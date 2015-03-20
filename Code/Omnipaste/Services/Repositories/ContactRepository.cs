@@ -10,9 +10,8 @@
     public class ContactRepository : SecurePermanentRepository<ContactInfo>, IContactRepository
     {
         public ContactRepository()
-            : base("contacts")
+            : base("contacts", null)
         {
-            DefaultExpireIn = null;
         }
 
         #region IContactRepository Members

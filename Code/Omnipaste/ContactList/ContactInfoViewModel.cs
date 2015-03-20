@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
     using OmniCommon.ExtensionMethods;
@@ -35,7 +34,7 @@
 
         private bool _hasNotViewedMessages;
 
-        private IConversationItem _lastActivity;
+        private IConversationPresenter _lastActivity;
 
         public ContactInfoViewModel(ISessionManager sessionManager)
         {
@@ -62,11 +61,11 @@
         {
             get
             {
-                return Model.ContactInfo.UniqueId == _sessionManager[SessionSelectionKey] as string;
+                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
             }
         }
 
-        public IConversationItem LastActivity
+        public IConversationPresenter LastActivity
         {
             get
             {
@@ -105,7 +104,7 @@
         {
             get
             {
-                return Model.ContactInfo.LastActivityTime;
+                return Model.BackingModel.LastActivityTime;
             }
         }
 
@@ -146,7 +145,7 @@
         public void ShowDetails()
         {
             var detailsViewModel = DetailsViewModelFactory.Create(Model);
-            _sessionManager[SessionSelectionKey] = Model.ContactInfo.UniqueId;
+            _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
 
             this.GetParentOfType<IPeopleWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
@@ -156,7 +155,7 @@
             RefreshUi();
             UpdateConversationStatus();
             _subscriptionsManager.Add(
-                ConversationProvider.ForContact(Model.ContactInfo)
+                ConversationProvider.ForContact(Model.BackingModel)
                     .Updated.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
@@ -199,17 +198,23 @@
         private void UpdateConversationStatus()
         {
             _subscriptionsManager.Add(
-                ConversationProvider.ForContact(Model.ContactInfo)
+                ConversationProvider.ForContact(Model.BackingModel)
                     .GetItems()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(
-                        items =>
+                        item =>
                             {
-                                var conversationItems = items.Where(item => !item.IsDeleted).ToList();
-                                HasNotViewedCalls = conversationItems.OfType<PhoneCall>().Any(item => !item.WasViewed);
-                                HasNotViewedMessages = conversationItems.OfType<SmsMessage>().Any(item => !item.WasViewed);
-                                LastActivity = conversationItems.OrderByDescending(item => item.Time).FirstOrDefault();
+                                if (item is PhoneCallPresenter)
+                                {
+                                    HasNotViewedCalls = HasNotViewedCalls || item.WasViewed;
+                                }
+                                else if (item is SmsMessagePresenter)
+                                {
+                                    HasNotViewedMessages = HasNotViewedMessages || item.WasViewed;
+                                }
+                                
+                                LastActivity = item;
                             }));
         }
 
@@ -221,18 +226,18 @@
 
         private void SaveChanges()
         {
-            ContactRepository.Save(Model.ContactInfo).RunToCompletion();
+            ContactRepository.Save(Model.BackingModel).RunToCompletion();
         }
 
-        private static string GetActivityInfo(IConversationItem item)
+        private static string GetActivityInfo(IConversationPresenter item)
         {
             var result = string.Empty;
 
-            if (item is SmsMessage)
+            if (item is SmsMessagePresenter)
             {
                 result = item.Content;
             }
-            else if (item is PhoneCall)
+            else if (item is PhoneCallPresenter)
             {
                 result = item.Source == SourceType.Local
                              ? Resources.OutgoingCallLabel

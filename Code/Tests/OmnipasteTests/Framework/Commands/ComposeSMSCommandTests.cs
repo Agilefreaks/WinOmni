@@ -41,7 +41,7 @@
             _mockPeopleWorkspace = new Mock<IPeopleWorkspace> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockShellViewModel = new Mock<IShellViewModel>();
-            _subject = new ComposeSMSCommand(_contactInfo)
+            _subject = new ComposeSMSCommand(new ContactInfoPresenter(_contactInfo))
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
                                PeopleWorkspace = _mockPeopleWorkspace.Object,

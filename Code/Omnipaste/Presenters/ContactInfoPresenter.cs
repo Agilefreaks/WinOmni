@@ -4,47 +4,35 @@
     using System.IO;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using Caliburn.Micro;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using OmniUI.Helpers;
     using OmniUI.Properties;
-    using Action = System.Action;
 
-    public class ContactInfoPresenter : PropertyChangedBase, IContactInfoPresenter
+    public class ContactInfoPresenter : Presenter<ContactInfo>, IContactInfoPresenter
     {
-        #region Constants
-
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
-        #endregion
-
-        #region Static Fields
-
         private static readonly string DefaultContactIdentifier = Resources.UnknownContact;
-
-        #endregion
-
-        #region Fields
 
         private string _identifier;
 
         private ImageSource _image;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         public ContactInfoPresenter(ContactInfo contactInfo)
+            : base(contactInfo)
         {
-            ContactInfo = contactInfo;
         }
 
-        #endregion
+        public string Name
+        {
+            get
+            {
+                return BackingModel.Name;
+            }
+        }
 
-        #region Public Properties
-
-        public ContactInfo ContactInfo { get; private set; }
+        #region IContactInfoPresenter Members
 
         public string Identifier
         {
@@ -94,42 +82,28 @@
         {
             get
             {
-                return ContactInfo.IsStarred;
+                return BackingModel.IsStarred;
             }
             set
             {
-                if (value.Equals(ContactInfo.IsStarred))
-                {
-                    return;
-                }
-                ContactInfo.IsStarred = value;
+                BackingModel.IsStarred = value;
                 NotifyOfPropertyChange(() => IsStarred);
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                return ContactInfo.Name;
             }
         }
 
         #endregion
 
-        #region Methods
-
         protected virtual ImageSource GetContactImage()
         {
             ImageSource result;
 
-            if (!string.IsNullOrEmpty(ContactInfo.Image))
+            if (!string.IsNullOrEmpty(BackingModel.Image))
             {
-                result = GetImageFromStoredData(ContactInfo.Image);
+                result = GetImageFromStoredData(BackingModel.Image);
             }
-            else if (ContactInfo.ImageUri != null)
+            else if (BackingModel.ImageUri != null)
             {
-                result = GetImageSourceFromUri(ContactInfo.ImageUri);
+                result = GetImageSourceFromUri(BackingModel.ImageUri);
             }
             else
             {
@@ -141,14 +115,14 @@
 
         protected virtual string GetIdentifier()
         {
-            return string.IsNullOrWhiteSpace(ContactInfo.Name) ? ContactInfo.PhoneNumber : ContactInfo.Name;
+            return string.IsNullOrWhiteSpace(BackingModel.Name) ? BackingModel.PhoneNumber : BackingModel.Name;
         }
 
         private static BitmapImage GetImageFromStoredData(string imageData)
         {
             var imageBytes = Convert.FromBase64String(imageData);
             var memoryStream = new MemoryStream(imageBytes);
-            
+
             var image = new BitmapImage();
             image.BeginInit();
             image.StreamSource = memoryStream;
@@ -189,7 +163,5 @@
                         NotifyOfPropertyChange(() => Image);
                     }));
         }
-
-        #endregion
     }
 }

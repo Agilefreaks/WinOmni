@@ -10,15 +10,9 @@
     using Omnipaste.Properties;
     using Omnipaste.Services;
 
-    public class ActivityPresenter : PropertyChangedBase
+    public class ActivityPresenter : PropertyChangedBase, IActivityPresenterBuilder
     {
-        #region Constants
-
         private const string StringFormPartSeparator = " ";
-
-        #endregion
-
-        #region Constructors and Destructors
 
         public ActivityPresenter()
         {
@@ -32,55 +26,13 @@
             Type = type;
         }
 
-        public ActivityPresenter(ClippingModel clipping)
-            : this()
-        {
-            BackingModel = clipping;
-            Content = clipping.Content;
-            Type = ActivityTypeEnum.Clipping;
-            Device = clipping.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
-        }
-
-        public ActivityPresenter(PhoneCall phoneCall)
-            : this()
-        {
-            BackingModel = phoneCall;
-            Content = phoneCall.Content ?? string.Empty;
-            Type = ActivityTypeEnum.Call;
-            Device = Resources.FromCloud;
-            ExtraData.ContactInfo = phoneCall.ContactInfo;
-        }
-
-        public ActivityPresenter(SmsMessage smsMessage)
-            : this()
-        {
-            BackingModel = smsMessage;
-            Content = smsMessage.Content ?? string.Empty;
-            Type = ActivityTypeEnum.Message;
-            Device = Resources.FromCloud;
-            ExtraData.ContactInfo = smsMessage.ContactInfo;
-        }
-
-        public ActivityPresenter(UpdateInfo updateInfo)
-            : this()
-        {
-            BackingModel = updateInfo;
-            Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
-            Type = ActivityTypeEnum.Version;
-            ExtraData.UpdateInfo = updateInfo;
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        public BaseModel BackingModel { get; private set; }
+        public virtual IPresenter BackingModel { get; private set; }
 
         public string Content { get; private set; }
 
         public string Device { get; private set; }
 
-        public ActivityTypeEnum Type { get; private set; }
+        public virtual ActivityTypeEnum Type { get; private set; }
 
         public dynamic ExtraData { get; private set; }
 
@@ -134,8 +86,6 @@
             }
         }
 
-        #endregion
-
         #region Public Methods and Operators
 
         public override string ToString()
@@ -146,8 +96,6 @@
         }
 
         #endregion
-
-        #region Methods
 
         private string GetExtraDataAsString()
         {
@@ -175,6 +123,94 @@
             return result;
         }
 
-        #endregion
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(IPresenter backingModel)
+        {
+            BackingModel = backingModel;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(IConversationPresenter backingModel)
+        {
+            BackingModel = backingModel;
+            ExtraData.ContactInfo = backingModel.ContactInfoPresenter;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(UpdateInfo backingModel)
+        {
+            ExtraData.UpdateInfo = backingModel;
+            return this;
+        }
+
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithType(ActivityTypeEnum type)
+        {
+            Type = type;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithContent(String content)
+        {
+            Content = content;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithContent(UpdateInfo updateInfo)
+        {
+            Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum)
+        {
+             Device = clippingSourceEnum == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(PhoneCall phoneCall)
+        {
+            Device = phoneCall is RemotePhoneCall ? Resources.FromCloud : Resources.FromLocal;
+            return this;
+        }
+
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(SmsMessage smsMessage)
+        {
+            Device = smsMessage is RemoteSmsMessage ? Resources.FromCloud : Resources.FromLocal;
+            return this;
+        }
+
+        public ActivityPresenter Build()
+        {
+            return this;
+        }
+
+        public static IActivityPresenterBuilder BeginBuild()
+        {
+            return new ActivityPresenter();
+        }
+    }
+
+    public interface IActivityPresenterBuilder
+    {
+        IActivityPresenterBuilder WithBackingModel(IPresenter backingModel);
+
+        // TODO: add a presenter
+        IActivityPresenterBuilder WithBackingModel(UpdateInfo backingModel);
+
+        IActivityPresenterBuilder WithBackingModel(IConversationPresenter backingModel);
+
+        IActivityPresenterBuilder WithType(ActivityTypeEnum type);
+
+        IActivityPresenterBuilder WithContent(String content);
+
+        IActivityPresenterBuilder WithContent(UpdateInfo update);
+
+        IActivityPresenterBuilder WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum);
+
+        IActivityPresenterBuilder WithDevice(PhoneCall phoneCall);
+
+        IActivityPresenterBuilder WithDevice(SmsMessage smsMessage);
+
+        ActivityPresenter Build();
     }
 }

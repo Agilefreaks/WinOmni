@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
+    using System.Reactive.Linq;
     using FluentAssertions;
+    using FluentAssertions.Common;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
@@ -29,7 +31,7 @@
 
         private Mock<IPhoneCallFactory> _mockPhoneCallFactory;
 
-        private Mock<IMessageRepository> _mockMessageRepository;
+        private Mock<ISmsMessageRepository> _mockMessageRepository;
 
         private TestScheduler _testScheduler;
 
@@ -43,14 +45,14 @@
             _mockPhoneCalls = new Mock<IPhoneCalls> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
-            _mockMessageRepository = new Mock<IMessageRepository> { DefaultValue = DefaultValue.Mock };
+            _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
 
             _subject = new ConversationHeaderViewModel
                            {
                                PhoneCalls = _mockPhoneCalls.Object,
                                PhoneCallRepository = _mockPhoneCallRepository.Object,
                                PhoneCallFactory = _mockPhoneCallFactory.Object,
-                               MessageRepository = _mockMessageRepository.Object,
+                               SmsMessageRepository = _mockMessageRepository.Object,
                                Model = new ContactInfoPresenter(new ContactInfo())
                            };
         }
@@ -196,7 +198,7 @@
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockPhoneCallRepository.Verify(m => m.Save(call));
+            _mockPhoneCallRepository.Verify(m => m.Save(It.Is<PhoneCall>(pc => pc.UniqueId == "42")));
             call.IsDeleted.Should().BeTrue();
         }
 
@@ -212,7 +214,7 @@
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockMessageRepository.Verify(m => m.Save(message));
+            _mockMessageRepository.Verify(m => m.Save(It.Is<SmsMessage>(sm => sm.UniqueId == "42")));
             message.IsDeleted.Should().BeTrue();
         }
 
@@ -236,7 +238,7 @@
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockPhoneCallRepository.Verify(m => m.Save(call));
+            _mockPhoneCallRepository.Verify(m => m.Save(It.Is<PhoneCall>(c => c.UniqueId == call.UniqueId)));
             call.IsDeleted.Should().BeFalse();
         }
 
@@ -252,7 +254,7 @@
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockMessageRepository.Verify(m => m.Save(message));
+            _mockMessageRepository.Verify(m => m.Save(It.Is<SmsMessage>(sm => message.UniqueId == sm.UniqueId)));
             message.IsDeleted.Should().BeFalse();
         }
 
