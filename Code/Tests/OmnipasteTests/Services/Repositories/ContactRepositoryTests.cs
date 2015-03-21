@@ -38,7 +38,7 @@
         }
 
         [Test]
-        public void GetByPhoneNumber_Always_ReturnsContact()
+        public void GetByPhoneNumber_WhenContactExists_ReturnsContact()
         {
             var contact1 = new ContactInfo
             {

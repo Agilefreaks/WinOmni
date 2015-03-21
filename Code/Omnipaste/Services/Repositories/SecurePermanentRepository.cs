@@ -54,7 +54,8 @@
 
             return insertObject
                 .Select(_ => RepositoryOperation<T>.Empty())
-                .Concat(BuildRepositoryOperation(RepositoryMethodEnum.Changed, item));
+                .Concat(BuildRepositoryOperation(RepositoryMethodEnum.Changed, item))
+                .LastAsync();
         }
 
         public override IObservable<RepositoryOperation<T>> Delete<T>(string id)

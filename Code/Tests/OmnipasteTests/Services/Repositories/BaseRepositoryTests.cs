@@ -51,6 +51,7 @@
 
             var testObservable = TestScheduler.Start(() => Subject.Save(testModel));
 
+            testObservable.Messages.Should().HaveCount(2);
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testObservable.Messages[0].Value.Value.RepositoryMethod.Should().Be(RepositoryMethodEnum.Changed);
         }
