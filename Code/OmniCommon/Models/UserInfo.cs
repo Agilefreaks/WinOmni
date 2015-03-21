@@ -49,6 +49,12 @@
             return this;
         }
 
+        IUserInfoBuilder IUserInfoBuilder.WithUpdatedAt(DateTime updatedAt)
+        {
+            UpdatedAt = updatedAt;
+            return this;
+        }
+
         UserInfo IUserInfoBuilder.Build()
         {
             return this;
@@ -79,6 +85,8 @@
         IUserInfoBuilder WithEmail(String email);
 
         IUserInfoBuilder WithContactsUpdatedAt(DateTime contactsUpdatedAt);
+
+        IUserInfoBuilder WithUpdatedAt(DateTime updatedAt);
 
         UserInfo Build();
     }

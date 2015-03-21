@@ -35,6 +35,7 @@
                     .WithFirstName(user.FirstName)
                     .WithLastName(user.LastName)
                     .WithImageUrl(user.ImageUrl)
+                    .WithUpdatedAt(user.UpdatedAt)
                     .Build();
             }
 

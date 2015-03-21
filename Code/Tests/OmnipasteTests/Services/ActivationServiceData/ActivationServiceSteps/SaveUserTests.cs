@@ -45,7 +45,8 @@
                 LastName = "Last",
                 Email = "test@user.com",
                 ImageUrl = "http://image.com",
-                ContactsUpdatedAt = DateTime.Now
+                ContactsUpdatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             _subject.Parameter = new DependencyParameter
             {
@@ -61,6 +62,7 @@
             userInfo.LastName.Should().Be(user.LastName);
             userInfo.Email.Should().Be(user.Email);
             userInfo.ImageUrl.Should().Be(user.ImageUrl);
+            userInfo.UpdatedAt.Should().NotBe(new DateTime());
         }
 
         [Test]

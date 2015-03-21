@@ -205,7 +205,7 @@ namespace OmniUI.List
 
         private void AddItems(IObservable<TPresenter> persenter)
         {
-            persenter.ObserveOn(SchedulerProvider.Default).Subscribe(ChangeItem);
+            persenter.ObserveOn(SchedulerProvider.Dispatcher).Subscribe(ChangeItem);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
