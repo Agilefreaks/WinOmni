@@ -110,6 +110,23 @@
         }
 
         [Test]
+        public void Execute_WhenUpdatedAtIsNotTheSameAsLocal_UpdatesInfo()
+        {
+            using (TimeHelper.Freez())
+            {
+                var user = new User { FirstName = "Crocobaur", UpdatedAt = TimeHelper.UtcNow };
+                var userInfo = new UserInfo { FirstName = "Croco", UpdatedAt = TimeHelper.UtcNow.AddDays(-1) };
+                _mockConfigurationService.Setup(m => m.UserInfo).Returns(userInfo);
+                _subject.Parameter = new DependencyParameter { Value = user };
+
+                _subject.Execute().Wait();
+
+                _mockConfigurationService.VerifySet(
+                    x => x.UserInfo = It.Is<UserInfo>(ui => ui.FirstName == "Crocobaur"));
+            }
+        }
+
+        [Test]
         public void Execute_Never_OverwritesContactsUpdatedAt()
         {
             using (TimeHelper.Freez())

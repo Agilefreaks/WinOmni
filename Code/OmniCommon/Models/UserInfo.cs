@@ -15,6 +15,8 @@
 
         public DateTime ContactsUpdatedAt { get; set; }
 
+        public DateTime UpdatedAt { get; set; }
+
         #region IUserInfoBuilder Members
 
         IUserInfoBuilder IUserInfoBuilder.WithFirstName(string firstName)

@@ -27,14 +27,17 @@
         protected override IExecuteResult ExecuteSynchronously()
         {
             var user = Parameter.Value as User ?? new User();
-            var userInfo = _configurationService.UserInfo ?? 
-                UserInfo.BeginBuild()
-                .WithEmail(user.Email)
-                .WithFirstName(user.FirstName)
-                .WithLastName(user.LastName)
-                .WithImageUrl(user.ImageUrl)
-                .Build();
-            
+            var userInfo = _configurationService.UserInfo;
+            if (userInfo == null || userInfo.UpdatedAt != user.UpdatedAt)
+            {
+                userInfo = UserInfo.BeginBuild()
+                    .WithEmail(user.Email)
+                    .WithFirstName(user.FirstName)
+                    .WithLastName(user.LastName)
+                    .WithImageUrl(user.ImageUrl)
+                    .Build();
+            }
+
             if (!_configurationService.HasSavedValueFor(ConfigurationProperties.SMSSuffixEnabled))
             {
                 _configurationService.IsSMSSuffixEnabled = user.ViaOmnipaste;
