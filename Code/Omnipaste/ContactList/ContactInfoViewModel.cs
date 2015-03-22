@@ -197,6 +197,8 @@
 
         private void UpdateConversationStatus()
         {
+            HasNotViewedMessages = false;
+            HasNotViewedCalls = false;
             _subscriptionsManager.Add(
                 ConversationProvider.ForContact(Model.BackingModel)
                     .GetItems()
@@ -207,14 +209,17 @@
                             {
                                 if (item is PhoneCallPresenter)
                                 {
-                                    HasNotViewedCalls = HasNotViewedCalls || item.WasViewed;
+                                    HasNotViewedCalls = HasNotViewedCalls || !item.WasViewed;
                                 }
                                 else if (item is SmsMessagePresenter)
                                 {
-                                    HasNotViewedMessages = HasNotViewedMessages || item.WasViewed;
+                                    HasNotViewedMessages = HasNotViewedMessages || !item.WasViewed;
                                 }
-                                
-                                LastActivity = item;
+
+                                if (LastActivity == null || LastActivity.Time < item.Time)
+                                {
+                                    LastActivity = item;
+                                }
                             }));
         }
 
