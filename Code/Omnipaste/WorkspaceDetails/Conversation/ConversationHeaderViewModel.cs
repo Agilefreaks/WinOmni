@@ -131,7 +131,7 @@
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationBaseModel
         {
-            repository.GetByContact<T>(Model.BackingModel)
+            repository.GetForContact(Model.BackingModel)
                 .SubscribeAndHandleErrors(
                     items =>
                     items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete<T>(c.UniqueId).RunToCompletion()));
@@ -151,7 +151,7 @@
         private void UpdateConversationItems<T>(IConversationRepository repository, bool isDeleted)
             where T : ConversationBaseModel
         {
-            repository.GetByContact<T>(Model.BackingModel).SelectMany(
+            repository.GetForContact(Model.BackingModel).SelectMany(
                 items => items.Select(
                     item =>
                         {

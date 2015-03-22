@@ -523,7 +523,6 @@
     <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
     <Compile Include="Services\Repositories\SmsMessageRepository.cs" />
     <Compile Include="Services\Repositories\RepositoryObservableExtensionMethods.cs" />
-    <Compile Include="Services\Repositories\RepositoryExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
     <Compile Include="Services\Repositories\RepositoryOperation.cs" />
     <Compile Include="Services\Repositories\UpdateInfoRepository.cs" />

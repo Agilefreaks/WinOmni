@@ -26,10 +26,10 @@ namespace Omnipaste.Services.Providers
         public override IObservable<IConversationPresenter> GetItems()
         {
             return
-                SmsMessageRepository.GetByContact<SmsMessage>(_contactInfo)
+                SmsMessageRepository.GetForContact(_contactInfo)
                     .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m)))
                     .Merge(
-                        PhoneCallRepository.GetByContact<PhoneCall>(_contactInfo)
+                        PhoneCallRepository.GetForContact(_contactInfo)
                             .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))))
                     .Switch();
         }

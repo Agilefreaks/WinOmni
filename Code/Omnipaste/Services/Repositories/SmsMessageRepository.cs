@@ -28,6 +28,21 @@ namespace Omnipaste.Services.Repositories
             return base.GetAll<SmsMessage, LocalSmsMessage, RemoteSmsMessage>();
         }
 
+        public IObservable<IEnumerable<SmsMessage>> GetForContact(ContactInfo contactInfo)
+        {
+            return base.GetForContact<SmsMessage, LocalSmsMessage, RemoteSmsMessage>(contactInfo);
+        }
+
         #endregion
+
+        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetForContact(ContactInfo contactInfo)
+        {
+            return GetForContact(contactInfo);
+        }
+
+        public override IObservable<RepositoryOperation<T>> Save<T>(T item)
+        {
+            return base.Save<T, LocalSmsMessage, RemoteSmsMessage>(item);
+        }
     }
 }

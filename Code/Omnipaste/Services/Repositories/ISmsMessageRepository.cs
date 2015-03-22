@@ -8,6 +8,8 @@
     {
         IObservable<IEnumerable<SmsMessage>> GetAll();
 
+        new IObservable<IEnumerable<SmsMessage>> GetForContact(ContactInfo contactInfo);
+
         IObservable<RepositoryOperation<SmsMessage>> GetOperationObservable();
 
         IObservable<RepositoryOperation<SmsMessage>> Delete(string id);

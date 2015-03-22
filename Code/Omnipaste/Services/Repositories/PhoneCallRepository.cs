@@ -2,6 +2,7 @@ namespace Omnipaste.Services.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive.Linq;
     using Omnipaste.Models;
 
     public class PhoneCallRepository : ConversationRepository, IPhoneCallRepository
@@ -28,6 +29,21 @@ namespace Omnipaste.Services.Repositories
             return base.GetAll<PhoneCall, LocalPhoneCall, RemotePhoneCall>();
         }
 
+        public IObservable<IEnumerable<PhoneCall>> GetForContact(ContactInfo contactInfo)
+        {
+            return base.GetForContact<PhoneCall, LocalPhoneCall, RemotePhoneCall>(contactInfo);
+        }
+
         #endregion
+
+        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetForContact(ContactInfo contactInfo)
+        {
+            return GetForContact(contactInfo);
+        }
+
+        public override IObservable<RepositoryOperation<T>> Save<T>(T item)
+        {
+            return base.Save<T, LocalPhoneCall, RemotePhoneCall>(item);
+        }
     }
 }

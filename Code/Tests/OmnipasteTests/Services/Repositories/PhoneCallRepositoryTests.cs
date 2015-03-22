@@ -121,24 +121,6 @@
         }
 
         [Test]
-        public void GetByContact_Always_ReturnsCallsForContact()
-        {
-            var contactInfo = new ContactInfo { UniqueId = "43" };
-            var call1 = new LocalPhoneCall { UniqueId = "42", ContactInfoUniqueId = "43" };
-            var call2 = new LocalPhoneCall { UniqueId = "1", ContactInfoUniqueId = "2" };
-            var observable =
-                _subject.Save(call1)
-                    .Select(_ => _subject.Save(call2))
-                    .Select(_ => _subject.GetByContact<LocalPhoneCall>(contactInfo))
-                    .Switch();
-
-            var result = _testScheduler.Start(() => observable);
-
-            result.Messages.First().Value.Value.Count().Should().Be(1);
-            result.Messages.First().Value.Value.First().UniqueId.Should().Be("42");
-        }
-
-        [Test]
         public void GetOperationObservable_WithRemotePhoneCall_ReturnsRemoteCallOperation()
         {
             var remotePhoneCall = new RemotePhoneCall();
@@ -149,6 +131,23 @@
 
             testObservable.Messages.Should().HaveCount(1);
             testObservable.Messages.First().Value.Value.GetItem<PhoneCall>().UniqueId.Should().Be(remotePhoneCall.UniqueId);
+        }
+
+        [Test]
+        public void GetForContact_WhenThereArePhoneCallsForThatContact_ReturnsTheContacts()
+        {
+            var remotePhoneCall = BuildRemotePhoneCall();
+            var localPhoneCall = BuildLocalPhoneCall();
+            var testObservable = _testScheduler.CreateObserver<IEnumerable<PhoneCall>>();
+
+            _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
+            _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
+            _testScheduler.Schedule(() => _subject.GetForContact(new ContactInfo { UniqueId = "123" }).Subscribe(testObservable));
+
+            _testScheduler.Start();
+
+            testObservable.Messages.First().Value.Value.Should().HaveCount(1);
+            testObservable.Messages.First().Value.Value.First().UniqueId.Should().Be("42");
         }
 
         private static RemotePhoneCall BuildRemotePhoneCall()
