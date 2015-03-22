@@ -43,7 +43,7 @@
             ContactInfo contactInfo,
             DateTime? lastActivityTime = null)
         {
-            contactInfo.LastActivityTime = TimeHelper.UtcNow;
+            contactInfo.LastActivityTime = DateTime.Now;
             return Save(contactInfo).Select(o => o.Item);
         }
 
