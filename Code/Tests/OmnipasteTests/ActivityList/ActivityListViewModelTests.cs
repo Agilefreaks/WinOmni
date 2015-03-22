@@ -1,6 +1,7 @@
 ﻿namespace OmnipasteTests.ActivityList
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
@@ -17,7 +18,6 @@
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
-    using Splat;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -80,6 +80,26 @@
         {
             SchedulerProvider.Default = null;
             SchedulerProvider.Dispatcher = null;
+        }
+
+        [Test]
+        public void Activate_Always_FetchesItems()
+        {
+            var remotePhoneCall = new RemotePhoneCall();
+            var phoneCallObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IEnumerable<RemotePhoneCall>>>(100, Notification.CreateOnNext((IEnumerable<RemotePhoneCall>)new List<RemotePhoneCall> { remotePhoneCall })));
+            var remoteSmsMessage = new RemoteSmsMessage();
+            var smsMessageObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<IEnumerable<RemoteSmsMessage>>>(200, Notification.CreateOnNext((IEnumerable<RemoteSmsMessage>)new List<RemoteSmsMessage> { remoteSmsMessage })));
+            _mockMessageRepository.Setup(m => m.GetAll()).Returns(smsMessageObservable);
+            _mockCallRepository.Setup(m => m.GetAll()).Returns(phoneCallObservable);
+            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(remotePhoneCall);
+            SetupSmsMessageActivityPresenterFactory<RemoteSmsMessagePresenter>(remoteSmsMessage);
+
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(300);
+
+            _subject.Items.Count.Should().Be(2);
         }
 
         [Test]
@@ -209,6 +229,7 @@
 
             mock.SetupGet(m => m.BackingModel).Returns(presenter);
             mock.SetupGet(m => m.Type).Returns(ActivityTypeEnum.Clipping);
+            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
         }
 
@@ -219,6 +240,18 @@
             var mock = new Mock<ActivityPresenter>();
 
             mock.SetupGet(m => m.BackingModel).Returns(presenter);
+            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+        }
+
+        private void SetupSmsMessageActivityPresenterFactory<TPresenter>(SmsMessage model)
+            where TPresenter : Presenter
+        {
+            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
+            var mock = new Mock<ActivityPresenter>();
+
+            mock.SetupGet(m => m.BackingModel).Returns(presenter);
+            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
         }
 

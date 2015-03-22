@@ -49,12 +49,9 @@
             _testScheduler.Start();
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[0].Value.Value.First().UniqueId.Should().Be("42");
-            testObservable.Messages[0].Value.Value.First()
-                .ContactInfoUniqueId.Should()
-                .Be("123");
-            testObservable.Messages[1].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[1].Value.Value.First().UniqueId.Should().Be("43");
+            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "42" && pc.ContactInfoUniqueId == "123");
+            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "43" && pc.ContactInfoUniqueId == "123");
+            testObservable.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
 
         [Test]
@@ -146,13 +143,14 @@
 
             _testScheduler.Start();
 
-            testObservable.Messages.First().Value.Value.Should().HaveCount(1);
-            testObservable.Messages.First().Value.Value.First().UniqueId.Should().Be("42");
+            testObservable.Messages.First().Value.Value.Should().HaveCount(2);
+            testObservable.Messages.First().Value.Value.Should().ContainSingle(pc => pc.UniqueId == "42");
+            testObservable.Messages.First().Value.Value.Should().ContainSingle(pc => pc.UniqueId == "43");
         }
 
         private static RemotePhoneCall BuildRemotePhoneCall()
         {
-            return new RemotePhoneCall { UniqueId = "43" };
+            return new RemotePhoneCall { UniqueId = "43", ContactInfoUniqueId = "123" };
         }
 
         private static LocalPhoneCall BuildLocalPhoneCall()

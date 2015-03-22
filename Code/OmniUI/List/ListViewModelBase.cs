@@ -148,9 +148,9 @@ namespace OmniUI.List
             return base.EnsureItem(newItem);
         }
 
-        protected virtual IObservable<IObservable<TPresenter>> GetFetchItemsObservable()
+        protected virtual IObservable<TPresenter> GetFetchItemsObservable()
         {
-            return Observable.Empty<IObservable<TPresenter>>(SchedulerProvider.Default);
+            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
         }
 
         protected virtual IObservable<TPresenter> GetItemChangedObservable()
@@ -180,7 +180,7 @@ namespace OmniUI.List
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(AddItems));
+                    .SubscribeAndHandleErrors(ChangeItem));
             Subscriptions.Add(
                 GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -201,11 +201,6 @@ namespace OmniUI.List
             }
 
             base.OnDeactivate(close);
-        }
-
-        private void AddItems(IObservable<TPresenter> persenter)
-        {
-            persenter.ObserveOn(SchedulerProvider.Dispatcher).Subscribe(ChangeItem);
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

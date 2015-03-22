@@ -109,11 +109,11 @@
             }
         }
 
-        protected override IObservable<IObservable<ClippingPresenter>> GetFetchItemsObservable()
+        protected override IObservable<ClippingPresenter> GetFetchItemsObservable()
         {
             return
                 _clippingRepository.GetAll()
-                    .SelectMany(clippings => clippings.Select(clipping => Observable.Return(new ClippingPresenter(clipping))));
+                    .SelectMany(clippings => clippings.Select(clipping => new ClippingPresenter(clipping)));
         }
 
         protected override IObservable<ClippingPresenter> GetItemChangedObservable()

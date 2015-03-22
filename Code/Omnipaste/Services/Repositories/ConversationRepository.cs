@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive.Joins;
     using System.Reactive.Linq;
     using Omnipaste.Models;
 
@@ -39,7 +41,8 @@
             where TLocal : T
             where TRemote : T
         {
-            return base.GetAll<TLocal>().OfType<IEnumerable<T>>().Concat(base.GetAll<TRemote>());
+            var pattern = base.GetAll<TLocal>().OfType<IEnumerable<T>>().And(base.GetAll<TRemote>());
+            return Observable.When(pattern.Then((locals, remotes) => locals.Concat(remotes)));
         }
 
         public IObservable<IEnumerable<T>> GetForContact<T, TLocal, TRemote>(ContactInfo contactInfo)
@@ -48,7 +51,9 @@
             where TRemote : T
         {
             Func<T, bool> contactFilter = item => item.ContactInfoUniqueId == contactInfo.UniqueId;
-            return base.GetAll<TLocal>(contactFilter).OfType<IEnumerable<T>>().Concat(base.GetAll<TRemote>(contactFilter));
+            var pattern = base.GetAll<TLocal>(contactFilter).OfType<IEnumerable<T>>().And(base.GetAll<TRemote>(contactFilter));
+
+            return Observable.When(pattern.Then((locals, remotes) => locals.Concat(remotes)));
         }
 
         public IObservable<RepositoryOperation<T>> Save<T, TLocal, TRemote>(T item) 

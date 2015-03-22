@@ -23,10 +23,11 @@ namespace Omnipaste.Services.Providers
             return
                 SmsMessageRepository.GetAll()
                     .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m)))
+                    .Merge()
                     .Merge(
                         PhoneCallRepository.GetAll()
-                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))))
-                    .Switch();
+                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c)))
+                            .Merge());
         }
 
         protected override IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method)

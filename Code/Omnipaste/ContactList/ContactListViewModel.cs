@@ -78,11 +78,11 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        protected override IObservable<IObservable<ContactInfoPresenter>> GetFetchItemsObservable()
+        protected override IObservable<ContactInfoPresenter> GetFetchItemsObservable()
         {
             return
                 _contactRepository.GetAll()
-                    .SelectMany(contacts => contacts.Select(contact => Observable.Return(new ContactInfoPresenter(contact))));
+                    .SelectMany(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
         }
 
         protected override IObservable<ContactInfoPresenter> GetItemChangedObservable()

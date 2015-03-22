@@ -27,11 +27,10 @@ namespace Omnipaste.Services.Providers
         {
             return
                 SmsMessageRepository.GetForContact(_contactInfo)
-                    .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m)))
+                    .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m))).Merge()
                     .Merge(
                         PhoneCallRepository.GetForContact(_contactInfo)
-                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))))
-                    .Switch();
+                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))).Merge());
         }
 
         protected override IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method)
@@ -41,7 +40,7 @@ namespace Omnipaste.Services.Providers
                     .OnMethod(method)
                     .ForContact(_contactInfo)
                     .Select(o => SMSMessagePresenterFactory.Create(o.Item))
-                    .Merge(
+                    .Concat(
                         PhoneCallRepository.GetOperationObservable()
                             .OnMethod(method)
                             .ForContact(_contactInfo)

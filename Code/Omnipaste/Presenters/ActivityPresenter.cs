@@ -61,7 +61,7 @@
             }
         }
 
-        public string SourceId
+        public virtual string SourceId
         {
             get
             {

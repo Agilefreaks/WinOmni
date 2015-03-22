@@ -1,13 +1,13 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;
@@ -125,9 +125,9 @@
             return _conversationContext.ItemRemoved;
         }
 
-        protected override IObservable<IObservable<IConversationPresenter>> GetFetchItemsObservable()
+        protected override IObservable<IConversationPresenter> GetFetchItemsObservable()
         {
-            return _conversationContext.GetItems().Select(Observable.Return);
+            return _conversationContext.GetItems();
         }
 
         protected override void OnActivate()
@@ -145,7 +145,7 @@
             _conversationContext.SaveItem(item).SubscribeAndHandleErrors();
         }
 
-        private void DismissConversationItemNotification(IConversationPresenter item)
+        private void DismissConversationItemNotification(IPresenter item)
         {
             EventAggregator.PublishOnUIThread(new DismissNotification(item.UniqueId));
         }
