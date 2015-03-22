@@ -148,6 +148,28 @@
             testObservable.Messages.First().Value.Value.Should().ContainSingle(pc => pc.UniqueId == "43");
         }
 
+        [Test]
+        public void ForContact_WithRepositoryOperation_ReturnsPhoneCall()
+        {
+            var remotePhoneCall = BuildRemotePhoneCall();
+            var localPhoneCall = BuildLocalPhoneCall();
+            var testObservable = _testScheduler.CreateObserver<RepositoryOperation<PhoneCall>>();
+
+            _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
+            _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
+
+            _subject.GetOperationObservable()
+                .OnMethod(RepositoryMethodEnum.Changed)
+                .ForContact(new ContactInfo { UniqueId = "123" })
+                .Subscribe(testObservable);
+
+            _testScheduler.Start();
+
+            testObservable.Messages.Should().HaveCount(2);
+            testObservable.Messages.First().Value.Value.Item.UniqueId.Should().Be("43");
+            testObservable.Messages.Last().Value.Value.Item.UniqueId.Should().Be("42");
+        }
+
         private static RemotePhoneCall BuildRemotePhoneCall()
         {
             return new RemotePhoneCall { UniqueId = "43", ContactInfoUniqueId = "123" };

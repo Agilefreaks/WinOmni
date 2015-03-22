@@ -39,13 +39,12 @@ namespace Omnipaste.Services.Providers
                 SmsMessageRepository.GetOperationObservable()
                     .OnMethod(method)
                     .ForContact(_contactInfo)
-                    .Select(o => SMSMessagePresenterFactory.Create(o.Item))
-                    .Concat(
+                    .Select(o => SMSMessagePresenterFactory.Create(o.Item)).Merge()
+                    .Merge(
                         PhoneCallRepository.GetOperationObservable()
                             .OnMethod(method)
                             .ForContact(_contactInfo)
-                            .Select(o => PhoneCallPresenterFactory.Create(o.Item)))
-                    .Cast<IConversationPresenter>();
+                            .Select(o => PhoneCallPresenterFactory.Create(o.Item)).Merge());
         }
     }
 }

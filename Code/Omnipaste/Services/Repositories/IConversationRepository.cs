@@ -6,6 +6,6 @@
 
     public interface IConversationRepository : IReporsitory
     {
-        IObservable<IEnumerable<ConversationBaseModel>> GetForContact(ContactInfo contactInfo);
+        IObservable<IEnumerable<ConversationBaseModel>> GetConversationForContact(ContactInfo contactInfo);
     }
 }

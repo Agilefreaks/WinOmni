@@ -3,11 +3,9 @@
     using System;
     using System.ComponentModel;
     using System.Linq;
-    using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;

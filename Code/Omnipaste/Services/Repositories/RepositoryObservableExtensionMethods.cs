@@ -22,7 +22,7 @@
             this IObservable<RepositoryOperation<T>> operationObservable,
             ContactInfo contactInfo) where T : ConversationBaseModel
         {
-            return operationObservable.Where(o => o.Item.UniqueId == contactInfo.UniqueId);
+            return operationObservable.Where(o => o.Item.ContactInfoUniqueId == contactInfo.UniqueId);
         }
 
         public static IObservable<RepositoryOperation<T>> OnMethod<T>(

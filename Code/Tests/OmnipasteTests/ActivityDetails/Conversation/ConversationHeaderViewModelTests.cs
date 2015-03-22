@@ -4,9 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Linq;
     using FluentAssertions;
-    using FluentAssertions.Common;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
@@ -193,12 +191,11 @@
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockPhoneCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
+            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getCallObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockPhoneCallRepository.Verify(m => m.Save(It.Is<PhoneCall>(pc => pc.UniqueId == "42")));
             call.IsDeleted.Should().BeTrue();
         }
 
@@ -209,12 +206,11 @@
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<SmsMessage, bool>>())).Returns(getMessageObservable);
+            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getMessageObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockMessageRepository.Verify(m => m.Save(It.Is<SmsMessage>(sm => sm.UniqueId == "42")));
             message.IsDeleted.Should().BeTrue();
         }
 
@@ -233,12 +229,11 @@
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockPhoneCallRepository.Setup(m => m.GetAll(It.IsAny<Func<PhoneCall, bool>>())).Returns(getCallObservable);
+            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getCallObservable);
             
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockPhoneCallRepository.Verify(m => m.Save(It.Is<PhoneCall>(c => c.UniqueId == call.UniqueId)));
             call.IsDeleted.Should().BeFalse();
         }
 
@@ -249,12 +244,11 @@
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetAll(It.IsAny<Func<SmsMessage, bool>>())).Returns(getMessageObservable);
+            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getMessageObservable);
 
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
 
-            _mockMessageRepository.Verify(m => m.Save(It.Is<SmsMessage>(sm => message.UniqueId == sm.UniqueId)));
             message.IsDeleted.Should().BeFalse();
         }
 

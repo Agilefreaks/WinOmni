@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reactive.Linq;
-    using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services;
 
@@ -26,7 +25,7 @@
                 .WithDevice(clippingModel.Source)
                 .WithBackingModel(new ClippingPresenter(clippingModel))
                 .Build();
-            return Observable.Return(activityPresenter, SchedulerProvider.Default);
+            return Observable.Return(activityPresenter);
         }
 
         public IObservable<ActivityPresenter> Create(PhoneCall phoneCall)
@@ -57,7 +56,7 @@
                 .WithContent(updateInfo)
                 .WithBackingModel(updateInfo)
                 .Build();
-            return Observable.Return(activityPresenter, SchedulerProvider.Default);
+            return Observable.Return(activityPresenter);
         }
     }
 }

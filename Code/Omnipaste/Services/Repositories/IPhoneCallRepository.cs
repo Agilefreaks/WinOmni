@@ -8,7 +8,7 @@
     {
         IObservable<IEnumerable<PhoneCall>> GetAll();
 
-        new IObservable<IEnumerable<PhoneCall>> GetForContact(ContactInfo contactInfo);
+        IObservable<IEnumerable<PhoneCall>> GetForContact(ContactInfo contactInfo);
 
         IObservable<RepositoryOperation<PhoneCall>> GetOperationObservable();
 

@@ -35,7 +35,7 @@ namespace Omnipaste.Services.Repositories
 
         #endregion
 
-        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetForContact(ContactInfo contactInfo)
+        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetConversationForContact(ContactInfo contactInfo)
         {
             return GetForContact(contactInfo);
         }

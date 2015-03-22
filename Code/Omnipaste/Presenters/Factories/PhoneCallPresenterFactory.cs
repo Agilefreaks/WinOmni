@@ -7,7 +7,7 @@ namespace Omnipaste.Presenters.Factories
 
     public interface IPhoneCallPresenterFactory
     {
-        IObservable<PhoneCallPresenter> Create(PhoneCall phoneCall);
+        IObservable<IConversationPresenter> Create(PhoneCall phoneCall);
     }
 
     public class PhoneCallPresenterFactory : ConversationPresenterFactory, IPhoneCallPresenterFactory
@@ -17,7 +17,7 @@ namespace Omnipaste.Presenters.Factories
         {
         }
 
-        public IObservable<PhoneCallPresenter> Create(PhoneCall phoneCall)
+        public IObservable<IConversationPresenter> Create(PhoneCall phoneCall)
         {
             return ContactRepository.Get(phoneCall.ContactInfoUniqueId).Select(
                 ci =>
