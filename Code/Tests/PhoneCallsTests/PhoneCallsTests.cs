@@ -58,7 +58,7 @@
 
             _subject.EndCall(CallId);
 
-            var expectedPayload = new { DeviceId = DeviceId, State = PhoneCallState.Ending };
+            var expectedPayload = new { DeviceId, State = PhoneCallState.Ending, Type = PhoneCallType.Incoming };
             _mockPhoneCallsAPI.Verify(
                 x =>
                 x.Patch(

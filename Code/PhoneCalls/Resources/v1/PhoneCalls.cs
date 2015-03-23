@@ -42,7 +42,7 @@
 
         public IObservable<EmptyModel> EndCall(string callId)
         {
-            return ResourceApi.Patch(callId, new  { DeviceId = ConfigurationService.DeviceId, State = PhoneCallState.Ending }, AccessToken);
+            return ResourceApi.Patch(callId, new { ConfigurationService.DeviceId, State = PhoneCallState.Ending, Type = PhoneCallType.Incoming }, AccessToken);
         }
 
         #endregion
