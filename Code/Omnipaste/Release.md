@@ -1,4 +1,12 @@
-﻿**Version 1.3.17 (11.03.2015)**
+﻿**Version 1.4.0 (23.03.2015)**
+
+**Features:**
+
+- Data is stored locally, no more tabula rasa after application restart.
+
+----------
+
+**Version 1.3.17 (11.03.2015)**
 
 **Features:**
 
