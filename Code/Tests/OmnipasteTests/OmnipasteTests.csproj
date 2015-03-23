@@ -158,6 +158,7 @@
     <Compile Include="ContactList\ContactInfoViewModelTests.cs" />
     <Compile Include="ContactList\ContactListViewModelTests.cs" />
     <Compile Include="ExtensionMethods\PropertyExtensionMethodsTests.cs" />
+    <Compile Include="Factories\ContactFactoryTests.cs" />
     <Compile Include="Factories\PhoneCallFactoryTests.cs" />
     <Compile Include="Factories\SmsMessageFactoryTests.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommandTests.cs" />

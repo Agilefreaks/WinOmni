@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using OmniCommon.Helpers;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
 

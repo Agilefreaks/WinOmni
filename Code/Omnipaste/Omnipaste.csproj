@@ -264,6 +264,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\ContactFactory.cs" />
+    <Compile Include="Factories\IContactFactory.cs" />
     <Compile Include="Factories\IPhoneCallFactory.cs" />
     <Compile Include="Factories\ISmsMessageFactory.cs" />
     <Compile Include="Factories\PhoneCallFactory.cs" />

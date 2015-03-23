@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Reactive;
+    using System.Linq;
     using System.Reactive.Linq;
     using Castle.Core.Internal;
     using Clipboard.Handlers;
     using Contacts.Handlers;
-    using Contacts.Models;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -52,7 +51,7 @@
         public IUpdateInfoRepository UpdateInfoRepository { get; set; }
 
         [Inject]
-        public IContactRepository ContactRepository { get; set; }
+        public IContactFactory ContactFactory { get; set; }
 
         [Inject]
         public IContactCreatedHandler ContactCreatedHandler { get; set; }
@@ -89,28 +88,26 @@
                     .SubscribeAndHandleErrors(updateInfo => UpdateInfoRepository.Save(updateInfo)));
 
             _subscriptions.Add(
-                ContactCreatedHandler.SubscribeOn(SchedulerProvider.Default)
+                ContactCreatedHandler
+                    .Select(ContactFactory.Create)
+                    .Switch()
+                    .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(c => StoreContact(c)));
+                    .SubscribeAndHandleErrors());
 
             _subscriptions.Add(
                 ContactsUpdatedHandler
-                    .SelectMany(cl => cl)
+                    .SelectMany(cl => cl.Select(contact => ContactFactory.Create(contact)))
+                    .Merge()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(c => StoreContact(c)));
+                    .SubscribeAndHandleErrors());
         }
 
         public void Stop()
         {
             _subscriptions.ForEach(s => s.Dispose());
             _subscriptions.Clear();
-        }
-
-        private IObservable<Unit> StoreContact(ContactDto contactDto)
-        {
-            var contactInfo = new ContactInfo(contactDto);
-            return ContactRepository.Save(contactInfo).Select(_ => Unit.Default);
         }
     }
 }

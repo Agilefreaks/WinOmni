@@ -76,5 +76,17 @@
         {
             return string.Join(NamePartSeparator, Name, PhoneNumber);
         }
+
+        public ContactInfo SetUniqueId(string uniqueId)
+        {
+            UniqueId = uniqueId;
+            return this;
+        }
+
+        public ContactInfo SetLastActivityTime(DateTime? lastActivityTime)
+        {
+            LastActivityTime = lastActivityTime;
+            return this;
+        }
     }
 }
