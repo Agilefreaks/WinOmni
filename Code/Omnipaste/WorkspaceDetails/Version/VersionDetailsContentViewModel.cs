@@ -2,13 +2,13 @@
 {
     using Omnipaste.Presenters;
 
-    public class VersionDetailsContentViewModel : WorkspaceDetailsContentViewModel<ActivityPresenter>, IVersionDetailsContentViewModel
+    public class VersionDetailsContentViewModel : WorkspaceDetailsContentViewModel<UpdateInfoPresenter>, IVersionDetailsContentViewModel
     {
         public string ReleaseLog
         {
             get
             {
-                return Model.ExtraData.UpdateInfo.ReleaseLog;
+                return Model.BackingModel.ReleaseLog;
             }
         }
 
@@ -16,7 +16,7 @@
         {
             get
             {
-                return Model.ExtraData.UpdateInfo.WasInstalled;
+                return Model.BackingModel.WasInstalled;
             }
         }
     }

@@ -1,5 +1,6 @@
 namespace Omnipaste.Activity
 {
+    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using OmniUI.Attributes;
 
@@ -18,7 +19,7 @@ namespace Omnipaste.Activity
         {
             get
             {
-                return Model.ExtraData.UpdateInfo.WasInstalled;
+                return ((UpdateInfoPresenter)Model.BackingModel).WasInstalled;
             }
         }
 

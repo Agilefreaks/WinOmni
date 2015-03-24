@@ -8,8 +8,10 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
+    using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.WorkspaceDetails.Clipping;
+    using Omnipaste.WorkspaceDetails.Version;
 
     [TestFixture]
     public class WorkspaceDetailsViewModelFactoryTests
@@ -55,6 +57,19 @@
             var result = _subject.Create(_activityPresenterFactory.Create(clippingModel).Wait());
 
             ((ClippingPresenter)result.Model).BackingModel.Should().Be(clippingModel);
+        }
+
+        [Test]
+        public void CreateWithActivityPresenter_WhenActivityIsVersion_ReturnsVersionViewModelDetails()
+        {
+            var mockDetailsViewModel = new Mock<IVersionDetailsViewModel>();
+            mockDetailsViewModel.SetupAllProperties();
+            var updateInfo = new UpdateInfo();
+            _mockServiceLocator.Setup(m => m.GetInstance<IVersionDetailsViewModel>()).Returns(mockDetailsViewModel.Object);
+
+            var result = _subject.Create(_activityPresenterFactory.Create(updateInfo).Wait());
+
+            ((UpdateInfoPresenter)result.Model).BackingModel.Should().Be(updateInfo);
         }
 
         [Test]

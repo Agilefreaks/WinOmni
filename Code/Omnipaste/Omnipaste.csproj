@@ -311,6 +311,7 @@
     <Compile Include="Presenters\RemotePhoneCallPresenter.cs" />
     <Compile Include="Presenters\RemoteSmsMessagePresenter.cs" />
     <Compile Include="Presenters\SmsMessagePresenter.cs" />
+    <Compile Include="Presenters\UpdateInfoPresenter.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />

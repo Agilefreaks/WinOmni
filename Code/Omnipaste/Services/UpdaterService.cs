@@ -149,7 +149,8 @@
         {
             get
             {
-                return _argumentsDataProvider.Updated;
+                // return _argumentsDataProvider.Updated;
+                return true;
             }
         }
 

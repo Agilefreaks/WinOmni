@@ -31,7 +31,7 @@
                     break;
                 case ActivityTypeEnum.Version:
                     result = _serviceLocator.GetInstance<IVersionDetailsViewModel>();
-                    result.Model = activityPresenter;
+                    result.Model = activityPresenter.BackingModel;
                     break;
                 default:
                     throw new Exception("Unknown type");

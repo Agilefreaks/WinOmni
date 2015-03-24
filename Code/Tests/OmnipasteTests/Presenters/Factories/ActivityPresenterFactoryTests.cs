@@ -188,13 +188,12 @@
         }
 
         [Test]
-        public void Create_WithUpdateInfo_SetsExtraDataUpdateInfo()
+        public void Create_WithUpdateInfo_SetsBackingModelToUpdateInfoPresenter()
         {
             var updateInfo = new UpdateInfo();
             var activityPresenter = _factory.Create(updateInfo).Wait();
 
-            UpdateInfo extraUpdateInfo = activityPresenter.ExtraData.UpdateInfo;
-            extraUpdateInfo.Should().Be(updateInfo);
+            activityPresenter.SourceId.Should().Be(updateInfo.UniqueId);            
         }
 
         private void SetupPhoneCallPresenterFactory<T, TPresenter>(T phoneCall)
