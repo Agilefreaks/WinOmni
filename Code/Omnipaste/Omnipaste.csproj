@@ -265,7 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContactList\IContactListViewModelBase.cs" />
-    <Compile Include="Controls\TokenizingControl.cs" />
     <Compile Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionViewModel.cs" />
     <Compile Include="ContactList\ContactListViewModelBase.cs" />
     <Compile Include="ContactList\IContactInfoSelectionViewModel.cs" />
