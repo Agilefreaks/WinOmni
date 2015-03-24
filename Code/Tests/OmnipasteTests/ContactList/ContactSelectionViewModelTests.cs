@@ -1,9 +1,8 @@
 ﻿namespace OmnipasteTests.ContactList
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reactive.Concurrency;
+    using System.Reactive;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -12,7 +11,6 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
-    using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.GroupMessage.ContactSelection;
     using Omnipaste.GroupMessage.ContactSelection.ContactInfo;
     using Omnipaste.Models;
@@ -84,9 +82,9 @@
             var contactInfo = new ContactInfo { FirstName = "asdf" };
             var contactInfos = new List<ContactInfo>() {contactInfo};
             var observable = _testScheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<IEnumerable<ContactInfo>>>(
+                new Recorded<Notification<IEnumerable<ContactInfo>>>(
                     100,
-                    System.Reactive.Notification.CreateOnNext(contactInfos.AsEnumerable())));
+                    Notification.CreateOnNext(contactInfos.AsEnumerable())));
             _mockContactRepository.Setup(cr => cr.GetAll()).Returns(observable);
             _subject.Activate();
             _testScheduler.Start();
@@ -102,9 +100,9 @@
             var contactInfo = new ContactInfo { FirstName = "asdf" };
             var contactInfos = new List<ContactInfo>() {contactInfo};
             var observable = _testScheduler.CreateColdObservable(
-                new Recorded<System.Reactive.Notification<IEnumerable<ContactInfo>>>(
+                new Recorded<Notification<IEnumerable<ContactInfo>>>(
                     100,
-                    System.Reactive.Notification.CreateOnNext(contactInfos.AsEnumerable())));
+                    Notification.CreateOnNext(contactInfos.AsEnumerable())));
             _mockContactRepository.Setup(cr => cr.GetAll()).Returns(observable);
             _subject.Activate();
             _testScheduler.Start();

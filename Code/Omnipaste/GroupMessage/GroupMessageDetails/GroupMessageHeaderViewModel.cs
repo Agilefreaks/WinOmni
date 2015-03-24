@@ -1,9 +1,6 @@
 namespace Omnipaste.GroupMessage.GroupMessageDetails{
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
-    using Contacts.Models;
-    using Omnipaste.Controls;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
 
     public class GroupMessageHeaderViewModel : Screen, IGroupMessageHeaderViewModel
@@ -26,18 +23,6 @@ namespace Omnipaste.GroupMessage.GroupMessageDetails{
                 _recipients = value;
                 NotifyOfPropertyChange(() => Recipients);
             }
-        }
-
-        public void AddNewContact(TokenEventArgs args)
-        {
-            var contactDto = new ContactDto();
-            contactDto.PhoneNumbers.Add(new PhoneNumberDto { Number = args.TokenIdentifier });
-            Recipients.Add(new ContactInfoPresenter(new ContactInfo(contactDto)));
-        }
-
-        public void RemoveContact(ContactInfoPresenter itemToRemove)
-        {
-            Recipients.Remove(itemToRemove);
         }
     }
 }
