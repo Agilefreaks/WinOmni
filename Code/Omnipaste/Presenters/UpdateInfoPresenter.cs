@@ -16,5 +16,14 @@
                 return BackingModel.WasInstalled;
             }
         }
+
+        public string ReleaseLog
+        {
+            get
+            {
+                return BackingModel.ReleaseLog;
+            }
+
+        }
     }
 }

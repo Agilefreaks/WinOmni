@@ -8,7 +8,7 @@
         {
             get
             {
-                return Model.BackingModel.ReleaseLog;
+                return Model.ReleaseLog;
             }
         }
 
@@ -16,7 +16,7 @@
         {
             get
             {
-                return Model.BackingModel.WasInstalled;
+                return Model.WasInstalled;
             }
         }
     }
