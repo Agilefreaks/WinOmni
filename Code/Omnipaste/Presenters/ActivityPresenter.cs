@@ -136,13 +136,6 @@
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(UpdateInfo backingModel)
-        {
-            ExtraData.UpdateInfo = backingModel;
-            return this;
-        }
-
-
         IActivityPresenterBuilder IActivityPresenterBuilder.WithType(ActivityTypeEnum type)
         {
             Type = type;
@@ -163,7 +156,7 @@
 
         IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum)
         {
-             Device = clippingSourceEnum == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            Device = clippingSourceEnum == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
@@ -193,9 +186,6 @@
     public interface IActivityPresenterBuilder
     {
         IActivityPresenterBuilder WithBackingModel(IPresenter backingModel);
-
-        // TODO: add a presenter
-        IActivityPresenterBuilder WithBackingModel(UpdateInfo backingModel);
 
         IActivityPresenterBuilder WithBackingModel(IConversationPresenter backingModel);
 

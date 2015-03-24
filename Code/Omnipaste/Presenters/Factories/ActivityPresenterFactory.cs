@@ -54,7 +54,7 @@
             var activityPresenter = ActivityPresenter.BeginBuild()
                 .WithType(ActivityTypeEnum.Version)
                 .WithContent(updateInfo)
-                .WithBackingModel(updateInfo)
+                .WithBackingModel(new UpdateInfoPresenter(updateInfo))
                 .Build();
             return Observable.Return(activityPresenter);
         }
