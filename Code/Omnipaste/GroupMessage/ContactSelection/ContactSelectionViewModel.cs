@@ -29,9 +29,8 @@
 
         public ContactSelectionViewModel(
             IContactRepository contactRepository,
-            IConversationProvider conversationProvider,
             IContactInfoViewModelFactory contactInfoViewModelFactory)
-            : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
+            : base(contactRepository, contactInfoViewModelFactory)
         {
             _selectionChangedObservable = Observable.Empty<EventPattern<PropertyChangedEventArgs>>();
         }

@@ -41,7 +41,7 @@
             _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
-            _mockContactInfoViewModelFactory.Setup(x => x.Create<ContactInfoViewModel>(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
+            _mockContactInfoViewModelFactory.Setup(x => x.Create<IContactInfoViewModel>(It.IsAny<ContactInfoPresenter>())).Returns<ContactInfoPresenter>(presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
 
             _subject = new ContactListViewModel(_mockContactRepository.Object, _mockContactInfoViewModelFactory.Object);
         }
@@ -68,7 +68,7 @@
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
 
             ((IActivate)_subject).Activate();
-            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+            _testScheduler.Start();
 
             _subject.Items.Count.Should().Be(contacts.Count);
         }

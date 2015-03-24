@@ -1,17 +1,12 @@
 namespace Omnipaste.ContactList
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Linq;
-    using OmniCommon.ExtensionMethods;
-    using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
-    using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmniUI.Details;
     using OmniUI.List;
@@ -19,8 +14,6 @@ namespace Omnipaste.ContactList
     public abstract class ContactListViewModelBase<TContactViewModel> : ListViewModelBase<ContactInfoPresenter, TContactViewModel>, IContactListViewModel<TContactViewModel>
         where TContactViewModel : class, IDetailsViewModel<ContactInfoPresenter>
     {
-        private readonly IConversationProvider _conversationProvider;
-
         private readonly IContactInfoViewModelFactory _contactInfoViewModelFactory;
 
         private bool _showStarred;
@@ -31,11 +24,9 @@ namespace Omnipaste.ContactList
 
         protected ContactListViewModelBase(
             IContactRepository contactRepository,
-            IConversationProvider conversationProvider,
             IContactInfoViewModelFactory contactInfoViewModelFactory)
         {
             ContactRepository = contactRepository;
-            _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
             FilteredItems.SortDescriptions.Add(
@@ -94,37 +85,36 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-            Subscriptions.Add(
-                GetItemUpdatedObservable()
-                    .SubscribeOn(SchedulerProvider.Default)
-                    .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(UpdateViewModel));
-
-            Subscriptions.Add(_conversationProvider.All().ItemAdded
-                .SubscribeOn(SchedulerProvider.Default)
-                .ObserveOn(SchedulerProvider.Dispatcher)
-                .SubscribeAndHandleErrors(OnConversationItemCreated));
-        }
-
-        protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
+        protected override IObservable<ContactInfoPresenter> GetFetchItemsObservable()
         {
             return
                 ContactRepository.GetAll()
-                    .Select(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
+                    .SelectMany(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
         }
 
-        protected override IObservable<ContactInfoPresenter> GetItemAddedObservable()
+        protected override IObservable<ContactInfoPresenter> GetItemChangedObservable()
         {
-            return ContactRepository.OperationObservable.Created()
+            return ContactRepository.GetOperationObservable().Changed()
                 .Select(o => new ContactInfoPresenter(o.Item));
         }
 
-        protected override TContactViewModel CreateViewModel(ContactInfoPresenter model)
+        protected override TContactViewModel ChangeViewModel(ContactInfoPresenter model)
         {
-            return _contactInfoViewModelFactory.Create<TContactViewModel>(model);
+            var contactInfoViewModel = UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create<TContactViewModel>(model);
+            return contactInfoViewModel;
+        }
+
+        private TContactViewModel UpdateViewModel(ContactInfoPresenter obj)
+        {
+            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactInfo.UniqueId == obj.ContactInfo.UniqueId);
+            if (viewModel != null)
+            {
+                viewModel.Model = obj;
+                FilteredItems.EditItem(viewModel);
+                FilteredItems.CommitEdit();
+            }
+
+            return viewModel;
         }
 
         private static bool IsMatch(string filter, string value)
@@ -134,32 +124,15 @@ namespace Omnipaste.ContactList
 
         private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
         {
-            return ContactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
-        }
-
-        private ContactInfoPresenter GetContactFor(IConversationItem conversationItem)
-        {
-            return
-                Items.Select(vm => vm.Model)
-                    .FirstOrDefault(
-                        model => conversationItem.ContactInfo.UniqueId == model.ContactInfo.UniqueId);
-        }
-
-        private void UpdateViewModel(ContactInfoPresenter obj)
-        {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.Identifier == obj.Identifier);
-            if (viewModel != null)
-            {
-                viewModel.Model = obj;
-            }
+            return ContactRepository.GetOperationObservable().Changed().Select(o => new ContactInfoPresenter(o.Item));
         }
 
         private bool MatchesFilterText(IContactInfoPresenter model)
         {
             return (model != null)
                    && (string.IsNullOrWhiteSpace(FilterText)
-                       || IsMatch(FilterText, model.ContactInfo.Name)
-                       || model.ContactInfo.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
+                       || IsMatch(FilterText, model.BackingModel.Name)
+                       || model.BackingModel.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
         }
 
         private bool MatchesFilter(IContactInfoPresenter model)
@@ -167,13 +140,5 @@ namespace Omnipaste.ContactList
             return !ShowStarred || model.IsStarred;
         }
 
-        private void OnConversationItemCreated(IConversationItem conversationItem)
-        {
-            var contactPresenter = GetContactFor(conversationItem);
-            if (contactPresenter != null)
-            {
-                RefreshViewForItem(contactPresenter);
-            }
-        }
     }
 }

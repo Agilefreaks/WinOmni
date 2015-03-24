@@ -142,6 +142,7 @@
                                        : _smsMessages.Send(ContactInfo.PhoneNumber, Message);
             
             createObservable.Select(SmsMessageFactory.Create<LocalSmsMessage>)
+                .Switch()
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);

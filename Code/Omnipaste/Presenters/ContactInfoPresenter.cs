@@ -27,11 +27,7 @@
         {
             _contactInfo = contactInfo;
         }
-
-        public ContactInfoPresenter()
-        {
-        }
-
+        
         public string Name
         {
             get
@@ -123,9 +119,7 @@
                 NotifyOfPropertyChange(() => Identifier);
             }
         }
-
-        #endregion
-
+        
         protected virtual ImageSource GetContactImage()
         {
             ImageSource result;

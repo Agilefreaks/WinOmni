@@ -7,9 +7,8 @@ namespace Omnipaste.ContactList
     {
         public ContactListViewModel(
             IContactRepository contactRepository,
-            IConversationProvider conversationProvider,
             IContactInfoViewModelFactory contactInfoViewModelFactory)
-            : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
+            : base(contactRepository, contactInfoViewModelFactory)
         {
         }
     }

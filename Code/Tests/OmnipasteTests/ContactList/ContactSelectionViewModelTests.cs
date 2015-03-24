@@ -135,8 +135,8 @@
                     new Recorded<Notification<RepositoryOperation<ContactInfo>>>(
                         100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Create, contactInfo))));
-            _mockContactRepository.Setup(cr => cr.OperationObservable).Returns(repositoryCreatedObservable);
+                            new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Changed, contactInfo))));
+            _mockContactRepository.Setup(cr => cr.GetOperationObservable()).Returns(repositoryCreatedObservable);
             
             _subject.Activate();
             _testScheduler.Start();

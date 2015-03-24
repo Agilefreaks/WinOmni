@@ -183,7 +183,14 @@ namespace OmniUI.List
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(ChangeItem));
+                    .Subscribe(
+                        ChangeItem,
+                        e =>
+                        {
+                            SimpleLogger.Log("Exception encountered: " + e);
+                            ExceptionReporter.Instance.Report(e);
+                        },
+                        ItemsAdded));
             Subscriptions.Add(
                 GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
