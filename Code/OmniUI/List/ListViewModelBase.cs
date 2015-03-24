@@ -97,6 +97,8 @@ namespace OmniUI.List
         public virtual void RefreshItems()
         {
             _filteredItems.Refresh();
+
+            Status = FilteredItems.Count == 0 ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
         }
 
         #endregion

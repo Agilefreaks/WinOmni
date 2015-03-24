@@ -264,6 +264,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactList\IContactListViewModelBase.cs" />
     <Compile Include="Controls\TokenizingControl.cs" />
     <Compile Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionViewModel.cs" />
     <Compile Include="ContactList\ContactListViewModelBase.cs" />
@@ -595,6 +596,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GroupMessage\ContactSelection\ContactSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GroupMessage\ContactSelection\ContactSelection\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GroupMessage\ContactSelection\ContactSelection\EmptyFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GroupMessage\ContactSelection\ContactSelection\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:properties="clr-namespace:Omnipaste.Properties"
-             xmlns:controls="clr-namespace:Omnipaste.Controls"
-             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -23,37 +21,21 @@
             <DockPanel VerticalAlignment="Center" LastChildFill="True">
                 <TextBlock Text="{x:Static properties:Resources.GroupMessageRecipientsLabel}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center" DockPanel.Dock="Left" />
-                <controls:TokenizingControl IsDocumentEnabled="True" cal:Message.Attach="[Event AddNewToken] = [Action AddNewContact($eventArgs)]"  ItemsSource="{Binding Path=Recipients}" BorderThickness="0">
-                    <controls:TokenizingControl.TokenTemplate>
+                <ItemsControl ItemsSource="{Binding Path=Recipients}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <DataTemplate.Resources>
-                                <Storyboard x:Key="OnLoaded1">
-                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
-                                        <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
-                                        <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
-                                    </DoubleAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </DataTemplate.Resources>
-                            <Border x:Name="border" BorderBrush="#FF7E7E7E" BorderThickness="0" Height="Auto" Padding="5,3" Margin="3,0,3,3">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock TextWrapping="NoWrap" Text="{Binding Path=Identifier}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                    <Button Content="x" cal:Message.Attach="RemoveContact($dataContext)"/>
-                                </StackPanel>
-                            </Border>
-                            <DataTemplate.Triggers>
-                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource OnLoaded1}"/>
-                                </EventTrigger>
-                            </DataTemplate.Triggers>
+                            <TextBlock Text="{Binding Path=Identifier}"></TextBlock>
                         </DataTemplate>
-                    </controls:TokenizingControl.TokenTemplate>
-                </controls:TokenizingControl>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </DockPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="Call" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
-                    Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource appbar_add}"
-                    Margin="0,0,14,0"/>
                 <Button x:Name="Delete" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
                     Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"/>
             </StackPanel>
@@ -61,5 +43,4 @@
 
         <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource MessageBrush}" />
     </Grid>
-
 </UserControl>

@@ -1,8 +1,6 @@
 ﻿namespace Omnipaste.ContactList
 {
-    using OmniUI.List;
-
-    public interface IContactListViewModel : IListViewModel<IContactInfoViewModel>
+    public interface IContactListViewModel : IContactListViewModel<IContactInfoViewModel>
     {
     }
 }

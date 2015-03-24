@@ -5,7 +5,10 @@ namespace Omnipaste.ContactList
 
     public class ContactListViewModel : ContactListViewModelBase<IContactInfoViewModel>, IContactListViewModel
     {
-        public ContactListViewModel(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
+        public ContactListViewModel(
+            IContactRepository contactRepository,
+            IConversationProvider conversationProvider,
+            IContactInfoViewModelFactory contactInfoViewModelFactory)
             : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
         {
         }

@@ -2,39 +2,21 @@
 {
     using System;
     using Omnipaste.ContactList;
+    using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Presenters;
-    using OmniUI.Details;
+    using Omnipaste.Services;
 
-    public class ContactInfoSelectionViewModel : DetailsViewModelBase<ContactInfoPresenter>,
+    public class ContactInfoSelectionViewModel : ContactInfoViewModel,
                                                  IContactInfoSelectionViewModel
     {
         private bool _isSelected;
 
         private DateTime? _lastActivityTime;
 
-        public ContactInfoSelectionViewModel()
+        public ContactInfoSelectionViewModel(ISessionManager sessionManager)
+            : base(sessionManager)
         {
             ClickCommand = new Command(ToggleSelection);
-        }
-
-        public Command ClickCommand { get; set; }
-
-        public DateTime? LastActivityTime
-        {
-            get
-            {
-                return _lastActivityTime;
-            }
-            set
-            {
-                if (value.Equals(_lastActivityTime))
-                {
-                    return;
-                }
-                _lastActivityTime = value;
-                NotifyOfPropertyChange(() => LastActivityTime);
-            }
         }
 
         public bool IsSelected

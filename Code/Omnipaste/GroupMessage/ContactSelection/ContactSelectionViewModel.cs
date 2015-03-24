@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.Reactive;
     using System.Reactive.Linq;
+    using System.Text.RegularExpressions;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.ContactList;
     using Omnipaste.GroupMessage.ContactSelection.ContactInfo;
@@ -12,13 +13,37 @@
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
 
-    public class ContactSelectionViewModel : ContactListViewModelBase<IContactInfoSelectionViewModel>, IContactSelectionViewModel
+    public class ContactSelectionViewModel : ContactListViewModelBase<IContactInfoSelectionViewModel>,
+                                             IContactSelectionViewModel
     {
-        private IObservable<EventPattern<PropertyChangedEventArgs>> _selectionChangedObservable;
+        private IContactInfoViewModel _contactInfoViewModel;
 
         private IDisposable _itemsSelectedSubscription;
 
-        private ObservableCollection<ContactInfoPresenter> _selectedContacts = new ObservableCollection<ContactInfoPresenter>();
+        private ContactInfoPresenter _newContactPresenter;
+
+        private ObservableCollection<ContactInfoPresenter> _selectedContacts =
+            new ObservableCollection<ContactInfoPresenter>();
+
+        private IObservable<EventPattern<PropertyChangedEventArgs>> _selectionChangedObservable;
+
+        public ContactSelectionViewModel(
+            IContactRepository contactRepository,
+            IConversationProvider conversationProvider,
+            IContactInfoViewModelFactory contactInfoViewModelFactory)
+            : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
+        {
+            _selectionChangedObservable = Observable.Empty<EventPattern<PropertyChangedEventArgs>>();
+        }
+
+        public ContactInfoPresenter PendingContact
+        {
+            get
+            {
+                return _newContactPresenter
+                       ?? (_newContactPresenter = new ContactInfoPresenter(new Models.ContactInfo()));
+            }
+        }
 
         public ObservableCollection<ContactInfoPresenter> SelectedContacts
         {
@@ -38,21 +63,41 @@
             }
         }
 
-        public ContactSelectionViewModel(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
-            : base(contactRepository, conversationProvider, contactInfoViewModelFactory)
-        {
-            _selectionChangedObservable = Observable.Empty<EventPattern<PropertyChangedEventArgs>>();
-        }
-
         public override void ActivateItem(IContactInfoSelectionViewModel item)
         {
             base.ActivateItem(item);
 
-            _selectionChangedObservable = _selectionChangedObservable.Merge(
-                Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                    h => item.PropertyChanged += h,
-                    h => item.PropertyChanged -= h)
-                    .Where(ep => ep.EventArgs.PropertyName == "IsSelected"));
+            _selectionChangedObservable =
+                _selectionChangedObservable.Merge(
+                    Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                        h => item.PropertyChanged += h,
+                        h => item.PropertyChanged -= h).Where(ep => ep.EventArgs.PropertyName == "IsSelected"));
+
+            if (_itemsSelectedSubscription != null)
+            {
+                ItemsAdded();
+            }
+
+            if (item.Model.Identifier == PendingContact.Identifier)
+            {
+                AddedPendingContact(item);
+            }
+        }
+
+        public override void NotifyOfPropertyChange(string propertyName)
+        {
+            base.NotifyOfPropertyChange(propertyName);
+
+            if (propertyName == "FilterText")
+            {
+                var phoneNumber = Regex.Replace(FilterText, "[^+0-9]", "");
+                PendingContact.PhoneNumber = phoneNumber;
+            }
+        }
+
+        public void AddPendingContact()
+        {
+            ContactRepository.Save(PendingContact.ContactInfo).Subscribe();
         }
 
         protected override void ItemsAdded()
@@ -68,7 +113,15 @@
             _itemsSelectedSubscription = _selectionChangedObservable.SubscribeAndHandleErrors(ItemSelectionChanged);
         }
 
-        void ItemSelectionChanged(EventPattern<PropertyChangedEventArgs> selectionChangedEvent)
+        private void AddedPendingContact(IContactInfoSelectionViewModel item)
+        {
+            item.IsSelected = true;
+            _newContactPresenter = new ContactInfoPresenter(new Models.ContactInfo());
+            NotifyOfPropertyChange(() => PendingContact);
+            FilterText = "";
+        }
+
+        private void ItemSelectionChanged(EventPattern<PropertyChangedEventArgs> selectionChangedEvent)
         {
             var contactInfoSelectionViewModel = (ContactInfoSelectionViewModel)selectionChangedEvent.Sender;
 

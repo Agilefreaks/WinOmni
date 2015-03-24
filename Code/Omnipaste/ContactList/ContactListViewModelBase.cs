@@ -16,11 +16,9 @@ namespace Omnipaste.ContactList
     using OmniUI.Details;
     using OmniUI.List;
 
-    public abstract class ContactListViewModelBase<TContactViewModel> : ListViewModelBase<ContactInfoPresenter, TContactViewModel>
+    public abstract class ContactListViewModelBase<TContactViewModel> : ListViewModelBase<ContactInfoPresenter, TContactViewModel>, IContactListViewModel<TContactViewModel>
         where TContactViewModel : class, IDetailsViewModel<ContactInfoPresenter>
     {
-        private readonly IContactRepository _contactRepository;
-
         private readonly IConversationProvider _conversationProvider;
 
         private readonly IContactInfoViewModelFactory _contactInfoViewModelFactory;
@@ -29,13 +27,21 @@ namespace Omnipaste.ContactList
 
         private string _filterText;
 
-        protected ContactListViewModelBase(IContactRepository contactRepository, IConversationProvider conversationProvider, IContactInfoViewModelFactory contactInfoViewModelFactory)
+        public IContactRepository ContactRepository { get; set; }
+
+        protected ContactListViewModelBase(
+            IContactRepository contactRepository,
+            IConversationProvider conversationProvider,
+            IContactInfoViewModelFactory contactInfoViewModelFactory)
         {
-            _contactRepository = contactRepository;
+            ContactRepository = contactRepository;
             _conversationProvider = conversationProvider;
             _contactInfoViewModelFactory = contactInfoViewModelFactory;
 
-            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime), ListSortDirection.Ascending));
+            FilteredItems.SortDescriptions.Add(
+                new SortDescription(
+                    PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime),
+                    ListSortDirection.Ascending));
         }
 
         public override int MaxItemCount
@@ -106,13 +112,13 @@ namespace Omnipaste.ContactList
         protected override IObservable<IEnumerable<ContactInfoPresenter>> GetFetchItemsObservable()
         {
             return
-                _contactRepository.GetAll()
+                ContactRepository.GetAll()
                     .Select(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
         }
 
         protected override IObservable<ContactInfoPresenter> GetItemAddedObservable()
         {
-            return _contactRepository.OperationObservable.Created()
+            return ContactRepository.OperationObservable.Created()
                 .Select(o => new ContactInfoPresenter(o.Item));
         }
 
@@ -128,7 +134,7 @@ namespace Omnipaste.ContactList
 
         private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
         {
-            return _contactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
+            return ContactRepository.OperationObservable.Updated().Select(o => new ContactInfoPresenter(o.Item));
         }
 
         private ContactInfoPresenter GetContactFor(IConversationItem conversationItem)

@@ -3,7 +3,6 @@ namespace Omnipaste.GroupMessage.GroupMessageDetails{
     using Caliburn.Micro;
     using Contacts.Models;
     using Omnipaste.Controls;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
 

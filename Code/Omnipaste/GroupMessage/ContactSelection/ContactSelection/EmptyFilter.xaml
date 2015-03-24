@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Omnipaste.GroupMessage.ContactSelection.ContactSelection.EmptyFilter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="We didn't find a contact. Do you want to add it now?" FontSize="{DynamicResource FilterButtonFontSize}" 
+                   FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
+            
+        <Border Grid.Row="1" Style="{DynamicResource ListItemBorderStyle}">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=PendingContact.Image}" Margin="0,0,8,0" Width="40" Height="40" />
+
+                <ContentControl Grid.Column="1" HorizontalAlignment="Stretch" Style="{DynamicResource FadingContentControlStyle}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Path=PendingContact.Identifier}" FontFamily="{DynamicResource ContentFont}" FontSize="{DynamicResource MediumFontSize}"
+                                    TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                    Foreground="{DynamicResource ActivityContentBrush}" />
+
+                        <TextBlock Text="{Binding Path=LastActivityInfo}" Foreground="{DynamicResource ActivitySecondaryContentBrush}"
+                                    TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                    FontFamily="{DynamicResource ActivityContentFont}" FontSize="{DynamicResource MediumFontSize}" FontStyle="Italic"/>
+                    </StackPanel>
+                </ContentControl>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="AddPendingContact" Style="{DynamicResource ShapeButtonWithOuterHighlight}" 
+                            Background="{DynamicResource ActivityContentBrush}" 
+                            Content="{DynamicResource appbar_add}" 
+                            Margin="0,0,14,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

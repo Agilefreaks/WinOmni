@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:Omnipaste.ContactList.Converters"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:framework="clr-namespace:Omnipaste.Framework"
              xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d" 

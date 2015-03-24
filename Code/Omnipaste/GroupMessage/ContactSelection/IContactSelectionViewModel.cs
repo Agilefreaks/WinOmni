@@ -5,8 +5,10 @@
     using Omnipaste.Presenters;
     using OmniUI.List;
 
-    public interface IContactSelectionViewModel : IListViewModel<IContactInfoSelectionViewModel>
+    public interface IContactSelectionViewModel : IContactListViewModel<IContactInfoSelectionViewModel>
     {
         ObservableCollection<ContactInfoPresenter> SelectedContacts { get; set; }
+
+        ContactInfoPresenter PendingContact { get; }
     }
 }
