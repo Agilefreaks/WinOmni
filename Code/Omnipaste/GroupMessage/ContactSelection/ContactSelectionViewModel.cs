@@ -20,7 +20,7 @@
 
         private IDisposable _itemsSelectedSubscription;
 
-        private ContactInfoPresenter _newContactPresenter;
+        private ContactInfoPresenter _pendingContact;
 
         private ObservableCollection<ContactInfoPresenter> _selectedContacts =
             new ObservableCollection<ContactInfoPresenter>();
@@ -40,8 +40,16 @@
         {
             get
             {
-                return _newContactPresenter
-                       ?? (_newContactPresenter = new ContactInfoPresenter(new Models.ContactInfo()));
+                return _pendingContact
+                       ?? (_pendingContact = new ContactInfoPresenter(new Models.ContactInfo()));
+            }
+            set
+            {
+                if (_pendingContact != value)
+                {
+                    _pendingContact = value;
+                    NotifyOfPropertyChange(() => _pendingContact);
+                }
             }
         }
 
@@ -116,7 +124,7 @@
         private void AddedPendingContact(IContactInfoSelectionViewModel item)
         {
             item.IsSelected = true;
-            _newContactPresenter = new ContactInfoPresenter(new Models.ContactInfo());
+            _pendingContact = new ContactInfoPresenter(new Models.ContactInfo());
             NotifyOfPropertyChange(() => PendingContact);
             FilterText = "";
         }

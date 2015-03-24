@@ -119,5 +119,29 @@
 
             _subject.PendingContact.Identifier.Should().Be(_subject.FilterText);
         }
+
+        [Test]
+        public void ActivateItem_WhenTheItemIsForThePendingContact_SelectsTheViewModel()
+        {
+            var contactInfo = new ContactInfo { FirstName = "asdf" };
+            var pendingContact = new ContactInfoPresenter(contactInfo);
+            _subject.PendingContact = pendingContact;
+            ContactInfoSelectionViewModel contactInfoSelectionViewModel = new ContactInfoSelectionViewModel(_mockSessionManager.Object) { Model = pendingContact };
+            _mockContactInfoViewModelFactory.Setup(
+                x => x.Create<IContactInfoSelectionViewModel>(It.IsAny<ContactInfoPresenter>()))
+                .Returns(contactInfoSelectionViewModel);
+            var repositoryCreatedObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<RepositoryOperation<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(
+                            new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Create, contactInfo))));
+            _mockContactRepository.Setup(cr => cr.OperationObservable).Returns(repositoryCreatedObservable);
+            
+            _subject.Activate();
+            _testScheduler.Start();
+
+            contactInfoSelectionViewModel.IsSelected.Should().Be(true);
+        }
     }
 }
