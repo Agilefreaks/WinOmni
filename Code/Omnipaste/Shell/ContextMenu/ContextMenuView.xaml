@@ -17,6 +17,7 @@
         Visibility="{Binding Path=Visibility}"
         ToolTipText="{Binding Path=TooltipText}"
         IconSource="{Binding Path=IconSource}"
+        cal:Message.Attach="[Event TrayMouseDoubleClick] = [Action Show]"
         behaviours:ShowBubbleNotificationBehavior.BalloonInfo="{Binding Path=BalloonInfo}">
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
