@@ -5,6 +5,7 @@
     using System.Reactive.Linq;
     using System.Runtime.InteropServices;
     using WindowsImports;
+    using OmniCommon.Helpers;
 
     public class SystemIdleService : ISystemIdleService
     {
@@ -20,7 +21,7 @@
 
         public IObservable<bool> CreateSystemIdleObservable(TimeSpan idleThreshHold)
         {
-            var timer = Observable.Timer(InitialWaitTime, RefreshInterval);
+            var timer = Observable.Timer(InitialWaitTime, RefreshInterval, SchedulerProvider.Default);
 
             return timer.Select(_ => GetIdleTime() > idleThreshHold);
         }
