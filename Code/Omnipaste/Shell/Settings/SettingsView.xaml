@@ -31,6 +31,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
             <controls:ToggleSwitch IsChecked="{Binding Path=IsSMSSuffixEnabled, Mode=TwoWay}" Header="{x:Static p:Resources.EnableSMSBranding}" Style="{StaticResource SettingsToggleStyle}"/>
+            <Button x:Name="RefreshContacts" behaviors:MultipleContentButton.Text="{x:Static p:Resources.SettingsRefreshContacts}" Content="{StaticResource appbar_refresh}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
             <Button x:Name="LogOut" behaviors:MultipleContentButton.Text="{x:Static p:Resources.SettingsLogOut}" Content="{StaticResource appbar_door_leave}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
             <Button x:Name="Exit" behaviors:MultipleContentButton.Text="{x:Static p:Resources.ButtonExit}" Content="{StaticResource appbar_switch_off}" HorizontalContentAlignment="Stretch" ContentTemplate="{DynamicResource SettingsButtonTemplate}" />
         </StackPanel>

@@ -442,4 +442,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="Local" xml:space="preserve">
     <value>Local</value>
   </data>
+  <data name="SettingsRefreshContacts" xml:space="preserve">
+    <value>Refresh Contacts</value>
+  </data>
 </root>

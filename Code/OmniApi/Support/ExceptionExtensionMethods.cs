@@ -10,13 +10,14 @@
         {
             ApiException result = null;
 
-            if (exception is ApiException)
+            var apiException = exception as ApiException;
+            if (apiException != null)
             {
-                result = exception as ApiException;
+                result = apiException;
             }
             else if (exception is AggregateException && exception.InnerException is ApiException)
             {
-                result = exception.InnerException as ApiException;
+                result = (ApiException)exception.InnerException;
             }
 
             return result;

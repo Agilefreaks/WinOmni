@@ -1,11 +1,13 @@
 ﻿namespace Omnipaste.Shell.Settings
 {
+    using System;
     using System.Threading.Tasks;
     using MahApps.Metro.Controls;
     using Ninject;
     using Omni;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using OmniUI.Flyout;
     using Omnipaste.Services;
 
@@ -86,6 +88,13 @@
         public void Exit()
         {
             ApplicationService.ShutDown();
+        }
+
+        public void RefreshContacts()
+        {
+            var userInfo = _configurationService.UserInfo;
+            userInfo.ContactsUpdatedAt = new DateTime();
+            _configurationService.UserInfo = userInfo;
         }
 
         #endregion

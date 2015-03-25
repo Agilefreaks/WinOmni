@@ -24,6 +24,8 @@
 
         void LogOut();
 
+        void RefreshContacts();
+
         #endregion
     }
 }

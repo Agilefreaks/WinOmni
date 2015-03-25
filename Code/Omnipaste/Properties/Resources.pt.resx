@@ -442,4 +442,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="Local" xml:space="preserve">
     <value>Local</value>
   </data>
+  <data name="SettingsRefreshContacts" xml:space="preserve">
+    <value>Atualizar Contatos</value>
+  </data>
 </root>
