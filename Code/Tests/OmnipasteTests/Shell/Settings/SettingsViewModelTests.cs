@@ -10,6 +10,7 @@
     using NUnit.Framework;
     using Omni;
     using OmniCommon.Interfaces;
+    using OmniCommon.Models;
     using Omnipaste.Services;
     using Omnipaste.Shell.Settings;
 
@@ -111,6 +112,17 @@
             _subject.IsSMSSuffixEnabled = false;
 
             _mockConfigurationService.VerifySet(x => x.IsSMSSuffixEnabled = false, Times.Once());
+        }
+
+        [Test]
+        public void RefreshContacts_Always_SetsContactsUpdatedAt()
+        {
+            var userInfo = new UserInfo();
+            _mockConfigurationService.SetupGet(m => m.UserInfo).Returns(userInfo);
+
+            _subject.Refresh();
+
+            userInfo.ContactsUpdatedAt.Should().Be(new DateTime());
         }
     }
 }

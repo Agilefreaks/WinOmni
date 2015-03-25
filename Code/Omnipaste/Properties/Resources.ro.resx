@@ -442,4 +442,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="Local" xml:space="preserve">
     <value>Local</value>
   </data>
+  <data name="SettingsRefreshContacts" xml:space="preserve">
+    <value>Actualizează Contactele</value>
+  </data>
 </root>

@@ -911,6 +911,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh Contacts.
+        /// </summary>
+        public static string SettingsRefreshContacts {
+            get {
+                return ResourceManager.GetString("SettingsRefreshContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Omnipaste is still running. To open the window again, double-click the icon..
         /// </summary>
         public static string ShellBallonContent {

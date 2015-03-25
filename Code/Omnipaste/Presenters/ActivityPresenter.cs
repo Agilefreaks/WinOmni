@@ -14,16 +14,10 @@
     {
         private const string StringFormPartSeparator = " ";
 
-        public ActivityPresenter()
+        private ActivityPresenter()
         {
             Type = ActivityTypeEnum.None;
             ExtraData = new ExpandoObject();
-        }
-
-        public ActivityPresenter(ActivityTypeEnum type)
-            : this()
-        {
-            Type = type;
         }
 
         public virtual IPresenter BackingModel { get; private set; }
