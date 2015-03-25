@@ -264,6 +264,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
     <Compile Include="ContactList\IContactListViewModelBase.cs" />
     <Compile Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionViewModel.cs" />
     <Compile Include="ContactList\ContactListViewModelBase.cs" />

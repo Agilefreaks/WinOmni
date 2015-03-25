@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.Workspaces
 {
-    using Omnipaste.GroupMessage;
+    using Omnipaste.ContactList;
     using OmniUI.Attributes;
     using OmniUI.Workspace;
 
     [UseView(typeof(WorkspaceView))]
-    public class GroupMessagesWorkspace : Workspace, IGroupMessagesWorkspace
+    public class GroupMessagesWorkspace : MasterDetailsWorkspace, IGroupMessagesWorkspace
     {
         public override string DisplayName
         {
@@ -14,10 +14,11 @@
                 return "+ New message";
             }
         }
-        
-        public GroupMessagesWorkspace(IGroupMessageViewModel defaultScreen)
-            : base(defaultScreen)
+
+        public GroupMessagesWorkspace(IContactListViewModel defaultScreen, IDetailsConductorViewModel detailsConductor)
+            : base(defaultScreen, detailsConductor)
         {
+            defaultScreen.CanSelectMultipleItems = true;
         }
     }
 }

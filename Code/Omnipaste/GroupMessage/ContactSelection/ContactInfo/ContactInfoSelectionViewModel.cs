@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.GroupMessage.ContactSelection.ContactInfo
 {
-    using System;
     using Omnipaste.ContactList;
     using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Framework.Commands;
@@ -10,8 +9,6 @@
                                                  IContactInfoSelectionViewModel
     {
         private bool _isSelected;
-
-        private DateTime? _lastActivityTime;
 
         public ContactInfoSelectionViewModel(ISessionManager sessionManager)
             : base(sessionManager)

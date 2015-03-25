@@ -6,8 +6,13 @@
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:framework="clr-namespace:Omnipaste.Framework"
+             xmlns:converters="clr-namespace:Omnipaste.ContactList.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <converters:BoolToSelectionModeConverter x:Key="BoolToSelectionModeConverter" />
+     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
         <Grid.RowDefinitions>
@@ -40,7 +45,11 @@
         </Border>
         
         <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
-            <ListView ItemsSource="{Binding Path=FilteredItems}" Style="{StaticResource VirtualisedMetroListView}" BorderThickness="0">
+            <ListView SelectionMode="{Binding Path=CanSelectMultipleItems, Converter={StaticResource BoolToSelectionModeConverter}}" 
+                      ItemsSource="{Binding Path=FilteredItems}" 
+                      Style="{StaticResource VirtualisedMetroListView}" 
+                      cal:Message.Attach="[Event SelectionChanged] = [Action SelectionChanged($eventArgs)]"
+                      BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ContentControl cal:View.Model="{Binding}" />

@@ -36,11 +36,13 @@
 
         private IConversationPresenter _lastActivity;
 
+        private bool _isSelected;
+
         public ContactInfoViewModel(ISessionManager sessionManager)
         {
             _subscriptionsManager = new SubscriptionsManager();
             _sessionManager = sessionManager;
-            ClickCommand = new Command(ShowDetails);
+            ClickCommand = new Command(ToggleSelection);
         }
 
         [Inject]
@@ -57,11 +59,21 @@
 
         public Command ClickCommand { get; set; }
 
+
         public bool IsSelected
         {
             get
             {
-                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
+                return _isSelected;
+            }
+            set
+            {
+                if (value.Equals(_isSelected))
+                {
+                    return;
+                }
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
             }
         }
 
@@ -250,6 +262,11 @@
             }
 
             return result;
+        }
+
+        private void ToggleSelection()
+        {
+            IsSelected = !IsSelected;
         }
     }
 }

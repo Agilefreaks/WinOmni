@@ -22,12 +22,9 @@
 
         private ContactInfoPresenter _pendingContact;
 
-        private ObservableCollection<ContactInfoPresenter> _selectedContacts =
-            new ObservableCollection<ContactInfoPresenter>();
-
         private IObservable<EventPattern<PropertyChangedEventArgs>> _selectionChangedObservable;
 
-        public ContactSelectionViewModel(
+        public ContactSelectionViewModel(   
             IContactRepository contactRepository,
             IContactInfoViewModelFactory contactInfoViewModelFactory)
             : base(contactRepository, contactInfoViewModelFactory)
@@ -52,21 +49,12 @@
             }
         }
 
-        public ObservableCollection<ContactInfoPresenter> SelectedContacts
+
+        public bool IsInitialized
         {
             get
             {
-                return _selectedContacts;
-            }
-            set
-            {
-                if (_selectedContacts == value)
-                {
-                    return;
-                }
-
-                _selectedContacts = value;
-                NotifyOfPropertyChange(() => SelectedContacts);
+                return _itemsSelectedSubscription != null;
             }
         }
 
@@ -74,13 +62,9 @@
         {
             base.ActivateItem(item);
 
-            _selectionChangedObservable =
-                _selectionChangedObservable.Merge(
-                    Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                        h => item.PropertyChanged += h,
-                        h => item.PropertyChanged -= h).Where(ep => ep.EventArgs.PropertyName == "IsSelected"));
+            TrackSelectionForNewItem(item);
 
-            if (_itemsSelectedSubscription != null)
+            if (IsInitialized)
             {
                 ItemsAdded();
             }
@@ -89,6 +73,15 @@
             {
                 AddedPendingContact(item);
             }
+        }
+
+        private void TrackSelectionForNewItem(IContactInfoSelectionViewModel item)
+        {
+            _selectionChangedObservable =
+                _selectionChangedObservable.Merge(
+                    Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                        h => item.PropertyChanged += h,
+                        h => item.PropertyChanged -= h).Where(ep => ep.EventArgs.PropertyName == "IsSelected"));
         }
 
         public override void NotifyOfPropertyChange(string propertyName)

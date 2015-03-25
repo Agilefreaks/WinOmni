@@ -8,5 +8,7 @@ namespace Omnipaste.ContactList
         where T : class, IDetailsViewModel<ContactInfoPresenter>
     {
         string FilterText { get; set; }
+
+        bool CanSelectMultipleItems { get; set; }
     }
 }

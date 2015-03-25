@@ -1,9 +1,11 @@
 namespace Omnipaste.GroupMessage.GroupMessageDetails{
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
     using Omnipaste.Presenters;
+    using Omnipaste.WorkspaceDetails;
 
-    public class GroupMessageHeaderViewModel : Screen, IGroupMessageHeaderViewModel
+    public class GroupMessageHeaderViewModel : WorkspaceDetailsHeaderViewModel<IEnumerable<ContactInfoPresenter>>, IGroupMessageHeaderViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
 

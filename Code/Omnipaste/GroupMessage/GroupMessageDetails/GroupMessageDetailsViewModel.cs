@@ -1,13 +1,13 @@
 ﻿namespace Omnipaste.GroupMessage.GroupMessageDetails
 {
     using System.Collections.ObjectModel;
-    using Caliburn.Micro;
     using Omnipaste.Presenters;
+    using Omnipaste.WorkspaceDetails;
     using OmniUI.Attributes;
     using OmniUI.Details;
 
     [UseView(typeof(DetailsViewWithHeader))]
-    public class GroupMessageDetailsViewModel : Screen, IGroupMessageDetailsViewModel
+    public class GroupMessageDetailsViewModel : DetailsViewModelWithHeaderBase<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>, IGroupMessageDetailsViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
 
@@ -36,6 +36,7 @@
         }
 
         public GroupMessageDetailsViewModel(IGroupMessageHeaderViewModel headerViewModel, IGroupMessageContentViewModel contentViewModel)
+            : base(headerViewModel, contentViewModel)
         {
             HeaderViewModel = headerViewModel;
             ContentViewModel = contentViewModel;

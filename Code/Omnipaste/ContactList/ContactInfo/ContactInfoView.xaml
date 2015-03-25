@@ -20,10 +20,6 @@
         <Border Background="{Binding Path=IsSelected, Converter={StaticResource ContactInfoBackroundBrushConverter}}" Opacity="0.05" />
         
         <Border Style="{DynamicResource ListItemBorderStyle}" cal:Message.Attach="[Event Loaded] = [Action OnLoaded()]; [Event Unloaded] = [Action OnUnloaded()]">
-            <Border.InputBindings>
-                <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClickCommand}"/>
-            </Border.InputBindings>
-
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

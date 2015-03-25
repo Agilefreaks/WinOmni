@@ -34,5 +34,7 @@
                 NotifyOfPropertyChange(() => Recipients);
             }
         }
+
+        public object Model { get; set; }
     }
 }
