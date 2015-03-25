@@ -93,8 +93,8 @@
                 new Recorded<Notification<IEnumerable<RemoteSmsMessage>>>(200, Notification.CreateOnNext((IEnumerable<RemoteSmsMessage>)new List<RemoteSmsMessage> { remoteSmsMessage })));
             _mockMessageRepository.Setup(m => m.GetAll()).Returns(smsMessageObservable);
             _mockCallRepository.Setup(m => m.GetAll()).Returns(phoneCallObservable);
-            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(remotePhoneCall);
-            SetupSmsMessageActivityPresenterFactory<RemoteSmsMessagePresenter>(remoteSmsMessage);
+            SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
+            SetupSmsMessageActivityPresenterFactory(remoteSmsMessage);
 
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(300);
@@ -116,7 +116,7 @@
                         200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
+            SetupClippingActivityPresenterFactory(clippingModel);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -127,8 +127,7 @@
         [Test]
         public void RemovingAClipping_AfterActivateWhenClippingWasPreviouslyReceived_RemovesViewModelForClipping()
         {
-            const string SourceId = "42";
-            var clippingModel = new ClippingModel { UniqueId = SourceId };
+            var clippingModel = new ClippingModel { UniqueId = "42" };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
@@ -143,7 +142,7 @@
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
+            SetupClippingActivityPresenterFactory(clippingModel);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceBy(1000);
@@ -171,8 +170,8 @@
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory<ClippingPresenter>(clippingModel);
-            SetupClippingActivityPresenterFactory<ClippingPresenter>(modifiedClipping);
+            SetupClippingActivityPresenterFactory(clippingModel);
+            SetupClippingActivityPresenterFactory(modifiedClipping);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceBy(1000);
@@ -191,7 +190,7 @@
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
             _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(eventObservable);
-            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(remotePhoneCall);
+            SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -211,8 +210,8 @@
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, modifiedCall))),
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
             _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(callObservable);
-            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(call);
-            SetupPhoneCallActivityPresenterFactory<RemotePhoneCallPresenter>(modifiedCall);
+            SetupPhoneCallActivityPresenterFactory(call);
+            SetupPhoneCallActivityPresenterFactory(modifiedCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(1000);
@@ -221,38 +220,34 @@
             _subject.Items.First().Model.BackingModel.BackingModel.Should().Be(modifiedCall);
         }
 
-        private void SetupClippingActivityPresenterFactory<TPresenter>(ClippingModel model)
-            where TPresenter : Presenter
+        private void SetupClippingActivityPresenterFactory(ClippingModel model)
         {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
-            var mock = new Mock<ActivityPresenter>();
+            var presenter = new Mock<IPresenter>();
+            presenter.SetupGet(m => m.BackingModel).Returns(model);
+            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
+            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Clipping).Build();
 
-            mock.SetupGet(m => m.BackingModel).Returns(presenter);
-            mock.SetupGet(m => m.Type).Returns(ActivityTypeEnum.Clipping);
-            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
-        private void SetupPhoneCallActivityPresenterFactory<TPresenter>(PhoneCall model)
-            where TPresenter : Presenter
+        private void SetupPhoneCallActivityPresenterFactory(PhoneCall model)
         {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
-            var mock = new Mock<ActivityPresenter>();
+            var presenter = new Mock<IPresenter>();
+            presenter.SetupGet(m => m.BackingModel).Returns(model);
+            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
+            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Call).Build();
 
-            mock.SetupGet(m => m.BackingModel).Returns(presenter);
-            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
-        private void SetupSmsMessageActivityPresenterFactory<TPresenter>(SmsMessage model)
-            where TPresenter : Presenter
+        private void SetupSmsMessageActivityPresenterFactory(SmsMessage model)
         {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
-            var mock = new Mock<ActivityPresenter>();
+            var presenter = new Mock<IPresenter>();
+            presenter.SetupGet(m => m.BackingModel).Returns(model);
+            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
+            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Message).Build();
 
-            mock.SetupGet(m => m.BackingModel).Returns(presenter);
-            mock.SetupGet(m => m.SourceId).Returns(presenter.UniqueId);
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(mock.Object));
+            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
     }
