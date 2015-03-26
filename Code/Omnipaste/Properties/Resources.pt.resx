@@ -451,4 +451,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="PeopleNoContact" xml:space="preserve">
     <value>Nós não encontrou um contato. Você deseja adicioná-lo agora?</value>
   </data>
+  <data name="GroupMessage" xml:space="preserve">
+    <value>+ Nova mensagem</value>
+  </data>
 </root>

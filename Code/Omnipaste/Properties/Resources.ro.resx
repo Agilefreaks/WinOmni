@@ -451,4 +451,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="PeopleNoContact" xml:space="preserve">
     <value>Nu am găsit un contact . Vrei adauga acum ?</value>
   </data>
+  <data name="GroupMessage" xml:space="preserve">
+    <value>+ Mesaj nou</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Workspaces
 {
     using Omnipaste.ContactList;
+    using Omnipaste.Properties;
     using OmniUI.Attributes;
     using OmniUI.Workspace;
 
@@ -11,7 +12,7 @@
         {
             get
             {
-                return "+ New message";
+                return Resources.GroupMessage;
             }
         }
 

@@ -451,4 +451,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="PeopleNoContact" xml:space="preserve">
     <value>We didn't find a contact. Do you want to add it now?</value>
   </data>
+  <data name="GroupMessage" xml:space="preserve">
+    <value>+ New message</value>
+  </data>
 </root>
