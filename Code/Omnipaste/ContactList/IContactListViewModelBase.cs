@@ -10,5 +10,7 @@ namespace Omnipaste.ContactList
         string FilterText { get; set; }
 
         bool CanSelectMultipleItems { get; set; }
+
+        bool ShowStarred { get; set; }
     }
 }
