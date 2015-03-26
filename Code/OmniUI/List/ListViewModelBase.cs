@@ -182,14 +182,7 @@ namespace OmniUI.List
                 GetFetchItemsObservable()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .Subscribe(
-                        ChangeItem,
-                        e =>
-                        {
-                            SimpleLogger.Log("Exception encountered: " + e);
-                            ExceptionReporter.Instance.Report(e);
-                        },
-                        ItemsAdded));
+                    .Subscribe(ChangeItem));
             Subscriptions.Add(
                 GetItemChangedObservable()
                     .SubscribeOn(SchedulerProvider.Default)
@@ -210,11 +203,6 @@ namespace OmniUI.List
             }
 
             base.OnDeactivate(close);
-        }
-
-        protected virtual void ItemsAdded()
-        {
-            
         }
 
         private void OnViewModelsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
