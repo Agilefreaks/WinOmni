@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -11,7 +12,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="We didn't find a contact. Do you want to add it now?" FontSize="{DynamicResource FilterButtonFontSize}" 
+        <TextBlock Margin="18,0,0,0" Text="{x:Static properties:Resources.PeopleNoContact}" FontSize="{DynamicResource FilterButtonFontSize}" 
                    FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
             
         <Border Grid.Row="1" Style="{DynamicResource ListItemBorderStyle}">

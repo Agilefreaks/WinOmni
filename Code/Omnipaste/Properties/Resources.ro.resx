@@ -448,4 +448,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="GroupMessageRecipientsLabel" xml:space="preserve">
     <value>Destinatari</value>
   </data>
+  <data name="PeopleNoContact" xml:space="preserve">
+    <value>Nu am găsit un contact . Vrei adauga acum ?</value>
+  </data>
 </root>

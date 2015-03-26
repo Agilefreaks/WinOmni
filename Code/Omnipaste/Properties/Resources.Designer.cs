@@ -812,6 +812,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We didn&apos;t find a contact. Do you want to add it now?.
+        /// </summary>
+        public static string PeopleNoContact {
+            get {
+                return ResourceManager.GetString("PeopleNoContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trying to contact Omnipaste server..
         /// </summary>
         public static string PingingHome {
