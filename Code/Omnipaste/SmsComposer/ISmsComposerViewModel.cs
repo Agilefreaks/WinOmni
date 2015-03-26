@@ -7,8 +7,6 @@
 
     public interface ISMSComposerViewModel : IScreen
     {
-        ContactInfo ContactInfo { get; set; }
-
         string Message { get; set; }
 
         IList<ContactInfoPresenter> Recipients { get; set; }

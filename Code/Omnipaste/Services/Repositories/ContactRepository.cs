@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
     using Omnipaste.Helpers;
@@ -36,6 +38,12 @@
                                             })
                                         .Select(o => o.Item);
                             });
+        }
+
+        public IObservable<ContactInfo> GetOrCreateByPhoneNumbers(IList<string> phoneNumbers)
+        {
+            return phoneNumbers.ToObservable()
+                .SelectMany(GetOrCreateByPhoneNumber);
         }
 
         public IObservable<ContactInfo> UpdateLastActivityTime(

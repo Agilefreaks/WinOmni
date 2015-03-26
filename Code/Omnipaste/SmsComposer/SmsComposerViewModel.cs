@@ -28,8 +28,6 @@
 
         private Command _sendCommand;
 
-        private ContactInfo _contactInfo;
-
         private string _message;
 
         #endregion
@@ -93,23 +91,6 @@
             }
         }
 
-        public ContactInfo ContactInfo
-        {
-            get
-            {
-                return _contactInfo;
-            }
-            set
-            {
-                if (Equals(value, _contactInfo))
-                {
-                    return;
-                }
-                _contactInfo = value;
-                NotifyOfPropertyChange(() => ContactInfo);
-            }
-        }
-
         public string Message
         {
             get
@@ -137,11 +118,8 @@
         {
             IsSending = true;
 
-            var createObservable = Recipients != null
-                                       ? _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
-                                       : _smsMessages.Send(ContactInfo.PhoneNumber, Message);
-            
-            createObservable.Select(SmsMessageFactory.Create<LocalSmsMessage>)
+            _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
+                .Select(sms => SmsMessageFactory.Create<LocalSmsMessage>(sms))
                 .Switch()
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)

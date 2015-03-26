@@ -22,12 +22,16 @@
         public IObservable<T> Create<T>(SmsMessageDto smsMessageDto)
             where T : SmsMessage
         {
-            var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
             return
-                ContactRepository.GetOrCreateByPhoneNumber(smsMessageDto.PhoneNumber)
+                ContactRepository.GetOrCreateByPhoneNumbers(smsMessageDto.PhoneNumberList)
                     .Select(contact => ContactRepository.UpdateLastActivityTime(contact))
                     .Switch()
-                    .Select(contact => _smsMessageRepository.Save((T)smsMessage.SetContactInfoUniqueId(contact.UniqueId)))
+                    .Select(contact =>
+                        {
+                            var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
+                            smsMessage.SetContactInfoUniqueId(contact.UniqueId);
+                            return _smsMessageRepository.Save(smsMessage);
+                        })
                     .Switch()
                     .Select(e => e.Item)
                     .Cast<T>();

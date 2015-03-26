@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
+    using System.Collections.Generic;
     using Ninject;
     using Omnipaste.Presenters;
     using Omnipaste.SMSComposer;
@@ -23,7 +24,7 @@
             base.OnActivate();
             ConversationContentViewModel.Model = Model;
             ConversationContentViewModel.Activate();
-            SMSComposer.ContactInfo = Model.BackingModel;
+            SMSComposer.Recipients = new List<ContactInfoPresenter> { Model };
             SMSComposer.Activate();
         }
 

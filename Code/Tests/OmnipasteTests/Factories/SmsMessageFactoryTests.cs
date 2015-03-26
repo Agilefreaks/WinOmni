@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Factories
 {
+    using System.Collections.Generic;
     using System.Linq;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -50,22 +51,23 @@
         }
 
         [Test]
-        public void Create_Always_GetOrCreateByPhoneNumberContact()
+        public void 
+            Create_Always_GetOrCreateByPhoneNumberContact()
         {
-            var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
+            var smsMessageDto = new SmsMessageDto { PhoneNumberList = new List<string> {"42"} };
 
             _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
-            _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumber(smsMessageDto.PhoneNumber), Times.Once);
+            _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumbers(smsMessageDto.PhoneNumberList), Times.Once);
         }
 
         [Test]
         public void Create_Always_UpdatesLastActivityTimeOnTheContact()
         {
-            var smsMessageDto = new SmsMessageDto();
+            var smsMessageDto = new SmsMessageDto { PhoneNumberList = new List<string> { "42" } };
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumbers(smsMessageDto.PhoneNumberList)).Returns(contactInfoObservable);
 
             _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
 
@@ -75,11 +77,11 @@
         [Test]
         public void Create_Always_SavesTheSmsMessage()
         {
-            var smsMessageDto = new SmsMessageDto();
+            var smsMessageDto = new SmsMessageDto { PhoneNumberList = new List<string> { "42" } };
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(
                 new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumbers(smsMessageDto.PhoneNumberList))
                 .Returns(contactInfoObservable);
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
                 .Returns(contactInfoObservable);
@@ -92,10 +94,10 @@
         [Test]
         public void Create_SaveSuccesful_ReturnsTheSavedMessage()
         {
-            var smsMessageDto = new SmsMessageDto();
+            var smsMessageDto = new SmsMessageDto { PhoneNumberList = new List<string> { "42" } };
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<ContactInfo>>(100, System.Reactive.Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
+            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumbers(smsMessageDto.PhoneNumberList)).Returns(contactInfoObservable);
             _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
             var remoteSmsMessage = new RemoteSmsMessage();
             var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<System.Reactive.Notification<RepositoryOperation<RemoteSmsMessage>>>(100, System.Reactive.Notification.CreateOnNext(new RepositoryOperation<RemoteSmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
