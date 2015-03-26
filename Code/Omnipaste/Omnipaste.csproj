@@ -306,7 +306,6 @@
     <Compile Include="Models\RemotePhoneCall.cs" />
     <Compile Include="Models\RemoteSmsMessage.cs" />
     <Compile Include="Presenters\ClippingPresenter.cs" />
-    <Compile Include="Presenters\GroupMessagePresenter.cs" />
     <Compile Include="Presenters\IGroupMessagePresenter.cs" />
     <Compile Include="Presenters\Factories\ActivityPresenterFactory.cs" />
     <Compile Include="Presenters\Factories\ConversationPresenterFactory.cs" />
