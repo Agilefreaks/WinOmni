@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.GroupMessage.GroupMessageDetails
+﻿namespace Omnipaste.WorkspaceDetails.GroupMessage
 {
     using System.Collections.ObjectModel;
     using Omnipaste.Presenters;

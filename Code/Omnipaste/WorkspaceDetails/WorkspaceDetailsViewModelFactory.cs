@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Microsoft.Practices.ServiceLocation;
-    using Omnipaste.GroupMessage.GroupMessageDetails;
+    using Omnipaste.WorkspaceDetails.GroupMessage;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.WorkspaceDetails.Clipping;

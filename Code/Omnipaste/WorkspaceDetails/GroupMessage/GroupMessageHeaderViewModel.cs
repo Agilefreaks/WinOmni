@@ -1,20 +1,13 @@
-﻿namespace Omnipaste.GroupMessage.GroupMessageDetails
-{
+namespace Omnipaste.WorkspaceDetails.GroupMessage{
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
     using Omnipaste.Presenters;
-    using Omnipaste.SMSComposer;
+    using Omnipaste.WorkspaceDetails;
 
-    public class GroupMessageContentViewModel : Screen, IGroupMessageContentViewModel
+    public class GroupMessageHeaderViewModel : WorkspaceDetailsHeaderViewModel<IEnumerable<ContactInfoPresenter>>, IGroupMessageHeaderViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
-
-        public GroupMessageContentViewModel(ISMSComposerViewModel smsComposer)
-        {
-            SMSComposer = smsComposer;
-        }
-
-        public ISMSComposerViewModel SMSComposer { get; set; }
 
         public ObservableCollection<ContactInfoPresenter> Recipients
         {
@@ -24,17 +17,14 @@
             }
             set
             {
-                if (_recipients == value)
+                if (Equals(value, _recipients))
                 {
                     return;
                 }
 
                 _recipients = value;
-                SMSComposer.Recipients = _recipients;
                 NotifyOfPropertyChange(() => Recipients);
             }
         }
-
-        public object Model { get; set; }
     }
 }

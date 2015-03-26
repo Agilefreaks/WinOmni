@@ -288,12 +288,12 @@
     <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageContentViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageDetailsViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageContentViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageHeaderViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageContentViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageHeaderViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageDetailsViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
@@ -603,11 +603,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GroupMessage\GroupMessageDetails\GroupMessageContentView.xaml">
+    <Page Include="WorkspaceDetails\GroupMessage\GroupMessageContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderView.xaml">
+    <Page Include="WorkspaceDetails\GroupMessage\GroupMessageHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
