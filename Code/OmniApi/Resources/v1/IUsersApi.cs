@@ -5,7 +5,7 @@
 
     public interface IUsersApi
     {
-        [Get("/users")]
+        [Get("/user")]
         IObservable<Models.User> Get([Header("Authorization")] string token);
     }
 }

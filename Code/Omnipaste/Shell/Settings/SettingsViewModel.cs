@@ -7,9 +7,8 @@
     using Omni;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
-    using OmniCommon.Models;
-    using OmniUI.Flyout;
     using Omnipaste.Services;
+    using OmniUI.Flyout;
 
     public class SettingsViewModel : FlyoutBaseViewModel, ISettingsViewModel
     {
