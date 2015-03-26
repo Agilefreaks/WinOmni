@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style x:Key="HolidaySideMainButtonStyle" TargetType="RadioButton">
+        <Style x:Key="NewMessageButtonStyle" TargetType="RadioButton">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -30,5 +30,5 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <RadioButton Visibility="{Binding Path=CanPerformAction, Converter={StaticResource BooleanToVisibilityConverter}}" cal:Message.Attach="PerformAction()" Style="{DynamicResource HolidaySideMainButtonStyle}" IsChecked="{Binding Path=IsOpen, Mode=OneWay}" Tag="{Binding Path=DisplayName}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" />
+    <RadioButton Visibility="{Binding Path=CanPerformAction, Converter={StaticResource BooleanToVisibilityConverter}}" cal:Message.Attach="PerformAction()" Style="{DynamicResource NewMessageButtonStyle}" IsChecked="{Binding Path=IsOpen, Mode=OneWay}" Tag="{Binding Path=DisplayName}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" />
 </UserControl>
