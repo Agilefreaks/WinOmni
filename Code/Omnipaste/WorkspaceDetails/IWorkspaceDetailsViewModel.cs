@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails
 {
-    using OmniUI.Details;
+    using OmniUI.Details;    
 
     public interface IWorkspaceDetailsViewModel : IDetailsViewModelWithHeader<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>
     {

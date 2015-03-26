@@ -7,13 +7,20 @@
     using OmniUI.Details;
 
     [UseView(typeof(DetailsViewWithHeader))]
-    public class GroupMessageDetailsViewModel : DetailsViewModelWithHeaderBase<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>, IGroupMessageDetailsViewModel
+    public class GroupMessageDetailsViewModel :
+        DetailsViewModelWithHeaderBase<IGroupMessageHeaderViewModel, IGroupMessageContentViewModel>,
+        IGroupMessageDetailsViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
 
-        public IGroupMessageHeaderViewModel HeaderViewModel { get; set; }
+        public GroupMessageDetailsViewModel(
+            IGroupMessageHeaderViewModel headerViewModel,
+            IGroupMessageContentViewModel contentViewModel)
+            : base(headerViewModel, contentViewModel)
+        {
+        }
 
-        public IGroupMessageContentViewModel ContentViewModel { get; set; }
+        #region IGroupMessageDetailsViewModel Members
 
         public ObservableCollection<ContactInfoPresenter> Recipients
         {
@@ -35,11 +42,26 @@
             }
         }
 
-        public GroupMessageDetailsViewModel(IGroupMessageHeaderViewModel headerViewModel, IGroupMessageContentViewModel contentViewModel)
-            : base(headerViewModel, contentViewModel)
+        IWorkspaceDetailsContentViewModel
+            IDetailsViewModelWithHeader<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>.
+            ContentViewModel
         {
-            HeaderViewModel = headerViewModel;
-            ContentViewModel = contentViewModel;
+            get
+            {
+                return ContentViewModel;
+            }
         }
+
+        IWorkspaceDetailsHeaderViewModel
+            IDetailsViewModelWithHeader<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>.
+            HeaderViewModel
+        {
+            get
+            {
+                return HeaderViewModel;
+            }
+        }
+
+        #endregion
     }
 }
