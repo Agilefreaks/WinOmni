@@ -265,9 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
-    <Compile Include="ContactList\IContactListViewModelBase.cs" />
-    <Compile Include="ContactList\ContactListViewModelBase.cs" />
-    <Compile Include="ContactList\IContactInfoSelectionViewModel.cs" />
     <Compile Include="Factories\ContactFactory.cs" />
     <Compile Include="Factories\IContactFactory.cs" />
     <Compile Include="Factories\IPhoneCallFactory.cs" />
