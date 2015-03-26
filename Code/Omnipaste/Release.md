@@ -1,4 +1,12 @@
-﻿**Version 1.4.3 (26.03.2015)**
+﻿**Version 1.5.0 (27.03.2015)**
+
+**Features:**
+
+- Adds ability to send group messages.
+
+----------
+
+**Version 1.4.3 (26.03.2015)**
 
 **Features:**
 
