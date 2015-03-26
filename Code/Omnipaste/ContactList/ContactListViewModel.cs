@@ -111,12 +111,15 @@ namespace Omnipaste.ContactList
                     return;
                 }
                 _filterText = value;
-                
+
+                IsRefreshing = true;
                 NotifyOfPropertyChange(() => FilterText);
-                
                 RefreshItems();
+                IsRefreshing = false;
             }
         }
+
+        public bool IsRefreshing { get; set; }
 
         public bool CanSelectMultipleItems
         {
@@ -271,9 +274,17 @@ namespace Omnipaste.ContactList
 
         public void SelectionChanged(SelectionChangedEventArgs args)
         {
+            if (IsRefreshing)
+            {
+                return;
+            }
+
             if (args.RemovedItems.Count != 0)
             {
-                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>().Where(vm => FilteredItems.Contains(vm)));
+                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>()
+                    .Where(vm => FilteredItems.Cast<IContactInfoViewModel>()
+                        .Any(filteredItem => filteredItem.Model.UniqueId == vm.Model.UniqueId)));
+
             }
 
             if (args.AddedItems.Count != 0)
@@ -325,15 +336,17 @@ namespace Omnipaste.ContactList
 
         private void UnselectItems(IEnumerable<IContactInfoViewModel> itemsToUnselect)
         {
-            foreach (var item in itemsToUnselect)
+            var contactInfoPresenters =
+                SelectedContacts.Where(sc => itemsToUnselect.Any(i => i.Model.UniqueId == sc.UniqueId)).ToList();
+            foreach (var item in contactInfoPresenters)
             {
-                SelectedContacts.Remove(item.Model);
+                SelectedContacts.Remove(item);
             }
         }
 
         private void SelectItems(IEnumerable<IContactInfoViewModel> itemsToSelect)
         {
-            foreach (var item in itemsToSelect.Where(i => !SelectedContacts.Contains(i.Model)))
+            foreach (var item in itemsToSelect.Where(i => SelectedContacts.All(sc => sc.UniqueId != i.Model.UniqueId)))
             {
                 SelectedContacts.Add(item.Model);
             }
