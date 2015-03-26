@@ -20,13 +20,6 @@
     using OmniUI.ExtensionMethods;
     using OmniUI.Workspace;
 
-    public enum ContactInfoStatusEnum
-    {
-        Normal,
-
-        Selected
-    }
-
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
         public const string SessionSelectionKey = "PeopleWorkspace_SelectedContact";

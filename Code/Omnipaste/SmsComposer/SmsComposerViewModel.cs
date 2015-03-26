@@ -13,7 +13,6 @@
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Properties;
-    using SMS.Models;
     using SMS.Resources.v1;
 
     public class SMSComposerViewModel : Screen, ISMSComposerViewModel
@@ -119,7 +118,7 @@
             IsSending = true;
 
             _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
-                .Select(sms => SmsMessageFactory.Create<LocalSmsMessage>(sms))
+                .Select(SmsMessageFactory.Create<LocalSmsMessage>)
                 .Switch()
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)

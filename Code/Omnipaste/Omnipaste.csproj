@@ -264,6 +264,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactList\ContactInfo\ContactInfoStatusEnum.cs" />
     <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
     <Compile Include="Factories\ContactFactory.cs" />
     <Compile Include="Factories\IContactFactory.cs" />
