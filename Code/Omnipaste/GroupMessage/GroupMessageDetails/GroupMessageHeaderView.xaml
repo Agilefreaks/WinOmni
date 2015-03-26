@@ -21,7 +21,7 @@
             <DockPanel VerticalAlignment="Center" LastChildFill="True">
                 <TextBlock Text="{x:Static properties:Resources.GroupMessageRecipientsLabel}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center" DockPanel.Dock="Left" />
-                <ItemsControl ItemsSource="{Binding Path=Recipients}">
+                <ItemsControl ItemsSource="{Binding Path=Recipients}" Margin="13,0,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />
