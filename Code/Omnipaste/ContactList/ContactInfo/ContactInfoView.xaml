@@ -7,6 +7,7 @@
              xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:converters="clr-namespace:Omnipaste.ContactList.Converters"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -32,8 +33,10 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Control Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Margin="0,0,8,0" Width="40" Height="40" />
-
+                <controls:TransitioningContentControl cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}"
+                                                      CustomVisualStatesName="Fade" Transition="Custom"
+                                                      Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0" Width="40" Height="40" />
+                
                 <CheckBox Grid.Column="1" IsChecked="{Binding Path=Model.IsStarred, Mode=TwoWay}" Style="{DynamicResource CheckboxWithIconStyle}" VerticalAlignment="Top" Margin="0,3,8,0">
                     <framework:CheckboxHelper.CheckedIcon>
                         <Rectangle Fill="{DynamicResource FavoriteBrush}" Stretch="Uniform" OpacityMask="{DynamicResource StarBrush}" Width="12" Height="12"/>

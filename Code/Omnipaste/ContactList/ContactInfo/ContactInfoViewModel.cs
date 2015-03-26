@@ -20,6 +20,13 @@
     using OmniUI.ExtensionMethods;
     using OmniUI.Workspace;
 
+    public enum ContactInfoStatusEnum
+    {
+        Normal,
+
+        Selected
+    }
+
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
     {
         public const string SessionSelectionKey = "PeopleWorkspace_SelectedContact";
@@ -38,12 +45,22 @@
 
         private bool _isSelected;
 
+        public ContactInfoStatusEnum State
+        {
+            get
+            {
+                return _isSelected ? ContactInfoStatusEnum.Selected : ContactInfoStatusEnum.Normal;
+            }
+        }
+
         public ContactInfoViewModel(ISessionManager sessionManager)
         {
             _subscriptionsManager = new SubscriptionsManager();
             _sessionManager = sessionManager;
             ClickCommand = new Command(ToggleSelection);
         }
+
+
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
@@ -74,6 +91,7 @@
                 }
                 _isSelected = value;
                 NotifyOfPropertyChange(() => IsSelected);
+                NotifyOfPropertyChange(() => State);
             }
         }
 

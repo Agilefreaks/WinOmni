@@ -586,6 +586,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ContactList\ContactInfo\ContactInfo\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContactList\ContactInfo\ContactInfo\Selected.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContactList\ContactList\Empty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
