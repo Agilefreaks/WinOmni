@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.Windows.Controls;
     using System.Windows.Data;
 
     public class BoolToSelectionModeConverter : IValueConverter
@@ -10,14 +11,12 @@
         {
             bool canSelectMultipleItems = (bool)value;
 
-            return canSelectMultipleItems
-                ? System.Windows.Controls.SelectionMode.Multiple
-                : System.Windows.Controls.SelectionMode.Single;
+            return canSelectMultipleItems ? SelectionMode.Multiple : SelectionMode.Single;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return (SelectionMode)value == SelectionMode.Multiple;
         }
     }
 }

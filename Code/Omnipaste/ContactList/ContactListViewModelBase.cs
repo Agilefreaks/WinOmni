@@ -8,6 +8,7 @@ namespace Omnipaste.ContactList
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Linq;
+    using System.Text.RegularExpressions;
     using System.Windows.Controls;
     using Ninject;
     using Omnipaste.ExtensionMethods;
@@ -29,12 +30,33 @@ namespace Omnipaste.ContactList
         private string _filterText;
 
         private bool _canSelectMultipleItems = false;
+        
+        private ContactInfoPresenter _pendingContact;
 
         public IContactRepository ContactRepository { get; set; }
 
 
+
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+
+        public ContactInfoPresenter PendingContact
+        {
+            get
+            {
+                return _pendingContact
+                       ?? (_pendingContact = new ContactInfoPresenter(new Models.ContactInfo()));
+            }
+            set
+            {
+                if (_pendingContact != value)
+                {
+                    _pendingContact = value;
+                    NotifyOfPropertyChange(() => _pendingContact);
+                }
+            }
+        }
+
 
         protected ContactListViewModelBase(
             IContactRepository contactRepository,
@@ -72,7 +94,7 @@ namespace Omnipaste.ContactList
                     return;
                 }
                 _showStarred = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => ShowStarred);
                 RefreshItems();
             }
         }
@@ -90,7 +112,9 @@ namespace Omnipaste.ContactList
                     return;
                 }
                 _filterText = value;
+                
                 NotifyOfPropertyChange(() => FilterText);
+                
                 RefreshItems();
             }
         }
@@ -146,10 +170,7 @@ namespace Omnipaste.ContactList
                     }
                     else if (e.Action == NotifyCollectionChangedAction.Remove && SelectedContacts.Count == 0)
                     {
-                        var detailsConductorViewModel = this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor;
-
-                        var activeItem = detailsConductorViewModel.ActiveItem;
-                        detailsConductorViewModel.DeactivateItem(activeItem, true);
+                        HideDetails();
                     }
                 }
                 else
@@ -168,7 +189,14 @@ namespace Omnipaste.ContactList
             return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
         }
 
-        public void ShowDetails()
+        private void HideDetails()
+        {
+            var detailsConductorViewModel = this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor;
+            var activeItem = detailsConductorViewModel.ActiveItem;
+            detailsConductorViewModel.DeactivateItem(activeItem, true);
+        }
+
+        private void ShowDetails()
         {
             _detailsViewModel = CanSelectMultipleItems
                                     ? DetailsViewModelFactory.Create(SelectedContacts)
@@ -221,9 +249,9 @@ namespace Omnipaste.ContactList
 
         private bool MatchesFilterText(IContactInfoPresenter model)
         {
+
             return (model != null)
-                   && (string.IsNullOrWhiteSpace(FilterText)
-                       || IsMatch(FilterText, model.BackingModel.Name)
+                   && (string.IsNullOrWhiteSpace(FilterText) || IsMatch(FilterText, model.BackingModel.Name)
                        || model.BackingModel.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
         }
 
@@ -236,13 +264,54 @@ namespace Omnipaste.ContactList
         {
             if (args.RemovedItems.Count != 0)
             {
-                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>());
+                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>().Where(vm => FilteredItems.Contains(vm)));
             }
 
             if (args.AddedItems.Count != 0)
             {
                 SelectItems(args.AddedItems.Cast<IContactInfoViewModel>());
             }
+        }
+
+        public override void RefreshItems()
+        {
+            base.RefreshItems();
+
+            NotifyOfPropertyChange(() => SelectedContacts);
+        }
+
+        public override void NotifyOfPropertyChange(string propertyName)
+        {
+            base.NotifyOfPropertyChange(propertyName);
+
+            if (propertyName == "FilterText")
+            {
+                var phoneNumber = Regex.Replace(FilterText, "[^+0-9]", "");
+                PendingContact.PhoneNumber = phoneNumber;
+            }
+        }
+
+        private void AddedPendingContact(TContactViewModel item)
+        {
+            _pendingContact = new ContactInfoPresenter(new Models.ContactInfo());
+            SelectedContacts.Add(item.Model);
+            NotifyOfPropertyChange(() => PendingContact);
+            FilterText = "";
+        }
+
+        public void ActivateItem(TContactViewModel item)
+        {
+            base.ActivateItem(item);
+
+            if (item.Model.Identifier == PendingContact.Identifier)
+            {
+                AddedPendingContact(item);
+            }
+        }
+
+        public void AddPendingContact()
+        {
+            ContactRepository.Save(PendingContact.ContactInfo).Subscribe();
         }
 
         private void UnselectItems(IEnumerable<IContactInfoViewModel> itemsToUnselect)
@@ -255,7 +324,7 @@ namespace Omnipaste.ContactList
 
         private void SelectItems(IEnumerable<IContactInfoViewModel> itemsToSelect)
         {
-            foreach (var item in itemsToSelect)
+            foreach (var item in itemsToSelect.Where(i => !SelectedContacts.Contains(i.Model)))
             {
                 SelectedContacts.Add(item.Model);
             }

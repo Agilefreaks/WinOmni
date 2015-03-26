@@ -1,6 +1,5 @@
 ﻿namespace Omnipaste.ContactList
 {
-    using System;
     using Omnipaste.Presenters;
     using OmniUI.Details;
 

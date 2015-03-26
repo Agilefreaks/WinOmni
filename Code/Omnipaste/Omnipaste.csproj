@@ -266,7 +266,6 @@
   <ItemGroup>
     <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
     <Compile Include="ContactList\IContactListViewModelBase.cs" />
-    <Compile Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionViewModel.cs" />
     <Compile Include="ContactList\ContactListViewModelBase.cs" />
     <Compile Include="ContactList\IContactInfoSelectionViewModel.cs" />
     <Compile Include="Factories\ContactFactory.cs" />
@@ -291,16 +290,12 @@
     <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
-    <Compile Include="GroupMessage\ContactSelection\ContactSelectionViewModel.cs" />
-    <Compile Include="GroupMessage\ContactSelection\IContactSelectionViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageContentViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\GroupMessageDetailsViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageContentViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageHeaderViewModel.cs" />
     <Compile Include="GroupMessage\GroupMessageDetails\IGroupMessageDetailsViewModel.cs" />
-    <Compile Include="GroupMessage\GroupMessageViewModel.cs" />
-    <Compile Include="GroupMessage\IGroupMessageViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
@@ -591,23 +586,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GroupMessage\ContactSelection\ContactInfo\ContactInfoSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GroupMessage\ContactSelection\ContactSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GroupMessage\ContactSelection\ContactSelection\Empty.xaml">
+    <Page Include="ContactList\ContactList\Empty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GroupMessage\ContactSelection\ContactSelection\EmptyFilter.xaml">
+    <Page Include="ContactList\ContactList\EmptyFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GroupMessage\ContactSelection\ContactSelection\NotEmpty.xaml">
+    <Page Include="ContactList\ContactList\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -616,10 +603,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GroupMessage\GroupMessageDetails\GroupMessageHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GroupMessage\GroupMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
