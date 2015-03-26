@@ -28,13 +28,11 @@ namespace Omnipaste.ContactList
 
         private string _filterText;
 
-        private bool _canSelectMultipleItems = false;
+        private bool _canSelectMultipleItems;
         
         private ContactInfoPresenter _pendingContact;
 
         public IContactRepository ContactRepository { get; set; }
-
-
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
@@ -48,14 +46,15 @@ namespace Omnipaste.ContactList
             }
             set
             {
-                if (_pendingContact != value)
+                if (_pendingContact == value)
                 {
-                    _pendingContact = value;
-                    NotifyOfPropertyChange(() => _pendingContact);
+                    return;
                 }
+
+                _pendingContact = value;
+                NotifyOfPropertyChange(() => _pendingContact);
             }
         }
-
 
         public ContactListViewModel(
             IContactRepository contactRepository,
@@ -244,11 +243,6 @@ namespace Omnipaste.ContactList
             return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
         }
 
-        private IObservable<ContactInfoPresenter> GetItemUpdatedObservable()
-        {
-            return ContactRepository.GetOperationObservable().Changed().Select(o => new ContactInfoPresenter(o.Item));
-        }
-
         private bool MatchesFilterText(IContactInfoPresenter model)
         {
             bool matchesFilterText = false;
@@ -300,7 +294,7 @@ namespace Omnipaste.ContactList
             NotifyOfPropertyChange(() => SelectedContacts);
         }
 
-        public override void NotifyOfPropertyChange(string propertyName)
+        public override void NotifyOfPropertyChange(string propertyName = null)
         {
             base.NotifyOfPropertyChange(propertyName);
 
