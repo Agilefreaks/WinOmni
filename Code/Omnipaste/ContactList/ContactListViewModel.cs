@@ -10,6 +10,7 @@ namespace Omnipaste.ContactList
     using System.Reactive.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Controls;
+    using Castle.Core.Internal;
     using Ninject;
     using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.ExtensionMethods;
@@ -298,8 +299,8 @@ namespace Omnipaste.ContactList
         public override void RefreshItems()
         {
             base.RefreshItems();
-            
-            Status = FilteredItems.Count == 0 ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
+
+            Status = FilteredItems.Count == 0 && !ShowStarred ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
             NotifyOfPropertyChange(() => SelectedContacts);
         }
 
