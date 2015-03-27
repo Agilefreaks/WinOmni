@@ -277,17 +277,20 @@ namespace Omnipaste.ContactList
             {
                 return;
             }
-
             if (args.RemovedItems.Count != 0)
             {
-                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>()
-                    .Where(vm => FilteredItems.Cast<IContactInfoViewModel>()
-                        .Any(filteredItem => filteredItem.Model.UniqueId == vm.Model.UniqueId)));
-
+                args.RemovedItems.Cast<IContactInfoViewModel>().ForEach(i => i.IsSelected = false);
+                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>());
             }
 
             if (args.AddedItems.Count != 0)
             {
+                if (!CanSelectMultipleItems)
+                {
+                    Items.Where(i => SelectedContacts.Any(c => c.UniqueId == i.Model.UniqueId)).ForEach(i => i.IsSelected = false);
+                    SelectedContacts.Clear();
+                }
+
                 SelectItems(args.AddedItems.Cast<IContactInfoViewModel>());
             }
         }

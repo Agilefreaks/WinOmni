@@ -10,6 +10,8 @@
 
         string Identifier { get; }
 
+        bool IsSelected { get; set; }
+
         void ShowDetails();
     }
 }
