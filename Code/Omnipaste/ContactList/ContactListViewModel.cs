@@ -66,7 +66,7 @@ namespace Omnipaste.ContactList
             FilteredItems.SortDescriptions.Add(
                 new SortDescription(
                     PropertyExtensions.GetPropertyName<IContactInfoViewModel, DateTime?>(vm => vm.LastActivityTime),
-                    ListSortDirection.Ascending));
+                    ListSortDirection.Descending));
 
             SelectedContacts = new ObservableCollection<ContactInfoPresenter>();
         }

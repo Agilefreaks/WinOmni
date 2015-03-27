@@ -226,6 +226,7 @@
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
         }
+
         [Test]
         public void FilterText_DoesntMatchAnyItem_SetsStateToEmptyFilter()
         {
@@ -245,6 +246,34 @@
             _subject.FilterText = "bla";
 
             _subject.Status.Should().Be(ListViewModelStatusEnum.EmptyFilter);
+        }
+
+        [Test]
+        public void FilteredItemsSorting_SortsItemsDescendingBasedOnLastActivity()
+        {
+            var oldestContact = new ContactInfo { FirstName = "Test1", LastActivityTime = DateTime.Now.AddDays(-1) };
+            var newestContact = new ContactInfo { FirstName = "Test2", LastActivityTime = DateTime.Now };
+            var contacts = new List<ContactInfo>
+                               {
+                                   oldestContact, 
+                                   newestContact
+                               };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = "Test";
+
+            _subject.FilteredItems.Cast<IContactInfoViewModel>().First().Model.BackingModel.Should().Be(contacts[1]);
+            _subject.FilteredItems.Cast<IContactInfoViewModel>().Last().Model.BackingModel.Should().Be(contacts[0]);
         }
     }
 }

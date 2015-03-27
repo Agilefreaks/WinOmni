@@ -7,7 +7,6 @@ namespace OmniUI.List
     using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
-    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniUI.Details;
