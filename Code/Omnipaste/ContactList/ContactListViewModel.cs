@@ -290,7 +290,8 @@ namespace Omnipaste.ContactList
         public override void RefreshItems()
         {
             base.RefreshItems();
-
+            
+            Status = FilteredItems.Count == 0 ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
             NotifyOfPropertyChange(() => SelectedContacts);
         }
 

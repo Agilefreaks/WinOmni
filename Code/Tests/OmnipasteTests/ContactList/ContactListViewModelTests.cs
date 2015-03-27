@@ -18,6 +18,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using OmniUI.List;
 
     [TestFixture]
     public class ContactListViewModelTests
@@ -202,6 +203,48 @@
             _subject.FilterText = "t";
 
             _subject.FilteredItems.Count.Should().Be(2);
+        }
+
+
+        [Test]
+        public void FilterText_MatchesItems_SetsStateToNotEmpty()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = "est";
+
+            _subject.Status.Should().Be(ListViewModelStatusEnum.NotEmpty);
+        }
+        [Test]
+        public void FilterText_DoesntMatchAnyItem_SetsStateToEmptyFilter()
+        {
+            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" } };
+            var contactObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        100,
+                        Notification.CreateOnNext(contacts.AsEnumerable())),
+                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                        200,
+                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+            _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
+            ((IActivate)_subject).Activate();
+            _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
+
+            _subject.FilterText = "bla";
+
+            _subject.Status.Should().Be(ListViewModelStatusEnum.EmptyFilter);
         }
     }
 }
