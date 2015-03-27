@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
@@ -24,8 +26,35 @@
                 <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" Width="40" Height="40"/>
                 <TextBlock Text="{x:Static properties:Resources.MessageDetailsHeader}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center"/>
-                <TextBlock x:Name="Model_Identifier" Style="{DynamicResource ActivityContentTextStyle}" 
-                       FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"/>
+                <Grid>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseEnter">
+                            <ei:GoToStateAction StateName="ShowPhoneNumber"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeave">
+                            <ei:GoToStateAction StateName="ShowIdentifier"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="ShowPhoneNumber">
+                                <Storyboard>
+                                    <DoubleAnimation To="1" Duration="0:00:00.3" Storyboard.TargetName="Model_PhoneNumber" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                                    <DoubleAnimation To="0" Duration="0:00:00.4" Storyboard.TargetName="Model_Identifier" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="ShowIdentifier">
+                                <Storyboard>
+                                    <DoubleAnimation To="1" Duration="0:00:00.3" Storyboard.TargetName="Model_Identifier" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                                    <DoubleAnimation To="0" Duration="0:00:00.4" Storyboard.TargetName="Model_PhoneNumber" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <TextBlock x:Name="Model_Identifier" Style="{DynamicResource ActivityContentTextStyle}" FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="Model_PhoneNumber" Style="{DynamicResource ActivityContentTextStyle}" FontFamily="{DynamicResource ContentFont}" 
+                               VerticalAlignment="Center" Opacity="0"/>
+                </Grid>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
