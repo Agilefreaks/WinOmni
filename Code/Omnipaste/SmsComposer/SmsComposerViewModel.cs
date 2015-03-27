@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
+    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -118,8 +119,17 @@
             IsSending = true;
 
             _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
-                .Select(SmsMessageFactory.Create<LocalSmsMessage>)
-                .Switch()
+                .SelectMany(
+                    smsMessage =>
+                        {
+                            return Recipients.Select(
+                                r =>
+                                    {
+                                        smsMessage.ContactId = r.ContactInfo.ContactId;
+                                        return SmsMessageFactory.Create<LocalSmsMessage>(smsMessage);
+                                    });
+                        })
+                .Merge()
                 .SubscribeOn(SchedulerProvider.Default)
                 .ObserveOn(SchedulerProvider.Default)
                 .Subscribe(OnSentSMS, OnSendSMSError);

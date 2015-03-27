@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
@@ -42,8 +41,7 @@
 
         public IObservable<ContactInfo> GetOrCreateByPhoneNumbers(IList<string> phoneNumbers)
         {
-            return phoneNumbers.ToObservable()
-                .SelectMany(GetOrCreateByPhoneNumber);
+            return phoneNumbers.ToObservable().SelectMany(GetOrCreateByPhoneNumber);
         }
 
         public IObservable<ContactInfo> UpdateLastActivityTime(
@@ -53,6 +51,18 @@
             contactInfo.LastActivityTime = DateTime.Now;
             return Save(contactInfo).Select(o => o.Item);
         }
+
+        public IObservable<ContactInfo> GetByContactIdOrPhoneNumber(int? contactId, string phoneNumber)
+        {
+            return contactId.HasValue ?
+                Get(c => c.ContactId == contactId).FirstAsync().Catch<ContactInfo, InvalidOperationException>(_ => GetByPhoneNumber(phoneNumber)) :
+                GetByPhoneNumber(phoneNumber);
+        }
+
+        public IObservable<ContactInfo> CreateIfNone(IObservable<ContactInfo> observable, Func<ContactInfo, ContactInfo> builder)
+        {
+            return observable.Catch<ContactInfo, InvalidOperationException>(_ => Save(builder(new ContactInfo())).Select(ro => ro.Item));
+        } 
 
         #endregion
     }

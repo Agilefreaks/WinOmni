@@ -13,5 +13,9 @@
         IObservable<ContactInfo> UpdateLastActivityTime(ContactInfo contactInfo, DateTime? lastActivityTime = null);
 
         IObservable<ContactInfo> GetOrCreateByPhoneNumbers(IList<string> phoneNumbers);
+
+        IObservable<ContactInfo> GetByContactIdOrPhoneNumber(int? contactId, string phoneNumber);
+
+        IObservable<ContactInfo> CreateIfNone(IObservable<ContactInfo> observable, Func<ContactInfo, ContactInfo> builder);
     }
 }

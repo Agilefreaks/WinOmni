@@ -13,9 +13,8 @@
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
-    using Omnipaste.Services.Repositories;
-    using Omnipaste.SMSComposer;
     using Omnipaste.Properties;
+    using Omnipaste.SMSComposer;
     using SMS.Models;
     using SMS.Resources.v1;
 
@@ -101,18 +100,20 @@
         }
 
         [Test]
-        public void Send_Always_CallsSmsFactoryCreateWithLocalSms()
+        public void Send_Always_CallsSmsFactoryCreateWithLocalSmsForEachRecepient()
         {
             const string Content = "Test";
             var sendObservable = Observable.Return(new SmsMessageDto { Content = Content }, _testScheduler);
             _mockSMSMessages.Setup(x => x.Send(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(sendObservable);
             _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessage>(It.IsAny<SmsMessageDto>())).Returns(Observable.Empty<LocalSmsMessage>());
             _subject.Message = Content;
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
 
             _subject.Send();
             _testScheduler.Start();
 
-            _mockSmsMessageFactory.Verify(x => x.Create<LocalSmsMessage>(It.Is<SmsMessageDto>(m => m.Content == Content)));
+            _mockSmsMessageFactory.Verify(x => x.Create<LocalSmsMessage>(It.Is<SmsMessageDto>(m => m.Content == Content)), Times.Exactly(3));
         }
     }
 }

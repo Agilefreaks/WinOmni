@@ -7,9 +7,9 @@
 
     public class ContactInfo : BaseModel
     {
-        private DateTime? _lastActivityTime;
-
         public const string NamePartSeparator = " ";
+
+        private DateTime? _lastActivityTime;
 
         public ContactInfo()
         {
@@ -72,6 +72,14 @@
             }
         }
 
+        public bool IsNew
+        {
+            get
+            {
+                return PhoneNumbers.Count == 0;
+            }
+        }
+
         public override string ToString()
         {
             return string.Join(NamePartSeparator, Name, PhoneNumber);
@@ -86,6 +94,18 @@
         public ContactInfo SetLastActivityTime(DateTime? lastActivityTime)
         {
             LastActivityTime = lastActivityTime;
+            return this;
+        }
+
+        public ContactInfo AddPhoneNumber(String phoneNumber)
+        {
+            PhoneNumbers.Add(new PhoneNumber(phoneNumber));
+            return this;
+        }
+
+        public ContactInfo SetContactId(int? contactId)
+        {
+            ContactId = contactId ?? default(int);
             return this;
         }
     }
