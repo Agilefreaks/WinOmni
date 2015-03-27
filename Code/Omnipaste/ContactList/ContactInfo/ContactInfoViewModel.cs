@@ -131,6 +131,14 @@
             }
         }
 
+        public string Identifier
+        {
+            get
+            {
+                return Model.Identifier;
+            }
+        }
+
         public bool HasNotViewedCalls
         {
             get

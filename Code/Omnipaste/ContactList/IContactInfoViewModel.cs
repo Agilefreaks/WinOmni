@@ -8,6 +8,8 @@
     {
         DateTime? LastActivityTime { get; }
 
+        string Identifier { get; }
+
         void ShowDetails();
     }
 }
