@@ -72,14 +72,6 @@
             }
         }
 
-        public bool IsNew
-        {
-            get
-            {
-                return PhoneNumbers.Count == 0;
-            }
-        }
-
         public override string ToString()
         {
             return string.Join(NamePartSeparator, Name, PhoneNumber);

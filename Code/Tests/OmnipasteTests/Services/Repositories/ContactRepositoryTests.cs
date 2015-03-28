@@ -152,40 +152,6 @@
         }
 
         [Test]
-        public void GetOrCreateByPhoneNumber_WhenTheContactExists_ReturnsTheContact()
-        {
-            var contact1 = new ContactInfo
-            {
-                UniqueId = "42",
-                PhoneNumbers =
-                    new List<PhoneNumber>
-                                           {
-                                               new PhoneNumber
-                                                   {
-                                                       Number = "+40722123123",
-                                                       Type = "Home"
-                                                   }
-                                           }
-            };
-
-            var observable = _subject.Save(contact1)
-                .Select(_ => _subject.GetOrCreateByPhoneNumber(PhoneNumber))
-                .Switch();
-
-            var result = _testScheduler.Start(() => observable);
-
-            result.Messages.First().Value.Value.UniqueId.Should().Be(contact1.UniqueId);
-        }
-
-        [Test]
-        public void GetOrCreateByPhoneNumber_WhenThereIsNoContactStored_WillSaveTheContact()
-        {
-            var result = _testScheduler.Start(() => _subject.GetOrCreateByPhoneNumber(PhoneNumber).Select(_ => _subject.GetByPhoneNumber(PhoneNumber)).Switch());
-            
-            result.Messages.First().Value.Value.PhoneNumber.Should().Be(PhoneNumber);
-        }
-
-        [Test]
         public void Save_WillNotExpire()
         {
             var testableObserver = _testScheduler.CreateObserver<ContactInfo>();

@@ -29,16 +29,17 @@
 
             return
                 _contactRepository.CreateIfNone(
-                    _contactRepository.GetByContactIdOrPhoneNumber(
-                        contactDto.ContactId,
-                        contactDto.PhoneNumbers.First().Number),
-                    c => c.AddPhoneNumber(contactInfo.PhoneNumber).SetContactId(contactInfo.ContactId))
-                    .Select(
-                        ci =>
-                        _contactRepository.Save(
-                            contactInfo.SetUniqueId(ci.UniqueId).SetLastActivityTime(lastActivityTime ?? ci.LastActivityTime)))
-                    .Switch()
-                    .Select(ro => ro.Item);
+                    _contactRepository.GetByContactIdOrPhoneNumber(contactDto.ContactId, contactDto.PhoneNumbers.First().Number),
+                    c => c.AddPhoneNumber(contactInfo.PhoneNumber).SetContactId(contactInfo.ContactId)
+                )
+                .Select(
+                    ci =>
+                        {
+                            var info = lastActivityTime != null ? ci : contactInfo.SetUniqueId(ci.UniqueId);
+                            return _contactRepository.Save(info.SetLastActivityTime(lastActivityTime ?? ci.LastActivityTime));
+                        })
+                        .Switch()
+                        .Select(ro => ro.Item);
         }
 
         #endregion
