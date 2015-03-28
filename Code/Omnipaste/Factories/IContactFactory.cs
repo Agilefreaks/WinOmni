@@ -7,5 +7,7 @@
     public interface IContactFactory
     {
         IObservable<ContactInfo> Create(ContactDto contactDto);
+
+        IObservable<ContactInfo> Create(ContactDto contactDto, DateTime? lastActivityTime);
     }
 }

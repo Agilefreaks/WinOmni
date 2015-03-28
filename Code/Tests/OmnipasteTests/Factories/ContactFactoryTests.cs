@@ -26,17 +26,17 @@
         }
 
         [Test]
-        public void Create_WhenThereIsNoOtheContactWithTheSameNumber_SavesANewContact()
+        public void Create_Always_CallsGetByContactIdOrPhoneNumberWithTheCorrectParams()
         {
             var contactDto = new ContactDto
             {
-                PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto { Number = "123" } }
+                PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto { Number = "123" } },
+                ContactId = 42
             };
-            _mockContactRepository.Setup(m => m.GetByPhoneNumber("123")).Returns(Observable.Throw<ContactInfo>(new Exception()));
 
             _subject.Create(contactDto).Subscribe();
 
-            _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactInfo>()));
+            _mockContactRepository.Verify(m => m.GetByContactIdOrPhoneNumber(42, "123"), Times.Once());
         }
 
         [Test]
@@ -50,13 +50,12 @@
                     PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto { Number = "123" } }
                 };
                 var contactInfo = new ContactInfo { UniqueId = "42", LastActivityTime = TimeHelper.UtcNow };
-                _mockContactRepository.Setup(m => m.GetByPhoneNumber("123")).Returns(Observable.Return(contactInfo));
+                _mockContactRepository.Setup(m => m.CreateIfNone(It.IsAny<IObservable<ContactInfo>>(), It.IsAny<Func<ContactInfo, ContactInfo>>())).Returns(Observable.Return(contactInfo));
 
                 _subject.Create(contactDto).Subscribe();
 
                 _mockContactRepository.Verify(m => m.Save(It.Is<ContactInfo>(ci => ci.UniqueId == "42" && ci.LastName == "Ion" && ci.LastActivityTime == TimeHelper.UtcNow)));
             }
         }
-
     }
 }

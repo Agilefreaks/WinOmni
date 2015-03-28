@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Contacts.Models;
     using Omnipaste.Models;
 
     public interface IContactRepository : IRepository<ContactInfo>

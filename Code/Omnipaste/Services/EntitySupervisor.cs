@@ -97,7 +97,7 @@
 
             _subscriptions.Add(
                 ContactsUpdatedHandler
-                    .SelectMany(cl => cl.Select(contact => ContactFactory.Create(contact)))
+                    .SelectMany(cl => cl.Select(ContactFactory.Create))
                     .Merge()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)

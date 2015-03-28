@@ -1,7 +1,9 @@
 ﻿namespace OmnipasteTests.Factories
 {
+    using System;
     using System.Linq;
     using System.Reactive;
+    using Contacts.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -21,7 +23,7 @@
 
         private IPhoneCallFactory _subject;
 
-        private Mock<IContactRepository> _mockContactRepository;
+        private Mock<IContactFactory> _mockContactFactory;
 
         private Mock<IPhoneCallRepository> _mockPhoneCallRepository;
 
@@ -31,12 +33,12 @@
         public void SetUp()
         {
             _mockPhoneCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
-            _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
+            _mockContactFactory = new Mock<IContactFactory> { DefaultValue = DefaultValue.Mock };
 
             _kernel = new MoqMockingKernel();
             _kernel.Bind<IPhoneCallFactory>().To<PhoneCallFactory>();
             _kernel.Bind<IPhoneCallRepository>().ToConstant(_mockPhoneCallRepository.Object);
-            _kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
+            _kernel.Bind<IContactFactory>().ToConstant(_mockContactFactory.Object);
 
             _subject = _kernel.Get<IPhoneCallFactory>();
 
@@ -51,27 +53,16 @@
         }
 
         [Test]
-        public void Create_Always_CallsGetOrCreateByPhoneNumberContact()
+        public void Create_Always_CallsCreateWithCorrectParamss()
         {
-            var phoneCallDto = new PhoneCallDto();
+            using (TimeHelper.Freez())
+            {
+                var phoneCallDto = new PhoneCallDto { Number = "123", ContactId = 42 };
 
-            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
+                _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
-            _mockContactRepository.Verify(cr => cr.GetOrCreateByPhoneNumber(phoneCallDto.Number), Times.Once);
-        }
-
-        [Test]
-        public void Create_Always_UpdatesLastActivityTimeOnTheContact()
-        {
-            var phoneCallDto = new PhoneCallDto { Number = "42" };
-            var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(m => m.GetOrCreateByPhoneNumber("42")).Returns(contactInfoObservable);
-
-            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
-
-            _mockContactRepository.Verify(cr => cr.UpdateLastActivityTime(contactInfo, null), Times.Once);
+                _mockContactFactory.Verify(cr => cr.Create(It.Is<ContactDto>(c => c.ContactId == 42 && c.PhoneNumbers.Any(pn => pn.Number == "123")), TimeHelper.UtcNow), Times.Once);                
+            }
         }
 
         [Test]
@@ -81,10 +72,7 @@
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(
                 new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>()))
-                .Returns(contactInfoObservable);
-            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null))
-                .Returns(contactInfoObservable);
+            _mockContactFactory.Setup(m => m.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
             _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
 
             _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<LocalPhoneCall>()), Times.Once);
@@ -96,8 +84,7 @@
             var phoneCallDto = new PhoneCallDto();
             var contactInfo = new ContactInfo();
             var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
-            _mockContactRepository.Setup(cr => cr.GetOrCreateByPhoneNumber(It.IsAny<string>())).Returns(contactInfoObservable);
-            _mockContactRepository.Setup(cr => cr.UpdateLastActivityTime(contactInfo, null)).Returns(contactInfoObservable);
+            _mockContactFactory.Setup(m => m.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
             var phoneCall = new LocalPhoneCall();
             var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<LocalPhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<LocalPhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
             _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<LocalPhoneCall>())).Returns(phoneCallObservable);

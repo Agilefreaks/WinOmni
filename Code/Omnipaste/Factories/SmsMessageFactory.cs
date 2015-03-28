@@ -1,8 +1,11 @@
 ﻿namespace Omnipaste.Factories
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Linq;
+    using Contacts.Models;
     using Ninject;
+    using OmniCommon.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using SMS.Models;
@@ -17,27 +20,21 @@
         }
 
         [Inject]
-        public IContactRepository ContactRepository { get; set; }
+        public IContactFactory ContactFactory { get; set; }
 
         #region ISmsMessageFactory Members
 
         public IObservable<T> Create<T>(SmsMessageDto smsMessageDto) where T : SmsMessage
         {
-            var createIfNone =
-                ContactRepository.CreateIfNone(
-                    ContactRepository.GetByContactIdOrPhoneNumber(smsMessageDto.ContactId, smsMessageDto.PhoneNumber),
-                    c => c.AddPhoneNumber(smsMessageDto.PhoneNumber).SetContactId(smsMessageDto.ContactId));
+            var contactDto = new ContactDto { PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto(smsMessageDto.PhoneNumber) }, ContactId =  smsMessageDto.ContactId ?? default(int) };
 
-            return
-                createIfNone.Select(contact => ContactRepository.UpdateLastActivityTime(contact))
-                    .Switch()
-                    .Select(
-                        contact =>
-                            {
-                                var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
-                                smsMessage.SetContactInfoUniqueId(contact.UniqueId);
-                                return _smsMessageRepository.Save(smsMessage);
-                            }).Switch().Select(e => e.Item).Cast<T>();
+            return ContactFactory.Create(contactDto, TimeHelper.UtcNow).Select(
+                contact =>
+                    {
+                        var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
+                        smsMessage.SetContactInfoUniqueId(contact.UniqueId);
+                        return _smsMessageRepository.Save(smsMessage);
+                    }).Switch().Select(e => e.Item).Cast<T>();
         }
 
         #endregion
