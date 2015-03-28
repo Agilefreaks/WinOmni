@@ -1,4 +1,12 @@
-﻿**Version 1.5.0 (27.03.2015)**
+﻿**Version 1.5.1 (28.03.2015)**
+
+**Features:**
+
+- Improves duplicate contact handling
+
+----------
+
+**Version 1.5.0 (27.03.2015)**
 
 **Features:**
 
