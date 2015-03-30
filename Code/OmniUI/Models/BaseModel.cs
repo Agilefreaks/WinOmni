@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Models
+﻿namespace OmniUI.Models
 {
     using System;
     using OmniCommon.Helpers;

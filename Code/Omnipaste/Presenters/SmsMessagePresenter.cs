@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Presenters
 {
     using Omnipaste.Models;
+    using OmniUI.Presenters;
 
     public abstract class SmsMessagePresenter : Presenter<SmsMessage>, IConversationPresenter
     {

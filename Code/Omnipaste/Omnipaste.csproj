@@ -288,18 +288,18 @@
     <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageContainerViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\GroupMessageDetailsViewModel.cs" />
+    <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageContainerViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\GroupMessage\IGroupMessageDetailsViewModel.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />
-    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ConversationBaseModel.cs" />
-    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\LocalPhoneCall.cs" />
     <Compile Include="Models\LocalSmsMessage.cs" />
     <Compile Include="Models\PhoneNumber.cs" />
@@ -316,7 +316,6 @@
     <Compile Include="Presenters\LocalPhoneCallPresenter.cs" />
     <Compile Include="Presenters\LocalSmsMessagePresenter.cs" />
     <Compile Include="Presenters\PhoneCallPresenter.cs" />
-    <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Presenters\RemotePhoneCallPresenter.cs" />
     <Compile Include="Presenters\RemoteSmsMessagePresenter.cs" />
     <Compile Include="Presenters\SmsMessagePresenter.cs" />
@@ -603,7 +602,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorkspaceDetails\GroupMessage\GroupMessageContentView.xaml">
+    <Page Include="WorkspaceDetails\GroupMessage\GroupMessageContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

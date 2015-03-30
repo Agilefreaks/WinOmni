@@ -18,6 +18,7 @@
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
+    using OmniUI.Presenters;
 
     [TestFixture]
     public class ActivityListViewModelTests

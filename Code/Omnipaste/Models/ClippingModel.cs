@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Models
 {
     using Clipboard.Models;
+    using OmniUI.Models;
 
     public class ClippingModel : BaseModel
     {

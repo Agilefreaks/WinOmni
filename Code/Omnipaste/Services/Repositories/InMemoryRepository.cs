@@ -8,6 +8,7 @@ namespace Omnipaste.Services.Repositories
     using Caliburn.Micro;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public abstract class InMemoryRepository<T> : BaseRepository<T>
         where T : BaseModel

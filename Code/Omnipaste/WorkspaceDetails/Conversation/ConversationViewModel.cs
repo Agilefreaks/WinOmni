@@ -7,16 +7,12 @@
     [UseView(typeof(DetailsViewWithHeader))]
     public class ConversationViewModel : DetailsViewModelWithHeaderBase<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>, IConversationViewModel
     {
-        #region Constructors and Destructors
-
         public ConversationViewModel(
             IConversationHeaderViewModel headerViewModel,
             IConversationContainerViewModel contentViewModel)
             : base(headerViewModel, contentViewModel)
         {
         }
-
-        #endregion
 
         protected override void OnDeactivate(bool close)
         {

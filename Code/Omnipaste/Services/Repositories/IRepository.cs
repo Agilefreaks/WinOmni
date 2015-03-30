@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public interface IReporsitory
     {

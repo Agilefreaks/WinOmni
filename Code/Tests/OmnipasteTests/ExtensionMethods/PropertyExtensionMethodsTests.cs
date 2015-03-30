@@ -4,6 +4,7 @@
     using NUnit.Framework;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     [TestFixture]
     public class PropertyExtensionMethodsTests

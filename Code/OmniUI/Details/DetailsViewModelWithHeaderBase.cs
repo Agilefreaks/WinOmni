@@ -11,10 +11,10 @@
     {
         private object _model;
 
-        protected DetailsViewModelWithHeaderBase(THeader headerViewModel, TContent contentViewModel)
+        protected DetailsViewModelWithHeaderBase(THeader headerViewModel, TContent containerViewModel)
         {
             HeaderViewModel = headerViewModel;
-            ContentViewModel = contentViewModel;
+            ContentViewModel = containerViewModel;
         }
 
         public TContent ContentViewModel { get; private set; }

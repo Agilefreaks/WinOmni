@@ -9,6 +9,7 @@
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using OmniUI.Presenters;
 
     public class ActivityPresenter : PropertyChangedBase, IActivityPresenterBuilder
     {

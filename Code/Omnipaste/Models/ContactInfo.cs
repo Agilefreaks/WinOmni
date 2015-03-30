@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contacts.Models;
+    using OmniUI.Models;
 
     public class ContactInfo : BaseModel
     {

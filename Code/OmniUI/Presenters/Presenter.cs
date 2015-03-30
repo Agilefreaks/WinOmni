@@ -1,8 +1,8 @@
-﻿namespace Omnipaste.Presenters
+﻿namespace OmniUI.Presenters
 {
     using System;
     using Caliburn.Micro;
-    using Omnipaste.Models;
+    using OmniUI.Models;
 
     public interface IPresenter
     {

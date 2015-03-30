@@ -5,6 +5,7 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public abstract class BaseRepositroy : IReporsitory
     {

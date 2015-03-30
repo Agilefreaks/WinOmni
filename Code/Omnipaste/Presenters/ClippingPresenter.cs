@@ -3,6 +3,7 @@
     using Clipboard.Models;
     using Omnipaste.Models;
     using Omnipaste.Properties;
+    using OmniUI.Presenters;
 
     public class ClippingPresenter : Presenter<ClippingModel>
     {

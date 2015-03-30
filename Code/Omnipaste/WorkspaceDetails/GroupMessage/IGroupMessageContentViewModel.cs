@@ -1,11 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails.GroupMessage
 {
-    using System.Collections.ObjectModel;
-    using Omnipaste.Presenters;
-    using Omnipaste.WorkspaceDetails;
-
-    public interface IGroupMessageContentViewModel : IWorkspaceDetailsContentViewModel
+    public interface IGroupMessageContentViewModel
     {
-        ObservableCollection<ContactInfoPresenter> Recipients { get; set; }
     }
 }

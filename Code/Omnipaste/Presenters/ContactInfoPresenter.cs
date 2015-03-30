@@ -8,6 +8,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using OmniUI.Helpers;
+    using OmniUI.Presenters;
     using OmniUI.Properties;
 
     public class ContactInfoPresenter : Presenter<ContactInfo>, IContactInfoPresenter

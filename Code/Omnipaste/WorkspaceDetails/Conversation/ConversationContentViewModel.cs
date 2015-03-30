@@ -14,6 +14,7 @@
     using Omnipaste.WorkspaceDetails.Conversation.Message;
     using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
     using OmniUI.List;
+    using OmniUI.Presenters;
 
     public class ConversationContentViewModel : ListViewModelBase<IConversationPresenter, IConversationItemViewModel>,
                                                 IConversationContentViewModel

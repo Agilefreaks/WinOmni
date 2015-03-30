@@ -3,6 +3,7 @@ namespace Omnipaste.Services
     using System;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using OmniUI.Models;
 
     public class UpdateInfo : BaseModel
     {

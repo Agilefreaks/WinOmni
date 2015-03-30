@@ -117,6 +117,9 @@
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Framework\Commands\IObservableCommand.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\IModel.cs" />
+    <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -190,9 +193,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

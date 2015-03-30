@@ -8,15 +8,15 @@
 
     [UseView(typeof(DetailsViewWithHeader))]
     public class GroupMessageDetailsViewModel :
-        DetailsViewModelWithHeaderBase<IGroupMessageHeaderViewModel, IGroupMessageContentViewModel>,
+        DetailsViewModelWithHeaderBase<IGroupMessageHeaderViewModel, IGroupMessageContainerViewModel>,
         IGroupMessageDetailsViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
 
         public GroupMessageDetailsViewModel(
             IGroupMessageHeaderViewModel headerViewModel,
-            IGroupMessageContentViewModel contentViewModel)
-            : base(headerViewModel, contentViewModel)
+            IGroupMessageContainerViewModel containerViewModel)
+            : base(headerViewModel, containerViewModel)
         {
         }
 

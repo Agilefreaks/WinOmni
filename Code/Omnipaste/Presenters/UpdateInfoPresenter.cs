@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Presenters
 {
     using Omnipaste.Services;
+    using OmniUI.Presenters;
 
     public class UpdateInfoPresenter : Presenter<UpdateInfo>
     {
