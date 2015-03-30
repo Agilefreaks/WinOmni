@@ -1,9 +1,10 @@
 ﻿namespace OmniUI.Details
 {
     using Caliburn.Micro;
+    using OmniUI.Presenters;
 
     public abstract class DetailsViewModelBase<TModel> : Screen, IDetailsViewModel<TModel>
-        where TModel : class
+        where TModel : class, IPresenter
     {
         #region Fields
 
@@ -37,7 +38,7 @@
 
         #region Explicit Interface Properties
 
-        object IDetailsViewModel.Model
+        IPresenter IDetailsViewModel.Model
         {
             get
             {

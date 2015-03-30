@@ -2,6 +2,7 @@
 {
     using Caliburn.Micro;
     using OmniUI.Attributes;
+    using OmniUI.Presenters;
 
     [UseView(typeof(DetailsViewWithHeader))]
     public abstract class DetailsViewModelWithHeaderBase<THeader, TContent> : Conductor<IScreen>.Collection.AllActive,
@@ -9,7 +10,7 @@
         where THeader : IDetailsViewModel
         where TContent : IDetailsViewModel
     {
-        private object _model;
+        private IPresenter _model;
 
         protected DetailsViewModelWithHeaderBase(THeader headerViewModel, TContent containerViewModel)
         {
@@ -21,7 +22,7 @@
 
         public THeader HeaderViewModel { get; private set; }
 
-        public object Model
+        public IPresenter Model
         {
             get
             {

@@ -5,6 +5,7 @@
     using Caliburn.Micro;
     using Omnipaste.Presenters;
     using Omnipaste.SMSComposer;
+    using OmniUI.Presenters;
 
     public class GroupMessageContainerViewModel : Screen, IGroupMessageContainerViewModel
     {
@@ -36,7 +37,7 @@
             }
         }
 
-        public object Model
+        public IPresenter Model
         {
             get
             {

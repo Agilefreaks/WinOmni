@@ -2,8 +2,9 @@ namespace Omnipaste.WorkspaceDetails.GroupMessage{
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Omnipaste.Presenters;
-
-    public class GroupMessageHeaderViewModel : WorkspaceDetailsHeaderViewModel<IEnumerable<ContactInfoPresenter>>, IGroupMessageHeaderViewModel
+    
+    // TODO: fix
+    public class GroupMessageHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>, IGroupMessageHeaderViewModel
     {
         private ObservableCollection<ContactInfoPresenter> _recipients;
 

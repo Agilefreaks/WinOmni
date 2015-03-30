@@ -4,9 +4,10 @@
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Services;
     using OmniUI.Details;
+    using OmniUI.Presenters;
 
     public abstract class DetailsViewModelWithAutoRefresh<TModel> : DetailsViewModelBase<TModel>, IDetailsViewModelWithAutoRefresh<TModel>
-        where TModel : class
+        where TModel : class, IPresenter
     {
         #region Fields
 
