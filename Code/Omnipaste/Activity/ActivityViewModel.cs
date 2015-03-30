@@ -19,8 +19,6 @@ namespace Omnipaste.Activity
 
     public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityPresenter>, IActivityViewModel
     {
-        #region Fields
-
         public const string SessionSelectionKey = "ActivityWorkspace_SelectedActivity";
 
         private readonly ISubscriptionsManager _subscriptionsManager;
@@ -29,10 +27,6 @@ namespace Omnipaste.Activity
 
         private ActivityContentInfo _contentInfo;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         public ActivityViewModel(IUiRefreshService uiRefreshService, ISessionManager sessionManager)
             : base(uiRefreshService)
         {
@@ -40,10 +34,6 @@ namespace Omnipaste.Activity
             _subscriptionsManager = new SubscriptionsManager();
             ClickCommand = new Command(ShowDetails);
         }
-
-        #endregion
-
-        #region Public Properties
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
@@ -105,10 +95,6 @@ namespace Omnipaste.Activity
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         public void ShowDetails()
         {
             var detailsViewModel = DetailsViewModelFactory.Create(Model);
@@ -143,10 +129,6 @@ namespace Omnipaste.Activity
             base.OnDeactivate(close);
         }
 
-        #endregion
-
-        #region Methods
-
         private void UpdateContentInfo()
         {
             if (Model == null) return;
@@ -167,7 +149,5 @@ namespace Omnipaste.Activity
 
             ContentInfo = contentInfo;
         }
-
-        #endregion
     }
 }

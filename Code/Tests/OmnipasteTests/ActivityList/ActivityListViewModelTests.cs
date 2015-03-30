@@ -18,7 +18,6 @@
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
-    using OmniUI.Presenters;
 
     [TestFixture]
     public class ActivityListViewModelTests
@@ -178,7 +177,7 @@
             _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.BackingModel.Should().Be(modifiedClipping);
+            _subject.Items.First().Model.BackingModel.Should().Be(modifiedClipping);
         }
 
         [Test]
@@ -218,35 +217,26 @@
             _testScheduler.AdvanceTo(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.BackingModel.Should().Be(modifiedCall);
+            _subject.Items.First().Model.BackingModel.Should().Be(modifiedCall);
         }
 
         private void SetupClippingActivityPresenterFactory(ClippingModel model)
         {
-            var presenter = new Mock<IPresenter>();
-            presenter.SetupGet(m => m.BackingModel).Returns(model);
-            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
-            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Clipping).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Clipping).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
         private void SetupPhoneCallActivityPresenterFactory(PhoneCall model)
         {
-            var presenter = new Mock<IPresenter>();
-            presenter.SetupGet(m => m.BackingModel).Returns(model);
-            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
-            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Call).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
         private void SetupSmsMessageActivityPresenterFactory(SmsMessage model)
         {
-            var presenter = new Mock<IPresenter>();
-            presenter.SetupGet(m => m.BackingModel).Returns(model);
-            presenter.SetupGet(m => m.UniqueId).Returns(model.UniqueId);
-            var activityPresenter = ActivityPresenter.BeginBuild().WithBackingModel(presenter.Object).WithType(ActivityTypeEnum.Message).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }

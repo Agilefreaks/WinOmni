@@ -175,7 +175,7 @@
 
         public void ShowDetails()
         {
-            var detailsViewModel = DetailsViewModelFactory.Create(Model);
+            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingModel);
             _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
 
             this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);

@@ -9,6 +9,7 @@
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
@@ -81,7 +82,7 @@
 
         public void ShowDetails()
         {
-            var detailsViewModel = DetailsViewModelFactory.Create(Model);
+            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingModel);
             _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
 
             this.GetParentOfType<IClippingWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);

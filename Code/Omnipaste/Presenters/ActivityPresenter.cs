@@ -2,59 +2,28 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
-    using System.Linq;
-    using Caliburn.Micro;
     using Clipboard.Models;
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using OmniUI.Models;
     using OmniUI.Presenters;
 
-    public class ActivityPresenter : PropertyChangedBase, IActivityPresenterBuilder
+    public class ActivityPresenter : Presenter, IActivityPresenterBuilder
     {
         private const string StringFormPartSeparator = " ";
 
-        private ActivityPresenter()
+        private ActivityPresenter(IModel backingModel)
+            : base(backingModel)
         {
             Type = ActivityTypeEnum.None;
-            ExtraData = new ExpandoObject();
         }
-
-        public virtual IPresenter BackingModel { get; private set; }
 
         public string Content { get; private set; }
 
         public string Device { get; private set; }
 
         public virtual ActivityTypeEnum Type { get; private set; }
-
-        public dynamic ExtraData { get; private set; }
-
-        public DateTime Time
-        {
-            get
-            {
-                return BackingModel.Time;
-            }
-        }
-
-        public bool WasViewed
-        {
-            get
-            {
-                return BackingModel.WasViewed;
-            }
-            set
-            {
-                if (value.Equals(BackingModel.WasViewed))
-                {
-                    return;
-                }
-                BackingModel.WasViewed = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public virtual string SourceId
         {
@@ -64,41 +33,18 @@
             }
         }
 
-        public bool IsDeleted
-        {
-            get
-            {
-                return BackingModel.IsDeleted;
-            }
-            set
-            {
-                if (value.Equals(BackingModel.IsDeleted))
-                {
-                    return;
-                }
-                BackingModel.IsDeleted = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public ContactInfo ContactInfo { get; set; }
 
         #region Public Methods and Operators
 
         public override string ToString()
         {
-            var parts = new List<string> { Device, GetTypeAsString(), Content, GetExtraDataAsString() };
+            var parts = new List<string> { Device, GetTypeAsString(), Content };
 
             return string.Join(StringFormPartSeparator, parts);
         }
 
         #endregion
-
-        private string GetExtraDataAsString()
-        {
-            var dictionary = ((IDictionary<string, object>)ExtraData);
-            return dictionary.Keys.Aggregate(
-                string.Empty,
-                (currentValue, key) => currentValue + (StringFormPartSeparator + dictionary[key].ToString()));
-        }
 
         private string GetTypeAsString()
         {
@@ -118,16 +64,9 @@
             return result;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(IPresenter backingModel)
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithContactInfo(ContactInfo contactInfo)
         {
-            BackingModel = backingModel;
-            return this;
-        }
-
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithBackingModel(IConversationPresenter backingModel)
-        {
-            BackingModel = backingModel;
-            ExtraData.ContactInfo = backingModel.ContactInfoPresenter;
+            ContactInfo = contactInfo;
             return this;
         }
 
@@ -172,17 +111,15 @@
             return this;
         }
 
-        public static IActivityPresenterBuilder BeginBuild()
+        public static IActivityPresenterBuilder BeginBuild(IModel model)
         {
-            return new ActivityPresenter();
+            return new ActivityPresenter(model);
         }
     }
 
     public interface IActivityPresenterBuilder
     {
-        IActivityPresenterBuilder WithBackingModel(IPresenter backingModel);
-
-        IActivityPresenterBuilder WithBackingModel(IConversationPresenter backingModel);
+        IActivityPresenterBuilder WithContactInfo(ContactInfo contactInfo);
 
         IActivityPresenterBuilder WithType(ActivityTypeEnum type);
 

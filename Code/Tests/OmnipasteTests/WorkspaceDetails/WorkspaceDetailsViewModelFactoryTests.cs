@@ -9,6 +9,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.WorkspaceDetails.Clipping;
     using Omnipaste.WorkspaceDetails.Version;
@@ -20,9 +21,7 @@
 
         private Mock<IServiceLocator> _mockServiceLocator;
 
-        private Mock<IPhoneCallPresenterFactory> _mockPhoneCallPresenterFactory;
-
-        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+        private Mock<IContactRepository> _mockContactRepository;
 
         private ActivityPresenterFactory _activityPresenterFactory;
 
@@ -30,9 +29,9 @@
         public void SetUp()
         {
             _mockServiceLocator = new Mock<IServiceLocator> { DefaultValue = DefaultValue.Mock };
-            _mockPhoneCallPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _activityPresenterFactory = new ActivityPresenterFactory(_mockPhoneCallPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+            _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactInfo()));
+            _activityPresenterFactory = new ActivityPresenterFactory(_mockContactRepository.Object);
 
             _subject = new WorkspaceDetailsViewModelFactory(_mockServiceLocator.Object);
         }
@@ -75,7 +74,7 @@
         [Test]
         public void CreateWithClippingPresenter_Always_ReturnsClippingDetailsViewModel()
         {
-            var result = _subject.Create(new ClippingPresenter(new ClippingModel { Content = "test" }));
+            var result = _subject.Create(new ClippingModel { Content = "test" });
 
             result.Should().BeAssignableTo<IClippingDetailsViewModel>();
         }
@@ -85,13 +84,12 @@
         {
             var mockDetailsViewModel = new Mock<IClippingDetailsViewModel>();
             mockDetailsViewModel.SetupAllProperties();
-            var presenter = new ClippingPresenter(new ClippingModel { Content = "test" });
-            _mockServiceLocator.Setup(m => m.GetInstance<IClippingDetailsViewModel>())
-                .Returns(mockDetailsViewModel.Object);
+            var model = new ClippingModel { Content = "test" };
+            _mockServiceLocator.Setup(m => m.GetInstance<IClippingDetailsViewModel>()).Returns(mockDetailsViewModel.Object);
 
-            var result = _subject.Create(presenter);
+            var result = _subject.Create(model);
 
-            result.Model.Should().Be(presenter);
+            ((ClippingPresenter)result.Model).BackingModel.Should().Be(model);
         }
     }
 }

@@ -52,7 +52,7 @@
             {
                 if (base.Model != value)
                 {
-                    ContactInfo = value.ExtraData.ContactInfo;
+                    ContactInfo = new ContactInfoPresenter(value.ContactInfo);
                 }
                 base.Model = value;
             }

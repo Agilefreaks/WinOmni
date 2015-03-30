@@ -6,6 +6,7 @@
     using Omnipaste.Activity;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
+    using Omnipaste.Services;
 
     [TestFixture]
     public class ActivityViewModelFactoryTests
@@ -32,7 +33,7 @@
         [Test]
         public void Create_ActivityIsOfTypeClipping_ReturnsAnActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild().WithType(ActivityTypeEnum.Clipping).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(new ClippingModel()).WithType(ActivityTypeEnum.Clipping).Build();
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -43,8 +44,8 @@
         [Test]
         public void Create_ActivityIsOfTypeCall_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild().WithType(ActivityTypeEnum.Call).Build();
-            activityPresenter.ExtraData.ContactInfo = new ContactInfo();
+            var activityPresenter = ActivityPresenter.BeginBuild(new LocalPhoneCall()).WithType(ActivityTypeEnum.Call).Build();
+            activityPresenter.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -55,8 +56,8 @@
         [Test]
         public void Create_ActivityIsOfTypeMessage_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild().WithType(ActivityTypeEnum.Message).Build();
-            activityPresenter.ExtraData.ContactInfo = new ContactInfo();
+            var activityPresenter = ActivityPresenter.BeginBuild(new LocalSmsMessage()).WithType(ActivityTypeEnum.Message).Build();
+            activityPresenter.ContactInfo = new ContactInfo();
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -67,7 +68,7 @@
         [Test]
         public void Create_ActivityIsOfTypeVersion_ReturnsAVersionActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild().WithType(ActivityTypeEnum.Version).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(new UpdateInfo()).WithType(ActivityTypeEnum.Version).Build();
 
             var activityViewModel = _subject.Create(activityPresenter);
 

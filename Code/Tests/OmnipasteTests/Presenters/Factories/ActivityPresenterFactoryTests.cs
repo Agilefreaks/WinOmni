@@ -7,26 +7,23 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Properties;
     using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class ActivityPresenterFactoryTests
     {
-        private Mock<IPhoneCallPresenterFactory> _mockPhoneCallPresenterFactory;
-
-        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+        private Mock<IContactRepository> _mockContactRepository;
 
         private ActivityPresenterFactory _factory;
 
         [SetUp]
         public void SetUp()
         {
-            _mockPhoneCallPresenterFactory = new Mock<IPhoneCallPresenterFactory>();
-            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory>();
-            _factory = new ActivityPresenterFactory(_mockPhoneCallPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+            _mockContactRepository = new Mock<IContactRepository>();
+            _factory = new ActivityPresenterFactory(_mockContactRepository.Object);
         }
 
         [Test]
@@ -66,7 +63,7 @@
         public void Create_WithLocalPhoneCall_SetsTypeToCall()
         {
             var localPhoneCall = new LocalPhoneCall();
-            SetupPhoneCallPresenterFactory<LocalPhoneCall, LocalPhoneCallPresenter>(localPhoneCall);
+            SetupContactRepository(localPhoneCall);
             var activityPresenter = _factory.Create(localPhoneCall).Wait();
 
             activityPresenter.Type.Should().Be(ActivityTypeEnum.Call);
@@ -76,7 +73,7 @@
         public void Create_WithLocalPhoneCall_SetsDeviceToLocal()
         {
             var localPhoneCall = new LocalPhoneCall();
-            SetupPhoneCallPresenterFactory<LocalPhoneCall, LocalPhoneCallPresenter>(localPhoneCall);
+            SetupContactRepository(localPhoneCall);
             var activityPresenter = _factory.Create(localPhoneCall).Wait();
 
             activityPresenter.Device.Should().Be(Resources.FromLocal);
@@ -86,7 +83,7 @@
         public void Create_WithRemotePhoneCall_SetsDeviceToRemote()
         {
             var remotePhoneCall = new RemotePhoneCall();
-            SetupPhoneCallPresenterFactory<RemotePhoneCall, RemotePhoneCallPresenter>(remotePhoneCall);
+            SetupContactRepository(remotePhoneCall);
             var activityPresenter = _factory.Create(remotePhoneCall).Wait();
 
             activityPresenter.Device.Should().Be(Resources.FromCloud);
@@ -96,19 +93,18 @@
         public void Create_WithPhoneCall_SetsContactInfo()
         {
             var remotePhoneCall = new RemotePhoneCall();
-            var contactInfoPresenter = new ContactInfoPresenter(new ContactInfo());
-            SetupPhoneCallPresenterFactory<RemotePhoneCall, RemotePhoneCallPresenter>(remotePhoneCall, contactInfoPresenter);
+            var contactInfo = new ContactInfo();
+            SetupContactRepository(remotePhoneCall, contactInfo);
             var activityPresenter = _factory.Create(remotePhoneCall).Wait();
 
-            ContactInfoPresenter contactInfo = activityPresenter.ExtraData.ContactInfo;
-            contactInfo.Should().Be(contactInfoPresenter);
+            activityPresenter.ContactInfo.Should().Be(contactInfo);
         }
 
         [Test]
         public void Create_WithLocalSmsMessage_SetsTypeToMessage()
         {
             var localSmsMessage = new LocalSmsMessage();
-            SetupSmsMessagePresenterFactory<LocalSmsMessage, LocalSmsMessagePresenter>(localSmsMessage);
+            SetupContactRepository(localSmsMessage);
             var activityPresenter = _factory.Create(localSmsMessage).Wait();
 
             activityPresenter.Type.Should().Be(ActivityTypeEnum.Message);
@@ -118,7 +114,7 @@
         public void Create_WithLocalSmsMessage_SetsDeviceToLocal()
         {
             var localSmsMessage = new LocalSmsMessage();
-            SetupSmsMessagePresenterFactory<LocalSmsMessage, LocalSmsMessagePresenter>(localSmsMessage);
+            SetupContactRepository(localSmsMessage);
             var activityPresenter = _factory.Create(localSmsMessage).Wait();
 
             activityPresenter.Device.Should().Be(Resources.FromLocal);
@@ -128,7 +124,7 @@
         public void Create_WithRemoteSmsMessage_SetsDeviceToRemote()
         {
             var remoteSmsMessage = new RemoteSmsMessage();
-            SetupSmsMessagePresenterFactory<RemoteSmsMessage, RemoteSmsMessagePresenter>(remoteSmsMessage);
+            SetupContactRepository(remoteSmsMessage);
             var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
 
             activityPresenter.Device.Should().Be(Resources.FromCloud);
@@ -138,19 +134,18 @@
         public void Create_WithSmsMessage_SetsContactInfo()
         {
             var remoteSmsMessage = new RemoteSmsMessage();
-            var contactInfoPresenter = new ContactInfoPresenter(new ContactInfo());
-            SetupSmsMessagePresenterFactory<RemoteSmsMessage, RemoteSmsMessagePresenter>(remoteSmsMessage, contactInfoPresenter);
+            var contactInfo = new ContactInfo();
+            SetupContactRepository(remoteSmsMessage, contactInfo);
             var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
 
-            ContactInfoPresenter contactInfo = activityPresenter.ExtraData.ContactInfo;
-            contactInfo.Should().Be(contactInfoPresenter);
+            activityPresenter.ContactInfo.Should().Be(contactInfo);
         }
 
         [Test]
         public void Create_WithSmsMessage_SetsContent()
         {
             var remoteSmsMessage = new RemoteSmsMessage { Content = "something" };
-            SetupSmsMessagePresenterFactory<RemoteSmsMessage, RemoteSmsMessagePresenter>(remoteSmsMessage);
+            SetupContactRepository(remoteSmsMessage);
             var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
 
             activityPresenter.Content.Should().Be("something");
@@ -160,7 +155,7 @@
         public void Create_WithSmsMessageAndNullContent_SetsContentToStringEmpty()
         {
             var remoteSmsMessage = new RemoteSmsMessage { Content = null };
-            SetupSmsMessagePresenterFactory<RemoteSmsMessage, RemoteSmsMessagePresenter>(remoteSmsMessage);
+            SetupContactRepository(remoteSmsMessage);
             var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
 
             activityPresenter.Content.Should().Be(String.Empty);
@@ -196,37 +191,11 @@
             activityPresenter.SourceId.Should().Be(updateInfo.UniqueId);            
         }
 
-        private void SetupPhoneCallPresenterFactory<T, TPresenter>(T phoneCall)
-            where T : PhoneCall
-            where TPresenter : PhoneCallPresenter
+        private void SetupContactRepository<T>(T conversationModel, ContactInfo contactInfo = null)
+            where T : ConversationBaseModel
         {
-            SetupPhoneCallPresenterFactory<T, TPresenter>(phoneCall, new ContactInfoPresenter(new ContactInfo()));
+            contactInfo = contactInfo ?? new ContactInfo();
+            _mockContactRepository.Setup(m => m.Get(conversationModel.ContactInfoUniqueId)).Returns(Observable.Return(contactInfo));
         }
-
-        private void SetupPhoneCallPresenterFactory<T, TPresenter>(T phoneCall, ContactInfoPresenter contactInfoPresenter)
-            where T : PhoneCall
-            where TPresenter : PhoneCallPresenter
-        {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), phoneCall);
-            _mockPhoneCallPresenterFactory.Setup(m => m.Create(phoneCall))
-                .Returns(Observable.Return(presenter.SetContactInfoPresenter(contactInfoPresenter)).Cast<TPresenter>());
-        }
-
-        private void SetupSmsMessagePresenterFactory<T, TPresenter>(T smsMessage)
-            where T : SmsMessage
-            where TPresenter : SmsMessagePresenter
-        {
-            SetupSmsMessagePresenterFactory<T, TPresenter>(smsMessage, new ContactInfoPresenter(new ContactInfo()));
-        }
-
-        private void SetupSmsMessagePresenterFactory<T, TPresenter>(T smsMessage, ContactInfoPresenter contactInfoPresenter)
-            where T : SmsMessage
-            where TPresenter : SmsMessagePresenter
-        {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), smsMessage);
-            _mockSmsMessagePresenterFactory.Setup(m => m.Create(smsMessage))
-                .Returns(Observable.Return(presenter.SetContactInfoPresenter(contactInfoPresenter)).Cast<TPresenter>());
-        }
-
     }
 }

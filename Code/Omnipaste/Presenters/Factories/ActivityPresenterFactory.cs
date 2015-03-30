@@ -4,57 +4,53 @@
     using System.Reactive.Linq;
     using Omnipaste.Models;
     using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
 
     public class ActivityPresenterFactory : IActivityPresenterFactory
     {
-        private readonly IPhoneCallPresenterFactory _phoneCallPresenterFactory;
+        private readonly IContactRepository _contactRepository;
 
-        private readonly ISmsMessagePresenterFactory _smsMessagePresenterFactory;
-
-        public ActivityPresenterFactory(IPhoneCallPresenterFactory phoneCallPresenterFactory, ISmsMessagePresenterFactory smsMessagePresenterFactory)
+        public ActivityPresenterFactory(IContactRepository contactRepository)
         {
-            _phoneCallPresenterFactory = phoneCallPresenterFactory;
-            _smsMessagePresenterFactory = smsMessagePresenterFactory;
+            _contactRepository = contactRepository;
         }
 
         public IObservable<ActivityPresenter> Create(ClippingModel clippingModel)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild()
+            var activityPresenter = ActivityPresenter.BeginBuild(clippingModel)
                 .WithType(ActivityTypeEnum.Clipping)
                 .WithContent(clippingModel.Content)
                 .WithDevice(clippingModel.Source)
-                .WithBackingModel(new ClippingPresenter(clippingModel))
                 .Build();
             return Observable.Return(activityPresenter);
         }
 
         public IObservable<ActivityPresenter> Create(PhoneCall phoneCall)
         {
-            return _phoneCallPresenterFactory.Create(phoneCall).Select(
-                pcp => ActivityPresenter.BeginBuild()
+            return _contactRepository.Get(phoneCall.ContactInfoUniqueId).Select(
+                contactInfo => ActivityPresenter.BeginBuild(phoneCall)
                            .WithType(ActivityTypeEnum.Call)
+                           .WithContactInfo(contactInfo)
                            .WithDevice(phoneCall)
-                           .WithBackingModel(pcp)
                            .Build());
         }
 
         public IObservable<ActivityPresenter> Create(SmsMessage smsMessage)
         {
-            return _smsMessagePresenterFactory.Create(smsMessage).Select(
-                smp => ActivityPresenter.BeginBuild()
+            return _contactRepository.Get(smsMessage.ContactInfoUniqueId).Select(
+                contactInfo => ActivityPresenter.BeginBuild(smsMessage)
+                    .WithContactInfo(contactInfo)
                     .WithType(ActivityTypeEnum.Message)
                     .WithDevice(smsMessage)
                     .WithContent(smsMessage.Content ?? String.Empty)
-                    .WithBackingModel(smp)
                     .Build());
         }
 
         public IObservable<ActivityPresenter> Create(UpdateInfo updateInfo)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild()
+            var activityPresenter = ActivityPresenter.BeginBuild(updateInfo)
                 .WithType(ActivityTypeEnum.Version)
                 .WithContent(updateInfo)
-                .WithBackingModel(new UpdateInfoPresenter(updateInfo))
                 .Build();
             return Observable.Return(activityPresenter);
         }

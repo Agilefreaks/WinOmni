@@ -14,6 +14,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
+    using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.Workspace;
@@ -31,9 +32,7 @@
 
         private Mock<ISessionManager> _mockSessionManager;
 
-        private Mock<IPhoneCallPresenterFactory> _mockPhoneCallPresenterFactory;
-
-        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+        private Mock<IContactRepository> _mockContactRepository;
 
         private ActivityPresenterFactory _activityPresenterFactory;
 
@@ -41,15 +40,11 @@
         public void Setup()
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
+            _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactInfo()));
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
-            _mockPhoneCallPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _mockPhoneCallPresenterFactory.Setup(m => m.Create(It.IsAny<PhoneCall>()))
-                .Returns(Observable.Return(new LocalPhoneCallPresenter(new LocalPhoneCall())));
-            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _mockSmsMessagePresenterFactory.Setup(m => m.Create(It.IsAny<SmsMessage>()))
-                .Returns(Observable.Return(new LocalSmsMessagePresenter(new LocalSmsMessage())));
-            _activityPresenterFactory = new ActivityPresenterFactory(_mockPhoneCallPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+            _activityPresenterFactory = new ActivityPresenterFactory(_mockContactRepository.Object);
 
             _subject = new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object)
                            {
