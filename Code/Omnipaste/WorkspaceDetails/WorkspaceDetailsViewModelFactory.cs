@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Microsoft.Practices.ServiceLocation;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails.Clipping;
     using Omnipaste.WorkspaceDetails.Conversation;
-    using Omnipaste.WorkspaceDetails.GroupMessage;
     using Omnipaste.WorkspaceDetails.Version;
 
     public class WorkspaceDetailsViewModelFactory : IWorkspaceDetailsViewModelFactory
@@ -47,16 +47,16 @@
 
         public IWorkspaceDetailsViewModel Create(ContactInfo contactInfo)
         {
-            var result = _serviceLocator.GetInstance<IConversationViewModel>();
-            result.Model = new ContactInfoPresenter(contactInfo);
+            var contactInfoPresenter = new ContactInfoPresenter(contactInfo);
 
-            return result;
+            return Create(new ObservableCollection<ContactInfoPresenter> { contactInfoPresenter });
         }
 
         public IWorkspaceDetailsViewModel Create(IEnumerable<ContactInfoPresenter> contactInfoPresenterList)
         {
-            var result = _serviceLocator.GetInstance<IGroupMessageDetailsViewModel>();
+            var result = _serviceLocator.GetInstance<IConversationViewModel>();
             result.Recipients = (ObservableCollection<ContactInfoPresenter>)contactInfoPresenterList;
+            result.Model = contactInfoPresenterList.First();
 
             return result;
         }

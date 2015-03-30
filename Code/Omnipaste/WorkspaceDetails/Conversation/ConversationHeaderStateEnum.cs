@@ -8,6 +8,8 @@
 
         Calling,
         
-        Deleted
+        Deleted,
+
+        Group
     }
 }

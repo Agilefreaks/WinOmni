@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.ActivityDetails.Conversation
+﻿namespace OmnipasteTests.WorkspaceDetails.Conversation
 {
     using System;
     using System.Linq;

@@ -205,9 +205,7 @@ namespace Omnipaste.ContactList
 
         private void ShowDetails()
         {
-            _detailsViewModel = CanSelectMultipleItems
-                                    ? DetailsViewModelFactory.Create(SelectedContacts)
-                                    : DetailsViewModelFactory.Create(SelectedContacts.First().BackingModel);
+            _detailsViewModel = DetailsViewModelFactory.Create(SelectedContacts);
 
             this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }

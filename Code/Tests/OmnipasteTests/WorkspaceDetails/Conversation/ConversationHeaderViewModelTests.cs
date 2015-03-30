@@ -1,9 +1,11 @@
-﻿namespace OmnipasteTests.ActivityDetails.Conversation
+﻿namespace OmnipasteTests.WorkspaceDetails.Conversation
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reactive;
+    using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -68,6 +70,31 @@
             _subject = new ConversationHeaderViewModel();
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+        }
+
+        [Test]
+        public void OnRecepients_WhenMoreThanTwo_WillChangeState()
+        {
+            _subject.Recipients = new ObservableCollection<ContactInfoPresenter>
+                                      {
+                                          new ContactInfoPresenter(new ContactInfo()),
+                                          new ContactInfoPresenter(new ContactInfo())
+                                      };
+
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
+        }
+
+        [Test]
+        public void OnRecepientAdded_WhenMoreThanTwo_WillChangeState()
+        {
+            _subject.Recipients = new ObservableCollection<ContactInfoPresenter>();
+
+            ((IActivate)_subject).Activate();
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
         }
 
         [Test]

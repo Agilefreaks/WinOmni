@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.WorkspaceDetails.Clippings
+﻿namespace OmnipasteTests.WorkspaceDetails.Clipping
 {
     using System;
     using Caliburn.Micro;

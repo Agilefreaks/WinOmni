@@ -1,12 +1,36 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
+    using System.Collections.ObjectModel;
     using Caliburn.Micro;
+    using Omnipaste.Presenters;
     using OmniUI.Attributes;
     using OmniUI.Details;
 
     [UseView(typeof(DetailsViewWithHeader))]
     public class ConversationViewModel : DetailsViewModelWithHeaderBase<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>, IConversationViewModel
     {
+        private ObservableCollection<ContactInfoPresenter> _recipients;
+
+        public ObservableCollection<ContactInfoPresenter> Recipients
+        {
+            get
+            {
+                return _recipients;
+            }
+            set
+            {
+                if (_recipients == value)
+                {
+                    return;
+                }
+
+                _recipients = value;
+                ((IConversationHeaderViewModel)HeaderViewModel).Recipients = _recipients;
+                ((IConversationContainerViewModel)ContentViewModel).Recipients = _recipients;
+                NotifyOfPropertyChange(() => Recipients);
+            }
+        }
+
         public ConversationViewModel(
             IConversationHeaderViewModel headerViewModel,
             IConversationContainerViewModel contentViewModel)

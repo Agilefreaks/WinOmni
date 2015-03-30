@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
@@ -15,23 +17,15 @@
     public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>,
                                                IConversationHeaderViewModel
     {
-        #region Static Fields
-
         protected static TimeSpan CallingDuration = TimeSpan.FromSeconds(5);
 
         protected static TimeSpan DelayCallDuration = TimeSpan.FromSeconds(2);
 
-        #endregion
-
-        #region Fields
-
         private IDisposable _callSubscription;
 
+        private ObservableCollection<ContactInfoPresenter> _recipients;
+
         private ConversationHeaderStateEnum _state;
-
-        #endregion
-
-        #region Public Properties
 
         [Inject]
         public IPhoneCallFactory PhoneCallFactory { get; set; }
@@ -53,6 +47,8 @@
             }
         }
 
+        #region IConversationHeaderViewModel Members
+
         public ConversationHeaderStateEnum State
         {
             get
@@ -70,9 +66,27 @@
             }
         }
 
-        #endregion
+        public ObservableCollection<ContactInfoPresenter> Recipients
+        {
+            get
+            {
+                return _recipients;
+            }
+            set
+            {
+                if (Equals(value, _recipients))
+                {
+                    return;
+                }
 
-        #region Public Methods and Operators
+                _recipients = value;
+                RecipientsOnCollectionChanged(_recipients, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+                NotifyOfPropertyChange(() => Recipients);
+            }
+        }
+
+        #endregion
 
         public void Call()
         {
@@ -112,10 +126,6 @@
             State = ConversationHeaderStateEnum.Normal;
         }
 
-        #endregion
-
-        #region Methods
-
         protected override void OnActivate()
         {
             State = ConversationHeaderStateEnum.Normal;
@@ -126,7 +136,20 @@
         {
             DeleteConversationItems<Models.PhoneCall>(PhoneCallRepository);
             DeleteConversationItems<SmsMessage>(SmsMessageRepository);
+
+            if (Recipients != null)
+            {
+                Recipients.CollectionChanged -= RecipientsOnCollectionChanged;
+            }
+
             base.OnDeactivate(close);
+        }
+
+        private void RecipientsOnCollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            State = _recipients.Count >= 2 ? ConversationHeaderStateEnum.Group : State;
         }
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationBaseModel
@@ -134,7 +157,9 @@
             repository.GetConversationForContact(Model.BackingModel)
                 .SubscribeAndHandleErrors(
                     items =>
-                    items.Where(c => c.IsDeleted).ToList().ForEach(c => repository.Delete<T>(c.UniqueId).RunToCompletion()));
+                    items.Where(c => c.IsDeleted)
+                        .ToList()
+                        .ForEach(c => repository.Delete<T>(c.UniqueId).RunToCompletion()));
         }
 
         private void DisposeCallSubscription()
@@ -159,7 +184,5 @@
                             return repository.Save(item);
                         })).Switch().SubscribeAndHandleErrors();
         }
-
-        #endregion
     }
 }

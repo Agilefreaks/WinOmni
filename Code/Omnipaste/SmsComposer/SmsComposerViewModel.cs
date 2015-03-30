@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
@@ -99,7 +100,7 @@
             }
         }
 
-        public IList<ContactInfoPresenter> Recipients { get; set; }
+        public ObservableCollection<ContactInfoPresenter> Recipients { get; set; }
 
         public virtual void Send()
         {

@@ -143,10 +143,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsHeaderViewModelTests.cs" />
-    <Compile Include="ActivityDetails\Clipping\ClippingDetailsViewModelTests.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationContentViewModelTests.cs" />
-    <Compile Include="ActivityDetails\Conversation\ConversationHeaderViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationContainerViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationContentViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModelTests.cs" />
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
     <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
     <Compile Include="Activity\ActivityViewModelTests.cs" />
@@ -244,7 +245,8 @@
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModelTests.cs" />
     <Compile Include="SMSComposer\SMSComposerViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Clippings\ClippingDetailsContentViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModelTests.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationViewModelTests.cs" />
     <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactoryTests.cs" />
     <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
   </ItemGroup>
@@ -298,7 +300,9 @@
       <Name>SMS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ActivityDetails\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

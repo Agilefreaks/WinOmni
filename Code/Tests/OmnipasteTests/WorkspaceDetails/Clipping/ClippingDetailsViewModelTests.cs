@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.ActivityDetails.Clipping
+﻿namespace OmnipasteTests.WorkspaceDetails.Clipping
 {
     using Caliburn.Micro;
     using Moq;

@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.ActivityDetails.Clipping
+﻿namespace OmnipasteTests.WorkspaceDetails.Clipping
 {
     using System.Reactive.Linq;
     using FluentAssertions;
