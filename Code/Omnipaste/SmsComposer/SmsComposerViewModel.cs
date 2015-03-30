@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -18,21 +17,15 @@
 
     public class SMSComposerViewModel : Screen, ISMSComposerViewModel
     {
-        #region Fields
+        private readonly IConfigurationService _configurationService;
 
         private readonly ISMSMessages _smsMessages;
 
-        private readonly IConfigurationService _configurationService;
-
         private bool _isSending;
-
-        private Command _sendCommand;
 
         private string _message;
 
-        #endregion
-
-        #region Constructors and Destructors
+        private Command _sendCommand;
 
         public SMSComposerViewModel(ISMSMessages smsMessages, IConfigurationService configurationService)
         {
@@ -41,12 +34,8 @@
             SendCommand = new Command(Send);
         }
 
-        #endregion
-
-        #region Public Properties
-
         [Inject]
-        public ISmsMessageFactory SmsMessageFactory { get; set; } 
+        public ISmsMessageFactory SmsMessageFactory { get; set; }
 
         public bool IsSending
         {
@@ -91,6 +80,8 @@
             }
         }
 
+        #region ISMSComposerViewModel Members
+
         public string Message
         {
             get
@@ -109,10 +100,6 @@
         }
 
         public IList<ContactInfoPresenter> Recipients { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         public virtual void Send()
         {
@@ -137,8 +124,6 @@
 
         #endregion
 
-        #region Methods
-
         protected override void OnActivate()
         {
             StartNewMessage();
@@ -162,7 +147,5 @@
                           ? string.Format("{0}{1}", Environment.NewLine, Resources.SentFromOmnipaste)
                           : string.Empty;
         }
-
-        #endregion
     }
 }
