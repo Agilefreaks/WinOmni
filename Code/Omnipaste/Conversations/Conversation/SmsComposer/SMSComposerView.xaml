@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Omnipaste.Conversations.Conversation.SMSComposer.SMSComposerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:behaviors="clr-namespace:OmniUI.Framework.Behaviors;assembly=OmniUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource ScreenBorderBrush}" CornerRadius="3" BorderThickness="1" 
+                Height="110" Margin="11,0">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBox x:Name="Message" BorderBrush="Transparent" BorderThickness="0" TextWrapping="Wrap"
+                                 IsEnabled="{Binding Path=CanSend}" Width="468" Height="60" Margin="11,11,8,11" VerticalScrollBarVisibility="Auto">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxFocusBehavior IsFocused="{Binding Path=CanSend}" />
+                        <behaviours:AddNewLineBehavior ModifierKey="Shift" Key="Enter" TextToAdd="{x:Static system:Environment.NewLine}"/>
+                        <behaviors:HotKeyCommandBehavior Key="Enter" Command="{Binding Path=SendCommand}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <Border BorderThickness="1,0,0,1" BorderBrush="{DynamicResource ScreenBorderBrush}"/>
+            </StackPanel>
+            <DockPanel Margin="11,0" LastChildFill="True">
+                <Button x:Name="Send" DockPanel.Dock="Right" Content="{DynamicResource airplane_icon}" Style="{DynamicResource ShapeButtonStyle}"
+                        Width="15" Height="15"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Send from your " Foreground="{DynamicResource LabelBrush}" 
+                               FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Mobile Device" Foreground="{DynamicResource ActivityContentBrush}" 
+                               FontSize="{DynamicResource ActivityLabelFontSize}" FontFamily="{DynamicResource ContentFont}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

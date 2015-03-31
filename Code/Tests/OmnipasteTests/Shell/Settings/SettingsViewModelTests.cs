@@ -11,7 +11,7 @@
     using Omni;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Shell.Settings;
 
     [TestFixture]

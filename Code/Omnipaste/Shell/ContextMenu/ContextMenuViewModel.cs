@@ -10,8 +10,8 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Behaviours;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Action = System.Action;
 
     public class ContextMenuViewModel : Screen, IContextMenuViewModel

@@ -2,14 +2,14 @@ namespace Clipboard.Handlers
 {
     using System;
     using System.Reactive.Subjects;
+    using Clipboard.Dto;
     using Clipboard.Handlers.WindowsClipboard;
-    using Clipboard.Models;
 
     public class LocalClipboardHandler : ILocalClipboardHandler
     {
         #region Fields
 
-        private readonly Subject<Clipping> _subject;
+        private readonly Subject<ClippingDto> _subject;
 
         private readonly IWindowsClipboardWrapper _windowsClipboardWrapper;
 
@@ -23,7 +23,7 @@ namespace Clipboard.Handlers
 
         public LocalClipboardHandler(IWindowsClipboardWrapper windowsClipboardWrapper)
         {
-            _subject = new Subject<Clipping>();
+            _subject = new Subject<ClippingDto>();
             _windowsClipboardWrapper = windowsClipboardWrapper;
         }
 
@@ -50,13 +50,13 @@ namespace Clipboard.Handlers
             WindowsClipboardWrapperDataReceived(value);
         }
 
-        public void PostClipping(Clipping clipping)
+        public void PostClipping(ClippingDto clippingDto)
         {
-            _lastClippingContent = clipping.Content;
-            _windowsClipboardWrapper.SetData(clipping.Content);
+            _lastClippingContent = clippingDto.Content;
+            _windowsClipboardWrapper.SetData(clippingDto.Content);
         }
 
-        public IObservable<Clipping> Clippings
+        public IObservable<ClippingDto> Clippings
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Clipboard.Handlers
             }
 
             _lastClippingContent = arguments.Data;
-            _subject.OnNext(new Clipping(arguments.Data) { Source = Clipping.ClippingSourceEnum.Local });
+            _subject.OnNext(new ClippingDto(arguments.Data) { Source = ClippingDto.ClippingSourceEnum.Local });
         }
 
         #endregion

@@ -9,8 +9,8 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using OmniCommon.Settings;
-    using Omnipaste.Services;
     using System.Reactive;
+    using Omnipaste.Framework.Services;
 
     [TestFixture]
     public class ConfigurationServiceTests

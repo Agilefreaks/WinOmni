@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using SMS.Models;
+    using SMS.Dto;
     using SMS.Resources.v1;
 
     public class SmsMessagesWrapper : ResourceWrapperBase<SmsMessageDto>, ISmsMessagesWrapper

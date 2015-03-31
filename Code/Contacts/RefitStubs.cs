@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
+using global::Contacts.Dto;
 using global::Contacts.Models;
 using Refit;
 

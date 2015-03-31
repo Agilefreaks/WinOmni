@@ -5,7 +5,7 @@
     using Caliburn.Micro;
     using OmniCommon.Models;
     using OmniDebug.Services;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     public class PhoneNotificationViewModel : PropertyChangedBase, IDebugBarPanel
     {

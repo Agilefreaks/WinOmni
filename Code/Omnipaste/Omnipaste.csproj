@@ -152,8 +152,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Humanizer.1.34.0\lib\portable-win+net40+sl50+wp8+wpa81\Humanizer.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Markdown.Xaml">
@@ -237,6 +236,7 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -264,164 +264,143 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactList\ContactInfo\ContactInfoStatusEnum.cs" />
-    <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
-    <Compile Include="Factories\ContactFactory.cs" />
-    <Compile Include="Factories\IContactFactory.cs" />
-    <Compile Include="Factories\IPhoneCallFactory.cs" />
-    <Compile Include="Factories\ISmsMessageFactory.cs" />
-    <Compile Include="Factories\PhoneCallFactory.cs" />
-    <Compile Include="Factories\SmsMessageFactory.cs" />
-    <Compile Include="Framework\BindingProxy.cs" />
-    <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
-    <Compile Include="ClippingList\ClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingViewModel.cs" />
-    <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
-    <Compile Include="ClippingList\Converters\ContactInfoBorderBrushConverter.cs" />
-    <Compile Include="ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
-    <Compile Include="ClippingList\IClippingListViewModel.cs" />
-    <Compile Include="ClippingList\IClippingViewModel.cs" />
-    <Compile Include="ClippingList\IClippingViewModelFactory.cs" />
-    <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
-    <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
+    <Compile Include="Conversations\ContactList\Converters\BoolToSelectionModeConverter.cs" />
+    <Compile Include="Framework\Entities\Factories\ContactFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\IContactFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\IPhoneCallFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\ISmsMessageFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\PhoneCallFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\SmsMessageFactory.cs" />
+    <Compile Include="Clippings\ClippingList\ClippingFilterTypeEnum.cs" />
+    <Compile Include="Clippings\ClippingList\ClippingListViewModel.cs" />
+    <Compile Include="Clippings\ClippingList\Clipping\ClippingViewModel.cs" />
+    <Compile Include="Clippings\ClippingList\ClippingViewModelFactory.cs" />
+    <Compile Include="Clippings\ClippingList\Converters\ClippingBorderBrushConverter.cs" />
+    <Compile Include="Clippings\ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
+    <Compile Include="Clippings\ClippingList\IClippingListViewModel.cs" />
+    <Compile Include="Clippings\ClippingList\Clipping\IClippingViewModel.cs" />
+    <Compile Include="Clippings\ClippingList\IClippingViewModelFactory.cs" />
+    <Compile Include="Conversations\ContactList\Converters\ContactBorderBrushConverter.cs" />
+    <Compile Include="Conversations\ContactList\Converters\ContactBackroundBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
-    <Compile Include="Helpers\ApplicationHelper.cs" />
-    <Compile Include="Helpers\IApplicationHelper.cs" />
-    <Compile Include="Helpers\PhoneNumberMatcher.cs" />
-    <Compile Include="Models\ConversationBaseModel.cs" />
-    <Compile Include="Models\LocalPhoneCall.cs" />
-    <Compile Include="Models\LocalSmsMessage.cs" />
-    <Compile Include="Models\PhoneNumber.cs" />
-    <Compile Include="Models\RemotePhoneCall.cs" />
-    <Compile Include="Models\RemoteSmsMessage.cs" />
-    <Compile Include="Presenters\ClippingPresenter.cs" />
-    <Compile Include="Presenters\IGroupMessagePresenter.cs" />
-    <Compile Include="Presenters\Factories\ActivityPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\ConversationPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\IActivityPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\IConversationPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\PhoneCallPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\SmsMessagePresenterFactory.cs" />
-    <Compile Include="Presenters\LocalPhoneCallPresenter.cs" />
-    <Compile Include="Presenters\LocalSmsMessagePresenter.cs" />
-    <Compile Include="Presenters\PhoneCallPresenter.cs" />
-    <Compile Include="Presenters\RemotePhoneCallPresenter.cs" />
-    <Compile Include="Presenters\RemoteSmsMessagePresenter.cs" />
-    <Compile Include="Presenters\SmsMessagePresenter.cs" />
-    <Compile Include="Presenters\UpdateInfoPresenter.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
-    <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
-    <Compile Include="Services\ExceptionReporters\LogExceptionReporter.cs" />
-    <Compile Include="Services\GlobalExceptionLogger.cs" />
-    <Compile Include="Services\Providers\ContactConversationContext.cs" />
-    <Compile Include="Services\Providers\ConversationContext.cs" />
-    <Compile Include="Services\Providers\ConversationProvider.cs" />
-    <Compile Include="Services\Providers\MergedConversationContext.cs" />
-    <Compile Include="Services\Repositories\BaseRepository.cs" />
-    <Compile Include="Services\Repositories\BlobCacheExtensions.cs" />
-    <Compile Include="Services\Repositories\ConversationRepository.cs" />
-    <Compile Include="Services\Repositories\IConversationContext.cs" />
-    <Compile Include="Services\Providers\IConversationProvider.cs" />
-    <Compile Include="Services\Repositories\IConversationRepository.cs" />
-    <Compile Include="Services\Repositories\SecurePermanentRepository.cs" />
-    <Compile Include="Services\SessionItemChangeEventArgs.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\IPhoneCallViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\IConversationItemViewModel.cs" />
-    <Compile Include="WorkspaceDetails\WorkspaceDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\WorkspaceDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactory.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\IClippingDetailsViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderStateEnum.cs" />
-    <Compile Include="WorkspaceDetails\IWorkspaceDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\IWorkspaceDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\IWorkspaceDetailsViewModel.cs" />
-    <Compile Include="WorkspaceDetails\IWorkspaceDetailsViewModelFactory.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\IConversationContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\IConversationContainerViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\IConversationHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\IConversationViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Message\IMessageViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationContainerViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\Message\MessageViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\IVersionDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\IVersionDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\IVersionDetailsViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\VersionDetailsContentViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\VersionDetailsHeaderViewModel.cs" />
-    <Compile Include="WorkspaceDetails\Version\VersionDetailsViewModel.cs" />
-    <Compile Include="Activity\ActivityViewModelFactory.cs" />
-    <Compile Include="Activity\ActivityContentInfo.cs" />
-    <Compile Include="Activity\ContentStateEnum.cs" />
-    <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ViewedSizeConverter.cs" />
-    <Compile Include="Activity\IActivityViewModelFactory.cs" />
-    <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
-    <Compile Include="Activity\IVersionActivityViewModel.cs" />
-    <Compile Include="Activity\VersionActivityViewModel.cs" />
-    <Compile Include="ContactList\ContactInfo\ContactInfoViewModel.cs" />
-    <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
-    <Compile Include="ContactList\ContactListViewModel.cs" />
-    <Compile Include="ContactList\IContactInfoViewModel.cs" />
-    <Compile Include="ContactList\IContactInfoViewModelFactory.cs" />
-    <Compile Include="ContactList\IContactListViewModel.cs" />
-    <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
-    <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
-    <Compile Include="Framework\CheckboxHelper.cs" />
-    <Compile Include="Models\ContactInfo.cs" />
-    <Compile Include="Presenters\IConversationPresenter.cs" />
-    <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
-    <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
-    <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
-    <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\Helpers\ApplicationHelper.cs" />
+    <Compile Include="Framework\Helpers\IApplicationHelper.cs" />
+    <Compile Include="Framework\Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Framework\Entities\ConversationEntity.cs" />
+    <Compile Include="Framework\Entities\LocalPhoneCallEntity.cs" />
+    <Compile Include="Framework\Entities\LocalSmsMessageEntity.cs" />
+    <Compile Include="Framework\Entities\RemotePhoneCallEntity.cs" />
+    <Compile Include="Framework\Entities\RemoteSmsMessageEntity.cs" />
+    <Compile Include="Framework\Models\ClippingModel.cs" />
+    <Compile Include="Framework\Models\Factories\ActivityModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\ConversationModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\PhoneCallModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\SmsMessageModelFactory.cs" />
+    <Compile Include="Framework\Models\LocalPhoneCallModel.cs" />
+    <Compile Include="Framework\Models\LocalSmsMessageModel.cs" />
+    <Compile Include="Framework\Models\PhoneCallModel.cs" />
+    <Compile Include="Framework\Models\RemotePhoneCallModel.cs" />
+    <Compile Include="Framework\Models\RemoteSmsMessageModel.cs" />
+    <Compile Include="Framework\Models\SmsMessageModel.cs" />
+    <Compile Include="Framework\Models\UpdateModel.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
+    <Compile Include="Framework\Services\ExceptionReporters\CompositeExceptionReporter.cs" />
+    <Compile Include="Framework\Services\ExceptionReporters\LogExceptionReporter.cs" />
+    <Compile Include="Framework\Services\GlobalExceptionLogger.cs" />
+    <Compile Include="Framework\Services\Providers\ContactConversationContext.cs" />
+    <Compile Include="Framework\Services\Providers\ConversationContext.cs" />
+    <Compile Include="Framework\Services\Providers\ConversationProvider.cs" />
+    <Compile Include="Framework\Services\Providers\MergedConversationContext.cs" />
+    <Compile Include="Framework\Services\Repositories\BaseRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\BlobCacheExtensions.cs" />
+    <Compile Include="Framework\Services\Repositories\ConversationRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IConversationContext.cs" />
+    <Compile Include="Framework\Services\Providers\IConversationProvider.cs" />
+    <Compile Include="Framework\Services\Repositories\IConversationRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\SecurePermanentRepository.cs" />
+    <Compile Include="Framework\Services\SessionItemChangeEventArgs.cs" />
+    <Compile Include="Conversations\Conversation\PhoneCall\IPhoneCallViewModel.cs" />
+    <Compile Include="Conversations\Conversation\IConversationItemViewModel.cs" />
+    <Compile Include="Framework\DetailsViewModelFactory.cs" />
+    <Compile Include="Clippings\CilppingDetails\ClippingDetailsHeaderStateEnum.cs" />
+    <Compile Include="Conversations\Conversation\PhoneCall\PhoneCallViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\ClippingDetailsContentViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\ClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\ClippingDetailsViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\IClippingDetailsContentViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\IClippingDetailsHeaderViewModel.cs" />
+    <Compile Include="Clippings\CilppingDetails\IClippingDetailsViewModel.cs" />
+    <Compile Include="Conversations\Conversation\ConversationHeaderStateEnum.cs" />
+    <Compile Include="Framework\IDetailsViewModelFactory.cs" />
+    <Compile Include="Conversations\Conversation\ConversationContentViewModel.cs" />
+    <Compile Include="Conversations\Conversation\IConversationContentViewModel.cs" />
+    <Compile Include="Conversations\Conversation\IConversationContainerViewModel.cs" />
+    <Compile Include="Conversations\Conversation\IConversationHeaderViewModel.cs" />
+    <Compile Include="Conversations\Conversation\IConversationViewModel.cs" />
+    <Compile Include="Conversations\Conversation\Message\IMessageViewModel.cs" />
+    <Compile Include="Conversations\Conversation\ConversationContainerViewModel.cs" />
+    <Compile Include="Conversations\Conversation\ConversationHeaderViewModel.cs" />
+    <Compile Include="Conversations\Conversation\ConversationViewModel.cs" />
+    <Compile Include="Conversations\Conversation\Message\MessageViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\IVersionDetailsContentViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\IVersionDetailsHeaderViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\IVersionDetailsViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\VersionDetailsContentViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\VersionDetailsHeaderViewModel.cs" />
+    <Compile Include="Activities\ActivityDetails\Version\VersionDetailsViewModel.cs" />
+    <Compile Include="Activities\ActivityList\ActivityViewModelFactory.cs" />
+    <Compile Include="Activities\ActivityList\Activity\ActivityContentInfo.cs" />
+    <Compile Include="Activities\ActivityList\Converters\ActivityBackgroundBrushConverter.cs" />
+    <Compile Include="Activities\ActivityList\Converters\ActivityBorderBrushConverter.cs" />
+    <Compile Include="Activities\ActivityList\Converters\ActivityIconBrushConverter.cs" />
+    <Compile Include="Activities\ActivityList\Converters\ViewedSizeConverter.cs" />
+    <Compile Include="Activities\ActivityList\IActivityViewModelFactory.cs" />
+    <Compile Include="Activities\ActivityList\Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="Activities\ActivityList\Activity\IVersionActivityViewModel.cs" />
+    <Compile Include="Activities\ActivityList\Activity\VersionActivityViewModel.cs" />
+    <Compile Include="Conversations\ContactList\Contact\ContactViewModel.cs" />
+    <Compile Include="Conversations\ContactList\ContactViewModelFactory.cs" />
+    <Compile Include="Conversations\ContactList\ContactListViewModel.cs" />
+    <Compile Include="Conversations\ContactList\Contact\IContactViewModel.cs" />
+    <Compile Include="Conversations\ContactList\IContactViewModelFactory.cs" />
+    <Compile Include="Conversations\ContactList\IContactListViewModel.cs" />
+    <Compile Include="Framework\ExtensionMethods\PropertyExtensions.cs" />
+    <Compile Include="Framework\Entities\ContactEntity.cs" />
+    <Compile Include="Framework\Models\IConversationModel.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\DismissNotification.cs" />
+    <Compile Include="Framework\ExtensionMethods\ActivityTypeExtensions.cs" />
+    <Compile Include="Conversations\Conversation\ConversationItemViewModel.cs" />
     <Compile Include="Framework\Behaviours\AddNewLineBehavior.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Commands\ClippingCommands.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
-    <Compile Include="Framework\Converters\ValuesToCenterPointConverter.cs" />
-    <Compile Include="Framework\Converters\ValueToRadiusConverter.cs" />
-    <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
-    <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
-    <Compile Include="Helpers\ExternalProcessHelper.cs" />
-    <Compile Include="Helpers\NameParser.cs" />
-    <Compile Include="Helpers\TextParser.cs" />
-    <Compile Include="Helpers\TextPartTypeEnum.cs" />
-    <Compile Include="Notification\IConversationNotificationViewModel.cs" />
-    <Compile Include="Presenters\ActivityPresenter.cs" />
-    <Compile Include="ActivityList\ActivityListViewModel.cs" />
-    <Compile Include="Models\ActivityTypeEnum.cs" />
-    <Compile Include="Activity\ActivityViewModel.cs" />
-    <Compile Include="Activity\IActivityViewModel.cs" />
-    <Compile Include="Models\PhoneCall.cs" />
-    <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
+    <Compile Include="Framework\Helpers\ExternalProcessHelper.cs" />
+    <Compile Include="Framework\Helpers\NameParser.cs" />
+    <Compile Include="Framework\Helpers\TextParser.cs" />
+    <Compile Include="Framework\Helpers\TextPartTypeEnum.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IConversationNotificationViewModel.cs" />
+    <Compile Include="Framework\Models\ActivityModel.cs" />
+    <Compile Include="Activities\ActivityList\ActivityListViewModel.cs" />
+    <Compile Include="Activities\ActivityList\Activity\ActivityViewModel.cs" />
+    <Compile Include="Activities\ActivityList\Activity\IActivityViewModel.cs" />
+    <Compile Include="Framework\Entities\PhoneCallEntity.cs" />
+    <Compile Include="Activities\ActivityList\Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controls\ExpandableTextBlock.cs" />
-    <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
-    <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
-    <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
-    <Compile Include="EventAggregatorMessages\RetryMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowCongratulationsMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
-    <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
-    <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
-    <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
-    <Compile Include="ExtensionMethods\ConfigurationContainerExtensions.cs" />
-    <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ActivationFailedMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\GetTokenFromUserMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\RetryMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ShowAndroidInstallGuideMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ShowCongratulationsMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ShowConnectionTroubleshooterMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ShowCreateClippingMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\TokenRequestResultMessage.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
+    <Compile Include="Framework\ExtensionMethods\ConfigurationContainerExtensions.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
     <Compile Include="Framework\Commands\CancelCommandEventArgs.cs" />
     <Compile Include="Framework\Commands\Command.cs" />
@@ -435,264 +414,251 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
-    <Compile Include="Models\ClippingModel.cs" />
-    <Compile Include="Models\SmsMessage.cs" />
-    <Compile Include="Models\SourceType.cs" />
-    <Compile Include="Models\UserContactInfo.cs" />
-    <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
-    <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationTypeEnum.cs" />
-    <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Presenters\IContactInfoPresenter.cs" />
+    <Compile Include="Framework\Entities\ClippingEntity.cs" />
+    <Compile Include="Framework\Entities\SmsMessageEntity.cs" />
+    <Compile Include="Framework\Entities\SourceType.cs" />
+    <Compile Include="Framework\Entities\UserEntity.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\ConversationNotificationViewModelBase.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="Framework\Models\ContactModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Properties\VersionInfo.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationSequence.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationSequenceProvider.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippings.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\EnsureEncryptionKeys.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveUser.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\PublishMessageStepBase.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForClippingBase.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForLocalClipping.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
-    <Compile Include="Services\Providers\ApplicationVersionProvider.cs" />
-    <Compile Include="Services\Commands\CommandService.cs" />
-    <Compile Include="Services\ConnectivitySupervisor.cs" />
-    <Compile Include="Services\ExceptionReporters\BugFreakExceptionReporter.cs" />
-    <Compile Include="Services\EntitySupervisor.cs" />
-    <Compile Include="Services\Providers\IApplicationVersionProvider.cs" />
-    <Compile Include="Services\IConnectivitySupervisor.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IProxyConfigurationDetector.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SocksProxyConfigurationDetector.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowConnectionTroubleshooter.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SynchronousStepBase.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SystemWebProxyConfigurationDetector.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
-    <Compile Include="Services\ConfigurationService.cs" />
-    <Compile Include="Services\ActivationServiceData\IActivationSequenceProvider.cs" />
-    <Compile Include="Services\IEntitySupervisor.cs" />
-    <Compile Include="Services\Providers\ILocalInstallerVersionProvider.cs" />
-    <Compile Include="Services\INetworkService.cs" />
-    <Compile Include="Services\IProcessHelper.cs" />
-    <Compile Include="Services\Providers\IRemoteInstallerVersionProvider.cs" />
-    <Compile Include="Services\ISessionManager.cs" />
-    <Compile Include="Services\ISystemIdleService.cs" />
-    <Compile Include="Services\IUiRefreshService.cs" />
-    <Compile Include="Services\IUpdateManager.cs" />
-    <Compile Include="Services\IUpdaterService.cs" />
-    <Compile Include="Services\IUrlShortenerService.cs" />
-    <Compile Include="Services\Providers\LocalInstallerVersionProvider.cs" />
-    <Compile Include="Services\Monitors\Credentials\CredentialsMonitor.cs" />
-    <Compile Include="Services\Monitors\Credentials\ICredentialsMonitor.cs" />
-    <Compile Include="Services\Monitors\Internet\InternetConnectivityStatusEnum.cs" />
-    <Compile Include="Services\Monitors\Power\IPowerMonitor.cs" />
-    <Compile Include="Services\Monitors\Power\PowerMonitor.cs" />
-    <Compile Include="Services\Monitors\ProxyConfiguration\IProxyConfigurationMonitor.cs" />
-    <Compile Include="Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitor.cs" />
-    <Compile Include="Services\Monitors\SettingsMonitor\ISettingsMonitor.cs" />
-    <Compile Include="Services\Monitors\SettingsMonitor\SettingsMonitorBase.cs" />
-    <Compile Include="Services\Monitors\User\IUserMonitor.cs" />
-    <Compile Include="Services\Monitors\User\UserEventTypeEnum.cs" />
-    <Compile Include="Services\Monitors\User\UserMonitor.cs" />
-    <Compile Include="Services\NAppUpdateManager.cs" />
-    <Compile Include="Services\NetworkService.cs" />
-    <Compile Include="Services\Providers\RemoteInstallerVersionProvider.cs" />
-    <Compile Include="Services\Repositories\PhoneCallRepository.cs" />
-    <Compile Include="Services\Repositories\ClippingRepository.cs" />
-    <Compile Include="Services\Repositories\IPhoneCallRepository.cs" />
-    <Compile Include="Services\Repositories\IClippingRepository.cs" />
-    <Compile Include="Services\Repositories\IContactRepository.cs" />
-    <Compile Include="Services\Repositories\ContactRepository.cs" />
-    <Compile Include="Services\Repositories\ISmsMessageRepository.cs" />
-    <Compile Include="Services\Repositories\InMemoryRepository.cs" />
-    <Compile Include="Services\Repositories\IRepository.cs" />
-    <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
-    <Compile Include="Services\Repositories\SmsMessageRepository.cs" />
-    <Compile Include="Services\Repositories\RepositoryObservableExtensionMethods.cs" />
-    <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
-    <Compile Include="Services\Repositories\RepositoryOperation.cs" />
-    <Compile Include="Services\Repositories\UpdateInfoRepository.cs" />
-    <Compile Include="Services\UIRefreshService.cs" />
-    <Compile Include="Services\UpdateFileInfo.cs" />
-    <Compile Include="Services\UpdateInfo.cs" />
-    <Compile Include="Services\UrlShortenerService.cs" />
-    <Compile Include="Services\WpfDispatcherProvider.cs" />
-    <Compile Include="ActivityList\IActivityListViewModel.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationSequence.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationSequenceProvider.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippings.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\EnsureEncryptionKeys.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetAndroidInstallLink.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetDeviceId.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetUser.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\RegisterDevice.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\SaveUser.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ShowCongratulations.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\NumberOfDevicesEnum.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ShowCreateClipping.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\PublishMessageStepBase.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\WaitForClippingBase.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\WaitForCloudClipping.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\WaitForLocalClipping.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\WaitForSecondDevice.cs" />
+    <Compile Include="Framework\Services\Providers\ApplicationVersionProvider.cs" />
+    <Compile Include="Framework\Services\Commands\CommandService.cs" />
+    <Compile Include="Framework\Services\ConnectivitySupervisor.cs" />
+    <Compile Include="Framework\Services\ExceptionReporters\BugFreakExceptionReporter.cs" />
+    <Compile Include="Framework\Services\EntitySupervisor.cs" />
+    <Compile Include="Framework\Services\Providers\IApplicationVersionProvider.cs" />
+    <Compile Include="Framework\Services\IConnectivitySupervisor.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\FixProxyConfiguration.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\HttpProxyConfigurationDetector.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\IProxyConfigurationDetector.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SocksProxyConfigurationDetector.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ShowConnectionTroubleshooter.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\SynchronousStepBase.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ProxyDetection\SystemWebProxyConfigurationDetector.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\VerifyConnectivity.cs" />
+    <Compile Include="Framework\Services\ConfigurationService.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\IActivationSequenceProvider.cs" />
+    <Compile Include="Framework\Services\IEntitySupervisor.cs" />
+    <Compile Include="Framework\Services\Providers\ILocalInstallerVersionProvider.cs" />
+    <Compile Include="Framework\Services\INetworkService.cs" />
+    <Compile Include="Framework\Services\IProcessHelper.cs" />
+    <Compile Include="Framework\Services\Providers\IRemoteInstallerVersionProvider.cs" />
+    <Compile Include="Framework\Services\ISessionManager.cs" />
+    <Compile Include="Framework\Services\ISystemIdleService.cs" />
+    <Compile Include="Framework\Services\IUpdateManager.cs" />
+    <Compile Include="Framework\Services\IUpdaterService.cs" />
+    <Compile Include="Framework\Services\IUrlShortenerService.cs" />
+    <Compile Include="Framework\Services\Providers\LocalInstallerVersionProvider.cs" />
+    <Compile Include="Framework\Services\Monitors\Credentials\CredentialsMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\Credentials\ICredentialsMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\Internet\InternetConnectivityStatusEnum.cs" />
+    <Compile Include="Framework\Services\Monitors\Power\IPowerMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\Power\PowerMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\ProxyConfiguration\IProxyConfigurationMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\ProxyConfiguration\ProxyConfigurationMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\SettingsMonitor\ISettingsMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\SettingsMonitor\SettingsMonitorBase.cs" />
+    <Compile Include="Framework\Services\Monitors\User\IUserMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\User\UserEventTypeEnum.cs" />
+    <Compile Include="Framework\Services\Monitors\User\UserMonitor.cs" />
+    <Compile Include="Framework\Services\NAppUpdateManager.cs" />
+    <Compile Include="Framework\Services\NetworkService.cs" />
+    <Compile Include="Framework\Services\Providers\RemoteInstallerVersionProvider.cs" />
+    <Compile Include="Framework\Services\Repositories\PhoneCallRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\ClippingRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IPhoneCallRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IClippingRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IContactRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\ContactRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\ISmsMessageRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\InMemoryRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\IUpdateRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\SmsMessageRepository.cs" />
+    <Compile Include="Framework\Services\Repositories\RepositoryObservableExtensionMethods.cs" />
+    <Compile Include="Framework\Services\Repositories\RepositoryMethodEnum.cs" />
+    <Compile Include="Framework\Services\Repositories\RepositoryOperation.cs" />
+    <Compile Include="Framework\Services\Repositories\UpdateRepository.cs" />
+    <Compile Include="Framework\Services\UpdateFileInfo.cs" />
+    <Compile Include="Framework\Entities\UpdateEntity.cs" />
+    <Compile Include="Framework\Services\UrlShortenerService.cs" />
+    <Compile Include="Framework\Services\WpfDispatcherProvider.cs" />
+    <Compile Include="Activities\ActivityList\IActivityListViewModel.cs" />
     <Compile Include="Shell\SessionInfo\ISessionInfoViewModel.cs" />
     <Compile Include="Shell\SessionInfo\SessionInfoView.xaml.cs">
       <DependentUpon>SessionInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
+    <Compile Include="Shell\Settings\SettingsItemViewModel.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
-    <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
+    <Compile Include="Clippings\Menu\ClippingsItemViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\GroupMessagesMainMenuEntryView.xaml.cs">
-      <DependentUpon>GroupMessagesMainMenuEntryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Workspaces\GroupMessagesMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\GroupMessagesWorkspace.cs" />
-    <Compile Include="Workspaces\IGroupMessagesMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\IGroupMessagesWorkspace.cs" />
-    <Compile Include="Workspaces\MessageMenuEntryViewModel.cs" />
+    <Compile Include="Conversations\Menu\NewMessageItemViewModel.cs" />
+    <Compile Include="Conversations\NewMessageWorkspace.cs" />
+    <Compile Include="Conversations\INewMessageWorkspace.cs" />
+    <Compile Include="Conversations\Menu\PeopleItemViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
-    <Compile Include="Services\SystemIdleService.cs" />
-    <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
-    <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
-    <Compile Include="Services\UpdaterService.cs" />
-    <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
-    <Compile Include="Workspaces\ActivityMenuEntryViewModel.cs" />
-    <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
-    <Compile Include="Workspaces\ActivityWorkspace.cs" />
-    <Compile Include="Workspaces\ClippingWorkspace.cs" />
-    <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
-    <Compile Include="Workspaces\IActivityWorkspace.cs" />
-    <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IPeopleWorkspace.cs" />
-    <Compile Include="Workspaces\PeopleWorkspace.cs" />
-    <Page Include="ClippingList\ClippingListView.xaml">
+    <Compile Include="Framework\Services\SystemIdleService.cs" />
+    <Compile Include="Framework\Services\Monitors\Power\ISystemPowerHelper.cs" />
+    <Compile Include="Framework\Services\Monitors\Power\SystemPowerHelper.cs" />
+    <Compile Include="Framework\Services\UpdaterService.cs" />
+    <Compile Include="Conversations\Conversation\SMSComposer\ISMSComposerViewModel.cs" />
+    <Compile Include="Activities\Menu\ActivityItemViewModel.cs" />
+    <Compile Include="Conversations\Conversation\SMSComposer\SMSComposerViewModel.cs" />
+    <Compile Include="Activities\ActivityWorkspace.cs" />
+    <Compile Include="Clippings\ClippingsWorkspace.cs" />
+    <Compile Include="Activities\IActivityWorkspace.cs" />
+    <Compile Include="Clippings\IClippingsWorkspace.cs" />
+    <Compile Include="Conversations\IConversationWorkspace.cs" />
+    <Compile Include="Conversations\ConversationWorkspace.cs" />
+    <Page Include="Clippings\ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingView.xaml">
+    <Page Include="Clippings\ClippingList\Clipping\ClippingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactInfo\ContactInfo\Normal.xaml">
+    <Page Include="Conversations\ContactList\Contact\Contact\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactInfo\ContactInfo\Selected.xaml">
+    <Page Include="Conversations\ContactList\Contact\Contact\Selected.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactList\Empty.xaml">
+    <Page Include="Conversations\ContactList\ContactList\Empty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ContactList\ContactList\EmptyFilter.xaml">
+    <Page Include="Conversations\ContactList\ContactList\EmptyFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactList\NotEmpty.xaml">
+    <Page Include="Conversations\ContactList\ContactList\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Group.xaml">
+    <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorkspaceDetails\WorkspaceDetailsContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\WorkspaceDetailsHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Deleted.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeader\Normal.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\PhoneCall\PhoneCallView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationContainerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Calling.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Deleted.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\InitiatingCall.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Normal.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Conversation\Message\MessageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Version\VersionDetailsContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceDetails\Version\VersionDetailsHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityList\ActivityListView.xaml">
+    <Page Include="Conversations\Conversation\ConversationHeader\Group.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityList\ActivityList\Empty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityList\ActivityList\NotEmpty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Activity\ActivityView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Activity\Activity\Call.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Activity\Activity\Message.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Activity\Activity\Clipping.xaml">
+    <Page Include="Clippings\CilppingDetails\ClippingDetailsHeader\Deleted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Activity\Activity\Version.xaml">
+    <Page Include="Clippings\CilppingDetails\ClippingDetailsHeader\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\PhoneCall\PhoneCallView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Clippings\CilppingDetails\ClippingDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Clippings\CilppingDetails\ClippingDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationHeader\Calling.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationHeader\Deleted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationHeader\InitiatingCall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\ConversationHeader\Normal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Conversations\Conversation\Message\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activities\ActivityDetails\Version\VersionDetailsContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activities\ActivityDetails\Version\VersionDetailsHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activities\ActivityList\ActivityListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\ActivityList\Empty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\ActivityList\NotEmpty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\Activity\ActivityView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\Activity\Activity\Call.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\Activity\Activity\Message.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Activities\ActivityList\Activity\Activity\Clipping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Activities\ActivityList\Activity\Activity\Version.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -700,79 +666,77 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="DataProviders\ArgumentsDataProvider.cs" />
-    <Compile Include="DataProviders\EnvironmentArgumentsProvider.cs" />
-    <Compile Include="DataProviders\IArgumentsProvider.cs" />
+    <Compile Include="Framework\DataProviders\ArgumentsDataProvider.cs" />
+    <Compile Include="Framework\DataProviders\EnvironmentArgumentsProvider.cs" />
+    <Compile Include="Framework\DataProviders\IArgumentsProvider.cs" />
     <Compile Include="Framework\Converters\LimitedStringConverter.cs" />
     <Compile Include="Framework\Behaviours\BalloonNotificationInfo.cs" />
     <Compile Include="Framework\Behaviours\ShowBubbleNotificationBehavior.cs" />
     <Compile Include="Loading\ActivationFailed\IActivationFailedViewModel.cs" />
     <Compile Include="Loading\ActivationFailed\ActivationFailedViewModel.cs" />
-    <Compile Include="NotificationList\INotificationViewModelFactory.cs" />
-    <Compile Include="NotificationList\NotificationViewModelFactory.cs" />
+    <Compile Include="Notifications\NotificationList\INotificationViewModelFactory.cs" />
+    <Compile Include="Notifications\NotificationList\NotificationViewModelFactory.cs" />
     <Compile Include="Loading\AndroidInstallGuide\AndroidInstallGuideViewModel.cs" />
     <Compile Include="Loading\AndroidInstallGuide\IAndroidInstallGuideViewModel.cs" />
-    <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
-    <Compile Include="Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
-    <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
-    <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
-    <Compile Include="Notification\ViewModelStatusEnum.cs" />
-    <Compile Include="Services\WebProxyFactory.cs" />
-    <Compile Include="Services\WindowHandleProvider.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\ViewModelStatusEnum.cs" />
+    <Compile Include="Framework\Services\WebProxyFactory.cs" />
+    <Compile Include="Framework\Services\WindowHandleProvider.cs" />
     <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
     <Compile Include="SingleInstanceApp.cs" />
-    <Compile Include="SMSComposer\SmsComposerStatusEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
-    <Compile Include="Services\Monitors\Internet\ConnectivityHelper.cs" />
-    <Compile Include="Services\Monitors\Internet\InternetConnectivityMonitor.cs" />
-    <Compile Include="Services\Monitors\Internet\IConnectivityHelper.cs" />
-    <Compile Include="Services\Monitors\Internet\IInternetConnectivityMonitor.cs" />
-    <Compile Include="Services\SessionManager.cs" />
-    <Compile Include="DataProviders\DPAPIConfigurationContainer.cs" />
-    <Compile Include="Dialog\DialogViewModel.cs" />
-    <Compile Include="Dialog\IDialogViewModel.cs" />
-    <Compile Include="EventAggregatorMessages\ShowShellMessage.cs" />
-    <Compile Include="Framework\ApplicationService.cs" />
+    <Compile Include="Conversations\Conversation\SMSComposer\SmsComposerStatusEnum.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ShowAndroidInstallGuide.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromArguments.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\VerifyNumberOfDevices.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\StartOmniService.cs" />
+    <Compile Include="Framework\Services\Monitors\Internet\ConnectivityHelper.cs" />
+    <Compile Include="Framework\Services\Monitors\Internet\InternetConnectivityMonitor.cs" />
+    <Compile Include="Framework\Services\Monitors\Internet\IConnectivityHelper.cs" />
+    <Compile Include="Framework\Services\Monitors\Internet\IInternetConnectivityMonitor.cs" />
+    <Compile Include="Framework\Services\SessionManager.cs" />
+    <Compile Include="Framework\DataProviders\DPAPIConfigurationContainer.cs" />
+    <Compile Include="Framework\EventAggregatorMessages\ShowShellMessage.cs" />
+    <Compile Include="Framework\Services\ApplicationService.cs" />
     <Compile Include="Framework\Behaviours\AutoFollowLinkBehavior.cs" />
     <Compile Include="Framework\Behaviours\FocusBehavior.cs" />
     <Compile Include="Framework\ViewLocator.cs" />
     <Compile Include="Loading\ILoadingViewModel.cs" />
     <Compile Include="Loading\LoadingViewModel.cs" />
     <Compile Include="Loading\LoadingViewModelStateEnum.cs" />
-    <Compile Include="NotificationList\INotificationListViewModel.cs" />
-    <Compile Include="NotificationList\NotificationListViewModel.cs" />
-    <Compile Include="Notification\INotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationViewModelBase.cs" />
-    <Compile Include="Services\ActivationService.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Failed.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUser.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifyAuthSettings.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
-    <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
-    <Compile Include="Services\ActivationServiceData\DependencyParameter.cs" />
-    <Compile Include="Services\ActivationServiceData\IStepFactory.cs" />
-    <Compile Include="Services\ActivationServiceData\StepFactory.cs" />
-    <Compile Include="Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
-    <Compile Include="Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
-    <Compile Include="Services\ActivationServiceData\Transitions\TransitionId.cs" />
+    <Compile Include="Notifications\NotificationList\INotificationListViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\NotificationListViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\INotificationViewModel.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\NotificationViewModelBase.cs" />
+    <Compile Include="Framework\Services\ActivationService.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\Failed.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\Finished.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfiguration.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetRemoteConfigurationStepStateEnum.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\GetActivationCodeFromUser.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\IActivationStep.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\IExecuteResult.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\VerifyAuthSettings.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\SaveConfiguration.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\SimpleStepStateEnum.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\ActivationServiceSteps\VoidStep.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\DependencyParameter.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\IStepFactory.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\StepFactory.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\Transitions\GenericTransitionId.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\Transitions\TransitionCollection.cs" />
+    <Compile Include="Framework\Services\ActivationServiceData\Transitions\TransitionId.cs" />
     <Compile Include="Framework\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="OmnipasteModule.cs" />
-    <Compile Include="Services\IActivationService.cs" />
+    <Compile Include="Framework\Services\IActivationService.cs" />
     <Compile Include="Shell\ContextMenu\ContextMenuViewModel.cs" />
     <Compile Include="Shell\ContextMenu\IContextMenuViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
@@ -781,11 +745,11 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="ContactList\ContactInfo\ContactInfoView.xaml">
+    <Page Include="Conversations\ContactList\Contact\ContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactListView.xaml">
+    <Page Include="Conversations\ContactList\ContactListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -829,27 +793,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
+    <Page Include="Notifications\NotificationList\Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\HyperlinkNotification\HyperlinkNotificationView.xaml">
+    <Page Include="Notifications\NotificationList\Notification\HyperlinkNotification\HyperlinkNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
+    <Page Include="Notifications\NotificationList\Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\CheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ContentControl.xaml">
+    <Page Include="Notifications\NotificationList\Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -857,43 +813,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Fonts.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Image.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\ItemsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Border.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\NumericUpDown.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\PasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\RadioButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ScrollViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ToggleSwitch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -905,51 +825,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\TextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Submenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Shapes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Buttons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\TextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Effects.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\Converters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Labels.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\TransitioningContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -965,11 +845,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SMSComposer\SMSComposerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialog\DialogView.xaml">
+    <Page Include="Conversations\Conversation\SMSComposer\SMSComposerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -985,7 +861,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NotificationList\NotificationListView.xaml">
+    <Page Include="Notifications\NotificationList\NotificationListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1013,15 +889,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ExpandableTextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Workspaces\DetailsConductorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Workspaces\GroupMessagesMainMenuEntryView.xaml">
+    <Page Include="Conversations\Menu\NewMessageItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1048,9 +916,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="Resources\Entypo.ttf" />
-    <Resource Include="Resources\segoeuil.ttf" />
-    <Resource Include="Resources\segoeuisl.ttf" />
-    <Resource Include="Resources\seguisb.ttf" />
     <Resource Include="Icon.ico" />
     <Resource Include="Connected.ico" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
@@ -1080,10 +945,14 @@
     <Resource Include="Disconnected.ico" />
     <Resource Include="Resources\WindowsIcons-license.txt" />
     <Resource Include="Resources\Entypo-license.txt" />
-    <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
+    <None Include="Settings\debug.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Settings\debug.config.example" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="Settings\release.config" Condition=" $(Configuration) == 'release' OR $(Configuration) == 'Release'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -1156,9 +1025,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WorkspaceDetails\Conversation\Call\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <StartAction>Program</StartAction>

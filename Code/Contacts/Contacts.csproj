@@ -87,9 +87,9 @@
     <Compile Include="Handlers\ContactsUpdatedHandler.cs" />
     <Compile Include="Handlers\IContactCreatedHandler.cs" />
     <Compile Include="Handlers\IContactsUpdatedHandler.cs" />
-    <Compile Include="Models\ContactDto.cs" />
-    <Compile Include="Models\ContactList.cs" />
-    <Compile Include="Models\PhoneNumberDto.cs" />
+    <Compile Include="Dto\ContactDto.cs" />
+    <Compile Include="Dto\ContactList.cs" />
+    <Compile Include="Dto\PhoneNumberDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefitStubs.cs" />
   </ItemGroup>

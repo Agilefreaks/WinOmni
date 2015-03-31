@@ -5,7 +5,7 @@
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Interactivity;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Helpers;
 
     public class TextProcessingBehavior : Behavior<RichTextBox>
     {

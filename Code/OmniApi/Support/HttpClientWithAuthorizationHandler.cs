@@ -7,8 +7,8 @@
     using System.Reactive.Threading.Tasks;
     using System.Threading;
     using System.Threading.Tasks;
+    using OmniApi.Dto;
     using OmniCommon.Helpers;
-    using OmniApi.Models;
     using OmniApi.Resources.v1;
 
     public class HttpClientWithAuthorizationHandler : DelegatingHandler
@@ -16,16 +16,16 @@
         #region Fields
 
         private readonly IOAuth2 _oAuth2;
-        private readonly Token _token;
+        private readonly TokenDto _tokenDto;
         private readonly IHttpResponseMessageHandler _responseMessageHandler;
 
         #endregion
 
         #region Constructors and Destructors
-        public HttpClientWithAuthorizationHandler(IOAuth2 oAuth2, Token token, IHttpResponseMessageHandler responseMessageHandler)
+        public HttpClientWithAuthorizationHandler(IOAuth2 oAuth2, TokenDto tokenDto, IHttpResponseMessageHandler responseMessageHandler)
         {
             _oAuth2 = oAuth2;
-            _token = token;
+            _tokenDto = tokenDto;
             _responseMessageHandler = responseMessageHandler;
         }
 
@@ -54,7 +54,7 @@
 
         protected IObservable<HttpResponseMessage> RefreshTokenAndRetryRequest(IObservable<HttpResponseMessage> requestObservable)
         {
-            return _oAuth2.Refresh(_token.RefreshToken)
+            return _oAuth2.Refresh(_tokenDto.RefreshToken)
                 .Select(_ => requestObservable)
                 .Switch()
                 .Catch<HttpResponseMessage, Exception>(exception =>

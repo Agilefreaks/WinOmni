@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:p="clr-namespace:Omnipaste.Properties"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:converters="clr-namespace:OmniUI.Converters;assembly=OmniUI"
+             xmlns:converters="clr-namespace:OmniUI.Framework.Converters;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>

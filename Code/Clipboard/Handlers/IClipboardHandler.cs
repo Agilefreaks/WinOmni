@@ -1,10 +1,10 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniCommon.Interfaces;
 
-    public interface IClipboardHandler : IHandler, IObservable<Clipping>
+    public interface IClipboardHandler : IHandler, IObservable<ClippingDto>
     {
     }
 }

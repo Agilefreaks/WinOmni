@@ -66,9 +66,9 @@
   <ItemGroup>
     <Compile Include="Handlers\IPhoneCallReceivedHandler.cs" />
     <Compile Include="Handlers\PhoneCallReceivedHandler.cs" />
-    <Compile Include="Models\PhoneCallDto.cs" />
-    <Compile Include="Models\PhoneCallState.cs" />
-    <Compile Include="Models\PhoneCallType.cs" />
+    <Compile Include="Dto\PhoneCallDto.cs" />
+    <Compile Include="Dto\PhoneCallState.cs" />
+    <Compile Include="Dto\PhoneCallType.cs" />
     <Compile Include="PhoneCallsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefitStubs.cs" />

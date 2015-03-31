@@ -1,8 +1,8 @@
 ﻿namespace OmnipasteTests.Services.Repositories
 {
     using NUnit.Framework;
-    using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
+    using Omnipaste.Framework.Services.Repositories;
+    using OmnipasteTests.Framework.Helpers;
 
     [TestFixture]
     public class InMemoryRepositoryTests : BaseRepositoryTests

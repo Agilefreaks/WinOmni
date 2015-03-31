@@ -3,9 +3,9 @@
     using System;
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Omnipaste.Services.ActivationServiceData.Transitions;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.Transitions;
 
     [TestFixture]
     public class TransitionCollectionTests

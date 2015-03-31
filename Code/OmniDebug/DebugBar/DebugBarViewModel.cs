@@ -4,7 +4,7 @@
     using MahApps.Metro.Controls;
     using OmniUI.Flyout;
 
-    public class DebugBarViewModel : FlyoutBaseViewModel, IDebugBarViewModel
+    public class DebugBarViewModel : FlyoutViewModelBase, IDebugBarViewModel
     {
         #region Constructors and Destructors
 

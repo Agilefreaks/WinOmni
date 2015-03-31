@@ -115,11 +115,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\RsaCryptoServiceTests.cs" />
-    <Compile Include="Models\UserTests.cs" />
+    <Compile Include="Dto\UserDtoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefitStubs.cs" />
     <Compile Include="Resources\ITestApi.cs" />
-    <Compile Include="Resources\TestResource.cs" />
     <Compile Include="Resources\ResourceTest.cs" />
     <Compile Include="Resources\v1\DevicesTests.cs" />
     <Compile Include="Support\Converters\EncryptionConverterTests.cs" />

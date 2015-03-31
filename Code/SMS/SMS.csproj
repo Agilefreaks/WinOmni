@@ -82,9 +82,9 @@
   <ItemGroup>
     <Compile Include="Handlers\ISmsMessageCreatedHandler.cs" />
     <Compile Include="Handlers\SmsMessageCreatedHandler.cs" />
-    <Compile Include="Models\SmsMessageDto.cs" />
-    <Compile Include="Models\SmsMessageState.cs" />
-    <Compile Include="Models\SmsMessageType.cs" />
+    <Compile Include="Dto\SmsMessageDto.cs" />
+    <Compile Include="Dto\SmsMessageState.cs" />
+    <Compile Include="Dto\SmsMessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefitStubs.cs" />
     <Compile Include="Resources\v1\ISMSMessages.cs" />

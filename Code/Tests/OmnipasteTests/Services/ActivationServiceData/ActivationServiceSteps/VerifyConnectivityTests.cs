@@ -7,8 +7,8 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class VerifyConnectivityTests

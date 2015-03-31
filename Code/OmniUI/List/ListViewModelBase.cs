@@ -11,7 +11,7 @@ namespace OmniUI.List
     using OmniUI.Details;
     using OmniUI.Framework;
 
-    public abstract class ListViewModelBase<TPresenter, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
+    public abstract class ListViewModelBase<TModel, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                   IListViewModel<TViewModel>
         where TViewModel : class, IDetailsViewModel
     {
@@ -102,13 +102,13 @@ namespace OmniUI.List
 
         #region Methods
 
-        protected virtual void ChangeItem(TPresenter presenter)
+        protected virtual void ChangeItem(TModel model)
         {
-            var viewModel = ChangeViewModel(presenter);
+            var viewModel = ChangeViewModel(model);
             ActivateItem(viewModel);
         }
 
-        protected void RemoveItem(TPresenter entity)
+        protected void RemoveItem(TModel entity)
         {
             var viewModel = GetViewModel(entity);
             if (viewModel == null)
@@ -123,7 +123,7 @@ namespace OmniUI.List
             return true;
         }
 
-        protected abstract TViewModel ChangeViewModel(TPresenter model);
+        protected abstract TViewModel ChangeViewModel(TModel model);
 
         protected override TViewModel EnsureItem(TViewModel newItem)
         {
@@ -148,22 +148,22 @@ namespace OmniUI.List
             return base.EnsureItem(newItem);
         }
 
-        protected virtual IObservable<TPresenter> GetFetchItemsObservable()
+        protected virtual IObservable<TModel> GetFetchItemsObservable()
         {
-            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
         }
 
-        protected virtual IObservable<TPresenter> GetItemChangedObservable()
+        protected virtual IObservable<TModel> GetItemChangedObservable()
         {
-            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
         }
 
-        protected virtual IObservable<TPresenter> GetItemRemovedObservable()
+        protected virtual IObservable<TModel> GetItemRemovedObservable()
         {
-            return Observable.Empty<TPresenter>(SchedulerProvider.Default);
+            return Observable.Empty<TModel>(SchedulerProvider.Default);
         }
 
-        protected TViewModel GetViewModel(TPresenter entity)
+        protected TViewModel GetViewModel(TModel entity)
         {
             return Items.FirstOrDefault(vm => Equals(vm.Model, entity));
         }

@@ -10,8 +10,8 @@
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class ContactRepositoryTests
@@ -40,43 +40,43 @@
         [Test]
         public void GetByContactIdOrPhoneNumber_WhenThereIsAContactWithContactId_ReturnsIt()
         {
-            var contact = new ContactInfo { ContactId = 42 };
+            var contact = new ContactEntity { ContactId = 42 };
             var observable = _subject.Save(contact).Select(_ => _subject.GetByContactIdOrPhoneNumber(42, String.Empty)).Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value;
-            contactInfo.ContactId.Should().Be(42);
+            var contactEntity = result.Messages.First().Value.Value;
+            contactEntity.ContactId.Should().Be(42);
         }
 
         [Test]
         public void GetByContactIdOrPhoneNumber_WhenThereIsAContactWithPhoneNumber_ReturnsIt()
         {
-            var contact = new ContactInfo().AddPhoneNumber("123");
+            var contact = new ContactEntity().AddPhoneNumber("123");
             var observable = _subject.Save(contact).Select(_ => _subject.GetByContactIdOrPhoneNumber(null, "123")).Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value;
-            contactInfo.PhoneNumber.Should().Be("123");
+            var contactEntity = result.Messages.First().Value.Value;
+            contactEntity.PhoneNumber.Should().Be("123");
         }
 
         [Test]
-        public void CreateIfNone_WhenTheObservableReturnsAException_CreatesANewContactInfo()
+        public void CreateIfNone_WhenTheObservableReturnsAException_CreatesANewContact()
         {
             var observable = _subject.CreateIfNone(_subject.GetByContactIdOrPhoneNumber(42, "123"), c => c.AddPhoneNumber("123").SetContactId(42)).Select(_ => _subject.GetAll()).Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value.First();
-            contactInfo.PhoneNumber.Should().Be("123");
-            contactInfo.ContactId.Should().Be(42);
+            var contactEntity = result.Messages.First().Value.Value.First();
+            contactEntity.PhoneNumber.Should().Be("123");
+            contactEntity.ContactId.Should().Be(42);
         }
 
         [Test]
         public void GetByPhoneNumber_WhenContactExists_ReturnsContact()
         {
-            var contact1 = new ContactInfo
+            var contact1 = new ContactEntity
             {
                 UniqueId = "42",
                 PhoneNumbers =
@@ -89,7 +89,7 @@
                                                    }
                                            }
             };
-            var contact2 = new ContactInfo
+            var contact2 = new ContactEntity
             {
                 UniqueId = "1",
                 PhoneNumbers =
@@ -115,7 +115,7 @@
         [Test]
         public void GetByPhoneNumber_WhenCallPhoneNumberContainsPrefix_ReturnsCallForContact()
         {
-            var contact1 = new ContactInfo
+            var contact1 = new ContactEntity
                                {
                                    UniqueId = "42",
                                    PhoneNumbers =
@@ -128,7 +128,7 @@
                                                    }
                                            }
                                };
-            var contact2 = new ContactInfo
+            var contact2 = new ContactEntity
                                {
                                    UniqueId = "1",
                                    PhoneNumbers =
@@ -154,8 +154,8 @@
         [Test]
         public void Save_WillNotExpire()
         {
-            var testableObserver = _testScheduler.CreateObserver<ContactInfo>();
-            _testScheduler.Schedule(() => _subject.Save(new ContactInfo { UniqueId = "42" }));
+            var testableObserver = _testScheduler.CreateObserver<ContactEntity>();
+            _testScheduler.Schedule(() => _subject.Save(new ContactEntity { UniqueId = "42" }));
             _testScheduler.Schedule(new TimeSpan(0, 23, 59, 0), () => _subject.Get("42").Subscribe(testableObserver));
             _testScheduler.Schedule(new TimeSpan(1, 0, 0, 1), () => _subject.Get("42").Subscribe(testableObserver));
 

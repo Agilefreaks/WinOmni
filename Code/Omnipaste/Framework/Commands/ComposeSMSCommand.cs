@@ -7,13 +7,13 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
-    using Omnipaste.Presenters;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList.Contact;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
     using OmniUI.Framework.Commands;
-    using OmniUI.Workspace;
+    using OmniUI.Workspaces;
 
     public class ComposeSMSCommand : IObservableCommand<Unit>
     {
@@ -29,20 +29,20 @@
 
         #endregion
 
-        public ComposeSMSCommand(ContactInfoPresenter contactInfo)
+        public ComposeSMSCommand(ContactModel contact)
         {
-            ContactInfo = contactInfo;
+            Contact = contact;
         }
 
         #region Public Properties
 
-        public ContactInfoPresenter ContactInfo { get; private set; }
+        public ContactModel Contact { get; private set; }
 
         [Inject]
-        public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+        public IDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         [Inject]
-        public IPeopleWorkspace PeopleWorkspace { get; set; }
+        public IConversationWorkspace ConversationWorkspace { get; set; }
 
         [Inject]
         public IShellViewModel ShellViewModel { get; set; }
@@ -62,7 +62,7 @@
                 Observable.Start(ShellViewModel.Show, defaultScheduler)
                     .Select(_ => Observable.Start(ActivatePeopleWorkspace, dispatcherScheduler))
                     .Switch()
-                    .Select(_ => Observable.Start<IContactInfoViewModel>(GetCorrespondingViewModel, defaultScheduler))
+                    .Select(_ => Observable.Start<IContactViewModel>(GetCorrespondingViewModel, defaultScheduler))
                     .Switch()
                     .RetryAfter(RetryInterval, MaxRetryCount, defaultScheduler)
                     .Select(viewModel => Observable.Start(viewModel.ShowDetails, dispatcherScheduler))
@@ -75,14 +75,14 @@
 
         private void ActivatePeopleWorkspace()
         {
-            WorkspaceConductor.ActivateItem(PeopleWorkspace);
+            WorkspaceConductor.ActivateItem(ConversationWorkspace);
         }
 
-        private IContactInfoViewModel GetCorrespondingViewModel()
+        private IContactViewModel GetCorrespondingViewModel()
         {
             return
-                PeopleWorkspace.MasterScreen.GetChildren()
-                    .First(item => item.Model.BackingModel.UniqueId == ContactInfo.UniqueId);
+                ConversationWorkspace.MasterScreen.GetChildren()
+                    .First(item => item.Model.BackingEntity.UniqueId == Contact.UniqueId);
         }
 
         #endregion

@@ -7,8 +7,8 @@
     using NUnit.Framework;
     using OmniCommon.Models;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class FixProxyConfigurationTests

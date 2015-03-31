@@ -9,11 +9,11 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
     using Refit;
 
     [TestFixture]
@@ -60,7 +60,7 @@
         {
             const string DeviceId = "42";
             _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
-            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Return(new Device { Id = DeviceId }, _testScheduler));
+            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Return(new DeviceDto { Id = DeviceId }, _testScheduler));
 
             var testObserver = _testScheduler.Start(() => _subject.Execute());
             
@@ -75,7 +75,7 @@
             _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
             var createNotFoundException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.NotFound));
             createNotFoundException.Wait();
-            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<Device>(createNotFoundException.Result, _testScheduler));
+            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(createNotFoundException.Result, _testScheduler));
 
             var testObserver = _testScheduler.Start(() => _subject.Execute());
 
@@ -90,7 +90,7 @@
             _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
             var createNotFoundException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
             createNotFoundException.Wait();
-            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<Device>(createNotFoundException.Result, _testScheduler));
+            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(createNotFoundException.Result, _testScheduler));
 
             var testObserver = _testScheduler.Start(() => _subject.Execute());
 

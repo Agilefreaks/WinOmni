@@ -1,12 +1,12 @@
 ﻿namespace OmniApi.Resources.v1
 {
     using System;
-    using OmniApi.Models;
+    using OmniApi.Dto;
 
     public interface IOAuth2
     {
-        IObservable<Token> Create(string authorizationCode);
+        IObservable<TokenDto> Create(string authorizationCode);
 
-        IObservable<Token> Refresh(string refreshToken);
+        IObservable<TokenDto> Refresh(string refreshToken);
     }
 }

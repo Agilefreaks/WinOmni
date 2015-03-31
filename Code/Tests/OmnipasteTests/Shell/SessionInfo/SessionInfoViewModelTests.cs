@@ -1,21 +1,21 @@
 ﻿namespace OmnipasteTests.Shell.SessionInfo
 {
     using System;
+    using System.Reactive;
     using System.Windows.Media;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using Omni;
-    using OmniCommon.Interfaces;
     using OmniCommon;
     using OmniCommon.Helpers;
+    using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using OmniCommon.Settings;
-    using System.Reactive;
-    using Omnipaste.Presenters;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Shell.SessionInfo;
-    using OmniUI.Helpers;
+    using OmniUI.Framework.Helpers;
 
     [TestFixture]
     public class SessionInfoViewModelTests
@@ -39,7 +39,7 @@
             _mockConfigurationService = new Mock<IConfigurationService> { DefaultValue = DefaultValue.Mock };
             _mockConfigurationService.SetupGet(x => x.SettingsChangedObservable).Returns(_scheduler.CreateColdObservable<SettingsChangedData>());
             _mockResourceHelper = new Mock<IResourceHelper>();
-            _mockResourceHelper.Setup(x => x.GetByKey(ContactInfoPresenter.UserPlaceholderBrush))
+            _mockResourceHelper.Setup(x => x.GetByKey(ContactModel.UserPlaceholderBrush))
                 .Returns(new DrawingBrush(new DrawingGroup()));
             ResourceHelper.Instance = _mockResourceHelper.Object;
 
@@ -65,12 +65,12 @@
                         Notification.CreateOnCompleted<SettingsChangedData>()));
             _mockConfigurationService.SetupGet(x => x.SettingsChangedObservable).Returns(settingsChangedObservable);
             _subject = new SessionInfoViewModel(_mockOmniService.Object, _mockConfigurationService.Object);
-            var oldUserInfo = _subject.UserInfo;
+            var oldUserInfo = _subject.User;
 
             _scheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
 
-            _subject.UserInfo.Should().NotBe(oldUserInfo);
-            _subject.UserInfo.Identifier.Should().Be("Test Last");
+            _subject.User.Should().NotBe(oldUserInfo);
+            _subject.User.Identifier.Should().Be("Test Last");
         }
     }
 }

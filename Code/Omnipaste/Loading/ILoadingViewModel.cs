@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Loading
 {
     using Caliburn.Micro;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Loading.UserToken;
 
     public interface ILoadingViewModel : IConductActiveItem, IHandle<GetTokenFromUserMessage>, IHandle<TokenRequestResultMessage>,

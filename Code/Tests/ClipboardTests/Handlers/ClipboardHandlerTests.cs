@@ -2,8 +2,8 @@
 {
     using System.Reactive;
     using System.Reactive.Linq;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
-    using Clipboard.Models;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
@@ -60,9 +60,9 @@
         {
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
-            var clipping = new Clipping("test");
+            var clipping = new ClippingDto("test");
             var localClippings = testScheduler.CreateColdObservable(
-                new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(clipping)));
+                new Recorded<Notification<ClippingDto>>(100, Notification.CreateOnNext(clipping)));
             _mockLocalClipboardHandler.Setup(x => x.Clippings).Returns(localClippings);
 
             _subject.Start(Observable.Empty<OmniMessage>());
@@ -76,9 +76,9 @@
         {
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
-            var clipping = new Clipping("test");
+            var clipping = new ClippingDto("test");
             var omniClippings = testScheduler.CreateColdObservable(
-                new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(clipping)));
+                new Recorded<Notification<ClippingDto>>(100, Notification.CreateOnNext(clipping)));
             _mockOmniClipboardHandler.Setup(x => x.Clippings).Returns(omniClippings);
 
             _subject.Start(Observable.Empty<OmniMessage>());

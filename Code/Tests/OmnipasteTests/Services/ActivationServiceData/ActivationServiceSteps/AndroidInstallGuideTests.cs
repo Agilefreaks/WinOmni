@@ -6,9 +6,9 @@
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.EventAggregatorMessages;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class AndroidInstallGuideTests

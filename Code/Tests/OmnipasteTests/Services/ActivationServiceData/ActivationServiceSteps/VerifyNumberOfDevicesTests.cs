@@ -7,11 +7,11 @@
     using Moq;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class VerifyNumberOfDevicesTests
@@ -24,9 +24,9 @@
 
         private Mock<IDevices> _mockDevices;
 
-        private ITestableObservable<List<Device>> _testObservable;
+        private ITestableObservable<List<DeviceDto>> _testObservable;
 
-        private List<Device> _devices;
+        private List<DeviceDto> _devices;
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
@@ -37,13 +37,13 @@
             _mockDevices = kernel.GetMock<IDevices>();
             _mockConfigurationService = new Mock<IConfigurationService>();
             _subject = new VerifyNumberOfDevices (_mockDevices.Object, _mockConfigurationService.Object);
-            _devices = new List<Device> { new Device() };
+            _devices = new List<DeviceDto> { new DeviceDto() };
 
             _testScheduler = new TestScheduler();
             _testObserver = _testScheduler.CreateObserver<IExecuteResult>();
             _testObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<List<Device>>>(0, Notification.CreateOnNext(_devices)),
-                new Recorded<Notification<List<Device>>>(0, Notification.CreateOnCompleted<List<Device>>()));
+                new Recorded<Notification<List<DeviceDto>>>(0, Notification.CreateOnNext(_devices)),
+                new Recorded<Notification<List<DeviceDto>>>(0, Notification.CreateOnCompleted<List<DeviceDto>>()));
             _mockDevices.Setup(d => d.GetAll()).Returns(_testObservable);
         }
 
@@ -61,7 +61,7 @@
         [Test]
         public void Execute_WhenTwoDevicesExistAndIsNewDeviceIsFalse_CompletesWithStatusTwoOrMore()
         {
-            _devices.Add(new Device());
+            _devices.Add(new DeviceDto());
             _mockConfigurationService.SetupGet(x => x.IsNewDevice).Returns(false);
 
             _subject.Execute().Subscribe(_testObserver);
@@ -75,7 +75,7 @@
         [Test]
         public void Execute_WhenTwoDevicesExistAndIsNewDeviceIsTrue_CompletesWithStatusTwoAndThisOneIsNew()
         {
-            _devices.Add(new Device());
+            _devices.Add(new DeviceDto());
             _mockConfigurationService.SetupGet(x => x.IsNewDevice).Returns(true);
 
             _subject.Execute().Subscribe(_testObserver);
@@ -89,9 +89,9 @@
         [Test]
         public void Execute_WhenMoreThanTwoDevicesExists_CompletesWithStatusTwoOrMore()
         {
-            _devices.Add(new Device());
-            _devices.Add(new Device());
-            _subject.Parameter = new DependencyParameter { Value = new Device() };
+            _devices.Add(new DeviceDto());
+            _devices.Add(new DeviceDto());
+            _subject.Parameter = new DependencyParameter { Value = new DeviceDto() };
 
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();
@@ -105,7 +105,7 @@
         public void Execute_WhenNoDevicesExists_CompletesWithStatusZero()
         {
             _devices.Clear();
-            _subject.Parameter = new DependencyParameter { Value = new Device() };
+            _subject.Parameter = new DependencyParameter { Value = new DeviceDto() };
 
             _subject.Execute().Subscribe(_testObserver);
             _testScheduler.Start();

@@ -4,12 +4,12 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Loading;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.UserToken;
+    using OmniUI.Dialog;
 
     [TestFixture]
     public class LoadingViewModelTests

@@ -330,9 +330,6 @@
   <data name="Disconnected" xml:space="preserve">
     <value>Deconectat</value>
   </data>
-  <data name="Dismiss" xml:space="preserve">
-    <value>Îndepărtează</value>
-  </data>
   <data name="CongratulationsContent" xml:space="preserve">
     <value>Acum ai posibilitatea să faci copy și paste între dispozitivele tale. Încearcă asta acum copiind o bucată de text de pe dispozitivul Android.</value>
   </data>

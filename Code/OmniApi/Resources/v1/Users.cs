@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net.Http;
+    using OmniApi.Dto;
     using OmniCommon.Interfaces;
     using Refit;
 
@@ -12,7 +13,7 @@
         {
         }
 
-        public IObservable<Models.User> Get()
+        public IObservable<UserDto> Get()
         {
             return ResourceApi.Get(AccessToken);
         }

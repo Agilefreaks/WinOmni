@@ -7,8 +7,7 @@
     using Moq;
     using NUnit.Framework;
     using Omni;
-    using OmniApi.Models;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class StartOmniServiceTests

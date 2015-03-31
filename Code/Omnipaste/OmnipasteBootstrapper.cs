@@ -19,8 +19,8 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
-    using Omnipaste.Helpers;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Helpers;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Shell;
     using OmniSync;
     using OmniUI;
@@ -42,8 +42,6 @@
                 { "ShowInTaskbar", false },
                 { "Visibility", Visibility.Hidden }
             };
-
-        private readonly List<IStartable> _backgroundServices = new List<IStartable>();
 
         private IKernel _kernel;
 

@@ -7,7 +7,7 @@
     using Gma.QrCodeNet.Encoding;
     using Gma.QrCodeNet.Encoding.Windows.Render;
     using OmniCommon.Helpers;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Helpers;
 
     public class AndroidInstallGuideViewModel : Screen, IAndroidInstallGuideViewModel
     {

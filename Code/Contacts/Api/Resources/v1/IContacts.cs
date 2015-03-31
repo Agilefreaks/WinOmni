@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using global::Contacts.Dto;
     using global::Contacts.Models;
 
     public interface IContacts

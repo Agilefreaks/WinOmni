@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
     using Ninject;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Loading.ActivationFailed;
     using Omnipaste.Loading.AndroidInstallGuide;
     using Omnipaste.Loading.Congratulations;

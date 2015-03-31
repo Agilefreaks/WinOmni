@@ -3,8 +3,8 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniUI.Converters;
-    using OmniUI.Helpers;
+    using OmniUI.Framework.Converters;
+    using OmniUI.Framework.Helpers;
 
     [TestFixture]
     public class StringToResourceConverterTests

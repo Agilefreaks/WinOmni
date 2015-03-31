@@ -7,10 +7,10 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Omnipaste.Services.ActivationServiceData.Transitions;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.Transitions;
 
     [TestFixture]
     public class ActivationServiceTests

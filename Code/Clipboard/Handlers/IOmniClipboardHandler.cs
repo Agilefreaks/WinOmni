@@ -1,9 +1,9 @@
 ﻿namespace Clipboard.Handlers
 {
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniCommon.Handlers;
 
-    public interface IOmniClipboardHandler : IClipboard, IResourceHandler<Clipping>
+    public interface IOmniClipboardHandler : IClipboard, IResourceHandler<ClippingDto>
     {
     }
 }

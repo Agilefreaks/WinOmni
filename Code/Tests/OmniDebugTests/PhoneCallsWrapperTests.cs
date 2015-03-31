@@ -5,7 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniDebug.Services;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]

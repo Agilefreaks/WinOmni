@@ -7,9 +7,9 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.EventAggregatorMessages;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
     using Action = System.Action;
 
     [TestFixture]

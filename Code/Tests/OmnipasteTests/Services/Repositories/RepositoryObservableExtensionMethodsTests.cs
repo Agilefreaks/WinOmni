@@ -6,7 +6,7 @@
     using System.Reactive.Subjects;
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class RepositoryObservableExtensionMethodsTests

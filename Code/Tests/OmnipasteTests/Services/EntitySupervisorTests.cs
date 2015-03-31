@@ -3,18 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
-    using Clipboard.Models;
+    using Contacts.Dto;
     using Contacts.Handlers;
     using Contacts.Models;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Factories;
-    using Omnipaste.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Entities.Factories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
     using PhoneCalls.Handlers;
     using SMS.Handlers;
 
@@ -33,7 +34,7 @@
 
         private Mock<ISmsMessageCreatedHandler> _mockSmsMessageCreatedHandler;
 
-        private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
+        private Mock<IUpdateRepository> _mockUpdateRepository;
 
         private Mock<IUpdaterService> _mockUpdaterService;
 
@@ -59,7 +60,7 @@
             _mockSmsMessageCreatedHandler = new Mock<ISmsMessageCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockContactCreatedHandler = new Mock<IContactCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
-            _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateRepository = new Mock<IUpdateRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactsUpdatedHandler = new Mock<IContactsUpdatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockSmsMessageFactory = new Mock<ISmsMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
@@ -70,7 +71,7 @@
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
                                UpdaterService = _mockUpdaterService.Object,
-                               UpdateInfoRepository = _mockUpdateInfoRepository.Object,
+                               UpdateRepository = _mockUpdateRepository.Object,
                                PhoneCallReceivedHandler = _mockPhoneCallReceivedHandler.Object,
                                SmsMessageCreatedHandler = _mockSmsMessageCreatedHandler.Object,
                                ContactCreatedHandler = _mockContactCreatedHandler.Object,
@@ -91,37 +92,37 @@
         public void OnNewClipping_AfterStart_AlwayStoresClipping()
         {
             const string Id = "42";
-            var clipping = new Clipping { Id = Id };
+            var clipping = new ClippingDto { Id = Id };
             var clippingObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(clipping)));
-            _mockClipboardHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Clipping>>()))
-                .Returns<IObserver<Clipping>>(o => clippingObservable.Subscribe(o));
+                    new Recorded<Notification<ClippingDto>>(100, Notification.CreateOnNext(clipping)));
+            _mockClipboardHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<ClippingDto>>()))
+                .Returns<IObserver<ClippingDto>>(o => clippingObservable.Subscribe(o));
 
             _subject.Start();
             _testScheduler.Start(() => clippingObservable);
 
-            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingModel>(c => c.Id == Id)));
+            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingEntity>(c => c.Id == Id)));
         }
 
         [Test]
-        public void OnNewUpdateInfo_Always_SotresUpdateInfo()
+        public void OnNewUpdate_Always_StoresUpdate()
         {
             const string UniqueId = "42";
-            var updateInfo = new UpdateInfo { UniqueId = UniqueId };
-            var updateInfoObservable =
+            var updateEntity = new UpdateEntity { UniqueId = UniqueId };
+            var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)));
-            _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateInfoObservable);
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateEntity)));
+            _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
 
             _subject.Start();
-            _testScheduler.Start(() => updateInfoObservable);
+            _testScheduler.Start(() => updateObservable);
 
-            _mockUpdateInfoRepository.Verify(m => m.Save(It.Is<UpdateInfo>(c => c.UniqueId == UniqueId)));
+            _mockUpdateRepository.Verify(m => m.Save(It.Is<UpdateEntity>(c => c.UniqueId == UniqueId)));
         }
 
         [Test]
-        public void OnNewContactInfo_Always_SavesTheContact()
+        public void OnNewContact_Always_SavesTheContact()
         {
             var contact = new ContactDto { FirstName = "first name" };
             var contactObservable =

@@ -10,7 +10,7 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniApi.Support;
     using Refit;
@@ -20,7 +20,7 @@
     {
         private HttpClientWithAuthorizationHandler _subject;
         private TestScheduler _scheduler;
-        private Token _token;
+        private TokenDto _tokenDto;
         private Mock<IOAuth2> _mockOAuth2;
         private Mock<IHttpResponseMessageHandler> _mockResponseMessageHandler;
         private Mock<HttpMessageHandler> _mockInnerHandler;
@@ -29,11 +29,11 @@
         public void SetUp()
         {
             _scheduler = new TestScheduler();
-            _token = new Token();
+            _tokenDto = new TokenDto();
             _mockOAuth2 = new Mock<IOAuth2> { DefaultValue = DefaultValue.Mock };
             _mockResponseMessageHandler = new Mock<IHttpResponseMessageHandler>();
             _mockInnerHandler = new Mock<HttpMessageHandler>();
-            _subject = new HttpClientWithAuthorizationHandler(_mockOAuth2.Object, _token, _mockResponseMessageHandler.Object)
+            _subject = new HttpClientWithAuthorizationHandler(_mockOAuth2.Object, _tokenDto, _mockResponseMessageHandler.Object)
             {
                 InnerHandler = _mockInnerHandler.Object
             };
@@ -66,8 +66,8 @@
                 return Disposable.Empty;
             });
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Token>>(100,
-                    Notification.CreateOnError<Token>(new Exception())));
+                new Recorded<Notification<TokenDto>>(100,
+                    Notification.CreateOnError<TokenDto>(new Exception())));
             
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
@@ -89,7 +89,7 @@
             var createBadRequestException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
             createBadRequestException.Wait();
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Token>>(100, Notification.CreateOnError<Token>(createBadRequestException.Result)));
+                new Recorded<Notification<TokenDto>>(100, Notification.CreateOnError<TokenDto>(createBadRequestException.Result)));
             
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
@@ -111,8 +111,8 @@
             var createBadRequestException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
             createBadRequestException.Wait();
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Token>>(100,
-                    Notification.CreateOnError<Token>(createBadRequestException.Result)));
+                new Recorded<Notification<TokenDto>>(100,
+                    Notification.CreateOnError<TokenDto>(createBadRequestException.Result)));
 
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
@@ -136,10 +136,10 @@
             });
 
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<Token>>(100,
-                    Notification.CreateOnNext(new Token())),
-                new Recorded<Notification<Token>>(200,
-                    Notification.CreateOnCompleted<Token>()));
+                new Recorded<Notification<TokenDto>>(100,
+                    Notification.CreateOnNext(new TokenDto())),
+                new Recorded<Notification<TokenDto>>(200,
+                    Notification.CreateOnCompleted<TokenDto>()));
 
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 

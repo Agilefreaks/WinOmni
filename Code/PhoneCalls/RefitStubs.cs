@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
-using global::PhoneCalls.Models;
-using OmniApi.Models;
+using global::PhoneCalls.Dto;
+using OmniApi.Dto;
 using Refit;
 
 /* ******** Hey You! *********
@@ -56,10 +56,10 @@ namespace PhoneCalls.Resources.v1
             return (IObservable<PhoneCallDto>) methodImpls["Create"](Client, arguments);
         }
 
-        public virtual IObservable<EmptyModel> Patch(string id,object payload,string token)
+        public virtual IObservable<EmptyDto> Patch(string id,object payload,string token)
         {
             var arguments = new object[] { id,payload,token };
-            return (IObservable<EmptyModel>) methodImpls["Patch"](Client, arguments);
+            return (IObservable<EmptyDto>) methodImpls["Patch"](Client, arguments);
         }
 
     }

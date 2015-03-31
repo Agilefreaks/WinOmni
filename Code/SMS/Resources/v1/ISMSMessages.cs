@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using OmniCommon.Interfaces;
-    using SMS.Models;
+    using SMS.Dto;
 
     public interface ISMSMessages : IResource<SmsMessageDto>
     {

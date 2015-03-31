@@ -6,10 +6,10 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class GetUserTests
@@ -20,7 +20,7 @@
 
         private TestScheduler _testScheduler;
 
-        private User _user;
+        private UserDto _userDto;
 
         [SetUp]
         public void Setup()
@@ -29,10 +29,10 @@
             _subject = new GetUser(_mockUserInfo.Object);
             _testScheduler = new TestScheduler();
             SchedulerProvider.Default = _testScheduler;
-            _user = new User();
+            _userDto = new UserDto();
             var getUserInfoObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<User>>(100, Notification.CreateOnNext(_user)),
-                new Recorded<Notification<User>>(200, Notification.CreateOnCompleted<User>()));
+                new Recorded<Notification<UserDto>>(100, Notification.CreateOnNext(_userDto)),
+                new Recorded<Notification<UserDto>>(200, Notification.CreateOnCompleted<UserDto>()));
             _mockUserInfo.Setup(x => x.Get()).Returns(getUserInfoObservable);
         }
 
@@ -52,7 +52,7 @@
             testableObserver.Messages.Count.Should().Be(2);
             testableObserver.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
             testableObserver.Messages[0].Value.Value.State.Should().Be(SimpleStepStateEnum.Successful);
-            testableObserver.Messages[0].Value.Value.Data.Should().Be(_user);
+            testableObserver.Messages[0].Value.Value.Data.Should().Be(_userDto);
             testableObserver.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
 
@@ -62,8 +62,8 @@
             var exception = new Exception("test");
             var getUserInfoObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<User>>(100, Notification.CreateOnError<User>(exception)),
-                    new Recorded<Notification<User>>(200, Notification.CreateOnCompleted<User>()));
+                    new Recorded<Notification<UserDto>>(100, Notification.CreateOnError<UserDto>(exception)),
+                    new Recorded<Notification<UserDto>>(200, Notification.CreateOnCompleted<UserDto>()));
             _mockUserInfo.Setup(x => x.Get()).Returns(() => getUserInfoObservable);
 
             var testableObserver = _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);

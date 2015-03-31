@@ -10,8 +10,8 @@
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
+    using Omnipaste.Framework.Services.Repositories;
+    using OmnipasteTests.Framework.Helpers;
 
     public abstract class BaseRepositoryTests
     {

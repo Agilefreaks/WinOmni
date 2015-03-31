@@ -13,7 +13,7 @@
     using OmniSync;
     using OmniUI;
     using OmniUI.Flyout;
-    using OmniUI.SecondaryMenuEntry;
+    using OmniUI.Menu.SecondaryItem;
     using PhoneCalls.Resources.v1;
     using SMS.Resources.v1;
 
@@ -41,7 +41,7 @@
             Kernel.Bind<IOmniService>().ToMethod(context => context.Kernel.Get<IOmniServiceWrapper>());
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<IDebugBarViewModel>());
-            Kernel.Bind<ISecondaryMenuEntryViewModel>().ToMethod(context => context.Kernel.Get<DebugMenuEntryViewModel>());
+            Kernel.Bind<ISecondaryItemViewModel>().ToMethod(context => context.Kernel.Get<DebugItemViewModel>());
 
             Kernel.Bind<SmsMessagesWrapper>()
                 .ToConstructor(syntax => new SmsMessagesWrapper(syntax.Context.Kernel.Get<SMSMessages>()))

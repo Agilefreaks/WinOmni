@@ -2,7 +2,7 @@
 {
     using System;
     using System.Windows;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Helpers;
 
     public partial class App
     {

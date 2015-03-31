@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Contacts.Api.Resources.v1;
+    using Contacts.Dto;
     using Contacts.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Handlers;

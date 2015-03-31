@@ -7,27 +7,28 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
-    using Omnipaste.Presenters;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
-    using OmniUI.Workspace;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ComposeSMSCommandTests
     {
         private ComposeSMSCommand _subject;
 
-        private ContactInfo _contactInfo;
+        private ContactEntity _contactEntity;
 
         private Mock<IWorkspaceConductor> _mockWorkspaceConductor;
 
-        private Mock<IPeopleWorkspace> _mockPeopleWorkspace;
+        private Mock<IConversationWorkspace> _mockPeopleWorkspace;
 
-        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private Mock<IShellViewModel> _mockShellViewModel;
 
@@ -36,15 +37,15 @@
         [SetUp]
         public void Setup()
         {
-            _contactInfo = new ContactInfo();
+            _contactEntity = new ContactEntity();
             _mockWorkspaceConductor = new Mock<IWorkspaceConductor>();
-            _mockPeopleWorkspace = new Mock<IPeopleWorkspace> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockPeopleWorkspace = new Mock<IConversationWorkspace> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockShellViewModel = new Mock<IShellViewModel>();
-            _subject = new ComposeSMSCommand(new ContactInfoPresenter(_contactInfo))
+            _subject = new ComposeSMSCommand(new ContactModel(_contactEntity))
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
-                               PeopleWorkspace = _mockPeopleWorkspace.Object,
+                               ConversationWorkspace = _mockPeopleWorkspace.Object,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
                                ShellViewModel = _mockShellViewModel.Object
                            };
@@ -72,34 +73,34 @@
         [Test]
         public void Execute_ACorrespondingContactViewModelsExistsForTheGivenContact_ShowsDetailsForThatViewModel()
         {
-            var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactInfoPresenter(_contactInfo));
+            var mockContactViewModel = new Mock<IContactViewModel>();
+            mockContactViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
             var mockContactListViewModel = new Mock<IContactListViewModel>();
-            var contactInfoViewModels = new List<IContactInfoViewModel> { mockContactInfoViewModel.Object };
-            mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactInfoViewModels);
+            var contactViewModels = new List<IContactViewModel> { mockContactViewModel.Object };
+            mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactViewModels);
             _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute);
 
-            mockContactInfoViewModel.Verify(x => x.ShowDetails(), Times.Once());
+            mockContactViewModel.Verify(x => x.ShowDetails(), Times.Once());
         }
         
         [Test]
         public void Execute_ACorrespondingContactViewModelsDoesNotExistForTheGivenContact_RetriesUntilOneExistsAndShowsDetailsForThatViewModel()
         {
-            var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactInfoPresenter(_contactInfo));
-            var contactInfoViewModels = new List<IContactInfoViewModel> { mockContactInfoViewModel.Object };
+            var mockContactViewModel = new Mock<IContactViewModel>();
+            mockContactViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
+            var contactViewModels = new List<IContactViewModel> { mockContactViewModel.Object };
             var getContactsCallcount = 0;
             var mockContactListViewModel = new Mock<IContactListViewModel>();
             mockContactListViewModel.Setup(x => x.GetChildren())
-                .Returns(() => getContactsCallcount++ == 0 ? new List<IContactInfoViewModel>() : contactInfoViewModels);
+                .Returns(() => getContactsCallcount++ == 0 ? new List<IContactViewModel>() : contactViewModels);
             _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);
 
             getContactsCallcount.Should().Be(2);
-            mockContactInfoViewModel.Verify(x => x.ShowDetails(), Times.Once());
+            mockContactViewModel.Verify(x => x.ShowDetails(), Times.Once());
         }
     }
 }

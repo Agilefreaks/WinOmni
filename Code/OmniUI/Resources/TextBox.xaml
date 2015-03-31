@@ -1,0 +1,144 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converters="clr-namespace:OmniUI.Framework.Converters">
+
+    <!--TextBox-->
+    <Style x:Key="SpacedTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="ActivityContentTextBoxStyle">
+        <Setter Property="FontSize" Value="{DynamicResource MediumFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+
+    <Style x:Key="FilterTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <ControlTemplate.Resources>
+                        <converters:WhiteSpaceToBooleanConverter x:Key="WhiteSpaceToBooleanConverter"/>
+                        <Duration x:Key="AnimationDuration">0:0:.2</Duration>
+                    </ControlTemplate.Resources>
+                    <Border CornerRadius="15" BorderThickness="2" BorderBrush="{DynamicResource PassiveUiElementsBrush}" Background="{DynamicResource ContentBackgroundBrush}" 
+                            Padding="10,0" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Rectangle Name="SearchIcon" DockPanel.Dock="Left" Width="13" Height="13" Fill="{DynamicResource ActivityContentBrush}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{DynamicResource search_icon}"/>
+                                </Rectangle.OpacityMask>
+
+                                <Rectangle.LayoutTransform>
+                                    <ScaleTransform />
+                                </Rectangle.LayoutTransform>
+                            </Rectangle>
+
+                            <TextBox Grid.Column="1" Name="SearchTextBox" VerticalAlignment="Center" BorderThickness="0" FontFamily="{DynamicResource ActivityContentFont}" 
+                                     FontSize="{DynamicResource MediumFontSize}" Background="Transparent" Margin="0"
+                                     Text="{Binding Path=Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Rectangle Grid.Column="2" Name="ResultIndicatorIcon" DockPanel.Dock="Right" Width="10" Height="13" Fill="{DynamicResource ActivityContentBrush}" Opacity="0">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{DynamicResource down_arrow}"/>
+                                </Rectangle.OpacityMask>
+
+                                <Rectangle.LayoutTransform>
+                                    <ScaleTransform />
+                                </Rectangle.LayoutTransform>
+                            </Rectangle>
+                        </Grid>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Text, ElementName=SearchTextBox, Converter={StaticResource WhiteSpaceToBooleanConverter}}">
+                            <DataTrigger.Value>
+                                <system:Boolean>False</system:Boolean>
+                            </DataTrigger.Value>
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="SearchIcon">
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="SearchIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleX" Storyboard.TargetName="SearchIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ResultIndicatorIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleX" Storyboard.TargetName="ResultIndicatorIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="SearchIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation From="0" To="1" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleX" Storyboard.TargetName="SearchIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ResultIndicatorIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation From="1" To="0" Duration="{StaticResource AnimationDuration}" Storyboard.TargetProperty="LayoutTransform.ScaleX" Storyboard.TargetName="ResultIndicatorIcon">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="RichTextBox" x:Key="ActivityContentRichTextBoxStyle">
+        <Setter Property="FontSize" Value="{DynamicResource MediumFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="IsDocumentEnabled" Value="True"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+</ResourceDictionary>

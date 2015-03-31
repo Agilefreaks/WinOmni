@@ -6,7 +6,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Shell.TitleBar;
 
     [TestFixture]
@@ -36,13 +37,13 @@
         }
 
         [Test]
-        public void OnUpdateInfoReceived_WhenWasInstalledIsFalse_UpdatesCanPerformActionToTrue()
+        public void OnUpdateReceived_WhenWasInstalledIsFalse_UpdatesCanPerformActionToTrue()
         {
-            var updateInfo = new UpdateInfo { WasInstalled = false };
+            var updateEntity = new UpdateEntity { WasInstalled = false };
             var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)),
-                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateEntity)),
+                    new Recorded<Notification<UpdateEntity>>(200, Notification.CreateOnCompleted<UpdateEntity>()));
             _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
             _subject = CreateSubject();
 
@@ -52,13 +53,13 @@
         }
 
         [Test]
-        public void OnUpdateInfoReceived_WhenWasInstalledIsTrue_UpdatesCanPerformActionToFalse()
+        public void OnUpdateReceived_WhenWasInstalledIsTrue_UpdatesCanPerformActionToFalse()
         {
-            var updateInfo = new UpdateInfo { WasInstalled = true };
+            var updateEntity = new UpdateEntity { WasInstalled = true };
             var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)),
-                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateEntity)),
+                    new Recorded<Notification<UpdateEntity>>(200, Notification.CreateOnCompleted<UpdateEntity>()));
             _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
             _subject = CreateSubject();
 

@@ -524,15 +524,6 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dismis.
-        /// </summary>
-        public static string Dismiss {
-            get {
-                return ResourceManager.GetString("Dismiss", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Access token empty in GetRemoteConfiguration.GetExecuteResult - Problem in the API.
         /// </summary>
         public static string EmptyTokenFromServer {

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniCommon.Helpers;
     using OmniCommon.Models;
 
@@ -11,7 +11,7 @@
     {
         #region Fields
 
-        private readonly IObservable<Clipping> _clippingsObservable;
+        private readonly IObservable<ClippingDto> _clippingsObservable;
 
         private readonly List<IDisposable> _observers = new List<IDisposable>();
 
@@ -72,7 +72,7 @@
             _observers.Clear();
         }
 
-        public IDisposable Subscribe(IObserver<Clipping> observer)
+        public IDisposable Subscribe(IObserver<ClippingDto> observer)
         {
             return _clippingsObservable.Subscribe(observer);
         }

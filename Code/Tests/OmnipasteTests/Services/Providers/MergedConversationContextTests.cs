@@ -1,20 +1,15 @@
 ﻿namespace OmnipasteTests.Services.Providers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Linq;
     using FluentAssertions;
-    using FluentAssertions.Events;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
-    using Omnipaste.Presenters.Factories;
-    using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
+    using Omnipaste.Framework.Models.Factories;
+    using Omnipaste.Framework.Services.Providers;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class MergedConversationContextTests
@@ -27,9 +22,9 @@
 
         private Mock<IPhoneCallRepository> _mockCallRepository;
 
-        private Mock<IPhoneCallPresenterFactory> _mockPhoneCalllPresenterFactory;
+        private Mock<IPhoneCallModelFactory> _mockPhoneCallModelFactory;
 
-        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+        private Mock<ISmsMessageModelFactory> _mockSmsMessageModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -39,9 +34,9 @@
 
             _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
-            _mockPhoneCalllPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object, _mockPhoneCalllPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+            _mockPhoneCallModelFactory = new Mock<IPhoneCallModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessageModelFactory = new Mock<ISmsMessageModelFactory> { DefaultValue = DefaultValue.Mock };
+            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object, _mockPhoneCallModelFactory.Object, _mockSmsMessageModelFactory.Object);
         }
 
         [TearDown]

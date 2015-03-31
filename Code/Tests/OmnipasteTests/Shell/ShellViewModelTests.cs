@@ -6,9 +6,10 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Shell;
     using Omnipaste.Shell.ContextMenu;
+    using OmniUI.Framework.Services;
 
     [TestFixture]
     public class ShellViewModelTests

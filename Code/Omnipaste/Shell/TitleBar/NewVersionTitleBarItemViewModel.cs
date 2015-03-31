@@ -3,10 +3,11 @@
     using System;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Services;
     using OmniUI.Attributes;
-    using OmniUI.TitleBarItem;
     using Omnipaste.Properties;
+    using OmniUI.Menu.TitleBarItem;
 
     [UseView(typeof(TitleBarItemView))]
     public class NewVersionTitleBarItemViewModel : Screen, ITitleBarItemViewModel
@@ -67,9 +68,9 @@
             DisposeUpdateAvailableSubscription();
         }
 
-        private void OnUpdateAvailable(UpdateInfo updateInfo)
+        private void OnUpdateAvailable(UpdateEntity updateEntity)
         {
-            CanPerformAction = !updateInfo.WasInstalled;
+            CanPerformAction = !updateEntity.WasInstalled;
         }
 
         private void DisposeUpdateAvailableSubscription()

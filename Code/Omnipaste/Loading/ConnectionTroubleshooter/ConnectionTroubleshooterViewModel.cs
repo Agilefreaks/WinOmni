@@ -8,9 +8,9 @@
     using OmniCommon;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
 
     public class ConnectionTroubleshooterViewModel : Screen, IConnectionTroubleshooterViewModel
     {

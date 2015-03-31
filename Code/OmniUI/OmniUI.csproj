@@ -88,88 +88,198 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
-    <Compile Include="Behaviors\DisposableBehavior.cs" />
-    <Compile Include="Behaviors\HotKeyBehavior.cs" />
-    <Compile Include="Behaviors\HotKeyCommandBehavior.cs" />
-    <Compile Include="Behaviors\ScrollBehavior.cs" />
-    <Compile Include="Behaviors\TextBoxFocusBehavior.cs" />
-    <Compile Include="Behaviors\TimeProgressUpdateBehavior.cs" />
-    <Compile Include="Behaviors\VisibleOnTruncationBehavior.cs" />
-    <Compile Include="Behaviors\MultipleContentButton.cs" />
-    <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\NegativeThicknessConverter.cs" />
-    <Compile Include="Converters\NullableToBooleanConverter.cs" />
-    <Compile Include="Converters\StringToResourceConverter.cs" />
-    <Compile Include="Converters\IntegerToNullableConverter.cs" />
-    <Compile Include="Converters\StringToUriConverter.cs" />
-    <Compile Include="Converters\WhiteSpaceToBooleanConverter.cs" />
+    <Compile Include="Details\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Details\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Dialog\DialogViewModel.cs" />
+    <Compile Include="Dialog\IDialogViewModel.cs" />
+    <Compile Include="Framework\Behaviors\DisposableBehavior.cs" />
+    <Compile Include="Framework\Behaviors\HotKeyBehavior.cs" />
+    <Compile Include="Framework\Behaviors\HotKeyCommandBehavior.cs" />
+    <Compile Include="Framework\Behaviors\ScrollBehavior.cs" />
+    <Compile Include="Framework\Behaviors\TextBoxFocusBehavior.cs" />
+    <Compile Include="Framework\Behaviors\TimeProgressUpdateBehavior.cs" />
+    <Compile Include="Framework\Behaviors\VisibleOnTruncationBehavior.cs" />
+    <Compile Include="Framework\Behaviors\MultipleContentButton.cs" />
+    <Compile Include="Controls\ExpandableTextBlock.cs" />
+    <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\NegativeThicknessConverter.cs" />
+    <Compile Include="Framework\Converters\NullableToBooleanConverter.cs" />
+    <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\StringToResourceConverter.cs" />
+    <Compile Include="Framework\Converters\IntegerToNullableConverter.cs" />
+    <Compile Include="Framework\Converters\StringToUriConverter.cs" />
+    <Compile Include="Framework\Converters\ValuesToCenterPointConverter.cs" />
+    <Compile Include="Framework\Converters\ValueToRadiusConverter.cs" />
+    <Compile Include="Framework\Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Details\DetailsViewModelBase.cs" />
-    <Compile Include="Details\DetailsViewModelWithHeaderBase.cs" />
+    <Compile Include="Details\DetailsWithHeaderViewModelBase.cs" />
     <Compile Include="Details\IDetailsViewModel.cs" />
     <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
-    <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
+    <Compile Include="Framework\ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
+    <Compile Include="Framework\BindingProxy.cs" />
+    <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Framework\ISubscriptionsManager.cs" />
+    <Compile Include="Framework\NotificationTypeEnum.cs" />
+    <Compile Include="Framework\Services\IUiRefreshService.cs" />
+    <Compile Include="Framework\Services\UIRefreshService.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
-    <Compile Include="Helpers\IResourceHelper.cs" />
-    <Compile Include="Helpers\PasswordBoxHelper.cs" />
-    <Compile Include="Helpers\ResourceHelper.cs" />
-    <Compile Include="Interfaces\IMenuEntryViewModel.cs" />
+    <Compile Include="Framework\Helpers\IResourceHelper.cs" />
+    <Compile Include="Framework\Helpers\PasswordBoxHelper.cs" />
+    <Compile Include="Framework\Helpers\ResourceHelper.cs" />
+    <Compile Include="Menu\IMenuItemViewModel.cs" />
     <Compile Include="List\IListViewModel.cs" />
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Framework\Commands\IObservableCommand.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\IModel.cs" />
-    <Compile Include="Presenters\Presenter.cs" />
+    <Compile Include="Framework\Entities\Entity.cs" />
+    <Compile Include="Framework\Models\Model.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Services\ICommandService.cs" />
-    <Compile Include="TitleBarItem\ITitleBarItemViewModel.cs" />
-    <Compile Include="Workspace\IWorkspaceConductor.cs" />
-    <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
-    <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
-    <Compile Include="Workspace\IWorkspace.cs" />
-    <Compile Include="MainMenuEntry\IMainMenuEntryViewModel.cs" />
     <Compile Include="Resources\IconNames.cs" />
-    <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
+    <Compile Include="Framework\Services\ICommandService.cs" />
+    <Compile Include="Menu\TitleBarItem\ITitleBarItemViewModel.cs" />
+    <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
+    <Compile Include="Workspaces\IWorkspaceConductor.cs" />
+    <Compile Include="Menu\WorkspaceItemViewModel.cs" />
+    <Compile Include="Workspaces\IDetailsConductorViewModel.cs" />
+    <Compile Include="Menu\MainItem\IMainItemViewModel.cs" />
+    <Compile Include="Menu\SecondaryItem\ISecondaryItemViewModel.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Flyout\FlyoutBaseViewModel.cs" />
-    <Compile Include="Workspace\IMasterDetailsWorkspace.cs" />
-    <Compile Include="Workspace\MasterDetailsWorkspace.cs" />
-    <Compile Include="Workspace\Workspace.cs" />
+    <Compile Include="Flyout\FlyoutViewModelBase.cs" />
+    <Compile Include="Workspaces\IMasterDetailsWorkspace.cs" />
+    <Compile Include="Workspaces\MasterDetailsWorkspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\Entypo.ttf" />
+    <Resource Include="Resources\seguisb.ttf" />
+    <Resource Include="Resources\segoeuisl.ttf" />
+    <Resource Include="Resources\segoeuil.ttf" />
+    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Details\DetailsViewWithHeader.xaml">
+    <Page Include="Controls\ExpandableTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainMenuEntry\MainMenuEntryView.xaml">
+    <Page Include="Details\DetailsWithHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\DialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Menu\MainItem\MainItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Border.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ContentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Fonts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Icons.xaml">
+      <SubType>
+      </SubType>
+    </Page>
+    <Page Include="Resources\Image.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml">
+    <Page Include="Resources\Labels.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\NumericUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\PasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Shapes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Submenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ToggleSwitch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\TransitioningContentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Menu\SecondaryItem\SecondaryItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TitleBarItem\TitleBarItemView.xaml">
+    <Page Include="Menu\TitleBarItem\TitleBarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Workspace\WorkspaceView.xaml">
+    <Page Include="Workspaces\DetailsConductorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Workspaces\WorkspaceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -179,10 +289,6 @@
       <Project>{1e9c5284-dfdc-4ac1-b257-526cb1989876}</Project>
       <Name>OmniCommon</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Entypo-license.txt" />
-    <Content Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.pt.resx">
@@ -195,7 +301,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ro.resx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

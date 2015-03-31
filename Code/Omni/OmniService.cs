@@ -7,7 +7,7 @@
     using System.Reactive.Subjects;
     using System.Threading;
     using Ninject;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
@@ -146,7 +146,7 @@
             return Observable.Return(new Unit(), SchedulerProvider.Default);
         }
 
-        private IObservable<EmptyModel> ActivateDevice(string deviceId)
+        private IObservable<EmptyDto> ActivateDevice(string deviceId)
         {
             SimpleLogger.Log("Activating device");
             return Devices.Activate(WebsocketConnection.SessionId, deviceId);
