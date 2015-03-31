@@ -2,17 +2,17 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
 
     [TestFixture]
     public class UserTests
     {
-        private User _subject;
+        private UserDto _subject;
 
         [SetUp]
         public void Setup()
         {
-            _subject = new User();
+            _subject = new UserDto();
         }
 
         [Test]

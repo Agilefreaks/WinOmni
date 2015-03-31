@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
@@ -89,9 +89,9 @@
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum)
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum)
         {
-            Device = clippingSourceEnum == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            Device = clippingSourceEnum == ClippingDto.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
@@ -128,7 +128,7 @@
 
         IActivityPresenterBuilder WithContent(UpdateInfo update);
 
-        IActivityPresenterBuilder WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum);
+        IActivityPresenterBuilder WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum);
 
         IActivityPresenterBuilder WithDevice(PhoneCallEntity phoneCallEntity);
 

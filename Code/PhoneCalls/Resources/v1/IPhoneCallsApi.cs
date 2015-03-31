@@ -1,8 +1,8 @@
 ﻿namespace PhoneCalls.Resources.v1
 {
     using System;
-    using global::PhoneCalls.Models;
-    using OmniApi.Models;
+    using global::PhoneCalls.Dto;
+    using OmniApi.Dto;
     using Refit;
 
     public interface IPhoneCallsApi
@@ -14,6 +14,6 @@
         IObservable<PhoneCallDto> Create([Body] PhoneCallDto payload, [Header("Authorization")] string token);
 
         [Patch("/phone_calls/{id}")]
-        IObservable<EmptyModel> Patch(string id, [Body] object payload, [Header("Authorization")] string token);
+        IObservable<EmptyDto> Patch(string id, [Body] object payload, [Header("Authorization")] string token);
     }
 }

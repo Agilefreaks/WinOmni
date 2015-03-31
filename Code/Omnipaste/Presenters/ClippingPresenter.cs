@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Presenters
 {
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
@@ -13,7 +13,7 @@
         {
             BackingModel = clipping;
             Content = clipping.Content;
-            Device = BackingModel.Source == Clipping.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            Device = BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
         }
 
         public string Content { get; private set; }
@@ -37,7 +37,7 @@
             }
         }
 
-        public Clipping.ClippingSourceEnum Source
+        public ClippingDto.ClippingSourceEnum Source
         {
             get
             {

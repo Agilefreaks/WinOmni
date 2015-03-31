@@ -4,7 +4,7 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using SMS.Models;
+    using SMS.Dto;
 
     [TestFixture]
     public class LocalSmsMessageTests

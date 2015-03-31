@@ -1,6 +1,7 @@
 ﻿namespace Contacts.Handlers
 {
     using System.Collections.Generic;
+    using Contacts.Dto;
     using Contacts.Models;
     using OmniCommon.Handlers;
 

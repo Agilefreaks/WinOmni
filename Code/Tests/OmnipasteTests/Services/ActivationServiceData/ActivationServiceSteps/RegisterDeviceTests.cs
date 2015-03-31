@@ -6,7 +6,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Cryptography;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -51,8 +51,8 @@
         {
             _mockConfigurationService.Setup(x => x.MachineName).Returns("testMachine");
             var createDeviceObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
-                new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<DeviceDto>>(100, Notification.CreateOnNext(new DeviceDto())),
+                new Recorded<Notification<DeviceDto>>(200, Notification.CreateOnCompleted<DeviceDto>()));
             _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             var keyPair = new KeyPair { Public = "publicKey" };
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(keyPair);
@@ -67,8 +67,8 @@
         {
             _mockConfigurationService.Setup(x => x.MachineName).Returns("testMachine");
             var createDeviceObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
-                new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<DeviceDto>>(100, Notification.CreateOnNext(new DeviceDto())),
+                new Recorded<Notification<DeviceDto>>(200, Notification.CreateOnCompleted<DeviceDto>()));
             _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
             
@@ -82,8 +82,8 @@
         {
             const string NewDeviceId = "someNewId";
             var createDeviceObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device { Id = NewDeviceId  })),
-                new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<DeviceDto>>(100, Notification.CreateOnNext(new DeviceDto { Id = NewDeviceId  })),
+                new Recorded<Notification<DeviceDto>>(200, Notification.CreateOnCompleted<DeviceDto>()));
             _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
 
@@ -96,8 +96,8 @@
         public void Execute_CreateDeviceIsSuccessful_CompletesWithASuccessfulResult()
         {
             var createDeviceObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<Device>>(100, Notification.CreateOnNext(new Device())),
-                new Recorded<Notification<Device>>(200, Notification.CreateOnCompleted<Device>()));
+                new Recorded<Notification<DeviceDto>>(100, Notification.CreateOnNext(new DeviceDto())),
+                new Recorded<Notification<DeviceDto>>(200, Notification.CreateOnCompleted<DeviceDto>()));
             _mockDevices.Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(createDeviceObservable);
             _mockCryptoService.Setup(x => x.GenerateKeyPair()).Returns(new KeyPair { Public = "publicKey" });
 

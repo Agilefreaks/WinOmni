@@ -4,7 +4,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniApi.Support;
     using OmniCommon;
@@ -41,7 +41,7 @@
         [Test]
         public void Token_Always_GetsReadFromConfigurationService()
         {
-            _subject.Token.ShouldBeEquivalentTo(new Token("AccessToken", "RefreshToken"));
+            _subject.TokenDto.ShouldBeEquivalentTo(new TokenDto("AccessToken", "RefreshToken"));
         }
 
         [Test]

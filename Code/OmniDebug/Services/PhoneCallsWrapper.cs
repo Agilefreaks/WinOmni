@@ -1,8 +1,8 @@
 ﻿namespace OmniDebug.Services
 {
     using System;
-    using OmniApi.Models;
-    using PhoneCalls.Models;
+    using OmniApi.Dto;
+    using PhoneCalls.Dto;
     using PhoneCalls.Resources.v1;
 
     public class PhoneCallsWrapper : ResourceWrapperBase<PhoneCallDto>, IPhoneCallsWrapper
@@ -20,7 +20,7 @@
             return _originalResource.Call(phoneNumber);
         }
 
-        public IObservable<EmptyModel> EndCall(string callId)
+        public IObservable<EmptyDto> EndCall(string callId)
         {
             return _originalResource.EndCall(callId);
         }

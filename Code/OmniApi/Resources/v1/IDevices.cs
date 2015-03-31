@@ -2,25 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
-    using OmniApi.Models;
+    using OmniApi.Dto;
 
     public interface IDevices
     {
         #region Public Methods and Operators
 
-        IObservable<EmptyModel> Update(string deviceId, object deviceParams);
+        IObservable<EmptyDto> Update(string deviceId, object deviceParams);
 
-        IObservable<EmptyModel> Activate(string registrationId, string deviceId);
+        IObservable<EmptyDto> Activate(string registrationId, string deviceId);
 
-        IObservable<Device> Create(string name, string publicKey);
+        IObservable<DeviceDto> Create(string name, string publicKey);
 
-        IObservable<EmptyModel> Deactivate(string deviceId);
+        IObservable<EmptyDto> Deactivate(string deviceId);
 
-        IObservable<EmptyModel> Remove(string deviceId);
+        IObservable<EmptyDto> Remove(string deviceId);
 
-        IObservable<List<Device>> GetAll();
+        IObservable<List<DeviceDto>> GetAll();
 
-        IObservable<Device> Get(string deviceId);
+        IObservable<DeviceDto> Get(string deviceId);
 
         #endregion
     }

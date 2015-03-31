@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Caliburn.Micro;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniCommon.Models;
     using OmniDebug.Services;
 
@@ -18,7 +18,7 @@
 
         private string _clippingContent;
 
-        private Clipping.ClippingTypeEnum _clippingType;
+        private ClippingDto.ClippingTypeEnum _clippingType;
 
         #endregion
 
@@ -29,7 +29,7 @@
             _omniServiceWrapper = omniServiceWrapper;
             _clippingsWrapper = clippingsWrapper;
             ClippingContent = "some content";
-            ClippingType = Clipping.ClippingTypeEnum.Unknown;
+            ClippingType = ClippingDto.ClippingTypeEnum.Unknown;
         }
 
         #endregion
@@ -53,7 +53,7 @@
             }
         }
 
-        public Clipping.ClippingTypeEnum ClippingType
+        public ClippingDto.ClippingTypeEnum ClippingType
         {
             get
             {
@@ -70,11 +70,11 @@
             }
         }
 
-        public IEnumerable<Clipping.ClippingTypeEnum> ClippingTypes
+        public IEnumerable<ClippingDto.ClippingTypeEnum> ClippingTypes
         {
             get
             {
-                return Enum.GetValues(typeof(Clipping.ClippingTypeEnum)).Cast<Clipping.ClippingTypeEnum>();
+                return Enum.GetValues(typeof(ClippingDto.ClippingTypeEnum)).Cast<ClippingDto.ClippingTypeEnum>();
             }
         }
 
@@ -85,7 +85,7 @@
         public void SimulateIncomingClipping()
         {
             var clippingId = Guid.NewGuid().ToString();
-            _clippingsWrapper.MockGet(clippingId, new Clipping { Id = clippingId, Content = ClippingContent, Type = ClippingType });
+            _clippingsWrapper.MockGet(clippingId, new ClippingDto { Id = clippingId, Content = ClippingContent, Type = ClippingType });
             _omniServiceWrapper.SimulateMessage(new OmniMessage { Type = "clipping_created", Payload = new Dictionary<string, string> { {"id", clippingId} }});
         }
 

@@ -2,7 +2,7 @@
 {
     using System;
     using Omnipaste.Models;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     public abstract class PhoneCallEntity : ConversationEntity
     {

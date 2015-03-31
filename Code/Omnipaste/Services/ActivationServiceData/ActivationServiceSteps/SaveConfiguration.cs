@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
@@ -17,7 +17,7 @@
 
         protected override IExecuteResult ExecuteSynchronously()
         {
-            var token = (Token)Parameter.Value;
+            var token = (TokenDto)Parameter.Value;
             _configurationService.SaveAuthSettings(new OmnipasteCredentials(token.AccessToken, token.RefreshToken));
             if (string.IsNullOrEmpty(_configurationService.AccessToken))
             {

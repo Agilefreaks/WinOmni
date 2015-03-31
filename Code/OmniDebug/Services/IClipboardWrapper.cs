@@ -1,10 +1,10 @@
 ﻿namespace OmniDebug.Services
 {
     using Clipboard.API.Resources.v1;
-    using Clipboard.Models;
+    using Clipboard.Dto;
 
     public interface IClippingsWrapper : IClippings
     {
-        void MockGet(string clippingId, Clipping clipping);
+        void MockGet(string clippingId, ClippingDto clippingDto);
     }
 }

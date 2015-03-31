@@ -1,10 +1,10 @@
-﻿namespace OmniApi.Models
+﻿namespace OmniApi.Dto
 {
     using System;
 
-    public class User
+    public class UserDto
     {
-        public User()
+        public UserDto()
         {
             FirstName = string.Empty;
             LastName = string.Empty;

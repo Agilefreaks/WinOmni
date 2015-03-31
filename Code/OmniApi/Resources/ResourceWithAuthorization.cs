@@ -4,9 +4,9 @@
     using System.Diagnostics;
     using System.Net.Http;
     using Ninject;
+    using OmniApi.Dto;
     using OmniCommon;
     using OmniApi.Support;
-    using OmniApi.Models;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -29,13 +29,13 @@
         {
             get
             {
-                if (string.IsNullOrEmpty(Token.AccessToken))
+                if (string.IsNullOrEmpty(TokenDto.AccessToken))
                 {
                     var callingMethodName = new StackFrame(1).GetMethod().Name;
                     ExceptionReporter.Instance.Report(
                         new Exception(string.Format("AccessToken is empty when calling {0}", callingMethodName)));
                 }
-                return string.Concat("bearer ", Token.AccessToken);
+                return string.Concat("bearer ", TokenDto.AccessToken);
             }
         }
 
@@ -45,11 +45,11 @@
         [Inject]
         public IHttpResponseMessageHandler ResponseHandler { get; set; }
 
-        public Token Token
+        public TokenDto TokenDto
         {
             get
             {
-                return new Token(ConfigurationService.AccessToken, ConfigurationService.RefreshToken);
+                return new TokenDto(ConfigurationService.AccessToken, ConfigurationService.RefreshToken);
             }
         }
 
@@ -69,7 +69,7 @@
             }
 
             var baseAddress = new Uri(ConfigurationService[ConfigurationProperties.BaseUrl]);
-            var handler = new HttpClientWithAuthorizationHandler(OAuth2, Token, ResponseHandler)
+            var handler = new HttpClientWithAuthorizationHandler(OAuth2, TokenDto, ResponseHandler)
             {
                 InnerHandler = CreateHttpHandler()
             };

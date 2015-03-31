@@ -3,7 +3,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
-    using SMS.Models;
+    using SMS.Dto;
     using SMS.Resources.v1;
 
     [TestFixture]

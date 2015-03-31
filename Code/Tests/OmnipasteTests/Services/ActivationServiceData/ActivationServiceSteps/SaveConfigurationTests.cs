@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
@@ -31,7 +31,7 @@
         [Test]
         public void Execute_Always_SaveTheConfiguration()
         {
-            _subject.Parameter = new DependencyParameter(null, new Token("access token", "refresh token"));
+            _subject.Parameter = new DependencyParameter(null, new TokenDto("access token", "refresh token"));
 
             var autoResetEvent = new AutoResetEvent(false);
             SchedulerProvider.Default = new NewThreadScheduler();

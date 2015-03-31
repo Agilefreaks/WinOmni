@@ -8,7 +8,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniApi.Cryptography;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -51,8 +51,8 @@
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
             var updateObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnNext(new EmptyDto())),
+                new Recorded<Notification<EmptyDto>>(200, Notification.CreateOnCompleted<EmptyDto>()));
             _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
 
             _testScheduler.Start(() => _subject.Execute(), TimeSpan.FromSeconds(1).Ticks);
@@ -66,8 +66,8 @@
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
             var updateObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnError<EmptyModel>(new Exception())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnError<EmptyDto>(new Exception())),
+                new Recorded<Notification<EmptyDto>>(200, Notification.CreateOnCompleted<EmptyDto>()));
             KeyPair newValue = null;
             _mockConfigurationService.SetupSet(m => m.DeviceKeyPair = It.IsAny<KeyPair>()).Callback<KeyPair>(pair => newValue = pair);
             _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
@@ -83,8 +83,8 @@
             var keyPair = new KeyPair { Public = "test", Private = "test" };
             _mockCryptoService.Setup(m => m.GenerateKeyPair()).Returns(keyPair);
             var updateObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnNext(new EmptyDto())),
+                new Recorded<Notification<EmptyDto>>(200, Notification.CreateOnCompleted<EmptyDto>()));
             _mockConfigurationService.SetupGet(x => x.DeviceKeyPair).Returns(new KeyPair { Private = "test" });
             _mockDevices.Setup(m => m.Update(Deviceid, It.IsAny<object>())).Returns(updateObservable);
 

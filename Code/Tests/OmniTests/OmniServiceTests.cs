@@ -14,7 +14,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omni;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -173,8 +173,8 @@
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
             var deactivateObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                new Recorded<Notification<EmptyModel>>(120, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnNext(new EmptyDto())),
+                new Recorded<Notification<EmptyDto>>(120, Notification.CreateOnCompleted<EmptyDto>()));
             var deviceId = Guid.NewGuid().ToString();
             _mockConfigurationService.SetupGet(x => x.DeviceId).Returns(deviceId);
             _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
@@ -196,8 +196,8 @@
             var testScheduler = new TestScheduler();
             SchedulerProvider.Default = testScheduler;
             var deactivateObservable = testScheduler.CreateColdObservable(
-                new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnError<EmptyModel>(new Exception("test"))),
-                new Recorded<Notification<EmptyModel>>(120, Notification.CreateOnCompleted<EmptyModel>()));
+                new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnError<EmptyDto>(new Exception("test"))),
+                new Recorded<Notification<EmptyDto>>(120, Notification.CreateOnCompleted<EmptyDto>()));
             var deviceId = Guid.NewGuid().ToString();
             _mockConfigurationService.SetupGet(x => x.DeviceId).Returns(deviceId);
             _mockDevices.Setup(x => x.Deactivate(deviceId)).Returns(deactivateObservable);
@@ -237,7 +237,7 @@
             _scheduler.Start(_subject.Start);
 
             SchedulerProvider.Default = Scheduler.Default;
-            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyDto()));
 
             _subject.Dispose();
 
@@ -251,7 +251,7 @@
             _scheduler.Start(_subject.Start);
 
             SchedulerProvider.Default = Scheduler.Default;
-            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
+            _mockDevices.Setup(x => x.Deactivate(It.IsAny<string>())).Returns(Observable.Return(new EmptyDto()));
 
             _subject.Dispose();
 
@@ -303,14 +303,14 @@
             _mockWebsocketConnection.Setup(x => x.SessionId).Returns(_registrationId);
             var activateDevice =
                 _scheduler.CreateColdObservable(
-                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                    new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnNext(new EmptyDto())),
+                    new Recorded<Notification<EmptyDto>>(200, Notification.CreateOnCompleted<EmptyDto>()));
             _mockDevices.Setup(m => m.Activate(_registrationId, DeviceId)).Returns(activateDevice);
 
             var deactivateDevice =
                 _scheduler.CreateColdObservable(
-                    new Recorded<Notification<EmptyModel>>(100, Notification.CreateOnNext(new EmptyModel())),
-                    new Recorded<Notification<EmptyModel>>(200, Notification.CreateOnCompleted<EmptyModel>()));
+                    new Recorded<Notification<EmptyDto>>(100, Notification.CreateOnNext(new EmptyDto())),
+                    new Recorded<Notification<EmptyDto>>(200, Notification.CreateOnCompleted<EmptyDto>()));
             _mockDevices.Setup(m => m.Deactivate(DeviceId)).Returns(deactivateDevice);
         }
     }

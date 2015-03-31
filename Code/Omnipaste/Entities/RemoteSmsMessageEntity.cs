@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Models
 {
     using Omnipaste.Entities;
-    using SMS.Models;
+    using SMS.Dto;
 
     public class RemoteSmsMessageEntity : SmsMessageEntity
     {

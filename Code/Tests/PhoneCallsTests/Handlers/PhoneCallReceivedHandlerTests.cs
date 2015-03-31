@@ -10,8 +10,8 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Models;
+    using PhoneCalls.Dto;
     using PhoneCalls.Handlers;
-    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]

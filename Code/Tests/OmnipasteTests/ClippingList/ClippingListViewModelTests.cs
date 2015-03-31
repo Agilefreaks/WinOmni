@@ -3,7 +3,7 @@
     using System.Linq;
     using System.Reactive;
     using Caliburn.Micro;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -159,7 +159,7 @@
 
             _subject.FilteredItems.Count.Should().Be(2);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == Clipping.ClippingSourceEnum.Cloud)
+                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud)
                 .Should()
                 .BeTrue();
         }
@@ -175,7 +175,7 @@
 
             _subject.FilteredItems.Count.Should().Be(2);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == Clipping.ClippingSourceEnum.Local)
+                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Local)
                 .Should()
                 .BeTrue();
         }
@@ -191,17 +191,17 @@
 
             _subject.FilteredItems.Count.Should().Be(1);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == Clipping.ClippingSourceEnum.Cloud && vm.Model.IsStarred)
+                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud && vm.Model.IsStarred)
                 .Should()
                 .BeTrue();
         }
 
         private void AddClippingsWithFilterCombinations()
         {
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "1", IsStarred = false, Source = Clipping.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "2", IsStarred = true, Source = Clipping.ClippingSourceEnum.Local })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "3", IsStarred = true, Source = Clipping.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "4", IsStarred = false, Source = Clipping.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "1", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "2", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "3", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "4", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Local })});
         }
     }
 }

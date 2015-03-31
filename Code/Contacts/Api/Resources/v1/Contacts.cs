@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+    using global::Contacts.Dto;
     using global::Contacts.Models;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;

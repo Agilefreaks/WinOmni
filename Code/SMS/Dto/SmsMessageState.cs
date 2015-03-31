@@ -1,4 +1,4 @@
-﻿namespace SMS.Models
+﻿namespace SMS.Dto
 {
     public static class SmsMessageState
     {

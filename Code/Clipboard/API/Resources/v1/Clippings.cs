@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net.Http;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
@@ -24,17 +24,17 @@
 
         #region Public Methods and Operators
 
-        public IObservable<Clipping> Last()
+        public IObservable<ClippingDto> Last()
         {
             return ResourceApi.Last(AccessToken);
         }
 
-        public IObservable<Clipping> Create(string deviceId, string content)
+        public IObservable<ClippingDto> Create(string deviceId, string content)
         {
-            return ResourceApi.Create(new Clipping(content, deviceId), AccessToken);
+            return ResourceApi.Create(new ClippingDto(content, deviceId), AccessToken);
         }
 
-        public IObservable<Clipping> Get(string id)
+        public IObservable<ClippingDto> Get(string id)
         {
             return ResourceApi.Get(id, AccessToken);
         }

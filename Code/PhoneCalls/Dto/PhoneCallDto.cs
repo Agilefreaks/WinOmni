@@ -1,4 +1,4 @@
-﻿namespace PhoneCalls.Models
+﻿namespace PhoneCalls.Dto
 {
     public class PhoneCallDto
     {

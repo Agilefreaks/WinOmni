@@ -6,7 +6,7 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Services.ActivationServiceData;
@@ -51,7 +51,7 @@
             _subject.Parameter = new DependencyParameter(string.Empty, "42");
             var createObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Token>>(0, Notification.CreateOnError<Token>(new Exception())));
+                    new Recorded<Notification<TokenDto>>(0, Notification.CreateOnError<TokenDto>(new Exception())));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
             _subject.Execute().Subscribe(_observer);
@@ -69,8 +69,8 @@
             var testScheduler = _testScheduler;
             var createObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Token>>(0, Notification.CreateOnNext(new Token("acccess token", "refresh token"))),
-                    new Recorded<Notification<Token>>(0, Notification.CreateOnCompleted<Token>()));
+                    new Recorded<Notification<TokenDto>>(0, Notification.CreateOnNext(new TokenDto("acccess token", "refresh token"))),
+                    new Recorded<Notification<TokenDto>>(0, Notification.CreateOnCompleted<TokenDto>()));
             _mockOAuth2.Setup(m => m.Create("42")).Returns(createObservable);
 
             _subject.Execute().Subscribe(_observer);

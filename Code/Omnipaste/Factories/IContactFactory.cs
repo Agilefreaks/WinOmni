@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Factories
 {
     using System;
+    using Contacts.Dto;
     using Contacts.Models;
     using Omnipaste.Entities;
     using Omnipaste.Models;

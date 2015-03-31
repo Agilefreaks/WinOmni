@@ -2,7 +2,7 @@
 {
     using System;
     using Omnipaste.Entities;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     public interface IPhoneCallFactory
     {

@@ -17,7 +17,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.SMSComposer;
-    using SMS.Models;
+    using SMS.Dto;
     using SMS.Resources.v1;
 
     [TestFixture]

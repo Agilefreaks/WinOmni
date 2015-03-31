@@ -2,9 +2,9 @@
 {
     using System;
     using Clipboard.API.Resources.v1;
-    using Clipboard.Models;
+    using Clipboard.Dto;
 
-    public class ClippingsWrapper : ResourceWrapperBase<Clipping>, IClippingsWrapper
+    public class ClippingsWrapper : ResourceWrapperBase<ClippingDto>, IClippingsWrapper
     {
         private readonly IClippings _clippings;
 
@@ -14,7 +14,7 @@
             _clippings = originalResource;
         }
 
-        public IObservable<Clipping> Create(string deviceId, string content)
+        public IObservable<ClippingDto> Create(string deviceId, string content)
         {
             return _clippings.Create(deviceId, content);
         }

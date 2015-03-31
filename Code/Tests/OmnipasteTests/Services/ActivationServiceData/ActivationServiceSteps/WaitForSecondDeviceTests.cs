@@ -7,7 +7,7 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
@@ -41,17 +41,17 @@
         {
             var devicesObservable1 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device>())),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableYieldTime, Notification.CreateOnNext(new List<DeviceDto>())),
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<DeviceDto>>()));
             var devicesObservable2 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device> { new Device() })),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
-            var devices = new List<Device> { new Device(), new Device() };
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableYieldTime, Notification.CreateOnNext(new List<DeviceDto> { new DeviceDto() })),
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<DeviceDto>>()));
+            var devices = new List<DeviceDto> { new DeviceDto(), new DeviceDto() };
             var devicesObservable3 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(devices)),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableYieldTime, Notification.CreateOnNext(devices)),
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<DeviceDto>>()));
             var deviceObservables = new[] { devicesObservable1, devicesObservable2, devicesObservable3 };
             var callCount = 0;
             _mockDevices.Setup(x => x.GetAll()).Returns(() => deviceObservables[callCount++]);
@@ -73,9 +73,9 @@
             var exception = new Exception();
             var devicesObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime,
-                        Notification.CreateOnError<List<Device>>(exception)),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableYieldTime,
+                        Notification.CreateOnError<List<DeviceDto>>(exception)),
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<DeviceDto>>()));
             _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
 
             var testableObserver = _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);
@@ -93,8 +93,8 @@
             var testScheduler = new TestScheduler();
             var devicesObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<Device>>>(ObservableYieldTime, Notification.CreateOnNext(new List<Device>())),
-                    new Recorded<Notification<List<Device>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<Device>>()));
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableYieldTime, Notification.CreateOnNext(new List<DeviceDto>())),
+                    new Recorded<Notification<List<DeviceDto>>>(ObservableCompletionTime, Notification.CreateOnCompleted<List<DeviceDto>>()));
             _mockDevices.Setup(x => x.GetAll()).Returns(devicesObservable);
 
             var testableObserver = testScheduler.Start(_subject.Execute, 5 * _checkInterval.Ticks);

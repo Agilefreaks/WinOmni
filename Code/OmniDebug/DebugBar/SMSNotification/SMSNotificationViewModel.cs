@@ -5,7 +5,7 @@
     using Caliburn.Micro;
     using OmniCommon.Models;
     using OmniDebug.Services;
-    using SMS.Models;
+    using SMS.Dto;
 
     public class SMSNotificationViewModel : PropertyChangedBase, IDebugBarPanel
     {

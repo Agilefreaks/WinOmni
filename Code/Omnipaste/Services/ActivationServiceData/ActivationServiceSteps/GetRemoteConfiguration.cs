@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using Ninject;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using Omnipaste.Properties;
@@ -58,14 +58,14 @@
 
         #region Methods
 
-        private static IExecuteResult GetExecuteResult(Token token)
+        private static IExecuteResult GetExecuteResult(TokenDto tokenDto)
         {
-            if (string.IsNullOrEmpty(token.AccessToken))
+            if (string.IsNullOrEmpty(tokenDto.AccessToken))
             {
                 ExceptionReporter.Instance.Report(new Exception(Resources.EmptyTokenFromServer));
             }
 
-            return new ExecuteResult(SimpleStepStateEnum.Successful, token);
+            return new ExecuteResult(SimpleStepStateEnum.Successful, tokenDto);
         }
 
         #endregion

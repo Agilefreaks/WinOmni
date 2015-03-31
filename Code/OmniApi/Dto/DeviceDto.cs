@@ -1,14 +1,14 @@
-﻿namespace OmniApi.Models
+﻿namespace OmniApi.Dto
 {
-    public class Device
+    public class DeviceDto
     {
         #region Constructors and Destructors
 
-        public Device()
+        public DeviceDto()
         {
         }
 
-        public Device(string registrationId)
+        public DeviceDto(string registrationId)
         {
             RegistrationId = registrationId;
         }

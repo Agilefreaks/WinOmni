@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Contacts.Dto;
     using Contacts.Models;
     using Omnipaste.Models;
     using OmniUI.Entities;

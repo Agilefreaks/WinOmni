@@ -3,13 +3,14 @@ namespace Omnipaste.Factories
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
+    using Contacts.Dto;
     using Contacts.Models;
     using Ninject;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     public class PhoneCallFactory : IPhoneCallFactory
     {

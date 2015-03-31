@@ -18,7 +18,7 @@
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation;
     using OmnipasteTests.Helpers;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]

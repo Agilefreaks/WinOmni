@@ -7,7 +7,7 @@
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using Omnipaste.Services;
@@ -26,7 +26,7 @@
         {
             _mockConfigurationService = new Mock<IConfigurationService>();
             _mockDevices = new Mock<IDevices>();
-            _mockDevices.Setup(x => x.Remove(It.IsAny<string>())).Returns(Observable.Return(new EmptyModel()));
+            _mockDevices.Setup(x => x.Remove(It.IsAny<string>())).Returns(Observable.Return(new EmptyDto()));
             _subject = new SessionManager
                        {
                            ConfigurationService = _mockConfigurationService.Object,

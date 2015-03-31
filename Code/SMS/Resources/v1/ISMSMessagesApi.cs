@@ -2,7 +2,7 @@
 {
     using System;
     using Refit;
-    using SMS.Models;
+    using SMS.Dto;
 
     public interface ISMSMessagesApi
     {

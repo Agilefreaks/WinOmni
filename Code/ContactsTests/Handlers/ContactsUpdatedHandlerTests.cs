@@ -7,6 +7,7 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Contacts.Api.Resources.v1;
+    using Contacts.Dto;
     using Contacts.Handlers;
     using Contacts.Models;
     using Microsoft.Reactive.Testing;
@@ -14,7 +15,7 @@
     using Ninject;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -57,7 +58,7 @@
         public void Start_WhenLocalContactsUpdatedAtIsNullAndRemote_ItShouldFetchContacts()
         {
             _mockConfigurationService.SetupGet(m => m.UserInfo).Returns(new UserInfo { ContactsUpdatedAt = null });
-            var testableObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<User>>(100, Notification.CreateOnNext(new User { ContactsUpdatedAt = TimeHelper.UtcNow })));
+            var testableObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<UserDto>>(100, Notification.CreateOnNext(new UserDto { ContactsUpdatedAt = TimeHelper.UtcNow })));
             _mockUsers.Setup(m => m.Get()).Returns(testableObservable);
             
             _subject.Start(_testScheduler.CreateColdObservable<OmniMessage>());
@@ -95,10 +96,10 @@
 
                 var testScheduler = new TestScheduler();
                 SchedulerProvider.Default = testScheduler;
-                var remoteUser = new User { ContactsUpdatedAt = TimeHelper.UtcNow };
+                var remoteUser = new UserDto { ContactsUpdatedAt = TimeHelper.UtcNow };
                 var userObservable =
                     testScheduler.CreateColdObservable(
-                        new Recorded<Notification<User>>(100, Notification.CreateOnNext(remoteUser)));
+                        new Recorded<Notification<UserDto>>(100, Notification.CreateOnNext(remoteUser)));
                 _mockUsers.Setup(m => m.Get()).Returns(userObservable);
 
                 _subject.OnCompleted();

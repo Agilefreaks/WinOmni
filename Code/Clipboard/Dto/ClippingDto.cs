@@ -1,6 +1,6 @@
-﻿namespace Clipboard.Models
+﻿namespace Clipboard.Dto
 {
-    public class Clipping
+    public class ClippingDto
     {
         public enum ClippingSourceEnum
         {
@@ -16,27 +16,21 @@
             Unknown
         }
 
-        #region Constructors and Destructors
-
-        public Clipping()
+        public ClippingDto()
             : this(string.Empty, string.Empty)
         {
         }
 
-        public Clipping(string content)
+        public ClippingDto(string content)
             : this(content, string.Empty)
         {
         }
 
-        public Clipping(string content, string deviceId)
+        public ClippingDto(string content, string deviceId)
         {
             Content = content;
             DeviceId = deviceId;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string Id { get; set; }
 
@@ -47,7 +41,5 @@
         public ClippingTypeEnum Type { get; set; }
 
         public ClippingSourceEnum Source { get; set; }
-
-        #endregion
     }
 }

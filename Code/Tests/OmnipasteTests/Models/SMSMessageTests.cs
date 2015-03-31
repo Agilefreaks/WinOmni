@@ -6,7 +6,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Models;
     using OmnipasteTests.Helpers;
-    using SMS.Models;
+    using SMS.Dto;
 
     [TestFixture]
     public class SmsMessageTests

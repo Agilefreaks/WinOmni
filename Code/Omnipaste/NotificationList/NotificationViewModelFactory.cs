@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Ninject;
     using Omnipaste.Entities;
     using Omnipaste.Models;
@@ -21,19 +21,19 @@
 
         public IKernel Kernel { get; set; }
 
-        private readonly IDictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
+        private readonly IDictionary<ClippingDto.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
 
         public NotificationViewModelFactory(IKernel kernel, IConversationPresenterFactory conversationPresenterFactory)
         {
             Kernel = kernel;
             
             _conversationPresenterFactory = conversationPresenterFactory;
-            _clippingNotificationConstructors = new Dictionary<Clipping.ClippingTypeEnum, Func<IClippingNotificationViewModel>>()
+            _clippingNotificationConstructors = new Dictionary<ClippingDto.ClippingTypeEnum, Func<IClippingNotificationViewModel>>()
                                                     {
-                                                        { Clipping.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>() },
-                                                        { Clipping.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>() },
-                                                        { Clipping.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>() },
-                                                        { Clipping.ClippingTypeEnum.PhoneNumber, () => Kernel.Get<IClippingNotificationViewModel>() }
+                                                        { ClippingDto.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>() },
+                                                        { ClippingDto.ClippingTypeEnum.Unknown, () => Kernel.Get<IClippingNotificationViewModel>() },
+                                                        { ClippingDto.ClippingTypeEnum.Address, () => Kernel.Get<IClippingNotificationViewModel>() },
+                                                        { ClippingDto.ClippingTypeEnum.PhoneNumber, () => Kernel.Get<IClippingNotificationViewModel>() }
                                                     };
         }
 

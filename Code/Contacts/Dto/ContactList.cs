@@ -1,4 +1,4 @@
-﻿namespace Contacts.Models
+﻿namespace Contacts.Dto
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

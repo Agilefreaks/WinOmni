@@ -2,7 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
@@ -47,7 +47,7 @@
         public void Create_WithClippingAndSourceIsCloud_SetsDeviceToCloud()
         {
             var activityPresenter =
-                _factory.Create(new ClippingEntity { Source = Clipping.ClippingSourceEnum.Cloud }).Wait();
+                _factory.Create(new ClippingEntity { Source = ClippingDto.ClippingSourceEnum.Cloud }).Wait();
 
             activityPresenter.Device.Should().Be(Resources.FromCloud);
         }

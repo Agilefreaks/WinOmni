@@ -4,7 +4,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Reactive.Linq;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
@@ -174,9 +174,9 @@
         private bool MatchesFilterType(IClippingViewModel viewModel)
         {
             return _clippingTypeFilter == ClippingFilterTypeEnum.None
-                   || (viewModel.Model.BackingModel.Source == Clipping.ClippingSourceEnum.Local
+                   || (viewModel.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Local
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Local))
-                   || (viewModel.Model.BackingModel.Source == Clipping.ClippingSourceEnum.Cloud
+                   || (viewModel.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Cloud));
         }
 

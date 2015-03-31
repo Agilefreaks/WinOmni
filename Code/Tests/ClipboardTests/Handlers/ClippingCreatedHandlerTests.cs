@@ -6,8 +6,8 @@
     using System.Reactive.Subjects;
     using System.Threading;
     using Clipboard.API.Resources.v1;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
-    using Clipboard.Models;
     using Moq;
     using Ninject;
     using Ninject.MockingKernel.Moq;
@@ -44,9 +44,9 @@
         [Test]
         public void WhenAClippingMessageArrives_SubscriberOnNextIsCalled()
         {
-            var observer = new Mock<IObserver<Clipping>>();
+            var observer = new Mock<IObserver<ClippingDto>>();
             var omniMessageObservable = new Subject<OmniMessage>();
-            var clipping = new Clipping();
+            var clipping = new ClippingDto();
             _mockClippings.Setup(c => c.Get("42")).Returns(Observable.Return(clipping));
             _omniClipboardHandler.Start(omniMessageObservable);
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
@@ -63,24 +63,24 @@
         [Test]
         public void WhenOtherMessageArrive_SubscriberOnNextIsNotCalled()
         {
-            var observer = new Mock<IObserver<Clipping>>();
+            var observer = new Mock<IObserver<ClippingDto>>();
             var observable = new Subject<OmniMessage>();
 
             _omniClipboardHandler.Clippings.Subscribe(observer.Object);
 
             observable.OnNext(new OmniMessage { Type = "other" });
 
-            observer.Verify(o => o.OnNext(It.IsAny<Clipping>()), Times.Never);
+            observer.Verify(o => o.OnNext(It.IsAny<ClippingDto>()), Times.Never);
         }
 
         [Test]
         public void PostClipping_Always_PostsToApi()
         {
             _mockClippings.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Observable.Empty<Clipping>());
+                .Returns(Observable.Empty<ClippingDto>());
             _mockConfigurationService.Setup(cs => cs.DeviceId).Returns("Radio");
 
-            _omniClipboardHandler.PostClipping(new Clipping("some Content"));
+            _omniClipboardHandler.PostClipping(new ClippingDto("some Content"));
 
             _mockClippings.Verify(ca => ca.Create("Radio", "some Content"));
         }

@@ -2,7 +2,7 @@
 {
     using System;
     using Omnipaste.Models;
-    using SMS.Models;
+    using SMS.Dto;
 
     public abstract class SmsMessageEntity : ConversationEntity
     {

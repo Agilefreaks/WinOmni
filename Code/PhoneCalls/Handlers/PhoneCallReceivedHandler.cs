@@ -3,7 +3,7 @@ namespace PhoneCalls.Handlers
     using System;
     using OmniCommon.Handlers;
     using OmniCommon.Models;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
     using PhoneCalls.Resources.v1;
 
     public class PhoneCallReceivedHandler : ResourceHandler<PhoneCallDto>, IPhoneCallReceivedHandler

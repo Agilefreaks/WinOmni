@@ -10,7 +10,7 @@
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
     using Castle.Core.Internal;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
@@ -163,7 +163,7 @@
                 _clippingRepository.GetOperationObservable()
                     .Changed()
                     .Select(o => o.Item)
-                    .Where(item => item.Source == Clipping.ClippingSourceEnum.Cloud && item.WasViewed == false)
+                    .Where(item => item.Source == ClippingDto.ClippingSourceEnum.Cloud && item.WasViewed == false)
                     .Select(item => NotificationViewModelFactory.Create(item))
                     .Switch()
                     .ObserveOn(SchedulerProvider.Dispatcher)

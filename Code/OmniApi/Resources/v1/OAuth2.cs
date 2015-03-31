@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net.Http;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon;
     using OmniCommon.Interfaces;
     using Refit;
@@ -27,14 +27,14 @@
 
         #region Public Methods and Operators
 
-        public IObservable<Token> Create(string authorizationCode)
+        public IObservable<TokenDto> Create(string authorizationCode)
         {
             return
                 ResourceApi.Create(
                     new AuthorizationRequest(GrantTypeEnum.authorization_code, _clientId) { Code = authorizationCode });
         }
 
-        public IObservable<Token> Refresh(string refreshToken)
+        public IObservable<TokenDto> Refresh(string refreshToken)
         {
             return
                 ResourceApi.Create(

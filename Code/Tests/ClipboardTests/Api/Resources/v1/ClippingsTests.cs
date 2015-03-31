@@ -1,7 +1,7 @@
 ﻿namespace ClipboardTests.Api.Resources.v1
 {
     using Clipboard.API.Resources.v1;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Interfaces;
@@ -37,7 +37,7 @@
             
             _subject.Create(DeviceId, Content);
 
-            _mockResourceApi.Verify(m => m.Create(It.Is<Clipping>(c => c.DeviceId == DeviceId && c.Content == Content), It.IsAny<string>()));
+            _mockResourceApi.Verify(m => m.Create(It.Is<ClippingDto>(c => c.DeviceId == DeviceId && c.Content == Content), It.IsAny<string>()));
         }
     }
 }

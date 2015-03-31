@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using Contacts.Dto;
     using Contacts.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -15,7 +16,7 @@
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     [TestFixture]
     public class PhoneCallFactoryTests

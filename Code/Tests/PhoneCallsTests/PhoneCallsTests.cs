@@ -2,9 +2,9 @@
 {
     using Moq;
     using OmniCommon.Interfaces;
-    using PhoneCalls.Models;
     using PhoneCalls.Resources.v1;
    using NUnit.Framework;
+    using PhoneCalls.Dto;
 
     [TestFixture]
     public class PhoneCallsTests

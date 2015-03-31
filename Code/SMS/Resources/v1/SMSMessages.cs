@@ -7,7 +7,7 @@
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
-    using SMS.Models;
+    using SMS.Dto;
 
     public class SMSMessages : ResourceWithAuthorization<ISMSMessagesApi>, ISMSMessages
     {

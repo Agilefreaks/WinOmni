@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Services.ActivationServiceData.ActivationServiceSteps
 {
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
@@ -26,7 +26,7 @@
 
         protected override IExecuteResult ExecuteSynchronously()
         {
-            var user = Parameter.Value as User ?? new User();
+            var user = Parameter.Value as UserDto ?? new UserDto();
             var userInfo = _configurationService.UserInfo;
             if (userInfo == null || userInfo.UpdatedAt != user.UpdatedAt)
             {

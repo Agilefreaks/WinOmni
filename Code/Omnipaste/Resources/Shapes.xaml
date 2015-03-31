@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:models="clr-namespace:Clipboard.Models;assembly=Clipboard"
-                    xmlns:notification="clr-namespace:Omnipaste.Notification">
+                    xmlns:notification="clr-namespace:Omnipaste.Notification"
+                    xmlns:models="clr-namespace:Clipboard.Dto;assembly=Clipboard">
 
     <!-- Shapes -->
     <Style x:Key="ItemIcon" TargetType="Rectangle">
@@ -15,10 +15,10 @@
 
     <Style x:Key="ClippingSourceIconStyle" TargetType="Rectangle" BasedOn="{StaticResource ItemIcon}">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Local}">
+            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:ClippingDto+ClippingSourceEnum.Local}">
                 <Setter Property="OpacityMask" Value="{DynamicResource LocalVisualBrush}"/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:Clipping+ClippingSourceEnum.Cloud}">
+            <DataTrigger Binding="{Binding Path=Source}" Value="{x:Static models:ClippingDto+ClippingSourceEnum.Cloud}">
                 <Setter Property="OpacityMask" Value="{DynamicResource CloudVisualBrush}"/>
             </DataTrigger>
         </Style.Triggers>

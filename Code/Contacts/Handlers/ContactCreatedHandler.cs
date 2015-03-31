@@ -2,6 +2,7 @@
 {
     using System;
     using Contacts.Api.Resources.v1;
+    using Contacts.Dto;
     using Contacts.Models;
     using OmniCommon.Handlers;
     using OmniCommon.Models;

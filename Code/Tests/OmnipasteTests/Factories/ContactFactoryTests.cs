@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive.Linq;
+    using Contacts.Dto;
     using Contacts.Models;
     using Moq;
     using NUnit.Framework;

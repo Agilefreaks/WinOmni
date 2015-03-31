@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Entities
 {
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniUI.Entities;
 
     public class ClippingEntity : Entity
@@ -11,15 +11,15 @@
 
         public bool IsStarred { get; set; }
 
-        public Clipping.ClippingTypeEnum Type { get; set; }
+        public ClippingDto.ClippingTypeEnum Type { get; set; }
 
-        public Clipping.ClippingSourceEnum Source { get; set; }
+        public ClippingDto.ClippingSourceEnum Source { get; set; }
 
         public bool IsLink
         {
             get
             {
-                return Type == Clipping.ClippingTypeEnum.Url;
+                return Type == ClippingDto.ClippingTypeEnum.Url;
             }
         }
 
@@ -27,14 +27,14 @@
         {
         }
 
-        public ClippingEntity(Clipping clipping)
+        public ClippingEntity(ClippingDto clippingDto)
             : this()
         {
-            Id = clipping.Id;
-            Content = clipping.Content;
-            DeviceId = clipping.DeviceId;
-            Type = clipping.Type;
-            Source = clipping.Source;
+            Id = clippingDto.Id;
+            Content = clippingDto.Content;
+            DeviceId = clippingDto.DeviceId;
+            Type = clippingDto.Type;
+            Source = clippingDto.Source;
         }
     }
 }

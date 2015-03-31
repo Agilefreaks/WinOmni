@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reactive;
+    using Contacts.Dto;
     using Contacts.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -15,7 +16,7 @@
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
-    using SMS.Models;
+    using SMS.Dto;
 
     [TestFixture]
     public class SmsMessageFactoryTests

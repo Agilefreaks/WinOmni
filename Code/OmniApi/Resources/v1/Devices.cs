@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon.Interfaces;
     using Refit;
 
@@ -26,38 +26,38 @@
 
         #region Public Methods and Operators
 
-        public IObservable<EmptyModel> Activate(string registrationId, string deviceId)
+        public IObservable<EmptyDto> Activate(string registrationId, string deviceId)
         {
             return Update(deviceId, new { RegistrationId = registrationId, Provider = NotificationsProvider });
         }
 
-        public IObservable<Device> Create(string name, string publicKey)
+        public IObservable<DeviceDto> Create(string name, string publicKey)
         {
-            var device = new Device { Name = name, PublicKey = publicKey };
+            var device = new DeviceDto { Name = name, PublicKey = publicKey };
             return ResourceApi.Create(device, AccessToken);
         }
 
-        public IObservable<EmptyModel> Deactivate(string deviceId)
+        public IObservable<EmptyDto> Deactivate(string deviceId)
         {
             return Update(deviceId, new { RegistrationId = string.Empty });
         }
 
-        public IObservable<List<Device>> GetAll()
+        public IObservable<List<DeviceDto>> GetAll()
         {
             return ResourceApi.GetAll(AccessToken);
         }
 
-        public IObservable<Device> Get(string deviceId)
+        public IObservable<DeviceDto> Get(string deviceId)
         {
             return ResourceApi.Get(deviceId, AccessToken);
         }
 
-        public IObservable<EmptyModel> Remove(string deviceId)
+        public IObservable<EmptyDto> Remove(string deviceId)
         {
             return ResourceApi.Remove(deviceId, AccessToken);
         }
 
-        public IObservable<EmptyModel> Update(string deviceId, object deviceParams)
+        public IObservable<EmptyDto> Update(string deviceId, object deviceParams)
         {
             return ResourceApi.Patch(deviceId, deviceParams, AccessToken, ConfigurationService.Version.ToString());
         }

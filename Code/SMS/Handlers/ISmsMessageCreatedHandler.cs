@@ -1,7 +1,7 @@
 ﻿namespace SMS.Handlers
 {
     using OmniCommon.Handlers;
-    using SMS.Models;
+    using SMS.Dto;
 
     public interface ISmsMessageCreatedHandler : IResourceHandler<SmsMessageDto>
     {

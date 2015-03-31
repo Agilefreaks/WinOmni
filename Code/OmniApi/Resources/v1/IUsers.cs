@@ -1,9 +1,10 @@
 ﻿namespace OmniApi.Resources.v1
 {
     using System;
+    using OmniApi.Dto;
 
     public interface IUsers
     {
-        IObservable<Models.User> Get();
+        IObservable<UserDto> Get();
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Contacts.Dto;
     using Contacts.Models;
     using FluentAssertions;
     using NUnit.Framework;

@@ -1,12 +1,12 @@
 ﻿namespace Clipboard.Handlers
 {
     using System;
-    using Clipboard.Models;
+    using Clipboard.Dto;
 
     public interface IClipboard
     {
-        void PostClipping(Clipping clipping);
+        void PostClipping(ClippingDto clippingDto);
 
-        IObservable<Clipping> Clippings { get; }
+        IObservable<ClippingDto> Clippings { get; }
     }
 }

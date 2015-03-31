@@ -3,13 +3,13 @@
     using System;
     using System.Reactive.Linq;
     using Clipboard.API.Resources.v1;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Handlers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
 
-    public class ClippingCreatedHandler : ResourceHandler<Clipping>, IOmniClipboardHandler
+    public class ClippingCreatedHandler : ResourceHandler<ClippingDto>, IOmniClipboardHandler
     {
         private readonly IClippings _clippingsResource;
 
@@ -29,7 +29,7 @@
 
         public IConfigurationService ConfigurationService { get; set; }
 
-        public IObservable<Clipping> Clippings
+        public IObservable<ClippingDto> Clippings
         {
             get
             {
@@ -37,18 +37,18 @@
             }
         }
 
-        public void PostClipping(Clipping clipping)
+        public void PostClipping(ClippingDto clippingDto)
         {
-            _clippingsResource.Create(ConfigurationService.DeviceId, clipping.Content).RunToCompletion();
+            _clippingsResource.Create(ConfigurationService.DeviceId, clippingDto.Content).RunToCompletion();
         }
 
-        protected override IObservable<Clipping> CreateResult(OmniMessage value)
+        protected override IObservable<ClippingDto> CreateResult(OmniMessage value)
         {
             var clippingId = value.GetPayload("id");
             return _clippingsResource.Get(clippingId).Select(
                 clipping =>
                 {
-                    clipping.Source = Clipping.ClippingSourceEnum.Cloud;
+                    clipping.Source = ClippingDto.ClippingSourceEnum.Cloud;
                     return clipping;
                 });
         }

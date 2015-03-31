@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
-using Clipboard.Models;
+using Clipboard.Dto;
 using Refit;
 
 /* ******** Hey You! *********
@@ -43,22 +43,22 @@ namespace Clipboard.API.Resources.v1
             Client = client;
         }
 
-        public virtual IObservable<Clipping> Get(string id,string token)
+        public virtual IObservable<ClippingDto> Get(string id,string token)
         {
             var arguments = new object[] { id,token };
-            return (IObservable<Clipping>) methodImpls["Get"](Client, arguments);
+            return (IObservable<ClippingDto>) methodImpls["Get"](Client, arguments);
         }
 
-        public virtual IObservable<Clipping> Create(Clipping clipping,string token)
+        public virtual IObservable<ClippingDto> Create(ClippingDto clippingDto,string token)
         {
-            var arguments = new object[] { clipping,token };
-            return (IObservable<Clipping>) methodImpls["Create"](Client, arguments);
+            var arguments = new object[] { clippingDto,token };
+            return (IObservable<ClippingDto>) methodImpls["Create"](Client, arguments);
         }
 
-        public virtual IObservable<Clipping> Last(string token)
+        public virtual IObservable<ClippingDto> Last(string token)
         {
             var arguments = new object[] { token };
-            return (IObservable<Clipping>) methodImpls["Last"](Client, arguments);
+            return (IObservable<ClippingDto>) methodImpls["Last"](Client, arguments);
         }
 
     }

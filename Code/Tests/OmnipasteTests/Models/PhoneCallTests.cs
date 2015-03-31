@@ -6,7 +6,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using PhoneCalls.Models;
+    using PhoneCalls.Dto;
 
     [TestFixture]
     public class PhoneCallTests

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Net.Http;
-    using global::PhoneCalls.Models;
-    using OmniApi.Models;
+    using global::PhoneCalls.Dto;
+    using OmniApi.Dto;
     using OmniApi.Resources;
     using OmniCommon.Interfaces;
     using Refit;
@@ -40,7 +40,7 @@
                     AccessToken);
         }
 
-        public IObservable<EmptyModel> EndCall(string callId)
+        public IObservable<EmptyDto> EndCall(string callId)
         {
             return ResourceApi.Patch(callId, new { ConfigurationService.DeviceId, State = PhoneCallState.Ending, Type = PhoneCallType.Incoming }, AccessToken);
         }

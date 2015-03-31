@@ -1,8 +1,8 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
     using System.Reactive;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
-    using Clipboard.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -31,9 +31,9 @@
             SchedulerProvider.Default = testScheduler;
             var cloudClippingObservable =
                 testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Clipping>>(
+                    new Recorded<Notification<ClippingDto>>(
                         100,
-                        Notification.CreateOnNext(new Clipping())));
+                        Notification.CreateOnNext(new ClippingDto())));
             _mockCloudClippingHandler.Setup(x => x.Clippings).Returns(cloudClippingObservable);
 
             var testableObserver = testScheduler.Start(_subject.Execute);

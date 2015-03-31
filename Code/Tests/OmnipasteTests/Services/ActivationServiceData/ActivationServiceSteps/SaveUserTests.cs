@@ -5,7 +5,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using OmniApi.Models;
+    using OmniApi.Dto;
     using OmniCommon;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -29,7 +29,7 @@
         [Test]
         public void Execute_WhenParameterValueIsUser_SetsUserInfo()
         {
-            _subject.Parameter = new DependencyParameter { Value = new User() };
+            _subject.Parameter = new DependencyParameter { Value = new UserDto() };
             
             _subject.Execute().Wait();
 
@@ -39,7 +39,7 @@
         [Test]
         public void Execute_WhenParameterValueIsUser_SetsPropertiesOnUserInfo()
         {
-            var user = new User
+            var user = new UserDto
             {
                 FirstName = "First",
                 LastName = "Last",
@@ -68,7 +68,7 @@
         [Test]
         public void Execute_SMSSuffixEnabledSettingDoesNotExistUserHasViaOmnipasteTrue_SetsConfigurationServiceUseSMSPrefixTrue()
         {
-            var user = new User
+            var user = new UserDto
             {
                 FirstName = "First",
                 LastName = "Last",
@@ -91,7 +91,7 @@
         [Test]
         public void Execute_SMSSuffixEnabledSettingDoesExistsUserHasViaOmnipasteTrue_DoesNotChangeSetting()
         {
-            var user = new User
+            var user = new UserDto
             {
                 FirstName = "First",
                 LastName = "Last",
@@ -116,7 +116,7 @@
         {
             using (TimeHelper.Freez())
             {
-                var user = new User { FirstName = "Crocobaur", UpdatedAt = TimeHelper.UtcNow };
+                var user = new UserDto { FirstName = "Crocobaur", UpdatedAt = TimeHelper.UtcNow };
                 var userInfo = new UserInfo { FirstName = "Croco", UpdatedAt = TimeHelper.UtcNow.AddDays(-1) };
                 _mockConfigurationService.Setup(m => m.UserInfo).Returns(userInfo);
                 _subject.Parameter = new DependencyParameter { Value = user };
@@ -133,7 +133,7 @@
         {
             using (TimeHelper.Freez())
             {
-                _subject.Parameter = new DependencyParameter { Value = new User() };
+                _subject.Parameter = new DependencyParameter { Value = new UserDto() };
                 var userInfo = new UserInfo().SetContactsUpdatedAt(TimeHelper.UtcNow);
                 _mockConfigurationService.SetupGet(x => x.UserInfo).Returns(userInfo);
 

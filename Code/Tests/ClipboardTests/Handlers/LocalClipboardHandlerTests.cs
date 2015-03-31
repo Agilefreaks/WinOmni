@@ -3,9 +3,9 @@
     using System;
     using System.Reactive;
     using Clipboard.API.Resources.v1;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
     using Clipboard.Handlers.WindowsClipboard;
-    using Clipboard.Models;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -61,19 +61,19 @@
             _mockWindowsClipboardWrapper
                 .Setup(wcw => wcw.Subscribe((_subject)))
                 .Callback<IObserver<ClipboardEventArgs>>(o => _clipboardEventsStream.Subscribe(o));
-            Clipping clipping = null;
+            ClippingDto clippingDto = null;
             _subject.Start();
-            _subject.Clippings.Subscribe(c => clipping = c);
+            _subject.Clippings.Subscribe(c => clippingDto = c);
 
             _testScheduler.Start();
 
-            clipping.Content.Should().Be("clipping content");
+            clippingDto.Content.Should().Be("clipping content");
         }
 
         [Test]
         public void PostClipping_Always_CallsPostClipping()
         {
-            _subject.PostClipping(new Clipping("some stuff"));
+            _subject.PostClipping(new ClippingDto("some stuff"));
 
             _mockWindowsClipboardWrapper.Verify(wc => wc.SetData("some stuff"), Times.Once);
         }
@@ -81,24 +81,24 @@
         [Test]
         public void PostClipping_DoesNotCallOnNext()
         {
-            var observer = new Mock<IObserver<Clipping>>();
+            var observer = new Mock<IObserver<ClippingDto>>();
             _subject.Clippings.Subscribe(observer.Object);
 
             _mockWindowsClipboardWrapper.Setup(m => m.SetData(It.IsAny<string>()))
                 .Callback(() => _mockWindowsClipboardWrapper.Raise(m => m.DataReceived += null, new ClipboardEventArgs() { Data = "42" }));
 
-            _subject.PostClipping(new Clipping() { Content = "42" });
+            _subject.PostClipping(new ClippingDto() { Content = "42" });
 
-            observer.Verify(m => m.OnNext(It.IsAny<Clipping>()), Times.Never);
+            observer.Verify(m => m.OnNext(It.IsAny<ClippingDto>()), Times.Never);
         }
 
         [Test]
         public void OnNext_AfterAPostClippingWithTheSameContentFollowedByAOnNextWithDifferentContent_ForwardsTheEvent()
         {
             const string Content = "some content";
-            var testableObserver = _testScheduler.CreateObserver<Clipping>();
+            var testableObserver = _testScheduler.CreateObserver<ClippingDto>();
             _subject.Clippings.Subscribe(testableObserver);
-            _subject.PostClipping(new Clipping(Content));
+            _subject.PostClipping(new ClippingDto(Content));
             _subject.OnNext(new ClipboardEventArgs("some other content"));
 
             _subject.OnNext(new ClipboardEventArgs(Content));
@@ -114,9 +114,9 @@
         public void OnNext_AfterAPostClippingWithTheSameContent_DoesNotForwardTheEvent()
         {
             const string Content = "some content";
-            var testableObserver = _testScheduler.CreateObserver<Clipping>();
+            var testableObserver = _testScheduler.CreateObserver<ClippingDto>();
             _subject.Clippings.Subscribe(testableObserver);
-            _subject.PostClipping(new Clipping(Content));
+            _subject.PostClipping(new ClippingDto(Content));
 
             _subject.OnNext(new ClipboardEventArgs(Content));
 

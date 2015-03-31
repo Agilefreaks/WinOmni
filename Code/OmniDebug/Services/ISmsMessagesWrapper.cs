@@ -1,6 +1,6 @@
 namespace OmniDebug.Services
 {
-    using SMS.Models;
+    using SMS.Dto;
     using SMS.Resources.v1;
 
     public interface ISmsMessagesWrapper : ISMSMessages

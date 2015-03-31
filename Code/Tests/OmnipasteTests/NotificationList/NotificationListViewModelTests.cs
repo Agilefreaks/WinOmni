@@ -4,7 +4,7 @@
     using System.Reactive;
     using System.Reactive.Linq;
     using Caliburn.Micro;
-    using Clipboard.Models;
+    using Clipboard.Dto;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
@@ -32,8 +32,8 @@
         private void SetupTestScheduler()
         {
             _testScheduler = new TestScheduler();
-            _incommingClipping = new ClippingEntity { Source = Clipping.ClippingSourceEnum.Cloud };
-            _viewedClipping = new ClippingEntity { Source = Clipping.ClippingSourceEnum.Cloud, WasViewed = true };
+            _incommingClipping = new ClippingEntity { Source = ClippingDto.ClippingSourceEnum.Cloud };
+            _viewedClipping = new ClippingEntity { Source = ClippingDto.ClippingSourceEnum.Cloud, WasViewed = true };
             _testableClippingsObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
@@ -45,7 +45,7 @@
                         Notification.CreateOnNext(
                             new RepositoryOperation<ClippingEntity>(
                                 RepositoryMethodEnum.Changed,
-                                new ClippingEntity { Source = Clipping.ClippingSourceEnum.Local }))),
+                                new ClippingEntity { Source = ClippingDto.ClippingSourceEnum.Local }))),
                     new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         300,
                         Notification.CreateOnNext(

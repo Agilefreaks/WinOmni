@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Reactive;
+    using Clipboard.Dto;
     using Clipboard.Handlers;
-    using Clipboard.Models;
+    using Contacts.Dto;
     using Contacts.Handlers;
     using Contacts.Models;
     using Microsoft.Reactive.Testing;
@@ -92,12 +93,12 @@
         public void OnNewClipping_AfterStart_AlwayStoresClipping()
         {
             const string Id = "42";
-            var clipping = new Clipping { Id = Id };
+            var clipping = new ClippingDto { Id = Id };
             var clippingObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<Clipping>>(100, Notification.CreateOnNext(clipping)));
-            _mockClipboardHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<Clipping>>()))
-                .Returns<IObserver<Clipping>>(o => clippingObservable.Subscribe(o));
+                    new Recorded<Notification<ClippingDto>>(100, Notification.CreateOnNext(clipping)));
+            _mockClipboardHandler.Setup(m => m.Subscribe(It.IsAny<IObserver<ClippingDto>>()))
+                .Returns<IObserver<ClippingDto>>(o => clippingObservable.Subscribe(o));
 
             _subject.Start();
             _testScheduler.Start(() => clippingObservable);
