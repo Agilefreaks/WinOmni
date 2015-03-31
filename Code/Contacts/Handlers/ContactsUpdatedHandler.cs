@@ -52,7 +52,7 @@
             var userInfo = _configurationService.UserInfo;
 
             _firstRunSubscription = _users.Get()
-                .Where(u => u.ContactsUpdatedAt > userInfo.ContactsUpdatedAt)
+                .Where(u => u.ContactsUpdatedAt > (userInfo.ContactsUpdatedAt ?? new DateTime()))
                 .Select(u => new OmniMessage())
                 .Subscribe(this);
         }
@@ -69,13 +69,8 @@
 
         protected override IObservable<List<ContactDto>> CreateResult(OmniMessage value)
         {
-            return SyncContacts();
-        }
-
-        protected IObservable<List<ContactDto>> SyncContacts()
-        {
             var userInfo = _configurationService.UserInfo;
-            return userInfo.ContactsUpdatedAt.HasValue ? _contactsResource.GetUpdates(userInfo.ContactsUpdatedAt.Value) : Observable.Empty<List<ContactDto>>();
+            return _contactsResource.GetUpdates(userInfo.ContactsUpdatedAt ?? new DateTime());
         }
 
         private void UpdateUserInfo()

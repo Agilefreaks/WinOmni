@@ -2,12 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Reactive;
+    using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Contacts.Api.Resources.v1;
     using Contacts.Handlers;
     using Contacts.Models;
-    using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;
@@ -50,6 +51,19 @@
             _mockingKernel.Bind<IUsers>().ToConstant(_mockUsers.Object);
 
             _subject = _mockingKernel.Get<IContactsUpdatedHandler>();
+        }
+
+        [Test]
+        public void Start_WhenLocalContactsUpdatedAtIsNullAndRemote_ItShouldFetchContacts()
+        {
+            _mockConfigurationService.SetupGet(m => m.UserInfo).Returns(new UserInfo { ContactsUpdatedAt = null });
+            var testableObservable = _testScheduler.CreateColdObservable(new Recorded<Notification<User>>(100, Notification.CreateOnNext(new User { ContactsUpdatedAt = TimeHelper.UtcNow })));
+            _mockUsers.Setup(m => m.Get()).Returns(testableObservable);
+            
+            _subject.Start(_testScheduler.CreateColdObservable<OmniMessage>());
+            _testScheduler.Start();
+
+            _mockContactsResource.Verify(m => m.GetUpdates(new DateTime()));
         }
 
         [Test]
