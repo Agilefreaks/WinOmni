@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.Activity
 {
     using Ninject;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
 

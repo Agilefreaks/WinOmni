@@ -13,6 +13,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
     using Omnipaste.ActivityList;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
@@ -85,12 +86,12 @@
         [Test]
         public void Activate_Always_FetchesItems()
         {
-            var remotePhoneCall = new RemotePhoneCall();
+            var remotePhoneCall = new RemotePhoneCallEntity();
             var phoneCallObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IEnumerable<RemotePhoneCall>>>(100, Notification.CreateOnNext((IEnumerable<RemotePhoneCall>)new List<RemotePhoneCall> { remotePhoneCall })));
-            var remoteSmsMessage = new RemoteSmsMessage();
+                new Recorded<Notification<IEnumerable<RemotePhoneCallEntity>>>(100, Notification.CreateOnNext((IEnumerable<RemotePhoneCallEntity>)new List<RemotePhoneCallEntity> { remotePhoneCall })));
+            var remoteSmsMessage = new RemoteSmsMessageEntity();
             var smsMessageObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<IEnumerable<RemoteSmsMessage>>>(200, Notification.CreateOnNext((IEnumerable<RemoteSmsMessage>)new List<RemoteSmsMessage> { remoteSmsMessage })));
+                new Recorded<Notification<IEnumerable<RemoteSmsMessageEntity>>>(200, Notification.CreateOnNext((IEnumerable<RemoteSmsMessageEntity>)new List<RemoteSmsMessageEntity> { remoteSmsMessage })));
             _mockMessageRepository.Setup(m => m.GetAll()).Returns(smsMessageObservable);
             _mockCallRepository.Setup(m => m.GetAll()).Returns(phoneCallObservable);
             SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
@@ -105,16 +106,16 @@
         [Test]
         public void ReceivingAClipping_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var clippingModel = new ClippingModel();
+            var clippingModel = new ClippingEntity();
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                        Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             SetupClippingActivityPresenterFactory(clippingModel);
             ((IActivate)_subject).Activate();
@@ -127,20 +128,20 @@
         [Test]
         public void RemovingAClipping_AfterActivateWhenClippingWasPreviouslyReceived_RemovesViewModelForClipping()
         {
-            var clippingModel = new ClippingModel { UniqueId = "42" };
+            var clippingModel = new ClippingEntity { UniqueId = "42" };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Delete, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Delete, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         300,
-                        Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                        Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             SetupClippingActivityPresenterFactory(clippingModel);
             ((IActivate)_subject).Activate();
@@ -154,21 +155,21 @@
         public void UpdatingAClipping_AfterActivateWhenClippingWasPreviouslyReceived_UpdatesViewModelWithNewClipping()
         {
             const string SourceId = "42";
-            var clippingModel = new ClippingModel { UniqueId = SourceId };
-            var modifiedClipping = new ClippingModel { UniqueId = SourceId, Content = "Test" };
+            var clippingModel = new ClippingEntity { UniqueId = SourceId };
+            var modifiedClipping = new ClippingEntity { UniqueId = SourceId, Content = "Test" };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, modifiedClipping))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, modifiedClipping))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         300,
-                        Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                        Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             SetupClippingActivityPresenterFactory(clippingModel);
             SetupClippingActivityPresenterFactory(modifiedClipping);
@@ -183,13 +184,13 @@
         [Test]
         public void ReceivingACall_AfterActivate_CreatesANewActivityViewModelAndAddsItToItems()
         {
-            var remotePhoneCall = new RemotePhoneCall();
-            var remoteRepositoryOperation = new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, remotePhoneCall);
+            var remotePhoneCall = new RemotePhoneCallEntity();
+            var remoteRepositoryOperation = new RepositoryOperation<RemotePhoneCallEntity>(RepositoryMethodEnum.Changed, remotePhoneCall);
             var eventObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
-            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(eventObservable);
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(200, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCallEntity>>()));
+            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCallEntity>()).Returns(eventObservable);
             SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
             ((IActivate)_subject).Activate();
 
@@ -202,14 +203,14 @@
         public void UpdatingACall_AfterActivateWhenPreviouslyReceived_UpdatesViewModelWithNewCall()
         {
             const string UniqueId = "42";
-            var call = new RemotePhoneCall { UniqueId = UniqueId };
-            var modifiedCall = new RemotePhoneCall { UniqueId = UniqueId, Content = "Test" };
+            var call = new RemotePhoneCallEntity { UniqueId = UniqueId };
+            var modifiedCall = new RemotePhoneCallEntity { UniqueId = UniqueId, Content = "Test" };
             var callObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, call))),
-                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(200, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCall>(RepositoryMethodEnum.Changed, modifiedCall))),
-                    new Recorded<Notification<RepositoryOperation<RemotePhoneCall>>>(300, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCall>>()));
-            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCall>()).Returns(callObservable);
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCallEntity>(RepositoryMethodEnum.Changed, call))),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(200, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCallEntity>(RepositoryMethodEnum.Changed, modifiedCall))),
+                    new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(300, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCallEntity>>()));
+            _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCallEntity>()).Returns(callObservable);
             SetupPhoneCallActivityPresenterFactory(call);
             SetupPhoneCallActivityPresenterFactory(modifiedCall);
             ((IActivate)_subject).Activate();
@@ -220,21 +221,21 @@
             _subject.Items.First().Model.BackingModel.Should().Be(modifiedCall);
         }
 
-        private void SetupClippingActivityPresenterFactory(ClippingModel model)
+        private void SetupClippingActivityPresenterFactory(ClippingEntity entity)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Clipping).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(entity).WithType(ActivityTypeEnum.Clipping).Build();
 
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
+            _mockActivityPresenterFactory.Setup(m => m.Create(entity)).Returns(Observable.Return(activityPresenter));
         }
 
-        private void SetupPhoneCallActivityPresenterFactory(PhoneCall model)
+        private void SetupPhoneCallActivityPresenterFactory(PhoneCallEntity model)
         {
             var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
-        private void SetupSmsMessageActivityPresenterFactory(SmsMessage model)
+        private void SetupSmsMessageActivityPresenterFactory(SmsMessageEntity model)
         {
             var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
 

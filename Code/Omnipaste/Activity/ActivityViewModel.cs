@@ -8,6 +8,7 @@ namespace Omnipaste.Activity
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;

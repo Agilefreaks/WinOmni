@@ -1,17 +1,18 @@
 ﻿namespace OmnipasteTests.Helpers
 {
     using System;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using SMS.Models;
 
-    public class TestSmsMessage : SmsMessage
+    public class TestSmsMessageEntity : SmsMessageEntity
     {
-        public TestSmsMessage(SmsMessageDto smsMessageDto)
+        public TestSmsMessageEntity(SmsMessageDto smsMessageDto)
             : base(smsMessageDto)
         {
         }
 
-        public TestSmsMessage()
+        public TestSmsMessageEntity()
             : base(new SmsMessageDto())
         {
         }

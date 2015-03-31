@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Contacts.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
@@ -18,14 +19,14 @@
 
         #region IContactFactory Members
 
-        public IObservable<ContactInfo> Create(ContactDto contactDto)
+        public IObservable<ContactEntity> Create(ContactDto contactDto)
         {
             return Create(contactDto, null);
         }
 
-        public IObservable<ContactInfo> Create(ContactDto contactDto, DateTime? lastActivityTime)
+        public IObservable<ContactEntity> Create(ContactDto contactDto, DateTime? lastActivityTime)
         {
-            var contactInfo = new ContactInfo(contactDto);
+            var contactInfo = new ContactEntity(contactDto);
 
             return
                 _contactRepository.CreateIfNone(

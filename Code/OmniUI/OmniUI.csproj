@@ -119,8 +119,8 @@
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Framework\Commands\IObservableCommand.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\IModel.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>

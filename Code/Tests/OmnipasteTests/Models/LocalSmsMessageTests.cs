@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using SMS.Models;
 
@@ -11,7 +12,7 @@
         [Test]
         public void Source_Always_ReturnsRemote()
         {
-            new RemoteSmsMessage(new SmsMessageDto()).Source.Should().Be(SourceType.Remote);
+            new RemoteSmsMessageEntity(new SmsMessageDto()).Source.Should().Be(SourceType.Remote);
         }
     }
 }

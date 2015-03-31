@@ -3,9 +3,9 @@ namespace Omnipaste.Services
     using System;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
-    using OmniUI.Models;
+    using OmniUI.Entities;
 
-    public class UpdateInfo : BaseModel
+    public class UpdateInfo : Entity
     {
         public bool WasInstalled { get; set; }
 

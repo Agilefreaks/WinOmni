@@ -6,9 +6,9 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;

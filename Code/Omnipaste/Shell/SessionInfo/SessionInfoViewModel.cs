@@ -136,7 +136,7 @@
 
         private void UpdateUserInfo(UserInfo userInfo)
         {
-            UserInfo = new ContactInfoPresenter(new UserContactInfo(userInfo));
+            UserInfo = new ContactInfoPresenter(new UserContactEntity(userInfo));
         }
 
         #endregion

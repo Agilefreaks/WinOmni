@@ -9,7 +9,7 @@
     using Akavache.Sqlite3;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
-    using OmniUI.Models;
+    using OmniUI.Entities;
     using Splat;
 
     public class SecurePermanentRepository : BaseRepositroy
@@ -97,7 +97,7 @@
     }
 
     public abstract class SecurePermanentRepository<T> : BaseRepository<T>
-        where T : BaseModel
+        where T : Entity
     {
         private readonly SecurePermanentRepository _underlyingRepository;
 

@@ -1,15 +1,16 @@
 ﻿namespace Omnipaste.NotificationList
 {
     using System;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Notification;
 
     public interface INotificationViewModelFactory
     {
-        IObservable<INotificationViewModel> Create(ClippingModel clipping);
+        IObservable<INotificationViewModel> Create(ClippingEntity clipping);
 
-        IObservable<INotificationViewModel> Create(RemotePhoneCall phoneCall);
+        IObservable<INotificationViewModel> Create(RemotePhoneCallEntity phoneCallEntity);
 
-        IObservable<INotificationViewModel> Create(RemoteSmsMessage smsMessage);
+        IObservable<INotificationViewModel> Create(RemoteSmsMessageEntity smsMessageEntity);
     }
 }

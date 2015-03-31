@@ -1,9 +1,9 @@
 namespace OmnipasteTests.Helpers
 {
     using Omnipaste.Models;
-    using OmniUI.Models;
+    using OmniUI.Entities;
 
-    public class TestModel : BaseModel
+    public class TestModel : Entity
     {
     }
 }

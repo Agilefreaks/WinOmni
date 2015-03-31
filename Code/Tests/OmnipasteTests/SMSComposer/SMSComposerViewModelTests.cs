@@ -11,6 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -32,7 +33,7 @@
 
         private Mock<IConfigurationService> _mockConfigurationService;
 
-        private ContactInfo _contactInfo;
+        private ContactEntity _contactEntity;
 
         [SetUp]
         public void Setup()
@@ -40,7 +41,7 @@
             _mockSMSMessages = new Mock<ISMSMessages>();
             _mockSmsMessageFactory = new Mock<ISmsMessageFactory>();
             _mockConfigurationService = new Mock<IConfigurationService>();
-            _contactInfo = new ContactInfo
+            _contactEntity = new ContactEntity
                                {
                                    PhoneNumbers = new List<PhoneNumber> { new PhoneNumber { Number = "1234" } },
                                    FirstName = "F",
@@ -48,7 +49,7 @@
                                };
             _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockConfigurationService.Object)
                            {
-                               Recipients = new ObservableCollection<ContactInfoPresenter> { new ContactInfoPresenter(_contactInfo) },
+                               Recipients = new ObservableCollection<ContactInfoPresenter> { new ContactInfoPresenter(_contactEntity) },
                                SmsMessageFactory = _mockSmsMessageFactory.Object
                            };
             _testScheduler = new TestScheduler();
@@ -88,10 +89,10 @@
                 new Recorded<Notification<SmsMessageDto>>(100, Notification.CreateOnNext(new SmsMessageDto())),
                 new Recorded<Notification<SmsMessageDto>>(200, Notification.CreateOnCompleted<SmsMessageDto>()));
             var createObservable = _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<LocalSmsMessage>>(100, Notification.CreateOnNext(new LocalSmsMessage())));
+                    new Recorded<Notification<LocalSmsMessageEntity>>(100, Notification.CreateOnNext(new LocalSmsMessageEntity())));
             _subject.Message = "test";
             _mockSMSMessages.Setup(x => x.Send(new List<string>{"1234"}, "test")).Returns(sendObservable);
-            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessage>(It.IsAny<SmsMessageDto>())).Returns(createObservable);
+            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessageEntity>(It.IsAny<SmsMessageDto>())).Returns(createObservable);
 
             _subject.Send();
             _testScheduler.Start();
@@ -106,15 +107,15 @@
             const string Content = "Test";
             var sendObservable = Observable.Return(new SmsMessageDto { Content = Content }, _testScheduler);
             _mockSMSMessages.Setup(x => x.Send(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(sendObservable);
-            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessage>(It.IsAny<SmsMessageDto>())).Returns(Observable.Empty<LocalSmsMessage>());
+            _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessageEntity>(It.IsAny<SmsMessageDto>())).Returns(Observable.Empty<LocalSmsMessageEntity>());
             _subject.Message = Content;
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
 
             _subject.Send();
             _testScheduler.Start();
 
-            _mockSmsMessageFactory.Verify(x => x.Create<LocalSmsMessage>(It.Is<SmsMessageDto>(m => m.Content == Content)), Times.Exactly(3));
+            _mockSmsMessageFactory.Verify(x => x.Create<LocalSmsMessageEntity>(It.Is<SmsMessageDto>(m => m.Content == Content)), Times.Exactly(3));
         }
     }
 }

@@ -2,6 +2,7 @@ namespace Omnipaste.Services.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public class SmsMessageRepository : ConversationRepository, ISmsMessageRepository
@@ -13,36 +14,36 @@ namespace Omnipaste.Services.Repositories
 
         #region IPhoneCallRepository Members
 
-        public IObservable<RepositoryOperation<SmsMessage>> GetOperationObservable()
+        public IObservable<RepositoryOperation<SmsMessageEntity>> GetOperationObservable()
         {
-            return base.GetOperationObservable<SmsMessage, LocalSmsMessage, RemoteSmsMessage>();
+            return base.GetOperationObservable<SmsMessageEntity, LocalSmsMessageEntity, RemoteSmsMessageEntity>();
         }
 
-        public IObservable<RepositoryOperation<SmsMessage>> Delete(string id)
+        public IObservable<RepositoryOperation<SmsMessageEntity>> Delete(string id)
         {
-            return base.Delete<SmsMessage, LocalSmsMessage, RemoteSmsMessage>(id);
+            return base.Delete<SmsMessageEntity, LocalSmsMessageEntity, RemoteSmsMessageEntity>(id);
         }
 
-        public IObservable<IEnumerable<SmsMessage>> GetAll()
+        public IObservable<IEnumerable<SmsMessageEntity>> GetAll()
         {
-            return base.GetAll<SmsMessage, LocalSmsMessage, RemoteSmsMessage>();
+            return base.GetAll<SmsMessageEntity, LocalSmsMessageEntity, RemoteSmsMessageEntity>();
         }
 
-        public IObservable<IEnumerable<SmsMessage>> GetForContact(ContactInfo contactInfo)
+        public IObservable<IEnumerable<SmsMessageEntity>> GetForContact(ContactEntity contactEntity)
         {
-            return base.GetForContact<SmsMessage, LocalSmsMessage, RemoteSmsMessage>(contactInfo);
+            return base.GetForContact<SmsMessageEntity, LocalSmsMessageEntity, RemoteSmsMessageEntity>(contactEntity);
         }
 
         #endregion
 
-        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetConversationForContact(ContactInfo contactInfo)
+        IObservable<IEnumerable<ConversationEntity>> IConversationRepository.GetConversationForContact(ContactEntity contactEntity)
         {
-            return GetForContact(contactInfo);
+            return GetForContact(contactEntity);
         }
 
         public override IObservable<RepositoryOperation<T>> Save<T>(T item)
         {
-            return base.Save<T, LocalSmsMessage, RemoteSmsMessage>(item);
+            return base.Save<T, LocalSmsMessageEntity, RemoteSmsMessageEntity>(item);
         }
     }
 }

@@ -3,6 +3,7 @@
     using System;
     using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Properties;

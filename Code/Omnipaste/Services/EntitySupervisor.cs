@@ -10,6 +10,7 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
@@ -66,17 +67,17 @@
             _subscriptions.Add(
                 ClipboardHandler.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingModel(clipping))));
+                    .SubscribeAndHandleErrors(clipping => ClippingRepository.Save(new ClippingEntity(clipping))));
 
             _subscriptions.Add(
-                PhoneCallReceivedHandler.Select(PhoneCallFactory.Create<RemotePhoneCall>)
+                PhoneCallReceivedHandler.Select(PhoneCallFactory.Create<RemotePhoneCallEntity>)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors());
 
             _subscriptions.Add(
-                SmsMessageCreatedHandler.Select(SmsMessageFactory.Create<RemoteSmsMessage>)
+                SmsMessageCreatedHandler.Select(SmsMessageFactory.Create<RemoteSmsMessageEntity>)
                     .Switch()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)

@@ -10,6 +10,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ClippingList;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -55,11 +56,11 @@
         {
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100,
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(100,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, new ClippingModel()))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200,
-                        Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, new ClippingEntity()))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(200,
+                        Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -72,12 +73,12 @@
         public void RemovingAClipping_AfterActivateWhenClippingWasPreviouslyReceived_RemovesViewModelForClipping()
         {
             const string SourceId = "42";
-            var clippingModel = new ClippingModel { UniqueId = SourceId };
+            var clippingModel = new ClippingEntity { UniqueId = SourceId };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Delete, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Delete, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -91,13 +92,13 @@
         public void UpdatingAClipping_AfterActivateWhenClippingWasPreviouslyReceived_UpdatesViewModelWithNewClipping()
         {
             const string SourceId = "42";
-            var clippingModel = new ClippingModel { UniqueId = SourceId };
-            var modifiedClipping = new ClippingModel { UniqueId = SourceId, Content = "Test" };
+            var clippingModel = new ClippingEntity { UniqueId = SourceId };
+            var modifiedClipping = new ClippingEntity { UniqueId = SourceId, Content = "Test" };
             var clippingOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, clippingModel))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, modifiedClipping))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingModel>>()));
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, clippingModel))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(200, Notification.CreateOnNext(new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, modifiedClipping))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(300, Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
             ((IActivate)_subject).Activate();
 
@@ -111,8 +112,8 @@
         [Test]
         public void FilteredItems_NoFilterIsApplied_ReturnsAllItems()
         {
-            var clippingPresenter1 = new ClippingPresenter(new ClippingModel { Content = "test1" });
-            var clippingPresenter2 = new ClippingPresenter(new ClippingModel { Content = "Other" });
+            var clippingPresenter1 = new ClippingPresenter(new ClippingEntity { Content = "test1" });
+            var clippingPresenter2 = new ClippingPresenter(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
@@ -123,8 +124,8 @@
         [Test]
         public void FilteredItems_WhenFilterTextHasValue_FiltersItemsByContentContainingText()
         {
-            var clippingPresenter1 = new ClippingPresenter(new ClippingModel { Content = "test1" });
-            var clippingPresenter2 = new ClippingPresenter(new ClippingModel { Content = "Other" });
+            var clippingPresenter1 = new ClippingPresenter(new ClippingEntity { Content = "test1" });
+            var clippingPresenter2 = new ClippingPresenter(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
@@ -197,10 +198,10 @@
 
         private void AddClippingsWithFilterCombinations()
         {
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingModel { Content = "1", IsStarred = false, Source = Clipping.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingModel { Content = "2", IsStarred = true, Source = Clipping.ClippingSourceEnum.Local })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingModel { Content = "3", IsStarred = true, Source = Clipping.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingModel { Content = "4", IsStarred = false, Source = Clipping.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "1", IsStarred = false, Source = Clipping.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "2", IsStarred = true, Source = Clipping.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "3", IsStarred = true, Source = Clipping.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "4", IsStarred = false, Source = Clipping.ClippingSourceEnum.Local })});
         }
     }
 }

@@ -10,14 +10,14 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Activity;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.NewMessage;
-    using Omnipaste.Workspaces.NewMessage.Activity;
+    using Omnipaste.Workspaces.Activity;
     using OmniUI.Workspace;
 
     [TestFixture]
@@ -42,7 +42,7 @@
         {
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
-            _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactInfo()));
+            _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactEntity()));
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _activityPresenterFactory = new ActivityPresenterFactory(_mockContactRepository.Object);
@@ -66,7 +66,7 @@
         [Test]
         public void ActivityType_Always_ReturnTheModelType()
         {
-            _subject.Model = _activityPresenterFactory.Create(new ClippingModel()).Wait();
+            _subject.Model = _activityPresenterFactory.Create(new ClippingEntity()).Wait();
 
             _subject.ActivityType.Should().Be(_subject.Model.Type);
         }
@@ -74,7 +74,7 @@
         [Test]
         public void IsSelected_WhenValueIsCurrentModelUniqueId_ReturnsTrue()
         {
-            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCall()).Wait();
+            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCallEntity()).Wait();
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns(_subject.Model.BackingModel.UniqueId);
 
             _subject.IsSelected.Should().BeTrue();
@@ -83,7 +83,7 @@
         [Test]
         public void IsSelected_WhenValueIsOtherThanCurrentModelUniqueId_ReturnsFalse()
         {
-            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCall()).Wait();
+            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCallEntity()).Wait();
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey]).Returns("other");
 
             _subject.IsSelected.Should().BeFalse();
@@ -125,7 +125,7 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
-            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCall()).Wait();
+            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCallEntity()).Wait();
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -139,7 +139,7 @@
         [Test]
         public void ShowDetails_Always_SavesCurrentItemAsSelection()
         {
-            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCall()).Wait();
+            _subject.Model = _activityPresenterFactory.Create(new LocalPhoneCallEntity()).Wait();
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
@@ -153,7 +153,7 @@
         [Test]
         public void ShowDetails_WhenDetailsIsActive_SetsContentInfoStateToViewing()
         {
-            var activity = _activityPresenterFactory.Create(new ClippingModel { WasViewed = true }).Wait();
+            var activity = _activityPresenterFactory.Create(new ClippingEntity { WasViewed = true }).Wait();
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -174,7 +174,7 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasViewed_SetsContentInfoStateToViewing()
         {
-            var activity = _activityPresenterFactory.Create(new ClippingModel { WasViewed = true }).Wait();
+            var activity = _activityPresenterFactory.Create(new ClippingEntity { WasViewed = true }).Wait();
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -195,7 +195,7 @@
         [Test]
         public void ShowDetails_WhenDetailsIsNotActiveAndModelWasNotViewed_SetsContentInfoStateToViewing()
         {
-            var activity = _activityPresenterFactory.Create(new ClippingModel { DeviceId = "42", WasViewed = false }).Wait();
+            var activity = _activityPresenterFactory.Create(new ClippingEntity { DeviceId = "42", WasViewed = false }).Wait();
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
@@ -215,7 +215,7 @@
         [Test]
         public void ShowDetails_WhenModelIsClipping_SetsContentInfoTypeToClipping()
         {
-            var activity = _activityPresenterFactory.Create(new ClippingModel { DeviceId = "42", WasViewed = false }).Wait();
+            var activity = _activityPresenterFactory.Create(new ClippingEntity { DeviceId = "42", WasViewed = false }).Wait();
             _subject.Model = activity;
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();

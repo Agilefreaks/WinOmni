@@ -4,15 +4,16 @@
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using PhoneCalls.Models;
 
     [TestFixture]
     public class PhoneCallTests
     {
-        private class TestPhoneCall : PhoneCall
+        private class TestPhoneCallEntity : PhoneCallEntity
         {
-            public TestPhoneCall(PhoneCallDto phoneCallDto)
+            public TestPhoneCallEntity(PhoneCallDto phoneCallDto)
                 : base(phoneCallDto)
             {
             }
@@ -35,14 +36,14 @@
         [Test]
         public void CtorWithCall_AlwaysAssignsAUniqueId()
         {
-            new TestPhoneCall(new PhoneCallDto()).UniqueId.Should().NotBeNullOrEmpty();
+            new TestPhoneCallEntity(new PhoneCallDto()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
         public void CtorWithCall_AlwaysCopiesId()
         {
             const string Id = "42";
-            new TestPhoneCall(new PhoneCallDto { Id = Id }).Id.Should().Be(Id);
+            new TestPhoneCallEntity(new PhoneCallDto { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
@@ -50,7 +51,7 @@
         {
             var dateTime = new DateTime(2014, 1,1);
             TimeHelper.UtcNow = dateTime;
-            new TestPhoneCall(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
+            new TestPhoneCallEntity(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
     }
 }

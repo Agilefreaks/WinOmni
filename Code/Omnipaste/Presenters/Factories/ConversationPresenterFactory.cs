@@ -2,6 +2,7 @@ namespace Omnipaste.Presenters.Factories
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
@@ -16,7 +17,7 @@ namespace Omnipaste.Presenters.Factories
 
         public IObservable<TPresenter> Create<TPresenter, TModel>(TModel model)
             where TPresenter : IConversationPresenter
-            where TModel : ConversationBaseModel
+            where TModel : ConversationEntity
         {
             var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
             return ContactRepository.Get(model.ContactInfoUniqueId).Select(c => (TPresenter)presenter.SetContactInfoPresenter(new ContactInfoPresenter(c)));

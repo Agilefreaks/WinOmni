@@ -11,6 +11,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services;
@@ -101,7 +102,7 @@
             _subject.Start();
             _testScheduler.Start(() => clippingObservable);
 
-            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingModel>(c => c.Id == Id)));
+            _mockClippingRepository.Verify(m => m.Save(It.Is<ClippingEntity>(c => c.Id == Id)));
         }
 
         [Test]

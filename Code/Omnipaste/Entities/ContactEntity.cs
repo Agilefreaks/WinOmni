@@ -1,25 +1,26 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Contacts.Models;
-    using OmniUI.Models;
+    using Omnipaste.Models;
+    using OmniUI.Entities;
 
-    public class ContactInfo : BaseModel
+    public class ContactEntity : Entity
     {
         public const string NamePartSeparator = " ";
 
         private DateTime? _lastActivityTime;
 
-        public ContactInfo()
+        public ContactEntity()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
             PhoneNumbers = new List<PhoneNumber>();
         }
 
-        public ContactInfo(ContactDto contactDto)
+        public ContactEntity(ContactDto contactDto)
             : this()
         {
             UniqueId = contactDto.Id;
@@ -78,28 +79,44 @@
             return string.Join(NamePartSeparator, Name, PhoneNumber);
         }
 
-        public ContactInfo SetUniqueId(string uniqueId)
+        public ContactEntity SetUniqueId(string uniqueId)
         {
             UniqueId = uniqueId;
             return this;
         }
 
-        public ContactInfo SetLastActivityTime(DateTime? lastActivityTime)
+        public ContactEntity SetLastActivityTime(DateTime? lastActivityTime)
         {
             LastActivityTime = lastActivityTime;
             return this;
         }
 
-        public ContactInfo AddPhoneNumber(String phoneNumber)
+        public ContactEntity AddPhoneNumber(String phoneNumber)
         {
             PhoneNumbers.Add(new PhoneNumber(phoneNumber));
             return this;
         }
 
-        public ContactInfo SetContactId(int? contactId)
+        public ContactEntity SetContactId(int? contactId)
         {
             ContactId = contactId ?? default(int);
             return this;
         }
+    }
+
+    public class PhoneNumber
+    {
+        public PhoneNumber()
+        {
+        }
+
+        public PhoneNumber(string number)
+        {
+            Number = number;
+        }
+
+        public string Number { get; set; }
+
+        public string Type { get; set; }
     }
 }

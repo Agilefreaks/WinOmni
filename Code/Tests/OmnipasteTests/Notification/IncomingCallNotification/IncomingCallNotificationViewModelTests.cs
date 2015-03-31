@@ -11,6 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Notification;
@@ -54,7 +55,7 @@
         public void EndCall_EndsThePhoneCallCorespondingToTheAssociatedResource()
         {
             const string ResourceId = "someId";
-            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCall { Id = ResourceId });
+            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCallEntity { Id = ResourceId });
             
             _subject.EndCall();
 
@@ -64,8 +65,8 @@
         [Test]
         public void ReplyWithSms_Always_ExecutesComposeSMSCommand()
         {
-            var contactInfoPresenter = new ContactInfoPresenter(new ContactInfo());
-            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCall()) { ContactInfoPresenter = contactInfoPresenter };
+            var contactInfoPresenter = new ContactInfoPresenter(new ContactEntity());
+            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCallEntity()) { ContactInfoPresenter = contactInfoPresenter };
             _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>())).Returns(Observable.Return(new Unit()));
             var testScheduler = new TestScheduler();
             SchedulerProvider.Dispatcher = testScheduler;

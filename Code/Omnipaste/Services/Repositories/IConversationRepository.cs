@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public interface IConversationRepository : IReporsitory
     {
-        IObservable<IEnumerable<ConversationBaseModel>> GetConversationForContact(ContactInfo contactInfo);
+        IObservable<IEnumerable<ConversationEntity>> GetConversationForContact(ContactEntity contactEntity);
     }
 }

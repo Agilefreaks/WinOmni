@@ -2,6 +2,7 @@ namespace Omnipaste.Services.Providers
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
@@ -28,7 +29,7 @@ namespace Omnipaste.Services.Providers
             return
                 SmsMessageRepository.GetOperationObservable()
                     .OnMethod(method)
-                    .Where(o => o.Item is LocalSmsMessage)
+                    .Where(o => o.Item is LocalSmsMessageEntity)
                     .Select(o => SMSMessagePresenterFactory.Create(o.Item))
                     .Merge();
         }

@@ -5,6 +5,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -36,7 +37,7 @@
         public void Activate_WhenModelWasNotViewed_DismissesNotificationForActivity()
         {
             const string Identifier = "42";
-            var activity = new ClippingPresenter(new ClippingModel { UniqueId = Identifier, WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingEntity { UniqueId = Identifier, WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -47,7 +48,7 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SetsModelWasViewedToTrue()
         {
-            var activity = new ClippingPresenter(new ClippingModel { WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingEntity { WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -58,7 +59,7 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SavesModel()
         {
-            var activity = new ClippingPresenter(new ClippingModel { WasViewed = false });
+            var activity = new ClippingPresenter(new ClippingEntity { WasViewed = false });
             _subject.Model = activity;
             
             ((IActivate)_subject).Activate();

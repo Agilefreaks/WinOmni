@@ -7,13 +7,12 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ClippingList;
-    using Omnipaste.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.NewMessage;
-    using Omnipaste.Workspaces.NewMessage.Clippings;
+    using Omnipaste.Workspaces.Clippings;
     using OmniUI.Workspace;
 
     [TestFixture]
@@ -45,7 +44,7 @@
                                                        DefaultValue.Mock
                                                };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
-            _clippingPresenter = new ClippingPresenter(new ClippingModel { Content = "Test" });
+            _clippingPresenter = new ClippingPresenter(new ClippingEntity { Content = "Test" });
             _subject = new ClippingViewModel(_mockSessionManager.Object)
                            {
                                Model = _clippingPresenter,
@@ -107,7 +106,7 @@
 
             _clippingPresenter.IsStarred = false;
 
-            _mockClippingRepository.Verify(m => m.Save(It.IsAny<ClippingModel>()), Times.Never());
+            _mockClippingRepository.Verify(m => m.Save(It.IsAny<ClippingEntity>()), Times.Never());
         }
 
         [Test]

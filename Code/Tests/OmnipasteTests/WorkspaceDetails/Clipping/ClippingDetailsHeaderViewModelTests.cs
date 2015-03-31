@@ -4,6 +4,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
@@ -22,7 +23,7 @@
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ClippingDetailsHeaderViewModel
                            {
-                               Model = new ClippingPresenter(new ClippingModel { UniqueId = "42" }),
+                               Model = new ClippingPresenter(new ClippingEntity { UniqueId = "42" }),
                                ClippingRepository = _mockClippingRepository.Object
                            };
         }
@@ -30,18 +31,18 @@
         [Test]
         public void DeleteClipping_WhenClippingExists_MarksCurrentClippingAsDeleted()
         {
-            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingModel()));
+            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingEntity()));
 
             _subject.DeleteClipping();
 
-            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingModel));
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingEntity));
             _subject.Model.BackingModel.IsDeleted.Should().BeTrue();
         }
 
         [Test]
         public void DeleteClipping_WhenClippingExists_SetsViewModelStateToDeleted()
         {
-            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingModel()));
+            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingEntity()));
 
             _subject.DeleteClipping();
 
@@ -59,11 +60,11 @@
         [Test]
         public void UndoDelete_WhenClippingIsMarkedAsDeleted_MarksCurrentClippingAsNotDeleted()
         {
-            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingModel { IsDeleted = true }));
+            _mockClippingRepository.Setup(m => m.Get("42")).Returns(Observable.Return(new ClippingEntity { IsDeleted = true }));
 
             _subject.UndoDelete();
 
-            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingModel));
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingEntity));
             _subject.Model.BackingModel.IsDeleted.Should().BeFalse();
         }
     }

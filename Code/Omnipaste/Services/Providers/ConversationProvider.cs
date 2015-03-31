@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Services.Providers
 {
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Repositories;
@@ -28,9 +29,9 @@
 
         #region IConversationProvider Members
 
-        public IConversationContext ForContact(ContactInfo contactInfo)
+        public IConversationContext ForContact(ContactEntity contactEntity)
         {
-            return new ContactConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory, contactInfo);
+            return new ContactConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory, contactEntity);
         }
 
         public IConversationContext All()

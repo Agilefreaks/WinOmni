@@ -2,12 +2,13 @@ namespace Omnipaste.Presenters.Factories
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
     public interface IPhoneCallPresenterFactory
     {
-        IObservable<IConversationPresenter> Create(PhoneCall phoneCall);
+        IObservable<IConversationPresenter> Create(PhoneCallEntity phoneCallEntity);
     }
 
     public class PhoneCallPresenterFactory : ConversationPresenterFactory, IPhoneCallPresenterFactory
@@ -17,15 +18,15 @@ namespace Omnipaste.Presenters.Factories
         {
         }
 
-        public IObservable<IConversationPresenter> Create(PhoneCall phoneCall)
+        public IObservable<IConversationPresenter> Create(PhoneCallEntity phoneCallEntity)
         {
-            return ContactRepository.Get(phoneCall.ContactInfoUniqueId).Select(
+            return ContactRepository.Get(phoneCallEntity.ContactInfoUniqueId).Select(
                 ci =>
                     {
-                        var localPhoneCall = phoneCall as LocalPhoneCall;
+                        var localPhoneCall = phoneCallEntity as LocalPhoneCallEntity;
                         var phoneCallPresenter = localPhoneCall != null ? 
                             (PhoneCallPresenter)new LocalPhoneCallPresenter(localPhoneCall) : 
-                            new RemotePhoneCallPresenter((RemotePhoneCall)phoneCall);
+                            new RemotePhoneCallPresenter((RemotePhoneCallEntity)phoneCallEntity);
                         phoneCallPresenter.ContactInfoPresenter = new ContactInfoPresenter(ci);
 
                         return phoneCallPresenter;

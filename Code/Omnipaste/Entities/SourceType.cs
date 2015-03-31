@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     public enum SourceType
     {

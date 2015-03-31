@@ -2,16 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public interface IPhoneCallRepository : IConversationRepository
     {
-        IObservable<IEnumerable<PhoneCall>> GetAll();
+        IObservable<IEnumerable<PhoneCallEntity>> GetAll();
 
-        IObservable<IEnumerable<PhoneCall>> GetForContact(ContactInfo contactInfo);
+        IObservable<IEnumerable<PhoneCallEntity>> GetForContact(ContactEntity contactEntity);
 
-        IObservable<RepositoryOperation<PhoneCall>> GetOperationObservable();
+        IObservable<RepositoryOperation<PhoneCallEntity>> GetOperationObservable();
 
-        IObservable<RepositoryOperation<PhoneCall>> Delete(string id);
+        IObservable<RepositoryOperation<PhoneCallEntity>> Delete(string id);
     }
 }

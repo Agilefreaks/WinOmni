@@ -12,6 +12,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -55,7 +56,7 @@
                     context => new MessageViewModel(_mockUiRefreshService.Object, _mockConfigurationService.Object));
             _mockConversationProvider = new Mock<IConversationProvider> { DefaultValue = DefaultValue.Mock };
             _mockConversationContext = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            _mockConversationProvider.Setup(x => x.ForContact(It.IsAny<ContactInfo>()))
+            _mockConversationProvider.Setup(x => x.ForContact(It.IsAny<ContactEntity>()))
                 .Returns(_mockConversationContext.Object);
             _mockEventAggregator = new Mock<IEventAggregator> { DefaultValue = DefaultValue.Mock };
             _subject = new ConversationContentViewModel(_mockConversationProvider.Object)
@@ -76,10 +77,10 @@
         [Test]
         public void OnActivate_Always_AddsACallViewModelForEachCallInTheConversation()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "42" });
-            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "43" });
+            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "42" });
+            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "43" });
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();
@@ -91,9 +92,9 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_MarksCallAsViewed()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new LocalPhoneCallPresenter(new LocalPhoneCall { UniqueId = "42" });
+            var call = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -106,9 +107,9 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_DismissesNotificationForCall()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new LocalPhoneCallPresenter(new LocalPhoneCall { UniqueId = "42" });
+            var call = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -124,9 +125,9 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_SavesCall()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call = new LocalPhoneCallPresenter(new LocalPhoneCall { UniqueId = "42" });
+            var call = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
             ((IActivate)_subject).Activate();
@@ -138,8 +139,8 @@
         [Test]
         public void ACallAppearsInTheConversation_ViewModelWasActivated_AddsACallViewModel()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCall());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCallEntity());
 
             var callObservable =
                 _testScheduler.CreateColdObservable(
@@ -158,8 +159,8 @@
         [Test]
         public void ACallAppearsInTheConversation_ViewModelIsActive_MarksCallAsViewed()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var callFromContact = new RemotePhoneCallPresenter(new RemotePhoneCall());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var callFromContact = new RemotePhoneCallPresenter(new RemotePhoneCallEntity());
             var callObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(
@@ -177,9 +178,9 @@
         [Test]
         public void OnActivate_Always_AddsAMessageViewModelForEachMessageInTheConversation()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var message1 = new RemoteSmsMessagePresenter(new RemoteSmsMessage());
-            var message2 = new LocalSmsMessagePresenter(new LocalSmsMessage());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var message1 = new RemoteSmsMessagePresenter(new RemoteSmsMessageEntity());
+            var message2 = new LocalSmsMessagePresenter(new LocalSmsMessageEntity());
             SetupGetConversationItems(message1, message2);
 
             ((IActivate)_subject).Activate();
@@ -191,8 +192,8 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelIsActive_MarksMessageAsViewed()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var messageFromContact = new RemoteSmsMessagePresenter(new RemoteSmsMessage());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var messageFromContact = new RemoteSmsMessagePresenter(new RemoteSmsMessageEntity());
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(
@@ -210,8 +211,8 @@
         [Test]
         public void AMessageAppearsInTheConversation_ViewModelWasActivated_AddsAMessageViewModel()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var messageFromContact = new LocalSmsMessagePresenter(new LocalSmsMessage());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var messageFromContact = new LocalSmsMessagePresenter(new LocalSmsMessageEntity());
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(
@@ -230,12 +231,12 @@
         [Test]
         public void OnActivate_Always_OrdersItemsForMessagesAndCallsAccordingToTheirTime()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
             var baseTime = DateTime.Now;
-            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "42", Time = baseTime });
-            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "43", Time = baseTime.Add(TimeSpan.FromSeconds(10)) });
-            var message1 = new LocalSmsMessagePresenter(new LocalSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(5)) });
-            var message2 = new RemoteSmsMessagePresenter(new RemoteSmsMessage { Time = baseTime.Add(TimeSpan.FromSeconds(15)) });
+            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "42", Time = baseTime });
+            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "43", Time = baseTime.Add(TimeSpan.FromSeconds(10)) });
+            var message1 = new LocalSmsMessagePresenter(new LocalSmsMessageEntity { Time = baseTime.Add(TimeSpan.FromSeconds(5)) });
+            var message2 = new RemoteSmsMessagePresenter(new RemoteSmsMessageEntity { Time = baseTime.Add(TimeSpan.FromSeconds(15)) });
             SetupGetConversationItems(call1, call2, message1, message2);
 
             ((IActivate)_subject).Activate();
@@ -253,10 +254,10 @@
         [Test]
         public void OnActivate_PreviousActivationOccured_DoesNotAddViewModelsMultipleTimes()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             _subject.Model = new ContactInfoPresenter(contactInfo);
-            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "42" });
-            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCall { Id = "43" });
+            var call1 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "42" });
+            var call2 = new LocalPhoneCallPresenter(new LocalPhoneCallEntity { Id = "43" });
             SetupGetConversationItems(call1, call2);
 
             ((IActivate)_subject).Activate();
@@ -271,8 +272,8 @@
         [Test]
         public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_AddsACorrespondingChildViewModel()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCall());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCallEntity());
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(
@@ -291,8 +292,8 @@
         [Test]
         public void AConversationIsCreated_ViewModelWasActivatedButIsNotActive_DoesNotMarkTheItemAsViewed()
         {
-            _subject.Model = new ContactInfoPresenter(new ContactInfo());
-            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCall());
+            _subject.Model = new ContactInfoPresenter(new ContactEntity());
+            var callFromContact = new LocalPhoneCallPresenter(new LocalPhoneCallEntity());
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(

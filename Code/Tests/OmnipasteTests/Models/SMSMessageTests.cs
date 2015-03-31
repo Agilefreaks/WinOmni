@@ -20,14 +20,14 @@
         [Test]
         public void CtorWithMessage_AlwaysAssignsAUniqueId()
         {
-            new TestSmsMessage(new SmsMessageDto()).UniqueId.Should().NotBeNullOrEmpty();
+            new TestSmsMessageEntity(new SmsMessageDto()).UniqueId.Should().NotBeNullOrEmpty();
         }
 
         [Test]
         public void CtorWithMessage_AlwaysCopiesId()
         {
             const string Id = "42";
-            new TestSmsMessage(new SmsMessageDto { Id = Id }).Id.Should().Be(Id);
+            new TestSmsMessageEntity(new SmsMessageDto { Id = Id }).Id.Should().Be(Id);
         }
 
         [Test]
@@ -35,7 +35,7 @@
         {
             var dateTime = new DateTime(2014, 1, 1);
             TimeHelper.UtcNow = dateTime;
-            new TestSmsMessage(new SmsMessageDto()).Time.Should().Be(dateTime.ToUniversalTime());
+            new TestSmsMessageEntity(new SmsMessageDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
     }
 }

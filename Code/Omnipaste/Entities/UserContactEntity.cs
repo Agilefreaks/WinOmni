@@ -2,10 +2,11 @@
 {
     using System;
     using OmniCommon.Models;
+    using Omnipaste.Entities;
 
-    public class UserContactInfo : ContactInfo
+    public class UserContactEntity : ContactEntity
     {
-        public UserContactInfo(UserInfo userInfo = null)
+        public UserContactEntity(UserInfo userInfo = null)
         {
             if (userInfo == null)
             {

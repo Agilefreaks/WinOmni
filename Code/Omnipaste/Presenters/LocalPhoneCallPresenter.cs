@@ -1,11 +1,12 @@
 ﻿namespace Omnipaste.Presenters
 {
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
-    public class LocalPhoneCallPresenter : PhoneCallPresenter<LocalPhoneCall>
+    public class LocalPhoneCallPresenter : PhoneCallPresenter<LocalPhoneCallEntity>
     {
-        public LocalPhoneCallPresenter(LocalPhoneCall phoneCall)
-            : base(phoneCall)
+        public LocalPhoneCallPresenter(LocalPhoneCallEntity phoneCallEntity)
+            : base(phoneCallEntity)
         {
         }
     }

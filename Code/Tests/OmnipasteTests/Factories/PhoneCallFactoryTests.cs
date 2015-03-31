@@ -11,6 +11,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
@@ -59,7 +60,7 @@
             {
                 var phoneCallDto = new PhoneCallDto { Number = "123", ContactId = 42 };
 
-                _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
+                _scheduler.Start(() => _subject.Create<LocalPhoneCallEntity>(phoneCallDto));
 
                 _mockContactFactory.Verify(cr => cr.Create(It.Is<ContactDto>(c => c.ContactId == 42 && c.PhoneNumbers.Any(pn => pn.Number == "123")), TimeHelper.UtcNow), Times.Once);                
             }
@@ -69,27 +70,27 @@
         public void Create_Always_SavesPhoneCall()
         {
             var phoneCallDto = new PhoneCallDto();
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
             var contactInfoObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
+                new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactFactory.Setup(m => m.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
-            _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
+            _scheduler.Start(() => _subject.Create<LocalPhoneCallEntity>(phoneCallDto));
 
-            _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<LocalPhoneCall>()), Times.Once);
+            _mockPhoneCallRepository.Verify(pcr => pcr.Save(It.IsAny<LocalPhoneCallEntity>()), Times.Once);
         }
 
         [Test]
         public void Create_SaveSuccesful_ReturnsTheSavedPhoneCall()
         {
             var phoneCallDto = new PhoneCallDto();
-            var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
+            var contactInfo = new ContactEntity();
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactFactory.Setup(m => m.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
-            var phoneCall = new LocalPhoneCall();
-            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<LocalPhoneCall>>>(100, Notification.CreateOnNext(new RepositoryOperation<LocalPhoneCall>(RepositoryMethodEnum.Changed, phoneCall))));
-            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<LocalPhoneCall>())).Returns(phoneCallObservable);
+            var phoneCall = new LocalPhoneCallEntity();
+            var phoneCallObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<LocalPhoneCallEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<LocalPhoneCallEntity>(RepositoryMethodEnum.Changed, phoneCall))));
+            _mockPhoneCallRepository.Setup(pcr => pcr.Save(It.IsAny<LocalPhoneCallEntity>())).Returns(phoneCallObservable);
 
-            var result = _scheduler.Start(() => _subject.Create<LocalPhoneCall>(phoneCallDto));
+            var result = _scheduler.Start(() => _subject.Create<LocalPhoneCallEntity>(phoneCallDto));
 
             result.Messages.First().Value.Value.Should().Be(phoneCall);
         }

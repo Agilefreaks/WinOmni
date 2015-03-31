@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Notification.HyperlinkNotification;
 
@@ -9,12 +10,12 @@
     {
         private HyperlinkNotificationViewModel _subject;
 
-        private ClippingModel _clipping;
+        private ClippingEntity _clipping;
 
         [SetUp]
         public void Setup()
         {
-            _clipping = new ClippingModel { Content = "test" };
+            _clipping = new ClippingEntity { Content = "test" };
             _subject = new HyperlinkNotificationViewModel
                            {
                                Resource = _clipping

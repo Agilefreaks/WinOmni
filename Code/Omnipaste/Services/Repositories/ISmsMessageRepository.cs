@@ -2,17 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public interface ISmsMessageRepository : IConversationRepository
     {
-        IObservable<IEnumerable<SmsMessage>> GetAll();
+        IObservable<IEnumerable<SmsMessageEntity>> GetAll();
 
-        IObservable<IEnumerable<SmsMessage>> GetForContact(ContactInfo contactInfo);
+        IObservable<IEnumerable<SmsMessageEntity>> GetForContact(ContactEntity contactEntity);
 
-        IObservable<RepositoryOperation<SmsMessage>> GetOperationObservable();
+        IObservable<RepositoryOperation<SmsMessageEntity>> GetOperationObservable();
 
-        IObservable<RepositoryOperation<SmsMessage>> Delete(string id);
+        IObservable<RepositoryOperation<SmsMessageEntity>> Delete(string id);
 
     }
 }

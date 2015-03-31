@@ -5,6 +5,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using Microsoft.Practices.ServiceLocation;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -29,11 +30,11 @@
             switch (activityPresenter.Type)
             {
                 case ActivityTypeEnum.Clipping:
-                    result = Create(activityPresenter.BackingModel as ClippingModel);
+                    result = Create(activityPresenter.BackingModel as ClippingEntity);
                     break;
                 case ActivityTypeEnum.Message:
                 case ActivityTypeEnum.Call:
-                    result = Create(activityPresenter.ContactInfo);
+                    result = Create(activityPresenter.ContactEntity);
                     break;
                 case ActivityTypeEnum.Version:
                     result = Create(activityPresenter.BackingModel as UpdateInfo);
@@ -45,9 +46,9 @@
             return result;
         }
 
-        public IWorkspaceDetailsViewModel Create(ContactInfo contactInfo)
+        public IWorkspaceDetailsViewModel Create(ContactEntity contactEntity)
         {
-            var contactInfoPresenter = new ContactInfoPresenter(contactInfo);
+            var contactInfoPresenter = new ContactInfoPresenter(contactEntity);
 
             return Create(new ObservableCollection<ContactInfoPresenter> { contactInfoPresenter });
         }
@@ -61,10 +62,10 @@
             return result;
         }
 
-        public IWorkspaceDetailsViewModel Create(ClippingModel clippingModel)
+        public IWorkspaceDetailsViewModel Create(ClippingEntity clippingEntity)
         {
             var result = _serviceLocator.GetInstance<IClippingDetailsViewModel>();
-            result.Model = new ClippingPresenter(clippingModel);
+            result.Model = new ClippingPresenter(clippingEntity);
 
             return result;
         }

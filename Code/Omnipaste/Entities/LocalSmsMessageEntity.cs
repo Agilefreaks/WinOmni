@@ -1,14 +1,15 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
+    using Omnipaste.Models;
     using SMS.Models;
 
-    public class LocalSmsMessage : SmsMessage
+    public class LocalSmsMessageEntity : SmsMessageEntity
     {
-        public LocalSmsMessage()
+        public LocalSmsMessageEntity()
         {
         }
 
-        public LocalSmsMessage(SmsMessageDto smsMessageDto)
+        public LocalSmsMessageEntity(SmsMessageDto smsMessageDto)
             : base(smsMessageDto)
         {
         }

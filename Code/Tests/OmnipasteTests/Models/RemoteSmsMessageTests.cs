@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using SMS.Models;
 
@@ -11,7 +12,7 @@
         [Test]
         public void Source_Always_ReturnsLocal()
         {
-            new LocalSmsMessage(new SmsMessageDto()).Source.Should().Be(SourceType.Local);
+            new LocalSmsMessageEntity(new SmsMessageDto()).Source.Should().Be(SourceType.Local);
         }
     }
 }

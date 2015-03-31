@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
@@ -15,34 +16,34 @@
             _contactRepository = contactRepository;
         }
 
-        public IObservable<ActivityPresenter> Create(ClippingModel clippingModel)
+        public IObservable<ActivityPresenter> Create(ClippingEntity clippingEntity)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(clippingModel)
+            var activityPresenter = ActivityPresenter.BeginBuild(clippingEntity)
                 .WithType(ActivityTypeEnum.Clipping)
-                .WithContent(clippingModel.Content)
-                .WithDevice(clippingModel.Source)
+                .WithContent(clippingEntity.Content)
+                .WithDevice(clippingEntity.Source)
                 .Build();
             return Observable.Return(activityPresenter);
         }
 
-        public IObservable<ActivityPresenter> Create(PhoneCall phoneCall)
+        public IObservable<ActivityPresenter> Create(PhoneCallEntity phoneCallEntity)
         {
-            return _contactRepository.Get(phoneCall.ContactInfoUniqueId).Select(
-                contactInfo => ActivityPresenter.BeginBuild(phoneCall)
+            return _contactRepository.Get(phoneCallEntity.ContactInfoUniqueId).Select(
+                contactInfo => ActivityPresenter.BeginBuild(phoneCallEntity)
                            .WithType(ActivityTypeEnum.Call)
                            .WithContactInfo(contactInfo)
-                           .WithDevice(phoneCall)
+                           .WithDevice(phoneCallEntity)
                            .Build());
         }
 
-        public IObservable<ActivityPresenter> Create(SmsMessage smsMessage)
+        public IObservable<ActivityPresenter> Create(SmsMessageEntity smsMessageEntity)
         {
-            return _contactRepository.Get(smsMessage.ContactInfoUniqueId).Select(
-                contactInfo => ActivityPresenter.BeginBuild(smsMessage)
+            return _contactRepository.Get(smsMessageEntity.ContactInfoUniqueId).Select(
+                contactInfo => ActivityPresenter.BeginBuild(smsMessageEntity)
                     .WithContactInfo(contactInfo)
                     .WithType(ActivityTypeEnum.Message)
-                    .WithDevice(smsMessage)
-                    .WithContent(smsMessage.Content ?? String.Empty)
+                    .WithDevice(smsMessageEntity)
+                    .WithContent(smsMessageEntity.Content ?? String.Empty)
                     .Build());
         }
 

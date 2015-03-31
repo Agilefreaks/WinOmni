@@ -3,17 +3,18 @@
     using System;
     using System.Collections.Generic;
     using Clipboard.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
-    using OmniUI.Models;
+    using OmniUI.Entities;
     using OmniUI.Presenters;
 
     public class ActivityPresenter : Presenter, IActivityPresenterBuilder
     {
         private const string StringFormPartSeparator = " ";
 
-        private ActivityPresenter(IModel backingModel)
+        private ActivityPresenter(IEntity backingModel)
             : base(backingModel)
         {
             Type = ActivityTypeEnum.None;
@@ -33,7 +34,7 @@
             }
         }
 
-        public ContactInfo ContactInfo { get; set; }
+        public ContactEntity ContactEntity { get; set; }
 
         #region Public Methods and Operators
 
@@ -64,9 +65,9 @@
             return result;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithContactInfo(ContactInfo contactInfo)
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithContactInfo(ContactEntity contactEntity)
         {
-            ContactInfo = contactInfo;
+            ContactEntity = contactEntity;
             return this;
         }
 
@@ -94,15 +95,15 @@
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(PhoneCall phoneCall)
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(PhoneCallEntity phoneCallEntity)
         {
-            Device = phoneCall is RemotePhoneCall ? Resources.FromCloud : Resources.FromLocal;
+            Device = phoneCallEntity is RemotePhoneCallEntity ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(SmsMessage smsMessage)
+        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(SmsMessageEntity smsMessageEntity)
         {
-            Device = smsMessage is RemoteSmsMessage ? Resources.FromCloud : Resources.FromLocal;
+            Device = smsMessageEntity is RemoteSmsMessageEntity ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
@@ -111,15 +112,15 @@
             return this;
         }
 
-        public static IActivityPresenterBuilder BeginBuild(IModel model)
+        public static IActivityPresenterBuilder BeginBuild(IEntity entity)
         {
-            return new ActivityPresenter(model);
+            return new ActivityPresenter(entity);
         }
     }
 
     public interface IActivityPresenterBuilder
     {
-        IActivityPresenterBuilder WithContactInfo(ContactInfo contactInfo);
+        IActivityPresenterBuilder WithContactInfo(ContactEntity contactEntity);
 
         IActivityPresenterBuilder WithType(ActivityTypeEnum type);
 
@@ -129,9 +130,9 @@
 
         IActivityPresenterBuilder WithDevice(Clipping.ClippingSourceEnum clippingSourceEnum);
 
-        IActivityPresenterBuilder WithDevice(PhoneCall phoneCall);
+        IActivityPresenterBuilder WithDevice(PhoneCallEntity phoneCallEntity);
 
-        IActivityPresenterBuilder WithDevice(SmsMessage smsMessage);
+        IActivityPresenterBuilder WithDevice(SmsMessageEntity smsMessageEntity);
 
         ActivityPresenter Build();
     }

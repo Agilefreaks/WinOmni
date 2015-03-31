@@ -1,16 +1,17 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using System;
+    using Omnipaste.Models;
     using SMS.Models;
 
-    public abstract class SmsMessage : ConversationBaseModel
+    public abstract class SmsMessageEntity : ConversationEntity
     {
-        protected SmsMessage()
+        protected SmsMessageEntity()
         {
             Content = string.Empty;
         }
 
-        protected SmsMessage(SmsMessageDto smsMessageDto)
+        protected SmsMessageEntity(SmsMessageDto smsMessageDto)
             : this()
         {
             Id = smsMessageDto.Id;
@@ -21,7 +22,7 @@
 
         public abstract SourceType Source { get; }
 
-        public SmsMessage SetContactInfoUniqueId(String contactInfoUniqueId)
+        public SmsMessageEntity SetContactInfoUniqueId(String contactInfoUniqueId)
         {
             ContactInfoUniqueId = contactInfoUniqueId;
             return this;

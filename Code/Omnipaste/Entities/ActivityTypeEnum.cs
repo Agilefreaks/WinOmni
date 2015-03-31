@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using System;
 

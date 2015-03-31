@@ -1,14 +1,15 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
     using System;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
-    public interface IContactRepository : IRepository<ContactInfo>
+    public interface IContactRepository : IRepository<ContactEntity>
     {
-        IObservable<ContactInfo> GetByPhoneNumber(string phoneNumber);
+        IObservable<ContactEntity> GetByPhoneNumber(string phoneNumber);
 
-        IObservable<ContactInfo> GetByContactIdOrPhoneNumber(int? contactId, string phoneNumber);
+        IObservable<ContactEntity> GetByContactIdOrPhoneNumber(int? contactId, string phoneNumber);
 
-        IObservable<ContactInfo> CreateIfNone(IObservable<ContactInfo> observable, Func<ContactInfo, ContactInfo> builder);
+        IObservable<ContactEntity> CreateIfNone(IObservable<ContactEntity> observable, Func<ContactEntity, ContactEntity> builder);
     }
 }

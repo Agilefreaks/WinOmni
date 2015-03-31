@@ -5,6 +5,7 @@
     using System.Reactive.Linq;
     using Clipboard.Models;
     using Ninject;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
@@ -36,7 +37,7 @@
                                                     };
         }
 
-        public IObservable<INotificationViewModel> Create(ClippingModel clipping)
+        public IObservable<INotificationViewModel> Create(ClippingEntity clipping)
         {
             var result = _clippingNotificationConstructors[clipping.Type]();
             result.Resource = clipping;
@@ -44,11 +45,11 @@
             return Observable.Return(result);
         }
 
-        public IObservable<INotificationViewModel> Create(RemotePhoneCall phoneCall)
+        public IObservable<INotificationViewModel> Create(RemotePhoneCallEntity phoneCallEntity)
         {
             var result = Kernel.Get<IIncomingCallNotificationViewModel>();
 
-            return _conversationPresenterFactory.Create<RemotePhoneCallPresenter, RemotePhoneCall>(phoneCall).Select(
+            return _conversationPresenterFactory.Create<RemotePhoneCallPresenter, RemotePhoneCallEntity>(phoneCallEntity).Select(
                 p =>
                     {
                         result.Resource = p;
@@ -56,11 +57,11 @@
                     });;
         }
 
-        public IObservable<INotificationViewModel> Create(RemoteSmsMessage smsMessage)
+        public IObservable<INotificationViewModel> Create(RemoteSmsMessageEntity smsMessageEntity)
         {
             var result = Kernel.Get<IIncomingSmsNotificationViewModel>();
 
-            return _conversationPresenterFactory.Create<RemoteSmsMessagePresenter, RemoteSmsMessage>(smsMessage).Select(
+            return _conversationPresenterFactory.Create<RemoteSmsMessagePresenter, RemoteSmsMessageEntity>(smsMessageEntity).Select(
                 m =>
                     {
                         result.Resource = m;

@@ -44,7 +44,7 @@ namespace Omnipaste.ContactList
             get
             {
                 return _pendingContact
-                       ?? (_pendingContact = new ContactInfoPresenter(new Models.ContactInfo()));
+                       ?? (_pendingContact = new ContactInfoPresenter(new Entities.ContactEntity()));
             }
             set
             {
@@ -241,7 +241,7 @@ namespace Omnipaste.ContactList
 
         private IContactInfoViewModel UpdateViewModel(ContactInfoPresenter obj)
         {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactInfo.UniqueId == obj.ContactInfo.UniqueId);
+            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactEntity.UniqueId == obj.ContactEntity.UniqueId);
             if (viewModel != null)
             {
                 viewModel.Model = obj;
@@ -325,7 +325,7 @@ namespace Omnipaste.ContactList
 
         public void AddPendingContact()
         {
-            ContactRepository.Save(PendingContact.ContactInfo).SubscribeAndHandleErrors();
+            ContactRepository.Save(PendingContact.ContactEntity).SubscribeAndHandleErrors();
         }
 
         private void UnselectItems(IEnumerable<IContactInfoViewModel> itemsToUnselect)

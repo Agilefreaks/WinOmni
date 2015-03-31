@@ -1,14 +1,15 @@
 ﻿namespace Omnipaste.Models
 {
+    using Omnipaste.Entities;
     using PhoneCalls.Models;
 
-    public class RemotePhoneCall : PhoneCall
+    public class RemotePhoneCallEntity : PhoneCallEntity
     {
-        public RemotePhoneCall()
+        public RemotePhoneCallEntity()
         {
         }
 
-        public RemotePhoneCall(PhoneCallDto phoneCallDto)
+        public RemotePhoneCallEntity(PhoneCallDto phoneCallDto)
             : base(phoneCallDto)
         {
         }

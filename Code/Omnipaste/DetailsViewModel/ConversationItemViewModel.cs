@@ -1,6 +1,7 @@
 ﻿namespace Omnipaste.DetailsViewModel
 {
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -17,7 +18,7 @@
             IConfigurationService configurationService)
             : base(uiRefreshService)
         {
-            _currentUserInfo = new ContactInfoPresenter(new UserContactInfo(configurationService.UserInfo));
+            _currentUserInfo = new ContactInfoPresenter(new UserContactEntity(configurationService.UserInfo));
         }
 
         public ContactInfoPresenter ContactInfo

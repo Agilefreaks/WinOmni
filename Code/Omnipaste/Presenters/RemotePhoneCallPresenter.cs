@@ -2,13 +2,13 @@
 {
     using Omnipaste.Models;
 
-    public class RemotePhoneCallPresenter : PhoneCallPresenter<RemotePhoneCall>
+    public class RemotePhoneCallPresenter : PhoneCallPresenter<RemotePhoneCallEntity>
     {
         /*
          * Use the Build method on PhoneCallPresenter
          */
-        public RemotePhoneCallPresenter(RemotePhoneCall phoneCall)
-            : base(phoneCall)
+        public RemotePhoneCallPresenter(RemotePhoneCallEntity phoneCallEntity)
+            : base(phoneCallEntity)
         {
         }
     }

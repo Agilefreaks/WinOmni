@@ -8,6 +8,7 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -96,7 +97,7 @@
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
                     .Select(_ => PhoneCalls.Call(Model.BackingModel.PhoneNumber, Model.BackingModel.ContactId))
                     .Switch()
-                    .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCall>(phoneCallDto))
+                    .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCallEntity>(phoneCallDto))
                     .Switch()
                     .Delay(CallingDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Normal)
@@ -114,15 +115,15 @@
 
         public void Delete()
         {
-            UpdateConversationItems<Models.PhoneCall>(PhoneCallRepository, true);
-            UpdateConversationItems<SmsMessage>(SmsMessageRepository, true);
+            UpdateConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository, true);
+            UpdateConversationItems<SmsMessageEntity>(SmsMessageRepository, true);
             State = ConversationHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            UpdateConversationItems<Models.PhoneCall>(PhoneCallRepository, false);
-            UpdateConversationItems<SmsMessage>(SmsMessageRepository, false);
+            UpdateConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository, false);
+            UpdateConversationItems<SmsMessageEntity>(SmsMessageRepository, false);
             State = ConversationHeaderStateEnum.Normal;
         }
 
@@ -134,8 +135,8 @@
 
         protected override void OnDeactivate(bool close)
         {
-            DeleteConversationItems<Models.PhoneCall>(PhoneCallRepository);
-            DeleteConversationItems<SmsMessage>(SmsMessageRepository);
+            DeleteConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository);
+            DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
 
             if (Recipients != null)
             {
@@ -152,7 +153,7 @@
             State = _recipients.Count >= 2 ? ConversationHeaderStateEnum.Group : State;
         }
 
-        private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationBaseModel
+        private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
         {
             repository.GetConversationForContact(Model.BackingModel)
                 .SubscribeAndHandleErrors(
@@ -174,7 +175,7 @@
         }
 
         private void UpdateConversationItems<T>(IConversationRepository repository, bool isDeleted)
-            where T : ConversationBaseModel
+            where T : ConversationEntity
         {
             repository.GetConversationForContact(Model.BackingModel).SelectMany(
                 items => items.Select(

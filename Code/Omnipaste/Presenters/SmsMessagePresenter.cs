@@ -1,11 +1,12 @@
 ﻿namespace Omnipaste.Presenters
 {
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using OmniUI.Presenters;
 
-    public abstract class SmsMessagePresenter : Presenter<SmsMessage>, IConversationPresenter
+    public abstract class SmsMessagePresenter : Presenter<SmsMessageEntity>, IConversationPresenter
     {
-        protected SmsMessagePresenter(SmsMessage backingModel)
+        protected SmsMessagePresenter(SmsMessageEntity backingModel)
             : base(backingModel)
         {
             BackingModel = backingModel;
@@ -41,7 +42,7 @@
     }
 
     public abstract class SmsMessagePresenter<T> : SmsMessagePresenter, IPresenter<T>
-        where T : SmsMessage
+        where T : SmsMessageEntity
     {
         protected SmsMessagePresenter(T smsMessage)
             : base(smsMessage)

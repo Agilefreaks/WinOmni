@@ -11,6 +11,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -53,7 +54,7 @@
                                PhoneCallRepository = _mockPhoneCallRepository.Object,
                                PhoneCallFactory = _mockPhoneCallFactory.Object,
                                SmsMessageRepository = _mockMessageRepository.Object,
-                               Model = new ContactInfoPresenter(new ContactInfo())
+                               Model = new ContactInfoPresenter(new ContactEntity())
                            };
         }
 
@@ -77,8 +78,8 @@
         {
             _subject.Recipients = new ObservableCollection<ContactInfoPresenter>
                                       {
-                                          new ContactInfoPresenter(new ContactInfo()),
-                                          new ContactInfoPresenter(new ContactInfo())
+                                          new ContactInfoPresenter(new ContactEntity()),
+                                          new ContactInfoPresenter(new ContactEntity())
                                       };
 
 
@@ -91,8 +92,8 @@
             _subject.Recipients = new ObservableCollection<ContactInfoPresenter>();
 
             ((IActivate)_subject).Activate();
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
         }
@@ -101,7 +102,7 @@
         public void Call_Always_InitiatesACall()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactInfo
+            var contactInfo = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -125,7 +126,7 @@
         public void Call_WhenCanceled_DoesNotInitiateACall()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
+            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
 
             _subject.Call();
@@ -139,7 +140,7 @@
         public void Call_WhenCanceled_ChangesStateToNormal()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
+            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
 
             _subject.Call();
@@ -152,7 +153,7 @@
         [Test]
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
@@ -168,16 +169,16 @@
         [Test]
         public void Call_OnInitiated_ChangesStateToCalling()
         {
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
             var phoneFactoryObservable = _testScheduler.CreateColdObservable(
-                new Recorded<Notification<LocalPhoneCall>>(110, Notification.CreateOnNext(new LocalPhoneCall())),
-                new Recorded<Notification<LocalPhoneCall>>(200, Notification.CreateOnCompleted<LocalPhoneCall>()));
+                new Recorded<Notification<LocalPhoneCallEntity>>(110, Notification.CreateOnNext(new LocalPhoneCallEntity())),
+                new Recorded<Notification<LocalPhoneCallEntity>>(200, Notification.CreateOnCompleted<LocalPhoneCallEntity>()));
             _mockPhoneCalls.Setup(m => m.Call(It.IsAny<string>(), It.IsAny<int?>())).Returns(callObservable);
-            _mockPhoneCallFactory.Setup(m => m.Create<LocalPhoneCall>(It.IsAny<PhoneCallDto>())).Returns(phoneFactoryObservable);
+            _mockPhoneCallFactory.Setup(m => m.Create<LocalPhoneCallEntity>(It.IsAny<PhoneCallDto>())).Returns(phoneFactoryObservable);
             SetupSaveCallObservable();
 
             _subject.Call();
@@ -189,7 +190,7 @@
         [Test]
         public void Call_AfterCreatingTheCall_CallsPhoneFactoryCreate()
         {
-            var contactInfo = new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
             _subject.Model = new ContactInfoPresenter(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
@@ -200,7 +201,7 @@
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
-            _mockPhoneCallFactory.Verify(x => x.Create<LocalPhoneCall>(It.IsAny<PhoneCallDto>()), Times.Once());
+            _mockPhoneCallFactory.Verify(x => x.Create<LocalPhoneCallEntity>(It.IsAny<PhoneCallDto>()), Times.Once());
         }
 
         [Test]
@@ -214,11 +215,11 @@
         [Test]
         public void Delete_WhenCallsExistForContact_UpdatesIsDeletedForCall()
         {
-            var call = new LocalPhoneCall { UniqueId = "42" };
+            var call = new LocalPhoneCallEntity { UniqueId = "42" };
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getCallObservable);
+                    new Recorded<Notification<IEnumerable<PhoneCallEntity>>>(100, Notification.CreateOnNext(new List<PhoneCallEntity> { call }.AsEnumerable())));
+            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactEntity>())).Returns(getCallObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
@@ -229,11 +230,11 @@
         [Test]
         public void Delete_WhenMessagesExistForContact_DeletesEachMessage()
         {
-            var message = new TestSmsMessage { UniqueId = "42" };
+            var message = new TestSmsMessageEntity { UniqueId = "42" };
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getMessageObservable);
+                    new Recorded<Notification<IEnumerable<SmsMessageEntity>>>(100, Notification.CreateOnNext(new List<SmsMessageEntity> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactEntity>())).Returns(getMessageObservable);
 
             _subject.Delete();
             _testScheduler.AdvanceBy(1000);
@@ -252,11 +253,11 @@
         [Test]
         public void UndoDelete_WhenCallsWereDeleted_RestoresCalls()
         {
-            var call = new LocalPhoneCall { UniqueId = "42", IsDeleted = true };
+            var call = new LocalPhoneCallEntity { UniqueId = "42", IsDeleted = true };
             var getCallObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<PhoneCall>>>(100, Notification.CreateOnNext(new List<PhoneCall> { call }.AsEnumerable())));
-            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getCallObservable);
+                    new Recorded<Notification<IEnumerable<PhoneCallEntity>>>(100, Notification.CreateOnNext(new List<PhoneCallEntity> { call }.AsEnumerable())));
+            _mockPhoneCallRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactEntity>())).Returns(getCallObservable);
             
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
@@ -267,11 +268,11 @@
         [Test]
         public void UndoDelete_WhenMessagesWereDeleted_RestoresMessages()
         {
-            var message = new TestSmsMessage { UniqueId = "42", IsDeleted = true };
+            var message = new TestSmsMessageEntity { UniqueId = "42", IsDeleted = true };
             var getMessageObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<SmsMessage>>>(100, Notification.CreateOnNext(new List<SmsMessage> { message }.AsEnumerable())));
-            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactInfo>())).Returns(getMessageObservable);
+                    new Recorded<Notification<IEnumerable<SmsMessageEntity>>>(100, Notification.CreateOnNext(new List<SmsMessageEntity> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactEntity>())).Returns(getMessageObservable);
 
             _subject.UndoDelete();
             _testScheduler.AdvanceBy(1000);
@@ -283,13 +284,13 @@
         {
             var saveObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                    new Recorded<Notification<RepositoryOperation<PhoneCallEntity>>>(
                         100,
-                        Notification.CreateOnNext(new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, new LocalPhoneCall()))),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                        Notification.CreateOnNext(new RepositoryOperation<PhoneCallEntity>(RepositoryMethodEnum.Changed, new LocalPhoneCallEntity()))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCallEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<RepositoryOperation<PhoneCall>>()));
-            _mockPhoneCallRepository.Setup(x => x.Save(It.IsAny<PhoneCall>())).Returns(saveObservable);
+                        Notification.CreateOnCompleted<RepositoryOperation<PhoneCallEntity>>()));
+            _mockPhoneCallRepository.Setup(x => x.Save(It.IsAny<PhoneCallEntity>())).Returns(saveObservable);
         }
     }
 }

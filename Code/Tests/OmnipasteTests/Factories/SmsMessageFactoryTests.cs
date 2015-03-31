@@ -11,6 +11,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
@@ -59,7 +60,7 @@
             {
                 var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
 
-                _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
+                _scheduler.Start(() => _subject.Create<RemoteSmsMessageEntity>(smsMessageDto));
 
                 _mockContactFactory.Verify(cr => cr.Create(It.Is<ContactDto>(c => c.PhoneNumbers.Any(pn => pn.Number == "42")), TimeHelper.UtcNow), Times.Once);                
             }
@@ -69,27 +70,27 @@
         public void Create_Always_SavesTheSmsMessage()
         {
             var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
-            var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
+            var contactInfo = new ContactEntity();
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable); 
 
-            _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
+            _scheduler.Start(() => _subject.Create<RemoteSmsMessageEntity>(smsMessageDto));
 
-            _mockMessageRepository.Verify(cr => cr.Save(It.IsAny<RemoteSmsMessage>()), Times.Once);
+            _mockMessageRepository.Verify(cr => cr.Save(It.IsAny<RemoteSmsMessageEntity>()), Times.Once);
         }
 
         [Test]
         public void Create_SaveSuccesful_ReturnsTheSavedMessage()
         {
             var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
-            var contactInfo = new ContactInfo();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactInfo>>(100, Notification.CreateOnNext(contactInfo)));
+            var contactInfo = new ContactEntity();
+            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
             _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
-            var remoteSmsMessage = new RemoteSmsMessage();
-            var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<RemoteSmsMessage>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemoteSmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
-            _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<RemoteSmsMessage>())).Returns(smsMessageObservable);
+            var remoteSmsMessage = new RemoteSmsMessageEntity();
+            var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<RemoteSmsMessageEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemoteSmsMessageEntity>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
+            _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<RemoteSmsMessageEntity>())).Returns(smsMessageObservable);
 
-            var result = _scheduler.Start(() => _subject.Create<RemoteSmsMessage>(smsMessageDto));
+            var result = _scheduler.Start(() => _subject.Create<RemoteSmsMessageEntity>(smsMessageDto));
 
             result.Messages.First().Value.Value.Should().Be(remoteSmsMessage);
         }

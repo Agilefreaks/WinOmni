@@ -1,19 +1,19 @@
-﻿namespace OmniUI.Models
+﻿namespace OmniUI.Entities
 {
     using System;
     using OmniCommon.Helpers;
 
-    public abstract class BaseModel : IModel
+    public abstract class Entity : IEntity
     {
         private DateTime _time;
 
-        protected BaseModel()
+        protected Entity()
         {
             UniqueId = Guid.NewGuid().ToString();
             Time = TimeHelper.UtcNow;
         }
 
-        #region IModel Members
+        #region IEntity Members
 
         public string Id { get; set; }
 

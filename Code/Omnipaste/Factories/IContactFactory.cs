@@ -2,12 +2,13 @@
 {
     using System;
     using Contacts.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public interface IContactFactory
     {
-        IObservable<ContactInfo> Create(ContactDto contactDto);
+        IObservable<ContactEntity> Create(ContactDto contactDto);
 
-        IObservable<ContactInfo> Create(ContactDto contactDto, DateTime? lastActivityTime);
+        IObservable<ContactEntity> Create(ContactDto contactDto, DateTime? lastActivityTime);
     }
 }

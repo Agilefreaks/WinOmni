@@ -6,12 +6,13 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using OmniUI.Helpers;
     using OmniUI.Presenters;
     using OmniUI.Properties;
 
-    public class ContactInfoPresenter : Presenter<ContactInfo>, IContactInfoPresenter
+    public class ContactInfoPresenter : Presenter<ContactEntity>, IContactInfoPresenter
     {
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
@@ -21,12 +22,12 @@
 
         private ImageSource _image;
 
-        private readonly ContactInfo _contactInfo;
+        private readonly ContactEntity _contactEntity;
 
-        public ContactInfoPresenter(ContactInfo contactInfo)
-            : base(contactInfo)
+        public ContactInfoPresenter(ContactEntity contactEntity)
+            : base(contactEntity)
         {
-            _contactInfo = contactInfo;
+            _contactEntity = contactEntity;
         }
         
         public string Name
@@ -37,11 +38,11 @@
             }
         }
 
-        public ContactInfo ContactInfo
+        public ContactEntity ContactEntity
         {
             get
             {
-                return _contactInfo;
+                return _contactEntity;
             }
         }
 
@@ -102,18 +103,18 @@
         {
             get
             {
-                return ContactInfo.PhoneNumber;
+                return ContactEntity.PhoneNumber;
             }
 
             set
             {
-                if (ContactInfo.PhoneNumbers.Any())
+                if (ContactEntity.PhoneNumbers.Any())
                 {
-                    ContactInfo.PhoneNumbers.First().Number = value;
+                    ContactEntity.PhoneNumbers.First().Number = value;
                 }
                 else
                 {
-                    ContactInfo.PhoneNumbers.Add(new PhoneNumber { Number = value });
+                    ContactEntity.PhoneNumbers.Add(new PhoneNumber { Number = value });
                 }
 
                 NotifyOfPropertyChange(() => PhoneNumber);

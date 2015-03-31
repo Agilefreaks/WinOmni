@@ -1,5 +1,6 @@
 ﻿namespace Omnipaste.Notification.HyperlinkNotification
 {
+    using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Notification.ClippingNotification;
@@ -32,7 +33,7 @@
             }
         }
 
-        public override ClippingModel Resource
+        public override ClippingEntity Resource
         {
             get
             {

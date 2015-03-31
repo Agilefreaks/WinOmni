@@ -12,7 +12,7 @@
         [Test]
         public void Ctor_WithUserInfo_SetsFirstNameToTheUserInfoFirstName()
         {
-            var userContactInfo = new UserContactInfo(UserInfo.BeginBuild().WithFirstName("someName").Build());
+            var userContactInfo = new UserContactEntity(UserInfo.BeginBuild().WithFirstName("someName").Build());
 
             userContactInfo.FirstName.Should().Be("someName");
         }
@@ -20,7 +20,7 @@
         [Test]
         public void Ctor_WithUserInfo_SetsLastNameToTheUserInfoLastName()
         {
-            var userContactInfo = new UserContactInfo(UserInfo.BeginBuild().WithLastName("someName").Build());
+            var userContactInfo = new UserContactEntity(UserInfo.BeginBuild().WithLastName("someName").Build());
 
             userContactInfo.LastName.Should().Be("someName");
         }
@@ -28,7 +28,7 @@
         [Test]
         public void Ctor_WithUserInfo_SetsImageUriToTheUserInfoImageUrl()
         {
-            var userContactInfo = new UserContactInfo(UserInfo.BeginBuild().WithImageUrl("http://some_url/").Build());
+            var userContactInfo = new UserContactEntity(UserInfo.BeginBuild().WithImageUrl("http://some_url/").Build());
 
             userContactInfo.ImageUri.ToString().Should().Be("http://some_url/");
         }
@@ -36,7 +36,7 @@
         [Test]
         public void Ctor_WithUserInfoNull_DoesNotThrowException()
         {
-            Action actionToTest = () => new UserContactInfo();
+            Action actionToTest = () => new UserContactEntity();
 
             actionToTest.ShouldNotThrow<Exception>();
         }

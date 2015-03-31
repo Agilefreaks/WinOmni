@@ -6,6 +6,7 @@ namespace Omnipaste.ActivityList
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity;
+    using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -191,11 +192,11 @@ namespace Omnipaste.ActivityList
                     .Merge(
                         _smsMessageRepository.GetAll()
                             .SelectMany(
-                                items => items.OfType<RemoteSmsMessage>().Select(item => _activityPresenterFactory.Create(item))).Merge())
+                                items => items.OfType<RemoteSmsMessageEntity>().Select(item => _activityPresenterFactory.Create(item))).Merge())
                     .Merge(
                         _phoneCallRepository.GetAll()
                             .SelectMany(
-                                items => items.OfType<RemotePhoneCall>().Select(item => _activityPresenterFactory.Create(item))).Merge())
+                                items => items.OfType<RemotePhoneCallEntity>().Select(item => _activityPresenterFactory.Create(item))).Merge())
                     .Merge(
                         _updateInfoRepository.GetAll()
                             .SelectMany(items => items.Select(item => _activityPresenterFactory.Create(item))).Merge());
@@ -208,11 +209,11 @@ namespace Omnipaste.ActivityList
                     .Changed()
                     .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge()
                     .Merge(
-                        _smsMessageRepository.GetOperationObservable<RemoteSmsMessage>()
+                        _smsMessageRepository.GetOperationObservable<RemoteSmsMessageEntity>()
                             .Changed()
                             .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge())
                     .Merge(
-                        _phoneCallRepository.GetOperationObservable<RemotePhoneCall>()
+                        _phoneCallRepository.GetOperationObservable<RemotePhoneCallEntity>()
                             .Changed()
                             .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge())
                     .Merge(
@@ -232,7 +233,7 @@ namespace Omnipaste.ActivityList
                             .Deleted()
                             .Select(o => GetActivityPresenter(ActivityTypeEnum.Message, o.Item.UniqueId)))
                     .Merge(
-                        _phoneCallRepository.GetOperationObservable<RemotePhoneCall>()
+                        _phoneCallRepository.GetOperationObservable<RemotePhoneCallEntity>()
                             .Deleted()
                             .Select(o => GetActivityPresenter(ActivityTypeEnum.Call, o.Item.UniqueId)))
                     .Merge(

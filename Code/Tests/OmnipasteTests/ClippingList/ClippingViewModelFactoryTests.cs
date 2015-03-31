@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ClippingList;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
 
@@ -26,7 +27,7 @@
         [Test]
         public void Create_Always_AssignsModelOnResult()
         {
-            var clipping = new ClippingPresenter(new ClippingModel());
+            var clipping = new ClippingPresenter(new ClippingEntity());
             var mockClippingViewModel = new Mock<IClippingViewModel>();
             _mockServiceLocator.Setup(m => m.GetInstance<IClippingViewModel>())
                 .Returns(mockClippingViewModel.Object);

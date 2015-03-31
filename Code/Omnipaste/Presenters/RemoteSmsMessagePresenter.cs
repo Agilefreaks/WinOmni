@@ -2,9 +2,9 @@
 {
     using Omnipaste.Models;
 
-    public class RemoteSmsMessagePresenter :  SmsMessagePresenter<RemoteSmsMessage>
+    public class RemoteSmsMessagePresenter :  SmsMessagePresenter<RemoteSmsMessageEntity>
     {
-        public RemoteSmsMessagePresenter(RemoteSmsMessage backingModel)
+        public RemoteSmsMessagePresenter(RemoteSmsMessageEntity backingModel)
             : base(backingModel)
         {
         }

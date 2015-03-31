@@ -11,7 +11,7 @@ namespace OmnipasteTests.ContactList
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList.ContactInfo;
+    using Omnipaste.ContactList.ContactEntity;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -29,7 +29,7 @@ namespace OmnipasteTests.ContactList
 
         private ContactInfoPresenter _contactInfoPresenter;
 
-        private ContactInfo _contactInfo;
+        private ContactEntity _contactEntity;
 
         private Mock<IContactRepository> _mockContactRepository;
 
@@ -52,14 +52,14 @@ namespace OmnipasteTests.ContactList
             SchedulerProvider.Default = _testScheduler;
             SchedulerProvider.Dispatcher = _testScheduler;
 
-            _contactInfo = new ContactInfo { FirstName = "test", LastName = "test", IsStarred = false, PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
-            _contactInfoPresenter = new ContactInfoPresenter(_contactInfo);
+            _contactEntity = new ContactEntity { FirstName = "test", LastName = "test", IsStarred = false, PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
+            _contactInfoPresenter = new ContactInfoPresenter(_contactEntity);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockConversationProvider = new Mock<IConversationProvider>();
             _mockConversation = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
-            _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactInfo>())).Returns(_mockConversation.Object);
+            _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactEntity>())).Returns(_mockConversation.Object);
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
             _subject = new ContactInfoViewModel(_mockSessionManager.Object)
@@ -83,7 +83,7 @@ namespace OmnipasteTests.ContactList
         public void IsSelected_WhenSessionSelectedContactIsSameAsContactInfoId_ReturnsTrue()
         {
             _mockSessionManager.SetupGet(m => m[ContactInfoViewModel.SessionSelectionKey])
-                .Returns(_contactInfo.UniqueId);
+                .Returns(_contactEntity.UniqueId);
 
             _subject.IsSelected.Should().BeTrue();
         }
@@ -104,7 +104,7 @@ namespace OmnipasteTests.ContactList
 
             _contactInfoPresenter.IsStarred = true;
 
-            _contactInfo.IsStarred.Should().BeTrue();
+            _contactEntity.IsStarred.Should().BeTrue();
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace OmnipasteTests.ContactList
 
             _contactInfoPresenter.IsStarred = true;
 
-            _mockContactRepository.Verify(m => m.Save(_contactInfo));
+            _mockContactRepository.Verify(m => m.Save(_contactEntity));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace OmnipasteTests.ContactList
 
             _contactInfoPresenter.IsStarred = false;
 
-            _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactInfo>()), Times.Never());
+            _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactEntity>()), Times.Never());
         }
 
         [Test]
@@ -151,14 +151,14 @@ namespace OmnipasteTests.ContactList
             
             _subject.ShowDetails();
 
-            _mockSessionManager.VerifySet(m => m[ContactInfoViewModel.SessionSelectionKey] = _contactInfo.UniqueId);
+            _mockSessionManager.VerifySet(m => m[ContactInfoViewModel.SessionSelectionKey] = _contactEntity.UniqueId);
         }
 
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -170,8 +170,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -183,8 +183,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -196,8 +196,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2014, 1, 1), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2014, 1, 1), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -209,8 +209,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new LocalPhoneCall { Time = new DateTime(2014, 1, 1), ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new LocalPhoneCallEntity { Time = new DateTime(2014, 1, 1), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -222,8 +222,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), WasViewed = true, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = true, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -235,8 +235,8 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2014, 1, 1), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
-            var call = new RemotePhoneCall { Time = new DateTime(2013, 12, 31), WasViewed = false, ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = false, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             SetupConversation(message, call);
 
             _subject.OnLoaded();
@@ -248,7 +248,7 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void MessageIsAddedToConversation_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(
@@ -266,7 +266,7 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void MessageIsDeletedFromConversation_AfterLoaded_SetsLastActivityInfoToEmptyString()
         {
-            var message = new TestSmsMessage { Time = new DateTime(2013, 12, 31), Content = "test", ContactInfo = new ContactInfo { PhoneNumbers = _contactInfo.PhoneNumbers } };
+            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             var observable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationPresenter>>(

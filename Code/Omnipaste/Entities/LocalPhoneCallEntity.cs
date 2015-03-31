@@ -1,14 +1,15 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
+    using Omnipaste.Models;
     using PhoneCalls.Models;
 
-    public class LocalPhoneCall : PhoneCall
+    public class LocalPhoneCallEntity : PhoneCallEntity
     {
-        public LocalPhoneCall()
+        public LocalPhoneCallEntity()
         {
         }
 
-        public LocalPhoneCall(PhoneCallDto phoneCallDto)
+        public LocalPhoneCallEntity(PhoneCallDto phoneCallDto)
             : base(phoneCallDto)
         {
         }

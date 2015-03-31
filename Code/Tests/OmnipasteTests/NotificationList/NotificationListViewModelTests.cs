@@ -14,6 +14,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
     using Omnipaste.Notification;
@@ -31,49 +32,49 @@
         private void SetupTestScheduler()
         {
             _testScheduler = new TestScheduler();
-            _incommingClipping = new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud };
-            _viewedClipping = new ClippingModel { Source = Clipping.ClippingSourceEnum.Cloud, WasViewed = true };
+            _incommingClipping = new ClippingEntity { Source = Clipping.ClippingSourceEnum.Cloud };
+            _viewedClipping = new ClippingEntity { Source = Clipping.ClippingSourceEnum.Cloud, WasViewed = true };
             _testableClippingsObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _incommingClipping))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, _incommingClipping))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         250,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(
+                            new RepositoryOperation<ClippingEntity>(
                                 RepositoryMethodEnum.Changed,
-                                new ClippingModel { Source = Clipping.ClippingSourceEnum.Local }))),
-                    new Recorded<Notification<RepositoryOperation<ClippingModel>>>(
+                                new ClippingEntity { Source = Clipping.ClippingSourceEnum.Local }))),
+                    new Recorded<Notification<RepositoryOperation<ClippingEntity>>>(
                         300,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<ClippingModel>(RepositoryMethodEnum.Changed, _viewedClipping))));
+                            new RepositoryOperation<ClippingEntity>(RepositoryMethodEnum.Changed, _viewedClipping))));
 
-            _incommingPhoneCall = new RemotePhoneCall();
-            _viewedPhoneCall = new RemotePhoneCall { WasViewed = true };
+            _incommingPhoneCallEntity = new RemotePhoneCallEntity();
+            _viewedPhoneCallEntity = new RemotePhoneCallEntity { WasViewed = true };
             _testableCallsObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                    new Recorded<Notification<RepositoryOperation<PhoneCallEntity>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, _incommingPhoneCall))),
-                    new Recorded<Notification<RepositoryOperation<PhoneCall>>>(
+                            new RepositoryOperation<PhoneCallEntity>(RepositoryMethodEnum.Changed, _incommingPhoneCallEntity))),
+                    new Recorded<Notification<RepositoryOperation<PhoneCallEntity>>>(
                         250,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<PhoneCall>(RepositoryMethodEnum.Changed, _viewedPhoneCall))));
-            var remoteSmsMessage = new RemoteSmsMessage();
-            var viewedSmsMessage = new RemoteSmsMessage { WasViewed = true };
+                            new RepositoryOperation<PhoneCallEntity>(RepositoryMethodEnum.Changed, _viewedPhoneCallEntity))));
+            var remoteSmsMessage = new RemoteSmsMessageEntity();
+            var viewedSmsMessage = new RemoteSmsMessageEntity { WasViewed = true };
             _testableMessagesObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
+                    new Recorded<Notification<RepositoryOperation<SmsMessageEntity>>>(
                         200,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, remoteSmsMessage))),
-                    new Recorded<Notification<RepositoryOperation<SmsMessage>>>(
+                            new RepositoryOperation<SmsMessageEntity>(RepositoryMethodEnum.Changed, remoteSmsMessage))),
+                    new Recorded<Notification<RepositoryOperation<SmsMessageEntity>>>(
                         250,
                         Notification.CreateOnNext(
-                            new RepositoryOperation<SmsMessage>(RepositoryMethodEnum.Changed, viewedSmsMessage))));
+                            new RepositoryOperation<SmsMessageEntity>(RepositoryMethodEnum.Changed, viewedSmsMessage))));
             SchedulerProvider.Dispatcher = _testScheduler;
         }
 
@@ -91,11 +92,11 @@
 
         private TestScheduler _testScheduler;
 
-        private ITestableObservable<RepositoryOperation<ClippingModel>> _testableClippingsObservable;
+        private ITestableObservable<RepositoryOperation<ClippingEntity>> _testableClippingsObservable;
 
-        private ITestableObservable<RepositoryOperation<PhoneCall>> _testableCallsObservable;
+        private ITestableObservable<RepositoryOperation<PhoneCallEntity>> _testableCallsObservable;
 
-        private ITestableObservable<RepositoryOperation<SmsMessage>> _testableMessagesObservable;
+        private ITestableObservable<RepositoryOperation<SmsMessageEntity>> _testableMessagesObservable;
 
         private Mock<INotificationViewModelFactory> _mockNotificationViewModelFactory;
 
@@ -103,13 +104,13 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
-        private PhoneCall _incommingPhoneCall;
+        private PhoneCallEntity _incommingPhoneCallEntity;
 
-        private PhoneCall _viewedPhoneCall;
+        private PhoneCallEntity _viewedPhoneCallEntity;
 
-        private ClippingModel _incommingClipping;
+        private ClippingEntity _incommingClipping;
 
-        private ClippingModel _viewedClipping;
+        private ClippingEntity _viewedClipping;
 
         [SetUp]
         public void Setup()
@@ -160,7 +161,7 @@
         {
             var firstClippingViewModel = new Mock<IClippingNotificationViewModel>();
             var secondClippingViewModel = new Mock<IClippingNotificationViewModel>();
-            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<ClippingModel>()))
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<ClippingEntity>()))
                 .Returns(Observable.Return(firstClippingViewModel.Object))
                 .Returns(Observable.Return(secondClippingViewModel.Object));
             _mockClippingRepository.Setup(m => m.GetOperationObservable()).Returns(_testableClippingsObservable);
@@ -176,7 +177,7 @@
         {
             var firstIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
             var secondIncomingCallNotificationViewModel = new Mock<IIncomingCallNotificationViewModel>();
-            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemotePhoneCall>()))
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemotePhoneCallEntity>()))
                 .Returns(Observable.Return(firstIncomingCallNotificationViewModel.Object))
                 .Returns(Observable.Return(secondIncomingCallNotificationViewModel.Object));
             _mockCallRepository.Setup(m => m.GetOperationObservable()).Returns(_testableCallsObservable);
@@ -192,7 +193,7 @@
         {
             var firstIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
             var secondIncomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
-            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemoteSmsMessage>()))
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemoteSmsMessageEntity>()))
                 .Returns(Observable.Return(firstIncomingSmsNotificationViewModel.Object))
                 .Returns(Observable.Return(secondIncomingSmsNotificationViewModel.Object));
             _mockMessageRepository.Setup(m => m.GetOperationObservable()).Returns(_testableMessagesObservable);

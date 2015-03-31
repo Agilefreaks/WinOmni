@@ -2,6 +2,7 @@ namespace Omnipaste.Services.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public class PhoneCallRepository : ConversationRepository, IPhoneCallRepository
@@ -13,36 +14,36 @@ namespace Omnipaste.Services.Repositories
 
         #region IPhoneCallRepository Members
 
-        public IObservable<RepositoryOperation<PhoneCall>> GetOperationObservable()
+        public IObservable<RepositoryOperation<PhoneCallEntity>> GetOperationObservable()
         {
-            return base.GetOperationObservable<PhoneCall, LocalPhoneCall, RemotePhoneCall>();
+            return base.GetOperationObservable<PhoneCallEntity, LocalPhoneCallEntity, RemotePhoneCallEntity>();
         }
 
-        public IObservable<RepositoryOperation<PhoneCall>> Delete(string id)
+        public IObservable<RepositoryOperation<PhoneCallEntity>> Delete(string id)
         {
-            return base.Delete<PhoneCall, LocalPhoneCall, RemotePhoneCall>(id);
+            return base.Delete<PhoneCallEntity, LocalPhoneCallEntity, RemotePhoneCallEntity>(id);
         }
 
-        public IObservable<IEnumerable<PhoneCall>> GetAll()
+        public IObservable<IEnumerable<PhoneCallEntity>> GetAll()
         {
-            return base.GetAll<PhoneCall, LocalPhoneCall, RemotePhoneCall>();
+            return base.GetAll<PhoneCallEntity, LocalPhoneCallEntity, RemotePhoneCallEntity>();
         }
 
-        public IObservable<IEnumerable<PhoneCall>> GetForContact(ContactInfo contactInfo)
+        public IObservable<IEnumerable<PhoneCallEntity>> GetForContact(ContactEntity contactEntity)
         {
-            return base.GetForContact<PhoneCall, LocalPhoneCall, RemotePhoneCall>(contactInfo);
+            return base.GetForContact<PhoneCallEntity, LocalPhoneCallEntity, RemotePhoneCallEntity>(contactEntity);
         }
 
         #endregion
 
-        IObservable<IEnumerable<ConversationBaseModel>> IConversationRepository.GetConversationForContact(ContactInfo contactInfo)
+        IObservable<IEnumerable<ConversationEntity>> IConversationRepository.GetConversationForContact(ContactEntity contactEntity)
         {
-            return GetForContact(contactInfo);
+            return GetForContact(contactEntity);
         }
 
         public override IObservable<RepositoryOperation<T>> Save<T>(T item)
         {
-            return base.Save<T, LocalPhoneCall, RemotePhoneCall>(item);
+            return base.Save<T, LocalPhoneCallEntity, RemotePhoneCallEntity>(item);
         }
     }
 }

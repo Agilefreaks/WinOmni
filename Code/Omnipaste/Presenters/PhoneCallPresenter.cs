@@ -1,14 +1,15 @@
 ﻿namespace Omnipaste.Presenters
 {
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using OmniUI.Presenters;
 
-    public abstract class PhoneCallPresenter : Presenter<PhoneCall>, IConversationPresenter
+    public abstract class PhoneCallPresenter : Presenter<PhoneCallEntity>, IConversationPresenter
     {
-        protected PhoneCallPresenter(PhoneCall phoneCall)
-            : base(phoneCall)
+        protected PhoneCallPresenter(PhoneCallEntity phoneCallEntity)
+            : base(phoneCallEntity)
         {
-            BackingModel = phoneCall;
+            BackingModel = phoneCallEntity;
         }
 
         #region IConversationPresenter Members
@@ -41,12 +42,12 @@
     }
 
     public abstract class PhoneCallPresenter<T> : PhoneCallPresenter, IPresenter<T>
-        where T : PhoneCall
+        where T : PhoneCallEntity
     {
-        protected PhoneCallPresenter(T phoneCall)
-            : base(phoneCall)
+        protected PhoneCallPresenter(T phoneCallEntity)
+            : base(phoneCallEntity)
         {
-            BackingModel = phoneCall;
+            BackingModel = phoneCallEntity;
         }
 
         #region IPresenter<T> Members

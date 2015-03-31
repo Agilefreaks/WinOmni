@@ -9,6 +9,7 @@
     using Ninject;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
@@ -106,16 +107,16 @@
         {
             IsSending = true;
 
-            _smsMessages.Send(Recipients.Select(r => r.ContactInfo.PhoneNumber).ToList(), Message)
+            _smsMessages.Send(Recipients.Select(r => r.ContactEntity.PhoneNumber).ToList(), Message)
                 .SelectMany(
                     smsMessage =>
                         {
                             return Recipients.Select(
                                 r =>
                                     {
-                                        smsMessage.ContactId = r.ContactInfo.ContactId;
+                                        smsMessage.ContactId = r.ContactEntity.ContactId;
                                         smsMessage.PhoneNumber = r.PhoneNumber;
-                                        return SmsMessageFactory.Create<LocalSmsMessage>(smsMessage);
+                                        return SmsMessageFactory.Create<LocalSmsMessageEntity>(smsMessage);
                                     });
                         })
                 .Merge()
@@ -137,7 +138,7 @@
             IsSending = false;
         }
 
-        protected void OnSentSMS(LocalSmsMessage smsMessage)
+        protected void OnSentSMS(LocalSmsMessageEntity smsMessageEntity)
         {
             IsSending = false;
             StartNewMessage();

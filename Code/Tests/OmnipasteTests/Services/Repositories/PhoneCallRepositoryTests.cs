@@ -10,6 +10,7 @@
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
@@ -40,7 +41,7 @@
         {
             var localPhoneCall = BuildLocalPhoneCall();
             var remotePhoneCall = BuildRemotePhoneCall();
-            var testObservable = _testScheduler.CreateObserver<IEnumerable<PhoneCall>>();
+            var testObservable = _testScheduler.CreateObserver<IEnumerable<PhoneCallEntity>>();
 
             _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
             _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
@@ -60,7 +61,7 @@
             var localPhoneCall = BuildLocalPhoneCall();
             var remotePhoneCall = BuildRemotePhoneCall();
 
-            var results = new List<RepositoryOperation<PhoneCall>>();
+            var results = new List<RepositoryOperation<PhoneCallEntity>>();
             _subject.GetOperationObservable().Subscribe(ro => results.Add(ro));
 
             _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
@@ -69,9 +70,9 @@
             _testScheduler.Start();
 
             results.Should().HaveCount(2);
-            results.First().GetItem<LocalPhoneCall>().UniqueId.Should().Be("42");
+            results.First().GetItem<LocalPhoneCallEntity>().UniqueId.Should().Be("42");
             results.First().RepositoryMethod.Should().Be(RepositoryMethodEnum.Changed);
-            results.Last().GetItem<RemotePhoneCall>().UniqueId.Should().Be("43");
+            results.Last().GetItem<RemotePhoneCallEntity>().UniqueId.Should().Be("43");
             results.Last().RepositoryMethod.Should().Be(RepositoryMethodEnum.Changed);
         }
 
@@ -80,9 +81,9 @@
         {
             var localPhoneCall = BuildLocalPhoneCall();
 
-            var results = new List<RepositoryOperation<PhoneCall>>();
+            var results = new List<RepositoryOperation<PhoneCallEntity>>();
             _subject.GetOperationObservable().Subscribe(ro => results.Add(ro));
-            var testableObserver = _testScheduler.CreateObserver<IEnumerable<PhoneCall>>();
+            var testableObserver = _testScheduler.CreateObserver<IEnumerable<PhoneCallEntity>>();
 
             _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
             _testScheduler.Schedule(() => _subject.Delete("42").Subscribe());
@@ -101,9 +102,9 @@
         {
             var remotePhoneCall = BuildRemotePhoneCall();
 
-            var results = new List<RepositoryOperation<PhoneCall>>();
+            var results = new List<RepositoryOperation<PhoneCallEntity>>();
             _subject.GetOperationObservable().Subscribe(ro => results.Add(ro));
-            var testableObserver = _testScheduler.CreateObserver<IEnumerable<PhoneCall>>();
+            var testableObserver = _testScheduler.CreateObserver<IEnumerable<PhoneCallEntity>>();
 
             _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
             _testScheduler.Schedule(() => _subject.Delete("43").Subscribe());
@@ -120,14 +121,14 @@
         [Test]
         public void GetOperationObservable_WithRemotePhoneCall_ReturnsRemoteCallOperation()
         {
-            var remotePhoneCall = new RemotePhoneCall();
+            var remotePhoneCall = new RemotePhoneCallEntity();
             var testObservable = _testScheduler.CreateObserver<RepositoryOperation>();
-            _subject.GetOperationObservable<RemotePhoneCall>().Subscribe(testObservable);
+            _subject.GetOperationObservable<RemotePhoneCallEntity>().Subscribe(testObservable);
 
             _testScheduler.Start(() => _subject.Save(remotePhoneCall));
 
             testObservable.Messages.Should().HaveCount(1);
-            testObservable.Messages.First().Value.Value.GetItem<PhoneCall>().UniqueId.Should().Be(remotePhoneCall.UniqueId);
+            testObservable.Messages.First().Value.Value.GetItem<PhoneCallEntity>().UniqueId.Should().Be(remotePhoneCall.UniqueId);
         }
 
         [Test]
@@ -135,11 +136,11 @@
         {
             var remotePhoneCall = BuildRemotePhoneCall();
             var localPhoneCall = BuildLocalPhoneCall();
-            var testObservable = _testScheduler.CreateObserver<IEnumerable<PhoneCall>>();
+            var testObservable = _testScheduler.CreateObserver<IEnumerable<PhoneCallEntity>>();
 
             _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
             _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
-            _testScheduler.Schedule(() => _subject.GetForContact(new ContactInfo { UniqueId = "123" }).Subscribe(testObservable));
+            _testScheduler.Schedule(() => _subject.GetForContact(new ContactEntity { UniqueId = "123" }).Subscribe(testObservable));
 
             _testScheduler.Start();
 
@@ -153,14 +154,14 @@
         {
             var remotePhoneCall = BuildRemotePhoneCall();
             var localPhoneCall = BuildLocalPhoneCall();
-            var testObservable = _testScheduler.CreateObserver<RepositoryOperation<PhoneCall>>();
+            var testObservable = _testScheduler.CreateObserver<RepositoryOperation<PhoneCallEntity>>();
 
             _testScheduler.Schedule(() => _subject.Save(remotePhoneCall));
             _testScheduler.Schedule(() => _subject.Save(localPhoneCall));
 
             _subject.GetOperationObservable()
                 .OnMethod(RepositoryMethodEnum.Changed)
-                .ForContact(new ContactInfo { UniqueId = "123" })
+                .ForContact(new ContactEntity { UniqueId = "123" })
                 .Subscribe(testObservable);
 
             _testScheduler.Start();
@@ -170,14 +171,14 @@
             testObservable.Messages.Last().Value.Value.Item.UniqueId.Should().Be("42");
         }
 
-        private static RemotePhoneCall BuildRemotePhoneCall()
+        private static RemotePhoneCallEntity BuildRemotePhoneCall()
         {
-            return new RemotePhoneCall { UniqueId = "43", ContactInfoUniqueId = "123" };
+            return new RemotePhoneCallEntity { UniqueId = "43", ContactInfoUniqueId = "123" };
         }
 
-        private static LocalPhoneCall BuildLocalPhoneCall()
+        private static LocalPhoneCallEntity BuildLocalPhoneCall()
         {
-            return new LocalPhoneCall { UniqueId = "42", ContactInfoUniqueId = "123" };
+            return new LocalPhoneCallEntity { UniqueId = "42", ContactInfoUniqueId = "123" };
         }
     }
 }

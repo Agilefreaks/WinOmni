@@ -6,18 +6,19 @@
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     [TestFixture]
     public class ContactInfoTests
     {
-        private ContactInfo _subject;
+        private ContactEntity _subject;
 
         [SetUp]
         public void Setup()
         {
             TimeHelper.UtcNow = new DateTime(2015, 1, 1);
-            _subject = new ContactInfo();
+            _subject = new ContactEntity();
         }
 
         [TearDown]
@@ -80,7 +81,7 @@
                                   Image = "image base64 string"
                               };
             
-            _subject = new ContactInfo(contact);
+            _subject = new ContactEntity(contact);
 
             _subject.ContactId.Should().Be(contact.ContactId);
             _subject.FirstName.Should().Be(contact.FirstName);
@@ -104,7 +105,7 @@
                                           };
             var contact = new ContactDto { PhoneNumbers = contactPhoneNumbers };
             
-            _subject = new ContactInfo(contact);
+            _subject = new ContactEntity(contact);
 
             _subject.PhoneNumbers.Should().HaveCount(2);
             _subject.PhoneNumbers[0].Number.Should().Be("1234");
@@ -116,7 +117,7 @@
         [Test]
         public void PhoneNumber_WhenThereIsAPhoneNumber_ReturnsThePhoneNumber()
         {
-            var contactInfo = new ContactInfo
+            var contactInfo = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -135,7 +136,7 @@
         [Test]
         public void PhoneNumber_WhenThereAreTwoPhoneNumbers_ReturnsTheFirstPhoneNumber()
         {
-            var contactInfo = new ContactInfo
+            var contactInfo = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -159,7 +160,7 @@
         [Test]
         public void PhoneNumber_WhenThereIsNoNumber_ReturnsEmptyString()
         {
-            var contactInfo = new ContactInfo();
+            var contactInfo = new ContactEntity();
 
             contactInfo.PhoneNumber.Should().Be(string.Empty);
         }

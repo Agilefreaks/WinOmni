@@ -4,6 +4,7 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using Omnipaste.Activity;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -33,7 +34,7 @@
         [Test]
         public void Create_ActivityIsOfTypeClipping_ReturnsAnActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(new ClippingModel()).WithType(ActivityTypeEnum.Clipping).Build();
+            var activityPresenter = ActivityPresenter.BeginBuild(new ClippingEntity()).WithType(ActivityTypeEnum.Clipping).Build();
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -44,8 +45,8 @@
         [Test]
         public void Create_ActivityIsOfTypeCall_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(new LocalPhoneCall()).WithType(ActivityTypeEnum.Call).Build();
-            activityPresenter.ContactInfo = new ContactInfo();
+            var activityPresenter = ActivityPresenter.BeginBuild(new LocalPhoneCallEntity()).WithType(ActivityTypeEnum.Call).Build();
+            activityPresenter.ContactEntity = new ContactEntity();
 
             var activityViewModel = _subject.Create(activityPresenter);
 
@@ -56,8 +57,8 @@
         [Test]
         public void Create_ActivityIsOfTypeMessage_ReturnsAContactRelatedActivityViewModelWithTheGivenActivityAsTheModel()
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(new LocalSmsMessage()).WithType(ActivityTypeEnum.Message).Build();
-            activityPresenter.ContactInfo = new ContactInfo();
+            var activityPresenter = ActivityPresenter.BeginBuild(new LocalSmsMessageEntity()).WithType(ActivityTypeEnum.Message).Build();
+            activityPresenter.ContactEntity = new ContactEntity();
 
             var activityViewModel = _subject.Create(activityPresenter);
 

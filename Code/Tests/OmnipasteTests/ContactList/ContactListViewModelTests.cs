@@ -14,6 +14,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
     using Omnipaste.ContactList.ContactInfo;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
@@ -66,15 +67,15 @@
         [Test]
         public void Activate_Always_PopulatesListWithStoredContacts()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
+            var contacts = new List<ContactEntity> { new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
 
             ((IActivate)_subject).Activate();
@@ -86,11 +87,11 @@
         [Test]
         public void ContactIsSaved_AfterActivate_AddsContactToList()
         {
-            var repositoryOperation = new RepositoryOperation<ContactInfo>(RepositoryMethodEnum.Changed, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
+            var repositoryOperation = new RepositoryOperation<ContactEntity>(RepositoryMethodEnum.Changed, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } });
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<RepositoryOperation<ContactInfo>>>(100, Notification.CreateOnNext(repositoryOperation)),
-                    new Recorded<Notification<RepositoryOperation<ContactInfo>>>(200, Notification.CreateOnCompleted<RepositoryOperation<ContactInfo>>()));
+                    new Recorded<Notification<RepositoryOperation<ContactEntity>>>(100, Notification.CreateOnNext(repositoryOperation)),
+                    new Recorded<Notification<RepositoryOperation<ContactEntity>>>(200, Notification.CreateOnCompleted<RepositoryOperation<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetOperationObservable()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
 
@@ -102,15 +103,15 @@
         [Test]
         public void ShowStarred_ChangesToTrue_FiltersItemsThatAreStarred()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
+            var contacts = new List<ContactEntity> { new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -123,15 +124,15 @@
         [Test]
         public void ShowStarred_ChangesToFalse_ShowsAllItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
+            var contacts = new List<ContactEntity> { new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } }, IsStarred = true }, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } }, IsStarred = false } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -144,15 +145,15 @@
         [Test]
         public void FilterText_ChangesToEmpty_ShowsAllItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
+            var contacts = new List<ContactEntity> { new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -165,15 +166,15 @@
         [Test]
         public void FilterText_MatchesPhoneNumber_ShowsMatchingItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactInfo { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
+            var contacts = new List<ContactEntity> { new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1" } } }, new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "2" } } } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -187,15 +188,15 @@
         [Test]
         public void FilterText_MatchesName_ShowsMatchingItems()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" }, new ContactInfo { LastName = "T2" }, new ContactInfo { FirstName = "some" } };
+            var contacts = new List<ContactEntity> { new ContactEntity { FirstName = "Test" }, new ContactEntity { LastName = "T2" }, new ContactEntity { FirstName = "some" } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -209,15 +210,15 @@
         [Test]
         public void FilterText_MatchesItems_SetsStateToNotEmpty()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" } };
+            var contacts = new List<ContactEntity> { new ContactEntity { FirstName = "Test" } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -230,15 +231,15 @@
         [Test]
         public void FilterText_DoesntMatchAnyItem_SetsStateToEmptyFilter()
         {
-            var contacts = new List<ContactInfo> { new ContactInfo { FirstName = "Test" } };
+            var contacts = new List<ContactEntity> { new ContactEntity { FirstName = "Test" } };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -251,21 +252,21 @@
         [Test]
         public void FilteredItemsSorting_SortsItemsDescendingBasedOnLastActivity()
         {
-            var oldestContact = new ContactInfo { FirstName = "Test1", LastActivityTime = DateTime.Now.AddDays(-1) };
-            var newestContact = new ContactInfo { FirstName = "Test2", LastActivityTime = DateTime.Now };
-            var contacts = new List<ContactInfo>
+            var oldestContact = new ContactEntity { FirstName = "Test1", LastActivityTime = DateTime.Now.AddDays(-1) };
+            var newestContact = new ContactEntity { FirstName = "Test2", LastActivityTime = DateTime.Now };
+            var contacts = new List<ContactEntity>
                                {
                                    oldestContact, 
                                    newestContact
                                };
             var contactObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         100,
                         Notification.CreateOnNext(contacts.AsEnumerable())),
-                    new Recorded<Notification<IEnumerable<ContactInfo>>>(
+                    new Recorded<Notification<IEnumerable<ContactEntity>>>(
                         200,
-                        Notification.CreateOnCompleted<IEnumerable<ContactInfo>>()));
+                        Notification.CreateOnCompleted<IEnumerable<ContactEntity>>()));
             _mockContactRepository.Setup(m => m.GetAll()).Returns(contactObservable);
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);

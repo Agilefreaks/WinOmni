@@ -6,6 +6,7 @@
     using Contacts.Models;
     using Ninject;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using SMS.Models;
@@ -24,7 +25,7 @@
 
         #region ISmsMessageFactory Members
 
-        public IObservable<T> Create<T>(SmsMessageDto smsMessageDto) where T : SmsMessage
+        public IObservable<T> Create<T>(SmsMessageDto smsMessageDto) where T : SmsMessageEntity
         {
             var contactDto = new ContactDto { PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto(smsMessageDto.PhoneNumber) }, ContactId =  smsMessageDto.ContactId ?? default(int) };
 

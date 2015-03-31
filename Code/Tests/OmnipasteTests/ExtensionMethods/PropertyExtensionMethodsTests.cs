@@ -4,7 +4,7 @@
     using NUnit.Framework;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Models;
-    using OmniUI.Models;
+    using OmniUI.Entities;
 
     [TestFixture]
     public class PropertyExtensionMethodsTests
@@ -19,7 +19,7 @@
 
         #region Nested type: TestModel
 
-        public class TestModel : BaseModel
+        public class TestModel : Entity
         {
         }
 

@@ -1,9 +1,9 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using Clipboard.Models;
-    using OmniUI.Models;
+    using OmniUI.Entities;
 
-    public class ClippingModel : BaseModel
+    public class ClippingEntity : Entity
     {
         public string Content { get; set; }
 
@@ -23,11 +23,11 @@
             }
         }
 
-        public ClippingModel()
+        public ClippingEntity()
         {
         }
 
-        public ClippingModel(Clipping clipping)
+        public ClippingEntity(Clipping clipping)
             : this()
         {
             Id = clipping.Id;

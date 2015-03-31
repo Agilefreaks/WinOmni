@@ -6,6 +6,7 @@ namespace Omnipaste.Factories
     using Contacts.Models;
     using Ninject;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Models;
@@ -23,7 +24,7 @@ namespace Omnipaste.Factories
         }
 
         public IObservable<T> Create<T>(PhoneCallDto phoneCallDto)
-            where T : PhoneCall
+            where T : PhoneCallEntity
         {
             var contactDto = new ContactDto { PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto(phoneCallDto.Number) }, ContactId = phoneCallDto.ContactId ?? default(int) };
 

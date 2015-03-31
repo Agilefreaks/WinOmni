@@ -1,9 +1,10 @@
 ﻿namespace Omnipaste.Notification.ClippingNotification
 {
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
 
-    public class ClippingNotificationViewModel : ResourceBasedNotificationViewModel<ClippingModel>, IClippingNotificationViewModel
+    public class ClippingNotificationViewModel : ResourceBasedNotificationViewModel<ClippingEntity>, IClippingNotificationViewModel
     {
         #region Public Properties
 

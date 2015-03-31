@@ -52,7 +52,7 @@
             {
                 if (base.Model != value)
                 {
-                    ContactInfo = new ContactInfoPresenter(value.ContactInfo);
+                    ContactInfo = new ContactInfoPresenter(value.ContactEntity);
                 }
                 base.Model = value;
             }

@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Presenters
 {
-    using Omnipaste.Models;
+    using Omnipaste.Entities;
     using OmniUI.Presenters;
 
     public interface IConversationPresenter : IPresenter

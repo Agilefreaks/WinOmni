@@ -2,11 +2,11 @@
 {
     using System;
     using Caliburn.Micro;
-    using OmniUI.Models;
+    using OmniUI.Entities;
 
     public interface IPresenter
     {
-        IModel BackingModel { get; set; }
+        IEntity BackingModel { get; set; }
 
         string Id { get; set; }
 
@@ -20,21 +20,21 @@
     }
 
     public interface IPresenter<T> : IPresenter
-        where T : BaseModel
+        where T : Entity
     {
         new T BackingModel { get; set; }
     }
 
     public class Presenter : PropertyChangedBase, IPresenter
     {
-        public Presenter(IModel backingModel)
+        public Presenter(IEntity backingModel)
         {
             BackingModel = backingModel;
         }
 
         #region IPresenter Members
 
-        public IModel BackingModel { get; set; }
+        public IEntity BackingModel { get; set; }
 
         public string Id
         {
@@ -103,7 +103,7 @@
     }
 
     public class Presenter<T> : Presenter, IPresenter<T>
-        where T : BaseModel
+        where T : Entity
     {
         public Presenter(T backingModel)
             : base(backingModel)

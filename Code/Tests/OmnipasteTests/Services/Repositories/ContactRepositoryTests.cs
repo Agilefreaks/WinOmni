@@ -10,6 +10,7 @@
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
@@ -40,7 +41,7 @@
         [Test]
         public void GetByContactIdOrPhoneNumber_WhenThereIsAContactWithContactId_ReturnsIt()
         {
-            var contact = new ContactInfo { ContactId = 42 };
+            var contact = new ContactEntity { ContactId = 42 };
             var observable = _subject.Save(contact).Select(_ => _subject.GetByContactIdOrPhoneNumber(42, String.Empty)).Switch();
 
             var result = _testScheduler.Start(() => observable);
@@ -52,7 +53,7 @@
         [Test]
         public void GetByContactIdOrPhoneNumber_WhenThereIsAContactWithPhoneNumber_ReturnsIt()
         {
-            var contact = new ContactInfo().AddPhoneNumber("123");
+            var contact = new ContactEntity().AddPhoneNumber("123");
             var observable = _subject.Save(contact).Select(_ => _subject.GetByContactIdOrPhoneNumber(null, "123")).Switch();
 
             var result = _testScheduler.Start(() => observable);
@@ -76,7 +77,7 @@
         [Test]
         public void GetByPhoneNumber_WhenContactExists_ReturnsContact()
         {
-            var contact1 = new ContactInfo
+            var contact1 = new ContactEntity
             {
                 UniqueId = "42",
                 PhoneNumbers =
@@ -89,7 +90,7 @@
                                                    }
                                            }
             };
-            var contact2 = new ContactInfo
+            var contact2 = new ContactEntity
             {
                 UniqueId = "1",
                 PhoneNumbers =
@@ -115,7 +116,7 @@
         [Test]
         public void GetByPhoneNumber_WhenCallPhoneNumberContainsPrefix_ReturnsCallForContact()
         {
-            var contact1 = new ContactInfo
+            var contact1 = new ContactEntity
                                {
                                    UniqueId = "42",
                                    PhoneNumbers =
@@ -128,7 +129,7 @@
                                                    }
                                            }
                                };
-            var contact2 = new ContactInfo
+            var contact2 = new ContactEntity
                                {
                                    UniqueId = "1",
                                    PhoneNumbers =
@@ -154,8 +155,8 @@
         [Test]
         public void Save_WillNotExpire()
         {
-            var testableObserver = _testScheduler.CreateObserver<ContactInfo>();
-            _testScheduler.Schedule(() => _subject.Save(new ContactInfo { UniqueId = "42" }));
+            var testableObserver = _testScheduler.CreateObserver<ContactEntity>();
+            _testScheduler.Schedule(() => _subject.Save(new ContactEntity { UniqueId = "42" }));
             _testScheduler.Schedule(new TimeSpan(0, 23, 59, 0), () => _subject.Get("42").Subscribe(testableObserver));
             _testScheduler.Schedule(new TimeSpan(1, 0, 0, 1), () => _subject.Get("42").Subscribe(testableObserver));
 

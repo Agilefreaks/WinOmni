@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public static class RepositoryObservableExtensionMethods
@@ -20,9 +21,9 @@
 
         public static IObservable<RepositoryOperation<T>> ForContact<T>(
             this IObservable<RepositoryOperation<T>> operationObservable,
-            ContactInfo contactInfo) where T : ConversationBaseModel
+            ContactEntity contactEntity) where T : ConversationEntity
         {
-            return operationObservable.Where(o => o.Item.ContactInfoUniqueId == contactInfo.UniqueId);
+            return operationObservable.Where(o => o.Item.ContactInfoUniqueId == contactEntity.UniqueId);
         }
 
         public static IObservable<RepositoryOperation<T>> OnMethod<T>(

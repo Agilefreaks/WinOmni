@@ -1,13 +1,14 @@
 ﻿namespace Omnipaste.Presenters
 {
     using Clipboard.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using OmniUI.Presenters;
 
-    public class ClippingPresenter : Presenter<ClippingModel>
+    public class ClippingPresenter : Presenter<ClippingEntity>
     {
-        public ClippingPresenter(ClippingModel clipping)
+        public ClippingPresenter(ClippingEntity clipping)
             : base(clipping)
         {
             BackingModel = clipping;

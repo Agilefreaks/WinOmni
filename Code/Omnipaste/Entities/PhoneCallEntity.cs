@@ -1,16 +1,17 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using System;
+    using Omnipaste.Models;
     using PhoneCalls.Models;
 
-    public abstract class PhoneCall : ConversationBaseModel
+    public abstract class PhoneCallEntity : ConversationEntity
     {
-        protected PhoneCall()
+        protected PhoneCallEntity()
         {
             Content = string.Empty;
         }
 
-        protected PhoneCall(PhoneCallDto phoneCallDto)
+        protected PhoneCallEntity(PhoneCallDto phoneCallDto)
             : this()
         {
             Id = phoneCallDto.Id;
@@ -20,7 +21,7 @@
 
         public string Content { get; set; }
 
-        public PhoneCall SetContactInfoUniqueId(String contactInfoUniqueId)
+        public PhoneCallEntity SetContactInfoUniqueId(String contactInfoUniqueId)
         {
             ContactInfoUniqueId = contactInfoUniqueId;
             return this;
