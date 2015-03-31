@@ -120,7 +120,7 @@
             var userInfo = new UserInfo();
             _mockConfigurationService.SetupGet(m => m.UserInfo).Returns(userInfo);
 
-            _subject.Refresh();
+            _subject.RefreshContacts();
 
             userInfo.ContactsUpdatedAt.Should().Be(new DateTime());
         }
