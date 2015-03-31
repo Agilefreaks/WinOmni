@@ -1,11 +1,11 @@
-﻿namespace OmniApiTests.Models
+﻿namespace OmniApiTests.Dto
 {
     using FluentAssertions;
     using NUnit.Framework;
     using OmniApi.Dto;
 
     [TestFixture]
-    public class UserTests
+    public class UserDtoTests
     {
         private UserDto _subject;
 
@@ -16,9 +16,12 @@
         }
 
         [Test]
-        public void Email_AfterConstructor_IsEmptyString()
+        public void Ctor_Always_InitsStringFieldsToEmpty()
         {
+            _subject.FirstName.Should().Be(string.Empty);
+            _subject.LastName.Should().Be(string.Empty);
             _subject.Email.Should().Be(string.Empty);
+            _subject.ImageUrl.Should().Be(string.Empty);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
     using FluentAssertions;
     using NUnit.Framework;
@@ -7,7 +7,7 @@
     using SMS.Dto;
 
     [TestFixture]
-    public class RemoteSmsMessageTests
+    public class RemoteSmsMessageEntityTests
     {
         [Test]
         public void Source_Always_ReturnsRemote()

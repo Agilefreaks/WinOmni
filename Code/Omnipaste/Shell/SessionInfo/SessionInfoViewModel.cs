@@ -10,6 +10,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Properties;
     using OmniUI.Resources;
@@ -135,7 +136,7 @@
 
         private void UpdateUserInfo(UserInfo userInfo)
         {
-            User = new ContactModel(new UserContactEntity(userInfo));
+            User = new ContactModel(new UserEntity(userInfo));
         }
 
         #endregion

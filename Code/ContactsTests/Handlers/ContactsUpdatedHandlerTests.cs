@@ -2,14 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Reactive;
-    using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Contacts.Api.Resources.v1;
     using Contacts.Dto;
     using Contacts.Handlers;
-    using Contacts.Models;
     using Microsoft.Reactive.Testing;
     using Moq;
     using Ninject;

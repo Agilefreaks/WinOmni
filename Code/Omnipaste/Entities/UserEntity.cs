@@ -1,12 +1,11 @@
-﻿namespace Omnipaste.Models
+﻿namespace Omnipaste.Entities
 {
     using System;
     using OmniCommon.Models;
-    using Omnipaste.Entities;
 
-    public class UserContactEntity : ContactEntity
+    public class UserEntity : ContactEntity
     {
-        public UserContactEntity(UserInfo userInfo = null)
+        public UserEntity(UserInfo userInfo = null)
         {
             if (userInfo == null)
             {

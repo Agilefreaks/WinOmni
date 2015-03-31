@@ -434,7 +434,7 @@
     <Compile Include="Entities\ClippingEntity.cs" />
     <Compile Include="Entities\SmsMessageEntity.cs" />
     <Compile Include="Entities\SourceType.cs" />
-    <Compile Include="Entities\UserContactEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />

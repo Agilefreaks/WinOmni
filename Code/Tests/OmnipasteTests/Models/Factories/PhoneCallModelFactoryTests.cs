@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Presenters.Factories
+﻿namespace OmnipasteTests.Models.Factories
 {
     using System.Reactive.Linq;
     using FluentAssertions;
@@ -10,11 +10,11 @@
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
-    public class PhoneCallPresenterFactoryTests
+    public class PhoneCallModelFactoryTests
     {
-        private Mock<IContactRepository> _mockContactRepository;
+        private PhoneCallModelFactory _subject;
 
-        private PhoneCallModelFactory _factory;
+        private Mock<IContactRepository> _mockContactRepository;
 
         private ContactEntity _contactEntity;
 
@@ -25,25 +25,25 @@
             _contactEntity = new ContactEntity();
             _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(_contactEntity));
 
-            _factory = new PhoneCallModelFactory(_mockContactRepository.Object);
+            _subject = new PhoneCallModelFactory(_mockContactRepository.Object);
         }
 
         [Test]
         public void Create_WithALocalPhoneCall_ReturnsALocalPhoneCallPresenter()
         {
-            _factory.Create(new LocalPhoneCallEntity()).Wait().Should().BeOfType<LocalPhoneCallModel>();
+            _subject.Create(new LocalPhoneCallEntity()).Wait().Should().BeOfType<LocalPhoneCallModel>();
         }
 
         [Test]
         public void Create_WithARemotePhoneCall_ReturnsARemotePhoneCallPresenter()
         {
-            _factory.Create(new RemotePhoneCallEntity()).Wait().Should().BeOfType<RemotePhoneCallModel>();
+            _subject.Create(new RemotePhoneCallEntity()).Wait().Should().BeOfType<RemotePhoneCallModel>();
         }
 
         [Test]
         public void Create_WithAPhoneCall_WillSetTheContactInfoPresenter()
         {
-            var phoneCallPresenter = _factory.Create(new RemotePhoneCallEntity()).Wait();
+            var phoneCallPresenter = _subject.Create(new RemotePhoneCallEntity()).Wait();
 
             phoneCallPresenter.ContactModel.BackingEntity.Should().Be(_contactEntity);
         }

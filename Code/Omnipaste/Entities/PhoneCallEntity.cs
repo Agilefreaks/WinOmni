@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Entities
 {
     using System;
-    using Omnipaste.Models;
     using PhoneCalls.Dto;
 
     public abstract class PhoneCallEntity : ConversationEntity

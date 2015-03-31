@@ -17,7 +17,7 @@
             IConfigurationService configurationService)
             : base(uiRefreshService)
         {
-            _currentUser = new ContactModel(new UserContactEntity(configurationService.UserInfo));
+            _currentUser = new ContactModel(new UserEntity(configurationService.UserInfo));
         }
 
         public ContactModel Contact

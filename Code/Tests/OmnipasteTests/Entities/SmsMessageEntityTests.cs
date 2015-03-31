@@ -1,15 +1,14 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
     using System;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
     using OmnipasteTests.Helpers;
     using SMS.Dto;
 
     [TestFixture]
-    public class SmsMessageTests
+    public class SmsMessageEntityTests
     {
         [TearDown]
         public void TearDown()

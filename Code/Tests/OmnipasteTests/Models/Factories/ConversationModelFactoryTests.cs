@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Presenters.Factories
+﻿namespace OmnipasteTests.Models.Factories
 {
     using System.Reactive.Linq;
     using FluentAssertions;
@@ -10,17 +10,17 @@
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
-    public class ConversationPresenterFactoryTests
+    public class ConversationModelFactoryTests
     {
         private Mock<IContactRepository> _mockContactRepository;
 
-        private ConversationModelFactory _factory;
+        private ConversationModelFactory _subject;
 
         [SetUp]
         public void SetUp()
         {
             _mockContactRepository = new Mock<IContactRepository>();
-            _factory = new ConversationModelFactory(_mockContactRepository.Object);
+            _subject = new ConversationModelFactory(_mockContactRepository.Object);
         }
 
         [Test]
@@ -29,7 +29,7 @@
             _mockContactRepository.Setup(m => m.Get("42"))
                 .Returns(Observable.Return(new ContactEntity { UniqueId = "42" }));
 
-            var localPhoneCallPresenter = _factory.Create<LocalPhoneCallModel, LocalPhoneCallEntity>(new LocalPhoneCallEntity { ContactInfoUniqueId = "42" }).Wait();
+            var localPhoneCallPresenter = _subject.Create<LocalPhoneCallModel, LocalPhoneCallEntity>(new LocalPhoneCallEntity { ContactInfoUniqueId = "42" }).Wait();
 
             localPhoneCallPresenter.ContactModel.UniqueId.Should().Be("42");
         }
@@ -40,7 +40,7 @@
             _mockContactRepository.Setup(m => m.Get("42"))
                 .Returns(Observable.Return(new ContactEntity { UniqueId = "42" }));
 
-            var localPhoneCallPresenter = _factory.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(new RemotePhoneCallEntity { ContactInfoUniqueId = "42" }).Wait();
+            var localPhoneCallPresenter = _subject.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(new RemotePhoneCallEntity { ContactInfoUniqueId = "42" }).Wait();
 
             localPhoneCallPresenter.ContactModel.UniqueId.Should().Be("42");
         }
@@ -51,7 +51,7 @@
             _mockContactRepository.Setup(m => m.Get("42"))
                 .Returns(Observable.Return(new ContactEntity { UniqueId = "42" }));
 
-            var localPhoneCallPresenter = _factory.Create<LocalSmsMessageModel, LocalSmsMessageEntity>(new LocalSmsMessageEntity { ContactInfoUniqueId = "42" }).Wait();
+            var localPhoneCallPresenter = _subject.Create<LocalSmsMessageModel, LocalSmsMessageEntity>(new LocalSmsMessageEntity { ContactInfoUniqueId = "42" }).Wait();
 
             localPhoneCallPresenter.ContactModel.UniqueId.Should().Be("42");
         }
@@ -62,7 +62,7 @@
             _mockContactRepository.Setup(m => m.Get("42"))
                 .Returns(Observable.Return(new ContactEntity { UniqueId = "42" }));
 
-            var localPhoneCallPresenter = _factory.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(new RemoteSmsMessageEntity { ContactInfoUniqueId = "42" }).Wait();
+            var localPhoneCallPresenter = _subject.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(new RemoteSmsMessageEntity { ContactInfoUniqueId = "42" }).Wait();
 
             localPhoneCallPresenter.ContactModel.UniqueId.Should().Be("42");
         }

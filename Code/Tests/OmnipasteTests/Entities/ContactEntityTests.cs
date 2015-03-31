@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +8,9 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
 
     [TestFixture]
-    public class ContactInfoTests
+    public class ContactEntityTests
     {
         private ContactEntity _subject;
 

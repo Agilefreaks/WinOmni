@@ -1,13 +1,12 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
     using FluentAssertions;
     using NUnit.Framework;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using SMS.Dto;
 
     [TestFixture]
-    public class LocalSmsMessageTests
+    public class LocalSmsMessageEntityTests
     {
         [Test]
         public void Source_Always_ReturnsLocal()

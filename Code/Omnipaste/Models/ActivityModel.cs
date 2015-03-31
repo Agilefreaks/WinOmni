@@ -5,7 +5,6 @@
     using Clipboard.Dto;
     using Omnipaste.Entities;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
     using OmniUI.Entities;
     using OmniUI.Models;
 

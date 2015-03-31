@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.Presenters.Factories
+﻿namespace OmnipasteTests.Models.Factories
 {
     using System;
     using System.Reactive.Linq;
@@ -10,11 +10,10 @@
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
-    public class ActivityPresenterFactoryTests
+    public class ActivityModelFactoryTests
     {
         private Mock<IContactRepository> _mockContactRepository;
 

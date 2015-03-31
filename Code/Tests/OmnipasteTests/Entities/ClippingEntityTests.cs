@@ -1,15 +1,13 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
-    using System;
     using Clipboard.Dto;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
 
     [TestFixture]
-    public class ClippingModelTests
+    public class ClippingEntityTests
     {
         [TearDown]
         public void TearDown()

@@ -1,25 +1,28 @@
 ﻿namespace OmniApiTests.Resources
 {
     using System;
+    using System.Net.Http;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using OmniApi.Dto;
+    using OmniApi.Resources;
     using OmniApi.Resources.v1;
     using OmniApi.Support;
     using OmniCommon;
     using OmniCommon.Interfaces;
+    using Refit;
 
     [TestFixture]
     public class ResourceTest
     {
-        private TestResource _subject;
-
         private Mock<IConfigurationService> _mockConfigurationService;
+
+        private Mock<IOAuth2> _mockOAuth2;
 
         private Mock<IWebProxyFactory> _mockWebProxyFactory;
 
-        private Mock<IOAuth2> _mockOAuth2;
+        private TestResource _subject;
 
         [SetUp]
         public void SetUp()
@@ -34,7 +37,9 @@
             _mockOAuth2 = new Mock<IOAuth2>();
             _subject = new TestResource(_mockConfigurationService.Object, _mockWebProxyFactory.Object)
                            {
-                               OAuth2 = _mockOAuth2.Object
+                               OAuth2 =
+                                   _mockOAuth2
+                                   .Object
                            };
         }
 
@@ -70,7 +75,9 @@
         {
             _subject = new TestResource(_mockConfigurationService.Object, _mockWebProxyFactory.Object)
                            {
-                               OAuth2 = _mockOAuth2.Object
+                               OAuth2 =
+                                   _mockOAuth2
+                                   .Object
                            };
             Action action = () => { var tmp = _subject.ResourceApi; };
 
@@ -82,12 +89,37 @@
         {
             _subject = new TestResource(_mockConfigurationService.Object, _mockWebProxyFactory.Object)
                            {
-                               OAuth2 = _mockOAuth2.Object,
-                               ResponseHandler = new Mock<IHttpResponseMessageHandler>().Object
+                               OAuth2 =
+                                   _mockOAuth2
+                                   .Object,
+                               ResponseHandler
+                                   =
+                                   new Mock
+                                   <
+                                   IHttpResponseMessageHandler
+                                   >()
+                                   .Object
                            };
             Action action = () => { var tmp = _subject.ResourceApi; };
 
             action.ShouldNotThrow();
         }
+
+        #region Nested type: TestResource
+
+        public class TestResource : ResourceWithAuthorization<ITestApi>
+        {
+            public TestResource(IConfigurationService configurationService, IWebProxyFactory webProxyFactory)
+                : base(configurationService, webProxyFactory)
+            {
+            }
+
+            protected override ITestApi CreateResourceApi(HttpClient httpClient)
+            {
+                return RestService.For<ITestApi>(httpClient);
+            }
+        }
+
+        #endregion
     }
 }

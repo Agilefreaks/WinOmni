@@ -1,32 +1,15 @@
-﻿namespace OmnipasteTests.Models
+﻿namespace OmnipasteTests.Entities
 {
     using System;
     using FluentAssertions;
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using PhoneCalls.Dto;
 
     [TestFixture]
-    public class PhoneCallTests
+    public class PhoneCallEntityTests
     {
-        private class TestPhoneCallEntity : PhoneCallEntity
-        {
-            public TestPhoneCallEntity(PhoneCallDto phoneCallDto)
-                : base(phoneCallDto)
-            {
-            }
-
-            public override SourceType Source
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
         [TearDown]
         public void TearDown()
         {
@@ -49,9 +32,29 @@
         [Test]
         public void CtorWithCall_Always_AssignsTime()
         {
-            var dateTime = new DateTime(2014, 1,1);
+            var dateTime = new DateTime(2014, 1, 1);
             TimeHelper.UtcNow = dateTime;
             new TestPhoneCallEntity(new PhoneCallDto()).Time.Should().Be(dateTime.ToUniversalTime());
         }
+
+        #region Nested type: TestPhoneCallEntity
+
+        private class TestPhoneCallEntity : PhoneCallEntity
+        {
+            public TestPhoneCallEntity(PhoneCallDto phoneCallDto)
+                : base(phoneCallDto)
+            {
+            }
+
+            public override SourceType Source
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
+        #endregion
     }
 }
