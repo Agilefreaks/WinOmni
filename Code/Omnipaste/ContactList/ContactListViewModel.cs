@@ -12,6 +12,7 @@ namespace Omnipaste.ContactList
     using System.Windows.Controls;
     using Castle.Core.Internal;
     using Ninject;
+    using OmniCommon.ExtensionMethods;
     using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Presenters;
@@ -226,6 +227,15 @@ namespace Omnipaste.ContactList
         protected override IContactInfoViewModel ChangeViewModel(ContactInfoPresenter model)
         {
             var contactInfoViewModel = UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create<IContactInfoViewModel>(model);
+
+            if (model.Identifier == PendingContact.Identifier)
+            {
+                SelectedContacts.Add(contactInfoViewModel.Model);
+
+                PendingContact = null;
+                FilterText = "";
+            }
+
             return contactInfoViewModel;
         }
 
@@ -313,27 +323,9 @@ namespace Omnipaste.ContactList
             }
         }
 
-        private void AddedPendingContact(ContactInfoViewModel item)
-        {
-            _pendingContact = new ContactInfoPresenter(new Models.ContactInfo());
-            SelectedContacts.Add(item.Model);
-            NotifyOfPropertyChange(() => PendingContact);
-            FilterText = "";
-        }
-
-        public void ActivateItem(ContactInfoViewModel item)
-        {
-            base.ActivateItem(item);
-
-            if (item.Model.Identifier == PendingContact.Identifier)
-            {
-                AddedPendingContact(item);
-            }
-        }
-
         public void AddPendingContact()
         {
-            ContactRepository.Save(PendingContact.ContactInfo).Subscribe();
+            ContactRepository.Save(PendingContact.ContactInfo).SubscribeAndHandleErrors();
         }
 
         private void UnselectItems(IEnumerable<IContactInfoViewModel> itemsToUnselect)

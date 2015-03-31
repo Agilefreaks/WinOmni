@@ -114,6 +114,7 @@
                                 r =>
                                     {
                                         smsMessage.ContactId = r.ContactInfo.ContactId;
+                                        smsMessage.PhoneNumber = r.PhoneNumber;
                                         return SmsMessageFactory.Create<LocalSmsMessage>(smsMessage);
                                     });
                         })
