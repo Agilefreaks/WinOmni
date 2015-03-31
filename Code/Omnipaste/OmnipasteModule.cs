@@ -36,7 +36,10 @@
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.TitleBar;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.Activity;
+    using Omnipaste.Workspaces.Clippings;
+    using Omnipaste.Workspaces.NewMessage;
+    using Omnipaste.Workspaces.People;
     using OmniUI;
     using OmniUI.Flyout;
     using OmniUI.MainMenuEntry;
@@ -60,7 +63,7 @@
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
             Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<MessageMenuEntryViewModel>().InSingletonScope();
+            Kernel.Bind<IMainMenuEntryViewModel>().To<PeopleMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<NewMessageMainMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<ISecondaryMenuEntryViewModel>()
@@ -88,7 +91,7 @@
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository),
                            typeof(UpdateInfoRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
-                           typeof(PeopleWorkspace), typeof(ClippingWorkspace), typeof(CredentialsMonitor),
+                           typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(CredentialsMonitor),
                            typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ActivityWorkspace), typeof(NewMessageWorkspace),
                            typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 

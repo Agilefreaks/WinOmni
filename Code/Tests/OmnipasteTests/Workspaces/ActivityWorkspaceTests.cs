@@ -4,7 +4,8 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ActivityList;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.NewMessage;
+    using Omnipaste.Workspaces.NewMessage.Activity;
     using OmniUI.Workspace;
 
     [TestFixture]

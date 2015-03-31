@@ -1,4 +1,4 @@
-namespace Omnipaste.Workspaces
+namespace Omnipaste.Workspaces.People
 {
     using Omnipaste.ContactList;
     using OmniUI.Workspace;

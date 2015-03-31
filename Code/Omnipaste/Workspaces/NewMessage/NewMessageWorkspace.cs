@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace Omnipaste.Workspaces.NewMessage
 {
     using Omnipaste.ContactList;
     using Omnipaste.Properties;

@@ -12,7 +12,7 @@
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.Clippings;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
     using OmniUI.Framework;

@@ -20,7 +20,7 @@
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.SideMenu;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.Activity;
     using OmniUI.Flyout;
     using OmniUI.TitleBarItem;
 

@@ -13,7 +13,7 @@ namespace Omnipaste.Activity
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.Activity;
     using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
 

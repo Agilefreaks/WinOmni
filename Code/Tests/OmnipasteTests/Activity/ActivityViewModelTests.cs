@@ -16,7 +16,8 @@
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.NewMessage;
+    using Omnipaste.Workspaces.NewMessage.Activity;
     using OmniUI.Workspace;
 
     [TestFixture]

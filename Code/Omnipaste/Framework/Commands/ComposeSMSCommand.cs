@@ -11,7 +11,7 @@
     using Omnipaste.Presenters;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.People;
     using OmniUI.Framework.Commands;
     using OmniUI.Workspace;
 

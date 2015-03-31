@@ -1,17 +1,17 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace Omnipaste.Workspaces.People
 {
     using Caliburn.Micro;
-    using Omnipaste.ClippingList;
+    using Omnipaste.ContactList;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
     using OmniUI.Workspace;
 
     [UseView(typeof(WorkspaceView))]
-    public class ClippingWorkspace : MasterDetailsWorkspace, IClippingWorkspace
+    public class PeopleWorkspace : MasterDetailsWorkspace, IPeopleWorkspace
     {
         #region Constructors and Destructors
 
-        public ClippingWorkspace(IClippingListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
+        public PeopleWorkspace(IContactListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
             : base(masterScreen, detailsConductor)
         {
             MasterScreen = masterScreen;
@@ -20,16 +20,16 @@
         #endregion
 
         #region Public Properties
-    
+
         public override string DisplayName
         {
             get
             {
-                return Resources.Clippings;
+                return Resources.People;
             }
         }
 
-        public new IClippingListViewModel MasterScreen { get; private set; }
+        public new IContactListViewModel MasterScreen { get; private set; }
 
         #endregion
 

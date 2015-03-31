@@ -13,7 +13,8 @@
     using Omnipaste.Presenters;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
+    using Omnipaste.Workspaces.NewMessage;
+    using Omnipaste.Workspaces.NewMessage.People;
     using OmniUI.Workspace;
 
     [TestFixture]

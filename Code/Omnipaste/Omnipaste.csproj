@@ -539,31 +539,31 @@
     </Compile>
     <Compile Include="Shell\Settings\SettingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
-    <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\Clippings\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\NewMessageMainMenuEntryView.xaml.cs">
+    <Compile Include="Workspaces\NewMessage\INewMessageMainMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\NewMessage\NewMessageMainMenuEntryView.xaml.cs">
       <DependentUpon>NewMessageMainMenuEntryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Workspaces\NewMessageMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\NewMessageWorkspace.cs" />
-    <Compile Include="Workspaces\INewMessageMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\INewMessageWorkspace.cs" />
-    <Compile Include="Workspaces\MessageMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\NewMessage\NewMessageMainMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\NewMessage\NewMessageWorkspace.cs" />
+    <Compile Include="Workspaces\NewMessage\INewMessageWorkspace.cs" />
+    <Compile Include="Workspaces\People\PeopleMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
     <Compile Include="Services\Monitors\Power\ISystemPowerHelper.cs" />
     <Compile Include="Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Services\UpdaterService.cs" />
     <Compile Include="SMSComposer\ISMSComposerViewModel.cs" />
-    <Compile Include="Workspaces\ActivityMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\Activity\ActivityMenuEntryViewModel.cs" />
     <Compile Include="SMSComposer\SMSComposerViewModel.cs" />
-    <Compile Include="Workspaces\ActivityWorkspace.cs" />
-    <Compile Include="Workspaces\ClippingWorkspace.cs" />
+    <Compile Include="Workspaces\Activity\ActivityWorkspace.cs" />
+    <Compile Include="Workspaces\Clippings\ClippingsWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
-    <Compile Include="Workspaces\IActivityWorkspace.cs" />
-    <Compile Include="Workspaces\IClippingWorkspace.cs" />
-    <Compile Include="Workspaces\IPeopleWorkspace.cs" />
-    <Compile Include="Workspaces\PeopleWorkspace.cs" />
+    <Compile Include="Workspaces\Activity\IActivityWorkspace.cs" />
+    <Compile Include="Workspaces\Clippings\IClippingWorkspace.cs" />
+    <Compile Include="Workspaces\People\IPeopleWorkspace.cs" />
+    <Compile Include="Workspaces\People\PeopleWorkspace.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1021,7 +1021,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Workspaces\NewMessageMainMenuEntryView.xaml">
+    <Page Include="Workspaces\NewMessage\NewMessageMainMenuEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1158,7 +1158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WorkspaceDetails\Conversation\Call\" />
-    <Folder Include="Workspaces\Activity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

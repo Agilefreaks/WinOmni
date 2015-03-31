@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace Omnipaste.Workspaces.Clippings
 {
     using Omnipaste.ClippingList;
     using OmniUI.Workspace;

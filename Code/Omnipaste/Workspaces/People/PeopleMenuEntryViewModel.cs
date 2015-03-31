@@ -1,17 +1,17 @@
-﻿namespace Omnipaste.Workspaces
+namespace Omnipaste.Workspaces.People
 {
     using OmniUI.Attributes;
     using OmniUI.MainMenuEntry;
     using OmniUI.Workspace;
 
     [UseView(typeof(MainMenuEntryView))]
-    public class ActivityMenuEntryViewModel : WorkspaceMainMenuEntry<IActivityWorkspace>, IMainMenuEntryViewModel
+    public class PeopleMenuEntryViewModel : WorkspaceMainMenuEntry<IPeopleWorkspace>, IMainMenuEntryViewModel
     {
         public override string Icon
         {
             get
             {
-                return OmniUI.Resources.IconNames.SideMenuActivity;
+                return OmniUI.Resources.IconNames.SideMenuMessages;
             }
         }
     }

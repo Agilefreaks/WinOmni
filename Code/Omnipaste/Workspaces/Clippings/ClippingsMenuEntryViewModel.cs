@@ -1,17 +1,17 @@
-namespace Omnipaste.Workspaces
+﻿namespace Omnipaste.Workspaces.Clippings
 {
     using OmniUI.Attributes;
     using OmniUI.MainMenuEntry;
     using OmniUI.Workspace;
 
     [UseView(typeof(MainMenuEntryView))]
-    public class MessageMenuEntryViewModel : WorkspaceMainMenuEntry<IPeopleWorkspace>, IMainMenuEntryViewModel
+    public class ClippingsMenuEntryViewModel : WorkspaceMainMenuEntry<IClippingWorkspace>, IMainMenuEntryViewModel
     {
         public override string Icon
         {
             get
             {
-                return OmniUI.Resources.IconNames.SideMenuMessages;
+                return OmniUI.Resources.IconNames.SideMenuClippings;
             }
         }
     }

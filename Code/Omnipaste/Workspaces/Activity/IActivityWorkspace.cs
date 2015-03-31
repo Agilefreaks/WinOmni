@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Workspaces
+﻿namespace Omnipaste.Workspaces.Activity
 {
     using OmniUI.Workspace;
 
