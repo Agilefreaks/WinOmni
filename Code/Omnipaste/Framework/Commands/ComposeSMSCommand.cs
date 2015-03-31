@@ -8,6 +8,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
+    using Omnipaste.ContactList.Contact;
     using Omnipaste.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
@@ -62,7 +63,7 @@
                 Observable.Start(ShellViewModel.Show, defaultScheduler)
                     .Select(_ => Observable.Start(ActivatePeopleWorkspace, dispatcherScheduler))
                     .Switch()
-                    .Select(_ => Observable.Start<IContactInfoViewModel>(GetCorrespondingViewModel, defaultScheduler))
+                    .Select(_ => Observable.Start<IContactViewModel>(GetCorrespondingViewModel, defaultScheduler))
                     .Switch()
                     .RetryAfter(RetryInterval, MaxRetryCount, defaultScheduler)
                     .Select(viewModel => Observable.Start(viewModel.ShowDetails, dispatcherScheduler))
@@ -78,7 +79,7 @@
             WorkspaceConductor.ActivateItem(PeopleWorkspace);
         }
 
-        private IContactInfoViewModel GetCorrespondingViewModel()
+        private IContactViewModel GetCorrespondingViewModel()
         {
             return
                 PeopleWorkspace.MasterScreen.GetChildren()

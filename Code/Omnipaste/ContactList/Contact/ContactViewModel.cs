@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ContactList.ContactInfo
+﻿namespace Omnipaste.ContactList.Contact
 {
     using System;
     using System.ComponentModel;
@@ -20,13 +20,22 @@
     using OmniUI.Framework;
     using OmniUI.Workspace;
 
-    public class ContactInfoViewModel : DetailsViewModelBase<ContactModel>, IContactInfoViewModel
+    public class ContactViewModel : DetailsViewModelBase<ContactModel>, IContactViewModel
     {
+        #region ContactStatusEnum enum
+
+        public enum ContactStatusEnum
+        {
+            Normal,
+
+            Selected
+        }
+
+        #endregion
+
         public const string SessionSelectionKey = "PeopleWorkspace_SelectedContact";
 
         private readonly ISessionManager _sessionManager;
-
-        private string _lastActivityInfo;
 
         private readonly ISubscriptionsManager _subscriptionsManager;
 
@@ -34,26 +43,26 @@
 
         private bool _hasNotViewedMessages;
 
-        private IConversationModel _lastActivity;
-
         private bool _isSelected;
 
-        public ContactInfoStatusEnum State
-        {
-            get
-            {
-                return _isSelected ? ContactInfoStatusEnum.Selected : ContactInfoStatusEnum.Normal;
-            }
-        }
+        private IConversationModel _lastActivity;
 
-        public ContactInfoViewModel(ISessionManager sessionManager)
+        private string _lastActivityInfo;
+
+        public ContactViewModel(ISessionManager sessionManager)
         {
             _subscriptionsManager = new SubscriptionsManager();
             _sessionManager = sessionManager;
             ClickCommand = new Command(ToggleSelection);
         }
 
-
+        public ContactStatusEnum State
+        {
+            get
+            {
+                return _isSelected ? ContactStatusEnum.Selected : ContactStatusEnum.Normal;
+            }
+        }
 
         [Inject]
         public IContactRepository ContactRepository { get; set; }
@@ -68,25 +77,6 @@
         public IConversationProvider ConversationProvider { get; set; }
 
         public Command ClickCommand { get; set; }
-
-
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-            set
-            {
-                if (value.Equals(_isSelected))
-                {
-                    return;
-                }
-                _isSelected = value;
-                NotifyOfPropertyChange(() => IsSelected);
-                NotifyOfPropertyChange(() => State);
-            }
-        }
 
         public IConversationModel LastActivity
         {
@@ -120,22 +110,6 @@
                 }
                 _lastActivityInfo = value;
                 NotifyOfPropertyChange(() => LastActivityInfo);
-            }
-        }
-
-        public DateTime? LastActivityTime
-        {
-            get
-            {
-                return Model.BackingEntity.LastActivityTime;
-            }
-        }
-
-        public string Identifier
-        {
-            get
-            {
-                return Model.Identifier;
             }
         }
 
@@ -173,6 +147,42 @@
             }
         }
 
+        #region IContactViewModel Members
+
+        public bool IsSelected
+        {
+            get
+            {
+                return _isSelected;
+            }
+            set
+            {
+                if (value.Equals(_isSelected))
+                {
+                    return;
+                }
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+                NotifyOfPropertyChange(() => State);
+            }
+        }
+
+        public DateTime? LastActivityTime
+        {
+            get
+            {
+                return Model.BackingEntity.LastActivityTime;
+            }
+        }
+
+        public string Identifier
+        {
+            get
+            {
+                return Model.Identifier;
+            }
+        }
+
         public void ShowDetails()
         {
             var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingEntity);
@@ -180,6 +190,8 @@
 
             this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
+
+        #endregion
 
         public void OnLoaded()
         {
@@ -190,12 +202,12 @@
                     .Updated.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
-            
+
             _subscriptionsManager.Add(
                 UiRefreshService.RefreshObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => RefreshUi()));
-            
+
             _subscriptionsManager.Add(
                 _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
                     .SubscribeOn(SchedulerProvider.Default)
@@ -207,7 +219,7 @@
         {
             _subscriptionsManager.ClearAll();
         }
-        
+
         protected override void HookModel(ContactModel model)
         {
             model.PropertyChanged += OnPropertyChanged;
@@ -275,9 +287,7 @@
             }
             else if (item is PhoneCallModel)
             {
-                result = item.Source == SourceType.Local
-                             ? Resources.OutgoingCallLabel
-                             : Resources.IncommingCallLabel;
+                result = item.Source == SourceType.Local ? Resources.OutgoingCallLabel : Resources.IncommingCallLabel;
             }
 
             return result;

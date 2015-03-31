@@ -6,7 +6,7 @@ namespace Omnipaste.ContactList.Converters
     using System.Windows.Media;
     using OmniUI.Helpers;
 
-    public class ContactInfoBorderBrushConverter : IValueConverter
+    public class ContactBorderBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

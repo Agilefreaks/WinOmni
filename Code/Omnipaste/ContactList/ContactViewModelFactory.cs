@@ -4,11 +4,11 @@ namespace Omnipaste.ContactList
     using Omnipaste.Models;
     using OmniUI.Details;
 
-    public class ContactInfoViewModelFactory : IContactInfoViewModelFactory
+    public class ContactViewModelFactory : IContactViewModelFactory
     {
         private readonly IServiceLocator _serviceLocator;
 
-        public ContactInfoViewModelFactory(IServiceLocator serviceLocator)
+        public ContactViewModelFactory(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }

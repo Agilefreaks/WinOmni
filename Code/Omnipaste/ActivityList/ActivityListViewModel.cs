@@ -6,7 +6,6 @@ namespace Omnipaste.ActivityList
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Activity;
-    using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;

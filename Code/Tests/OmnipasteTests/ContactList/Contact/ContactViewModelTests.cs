@@ -1,31 +1,25 @@
-﻿/* TODO
-namespace OmnipasteTests.ContactList
+﻿namespace OmnipasteTests.ContactList.Contact
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reactive;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList.ContactEntity;
+    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces;
-    using OmnipasteTests.Helpers;
+    using Omnipaste.Workspaces.People;
     using OmniUI.Workspace;
 
     [TestFixture]
-    public class ContactInfoViewModelTests
+    public class ContactViewModelTests
     {
-        private ContactInfoViewModel _subject;
+        private ContactViewModel _subject;
 
         private ContactModel _contactInfoPresenter;
 
@@ -62,7 +56,7 @@ namespace OmnipasteTests.ContactList
             _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactEntity>())).Returns(_mockConversation.Object);
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
-            _subject = new ContactInfoViewModel(_mockSessionManager.Object)
+            _subject = new ContactViewModel(_mockSessionManager.Object)
                            {
                                Model = _contactInfoPresenter,
                                ContactRepository = _mockContactRepository.Object,
@@ -82,8 +76,7 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void IsSelected_WhenSessionSelectedContactIsSameAsContactInfoId_ReturnsTrue()
         {
-            _mockSessionManager.SetupGet(m => m[ContactInfoViewModel.SessionSelectionKey])
-                .Returns(_contactEntity.UniqueId);
+            _mockSessionManager.SetupGet(m => m[ContactViewModel.SessionSelectionKey]).Returns(_contactEntity.UniqueId);
 
             _subject.IsSelected.Should().BeTrue();
         }
@@ -91,7 +84,7 @@ namespace OmnipasteTests.ContactList
         [Test]
         public void IsSelected_WhenSessionSelectedContactIsNotSameAsContactInfoId_ReturnsFalse()
         {
-            _mockSessionManager.SetupGet(m => m[ContactInfoViewModel.SessionSelectionKey])
+            _mockSessionManager.SetupGet(m => m[ContactViewModel.SessionSelectionKey])
                 .Returns("other");
 
             _subject.IsSelected.Should().BeFalse();
@@ -151,9 +144,10 @@ namespace OmnipasteTests.ContactList
             
             _subject.ShowDetails();
 
-            _mockSessionManager.VerifySet(m => m[ContactInfoViewModel.SessionSelectionKey] = _contactEntity.UniqueId);
+            _mockSessionManager.VerifySet(m => m[ContactViewModel.SessionSelectionKey] = _contactEntity.UniqueId);
         }
 
+/*
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
@@ -203,7 +197,7 @@ namespace OmnipasteTests.ContactList
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
 
-            _subject.LastActivityInfo.Should().Be(Omnipaste.Properties.Resources.IncommingCallLabel);
+            _subject.LastActivityInfo.Should().Be(Resources.IncommingCallLabel);
         }
 
         [Test]
@@ -216,7 +210,7 @@ namespace OmnipasteTests.ContactList
             _subject.OnLoaded();
             _testScheduler.AdvanceBy(1000);
 
-            _subject.LastActivityInfo.Should().Be(Omnipaste.Properties.Resources.OutgoingCallLabel);
+            _subject.LastActivityInfo.Should().Be(Resources.OutgoingCallLabel);
         }
 
         [Test]
@@ -302,6 +296,6 @@ namespace OmnipasteTests.ContactList
                         Notification.CreateOnNext(items.AsEnumerable())));
             _mockConversation.Setup(x => x.GetItems()).Returns(observable);
         }
+*/
     }
 }
-*/

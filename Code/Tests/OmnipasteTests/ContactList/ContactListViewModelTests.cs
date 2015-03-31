@@ -13,7 +13,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
-    using Omnipaste.ContactList.ContactInfo;
+    using Omnipaste.ContactList.Contact;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services;
@@ -27,7 +27,7 @@
 
         private Mock<IContactRepository> _mockContactRepository;
 
-        private Mock<IContactInfoViewModelFactory> _mockContactInfoViewModelFactory;
+        private Mock<IContactViewModelFactory> _mockContactInfoViewModelFactory;
 
         private TestScheduler _testScheduler;
 
@@ -41,18 +41,18 @@
             SchedulerProvider.Dispatcher = _testScheduler;
             
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
-            _mockContactInfoViewModelFactory = new Mock<IContactInfoViewModelFactory>();
+            _mockContactInfoViewModelFactory = new Mock<IContactViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
             _mockContactInfoViewModelFactory.Setup(
-                x => x.Create<IContactInfoViewModel>(It.IsAny<ContactModel>()))
+                x => x.Create<IContactViewModel>(It.IsAny<ContactModel>()))
                 .Returns<ContactModel>(
-                    presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
+                    presenter => new ContactViewModel(_mockSessionManager.Object) { Model = presenter });
             
             MoqMockingKernel kernel = new MoqMockingKernel();
             kernel.Bind<IContactListViewModel>().To<ContactListViewModel>();
             kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
-            kernel.Bind<IContactInfoViewModelFactory>().ToConstant(_mockContactInfoViewModelFactory.Object);
+            kernel.Bind<IContactViewModelFactory>().ToConstant(_mockContactInfoViewModelFactory.Object);
             _subject = (ContactListViewModel)kernel.Get<IContactListViewModel>();
         }
 
@@ -181,7 +181,7 @@
             _subject.FilterText = "1";
 
             _subject.FilteredItems.Count.Should().Be(1);
-            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.BackingEntity.Should().Be(contacts.First());
+            ((IContactViewModel)_subject.FilteredItems.GetItemAt(0)).Model.BackingEntity.Should().Be(contacts.First());
         }
 
         [Test]
@@ -272,8 +272,8 @@
 
             _subject.FilterText = "Test";
 
-            _subject.FilteredItems.Cast<IContactInfoViewModel>().First().Model.BackingEntity.Should().Be(contacts[1]);
-            _subject.FilteredItems.Cast<IContactInfoViewModel>().Last().Model.BackingEntity.Should().Be(contacts[0]);
+            _subject.FilteredItems.Cast<IContactViewModel>().First().Model.BackingEntity.Should().Be(contacts[1]);
+            _subject.FilteredItems.Cast<IContactViewModel>().Last().Model.BackingEntity.Should().Be(contacts[0]);
         }
     }
 }

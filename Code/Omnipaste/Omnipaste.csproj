@@ -264,7 +264,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactList\ContactInfo\ContactInfoStatusEnum.cs" />
     <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
     <Compile Include="Factories\ContactFactory.cs" />
     <Compile Include="Factories\IContactFactory.cs" />
@@ -277,13 +276,13 @@
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
-    <Compile Include="ClippingList\Converters\ContactInfoBorderBrushConverter.cs" />
+    <Compile Include="ClippingList\Converters\ClippingBorderBrushConverter.cs" />
     <Compile Include="ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
     <Compile Include="ClippingList\IClippingListViewModel.cs" />
     <Compile Include="ClippingList\IClippingViewModel.cs" />
     <Compile Include="ClippingList\IClippingViewModelFactory.cs" />
-    <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
-    <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
+    <Compile Include="ContactList\Converters\ContactBorderBrushConverter.cs" />
+    <Compile Include="ContactList\Converters\ContactBackroundBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
@@ -367,7 +366,7 @@
     <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
-    <Compile Include="ContactList\ContactInfo\ContactInfoViewModel.cs" />
+    <Compile Include="ContactList\Contact\ContactViewModel.cs" />
     <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
     <Compile Include="ContactList\ContactListViewModel.cs" />
     <Compile Include="ContactList\IContactInfoViewModel.cs" />
@@ -565,11 +564,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactInfo\ContactInfo\Normal.xaml">
+    <Page Include="ContactList\Contact\Contact\Normal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactList\ContactInfo\ContactInfo\Selected.xaml">
+    <Page Include="ContactList\Contact\Contact\Selected.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -774,7 +773,7 @@
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Loading\UserToken\IUserTokenViewModel.cs" />
     <Compile Include="Loading\UserToken\UserTokenViewModel.cs" />
-    <Page Include="ContactList\ContactInfo\ContactInfoView.xaml">
+    <Page Include="ContactList\Contact\ContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

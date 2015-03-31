@@ -6,7 +6,7 @@
     using System.Windows.Media;
     using OmniUI.Helpers;
 
-    public class ContactInfoBackroundBrushConverter : IValueConverter
+    public class ContactBackroundBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

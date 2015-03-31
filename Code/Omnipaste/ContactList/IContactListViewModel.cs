@@ -1,8 +1,9 @@
 ﻿namespace Omnipaste.ContactList
 {
+    using Omnipaste.ContactList.Contact;
     using OmniUI.List;
 
-    public interface IContactListViewModel : IListViewModel<IContactInfoViewModel>
+    public interface IContactListViewModel : IListViewModel<IContactViewModel>
     {
         string FilterText { get; set; }
 

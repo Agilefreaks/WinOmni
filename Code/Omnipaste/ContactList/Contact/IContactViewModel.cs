@@ -1,10 +1,10 @@
-﻿namespace Omnipaste.ContactList
+﻿namespace Omnipaste.ContactList.Contact
 {
     using System;
     using Omnipaste.Models;
     using OmniUI.Details;
 
-    public interface IContactInfoViewModel : IDetailsViewModel<ContactModel>
+    public interface IContactViewModel : IDetailsViewModel<ContactModel>
     {
         DateTime? LastActivityTime { get; }
 
