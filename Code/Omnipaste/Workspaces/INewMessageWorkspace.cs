@@ -2,7 +2,7 @@
 {
     using OmniUI.Workspace;
 
-    public interface IGroupMessagesWorkspace : IWorkspace
+    public interface INewMessageWorkspace : IWorkspace
     {
     }
 }

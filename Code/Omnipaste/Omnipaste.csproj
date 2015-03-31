@@ -541,13 +541,13 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\GroupMessagesMainMenuEntryView.xaml.cs">
-      <DependentUpon>GroupMessagesMainMenuEntryView.xaml</DependentUpon>
+    <Compile Include="Workspaces\NewMessageMainMenuEntryView.xaml.cs">
+      <DependentUpon>NewMessageMainMenuEntryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Workspaces\GroupMessagesMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\GroupMessagesWorkspace.cs" />
-    <Compile Include="Workspaces\IGroupMessagesMainMenuEntryViewModel.cs" />
-    <Compile Include="Workspaces\IGroupMessagesWorkspace.cs" />
+    <Compile Include="Workspaces\NewMessageMainMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\NewMessageWorkspace.cs" />
+    <Compile Include="Workspaces\INewMessageMainMenuEntryViewModel.cs" />
+    <Compile Include="Workspaces\INewMessageWorkspace.cs" />
     <Compile Include="Workspaces\MessageMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\SideMenuViewModel.cs" />
     <Compile Include="Services\SystemIdleService.cs" />
@@ -1021,7 +1021,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Workspaces\GroupMessagesMainMenuEntryView.xaml">
+    <Page Include="Workspaces\NewMessageMainMenuEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1158,6 +1158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WorkspaceDetails\Conversation\Call\" />
+    <Folder Include="Workspaces\Activity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

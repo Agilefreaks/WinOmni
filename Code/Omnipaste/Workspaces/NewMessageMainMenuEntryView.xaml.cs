@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Omnipaste.Workspaces
 {
     /// <summary>
-    /// Interaction logic for GroupMessagesMainMenuEntryView.xaml
+    /// Interaction logic for NewMessageMainMenuEntryView.xaml
     /// </summary>
-    public partial class GroupMessagesMainMenuEntryView : UserControl
+    public partial class NewMessageMainMenuEntryView : UserControl
     {
-        public GroupMessagesMainMenuEntryView()
+        public NewMessageMainMenuEntryView()
         {
             InitializeComponent();
         }

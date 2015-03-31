@@ -6,7 +6,7 @@
     using OmniUI.Workspace;
 
     [UseView(typeof(WorkspaceView))]
-    public class GroupMessagesWorkspace : MasterDetailsWorkspace, IGroupMessagesWorkspace
+    public class NewMessageWorkspace : MasterDetailsWorkspace, INewMessageWorkspace
     {
         public override string DisplayName
         {
@@ -16,7 +16,7 @@
             }
         }
 
-        public GroupMessagesWorkspace(IContactListViewModel defaultScreen, IDetailsConductorViewModel detailsConductor)
+        public NewMessageWorkspace(IContactListViewModel defaultScreen, IDetailsConductorViewModel detailsConductor)
             : base(defaultScreen, detailsConductor)
         {
             defaultScreen.CanSelectMultipleItems = true;

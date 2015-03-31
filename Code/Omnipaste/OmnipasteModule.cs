@@ -62,7 +62,7 @@
             Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<MessageMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<GroupMessagesMainMenuEntryViewModel>().InSingletonScope();
+            Kernel.Bind<IMainMenuEntryViewModel>().To<NewMessageMainMenuEntryViewModel>().InSingletonScope();
             Kernel.Bind<ISecondaryMenuEntryViewModel>()
                 .ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
             Kernel.Bind<ITitleBarItemViewModel>().To<NewVersionTitleBarItemViewModel>().InSingletonScope();
@@ -90,7 +90,7 @@
                            typeof(UpdateInfoRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
                            typeof(PeopleWorkspace), typeof(ClippingWorkspace), typeof(CredentialsMonitor),
                            typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
-                           typeof(ActivityWorkspace), typeof(GroupMessagesWorkspace),
+                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace),
                            typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
                            typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory),
                            typeof(ConversationPresenterFactory), typeof(ActivityPresenterFactory), typeof(PhoneCallPresenterFactory), typeof(SmsMessagePresenterFactory)

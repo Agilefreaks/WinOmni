@@ -2,7 +2,7 @@
 {
     using OmniUI.Workspace;
 
-    public class GroupMessagesMainMenuEntryViewModel : WorkspaceMainMenuEntry<IGroupMessagesWorkspace>, IGroupMessagesMainMenuEntryViewModel
+    public class NewMessageMainMenuEntryViewModel : WorkspaceMainMenuEntry<INewMessageWorkspace>, INewMessageMainMenuEntryViewModel
     {
         public override string Icon
         {
