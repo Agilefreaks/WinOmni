@@ -1,8 +1,11 @@
-﻿**Version 1.5.2 (31.03.2015)**
+﻿**Version 1.5.3 (31.03.2015)**
 
-**Features:**
+**Bug fixes:**
+- Fixes contact update for some users
 
-- Improves duplicate contact handling
+**Improvements:**
+
+- Better duplicate contact handling
 
 ----------
 
