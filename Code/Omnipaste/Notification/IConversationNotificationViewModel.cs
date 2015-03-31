@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.Notification
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
-    public interface IConversationNotificationViewModel : IResourceBasedNotificationViewModel<IConversationPresenter>
+    public interface IConversationNotificationViewModel : IResourceBasedNotificationViewModel<IConversationModel>
     {
     }
 }

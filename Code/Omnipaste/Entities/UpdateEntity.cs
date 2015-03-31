@@ -1,17 +1,16 @@
-namespace Omnipaste.Services
+namespace Omnipaste.Entities
 {
     using System;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
     using OmniUI.Entities;
 
-    public class UpdateInfo : Entity
+    public class UpdateEntity : Entity
     {
         public bool WasInstalled { get; set; }
 
         public string ReleaseLog { get; set; }
 
-        public UpdateInfo()
+        public UpdateEntity()
         {
             UniqueId = Guid.NewGuid().ToString();
             Time = TimeHelper.UtcNow;

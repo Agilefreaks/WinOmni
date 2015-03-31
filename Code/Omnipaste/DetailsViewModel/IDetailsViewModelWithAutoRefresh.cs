@@ -2,10 +2,10 @@
 {
     using System;
     using OmniUI.Details;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
 
     public interface IDetailsViewModelWithAutoRefresh<TModel> : IDetailsViewModel<TModel>, IDisposable
-        where TModel : IPresenter
+        where TModel : IModel
     {
     }
 }

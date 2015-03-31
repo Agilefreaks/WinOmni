@@ -10,7 +10,7 @@
     using Omnipaste.ContactList;
     using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.People;
@@ -41,7 +41,7 @@
             _mockPeopleWorkspace = new Mock<IPeopleWorkspace> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockShellViewModel = new Mock<IShellViewModel>();
-            _subject = new ComposeSMSCommand(new ContactInfoPresenter(_contactEntity))
+            _subject = new ComposeSMSCommand(new ContactModel(_contactEntity))
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
                                PeopleWorkspace = _mockPeopleWorkspace.Object,
@@ -73,7 +73,7 @@
         public void Execute_ACorrespondingContactViewModelsExistsForTheGivenContact_ShowsDetailsForThatViewModel()
         {
             var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactInfoPresenter(_contactEntity));
+            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
             var mockContactListViewModel = new Mock<IContactListViewModel>();
             var contactInfoViewModels = new List<IContactInfoViewModel> { mockContactInfoViewModel.Object };
             mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactInfoViewModels);
@@ -88,7 +88,7 @@
         public void Execute_ACorrespondingContactViewModelsDoesNotExistForTheGivenContact_RetriesUntilOneExistsAndShowsDetailsForThatViewModel()
         {
             var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactInfoPresenter(_contactEntity));
+            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
             var contactInfoViewModels = new List<IContactInfoViewModel> { mockContactInfoViewModel.Object };
             var getContactsCallcount = 0;
             var mockContactListViewModel = new Mock<IContactListViewModel>();

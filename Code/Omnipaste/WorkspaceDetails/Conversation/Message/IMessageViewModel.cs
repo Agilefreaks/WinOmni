@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation.Message
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using OmniUI.Details;
 
-    public interface IMessageViewModel : IConversationItemViewModel, IDetailsViewModel<SmsMessagePresenter>
+    public interface IMessageViewModel : IConversationItemViewModel, IDetailsViewModel<SmsMessageModel>
     {
     }
 }

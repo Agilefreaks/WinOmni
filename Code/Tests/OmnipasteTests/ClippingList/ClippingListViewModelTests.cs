@@ -12,7 +12,6 @@
     using Omnipaste.ClippingList;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
 
@@ -39,8 +38,8 @@
             _mockClippingViewModelFactory = new Mock<IClippingViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
-            _mockClippingViewModelFactory.Setup(m => m.Create(It.IsAny<ClippingPresenter>()))
-                .Returns<ClippingPresenter>(clippingModel => new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel });
+            _mockClippingViewModelFactory.Setup(m => m.Create(It.IsAny<ClippingModel>()))
+                .Returns<ClippingModel>(clippingModel => new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel });
             _subject = new ClippingListViewModel(_mockClippingRepository.Object, _mockClippingViewModelFactory.Object);
         }
 
@@ -106,14 +105,14 @@
             _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.Should().Be(modifiedClipping);
+            _subject.Items.First().Model.BackingEntity.Should().Be(modifiedClipping);
         }
 
         [Test]
         public void FilteredItems_NoFilterIsApplied_ReturnsAllItems()
         {
-            var clippingPresenter1 = new ClippingPresenter(new ClippingEntity { Content = "test1" });
-            var clippingPresenter2 = new ClippingPresenter(new ClippingEntity { Content = "Other" });
+            var clippingPresenter1 = new ClippingModel(new ClippingEntity { Content = "test1" });
+            var clippingPresenter2 = new ClippingModel(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
@@ -124,8 +123,8 @@
         [Test]
         public void FilteredItems_WhenFilterTextHasValue_FiltersItemsByContentContainingText()
         {
-            var clippingPresenter1 = new ClippingPresenter(new ClippingEntity { Content = "test1" });
-            var clippingPresenter2 = new ClippingPresenter(new ClippingEntity { Content = "Other" });
+            var clippingPresenter1 = new ClippingModel(new ClippingEntity { Content = "test1" });
+            var clippingPresenter2 = new ClippingModel(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
             _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
@@ -159,7 +158,7 @@
 
             _subject.FilteredItems.Count.Should().Be(2);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud)
+                .All(vm => vm.Model.BackingEntity.Source == ClippingDto.ClippingSourceEnum.Cloud)
                 .Should()
                 .BeTrue();
         }
@@ -175,7 +174,7 @@
 
             _subject.FilteredItems.Count.Should().Be(2);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Local)
+                .All(vm => vm.Model.BackingEntity.Source == ClippingDto.ClippingSourceEnum.Local)
                 .Should()
                 .BeTrue();
         }
@@ -191,17 +190,17 @@
 
             _subject.FilteredItems.Count.Should().Be(1);
             _subject.FilteredItems.Cast<IClippingViewModel>()
-                .All(vm => vm.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud && vm.Model.IsStarred)
+                .All(vm => vm.Model.BackingEntity.Source == ClippingDto.ClippingSourceEnum.Cloud && vm.Model.IsStarred)
                 .Should()
                 .BeTrue();
         }
 
         private void AddClippingsWithFilterCombinations()
         {
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "1", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "2", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Local })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "3", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Cloud })});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingPresenter(new ClippingEntity { Content = "4", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingModel(new ClippingEntity { Content = "1", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingModel(new ClippingEntity { Content = "2", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Local })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingModel(new ClippingEntity { Content = "3", IsStarred = true, Source = ClippingDto.ClippingSourceEnum.Cloud })});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = new ClippingModel(new ClippingEntity { Content = "4", IsStarred = false, Source = ClippingDto.ClippingSourceEnum.Local })});
         }
     }
 }

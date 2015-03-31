@@ -13,16 +13,16 @@ namespace Omnipaste.ContactList
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.ContactList.ContactInfo;
+    using Omnipaste.Entities;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using OmniUI.ExtensionMethods;
     using OmniUI.List;
     using OmniUI.Workspace;
 
-    public class ContactListViewModel : ListViewModelBase<ContactInfoPresenter, IContactInfoViewModel>, IContactListViewModel
+    public class ContactListViewModel : ListViewModelBase<ContactModel, IContactInfoViewModel>, IContactListViewModel
     {
         private readonly IContactInfoViewModelFactory _contactInfoViewModelFactory;
 
@@ -32,19 +32,19 @@ namespace Omnipaste.ContactList
 
         private bool _canSelectMultipleItems;
         
-        private ContactInfoPresenter _pendingContact;
+        private ContactModel _pendingContact;
 
         public IContactRepository ContactRepository { get; set; }
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
-        public ContactInfoPresenter PendingContact
+        public ContactModel PendingContact
         {
             get
             {
                 return _pendingContact
-                       ?? (_pendingContact = new ContactInfoPresenter(new Entities.ContactEntity()));
+                       ?? (_pendingContact = new ContactModel(new ContactEntity()));
             }
             set
             {
@@ -75,7 +75,7 @@ namespace Omnipaste.ContactList
                     PropertyExtensions.GetPropertyName<IContactInfoViewModel, string>(vm => vm.Identifier),
                     ListSortDirection.Ascending));
 
-            SelectedContacts = new ObservableCollection<ContactInfoPresenter>();
+            SelectedContacts = new ObservableCollection<ContactModel>();
         }
 
         public override int MaxItemCount
@@ -145,11 +145,11 @@ namespace Omnipaste.ContactList
             }
         }
 
-        private ObservableCollection<ContactInfoPresenter> _selectedContacts;
+        private ObservableCollection<ContactModel> _selectedContacts;
 
         private IWorkspaceDetailsViewModel _detailsViewModel;
 
-        public ObservableCollection<ContactInfoPresenter> SelectedContacts
+        public ObservableCollection<ContactModel> SelectedContacts
         {
             get
             {
@@ -211,20 +211,20 @@ namespace Omnipaste.ContactList
             this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
         }
 
-        protected override IObservable<ContactInfoPresenter> GetFetchItemsObservable()
+        protected override IObservable<ContactModel> GetFetchItemsObservable()
         {
             return
                 ContactRepository.GetAll()
-                    .SelectMany(contacts => contacts.Select(contact => new ContactInfoPresenter(contact)));
+                    .SelectMany(contacts => contacts.Select(contact => new ContactModel(contact)));
         }
 
-        protected override IObservable<ContactInfoPresenter> GetItemChangedObservable()
+        protected override IObservable<ContactModel> GetItemChangedObservable()
         {
             return ContactRepository.GetOperationObservable().Changed()
-                .Select(o => new ContactInfoPresenter(o.Item));
+                .Select(o => new ContactModel(o.Item));
         }
 
-        protected override IContactInfoViewModel ChangeViewModel(ContactInfoPresenter model)
+        protected override IContactInfoViewModel ChangeViewModel(ContactModel model)
         {
             var contactInfoViewModel = UpdateViewModel(model) ?? _contactInfoViewModelFactory.Create<IContactInfoViewModel>(model);
 
@@ -239,7 +239,7 @@ namespace Omnipaste.ContactList
             return contactInfoViewModel;
         }
 
-        private IContactInfoViewModel UpdateViewModel(ContactInfoPresenter obj)
+        private IContactInfoViewModel UpdateViewModel(ContactModel obj)
         {
             var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactEntity.UniqueId == obj.ContactEntity.UniqueId);
             if (viewModel != null)
@@ -257,15 +257,15 @@ namespace Omnipaste.ContactList
             return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
         }
 
-        private bool MatchesFilterText(IContactInfoPresenter model)
+        private bool MatchesFilterText(IContactModel model)
         {
             bool matchesFilterText = false;
 
             try
             {
                 matchesFilterText = (model != null)
-                                    && (string.IsNullOrWhiteSpace(FilterText) || IsMatch(FilterText, model.BackingModel.Name)
-                                        || model.BackingModel.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
+                                    && (string.IsNullOrWhiteSpace(FilterText) || IsMatch(FilterText, model.BackingEntity.Name)
+                                        || model.BackingEntity.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
             }
             catch (Exception e)
             {
@@ -275,7 +275,7 @@ namespace Omnipaste.ContactList
             return matchesFilterText;
         }
 
-        private bool MatchesFilter(IContactInfoPresenter model)
+        private bool MatchesFilter(IContactModel model)
         {
             return !ShowStarred || model.IsStarred;
         }

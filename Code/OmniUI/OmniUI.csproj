@@ -121,7 +121,7 @@
     <Compile Include="Framework\Commands\IObservableCommand.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Presenters\Presenter.cs" />
+    <Compile Include="Models\Model.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>

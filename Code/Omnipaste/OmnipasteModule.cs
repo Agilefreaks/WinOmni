@@ -17,8 +17,8 @@
     using Omnipaste.Dialog;
     using Omnipaste.Factories;
     using Omnipaste.Framework;
+    using Omnipaste.Models.Factories;
     using Omnipaste.NotificationList;
-    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;
     using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
@@ -96,7 +96,7 @@
                            typeof(ActivityWorkspace), typeof(NewMessageWorkspace),
                            typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
                            typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory),
-                           typeof(ConversationPresenterFactory), typeof(ActivityPresenterFactory), typeof(PhoneCallPresenterFactory), typeof(SmsMessagePresenterFactory)
+                           typeof(ConversationModelFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)
                        };
         }
 

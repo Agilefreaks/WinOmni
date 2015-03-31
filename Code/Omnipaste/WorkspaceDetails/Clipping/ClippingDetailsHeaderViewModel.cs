@@ -2,10 +2,10 @@
 {
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
-    public class ClippingDetailsHeaderViewModel : WorkspaceDetailsHeaderViewModel<ClippingPresenter>, IClippingDetailsHeaderViewModel
+    public class ClippingDetailsHeaderViewModel : WorkspaceDetailsHeaderViewModel<ClippingModel>, IClippingDetailsHeaderViewModel
     {
         #region Fields
 
@@ -42,14 +42,14 @@
         public void DeleteClipping()
         {
             Model.IsDeleted = true;
-            ClippingRepository.Save(Model.BackingModel).RunToCompletion();
+            ClippingRepository.Save(Model.BackingEntity).RunToCompletion();
             State = ClippingDetailsHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
             Model.IsDeleted = false;
-            ClippingRepository.Save(Model.BackingModel).RunToCompletion();
+            ClippingRepository.Save(Model.BackingEntity).RunToCompletion();
             State = ClippingDetailsHeaderStateEnum.Normal;
         }
 
@@ -63,7 +63,7 @@
         {
             if (Model.IsDeleted)
             {
-                ClippingRepository.Delete(Model.BackingModel.UniqueId).RunToCompletion();
+                ClippingRepository.Delete(Model.BackingEntity.UniqueId).RunToCompletion();
             }
 
             base.OnDeactivate(close);

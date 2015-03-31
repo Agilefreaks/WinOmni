@@ -8,7 +8,6 @@
     using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Clipping;
 
@@ -37,7 +36,7 @@
         public void Activate_WhenModelWasNotViewed_DismissesNotificationForActivity()
         {
             const string Identifier = "42";
-            var activity = new ClippingPresenter(new ClippingEntity { UniqueId = Identifier, WasViewed = false });
+            var activity = new ClippingModel(new ClippingEntity { UniqueId = Identifier, WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -48,7 +47,7 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SetsModelWasViewedToTrue()
         {
-            var activity = new ClippingPresenter(new ClippingEntity { WasViewed = false });
+            var activity = new ClippingModel(new ClippingEntity { WasViewed = false });
             _subject.Model = activity;
 
             ((IActivate)_subject).Activate();
@@ -59,12 +58,12 @@
         [Test]
         public void ShowDetails_WhenModelWasNotViewed_SavesModel()
         {
-            var activity = new ClippingPresenter(new ClippingEntity { WasViewed = false });
+            var activity = new ClippingModel(new ClippingEntity { WasViewed = false });
             _subject.Model = activity;
             
             ((IActivate)_subject).Activate();
 
-            _mockClippingRepository.Verify(m => m.Save(activity.BackingModel));
+            _mockClippingRepository.Verify(m => m.Save(activity.BackingEntity));
         }
     }
 }

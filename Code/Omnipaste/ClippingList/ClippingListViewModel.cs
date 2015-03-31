@@ -6,11 +6,11 @@
     using System.Reactive.Linq;
     using Clipboard.Dto;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ClippingListViewModel : ListViewModelBase<ClippingPresenter, IClippingViewModel>,
+    public class ClippingListViewModel : ListViewModelBase<ClippingModel, IClippingViewModel>,
                                          IClippingListViewModel
     {
         private readonly IClippingRepository _clippingRepository;
@@ -109,24 +109,24 @@
             }
         }
 
-        protected override IObservable<ClippingPresenter> GetFetchItemsObservable()
+        protected override IObservable<ClippingModel> GetFetchItemsObservable()
         {
             return
                 _clippingRepository.GetAll()
-                    .SelectMany(clippings => clippings.Select(clipping => new ClippingPresenter(clipping)));
+                    .SelectMany(clippings => clippings.Select(clipping => new ClippingModel(clipping)));
         }
 
-        protected override IObservable<ClippingPresenter> GetItemChangedObservable()
+        protected override IObservable<ClippingModel> GetItemChangedObservable()
         {
-            return _clippingRepository.GetOperationObservable().Changed().Select(o => new ClippingPresenter(o.Item));
+            return _clippingRepository.GetOperationObservable().Changed().Select(o => new ClippingModel(o.Item));
         }
 
-        protected override IObservable<ClippingPresenter> GetItemRemovedObservable()
+        protected override IObservable<ClippingModel> GetItemRemovedObservable()
         {
             return _clippingRepository.GetOperationObservable().Deleted().Select(o => GetClippingPresenter(o.Item.UniqueId));
         }
 
-        protected override IClippingViewModel ChangeViewModel(ClippingPresenter model)
+        protected override IClippingViewModel ChangeViewModel(ClippingModel model)
         {
             return UpdateViewModel(model) ?? _clippingViewModelFactory.Create(model);
         }
@@ -174,18 +174,18 @@
         private bool MatchesFilterType(IClippingViewModel viewModel)
         {
             return _clippingTypeFilter == ClippingFilterTypeEnum.None
-                   || (viewModel.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Local
+                   || (viewModel.Model.BackingEntity.Source == ClippingDto.ClippingSourceEnum.Local
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Local))
-                   || (viewModel.Model.BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud
+                   || (viewModel.Model.BackingEntity.Source == ClippingDto.ClippingSourceEnum.Cloud
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Cloud));
         }
 
-        private ClippingPresenter GetClippingPresenter(string uniqueId)
+        private ClippingModel GetClippingPresenter(string uniqueId)
         {
             return Items.Select(vm => vm.Model).FirstOrDefault(clipping => clipping.UniqueId == uniqueId);
         }
 
-        private IClippingViewModel UpdateViewModel(ClippingPresenter obj)
+        private IClippingViewModel UpdateViewModel(ClippingModel obj)
         {
             var viewModel = Items.FirstOrDefault(vm => vm.Model.UniqueId == obj.UniqueId);
             if (viewModel != null)

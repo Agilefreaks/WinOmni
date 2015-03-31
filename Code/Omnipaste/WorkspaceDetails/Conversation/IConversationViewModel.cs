@@ -1,10 +1,10 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System.Collections.ObjectModel;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IConversationViewModel : IWorkspaceDetailsViewModel
     {
-        ObservableCollection<ContactInfoPresenter> Recipients { get; set; }
+        ObservableCollection<ContactModel> Recipients { get; set; }
     }
 }

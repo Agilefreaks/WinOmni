@@ -8,7 +8,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.ClippingList;
     using Omnipaste.Entities;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
@@ -20,7 +20,7 @@
     {
         private ClippingViewModel _subject;
 
-        private ClippingPresenter _clippingPresenter;
+        private ClippingModel _clippingModel;
 
         private Mock<ISessionManager> _mockSessionManager;
 
@@ -44,10 +44,10 @@
                                                        DefaultValue.Mock
                                                };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
-            _clippingPresenter = new ClippingPresenter(new ClippingEntity { Content = "Test" });
+            _clippingModel = new ClippingModel(new ClippingEntity { Content = "Test" });
             _subject = new ClippingViewModel(_mockSessionManager.Object)
                            {
-                               Model = _clippingPresenter,
+                               Model = _clippingModel,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
                                ClippingRepository = _mockClippingRepository.Object
                            };
@@ -64,7 +64,7 @@
         public void IsSelected_WhenSessionSelectedClippingIdIsSameAsModelId_ReturnsTrue()
         {
             _mockSessionManager.SetupGet(m => m[ClippingViewModel.SessionSelectionKey])
-                .Returns(_clippingPresenter.UniqueId);
+                .Returns(_clippingModel.UniqueId);
 
             _subject.IsSelected.Should().BeTrue();
         }
@@ -83,9 +83,9 @@
         {
             ((IActivate)_subject).Activate();
 
-            _clippingPresenter.IsStarred = true;
+            _clippingModel.IsStarred = true;
 
-            _clippingPresenter.BackingModel.IsStarred.Should().BeTrue();
+            _clippingModel.BackingEntity.IsStarred.Should().BeTrue();
         }
 
         [Test]
@@ -93,9 +93,9 @@
         {
             ((IActivate)_subject).Activate();
 
-            _clippingPresenter.IsStarred = true;
+            _clippingModel.IsStarred = true;
 
-            _mockClippingRepository.Verify(m => m.Save(_clippingPresenter.BackingModel));
+            _mockClippingRepository.Verify(m => m.Save(_clippingModel.BackingEntity));
         }
 
         [Test]
@@ -104,7 +104,7 @@
             ((IActivate)_subject).Activate();
             ((IDeactivate)_subject).Deactivate(false);
 
-            _clippingPresenter.IsStarred = false;
+            _clippingModel.IsStarred = false;
 
             _mockClippingRepository.Verify(m => m.Save(It.IsAny<ClippingEntity>()), Times.Never());
         }
@@ -132,7 +132,7 @@
 
             _subject.ShowDetails();
 
-            _mockSessionManager.VerifySet(m => m[ClippingViewModel.SessionSelectionKey] = _clippingPresenter.UniqueId);
+            _mockSessionManager.VerifySet(m => m[ClippingViewModel.SessionSelectionKey] = _clippingModel.UniqueId);
         }
     }
 }

@@ -7,7 +7,6 @@
     using Omnipaste.ContactList;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
 
     [TestFixture]
     public class ContactInfoViewModelFactoryTests
@@ -27,7 +26,7 @@
         [Test]
         public void Create_Always_AssignsModelOnResult()
         {
-            var contactInfoPresenter = new ContactInfoPresenter(new ContactEntity());
+            var contactInfoPresenter = new ContactModel(new ContactEntity());
             var mockContactInfoViewModel = new Mock<IContactInfoViewModel>();
             _mockServiceLocator.Setup(m => m.GetInstance<IContactInfoViewModel>())
                 .Returns(mockContactInfoViewModel.Object);

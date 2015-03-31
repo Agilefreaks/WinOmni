@@ -8,7 +8,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
@@ -17,7 +17,7 @@
     using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
 
-    public class ClippingViewModel : DetailsViewModelBase<ClippingPresenter>, IClippingViewModel
+    public class ClippingViewModel : DetailsViewModelBase<ClippingModel>, IClippingViewModel
     {
         public const string SessionSelectionKey = "ClippingWorkspace_SelectedClipping";
 
@@ -46,7 +46,7 @@
         {
             get
             {
-                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
+                return Model.BackingEntity.UniqueId == _sessionManager[SessionSelectionKey] as string;
             }
         }
 
@@ -81,8 +81,8 @@
 
         public void ShowDetails()
         {
-            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingModel);
-            _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
+            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingEntity);
+            _sessionManager[SessionSelectionKey] = Model.BackingEntity.UniqueId;
 
             this.GetParentOfType<IClippingWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
@@ -103,12 +103,12 @@
             base.OnDeactivate(close);
         }
 
-        protected override void HookModel(ClippingPresenter model)
+        protected override void HookModel(ClippingModel model)
         {
             model.PropertyChanged += OnPropertyChanged;
         }
 
-        protected override void UnhookModel(ClippingPresenter model)
+        protected override void UnhookModel(ClippingModel model)
         {
             model.PropertyChanged -= OnPropertyChanged;
         }
@@ -123,7 +123,7 @@
 
         private void SaveChanges()
         {
-            ClippingRepository.Save(Model.BackingModel).RunToCompletion();
+            ClippingRepository.Save(Model.BackingEntity).RunToCompletion();
         }
     }
 }

@@ -294,21 +294,18 @@
     <Compile Include="Entities\LocalSmsMessageEntity.cs" />
     <Compile Include="Entities\RemotePhoneCallEntity.cs" />
     <Compile Include="Entities\RemoteSmsMessageEntity.cs" />
-    <Compile Include="Presenters\ClippingPresenter.cs" />
-    <Compile Include="Presenters\IGroupMessagePresenter.cs" />
-    <Compile Include="Presenters\Factories\ActivityPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\ConversationPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\IActivityPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\IConversationPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\PhoneCallPresenterFactory.cs" />
-    <Compile Include="Presenters\Factories\SmsMessagePresenterFactory.cs" />
-    <Compile Include="Presenters\LocalPhoneCallPresenter.cs" />
-    <Compile Include="Presenters\LocalSmsMessagePresenter.cs" />
-    <Compile Include="Presenters\PhoneCallPresenter.cs" />
-    <Compile Include="Presenters\RemotePhoneCallPresenter.cs" />
-    <Compile Include="Presenters\RemoteSmsMessagePresenter.cs" />
-    <Compile Include="Presenters\SmsMessagePresenter.cs" />
-    <Compile Include="Presenters\UpdateInfoPresenter.cs" />
+    <Compile Include="Models\ClippingModel.cs" />
+    <Compile Include="Models\Factories\ActivityModelFactory.cs" />
+    <Compile Include="Models\Factories\ConversationModelFactory.cs" />
+    <Compile Include="Models\Factories\PhoneCallModelFactory.cs" />
+    <Compile Include="Models\Factories\SmsMessageModelFactory.cs" />
+    <Compile Include="Models\LocalPhoneCallModel.cs" />
+    <Compile Include="Models\LocalSmsMessageModel.cs" />
+    <Compile Include="Models\PhoneCallModel.cs" />
+    <Compile Include="Models\RemotePhoneCallModel.cs" />
+    <Compile Include="Models\RemoteSmsMessageModel.cs" />
+    <Compile Include="Models\SmsMessageModel.cs" />
+    <Compile Include="Models\UpdateModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
@@ -381,7 +378,7 @@
     <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
     <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Entities\ContactEntity.cs" />
-    <Compile Include="Presenters\IConversationPresenter.cs" />
+    <Compile Include="Models\IConversationModel.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
@@ -400,7 +397,7 @@
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
     <Compile Include="Notification\IConversationNotificationViewModel.cs" />
-    <Compile Include="Presenters\ActivityPresenter.cs" />
+    <Compile Include="Models\ActivityModel.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="Entities\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
@@ -442,8 +439,7 @@
     <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notification\NotificationTypeEnum.cs" />
     <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Presenters\ContactInfoPresenter.cs" />
-    <Compile Include="Presenters\IContactInfoPresenter.cs" />
+    <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -528,7 +524,7 @@
     <Compile Include="Services\Repositories\UpdateInfoRepository.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UpdateFileInfo.cs" />
-    <Compile Include="Services\UpdateInfo.cs" />
+    <Compile Include="Entities\UpdateEntity.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />

@@ -15,8 +15,7 @@
     using Omnipaste.ActivityList;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
 
@@ -31,7 +30,7 @@
 
         private Mock<ISmsMessageRepository> _mockMessageRepository;
 
-        private Mock<IActivityPresenterFactory> _mockActivityPresenterFactory;
+        private Mock<IActivityModelFactory> _mockActivityPresenterFactory;
 
         private Mock<ISessionManager> _mockSessionManager;
 
@@ -52,15 +51,15 @@
 
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockActivityPresenterFactory = new Mock<IActivityPresenterFactory> { DefaultValue = DefaultValue.Mock };
+            _mockActivityPresenterFactory = new Mock<IActivityModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
 
-            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityPresenter>()))
-                .Returns<ActivityPresenter>(
+            _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
+                .Returns<ActivityModel>(
                     presenter =>
                     new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object)
                         {
@@ -178,7 +177,7 @@
             _testScheduler.AdvanceBy(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.Should().Be(modifiedClipping);
+            _subject.Items.First().Model.BackingEntity.Should().Be(modifiedClipping);
         }
 
         [Test]
@@ -218,26 +217,26 @@
             _testScheduler.AdvanceTo(1000);
 
             _subject.Items.Count.Should().Be(1);
-            _subject.Items.First().Model.BackingModel.Should().Be(modifiedCall);
+            _subject.Items.First().Model.BackingEntity.Should().Be(modifiedCall);
         }
 
         private void SetupClippingActivityPresenterFactory(ClippingEntity entity)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(entity).WithType(ActivityTypeEnum.Clipping).Build();
+            var activityPresenter = ActivityModel.BeginBuild(entity).WithType(ActivityTypeEnum.Clipping).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(entity)).Returns(Observable.Return(activityPresenter));
         }
 
         private void SetupPhoneCallActivityPresenterFactory(PhoneCallEntity model)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
+            var activityPresenter = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }
 
         private void SetupSmsMessageActivityPresenterFactory(SmsMessageEntity model)
         {
-            var activityPresenter = ActivityPresenter.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
+            var activityPresenter = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
 
             _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
         }

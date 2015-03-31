@@ -27,7 +27,7 @@ namespace OmnipasteTests.ContactList
     {
         private ContactInfoViewModel _subject;
 
-        private ContactInfoPresenter _contactInfoPresenter;
+        private ContactModel _contactInfoPresenter;
 
         private ContactEntity _contactEntity;
 
@@ -53,7 +53,7 @@ namespace OmnipasteTests.ContactList
             SchedulerProvider.Dispatcher = _testScheduler;
 
             _contactEntity = new ContactEntity { FirstName = "test", LastName = "test", IsStarred = false, PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
-            _contactInfoPresenter = new ContactInfoPresenter(_contactEntity);
+            _contactInfoPresenter = new ContactModel(_contactEntity);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
@@ -251,9 +251,9 @@ namespace OmnipasteTests.ContactList
             var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IConversationPresenter>>(
+                    new Recorded<Notification<IConversationModel>>(
                         200,
-                        Notification.CreateOnNext((IConversationPresenter)message)));
+                        Notification.CreateOnNext((IConversationModel)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(messageOperationObservable);
             SetupConversation(message);
             _subject.OnLoaded();
@@ -269,20 +269,20 @@ namespace OmnipasteTests.ContactList
             var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
             var observable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IConversationPresenter>>(
+                    new Recorded<Notification<IConversationModel>>(
                         200,
-                        Notification.CreateOnNext((IConversationPresenter)message)));
+                        Notification.CreateOnNext((IConversationModel)message)));
             _mockConversation.SetupGet(x => x.Updated).Returns(observable);
             var observable1 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
+                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
                         100,
-                        Notification.CreateOnNext(new List<IConversationPresenter> { message }.AsEnumerable())));
+                        Notification.CreateOnNext(new List<IConversationModel> { message }.AsEnumerable())));
             var observable2 =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
+                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
                         100,
-                        Notification.CreateOnNext(Enumerable.Empty<IConversationPresenter>())));
+                        Notification.CreateOnNext(Enumerable.Empty<IConversationModel>())));
             var results = new[] { observable1, observable2 };
             var index = 0;
             _mockConversation.Setup(x => x.GetItems()).Returns(() => results[index++]);
@@ -293,11 +293,11 @@ namespace OmnipasteTests.ContactList
             _subject.LastActivityInfo.Should().Be(string.Empty);
         }
 
-        private void SetupConversation(params IConversationPresenter[] items)
+        private void SetupConversation(params IConversationModel[] items)
         {
             var observable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationPresenter>>>(
+                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
                         100,
                         Notification.CreateOnNext(items.AsEnumerable())));
             _mockConversation.Setup(x => x.GetItems()).Returns(observable);

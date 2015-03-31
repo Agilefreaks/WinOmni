@@ -1,18 +1,27 @@
-﻿namespace Omnipaste.Presenters
+﻿namespace Omnipaste.Models
 {
     using System;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using OmniUI.Helpers;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
     using OmniUI.Properties;
 
-    public class ContactInfoPresenter : Presenter<ContactEntity>, IContactInfoPresenter
+    public interface IContactModel : IModel<ContactEntity>, INotifyPropertyChanged
+    {
+        string Identifier { get; set; }
+
+        ImageSource Image { get; set; }
+
+        bool IsStarred { get; set; }
+    }
+
+    public class ContactModel : Model<ContactEntity>, IContactModel
     {
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 
@@ -24,7 +33,7 @@
 
         private readonly ContactEntity _contactEntity;
 
-        public ContactInfoPresenter(ContactEntity contactEntity)
+        public ContactModel(ContactEntity contactEntity)
             : base(contactEntity)
         {
             _contactEntity = contactEntity;
@@ -34,7 +43,7 @@
         {
             get
             {
-                return BackingModel.Name;
+                return BackingEntity.Name;
             }
         }
 
@@ -90,11 +99,11 @@
         {
             get
             {
-                return BackingModel.IsStarred;
+                return BackingEntity.IsStarred;
             }
             set
             {
-                BackingModel.IsStarred = value;
+                BackingEntity.IsStarred = value;
                 NotifyOfPropertyChange(() => IsStarred);
             }
         }
@@ -126,13 +135,13 @@
         {
             ImageSource result;
 
-            if (!string.IsNullOrEmpty(BackingModel.Image))
+            if (!string.IsNullOrEmpty(BackingEntity.Image))
             {
-                result = GetImageFromStoredData(BackingModel.Image);
+                result = GetImageFromStoredData(BackingEntity.Image);
             }
-            else if (BackingModel.ImageUri != null)
+            else if (BackingEntity.ImageUri != null)
             {
-                result = GetImageSourceFromUri(BackingModel.ImageUri);
+                result = GetImageSourceFromUri(BackingEntity.ImageUri);
             }
             else
             {
@@ -144,7 +153,7 @@
 
         protected virtual string GetIdentifier()
         {
-            return string.IsNullOrWhiteSpace(BackingModel.Name) ? BackingModel.PhoneNumber : BackingModel.Name;
+            return string.IsNullOrWhiteSpace(BackingEntity.Name) ? BackingEntity.PhoneNumber : BackingEntity.Name;
         }
 
         private static BitmapImage GetImageFromStoredData(string imageData)

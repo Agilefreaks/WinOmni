@@ -9,7 +9,7 @@
     using Omnipaste.Entities;
     using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
@@ -20,7 +20,7 @@
     using OmniUI.Framework;
     using OmniUI.Workspace;
 
-    public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel
+    public class ContactInfoViewModel : DetailsViewModelBase<ContactModel>, IContactInfoViewModel
     {
         public const string SessionSelectionKey = "PeopleWorkspace_SelectedContact";
 
@@ -34,7 +34,7 @@
 
         private bool _hasNotViewedMessages;
 
-        private IConversationPresenter _lastActivity;
+        private IConversationModel _lastActivity;
 
         private bool _isSelected;
 
@@ -88,7 +88,7 @@
             }
         }
 
-        public IConversationPresenter LastActivity
+        public IConversationModel LastActivity
         {
             get
             {
@@ -127,7 +127,7 @@
         {
             get
             {
-                return Model.BackingModel.LastActivityTime;
+                return Model.BackingEntity.LastActivityTime;
             }
         }
 
@@ -175,8 +175,8 @@
 
         public void ShowDetails()
         {
-            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingModel);
-            _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
+            var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingEntity);
+            _sessionManager[SessionSelectionKey] = Model.BackingEntity.UniqueId;
 
             this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
@@ -186,7 +186,7 @@
             RefreshUi();
             UpdateConversationStatus();
             _subscriptionsManager.Add(
-                ConversationProvider.ForContact(Model.BackingModel)
+                ConversationProvider.ForContact(Model.BackingEntity)
                     .Updated.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
                     .SubscribeAndHandleErrors(_ => UpdateConversationStatus()));
@@ -208,12 +208,12 @@
             _subscriptionsManager.ClearAll();
         }
         
-        protected override void HookModel(ContactInfoPresenter model)
+        protected override void HookModel(ContactModel model)
         {
             model.PropertyChanged += OnPropertyChanged;
         }
 
-        protected override void UnhookModel(ContactInfoPresenter model)
+        protected override void UnhookModel(ContactModel model)
         {
             model.PropertyChanged -= OnPropertyChanged;
         }
@@ -231,18 +231,18 @@
             HasNotViewedMessages = false;
             HasNotViewedCalls = false;
             _subscriptionsManager.Add(
-                ConversationProvider.ForContact(Model.BackingModel)
+                ConversationProvider.ForContact(Model.BackingEntity)
                     .GetItems()
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(
                         item =>
                             {
-                                if (item is PhoneCallPresenter)
+                                if (item is PhoneCallModel)
                                 {
                                     HasNotViewedCalls = HasNotViewedCalls || !item.WasViewed;
                                 }
-                                else if (item is SmsMessagePresenter)
+                                else if (item is SmsMessageModel)
                                 {
                                     HasNotViewedMessages = HasNotViewedMessages || !item.WasViewed;
                                 }
@@ -262,18 +262,18 @@
 
         private void SaveChanges()
         {
-            ContactRepository.Save(Model.BackingModel).RunToCompletion();
+            ContactRepository.Save(Model.BackingEntity).RunToCompletion();
         }
 
-        private static string GetActivityInfo(IConversationPresenter item)
+        private static string GetActivityInfo(IConversationModel item)
         {
             var result = string.Empty;
 
-            if (item is SmsMessagePresenter)
+            if (item is SmsMessageModel)
             {
                 result = item.Content;
             }
-            else if (item is PhoneCallPresenter)
+            else if (item is PhoneCallModel)
             {
                 result = item.Source == SourceType.Local
                              ? Resources.OutgoingCallLabel

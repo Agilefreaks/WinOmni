@@ -1,15 +1,15 @@
 ﻿namespace OmniUI.Details
 {
     using Caliburn.Micro;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
 
     public interface IDetailsViewModel : IScreen
     {
-        IPresenter Model { get; set; }
+        IModel Model { get; set; }
     }
 
     public interface IDetailsViewModel<TPresenter> : IDetailsViewModel
-        where TPresenter : IPresenter
+        where TPresenter : IModel
     {
         new TPresenter Model { get; set; }
     }

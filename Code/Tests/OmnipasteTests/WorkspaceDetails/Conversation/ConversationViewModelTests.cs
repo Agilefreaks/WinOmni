@@ -3,7 +3,7 @@
     using System.Collections.ObjectModel;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.WorkspaceDetails.Conversation;
 
     [TestFixture]
@@ -28,7 +28,7 @@
         [Test]
         public void RecepientsSet_Always_SetsRecepientsOnViewModels()
         {
-            var contactInfoPresenters = new ObservableCollection<ContactInfoPresenter>();
+            var contactInfoPresenters = new ObservableCollection<ContactModel>();
             _subject.Recipients = contactInfoPresenters;
 
             _mockConversationHeaderViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);

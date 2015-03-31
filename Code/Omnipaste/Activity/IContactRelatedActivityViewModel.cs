@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IContactRelatedActivityViewModel : IActivityViewModel
     {
-        IContactInfoPresenter ContactInfo { get; set; }
+        IContactModel Contact { get; set; }
     }
 }

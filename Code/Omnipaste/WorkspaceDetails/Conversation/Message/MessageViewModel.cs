@@ -3,10 +3,10 @@
     using System;
     using OmniCommon.Interfaces;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services;
 
-    public class MessageViewModel : ConversationItemViewModel<SmsMessagePresenter>, IMessageViewModel
+    public class MessageViewModel : ConversationItemViewModel<SmsMessageModel>, IMessageViewModel
     {
         #region Constructors and Destructors
 

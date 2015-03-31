@@ -7,27 +7,26 @@
     using Ninject;
     using Omnipaste.Entities;
     using Omnipaste.Models;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Notification;
     using Omnipaste.Notification.ClippingNotification;
     using Omnipaste.Notification.HyperlinkNotification;
     using Omnipaste.Notification.IncomingCallNotification;
     using Omnipaste.Notification.IncomingSmsNotification;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
 
     public class NotificationViewModelFactory : INotificationViewModelFactory
     {
-        private readonly IConversationPresenterFactory _conversationPresenterFactory;
+        private readonly IConversationModelFactory _conversationModelFactory;
 
         public IKernel Kernel { get; set; }
 
         private readonly IDictionary<ClippingDto.ClippingTypeEnum, Func<IClippingNotificationViewModel>> _clippingNotificationConstructors;
 
-        public NotificationViewModelFactory(IKernel kernel, IConversationPresenterFactory conversationPresenterFactory)
+        public NotificationViewModelFactory(IKernel kernel, IConversationModelFactory conversationModelFactory)
         {
             Kernel = kernel;
             
-            _conversationPresenterFactory = conversationPresenterFactory;
+            _conversationModelFactory = conversationModelFactory;
             _clippingNotificationConstructors = new Dictionary<ClippingDto.ClippingTypeEnum, Func<IClippingNotificationViewModel>>()
                                                     {
                                                         { ClippingDto.ClippingTypeEnum.Url, () => Kernel.Get<IHyperlinkNotificationViewModel>() },
@@ -49,7 +48,7 @@
         {
             var result = Kernel.Get<IIncomingCallNotificationViewModel>();
 
-            return _conversationPresenterFactory.Create<RemotePhoneCallPresenter, RemotePhoneCallEntity>(phoneCallEntity).Select(
+            return _conversationModelFactory.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(phoneCallEntity).Select(
                 p =>
                     {
                         result.Resource = p;
@@ -61,7 +60,7 @@
         {
             var result = Kernel.Get<IIncomingSmsNotificationViewModel>();
 
-            return _conversationPresenterFactory.Create<RemoteSmsMessagePresenter, RemoteSmsMessageEntity>(smsMessageEntity).Select(
+            return _conversationModelFactory.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(smsMessageEntity).Select(
                 m =>
                     {
                         result.Resource = m;

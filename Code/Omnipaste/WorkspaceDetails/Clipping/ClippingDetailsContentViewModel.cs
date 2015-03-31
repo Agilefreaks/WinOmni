@@ -4,10 +4,10 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
-    public class ClippingDetailsContentViewModel : WorkspaceDetailsContentViewModel<ClippingPresenter>, IClippingDetailsContentViewModel
+    public class ClippingDetailsContentViewModel : WorkspaceDetailsContentViewModel<ClippingModel>, IClippingDetailsContentViewModel
     {
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
@@ -20,8 +20,8 @@
             if (Model != null && !Model.WasViewed)
             {
                 Model.WasViewed = true;
-                ClippingRepository.Save(Model.BackingModel).RunToCompletion();
-                EventAggregator.PublishOnUIThread(new DismissNotification(Model.BackingModel.UniqueId));
+                ClippingRepository.Save(Model.BackingEntity).RunToCompletion();
+                EventAggregator.PublishOnUIThread(new DismissNotification(Model.BackingEntity.UniqueId));
             }
             
             base.OnActivate();

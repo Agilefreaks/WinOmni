@@ -8,7 +8,7 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
@@ -18,13 +18,13 @@
     {
         private Mock<IContactRepository> _mockContactRepository;
 
-        private ActivityPresenterFactory _factory;
+        private ActivityModelFactory _factory;
 
         [SetUp]
         public void SetUp()
         {
             _mockContactRepository = new Mock<IContactRepository>();
-            _factory = new ActivityPresenterFactory(_mockContactRepository.Object);
+            _factory = new ActivityModelFactory(_mockContactRepository.Object);
         }
 
         [Test]
@@ -165,28 +165,28 @@
         [Test]
         public void Create_WithUpdateInfo_SetsTypeToVersion()
         {
-            var activityPresenter = _factory.Create(new UpdateInfo()).Wait();
+            var activityPresenter = _factory.Create(new UpdateEntity()).Wait();
             activityPresenter.Type.Should().Be(ActivityTypeEnum.Version);
         }
 
         [Test]
         public void Create_WithUpdateInfoWasInstalled_SetsContentToNewVersionInstalled()
         {
-            var activityPresenter = _factory.Create(new UpdateInfo { WasInstalled = true }).Wait();
+            var activityPresenter = _factory.Create(new UpdateEntity { WasInstalled = true }).Wait();
             activityPresenter.Content.Should().Be(Resources.NewVersionInstalled);
         }
 
         [Test]
         public void Create_WithUpdateInfoNotInstalled_SetsContentToNewVersionAvailable()
         {
-            var activityPresenter = _factory.Create(new UpdateInfo { WasInstalled = false }).Wait();
+            var activityPresenter = _factory.Create(new UpdateEntity { WasInstalled = false }).Wait();
             activityPresenter.Content.Should().Be(Resources.NewVersionAvailable);
         }
 
         [Test]
         public void Create_WithUpdateInfo_SetsBackingModelToUpdateInfoPresenter()
         {
-            var updateInfo = new UpdateInfo();
+            var updateInfo = new UpdateEntity();
             var activityPresenter = _factory.Create(updateInfo).Wait();
 
             activityPresenter.SourceId.Should().Be(updateInfo.UniqueId);            

@@ -5,8 +5,7 @@ namespace Omnipaste.Services.Providers
     using System.Reactive.Linq;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     public class ContactConversationContext : ConversationContext
@@ -24,7 +23,7 @@ namespace Omnipaste.Services.Providers
             _contactEntity = contactEntity;
         }
 
-        public override IObservable<IConversationPresenter> GetItems()
+        public override IObservable<IConversationModel> GetItems()
         {
             return
                 SmsMessageRepository.GetForContact(_contactEntity)
@@ -34,7 +33,7 @@ namespace Omnipaste.Services.Providers
                             .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))).Merge());
         }
 
-        protected override IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method)
+        protected override IObservable<IConversationModel> GetObservableForOperation(RepositoryMethodEnum method)
         {
             return
                 SmsMessageRepository.GetOperationObservable()

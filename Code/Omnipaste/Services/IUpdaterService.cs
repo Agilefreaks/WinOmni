@@ -2,10 +2,11 @@
 {
     using System;
     using Ninject;
+    using Omnipaste.Entities;
 
     public interface IUpdaterService : IStartable
     {
-        IObservable<UpdateInfo> UpdateObservable { get; }
+        IObservable<UpdateEntity> UpdateObservable { get; }
 
         IObservable<bool> AreUpdatesAvailable(TimeSpan updateCheckInterval);
 

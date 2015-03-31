@@ -14,7 +14,6 @@
     using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation;
     using OmnipasteTests.Helpers;
@@ -54,7 +53,7 @@
                                PhoneCallRepository = _mockPhoneCallRepository.Object,
                                PhoneCallFactory = _mockPhoneCallFactory.Object,
                                SmsMessageRepository = _mockMessageRepository.Object,
-                               Model = new ContactInfoPresenter(new ContactEntity())
+                               Model = new ContactModel(new ContactEntity())
                            };
         }
 
@@ -76,10 +75,10 @@
         [Test]
         public void OnRecepients_WhenMoreThanTwo_WillChangeState()
         {
-            _subject.Recipients = new ObservableCollection<ContactInfoPresenter>
+            _subject.Recipients = new ObservableCollection<ContactModel>
                                       {
-                                          new ContactInfoPresenter(new ContactEntity()),
-                                          new ContactInfoPresenter(new ContactEntity())
+                                          new ContactModel(new ContactEntity()),
+                                          new ContactModel(new ContactEntity())
                                       };
 
 
@@ -89,11 +88,11 @@
         [Test]
         public void OnRecepientAdded_WhenMoreThanTwo_WillChangeState()
         {
-            _subject.Recipients = new ObservableCollection<ContactInfoPresenter>();
+            _subject.Recipients = new ObservableCollection<ContactModel>();
 
             ((IActivate)_subject).Activate();
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
 
             _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
         }
@@ -114,7 +113,7 @@
                                                       }
                                               }
                                   };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -127,7 +126,7 @@
         {
             const string PhoneNumber = "1234567890";
             var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
 
             _subject.Call();
             _subject.CancelCall();
@@ -141,7 +140,7 @@
         {
             const string PhoneNumber = "1234567890";
             var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
 
             _subject.Call();
             _subject.CancelCall();
@@ -154,7 +153,7 @@
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
             var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
@@ -170,7 +169,7 @@
         public void Call_OnInitiated_ChangesStateToCalling()
         {
             var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
@@ -191,7 +190,7 @@
         public void Call_AfterCreatingTheCall_CallsPhoneFactoryCreate()
         {
             var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactInfoPresenter(contactInfo);
+            _subject.Model = new ContactModel(contactInfo);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));

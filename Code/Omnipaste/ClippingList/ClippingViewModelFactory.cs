@@ -1,7 +1,7 @@
 namespace Omnipaste.ClippingList
 {
     using Microsoft.Practices.ServiceLocation;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public class ClippingViewModelFactory : IClippingViewModelFactory
     {
@@ -12,10 +12,10 @@ namespace Omnipaste.ClippingList
             _serviceLocator = serviceLocator;
         }
 
-        public IClippingViewModel Create(ClippingPresenter clippingPresenter)
+        public IClippingViewModel Create(ClippingModel clippingModel)
         {
             var viewModel = _serviceLocator.GetInstance<IClippingViewModel>();
-            viewModel.Model = clippingPresenter;
+            viewModel.Model = clippingModel;
 
             return viewModel;
         }

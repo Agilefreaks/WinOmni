@@ -16,7 +16,6 @@
     using Omnipaste.ContactList.ContactInfo;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
@@ -46,8 +45,8 @@
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
             _mockContactInfoViewModelFactory.Setup(
-                x => x.Create<IContactInfoViewModel>(It.IsAny<ContactInfoPresenter>()))
-                .Returns<ContactInfoPresenter>(
+                x => x.Create<IContactInfoViewModel>(It.IsAny<ContactModel>()))
+                .Returns<ContactModel>(
                     presenter => new ContactInfoViewModel(_mockSessionManager.Object) { Model = presenter });
             
             MoqMockingKernel kernel = new MoqMockingKernel();
@@ -182,7 +181,7 @@
             _subject.FilterText = "1";
 
             _subject.FilteredItems.Count.Should().Be(1);
-            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.BackingModel.Should().Be(contacts.First());
+            ((IContactInfoViewModel)_subject.FilteredItems.GetItemAt(0)).Model.BackingEntity.Should().Be(contacts.First());
         }
 
         [Test]
@@ -273,8 +272,8 @@
 
             _subject.FilterText = "Test";
 
-            _subject.FilteredItems.Cast<IContactInfoViewModel>().First().Model.BackingModel.Should().Be(contacts[1]);
-            _subject.FilteredItems.Cast<IContactInfoViewModel>().Last().Model.BackingModel.Should().Be(contacts[0]);
+            _subject.FilteredItems.Cast<IContactInfoViewModel>().First().Model.BackingEntity.Should().Be(contacts[1]);
+            _subject.FilteredItems.Cast<IContactInfoViewModel>().Last().Model.BackingEntity.Should().Be(contacts[0]);
         }
     }
 }

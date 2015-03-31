@@ -1,21 +1,20 @@
-﻿namespace Omnipaste.Presenters
+﻿namespace Omnipaste.Models
 {
     using System;
     using System.Collections.Generic;
     using Clipboard.Dto;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using OmniUI.Entities;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
 
-    public class ActivityPresenter : Presenter, IActivityPresenterBuilder
+    public class ActivityModel : Model, IActivityModelBuilder
     {
         private const string StringFormPartSeparator = " ";
 
-        private ActivityPresenter(IEntity backingModel)
-            : base(backingModel)
+        private ActivityModel(IEntity backingEntity)
+            : base(backingEntity)
         {
             Type = ActivityTypeEnum.None;
         }
@@ -30,7 +29,7 @@
         {
             get
             {
-                return BackingModel.UniqueId;
+                return BackingEntity.UniqueId;
             }
         }
 
@@ -65,75 +64,75 @@
             return result;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithContactInfo(ContactEntity contactEntity)
+        IActivityModelBuilder IActivityModelBuilder.WithContact(ContactEntity contactEntity)
         {
             ContactEntity = contactEntity;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithType(ActivityTypeEnum type)
+        IActivityModelBuilder IActivityModelBuilder.WithType(ActivityTypeEnum type)
         {
             Type = type;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithContent(String content)
+        IActivityModelBuilder IActivityModelBuilder.WithContent(String content)
         {
             Content = content;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithContent(UpdateInfo updateInfo)
+        IActivityModelBuilder IActivityModelBuilder.WithContent(UpdateEntity updateEntity)
         {
-            Content = updateInfo.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
+            Content = updateEntity.WasInstalled ? Resources.NewVersionInstalled : Resources.NewVersionAvailable;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum)
+        IActivityModelBuilder IActivityModelBuilder.WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum)
         {
             Device = clippingSourceEnum == ClippingDto.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(PhoneCallEntity phoneCallEntity)
+        IActivityModelBuilder IActivityModelBuilder.WithDevice(PhoneCallEntity phoneCallEntity)
         {
             Device = phoneCallEntity is RemotePhoneCallEntity ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
-        IActivityPresenterBuilder IActivityPresenterBuilder.WithDevice(SmsMessageEntity smsMessageEntity)
+        IActivityModelBuilder IActivityModelBuilder.WithDevice(SmsMessageEntity smsMessageEntity)
         {
             Device = smsMessageEntity is RemoteSmsMessageEntity ? Resources.FromCloud : Resources.FromLocal;
             return this;
         }
 
-        public ActivityPresenter Build()
+        public ActivityModel Build()
         {
             return this;
         }
 
-        public static IActivityPresenterBuilder BeginBuild(IEntity entity)
+        public static IActivityModelBuilder BeginBuild(IEntity entity)
         {
-            return new ActivityPresenter(entity);
+            return new ActivityModel(entity);
         }
     }
 
-    public interface IActivityPresenterBuilder
+    public interface IActivityModelBuilder
     {
-        IActivityPresenterBuilder WithContactInfo(ContactEntity contactEntity);
+        IActivityModelBuilder WithContact(ContactEntity contactEntity);
 
-        IActivityPresenterBuilder WithType(ActivityTypeEnum type);
+        IActivityModelBuilder WithType(ActivityTypeEnum type);
 
-        IActivityPresenterBuilder WithContent(String content);
+        IActivityModelBuilder WithContent(String content);
 
-        IActivityPresenterBuilder WithContent(UpdateInfo update);
+        IActivityModelBuilder WithContent(UpdateEntity update);
 
-        IActivityPresenterBuilder WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum);
+        IActivityModelBuilder WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum);
 
-        IActivityPresenterBuilder WithDevice(PhoneCallEntity phoneCallEntity);
+        IActivityModelBuilder WithDevice(PhoneCallEntity phoneCallEntity);
 
-        IActivityPresenterBuilder WithDevice(SmsMessageEntity smsMessageEntity);
+        IActivityModelBuilder WithDevice(SmsMessageEntity smsMessageEntity);
 
-        ActivityPresenter Build();
+        ActivityModel Build();
     }
 }

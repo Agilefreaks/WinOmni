@@ -11,7 +11,6 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using OmniUI.Resources;
 
@@ -29,7 +28,7 @@
 
         private ConnectionStateEnum _state;
 
-        private ContactInfoPresenter _userInfo;
+        private ContactModel _user;
 
         #endregion
 
@@ -103,19 +102,19 @@
             }
         }
 
-        public ContactInfoPresenter UserInfo
+        public ContactModel User
         {
             get
             {
-                return _userInfo;
+                return _user;
             }
             set
             {
-                if (Equals(value, _userInfo))
+                if (Equals(value, _user))
                 {
                     return;
                 }
-                _userInfo = value;
+                _user = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -136,7 +135,7 @@
 
         private void UpdateUserInfo(UserInfo userInfo)
         {
-            UserInfo = new ContactInfoPresenter(new UserContactEntity(userInfo));
+            User = new ContactModel(new UserContactEntity(userInfo));
         }
 
         #endregion

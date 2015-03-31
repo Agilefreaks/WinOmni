@@ -3,13 +3,13 @@
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using Ninject;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.SMSComposer;
 
-    public class ConversationContainerViewModel : WorkspaceDetailsContentViewModel<ContactInfoPresenter>,
+    public class ConversationContainerViewModel : WorkspaceDetailsContentViewModel<ContactModel>,
                                                   IConversationContainerViewModel
     {
-        private ObservableCollection<ContactInfoPresenter> _recipients;
+        private ObservableCollection<ContactModel> _recipients;
 
         [Inject]
         public ISMSComposerViewModel SMSComposer { get; set; }
@@ -19,7 +19,7 @@
 
         #region IConversationContainerViewModel Members
 
-        public ObservableCollection<ContactInfoPresenter> Recipients
+        public ObservableCollection<ContactModel> Recipients
         {
             get
             {

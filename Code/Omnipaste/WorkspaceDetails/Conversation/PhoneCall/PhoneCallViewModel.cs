@@ -5,11 +5,10 @@
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.Services;
 
-    public class PhoneCallViewModel : ConversationItemViewModel<PhoneCallPresenter>, IPhoneCallViewModel
+    public class PhoneCallViewModel : ConversationItemViewModel<PhoneCallModel>, IPhoneCallViewModel
     {
 
         public PhoneCallViewModel(IUiRefreshService uiRefreshService, IConfigurationService configurationService)

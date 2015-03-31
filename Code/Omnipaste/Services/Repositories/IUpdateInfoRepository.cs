@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
-    public interface IUpdateInfoRepository : IRepository<UpdateInfo>
+    using Omnipaste.Entities;
+
+    public interface IUpdateInfoRepository : IRepository<UpdateEntity>
     {
     }
 }

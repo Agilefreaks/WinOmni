@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Services;
 
     using OmniUI.Attributes;
@@ -10,7 +10,7 @@
     {
         #region Fields
 
-        private IContactInfoPresenter _contactInfo;
+        private IContactModel _contact;
 
         #endregion
 
@@ -25,24 +25,24 @@
 
         #region Public Properties
 
-        public IContactInfoPresenter ContactInfo
+        public IContactModel Contact
         {
             get
             {
-                return _contactInfo;
+                return _contact;
             }
             set
             {
-                if (Equals(value, _contactInfo))
+                if (Equals(value, _contact))
                 {
                     return;
                 }
-                _contactInfo = value;
+                _contact = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public override ActivityPresenter Model
+        public override ActivityModel Model
         {
             get
             {
@@ -52,7 +52,7 @@
             {
                 if (base.Model != value)
                 {
-                    ContactInfo = new ContactInfoPresenter(value.ContactEntity);
+                    Contact = new ContactModel(value.ContactEntity);
                 }
                 base.Model = value;
             }

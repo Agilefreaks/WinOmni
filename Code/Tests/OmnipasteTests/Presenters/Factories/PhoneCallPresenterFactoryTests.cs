@@ -6,8 +6,7 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]
@@ -15,7 +14,7 @@
     {
         private Mock<IContactRepository> _mockContactRepository;
 
-        private PhoneCallPresenterFactory _factory;
+        private PhoneCallModelFactory _factory;
 
         private ContactEntity _contactEntity;
 
@@ -26,19 +25,19 @@
             _contactEntity = new ContactEntity();
             _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(_contactEntity));
 
-            _factory = new PhoneCallPresenterFactory(_mockContactRepository.Object);
+            _factory = new PhoneCallModelFactory(_mockContactRepository.Object);
         }
 
         [Test]
         public void Create_WithALocalPhoneCall_ReturnsALocalPhoneCallPresenter()
         {
-            _factory.Create(new LocalPhoneCallEntity()).Wait().Should().BeOfType<LocalPhoneCallPresenter>();
+            _factory.Create(new LocalPhoneCallEntity()).Wait().Should().BeOfType<LocalPhoneCallModel>();
         }
 
         [Test]
         public void Create_WithARemotePhoneCall_ReturnsARemotePhoneCallPresenter()
         {
-            _factory.Create(new RemotePhoneCallEntity()).Wait().Should().BeOfType<RemotePhoneCallPresenter>();
+            _factory.Create(new RemotePhoneCallEntity()).Wait().Should().BeOfType<RemotePhoneCallModel>();
         }
 
         [Test]
@@ -46,7 +45,7 @@
         {
             var phoneCallPresenter = _factory.Create(new RemotePhoneCallEntity()).Wait();
 
-            phoneCallPresenter.ContactInfoPresenter.BackingModel.Should().Be(_contactEntity);
+            phoneCallPresenter.ContactModel.BackingEntity.Should().Be(_contactEntity);
         }
     }
 }

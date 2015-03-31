@@ -11,7 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmnipasteTests.Helpers;

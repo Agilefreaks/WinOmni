@@ -4,9 +4,8 @@ namespace Omnipaste.Activity
     using Omnipaste.DetailsViewModel;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
 
-    public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<ActivityPresenter>
+    public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<ActivityModel>
     {
         ActivityTypeEnum ActivityType { get; }
 

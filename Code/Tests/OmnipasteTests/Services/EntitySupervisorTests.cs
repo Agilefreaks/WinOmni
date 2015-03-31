@@ -110,16 +110,16 @@
         public void OnNewUpdateInfo_Always_SotresUpdateInfo()
         {
             const string UniqueId = "42";
-            var updateInfo = new UpdateInfo { UniqueId = UniqueId };
+            var updateInfo = new UpdateEntity { UniqueId = UniqueId };
             var updateInfoObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)));
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateInfo)));
             _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateInfoObservable);
 
             _subject.Start();
             _testScheduler.Start(() => updateInfoObservable);
 
-            _mockUpdateInfoRepository.Verify(m => m.Save(It.Is<UpdateInfo>(c => c.UniqueId == UniqueId)));
+            _mockUpdateInfoRepository.Verify(m => m.Save(It.Is<UpdateEntity>(c => c.UniqueId == UniqueId)));
         }
 
         [Test]

@@ -1,11 +1,11 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using Caliburn.Micro;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IConversationContentViewModel : IConductor, IActivate, IDeactivate
     {
-        ContactInfoPresenter Model { get; set; }
+        ContactModel Model { get; set; }
 
         void RefreshConversation();
     }

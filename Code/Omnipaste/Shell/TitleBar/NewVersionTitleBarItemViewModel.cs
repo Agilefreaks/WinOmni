@@ -3,6 +3,7 @@
     using System;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
+    using Omnipaste.Entities;
     using Omnipaste.Services;
     using OmniUI.Attributes;
     using OmniUI.TitleBarItem;
@@ -67,9 +68,9 @@
             DisposeUpdateAvailableSubscription();
         }
 
-        private void OnUpdateAvailable(UpdateInfo updateInfo)
+        private void OnUpdateAvailable(UpdateEntity updateEntity)
         {
-            CanPerformAction = !updateInfo.WasInstalled;
+            CanPerformAction = !updateEntity.WasInstalled;
         }
 
         private void DisposeUpdateAvailableSubscription()

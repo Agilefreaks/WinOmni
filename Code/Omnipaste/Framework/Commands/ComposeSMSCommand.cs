@@ -8,7 +8,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.People;
@@ -29,14 +29,14 @@
 
         #endregion
 
-        public ComposeSMSCommand(ContactInfoPresenter contactInfo)
+        public ComposeSMSCommand(ContactModel contact)
         {
-            ContactInfo = contactInfo;
+            Contact = contact;
         }
 
         #region Public Properties
 
-        public ContactInfoPresenter ContactInfo { get; private set; }
+        public ContactModel Contact { get; private set; }
 
         [Inject]
         public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
@@ -82,7 +82,7 @@
         {
             return
                 PeopleWorkspace.MasterScreen.GetChildren()
-                    .First(item => item.Model.BackingModel.UniqueId == ContactInfo.UniqueId);
+                    .First(item => item.Model.BackingEntity.UniqueId == Contact.UniqueId);
         }
 
         #endregion

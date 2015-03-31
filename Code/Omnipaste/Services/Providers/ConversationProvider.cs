@@ -2,7 +2,7 @@
 {
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     public class ConversationProvider : IConversationProvider

@@ -1,12 +1,12 @@
-﻿namespace OmniUI.Presenters
+﻿namespace OmniUI.Models
 {
     using System;
     using Caliburn.Micro;
     using OmniUI.Entities;
 
-    public interface IPresenter
+    public interface IModel
     {
-        IEntity BackingModel { get; set; }
+        IEntity BackingEntity { get; set; }
 
         string Id { get; set; }
 
@@ -19,33 +19,33 @@
         bool WasViewed { get; set; }
     }
 
-    public interface IPresenter<T> : IPresenter
+    public interface IModel<T> : IModel
         where T : Entity
     {
-        new T BackingModel { get; set; }
+        new T BackingEntity { get; set; }
     }
 
-    public class Presenter : PropertyChangedBase, IPresenter
+    public class Model : PropertyChangedBase, IModel
     {
-        public Presenter(IEntity backingModel)
+        public Model(IEntity backingEntity)
         {
-            BackingModel = backingModel;
+            BackingEntity = backingEntity;
         }
 
-        #region IPresenter Members
+        #region IModel Members
 
-        public IEntity BackingModel { get; set; }
+        public IEntity BackingEntity { get; set; }
 
         public string Id
         {
             get
             {
-                return BackingModel.Id;
+                return BackingEntity.Id;
             }
 
             set
             {
-                BackingModel.Id = value;
+                BackingEntity.Id = value;
             }
         }
 
@@ -53,11 +53,11 @@
         {
             get
             {
-                return BackingModel.IsDeleted;
+                return BackingEntity.IsDeleted;
             }
             set
             {
-                BackingModel.IsDeleted = value;
+                BackingEntity.IsDeleted = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -66,11 +66,11 @@
         {
             get
             {
-                return BackingModel.Time;
+                return BackingEntity.Time;
             }
             set
             {
-                BackingModel.Time = value;
+                BackingEntity.Time = value;
             }
         }
 
@@ -78,11 +78,11 @@
         {
             get
             {
-                return BackingModel.UniqueId;
+                return BackingEntity.UniqueId;
             }
             set
             {
-                BackingModel.UniqueId = value;
+                BackingEntity.UniqueId = value;
             }
         }
 
@@ -90,11 +90,11 @@
         {
             get
             {
-                return BackingModel.WasViewed;
+                return BackingEntity.WasViewed;
             }
             set
             {
-                BackingModel.WasViewed = value;
+                BackingEntity.WasViewed = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -102,18 +102,18 @@
         #endregion
     }
 
-    public class Presenter<T> : Presenter, IPresenter<T>
+    public class Model<T> : Model, IModel<T>
         where T : Entity
     {
-        public Presenter(T backingModel)
-            : base(backingModel)
+        public Model(T backingEntity)
+            : base(backingEntity)
         {
-            BackingModel = backingModel;
+            BackingEntity = backingEntity;
         }
 
-        #region IPresenter<T> Members
+        #region IModel<T> Members
 
-        public new T BackingModel { get; set; }
+        public new T BackingEntity { get; set; }
 
         #endregion
     }

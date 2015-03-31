@@ -3,8 +3,8 @@
     using System;
     using System.Reactive;
     using System.Reactive.Linq;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     public abstract class ConversationContext : IConversationContext
@@ -17,11 +17,11 @@
 
         protected readonly ISmsMessageRepository SmsMessageRepository;
 
-        private IObservable<IConversationPresenter> _itemChanged;
+        private IObservable<IConversationModel> _itemChanged;
 
-        private IObservable<IConversationPresenter> _itemRemoved;
+        private IObservable<IConversationModel> _itemRemoved;
 
-        private IObservable<IConversationPresenter> _updated;
+        private IObservable<IConversationModel> _updated;
 
         protected ConversationContext(
             ISmsMessageRepository smsMessageRepository,
@@ -37,7 +37,7 @@
 
         #region IConversationContext Members
 
-        public IObservable<IConversationPresenter> ItemChanged
+        public IObservable<IConversationModel> ItemChanged
         {
             get
             {
@@ -45,7 +45,7 @@
             }
         }
 
-        public IObservable<IConversationPresenter> ItemRemoved
+        public IObservable<IConversationModel> ItemRemoved
         {
             get
             {
@@ -53,7 +53,7 @@
             }
         }
 
-        public IObservable<IConversationPresenter> Updated
+        public IObservable<IConversationModel> Updated
         {
             get
             {
@@ -61,22 +61,22 @@
             }
         }
 
-        public abstract IObservable<IConversationPresenter> GetItems();
+        public abstract IObservable<IConversationModel> GetItems();
 
-        public virtual IObservable<Unit> SaveItem(IConversationPresenter item)
+        public virtual IObservable<Unit> SaveItem(IConversationModel item)
         {
-            var call = item as PhoneCallPresenter;
+            var call = item as PhoneCallModel;
             var result = Observable.Return(new Unit());
             if (call != null)
             {
-                result = PhoneCallRepository.Save(call.BackingModel).Select(_ => new Unit());
+                result = PhoneCallRepository.Save(call.BackingEntity).Select(_ => new Unit());
             }
             else
             {
-                var message = item as SmsMessagePresenter;
+                var message = item as SmsMessageModel;
                 if (message != null)
                 {
-                    result = SmsMessageRepository.Save(message.BackingModel).Select(_ => new Unit());
+                    result = SmsMessageRepository.Save(message.BackingEntity).Select(_ => new Unit());
                 }
             }
 
@@ -85,6 +85,6 @@
 
         #endregion
 
-        protected abstract IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method);
+        protected abstract IObservable<IConversationModel> GetObservableForOperation(RepositoryMethodEnum method);
     }
 }

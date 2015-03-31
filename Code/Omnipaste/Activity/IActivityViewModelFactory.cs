@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.Activity
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IActivityViewModelFactory
     {
-        IActivityViewModel Create(ActivityPresenter activity);
+        IActivityViewModel Create(ActivityModel activity);
     }
 }

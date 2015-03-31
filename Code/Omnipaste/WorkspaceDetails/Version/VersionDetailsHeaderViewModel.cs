@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Version
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
-    public class VersionDetailsHeaderViewModel : WorkspaceDetailsHeaderViewModel<ActivityPresenter>, IVersionDetailsHeaderViewModel
+    public class VersionDetailsHeaderViewModel : WorkspaceDetailsHeaderViewModel<ActivityModel>, IVersionDetailsHeaderViewModel
     {
     }
 }

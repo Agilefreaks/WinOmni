@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Presenters.Factories
+﻿namespace Omnipaste.Models.Factories
 {
     using System;
     using System.Reactive.Linq;
@@ -8,28 +8,28 @@
 
     public interface ISmsMessagePresenterFactory
     {
-        IObservable<IConversationPresenter> Create(SmsMessageEntity smsMessageEntity);
+        IObservable<IConversationModel> Create(SmsMessageEntity smsMessageEntity);
     }
 
-    public class SmsMessagePresenterFactory : ConversationPresenterFactory, ISmsMessagePresenterFactory
+    public class SmsMessageModelFactory : ConversationModelFactory, ISmsMessagePresenterFactory
     {
-        public SmsMessagePresenterFactory(IContactRepository contactRepository)
+        public SmsMessageModelFactory(IContactRepository contactRepository)
             : base(contactRepository)
         {
         }
 
         #region ISmsMessagePresenterFactory Members
 
-        public IObservable<IConversationPresenter> Create(SmsMessageEntity smsMessageEntity)
+        public IObservable<IConversationModel> Create(SmsMessageEntity smsMessageEntity)
         {
             return ContactRepository.Get(smsMessageEntity.ContactInfoUniqueId).Select(
                 ci =>
                     {
                         var localSmsMessage = smsMessageEntity as LocalSmsMessageEntity;
                         var smsMessagePresenter = localSmsMessage != null
-                            ? (SmsMessagePresenter)new LocalSmsMessagePresenter(localSmsMessage)
-                            : new RemoteSmsMessagePresenter((RemoteSmsMessageEntity)smsMessageEntity);
-                        smsMessagePresenter.ContactInfoPresenter = new ContactInfoPresenter(ci);
+                            ? (SmsMessageModel)new LocalSmsMessageModel(localSmsMessage)
+                            : new RemoteSmsMessageModel((RemoteSmsMessageEntity)smsMessageEntity);
+                        smsMessagePresenter.ContactModel = new ContactModel(ci);
 
                         return smsMessagePresenter;
                     });

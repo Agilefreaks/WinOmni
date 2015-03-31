@@ -6,7 +6,6 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Clipping;
 
@@ -23,7 +22,7 @@
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
             _subject = new ClippingDetailsHeaderViewModel
                            {
-                               Model = new ClippingPresenter(new ClippingEntity { UniqueId = "42" }),
+                               Model = new ClippingModel(new ClippingEntity { UniqueId = "42" }),
                                ClippingRepository = _mockClippingRepository.Object
                            };
         }
@@ -35,8 +34,8 @@
 
             _subject.DeleteClipping();
 
-            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingEntity));
-            _subject.Model.BackingModel.IsDeleted.Should().BeTrue();
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingEntity as ClippingEntity));
+            _subject.Model.BackingEntity.IsDeleted.Should().BeTrue();
         }
 
         [Test]
@@ -64,8 +63,8 @@
 
             _subject.UndoDelete();
 
-            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingModel as ClippingEntity));
-            _subject.Model.BackingModel.IsDeleted.Should().BeFalse();
+            _mockClippingRepository.Verify(m => m.Save(_subject.Model.BackingEntity as ClippingEntity));
+            _subject.Model.BackingEntity.IsDeleted.Should().BeFalse();
         }
     }
 }

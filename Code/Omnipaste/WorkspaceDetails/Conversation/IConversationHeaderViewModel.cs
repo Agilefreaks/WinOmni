@@ -1,12 +1,12 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System.Collections.ObjectModel;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IConversationHeaderViewModel : IWorkspaceDetailsHeaderViewModel
     {
         ConversationHeaderStateEnum State { get; set; }
 
-        ObservableCollection<ContactInfoPresenter> Recipients { get; set; }
+        ObservableCollection<ContactModel> Recipients { get; set; }
     }
 }

@@ -2,16 +2,16 @@
 {
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using OmniUI.Attributes;
     using OmniUI.Details;
 
     [UseView(typeof(DetailsViewWithHeader))]
     public class ConversationViewModel : DetailsViewModelWithHeaderBase<IWorkspaceDetailsHeaderViewModel, IWorkspaceDetailsContentViewModel>, IConversationViewModel
     {
-        private ObservableCollection<ContactInfoPresenter> _recipients;
+        private ObservableCollection<ContactModel> _recipients;
 
-        public ObservableCollection<ContactInfoPresenter> Recipients
+        public ObservableCollection<ContactModel> Recipients
         {
             get
             {

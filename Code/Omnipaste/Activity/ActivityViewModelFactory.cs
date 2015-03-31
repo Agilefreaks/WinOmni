@@ -3,7 +3,6 @@
     using Ninject;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
 
     public class ActivityViewModelFactory : IActivityViewModelFactory
     {
@@ -16,10 +15,10 @@
 
         #region Public Methods and Operators
 
-        public IActivityViewModel Create(ActivityPresenter activityPresenter)
+        public IActivityViewModel Create(ActivityModel activityModel)
         {
             IActivityViewModel result;
-            switch (activityPresenter.Type)
+            switch (activityModel.Type)
             {
                 case ActivityTypeEnum.Call:
                 case ActivityTypeEnum.Message:
@@ -33,7 +32,7 @@
                     break;
             }
 
-            result.Model = activityPresenter;
+            result.Model = activityModel;
 
             return result;
         }

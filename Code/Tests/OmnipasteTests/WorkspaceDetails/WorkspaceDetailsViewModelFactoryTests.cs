@@ -7,9 +7,7 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
-    using Omnipaste.Services;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.WorkspaceDetails.Clipping;
@@ -24,7 +22,7 @@
 
         private Mock<IContactRepository> _mockContactRepository;
 
-        private ActivityPresenterFactory _activityPresenterFactory;
+        private ActivityModelFactory _activityModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -32,7 +30,7 @@
             _mockServiceLocator = new Mock<IServiceLocator> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactEntity()));
-            _activityPresenterFactory = new ActivityPresenterFactory(_mockContactRepository.Object);
+            _activityModelFactory = new ActivityModelFactory(_mockContactRepository.Object);
 
             _subject = new WorkspaceDetailsViewModelFactory(_mockServiceLocator.Object);
         }
@@ -40,7 +38,7 @@
         [Test]
         public void CreateWithActivityPresenter_WhenActivityIsClipping_ReturnsClippingDetailsViewModel()
         {
-            var result = _subject.Create(_activityPresenterFactory.Create(new ClippingEntity { Content = "test" }).Wait());
+            var result = _subject.Create(_activityModelFactory.Create(new ClippingEntity { Content = "test" }).Wait());
 
             result.Should().BeAssignableTo<IClippingDetailsViewModel>();
         }
@@ -54,9 +52,9 @@
             _mockServiceLocator.Setup(m => m.GetInstance<IClippingDetailsViewModel>())
                 .Returns(mockDetailsViewModel.Object);
             
-            var result = _subject.Create(_activityPresenterFactory.Create(clippingModel).Wait());
+            var result = _subject.Create(_activityModelFactory.Create(clippingModel).Wait());
 
-            ((ClippingPresenter)result.Model).BackingModel.Should().Be(clippingModel);
+            ((ClippingModel)result.Model).BackingEntity.Should().Be(clippingModel);
         }
 
         [Test]
@@ -64,12 +62,12 @@
         {
             var mockDetailsViewModel = new Mock<IVersionDetailsViewModel>();
             mockDetailsViewModel.SetupAllProperties();
-            var updateInfo = new UpdateInfo();
+            var updateInfo = new UpdateEntity();
             _mockServiceLocator.Setup(m => m.GetInstance<IVersionDetailsViewModel>()).Returns(mockDetailsViewModel.Object);
 
-            var result = _subject.Create(_activityPresenterFactory.Create(updateInfo).Wait());
+            var result = _subject.Create(_activityModelFactory.Create(updateInfo).Wait());
 
-            ((UpdateInfoPresenter)result.Model).BackingModel.Should().Be(updateInfo);
+            ((UpdateModel)result.Model).BackingEntity.Should().Be(updateInfo);
         }
 
         [Test]
@@ -90,7 +88,7 @@
 
             var result = _subject.Create(model);
 
-            ((ClippingPresenter)result.Model).BackingModel.Should().Be(model);
+            ((ClippingModel)result.Model).BackingEntity.Should().Be(model);
         }
     }
 }

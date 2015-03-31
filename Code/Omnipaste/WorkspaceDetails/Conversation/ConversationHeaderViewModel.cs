@@ -11,11 +11,10 @@
     using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Resources.v1;
 
-    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactInfoPresenter>,
+    public class ConversationHeaderViewModel : WorkspaceDetailsHeaderViewModel<ContactModel>,
                                                IConversationHeaderViewModel
     {
         protected static TimeSpan CallingDuration = TimeSpan.FromSeconds(5);
@@ -24,7 +23,7 @@
 
         private IDisposable _callSubscription;
 
-        private ObservableCollection<ContactInfoPresenter> _recipients;
+        private ObservableCollection<ContactModel> _recipients;
 
         private ConversationHeaderStateEnum _state;
 
@@ -67,7 +66,7 @@
             }
         }
 
-        public ObservableCollection<ContactInfoPresenter> Recipients
+        public ObservableCollection<ContactModel> Recipients
         {
             get
             {
@@ -95,7 +94,7 @@
             _callSubscription =
                 Observable.Timer(DelayCallDuration, SchedulerProvider.Default)
                     .Do(_ => State = ConversationHeaderStateEnum.Calling)
-                    .Select(_ => PhoneCalls.Call(Model.BackingModel.PhoneNumber, Model.BackingModel.ContactId))
+                    .Select(_ => PhoneCalls.Call(Model.BackingEntity.PhoneNumber, Model.BackingEntity.ContactId))
                     .Switch()
                     .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCallEntity>(phoneCallDto))
                     .Switch()
@@ -155,7 +154,7 @@
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
         {
-            repository.GetConversationForContact(Model.BackingModel)
+            repository.GetConversationForContact(Model.BackingEntity)
                 .SubscribeAndHandleErrors(
                     items =>
                     items.Where(c => c.IsDeleted)
@@ -177,7 +176,7 @@
         private void UpdateConversationItems<T>(IConversationRepository repository, bool isDeleted)
             where T : ConversationEntity
         {
-            repository.GetConversationForContact(Model.BackingModel).SelectMany(
+            repository.GetConversationForContact(Model.BackingEntity).SelectMany(
                 items => items.Select(
                     item =>
                         {

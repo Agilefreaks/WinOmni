@@ -1,9 +1,9 @@
 namespace Omnipaste.WorkspaceDetails.Conversation.PhoneCall
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using OmniUI.Details;
 
-    public interface IPhoneCallViewModel : IConversationItemViewModel, IDetailsViewModel<PhoneCallPresenter>
+    public interface IPhoneCallViewModel : IConversationItemViewModel, IDetailsViewModel<PhoneCallModel>
     {
     }
 }

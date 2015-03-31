@@ -7,8 +7,6 @@
     using Microsoft.Practices.ServiceLocation;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails.Clipping;
     using Omnipaste.WorkspaceDetails.Conversation;
     using Omnipaste.WorkspaceDetails.Version;
@@ -24,20 +22,20 @@
 
         #region IWorkspaceDetailsViewModelFactory Members
 
-        public IWorkspaceDetailsViewModel Create(ActivityPresenter activityPresenter)
+        public IWorkspaceDetailsViewModel Create(ActivityModel activityModel)
         {
             IWorkspaceDetailsViewModel result;
-            switch (activityPresenter.Type)
+            switch (activityModel.Type)
             {
                 case ActivityTypeEnum.Clipping:
-                    result = Create(activityPresenter.BackingModel as ClippingEntity);
+                    result = Create(activityModel.BackingEntity as ClippingEntity);
                     break;
                 case ActivityTypeEnum.Message:
                 case ActivityTypeEnum.Call:
-                    result = Create(activityPresenter.ContactEntity);
+                    result = Create(activityModel.ContactEntity);
                     break;
                 case ActivityTypeEnum.Version:
-                    result = Create(activityPresenter.BackingModel as UpdateInfo);
+                    result = Create(activityModel.BackingEntity as UpdateEntity);
                     break;
                 default:
                     throw new Exception("Unknown type");
@@ -48,15 +46,15 @@
 
         public IWorkspaceDetailsViewModel Create(ContactEntity contactEntity)
         {
-            var contactInfoPresenter = new ContactInfoPresenter(contactEntity);
+            var contactInfoPresenter = new ContactModel(contactEntity);
 
-            return Create(new ObservableCollection<ContactInfoPresenter> { contactInfoPresenter });
+            return Create(new ObservableCollection<ContactModel> { contactInfoPresenter });
         }
 
-        public IWorkspaceDetailsViewModel Create(IEnumerable<ContactInfoPresenter> contactInfoPresenterList)
+        public IWorkspaceDetailsViewModel Create(IEnumerable<ContactModel> contactInfoPresenterList)
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
-            result.Recipients = (ObservableCollection<ContactInfoPresenter>)contactInfoPresenterList;
+            result.Recipients = (ObservableCollection<ContactModel>)contactInfoPresenterList;
             result.Model = contactInfoPresenterList.First();
 
             return result;
@@ -65,15 +63,15 @@
         public IWorkspaceDetailsViewModel Create(ClippingEntity clippingEntity)
         {
             var result = _serviceLocator.GetInstance<IClippingDetailsViewModel>();
-            result.Model = new ClippingPresenter(clippingEntity);
+            result.Model = new ClippingModel(clippingEntity);
 
             return result;
         }
 
-        public IWorkspaceDetailsViewModel Create(UpdateInfo updateInfo)
+        public IWorkspaceDetailsViewModel Create(UpdateEntity updateEntity)
         {
             var result = _serviceLocator.GetInstance<IVersionDetailsViewModel>();
-            result.Model = new UpdateInfoPresenter(updateInfo);
+            result.Model = new UpdateModel(updateEntity);
 
             return result;
         }

@@ -16,7 +16,6 @@
     using Omnipaste.Models;
     using Omnipaste.Notification;
     using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Presenters;
     using OmniUI.Services;
     using PhoneCalls.Resources.v1;
 
@@ -55,7 +54,7 @@
         public void EndCall_EndsThePhoneCallCorespondingToTheAssociatedResource()
         {
             const string ResourceId = "someId";
-            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCallEntity { Id = ResourceId });
+            _subject.Resource = new RemotePhoneCallModel(new RemotePhoneCallEntity { Id = ResourceId });
             
             _subject.EndCall();
 
@@ -65,15 +64,15 @@
         [Test]
         public void ReplyWithSms_Always_ExecutesComposeSMSCommand()
         {
-            var contactInfoPresenter = new ContactInfoPresenter(new ContactEntity());
-            _subject.Resource = new RemotePhoneCallPresenter(new RemotePhoneCallEntity()) { ContactInfoPresenter = contactInfoPresenter };
+            var contactInfoPresenter = new ContactModel(new ContactEntity());
+            _subject.Resource = new RemotePhoneCallModel(new RemotePhoneCallEntity()) { ContactModel = contactInfoPresenter };
             _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>())).Returns(Observable.Return(new Unit()));
             var testScheduler = new TestScheduler();
             SchedulerProvider.Dispatcher = testScheduler;
 
             testScheduler.Start(() => _subject.ReplyWithSMS().ToObservable());
 
-            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.ContactInfo == contactInfoPresenter)));
+            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.Contact == contactInfoPresenter)));
         }
     }
 }

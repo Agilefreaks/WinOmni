@@ -1,6 +1,8 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
-    public class UpdateInfoRepository : InMemoryRepository<UpdateInfo>, IUpdateInfoRepository
+    using Omnipaste.Entities;
+
+    public class UpdateInfoRepository : InMemoryRepository<UpdateEntity>, IUpdateInfoRepository
     {
     }
 }

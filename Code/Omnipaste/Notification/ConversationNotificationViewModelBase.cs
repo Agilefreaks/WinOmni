@@ -5,10 +5,10 @@
     using System.Threading.Tasks;
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
     using OmniUI.Services;
 
-    public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationPresenter>,
+    public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationModel>,
                                                                   IConversationNotificationViewModel
     {
         #region Fields
@@ -59,7 +59,7 @@
         {
             get
             {
-                return Resource.ContactInfoPresenter.Identifier;
+                return Resource.ContactModel.Identifier;
             }
         }
 
@@ -79,7 +79,7 @@
         {
             CanReplyWithSMS = false;
 
-            var command = new ComposeSMSCommand(Resource.ContactInfoPresenter);
+            var command = new ComposeSMSCommand(Resource.ContactModel);
             await _commandService.Execute(command).SubscribeOn(SchedulerProvider.Dispatcher).ToTask();
 
             Dismiss();

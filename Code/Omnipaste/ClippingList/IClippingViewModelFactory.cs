@@ -1,9 +1,9 @@
 namespace Omnipaste.ClippingList
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
     public interface IClippingViewModelFactory
     {
-        IClippingViewModel Create(ClippingPresenter contactInfoPresenter);
+        IClippingViewModel Create(ClippingModel contactInfoModel);
     }
 }

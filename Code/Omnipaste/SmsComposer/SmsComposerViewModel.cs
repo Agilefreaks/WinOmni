@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.SMSComposer
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reactive.Linq;
@@ -13,7 +12,6 @@
     using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using SMS.Resources.v1;
 
@@ -101,7 +99,7 @@
             }
         }
 
-        public ObservableCollection<ContactInfoPresenter> Recipients { get; set; }
+        public ObservableCollection<ContactModel> Recipients { get; set; }
 
         public virtual void Send()
         {

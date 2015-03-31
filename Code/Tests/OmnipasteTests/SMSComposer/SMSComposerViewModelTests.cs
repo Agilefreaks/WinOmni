@@ -14,7 +14,6 @@
     using Omnipaste.Entities;
     using Omnipaste.Factories;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Properties;
     using Omnipaste.SMSComposer;
     using SMS.Dto;
@@ -49,7 +48,7 @@
                                };
             _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockConfigurationService.Object)
                            {
-                               Recipients = new ObservableCollection<ContactInfoPresenter> { new ContactInfoPresenter(_contactEntity) },
+                               Recipients = new ObservableCollection<ContactModel> { new ContactModel(_contactEntity) },
                                SmsMessageFactory = _mockSmsMessageFactory.Object
                            };
             _testScheduler = new TestScheduler();
@@ -109,8 +108,8 @@
             _mockSMSMessages.Setup(x => x.Send(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(sendObservable);
             _mockSmsMessageFactory.Setup(x => x.Create<LocalSmsMessageEntity>(It.IsAny<SmsMessageDto>())).Returns(Observable.Empty<LocalSmsMessageEntity>());
             _subject.Message = Content;
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
-            _subject.Recipients.Add(new ContactInfoPresenter(new ContactEntity()));
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
 
             _subject.Send();
             _testScheduler.Start();

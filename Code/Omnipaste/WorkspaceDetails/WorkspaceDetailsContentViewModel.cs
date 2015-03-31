@@ -1,10 +1,10 @@
 ﻿namespace Omnipaste.WorkspaceDetails
 {
     using OmniUI.Details;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
 
     public class WorkspaceDetailsContentViewModel<TModel> : DetailsViewModelBase<TModel>, IWorkspaceDetailsContentViewModel
-        where TModel : class, IPresenter
+        where TModel : class, IModel
     {
     }
 }

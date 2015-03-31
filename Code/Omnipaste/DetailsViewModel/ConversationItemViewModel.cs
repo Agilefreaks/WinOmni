@@ -3,37 +3,36 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>
-        where TModel : class, IConversationPresenter
+        where TModel : class, IConversationModel
     {
-        private readonly ContactInfoPresenter _currentUserInfo;
+        private readonly ContactModel _currentUser;
 
-        private ContactInfoPresenter _contactInfo;
+        private ContactModel _contact;
 
         protected ConversationItemViewModel(
             IUiRefreshService uiRefreshService,
             IConfigurationService configurationService)
             : base(uiRefreshService)
         {
-            _currentUserInfo = new ContactInfoPresenter(new UserContactEntity(configurationService.UserInfo));
+            _currentUser = new ContactModel(new UserContactEntity(configurationService.UserInfo));
         }
 
-        public ContactInfoPresenter ContactInfo
+        public ContactModel Contact
         {
             get
             {
-                return _contactInfo;
+                return _contact;
             }
             set
             {
-                if (Equals(value, _contactInfo))
+                if (Equals(value, _contact))
                 {
                     return;
                 }
-                _contactInfo = value;
+                _contact = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -47,9 +46,9 @@
             set
             {
                 base.Model = value;
-                ContactInfo = value.Source == SourceType.Local
-                                  ? _currentUserInfo
-                                  : value.ContactInfoPresenter;
+                Contact = value.Source == SourceType.Local
+                                  ? _currentUser
+                                  : value.ContactModel;
             }
         }
     }

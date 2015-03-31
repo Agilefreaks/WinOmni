@@ -14,6 +14,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Services.Providers;
 
@@ -45,7 +46,7 @@
 
         private readonly IUpdateManager _updateManager;
         
-        private readonly ReplaySubject<UpdateInfo> _updateSubject;
+        private readonly ReplaySubject<UpdateEntity> _updateSubject;
 
         private IDisposable _systemIdleObserver;
 
@@ -69,7 +70,7 @@
             _updateManager = updateManager;
             _webProxyFactory = webProxyFactory;
             _argumentsDataProvider = argumentsDataProvider;
-            _updateSubject = new ReplaySubject<UpdateInfo>();
+            _updateSubject = new ReplaySubject<UpdateEntity>();
 
             SetUpdateSource();
             _updateManager.ReinstateIfRestarted();
@@ -86,7 +87,7 @@
 
         public IConfigurationService ConfigurationService { get; set; }
         
-        public IObservable<UpdateInfo> UpdateObservable
+        public IObservable<UpdateEntity> UpdateObservable
         {
             get
             {
@@ -395,7 +396,7 @@
 
         private void NotifyNewVersion(bool wasInstalled = false)
         {
-            var updateInfo = new UpdateInfo
+            var updateInfo = new UpdateEntity
                                         {
                                             WasInstalled = wasInstalled,
                                             ReleaseLog = File.Exists(ReleaseLogPath) ? File.ReadAllText(ReleaseLogPath) : string.Empty

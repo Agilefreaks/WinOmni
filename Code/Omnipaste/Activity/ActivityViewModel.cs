@@ -11,14 +11,13 @@ namespace Omnipaste.Activity
     using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.Activity;
     using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
 
-    public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityPresenter>, IActivityViewModel
+    public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityModel>, IActivityViewModel
     {
         public const string SessionSelectionKey = "ActivityWorkspace_SelectedActivity";
 
@@ -45,11 +44,11 @@ namespace Omnipaste.Activity
         {
             get
             {
-                return Model.BackingModel.UniqueId == _sessionManager[SessionSelectionKey] as string;
+                return Model.BackingEntity.UniqueId == _sessionManager[SessionSelectionKey] as string;
             }
         }
 
-        public override ActivityPresenter Model
+        public override ActivityModel Model
         {
             get
             {
@@ -106,7 +105,7 @@ namespace Omnipaste.Activity
                     UpdateContentInfo();
                 };
             detailsViewModel.Deactivated += eventHandler;
-            _sessionManager[SessionSelectionKey] = Model.BackingModel.UniqueId;
+            _sessionManager[SessionSelectionKey] = Model.BackingEntity.UniqueId;
 
             this.GetParentOfType<IActivityWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
             UpdateContentInfo();

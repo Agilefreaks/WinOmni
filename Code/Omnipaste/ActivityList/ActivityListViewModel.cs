@@ -9,13 +9,12 @@ namespace Omnipaste.ActivityList
     using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
-    using Omnipaste.Presenters;
-    using Omnipaste.Presenters.Factories;
+    using Omnipaste.Models.Factories;
     using Omnipaste.Properties;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 
-    public class ActivityListViewModel : ListViewModelBase<ActivityPresenter, IActivityViewModel>,
+    public class ActivityListViewModel : ListViewModelBase<ActivityModel, IActivityViewModel>,
                                          IActivityListViewModel
     {
         private readonly IActivityViewModelFactory _activityViewModelFactory;
@@ -28,7 +27,7 @@ namespace Omnipaste.ActivityList
 
         private readonly IUpdateInfoRepository _updateInfoRepository;
 
-        private readonly IActivityPresenterFactory _activityPresenterFactory;
+        private readonly IActivityModelFactory _activityModelFactory;
 
         private ActivityTypeEnum _allowedActivityTypes;
 
@@ -45,7 +44,7 @@ namespace Omnipaste.ActivityList
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
             IUpdateInfoRepository updateInfoRepository,
-            IActivityPresenterFactory activityPresenterFactory,
+            IActivityModelFactory activityModelFactory,
             IActivityViewModelFactory activityViewModelFactory)
         {
             _clippingRepository = clippingRepository;
@@ -53,7 +52,7 @@ namespace Omnipaste.ActivityList
             _phoneCallRepository = phoneCallRepository;
             _activityViewModelFactory = activityViewModelFactory;
             _updateInfoRepository = updateInfoRepository;
-            _activityPresenterFactory = activityPresenterFactory;
+            _activityModelFactory = activityModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
 
             FilteredItems.SortDescriptions.Add(new SortDescription("Time", ListSortDirection.Descending));
@@ -148,7 +147,7 @@ namespace Omnipaste.ActivityList
             ExternalProcessHelper.ShowVideoTutorial();
         }
 
-        protected override IActivityViewModel ChangeViewModel(ActivityPresenter model)
+        protected override IActivityViewModel ChangeViewModel(ActivityModel model)
         {
             return UpdateViewModel(model) ?? _activityViewModelFactory.Create(model);
         }
@@ -184,45 +183,45 @@ namespace Omnipaste.ActivityList
             RefreshItems();
         }
 
-        protected override IObservable<ActivityPresenter> GetFetchItemsObservable()
+        protected override IObservable<ActivityModel> GetFetchItemsObservable()
         {
             return
                 _clippingRepository.GetAll()
-                    .SelectMany(items => items.Select(item => _activityPresenterFactory.Create(item))).Merge()
+                    .SelectMany(items => items.Select(item => _activityModelFactory.Create(item))).Merge()
                     .Merge(
                         _smsMessageRepository.GetAll()
                             .SelectMany(
-                                items => items.OfType<RemoteSmsMessageEntity>().Select(item => _activityPresenterFactory.Create(item))).Merge())
+                                items => items.OfType<RemoteSmsMessageEntity>().Select(item => _activityModelFactory.Create(item))).Merge())
                     .Merge(
                         _phoneCallRepository.GetAll()
                             .SelectMany(
-                                items => items.OfType<RemotePhoneCallEntity>().Select(item => _activityPresenterFactory.Create(item))).Merge())
+                                items => items.OfType<RemotePhoneCallEntity>().Select(item => _activityModelFactory.Create(item))).Merge())
                     .Merge(
                         _updateInfoRepository.GetAll()
-                            .SelectMany(items => items.Select(item => _activityPresenterFactory.Create(item))).Merge());
+                            .SelectMany(items => items.Select(item => _activityModelFactory.Create(item))).Merge());
         }
 
-        protected override IObservable<ActivityPresenter> GetItemChangedObservable()
+        protected override IObservable<ActivityModel> GetItemChangedObservable()
         {
             return
                 _clippingRepository.GetOperationObservable()
                     .Changed()
-                    .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge()
+                    .Select(ro => _activityModelFactory.Create(ro.Item)).Merge()
                     .Merge(
                         _smsMessageRepository.GetOperationObservable<RemoteSmsMessageEntity>()
                             .Changed()
-                            .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge())
+                            .Select(ro => _activityModelFactory.Create(ro.Item)).Merge())
                     .Merge(
                         _phoneCallRepository.GetOperationObservable<RemotePhoneCallEntity>()
                             .Changed()
-                            .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge())
+                            .Select(ro => _activityModelFactory.Create(ro.Item)).Merge())
                     .Merge(
                         _updateInfoRepository.GetOperationObservable()
                             .Changed()
-                            .Select(ro => _activityPresenterFactory.Create(ro.Item)).Merge());
+                            .Select(ro => _activityModelFactory.Create(ro.Item)).Merge());
         }
 
-        protected override IObservable<ActivityPresenter> GetItemRemovedObservable()
+        protected override IObservable<ActivityModel> GetItemRemovedObservable()
         {
             return
                 _clippingRepository.GetOperationObservable()
@@ -242,7 +241,7 @@ namespace Omnipaste.ActivityList
                             .Select(o => GetActivityPresenter(ActivityTypeEnum.Version, o.Item.UniqueId)));
         }
 
-        private ActivityPresenter GetActivityPresenter(ActivityTypeEnum type, string id)
+        private ActivityModel GetActivityPresenter(ActivityTypeEnum type, string id)
         {
             return
                 Items.Select(vm => vm.Model)
@@ -267,13 +266,13 @@ namespace Omnipaste.ActivityList
                                   .IndexOf(filterPart, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
-        private IActivityViewModel UpdateViewModel(ActivityPresenter presenter)
+        private IActivityViewModel UpdateViewModel(ActivityModel model)
         {
-            var currentModel = GetActivityPresenter(presenter.Type, presenter.SourceId);
+            var currentModel = GetActivityPresenter(model.Type, model.SourceId);
             var activityViewModel = GetViewModel(currentModel);
             if (activityViewModel != null)
             {
-                activityViewModel.Model = presenter;
+                activityViewModel.Model = model;
             }
 
             return activityViewModel;

@@ -1,19 +1,18 @@
-﻿namespace Omnipaste.Presenters
+﻿namespace Omnipaste.Models
 {
     using Clipboard.Dto;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using Omnipaste.Properties;
-    using OmniUI.Presenters;
+    using OmniUI.Models;
 
-    public class ClippingPresenter : Presenter<ClippingEntity>
+    public class ClippingModel : Model<ClippingEntity>
     {
-        public ClippingPresenter(ClippingEntity clipping)
+        public ClippingModel(ClippingEntity clipping)
             : base(clipping)
         {
-            BackingModel = clipping;
+            BackingEntity = clipping;
             Content = clipping.Content;
-            Device = BackingModel.Source == ClippingDto.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
+            Device = BackingEntity.Source == ClippingDto.ClippingSourceEnum.Cloud ? Resources.FromCloud : Resources.FromLocal;
         }
 
         public string Content { get; private set; }
@@ -24,15 +23,15 @@
         {
             get
             {
-                return BackingModel.IsStarred;
+                return BackingEntity.IsStarred;
             }
             set
             {
-                if (value.Equals(BackingModel.IsStarred))
+                if (value.Equals(BackingEntity.IsStarred))
                 {
                     return;
                 }
-                BackingModel.IsStarred = value;
+                BackingEntity.IsStarred = value;
                 NotifyOfPropertyChange(() => IsStarred);
             }
         }
@@ -41,12 +40,12 @@
         {
             get
             {
-                return BackingModel.Source;
+                return BackingEntity.Source;
             }
 
             set
             {
-                BackingModel.Source = value;
+                BackingEntity.Source = value;
             }
         }
     }

@@ -6,6 +6,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Entities;
     using Omnipaste.Services;
     using Omnipaste.Shell.TitleBar;
 
@@ -38,11 +39,11 @@
         [Test]
         public void OnUpdateInfoReceived_WhenWasInstalledIsFalse_UpdatesCanPerformActionToTrue()
         {
-            var updateInfo = new UpdateInfo { WasInstalled = false };
+            var updateInfo = new UpdateEntity { WasInstalled = false };
             var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)),
-                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateInfo)),
+                    new Recorded<Notification<UpdateEntity>>(200, Notification.CreateOnCompleted<UpdateEntity>()));
             _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
             _subject = CreateSubject();
 
@@ -54,11 +55,11 @@
         [Test]
         public void OnUpdateInfoReceived_WhenWasInstalledIsTrue_UpdatesCanPerformActionToFalse()
         {
-            var updateInfo = new UpdateInfo { WasInstalled = true };
+            var updateInfo = new UpdateEntity { WasInstalled = true };
             var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateInfo>>(100, Notification.CreateOnNext(updateInfo)),
-                    new Recorded<Notification<UpdateInfo>>(200, Notification.CreateOnCompleted<UpdateInfo>()));
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateInfo)),
+                    new Recorded<Notification<UpdateEntity>>(200, Notification.CreateOnCompleted<UpdateEntity>()));
             _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
             _subject = CreateSubject();
 

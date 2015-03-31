@@ -14,6 +14,7 @@
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using Omnipaste.Entities;
     using Omnipaste.Helpers;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
@@ -136,7 +137,7 @@
         {
             _mockLocalInstallerVersionProvider.Setup(m => m.GetVersion(It.IsAny<string>())).Returns(new Version(2, 0, 0));
             _mockApplicationVersionProvider.Setup(m => m.GetVersion()).Returns(new Version(1, 0, 0));
-            var testObserver = _testScheduler.CreateObserver<UpdateInfo>();
+            var testObserver = _testScheduler.CreateObserver<UpdateEntity>();
             _subject.UpdateObservable.Subscribe(testObserver);
 
             _subject.Start();
@@ -149,12 +150,12 @@
         public void Start_WhenAppStartedAfterUpdate_NotifiesUpdateListenersThatUpdateWasInstalled()
         {
             _mockArgumentsDataProvider.SetupGet(m => m.Updated).Returns(true);
-            UpdateInfo updateInfo = null;
-            _subject.UpdateObservable.Subscribe(ui => { updateInfo = ui; }, _ => { });
+            UpdateEntity updateEntity = null;
+            _subject.UpdateObservable.Subscribe(ui => { updateEntity = ui; }, _ => { });
 
             _subject.Start();
 
-            updateInfo.WasInstalled.Should().BeTrue();
+            updateEntity.WasInstalled.Should().BeTrue();
         }
 
         [Test]

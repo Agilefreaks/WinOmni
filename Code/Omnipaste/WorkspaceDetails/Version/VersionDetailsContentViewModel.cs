@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Version
 {
-    using Omnipaste.Presenters;
+    using Omnipaste.Models;
 
-    public class VersionDetailsContentViewModel : WorkspaceDetailsContentViewModel<UpdateInfoPresenter>, IVersionDetailsContentViewModel
+    public class VersionDetailsContentViewModel : WorkspaceDetailsContentViewModel<UpdateModel>, IVersionDetailsContentViewModel
     {
         public string ReleaseLog
         {
