@@ -59,14 +59,14 @@
             _mockConfigurationService.Setup(cs => cs.UserInfo).Returns(userInfo);
             var userObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<List<ContactDto>>>(100, Notification.CreateOnNext(new List<ContactDto> { new ContactDto()})));
+                    new Recorded<Notification<List<ContactDto>>>(100, Notification.CreateOnNext(new List<ContactDto> { new ContactDto() })));
             _mockContactsResource.Setup(cr => cr.GetUpdates(It.IsAny<DateTime>())).Returns(userObservable);
             var omniMessageObservable = new Subject<OmniMessage>();
             _subject.Start(omniMessageObservable);
 
             omniMessageObservable.OnNext(new OmniMessage { Type = "contacts_updated" });
 
-            _mockContactsResource.Verify(cr => cr.GetUpdates(userInfo.ContactsUpdatedAt), Times.Once);
+            _mockContactsResource.Verify(cr => cr.GetUpdates(userInfo.ContactsUpdatedAt.Value), Times.Once);
         }
 
         [Test]

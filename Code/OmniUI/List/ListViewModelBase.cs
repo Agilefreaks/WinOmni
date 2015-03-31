@@ -3,13 +3,13 @@ namespace OmniUI.List
     using System;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Windows.Data;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniUI.Details;
+    using OmniUI.Framework;
 
     public abstract class ListViewModelBase<TPresenter, TViewModel> : Conductor<TViewModel>.Collection.AllActive,
                                                                   IListViewModel<TViewModel>
@@ -19,7 +19,7 @@ namespace OmniUI.List
 
         protected ListViewModelBase()
         {
-            Subscriptions = new CompositeDisposable();
+            Subscriptions = new SubscriptionsManager();
             Items.CollectionChanged += OnViewModelsCollectionChanged;
             _filteredItems = (ListCollectionView)CollectionViewSource.GetDefaultView(Items);
             _filteredItems.Filter = vm => CanShow((TViewModel)vm);
@@ -35,7 +35,7 @@ namespace OmniUI.List
 
         #region Fields
 
-        protected readonly CompositeDisposable Subscriptions;
+        protected readonly SubscriptionsManager Subscriptions;
 
         private readonly ListCollectionView _filteredItems;
 
@@ -197,7 +197,7 @@ namespace OmniUI.List
         {
             if (close)
             {
-                Subscriptions.Dispose();
+                Subscriptions.ClearAll();
             }
 
             base.OnDeactivate(close);

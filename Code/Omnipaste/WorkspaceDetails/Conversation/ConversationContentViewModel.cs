@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Linq;
+    using System.Reactive.Disposables;
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.ExtensionMethods;
@@ -19,34 +20,27 @@
     public class ConversationContentViewModel : ListViewModelBase<IConversationPresenter, IConversationItemViewModel>,
                                                 IConversationContentViewModel
     {
-        #region Fields
-        
+        public ConversationContentViewModel(IConversationProvider conversationProvider)
+        {
+            _conversationProvider = conversationProvider;
+
+            FilteredItems.SortDescriptions.Add(
+                new SortDescription(
+                    PropertyExtensions.GetPropertyName<IConversationItemViewModel, DateTime>(vm => vm.Time),
+                    ListSortDirection.Ascending));
+        }
+
         private readonly IConversationProvider _conversationProvider;
 
         private ContactInfoPresenter _model;
 
         private IConversationContext _conversationContext;
 
-        #endregion
-
-        public ConversationContentViewModel(IConversationProvider conversationProvider)
-        {
-            _conversationProvider = conversationProvider;
-
-            FilteredItems.SortDescriptions.Add(new SortDescription(PropertyExtensions.GetPropertyName<IConversationItemViewModel, DateTime>(vm => vm.Time), ListSortDirection.Ascending));
-        }
-
-        #region Public Properties
-
         [Inject]
         public IKernel Kernel { get; set; }
 
         [Inject]
         public IEventAggregator EventAggregator { get; set; }
-
-        #endregion
-
-        #region Properties
 
         protected override bool InsertItemsAtBottom
         {
@@ -73,13 +67,18 @@
             }
         }
 
-        #endregion
-
-        #region Methods
+        public void RefreshConversation()
+        {
+            Items.Clear();
+            Subscriptions.ClearAll();
+            OnInitialize();
+        }
 
         protected override void OnInitialize()
         {
-            _conversationContext = _conversationProvider.ForContact(Model.BackingModel);
+            _conversationContext = Model != null
+                                       ? _conversationProvider.ForContact(Model.BackingModel)
+                                       : _conversationProvider.All();
             base.OnInitialize();
         }
 
@@ -107,9 +106,12 @@
 
         private IConversationItemViewModel UpdateViewModel(IConversationPresenter model)
         {
-            IConversationItemViewModel result =
-                (IConversationItemViewModel)Items.OfType<IPhoneCallViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source) ??
-                Items.OfType<IMessageViewModel>().FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source);
+            var result =
+                (IConversationItemViewModel)
+                Items.OfType<IPhoneCallViewModel>()
+                    .FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source)
+                ?? Items.OfType<IMessageViewModel>()
+                       .FirstOrDefault(vm => vm.Model.Id == model.Id && vm.Model.Source == model.Source);
 
             return result;
         }
@@ -158,7 +160,5 @@
             MarkConversationItemAsViewed(item);
             DismissConversationItemNotification(item);
         }
-
-        #endregion
     }
 }

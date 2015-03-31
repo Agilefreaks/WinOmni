@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.Framework
+﻿namespace OmniUI.Framework
 {
     using System;
     using System.Reactive.Disposables;

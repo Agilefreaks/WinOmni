@@ -8,7 +8,6 @@ namespace Omnipaste.Activity
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -16,6 +15,7 @@ namespace Omnipaste.Activity
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Framework;
 
     public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityPresenter>, IActivityViewModel
     {

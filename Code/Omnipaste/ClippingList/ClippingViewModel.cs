@@ -7,9 +7,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
@@ -17,6 +15,7 @@
     using Omnipaste.Workspaces;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Framework;
 
     public class ClippingViewModel : DetailsViewModelBase<ClippingPresenter>, IClippingViewModel
     {

@@ -285,9 +285,7 @@
     <Compile Include="ContactList\Converters\ContactInfoBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactInfoBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
-    <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
-    <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Helpers\ApplicationHelper.cs" />
     <Compile Include="Helpers\IApplicationHelper.cs" />
     <Compile Include="Helpers\PhoneNumberMatcher.cs" />

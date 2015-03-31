@@ -7,7 +7,6 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.ExtensionMethods;
-    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
     using Omnipaste.Presenters;
@@ -18,6 +17,7 @@
     using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.ExtensionMethods;
+    using OmniUI.Framework;
     using OmniUI.Workspace;
 
     public class ContactInfoViewModel : DetailsViewModelBase<ContactInfoPresenter>, IContactInfoViewModel

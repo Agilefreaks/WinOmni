@@ -22,7 +22,7 @@
 
         public bool ViaOmnipaste { get; set; }
 
-        public DateTime ContactsUpdatedAt { get; set; }
+        public DateTime? ContactsUpdatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
     }

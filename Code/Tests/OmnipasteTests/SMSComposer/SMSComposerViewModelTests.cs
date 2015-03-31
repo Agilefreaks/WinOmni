@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Reactive;
     using System.Reactive.Linq;
     using FluentAssertions;
@@ -47,7 +48,7 @@
                                };
             _subject = new SMSComposerViewModel(_mockSMSMessages.Object, _mockConfigurationService.Object)
                            {
-                               Recipients = new List<ContactInfoPresenter> { new ContactInfoPresenter(_contactInfo)},
+                               Recipients = new ObservableCollection<ContactInfoPresenter> { new ContactInfoPresenter(_contactInfo) },
                                SmsMessageFactory = _mockSmsMessageFactory.Object
                            };
             _testScheduler = new TestScheduler();

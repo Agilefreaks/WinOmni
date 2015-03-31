@@ -1,16 +1,17 @@
-﻿/* TODO
-namespace OmnipasteTests.Services.Providers
+﻿namespace OmnipasteTests.Services.Providers
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
     using FluentAssertions;
+    using FluentAssertions.Events;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Models;
+    using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using OmnipasteTests.Helpers;
@@ -26,6 +27,10 @@ namespace OmnipasteTests.Services.Providers
 
         private Mock<IPhoneCallRepository> _mockCallRepository;
 
+        private Mock<IPhoneCallPresenterFactory> _mockPhoneCalllPresenterFactory;
+
+        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+
         [SetUp]
         public void SetUp()
         {
@@ -34,7 +39,9 @@ namespace OmnipasteTests.Services.Providers
 
             _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
-            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object);
+            _mockPhoneCalllPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
+            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object, _mockPhoneCalllPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
         }
 
         [TearDown]
@@ -44,19 +51,11 @@ namespace OmnipasteTests.Services.Providers
         }
 
         [Test]
-        public void GetItems_Always_ReturnsMessagesAndCalls()
+        public void GetItems_Always_ReturnsAnEmptyObserver()
         {
-            var message =  new TestSmsMessage();
-            _mockMessageRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<SmsMessage> { message }, _testScheduler));
-            var call = new LocalPhoneCall();
-            _mockCallRepository.Setup(m => m.GetAll()).Returns(Observable.Return(new List<PhoneCall> { call }));
-
             var testObserver = _testScheduler.Start(() => _subject.GetItems());
 
-            testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObserver.Messages.First().Value.Value.Should().Contain(message);
-            testObserver.Messages.First().Value.Value.Should().Contain(call);
+            testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
     }
 }
-*/

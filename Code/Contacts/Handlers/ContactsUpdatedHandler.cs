@@ -75,7 +75,7 @@
         protected IObservable<List<ContactDto>> SyncContacts()
         {
             var userInfo = _configurationService.UserInfo;
-            return _contactsResource.GetUpdates(userInfo.ContactsUpdatedAt);
+            return userInfo.ContactsUpdatedAt.HasValue ? _contactsResource.GetUpdates(userInfo.ContactsUpdatedAt.Value) : Observable.Empty<List<ContactDto>>();
         }
 
         private void UpdateUserInfo()

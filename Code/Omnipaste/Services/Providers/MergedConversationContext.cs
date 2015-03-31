@@ -1,8 +1,8 @@
 namespace Omnipaste.Services.Providers
 {
     using System;
-    using System.Linq;
     using System.Reactive.Linq;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.Presenters.Factories;
     using Omnipaste.Services.Repositories;
@@ -20,14 +20,7 @@ namespace Omnipaste.Services.Providers
 
         public override IObservable<IConversationPresenter> GetItems()
         {
-            return
-                SmsMessageRepository.GetAll()
-                    .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m)))
-                    .Merge()
-                    .Merge(
-                        PhoneCallRepository.GetAll()
-                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c)))
-                            .Merge());
+            return Observable.Empty<IConversationPresenter>();
         }
 
         protected override IObservable<IConversationPresenter> GetObservableForOperation(RepositoryMethodEnum method)
@@ -35,12 +28,9 @@ namespace Omnipaste.Services.Providers
             return
                 SmsMessageRepository.GetOperationObservable()
                     .OnMethod(method)
-                    .SelectMany(o => SMSMessagePresenterFactory.Create(o.Item))
-                    .Merge(
-                        PhoneCallRepository.GetOperationObservable()
-                            .OnMethod(method)
-                            .SelectMany(o => PhoneCallPresenterFactory.Create(o.Item))
-                            .Cast<IConversationPresenter>());
+                    .Where(o => o.Item is LocalSmsMessage)
+                    .Select(o => SMSMessagePresenterFactory.Create(o.Item))
+                    .Merge();
         }
     }
 }

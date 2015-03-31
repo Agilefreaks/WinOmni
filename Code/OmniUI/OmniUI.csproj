@@ -109,6 +109,8 @@
     <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
     <Compile Include="ExtensionMethods\ScreenExtensionMethods.cs" />
     <Compile Include="Flyout\IFlyoutViewModel.cs" />
+    <Compile Include="Framework\ISubscriptionsManager.cs" />
+    <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Helpers\IResourceHelper.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />

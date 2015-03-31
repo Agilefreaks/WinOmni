@@ -6,5 +6,7 @@
     public interface IConversationContentViewModel : IConductor, IActivate, IDeactivate
     {
         ContactInfoPresenter Model { get; set; }
+
+        void RefreshConversation();
     }
 }

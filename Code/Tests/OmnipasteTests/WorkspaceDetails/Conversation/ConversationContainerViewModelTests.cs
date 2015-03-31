@@ -3,6 +3,7 @@
     using System.Collections.ObjectModel;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Models;
     using Omnipaste.Presenters;
     using Omnipaste.SMSComposer;
     using Omnipaste.WorkspaceDetails.Conversation;
@@ -14,12 +15,20 @@
 
         private Mock<ISMSComposerViewModel> _mockSmsComposerViewModel;
 
+        private Mock<IConversationContentViewModel> _mockConversationContentViewModel;
+
         [SetUp]
         public void SetUp()
         {
             _mockSmsComposerViewModel = new Mock<ISMSComposerViewModel>();
+            _mockConversationContentViewModel = new Mock<IConversationContentViewModel>();
 
-            _subject = new ConversationContainerViewModel { SMSComposer = _mockSmsComposerViewModel.Object };
+            _subject = new ConversationContainerViewModel
+                           {
+                               SMSComposer = _mockSmsComposerViewModel.Object,
+                               ConversationContentViewModel = _mockConversationContentViewModel.Object,
+                               Model = new ContactInfoPresenter(new ContactInfo())
+                           };
         }
 
         [Test]
@@ -29,6 +38,18 @@
             _subject.Recipients = contactInfoPresenters;
 
             _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);
+        }
+
+        [Test]
+        public void Recepients_WhenMoreOrTwo_SetsModelToNullOnConversationContentViewModel()
+        {
+            _subject.Recipients = new ObservableCollection<ContactInfoPresenter>();
+            
+            _subject.Activate();
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+            _subject.Recipients.Add(new ContactInfoPresenter(new ContactInfo()));
+
+            _mockConversationContentViewModel.VerifySet(m => m.Model = null);
         }
     }
 }

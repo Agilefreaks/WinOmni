@@ -13,7 +13,7 @@
 
         public string Email { get; set; }
 
-        public DateTime ContactsUpdatedAt { get; set; }
+        public DateTime? ContactsUpdatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
@@ -62,7 +62,7 @@
 
         #endregion
 
-        public UserInfo SetContactsUpdatedAt(DateTime contactsUpdatedAt)
+        public UserInfo SetContactsUpdatedAt(DateTime? contactsUpdatedAt)
         {
             ContactsUpdatedAt = contactsUpdatedAt;
             return this;

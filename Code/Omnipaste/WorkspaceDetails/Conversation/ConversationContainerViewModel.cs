@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using Ninject;
     using Omnipaste.Presenters;
     using Omnipaste.SMSComposer;
@@ -33,6 +33,8 @@
                 }
 
                 _recipients = value;
+                _recipients.CollectionChanged -= RecipientsOnCollectionChanged;
+                _recipients.CollectionChanged += RecipientsOnCollectionChanged;
                 SMSComposer.Recipients = _recipients;
                 NotifyOfPropertyChange(() => Recipients);
             }
@@ -52,7 +54,22 @@
         {
             ConversationContentViewModel.Deactivate(close);
             SMSComposer.Deactivate(close);
+            if (_recipients != null)
+            {
+                _recipients.CollectionChanged -= RecipientsOnCollectionChanged;
+            }
             base.OnDeactivate(close);
+        }
+
+        private void RecipientsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            var initialModel = ConversationContentViewModel.Model;
+            ConversationContentViewModel.Model = _recipients.Count >= 2 ? null : Model;
+
+            if (initialModel != ConversationContentViewModel.Model)
+            {
+                ConversationContentViewModel.RefreshConversation();
+            }
         }
     }
 }
