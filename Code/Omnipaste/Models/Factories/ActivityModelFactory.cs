@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
+    using Omnipaste.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Services.Repositories;
 

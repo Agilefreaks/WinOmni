@@ -10,7 +10,7 @@
     {
         #region Fields
 
-        private IContactModel _contact;
+        private ContactModel _contact;
 
         #endregion
 
@@ -25,7 +25,7 @@
 
         #region Public Properties
 
-        public IContactModel Contact
+        public ContactModel Contact
         {
             get
             {

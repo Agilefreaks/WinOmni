@@ -4,6 +4,6 @@
 
     public interface IContactRelatedActivityViewModel : IActivityViewModel
     {
-        IContactModel Contact { get; set; }
+        ContactModel Contact { get; set; }
     }
 }

@@ -2,7 +2,6 @@ namespace Omnipaste.Activity
 {
     using System;
     using Omnipaste.DetailsViewModel;
-    using Omnipaste.Entities;
     using Omnipaste.Models;
 
     public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<ActivityModel>

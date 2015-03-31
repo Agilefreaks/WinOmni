@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Models
 {
     using System;
-    using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Media;
@@ -12,16 +11,7 @@
     using OmniUI.Models;
     using OmniUI.Properties;
 
-    public interface IContactModel : IModel<ContactEntity>, INotifyPropertyChanged
-    {
-        string Identifier { get; set; }
-
-        ImageSource Image { get; set; }
-
-        bool IsStarred { get; set; }
-    }
-
-    public class ContactModel : Model<ContactEntity>, IContactModel
+    public class ContactModel : Model<ContactEntity>
     {
         public const string UserPlaceholderBrush = "UserPlaceholderBrush";
 

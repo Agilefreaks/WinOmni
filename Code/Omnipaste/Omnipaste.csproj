@@ -359,7 +359,6 @@
     <Compile Include="WorkspaceDetails\Version\VersionDetailsViewModel.cs" />
     <Compile Include="Activity\ActivityViewModelFactory.cs" />
     <Compile Include="Activity\ActivityContentInfo.cs" />
-    <Compile Include="Activity\ContentStateEnum.cs" />
     <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
     <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
@@ -399,7 +398,6 @@
     <Compile Include="Notification\IConversationNotificationViewModel.cs" />
     <Compile Include="Models\ActivityModel.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
-    <Compile Include="Entities\ActivityTypeEnum.cs" />
     <Compile Include="Activity\ActivityViewModel.cs" />
     <Compile Include="Activity\IActivityViewModel.cs" />
     <Compile Include="Entities\PhoneCallEntity.cs" />

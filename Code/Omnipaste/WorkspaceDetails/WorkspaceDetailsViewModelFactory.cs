@@ -5,6 +5,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using Microsoft.Practices.ServiceLocation;
+    using Omnipaste.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.WorkspaceDetails.Clipping;

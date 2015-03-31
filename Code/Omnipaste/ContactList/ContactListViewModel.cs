@@ -257,7 +257,7 @@ namespace Omnipaste.ContactList
             return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
         }
 
-        private bool MatchesFilterText(IContactModel model)
+        private bool MatchesFilterText(ContactModel model)
         {
             bool matchesFilterText = false;
 
@@ -275,7 +275,7 @@ namespace Omnipaste.ContactList
             return matchesFilterText;
         }
 
-        private bool MatchesFilter(IContactModel model)
+        private bool MatchesFilter(ContactModel model)
         {
             return !ShowStarred || model.IsStarred;
         }

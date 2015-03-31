@@ -6,6 +6,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
