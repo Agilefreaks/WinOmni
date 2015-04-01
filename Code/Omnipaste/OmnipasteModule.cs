@@ -94,7 +94,7 @@
                            typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(CredentialsMonitor),
                            typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ActivityWorkspace), typeof(NewMessageWorkspace),
-                           typeof(ContactInfoViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
+                           typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
                            typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory),
                            typeof(ConversationModelFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)
                        };

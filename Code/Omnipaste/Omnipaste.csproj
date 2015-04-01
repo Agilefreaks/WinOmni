@@ -367,10 +367,10 @@
     <Compile Include="Activity\IVersionActivityViewModel.cs" />
     <Compile Include="Activity\VersionActivityViewModel.cs" />
     <Compile Include="ContactList\Contact\ContactViewModel.cs" />
-    <Compile Include="ContactList\ContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\ContactViewModelFactory.cs" />
     <Compile Include="ContactList\ContactListViewModel.cs" />
-    <Compile Include="ContactList\IContactInfoViewModel.cs" />
-    <Compile Include="ContactList\IContactInfoViewModelFactory.cs" />
+    <Compile Include="ContactList\Contact\IContactViewModel.cs" />
+    <Compile Include="ContactList\IContactViewModelFactory.cs" />
     <Compile Include="ContactList\IContactListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
