@@ -1,6 +1,15 @@
 ﻿**Version 1.5.3 (31.03.2015)**
 
 **Bug fixes:**
+
+- Fixes msvcr110 include on windows 7.
+
+----------
+
+**Version 1.5.3 (31.03.2015)**
+
+**Bug fixes:**
+
 - Fixes contact update for some users
 
 **Improvements:**
