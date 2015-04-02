@@ -44,6 +44,7 @@
     <Compile Include="Fragments\Components.wxs" />
     <Compile Include="Fragments\Folders.wxs" />
     <Compile Include="Fragments\Shorcuts.wxs" />
+    <Compile Include="Fragments\VCRedist.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="UI\InstallNetFrameworkDialog.wxs" />
     <Compile Include="UI\MinimalUi.wxs" />

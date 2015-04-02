@@ -55,6 +55,10 @@
       <ComponentRef Id="MainApplicationFolder"/>
       <ComponentRef Id="ApplicationSettingsFolder"/>
     </Feature>
+
+    <Feature Id="VCRedist" Title="Visual C++ 11.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist"/>
+    </Feature>
     
     <UIRef Id="OmnipasteUI_Minimal" />
 
