@@ -73,11 +73,14 @@
     <Folder Include="Includes" />
     <Folder Include="Lang" />
     <Folder Include="Lang\en-us" />
+    <Folder Include="VCRedist" />
     <Folder Include="UI" />
     <Folder Include="Transforms" />
     <Folder Include="Packages\en-us\" />
     <Folder Include="Resources" />
     <Folder Include="Packages" />
+    <Folder Include="VCRedist\x64" />
+    <Folder Include="VCRedist\x86" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUtilExtension">
@@ -99,6 +102,8 @@
     <Content Include="Resources\side.bmp" />
     <Content Include="Resources\Icon.ico" />
     <Content Include="Transforms\ComponentsFilter.xslt" />
+    <Content Include="VCRedist\x64\msvcr110.dll" />
+    <Content Include="VCRedist\x86\msvcr110.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Lang\en-us\Loc_en-us.wxl" />

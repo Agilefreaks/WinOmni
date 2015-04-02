@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
-    <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="MegedModules\Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0"/>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="VCRedistx86" Guid="{A559F347-8D81-4FE3-B3C5-93463A36B837}">
+        <Condition>
+          <![CDATA[Not(VersionNT64)]]>
+        </Condition>
+        <File Id="VCRedistx86" KeyPath="yes" Source="VCRedist\x86\msvcr110.dll" />
+      </Component>
+      <Component Id="VCRedistx64" Guid="{ACE780F7-80FE-4D8E-87F8-8D4B703CE5B2}">
+        <Condition>
+          <![CDATA[VersionNT64]]>
+        </Condition>
+        <File Id="VCRedistx64" KeyPath="yes" Source="VCRedist\x64\msvcr110.dll" />
+      </Component>
     </DirectoryRef>
+    <ComponentGroup Id="VCRedist">
+      <ComponentRef Id="VCRedistx86" />
+      <ComponentRef Id="VCRedistx64" />
+    </ComponentGroup>
 	</Fragment>
 </Wix>
