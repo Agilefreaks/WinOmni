@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ClippingList
+﻿namespace Omnipaste.ClippingList.Clipping
 {
     using System;
     using Omnipaste.Models;

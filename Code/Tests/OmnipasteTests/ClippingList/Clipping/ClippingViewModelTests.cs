@@ -1,4 +1,4 @@
-﻿namespace OmnipasteTests.ClippingList
+﻿namespace OmnipasteTests.ClippingList.Clipping
 {
     using Caliburn.Micro;
     using FluentAssertions;
@@ -6,7 +6,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ClippingList;
+    using Omnipaste.ClippingList.Clipping;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services;
@@ -112,7 +112,7 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
-            var mockWorkspace = new Mock<IClippingWorkspace>();
+            var mockWorkspace = new Mock<IClippingsWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             _subject.Parent = mockWorkspace.Object;
@@ -125,7 +125,7 @@
         [Test]
         public void ShowDetails_Always_StoresSelectedClippingIdInSession()
         {
-            var mockWorkspace = new Mock<IClippingWorkspace>();
+            var mockWorkspace = new Mock<IClippingsWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             _subject.Parent = mockWorkspace.Object;

@@ -5,6 +5,7 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.ClippingList;
+    using Omnipaste.ClippingList.Clipping;
     using Omnipaste.Entities;
     using Omnipaste.Models;
 

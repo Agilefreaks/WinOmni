@@ -7,7 +7,7 @@
     using OmniUI.Workspace;
 
     [UseView(typeof(WorkspaceView))]
-    public class ClippingsWorkspace : MasterDetailsWorkspace, IClippingWorkspace
+    public class ClippingsWorkspace : MasterDetailsWorkspace, IClippingsWorkspace
     {
         #region Constructors and Destructors
 

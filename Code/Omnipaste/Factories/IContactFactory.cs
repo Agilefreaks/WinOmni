@@ -2,9 +2,7 @@
 {
     using System;
     using Contacts.Dto;
-    using Contacts.Models;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
 
     public interface IContactFactory
     {

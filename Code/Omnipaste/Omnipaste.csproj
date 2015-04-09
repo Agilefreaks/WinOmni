@@ -275,12 +275,12 @@
     <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
-    <Compile Include="ClippingList\ClippingViewModel.cs" />
+    <Compile Include="ClippingList\Clipping\ClippingViewModel.cs" />
     <Compile Include="ClippingList\ClippingViewModelFactory.cs" />
     <Compile Include="ClippingList\Converters\ClippingBorderBrushConverter.cs" />
     <Compile Include="ClippingList\Converters\ClippingBackroundBrushConverter.cs" />
     <Compile Include="ClippingList\IClippingListViewModel.cs" />
-    <Compile Include="ClippingList\IClippingViewModel.cs" />
+    <Compile Include="ClippingList\Clipping\IClippingViewModel.cs" />
     <Compile Include="ClippingList\IClippingViewModelFactory.cs" />
     <Compile Include="ContactList\Converters\ContactBorderBrushConverter.cs" />
     <Compile Include="ContactList\Converters\ContactBackroundBrushConverter.cs" />
@@ -380,7 +380,7 @@
     <Compile Include="Models\IConversationModel.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
     <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
-    <Compile Include="DetailsViewModel\ConversationItemViewModel.cs" />
+    <Compile Include="WorkspaceDetails\Conversation\ConversationItemViewModel.cs" />
     <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\Behaviours\AddNewLineBehavior.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
@@ -534,7 +534,6 @@
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModel.cs" />
     <Compile Include="Workspaces\Clippings\ClippingsMenuEntryViewModel.cs" />
     <Compile Include="Shell\SideMenu\ISideMenuViewModel.cs" />
-    <Compile Include="Workspaces\NewMessage\INewMessageMainMenuEntryViewModel.cs" />
     <Compile Include="Workspaces\NewMessage\NewMessageMainMenuEntryView.xaml.cs">
       <DependentUpon>NewMessageMainMenuEntryView.xaml</DependentUpon>
     </Compile>
@@ -554,14 +553,14 @@
     <Compile Include="Workspaces\Clippings\ClippingsWorkspace.cs" />
     <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
     <Compile Include="Workspaces\Activity\IActivityWorkspace.cs" />
-    <Compile Include="Workspaces\Clippings\IClippingWorkspace.cs" />
+    <Compile Include="Workspaces\Clippings\IClippingsWorkspace.cs" />
     <Compile Include="Workspaces\People\IPeopleWorkspace.cs" />
     <Compile Include="Workspaces\People\PeopleWorkspace.cs" />
     <Page Include="ClippingList\ClippingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClippingList\ClippingView.xaml">
+    <Page Include="ClippingList\Clipping\ClippingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

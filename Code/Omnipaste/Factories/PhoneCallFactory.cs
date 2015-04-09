@@ -8,7 +8,6 @@ namespace Omnipaste.Factories
     using Ninject;
     using OmniCommon.Helpers;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Dto;
 

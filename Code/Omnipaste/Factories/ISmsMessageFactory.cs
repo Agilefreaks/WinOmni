@@ -2,7 +2,6 @@
 {
     using System;
     using Omnipaste.Entities;
-    using Omnipaste.Models;
     using SMS.Dto;
 
     public interface ISmsMessageFactory

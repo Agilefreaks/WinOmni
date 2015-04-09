@@ -1,4 +1,4 @@
-﻿namespace Omnipaste.ClippingList
+﻿namespace Omnipaste.ClippingList.Clipping
 {
     using System;
     using System.ComponentModel;
@@ -84,7 +84,7 @@
             var detailsViewModel = DetailsViewModelFactory.Create(Model.BackingEntity);
             _sessionManager[SessionSelectionKey] = Model.BackingEntity.UniqueId;
 
-            this.GetParentOfType<IClippingWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
+            this.GetParentOfType<IClippingsWorkspace>().DetailsConductor.ActivateItem(detailsViewModel);
         }
 
         protected override void OnActivate()

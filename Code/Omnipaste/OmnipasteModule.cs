@@ -87,16 +87,13 @@
                            typeof(ShellViewModel), typeof(DialogViewModel), typeof(SettingsViewModel),
                            typeof(NotificationViewModelFactory), typeof(ConnectivityHelper), typeof(SessionInfoViewModel),
                            typeof(ActivationSequenceProvider), typeof(WebProxyFactory), typeof(SystemPowerHelper),
-                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor),
+                           typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), typeof(CredentialsMonitor),
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository),
-                           typeof(UpdateInfoRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
-                           typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(CredentialsMonitor),
-                           typeof(ActivityViewModelFactory), typeof(WorkspaceDetailsViewModelFactory),
-                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace),
-                           typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationProvider), 
-                           typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory),
-                           typeof(ConversationModelFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateInfoRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
+                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(WorkspaceDetailsViewModelFactory),
+                           typeof(ActivityViewModelFactory), typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationModelFactory),
+                           typeof(ConversationProvider), 
+                           typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)
                        };
         }
 

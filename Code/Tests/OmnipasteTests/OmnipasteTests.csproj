@@ -154,7 +154,7 @@
     <Compile Include="Activity\VersionActivityViewModelTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="ClippingList\ClippingViewModelFactoryTests.cs" />
-    <Compile Include="ClippingList\ClippingViewModelTests.cs" />
+    <Compile Include="ClippingList\Clipping\ClippingViewModelTests.cs" />
     <Compile Include="ContactList\ContactViewModelFactoryTests.cs" />
     <Compile Include="ContactList\Contact\ContactViewModelTests.cs" />
     <Compile Include="ContactList\ContactListViewModelTests.cs" />

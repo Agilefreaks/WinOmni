@@ -3,7 +3,7 @@
     using Omnipaste.ClippingList;
     using OmniUI.Workspace;
 
-    public interface IClippingWorkspace : IMasterDetailsWorkspace
+    public interface IClippingsWorkspace : IMasterDetailsWorkspace
     {
         new IClippingListViewModel MasterScreen { get; }
     }

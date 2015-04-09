@@ -1,6 +1,7 @@
-﻿namespace Omnipaste.DetailsViewModel
+﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using OmniCommon.Interfaces;
+    using Omnipaste.DetailsViewModel;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services;

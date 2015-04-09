@@ -10,6 +10,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ClippingList;
+    using Omnipaste.ClippingList.Clipping;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Services;

@@ -5,7 +5,7 @@
     using OmniUI.Workspace;
 
     [UseView(typeof(MainMenuEntryView))]
-    public class ClippingsMenuEntryViewModel : WorkspaceMainMenuEntry<IClippingWorkspace>, IMainMenuEntryViewModel
+    public class ClippingsMenuEntryViewModel : WorkspaceMainMenuEntry<IClippingsWorkspace>, IMainMenuEntryViewModel
     {
         public override string Icon
         {
