@@ -1,20 +1,15 @@
 ﻿namespace OmnipasteTests.Services.Providers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive;
-    using System.Reactive.Linq;
     using FluentAssertions;
-    using FluentAssertions.Events;
     using Microsoft.Reactive.Testing;
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
     using Omnipaste.Models.Factories;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
 
     [TestFixture]
     public class MergedConversationContextTests

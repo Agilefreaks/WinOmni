@@ -10,7 +10,7 @@
     using Omnipaste.Models;
 
     [TestFixture]
-    public class ContactInfoViewModelFactoryTests
+    public class ContactViewModelFactoryTests
     {
         private IContactViewModelFactory _subject;
 

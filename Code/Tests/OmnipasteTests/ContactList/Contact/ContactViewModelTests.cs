@@ -1,5 +1,8 @@
 ﻿namespace OmnipasteTests.ContactList.Contact
 {
+    using System;
+    using System.Reactive;
+    using System.Reactive.Linq;
     using Caliburn.Micro;
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
@@ -9,6 +12,7 @@
     using Omnipaste.ContactList.Contact;
     using Omnipaste.Entities;
     using Omnipaste.Models;
+    using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
@@ -76,7 +80,14 @@
         [Test]
         public void IsSelected_WhenSessionSelectedContactIsSameAsContactInfoId_ReturnsTrue()
         {
-            _mockSessionManager.SetupGet(m => m[ContactViewModel.SessionSelectionKey]).Returns(_contactEntity.UniqueId);
+            var messageOperationObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<SessionItemChangeEventArgs>>(
+                    200,
+                    Notification.CreateOnNext(new SessionItemChangeEventArgs(ContactViewModel.SessionSelectionKey, _contactEntity.UniqueId, null))));
+            _mockSessionManager.SetupGet(m => m.ItemChangedObservable).Returns(messageOperationObservable);
+            
+            _subject.OnLoaded();
+            _testScheduler.Start();
 
             _subject.IsSelected.Should().BeTrue();
         }
@@ -84,8 +95,15 @@
         [Test]
         public void IsSelected_WhenSessionSelectedContactIsNotSameAsContactInfoId_ReturnsFalse()
         {
-            _mockSessionManager.SetupGet(m => m[ContactViewModel.SessionSelectionKey])
-                .Returns("other");
+            _subject.IsSelected = true;
+            var messageOperationObservable = _testScheduler.CreateColdObservable(
+                new Recorded<Notification<SessionItemChangeEventArgs>>(
+                    200,
+                    Notification.CreateOnNext(new SessionItemChangeEventArgs(ContactViewModel.SessionSelectionKey, "other", null))));
+            _mockSessionManager.SetupGet(m => m.ItemChangedObservable).Returns(messageOperationObservable);
+
+            _subject.OnLoaded();
+            _testScheduler.Start();
 
             _subject.IsSelected.Should().BeFalse();
         }
@@ -147,16 +165,15 @@
             _mockSessionManager.VerifySet(m => m[ContactViewModel.SessionSelectionKey] = _contactEntity.UniqueId);
         }
 
-/*
         [Test]
         public void OnLoaded_WhenMessageIsLastConversationItemWithContact_PopulatesLastActivityInfoWithMessage()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test" });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31) });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.LastActivityInfo.Should().Be(message.Content);
         }
@@ -164,25 +181,25 @@
         [Test]
         public void OnLoaded_WhenAllMessagesAreViewed_PopulatesHasNotViewedMessagesWithFalse()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = true });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31) });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.HasNotViewedMessages.Should().Be(false);
         }
-
+        
         [Test]
         public void OnLoaded_WhenOneMessageIsNotViewed_PopulatesHasNotViewedMessagesWithTrue()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", WasViewed = false });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31) });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.HasNotViewedMessages.Should().Be(true);
         }
@@ -190,12 +207,12 @@
         [Test]
         public void OnLoaded_WhenRemoteCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2014, 1, 1), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2013, 12, 31) });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2014, 1, 1) });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.LastActivityInfo.Should().Be(Resources.IncommingCallLabel);
         }
@@ -203,12 +220,12 @@
         [Test]
         public void OnLoaded_WhenLocalCallIsLastConversationItemWithContact_PopulatesLastActivityInfoWithCallText()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new LocalPhoneCallEntity { Time = new DateTime(2014, 1, 1), ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test" });
+            var call = new LocalPhoneCallModel(new LocalPhoneCallEntity { Time = new DateTime(2014, 1, 1) });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.LastActivityInfo.Should().Be(Resources.OutgoingCallLabel);
         }
@@ -216,12 +233,12 @@
         [Test]
         public void OnLoaded_WhenAllCallsAreViewed_PopulatesHasNotViewedCallsWithFalse()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = true, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test" });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = true });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.HasNotViewedCalls.Should().Be(false);
         }
@@ -229,12 +246,12 @@
         [Test]
         public void OnLoaded_WhenOneCallIsNotViewed_PopulatesHasNotViewedCallsWithTrue()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var call = new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = false, ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2014, 1, 1), Content = "test" });
+            var call = new RemotePhoneCallModel(new RemotePhoneCallEntity { Time = new DateTime(2013, 12, 31), WasViewed = false });
             SetupConversation(message, call);
 
             _subject.OnLoaded();
-            _testScheduler.AdvanceBy(1000);
+            _testScheduler.Start();
 
             _subject.HasNotViewedCalls.Should().Be(true);
         }
@@ -242,7 +259,7 @@
         [Test]
         public void MessageIsAddedToConversation_AfterLoaded_PopulatesLastActivityInfoWithMessageContent()
         {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
+            var message = new RemoteSmsMessageModel(new RemoteSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test" });
             var messageOperationObservable =
                 _testScheduler.CreateColdObservable(
                     new Recorded<Notification<IConversationModel>>(
@@ -257,45 +274,9 @@
             _subject.LastActivityInfo.Should().Be(message.Content);
         }
 
-        [Test]
-        public void MessageIsDeletedFromConversation_AfterLoaded_SetsLastActivityInfoToEmptyString()
-        {
-            var message = new TestSmsMessageEntity { Time = new DateTime(2013, 12, 31), Content = "test", ContactEntity = new ContactEntity { PhoneNumbers = _contactEntity.PhoneNumbers } };
-            var observable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IConversationModel>>(
-                        200,
-                        Notification.CreateOnNext((IConversationModel)message)));
-            _mockConversation.SetupGet(x => x.Updated).Returns(observable);
-            var observable1 =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
-                        100,
-                        Notification.CreateOnNext(new List<IConversationModel> { message }.AsEnumerable())));
-            var observable2 =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
-                        100,
-                        Notification.CreateOnNext(Enumerable.Empty<IConversationModel>())));
-            var results = new[] { observable1, observable2 };
-            var index = 0;
-            _mockConversation.Setup(x => x.GetItems()).Returns(() => results[index++]);
-            _subject.OnLoaded();
-
-            _testScheduler.AdvanceBy(1000);
-
-            _subject.LastActivityInfo.Should().Be(string.Empty);
-        }
-
         private void SetupConversation(params IConversationModel[] items)
         {
-            var observable =
-                _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<IEnumerable<IConversationModel>>>(
-                        100,
-                        Notification.CreateOnNext(items.AsEnumerable())));
-            _mockConversation.Setup(x => x.GetItems()).Returns(observable);
+            _mockConversation.Setup(x => x.GetItems()).Returns(items.ToObservable(_testScheduler));
         }
-*/
     }
 }

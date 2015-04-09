@@ -161,6 +161,7 @@
                 {
                     return;
                 }
+
                 _isSelected = value;
                 NotifyOfPropertyChange(() => IsSelected);
                 NotifyOfPropertyChange(() => State);
@@ -197,6 +198,7 @@
         {
             RefreshUi();
             UpdateConversationStatus();
+
             _subscriptionsManager.Add(
                 ConversationProvider.ForContact(Model.BackingEntity)
                     .Updated.SubscribeOn(SchedulerProvider.Default)
@@ -209,10 +211,10 @@
                     .SubscribeAndHandleErrors(_ => RefreshUi()));
 
             _subscriptionsManager.Add(
-                _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey)
+                _sessionManager.ItemChangedObservable.Where(arg => arg.Key == SessionSelectionKey && arg.NewValue != null)
                     .SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(arg => NotifyOfPropertyChange(() => IsSelected)));
+                    .SubscribeAndHandleErrors(arg => IsSelected = (string)arg.NewValue == Model.UniqueId));
         }
 
         public void OnUnloaded()
@@ -249,21 +251,21 @@
                     .ObserveOn(SchedulerProvider.Default)
                     .SubscribeAndHandleErrors(
                         item =>
+                        {
+                            if (item is PhoneCallModel)
                             {
-                                if (item is PhoneCallModel)
-                                {
-                                    HasNotViewedCalls = HasNotViewedCalls || !item.WasViewed;
-                                }
-                                else if (item is SmsMessageModel)
-                                {
-                                    HasNotViewedMessages = HasNotViewedMessages || !item.WasViewed;
-                                }
+                                HasNotViewedCalls = HasNotViewedCalls || !item.WasViewed;
+                            }
+                            else if (item is SmsMessageModel)
+                            {
+                                HasNotViewedMessages = HasNotViewedMessages || !item.WasViewed;
+                            }
 
-                                if (LastActivity == null || LastActivity.Time < item.Time)
-                                {
-                                    LastActivity = item;
-                                }
-                            }));
+                            if (LastActivity == null || LastActivity.Time < item.Time)
+                            {
+                                LastActivity = item;
+                            }
+                        }));
         }
 
         private void RefreshUi()
