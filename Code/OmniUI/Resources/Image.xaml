@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:framework="clr-namespace:OmniUI.Framework"
+                    xmlns:converters1="clr-namespace:OmniUI.Converters">
+
+    <Style x:Key="ImageInCircle" TargetType="Control">
+        <Setter Property="Width" Value="28" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <ControlTemplate.Resources>
+                        <converters1:ValuesToCenterPointConverter x:Key="ValuesToCenterPointConverter" />
+                        <converters1:ValueToRadiusConverter x:Key="ValueToRadiusConverter" />
+                    </ControlTemplate.Resources>
+                    <Image Source="{TemplateBinding Tag}"
+                           Width="{TemplateBinding Width}"
+                           Height="{TemplateBinding Height}" 
+                           x:Name="Image"
+                           SnapsToDevicePixels="True" Stretch="UniformToFill">
+                        <Image.Resources>
+                            <framework:BindingProxy x:Key="Proxy" Data="{Binding ElementName=Image}"/>
+                        </Image.Resources>
+                        <Image.Clip>
+                            <EllipseGeometry
+                                RadiusX="{Binding Path=Data.Width, Source={StaticResource Proxy}, Converter={StaticResource ValueToRadiusConverter}}"
+                                RadiusY="{Binding Path=Data.Height, Source={StaticResource Proxy}, Converter={StaticResource ValueToRadiusConverter}}">
+                                <EllipseGeometry.Center>
+                                    <MultiBinding Converter="{StaticResource ValuesToCenterPointConverter}">
+                                        <Binding Path="Data.Width" Source="{StaticResource Proxy}" />
+                                        <Binding Path="Data.Height" Source="{StaticResource Proxy}" />
+                                    </MultiBinding>
+                                </EllipseGeometry.Center>
+                            </EllipseGeometry>
+                        </Image.Clip>
+                    </Image>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="SideUserImageStyle" TargetType="Control" BasedOn="{StaticResource ImageInCircle}">
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Width" Value="60" />
+    </Style>
+</ResourceDictionary>

@@ -149,9 +149,9 @@
     <Compile Include="WorkspaceDetails\Conversation\ConversationContentViewModelTests.cs" />
     <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModelTests.cs" />
     <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
-    <Compile Include="Activity\ActivityViewModelFactoryTests.cs" />
-    <Compile Include="Activity\ActivityViewModelTests.cs" />
-    <Compile Include="Activity\VersionActivityViewModelTests.cs" />
+    <Compile Include="ActivityList\ActivityViewModelFactoryTests.cs" />
+    <Compile Include="ActivityList\Activity\ActivityViewModelTests.cs" />
+    <Compile Include="ActivityList\Activity\VersionActivityViewModelTests.cs" />
     <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
     <Compile Include="ClippingList\ClippingViewModelFactoryTests.cs" />
     <Compile Include="ClippingList\Clipping\ClippingViewModelTests.cs" />

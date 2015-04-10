@@ -76,8 +76,8 @@
         [Test]
         public void OnActivate_Always_AddsACallViewModelForEachCallInTheConversation()
         {
-            var contactInfo = new ContactEntity();
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity();
+            _subject.Model = new ContactModel(contactEntity);
             var call1 = new LocalPhoneCallModel(new LocalPhoneCallEntity { Id = "42" });
             var call2 = new LocalPhoneCallModel(new LocalPhoneCallEntity { Id = "43" });
             SetupGetConversationItems(call1, call2);
@@ -91,8 +91,8 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_MarksCallAsViewed()
         {
-            var contactInfo = new ContactEntity();
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity();
+            _subject.Model = new ContactModel(contactEntity);
             var call = new LocalPhoneCallModel(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
@@ -106,8 +106,8 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_DismissesNotificationForCall()
         {
-            var contactInfo = new ContactEntity();
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity();
+            _subject.Model = new ContactModel(contactEntity);
             var call = new LocalPhoneCallModel(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
@@ -124,8 +124,8 @@
         [Test]
         public void OnActivate_WhenCallWasNotViewed_SavesCall()
         {
-            var contactInfo = new ContactEntity();
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity();
+            _subject.Model = new ContactModel(contactEntity);
             var call = new LocalPhoneCallModel(new LocalPhoneCallEntity { UniqueId = "42" });
             SetupGetConversationItems(call);
 
@@ -253,8 +253,8 @@
         [Test]
         public void OnActivate_PreviousActivationOccured_DoesNotAddViewModelsMultipleTimes()
         {
-            var contactInfo = new ContactEntity();
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity();
+            _subject.Model = new ContactModel(contactEntity);
             var call1 = new LocalPhoneCallModel(new LocalPhoneCallEntity { Id = "42" });
             var call2 = new LocalPhoneCallModel(new LocalPhoneCallEntity { Id = "43" });
             SetupGetConversationItems(call1, call2);

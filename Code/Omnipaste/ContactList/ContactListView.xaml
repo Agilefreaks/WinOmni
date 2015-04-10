@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:framework="clr-namespace:Omnipaste.Framework"
+             xmlns:framework="clr-namespace:OmniUI.Framework;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">

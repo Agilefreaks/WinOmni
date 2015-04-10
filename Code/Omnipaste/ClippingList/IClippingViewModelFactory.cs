@@ -5,6 +5,6 @@ namespace Omnipaste.ClippingList
 
     public interface IClippingViewModelFactory
     {
-        IClippingViewModel Create(ClippingModel contactInfoModel);
+        IClippingViewModel Create(ClippingModel clippingModel);
     }
 }

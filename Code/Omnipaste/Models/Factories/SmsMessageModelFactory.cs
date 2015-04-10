@@ -6,32 +6,32 @@
     using Omnipaste.Models;
     using Omnipaste.Services.Repositories;
 
-    public interface ISmsMessagePresenterFactory
+    public interface ISmsMessageModelFactory
     {
         IObservable<IConversationModel> Create(SmsMessageEntity smsMessageEntity);
     }
 
-    public class SmsMessageModelFactory : ConversationModelFactory, ISmsMessagePresenterFactory
+    public class SmsMessageModelFactory : ConversationModelFactory, ISmsMessageModelFactory
     {
         public SmsMessageModelFactory(IContactRepository contactRepository)
             : base(contactRepository)
         {
         }
 
-        #region ISmsMessagePresenterFactory Members
+        #region ISmsMessageModelFactory Members
 
         public IObservable<IConversationModel> Create(SmsMessageEntity smsMessageEntity)
         {
-            return ContactRepository.Get(smsMessageEntity.ContactInfoUniqueId).Select(
+            return ContactRepository.Get(smsMessageEntity.ContactUniqueId).Select(
                 ci =>
                     {
                         var localSmsMessage = smsMessageEntity as LocalSmsMessageEntity;
-                        var smsMessagePresenter = localSmsMessage != null
+                        var messageModel = localSmsMessage != null
                             ? (SmsMessageModel)new LocalSmsMessageModel(localSmsMessage)
                             : new RemoteSmsMessageModel((RemoteSmsMessageEntity)smsMessageEntity);
-                        smsMessagePresenter.ContactModel = new ContactModel(ci);
+                        messageModel.ContactModel = new ContactModel(ci);
 
-                        return smsMessagePresenter;
+                        return messageModel;
                     });
         }
 

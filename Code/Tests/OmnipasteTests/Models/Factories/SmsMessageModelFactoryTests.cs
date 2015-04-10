@@ -29,23 +29,23 @@
         }
 
         [Test]
-        public void Create_WithALocalSmsMessage_ReturnsALocalSmsMessagePresenter()
+        public void Create_WithALocalSmsMessage_ReturnsALocalSmsMessageModel()
         {
             _subject.Create(new LocalSmsMessageEntity()).Wait().Should().BeOfType<LocalSmsMessageModel>();
         }
 
         [Test]
-        public void Create_WithARemoteSmsMessage_ReturnsARemoteSmsMessagePresenter()
+        public void Create_WithARemoteSmsMessage_ReturnsARemoteSmsMessageModel()
         {
             _subject.Create(new RemoteSmsMessageEntity()).Wait().Should().BeOfType<RemoteSmsMessageModel>();
         }
 
         [Test]
-        public void Create_WithASmsMessage_WillSetTheContactInfoPresenter()
+        public void Create_WithASmsMessage_WillSetTheContactModel()
         {
-            var phoneCallPresenter = _subject.Create(new LocalSmsMessageEntity()).Wait();
+            var conversationModel = _subject.Create(new LocalSmsMessageEntity()).Wait();
 
-            phoneCallPresenter.ContactModel.BackingEntity.Should().Be(_contactEntity);
+            conversationModel.ContactModel.BackingEntity.Should().Be(_contactEntity);
         }
 
     }

@@ -124,7 +124,7 @@
 
         protected override IObservable<ClippingModel> GetItemRemovedObservable()
         {
-            return _clippingRepository.GetOperationObservable().Deleted().Select(o => GetClippingPresenter(o.Item.UniqueId));
+            return _clippingRepository.GetOperationObservable().Deleted().Select(o => GetClippingModel(o.Item.UniqueId));
         }
 
         protected override IClippingViewModel ChangeViewModel(ClippingModel model)
@@ -181,7 +181,7 @@
                        && _clippingTypeFilter.HasFlag(ClippingFilterTypeEnum.Cloud));
         }
 
-        private ClippingModel GetClippingPresenter(string uniqueId)
+        private ClippingModel GetClippingModel(string uniqueId)
         {
             return Items.Select(vm => vm.Model).FirstOrDefault(clipping => clipping.UniqueId == uniqueId);
         }

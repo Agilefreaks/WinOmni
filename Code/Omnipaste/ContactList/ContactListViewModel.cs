@@ -194,8 +194,8 @@ namespace Omnipaste.ContactList
 
         protected override bool CanShow(IContactViewModel viewModel)
         {
-            var contactInfoPresenter = viewModel.Model;
-            return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
+            var contactModel = viewModel.Model;
+            return MatchesFilter(contactModel) && MatchesFilterText(contactModel);
         }
 
         private void HideDetails()
@@ -227,17 +227,17 @@ namespace Omnipaste.ContactList
 
         protected override IContactViewModel ChangeViewModel(ContactModel model)
         {
-            var contactInfoViewModel = UpdateViewModel(model) ?? _contactViewModelFactory.Create<IContactViewModel>(model);
+            var contactViewModel = UpdateViewModel(model) ?? _contactViewModelFactory.Create<IContactViewModel>(model);
 
             if (model.Identifier == PendingContact.Identifier)
             {
-                SelectedContacts.Add(contactInfoViewModel.Model);
+                SelectedContacts.Add(contactViewModel.Model);
 
                 PendingContact = null;
                 FilterText = "";
             }
 
-            return contactInfoViewModel;
+            return contactViewModel;
         }
 
         private IContactViewModel UpdateViewModel(ContactModel obj)
@@ -331,9 +331,9 @@ namespace Omnipaste.ContactList
 
         private void UnselectItems(IEnumerable<IContactViewModel> itemsToUnselect)
         {
-            var contactInfoPresenters =
+            var contactModels =
                 SelectedContacts.Where(sc => itemsToUnselect.Any(i => i.Model.UniqueId == sc.UniqueId)).ToList();
-            foreach (var item in contactInfoPresenters)
+            foreach (var item in contactModels)
             {
                 SelectedContacts.Remove(item);
             }

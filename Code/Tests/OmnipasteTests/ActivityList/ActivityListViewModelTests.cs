@@ -11,8 +11,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Activity;
     using Omnipaste.ActivityList;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
@@ -30,13 +30,13 @@
 
         private Mock<ISmsMessageRepository> _mockMessageRepository;
 
-        private Mock<IActivityModelFactory> _mockActivityPresenterFactory;
+        private Mock<IActivityModelFactory> _mockActivityModelFactory;
 
         private Mock<ISessionManager> _mockSessionManager;
 
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
-        private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
+        private Mock<IUpdateRepository> _mockUpdateRepository;
 
         private ActivityListViewModel _subject;
 
@@ -51,8 +51,8 @@
 
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
             _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
-            _mockActivityPresenterFactory = new Mock<IActivityModelFactory> { DefaultValue = DefaultValue.Mock };
-            _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
+            _mockActivityModelFactory = new Mock<IActivityModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateRepository = new Mock<IUpdateRepository> { DefaultValue = DefaultValue.Mock };
             _mockActivityViewModelFactory = new Mock<IActivityViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockClippingRepository = new Mock<IClippingRepository> { DefaultValue = DefaultValue.Mock };
@@ -60,18 +60,18 @@
 
             _mockActivityViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
                 .Returns<ActivityModel>(
-                    presenter =>
+                    model =>
                     new ActivityViewModel(_mockUiRefreshService.Object, _mockSessionManager.Object)
                         {
-                            Model = presenter
+                            Model = model
                         });
 
             _subject = new ActivityListViewModel(
                 _mockClippingRepository.Object, 
                 _mockMessageRepository.Object, 
                 _mockCallRepository.Object, 
-                _mockUpdateInfoRepository.Object, 
-                _mockActivityPresenterFactory.Object, 
+                _mockUpdateRepository.Object, 
+                _mockActivityModelFactory.Object, 
                 _mockActivityViewModelFactory.Object);
         }
 
@@ -93,8 +93,8 @@
                 new Recorded<Notification<IEnumerable<RemoteSmsMessageEntity>>>(200, Notification.CreateOnNext((IEnumerable<RemoteSmsMessageEntity>)new List<RemoteSmsMessageEntity> { remoteSmsMessage })));
             _mockMessageRepository.Setup(m => m.GetAll()).Returns(smsMessageObservable);
             _mockCallRepository.Setup(m => m.GetAll()).Returns(phoneCallObservable);
-            SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
-            SetupSmsMessageActivityPresenterFactory(remoteSmsMessage);
+            SetupPhoneCallActivityModelFactory(remotePhoneCall);
+            SetupSmsMessageActivityModelFactory(remoteSmsMessage);
 
             ((IActivate)_subject).Activate();
             _testScheduler.AdvanceTo(300);
@@ -116,7 +116,7 @@
                         200,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory(clippingModel);
+            SetupClippingActivityModelFactory(clippingModel);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -142,7 +142,7 @@
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory(clippingModel);
+            SetupClippingActivityModelFactory(clippingModel);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceBy(1000);
@@ -170,8 +170,8 @@
                         300,
                         Notification.CreateOnCompleted<RepositoryOperation<ClippingEntity>>()));
             _mockClippingRepository.Setup(x => x.GetOperationObservable()).Returns(clippingOperationObservable);
-            SetupClippingActivityPresenterFactory(clippingModel);
-            SetupClippingActivityPresenterFactory(modifiedClipping);
+            SetupClippingActivityModelFactory(clippingModel);
+            SetupClippingActivityModelFactory(modifiedClipping);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceBy(1000);
@@ -190,7 +190,7 @@
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(100, Notification.CreateOnNext(remoteRepositoryOperation)),
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(200, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCallEntity>>()));
             _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCallEntity>()).Returns(eventObservable);
-            SetupPhoneCallActivityPresenterFactory(remotePhoneCall);
+            SetupPhoneCallActivityModelFactory(remotePhoneCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(TimeSpan.FromSeconds(1).Ticks);
@@ -210,8 +210,8 @@
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(200, Notification.CreateOnNext(new RepositoryOperation<RemotePhoneCallEntity>(RepositoryMethodEnum.Changed, modifiedCall))),
                     new Recorded<Notification<RepositoryOperation<RemotePhoneCallEntity>>>(300, Notification.CreateOnCompleted<RepositoryOperation<RemotePhoneCallEntity>>()));
             _mockCallRepository.Setup(m => m.GetOperationObservable<RemotePhoneCallEntity>()).Returns(callObservable);
-            SetupPhoneCallActivityPresenterFactory(call);
-            SetupPhoneCallActivityPresenterFactory(modifiedCall);
+            SetupPhoneCallActivityModelFactory(call);
+            SetupPhoneCallActivityModelFactory(modifiedCall);
             ((IActivate)_subject).Activate();
 
             _testScheduler.AdvanceTo(1000);
@@ -220,25 +220,25 @@
             _subject.Items.First().Model.BackingEntity.Should().Be(modifiedCall);
         }
 
-        private void SetupClippingActivityPresenterFactory(ClippingEntity entity)
+        private void SetupClippingActivityModelFactory(ClippingEntity entity)
         {
-            var activityPresenter = ActivityModel.BeginBuild(entity).WithType(ActivityTypeEnum.Clipping).Build();
+            var activityModel = ActivityModel.BeginBuild(entity).WithType(ActivityTypeEnum.Clipping).Build();
 
-            _mockActivityPresenterFactory.Setup(m => m.Create(entity)).Returns(Observable.Return(activityPresenter));
+            _mockActivityModelFactory.Setup(m => m.Create(entity)).Returns(Observable.Return(activityModel));
         }
 
-        private void SetupPhoneCallActivityPresenterFactory(PhoneCallEntity model)
+        private void SetupPhoneCallActivityModelFactory(PhoneCallEntity model)
         {
-            var activityPresenter = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
+            var activityModel = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Call).Build();
 
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
+            _mockActivityModelFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityModel));
         }
 
-        private void SetupSmsMessageActivityPresenterFactory(SmsMessageEntity model)
+        private void SetupSmsMessageActivityModelFactory(SmsMessageEntity model)
         {
-            var activityPresenter = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
+            var activityModel = ActivityModel.BeginBuild(model).WithType(ActivityTypeEnum.Message).Build();
 
-            _mockActivityPresenterFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityPresenter));
+            _mockActivityModelFactory.Setup(m => m.Create(model)).Returns(Observable.Return(activityModel));
         }
 
     }

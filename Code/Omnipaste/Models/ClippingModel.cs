@@ -48,5 +48,13 @@
                 BackingEntity.Source = value;
             }
         }
+
+        public bool IsLocal
+        {
+            get
+            {
+                return Source == ClippingDto.ClippingSourceEnum.Local;
+            }
+        }
     }
 }

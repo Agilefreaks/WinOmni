@@ -117,7 +117,7 @@
         [Test]
         public void PhoneNumber_WhenThereIsAPhoneNumber_ReturnsThePhoneNumber()
         {
-            var contactInfo = new ContactEntity
+            var contactEntity = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -130,13 +130,13 @@
                                               }
                                   };
 
-            contactInfo.PhoneNumber.Should().Be("1234");
+            contactEntity.PhoneNumber.Should().Be("1234");
         }
 
         [Test]
         public void PhoneNumber_WhenThereAreTwoPhoneNumbers_ReturnsTheFirstPhoneNumber()
         {
-            var contactInfo = new ContactEntity
+            var contactEntity = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -154,15 +154,15 @@
                                               }
                                   };
 
-            contactInfo.PhoneNumber.Should().Be("1234");
+            contactEntity.PhoneNumber.Should().Be("1234");
         }
 
         [Test]
         public void PhoneNumber_WhenThereIsNoNumber_ReturnsEmptyString()
         {
-            var contactInfo = new ContactEntity();
+            var contactEntity = new ContactEntity();
 
-            contactInfo.PhoneNumber.Should().Be(string.Empty);
+            contactEntity.PhoneNumber.Should().Be(string.Empty);
         }
     }
 }

@@ -8,11 +8,11 @@
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
-    using Omnipaste.Notification;
-    using Omnipaste.Notification.ClippingNotification;
-    using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
+    using Omnipaste.NotificationList.Notification;
+    using Omnipaste.NotificationList.Notification.ClippingNotification;
+    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
+    using Omnipaste.NotificationList.Notification.IncomingSmsNotification;
 
     [TestFixture]
     public class NotificationViewModelFactoryTests
@@ -21,7 +21,7 @@
 
         private MoqMockingKernel _kernel;
 
-        private Mock<IConversationModelFactory> _mockConversationPresenterFactory;
+        private Mock<IConversationModelFactory> _mockConversationModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -30,9 +30,9 @@
             _kernel.Bind<IIncomingCallNotificationViewModel>().To<IncomingCallNotificationViewModel>();
             _kernel.Bind<IIncomingSmsNotificationViewModel>().To<IncomingSmsNotificationViewModel>();
             _kernel.Bind<IClippingNotificationViewModel>().To<ClippingNotificationViewModel>();
-            _mockConversationPresenterFactory = new Mock<IConversationModelFactory>();
+            _mockConversationModelFactory = new Mock<IConversationModelFactory>();
 
-            _subject = new NotificationViewModelFactory(_kernel, _mockConversationPresenterFactory.Object);
+            _subject = new NotificationViewModelFactory(_kernel, _mockConversationModelFactory.Object);
         }
 
         [Test]
@@ -47,10 +47,10 @@
         [Test]
         public void Create_WithCallNotification_SetsThePhoneNumberOnTheModel()
         {
-            var contactInfoPresenter = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "your number" } } });
+            var contactModel = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "your number" } } });
             var remotePhoneCall = new RemotePhoneCallEntity();
-            var observable = Observable.Return(new RemotePhoneCallModel(remotePhoneCall) { ContactModel = contactInfoPresenter });
-            _mockConversationPresenterFactory.Setup(m => m.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(remotePhoneCall)).Returns(observable);
+            var observable = Observable.Return(new RemotePhoneCallModel(remotePhoneCall) { ContactModel = contactModel });
+            _mockConversationModelFactory.Setup(m => m.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(remotePhoneCall)).Returns(observable);
             var notificationViewModel = (IncomingCallNotificationViewModel)_subject.Create(remotePhoneCall).Wait();
 
             notificationViewModel.Line1.Should().Be("your number");
@@ -59,23 +59,23 @@
         public void Create_WithCall_SetsTheEventOnTheViewModelAsTheResource()
         {
             var remotePhoneCall = new RemotePhoneCallEntity();
-            var remotePhoneCallPresenter = new RemotePhoneCallModel(remotePhoneCall);
-            var observable = Observable.Return(remotePhoneCallPresenter);
-            _mockConversationPresenterFactory.Setup(m => m.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(remotePhoneCall)).Returns(observable);
+            var remotePhoneCallModel = new RemotePhoneCallModel(remotePhoneCall);
+            var observable = Observable.Return(remotePhoneCallModel);
+            _mockConversationModelFactory.Setup(m => m.Create<RemotePhoneCallModel, RemotePhoneCallEntity>(remotePhoneCall)).Returns(observable);
             var viewModel = (IConversationNotificationViewModel)_subject.Create(remotePhoneCall).Wait();
 
-            viewModel.Resource.Should().Be(remotePhoneCallPresenter);
+            viewModel.Resource.Should().Be(remotePhoneCallModel);
         }
 
 
         [Test]
         public void Create_WithMessageAndNoContactNamePresent_SetsThePhoneAndContentProperties()
         {
-            var contactInfoPresenter = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567" } } });
+            var contactModel = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567" } } });
             var remoteSmsMessage = new RemoteSmsMessageEntity { Content = "SmsContent" };
-            var remoteSmsMessagePresenter = new RemoteSmsMessageModel(remoteSmsMessage) { ContactModel = contactInfoPresenter };
-            var observable = Observable.Return(remoteSmsMessagePresenter);
-            _mockConversationPresenterFactory.Setup(m => m.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(remoteSmsMessage)).Returns(observable);
+            var remoteSmsMessageModel = new RemoteSmsMessageModel(remoteSmsMessage) { ContactModel = contactModel };
+            var observable = Observable.Return(remoteSmsMessageModel);
+            _mockConversationModelFactory.Setup(m => m.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(remoteSmsMessage)).Returns(observable);
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(remoteSmsMessage).Wait();
 
             notificationViewModel.Line1.Should().Be("1234567");
@@ -85,11 +85,11 @@
         [Test]
         public void Create_WithEventOfTypeIncomingSmsAndContactNamePresent_SetsTheContactNameAndContentProperties()
         {
-            var contactInfoPresenter = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567" } }, FirstName = "Test", LastName = "Contact" });
+            var contactModel = new ContactModel(new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567" } }, FirstName = "Test", LastName = "Contact" });
             var remoteSmsMessage = new RemoteSmsMessageEntity { Content = "SmsContent" };
-            var remoteSmsMessagePresenter = new RemoteSmsMessageModel(remoteSmsMessage) { ContactModel = contactInfoPresenter };
-            var observable = Observable.Return(remoteSmsMessagePresenter);
-            _mockConversationPresenterFactory.Setup(m => m.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(remoteSmsMessage)).Returns(observable);
+            var remoteSmsMessageModel = new RemoteSmsMessageModel(remoteSmsMessage) { ContactModel = contactModel };
+            var observable = Observable.Return(remoteSmsMessageModel);
+            _mockConversationModelFactory.Setup(m => m.Create<RemoteSmsMessageModel, RemoteSmsMessageEntity>(remoteSmsMessage)).Returns(observable);
             var notificationViewModel = (IIncomingSmsNotificationViewModel)_subject.Create(remoteSmsMessage).Wait();
 
             notificationViewModel.Line1.Should().Be("Test Contact");

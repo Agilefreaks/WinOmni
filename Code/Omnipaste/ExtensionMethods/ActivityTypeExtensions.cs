@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.ExtensionMethods
 {
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
 

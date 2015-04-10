@@ -8,11 +8,11 @@
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
-    using Omnipaste.Notification;
-    using Omnipaste.Notification.ClippingNotification;
-    using Omnipaste.Notification.HyperlinkNotification;
-    using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.IncomingSmsNotification;
+    using Omnipaste.NotificationList.Notification;
+    using Omnipaste.NotificationList.Notification.ClippingNotification;
+    using Omnipaste.NotificationList.Notification.HyperlinkNotification;
+    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
+    using Omnipaste.NotificationList.Notification.IncomingSmsNotification;
 
     public class NotificationViewModelFactory : INotificationViewModelFactory
     {

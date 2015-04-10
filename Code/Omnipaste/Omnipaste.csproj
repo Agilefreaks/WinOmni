@@ -152,8 +152,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Humanizer.1.34.0\lib\portable-win+net40+sl50+wp8+wpa81\Humanizer.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Markdown.Xaml">
@@ -272,7 +271,6 @@
     <Compile Include="Factories\ISmsMessageFactory.cs" />
     <Compile Include="Factories\PhoneCallFactory.cs" />
     <Compile Include="Factories\SmsMessageFactory.cs" />
-    <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\Clipping\ClippingViewModel.cs" />
@@ -357,16 +355,16 @@
     <Compile Include="WorkspaceDetails\Version\VersionDetailsContentViewModel.cs" />
     <Compile Include="WorkspaceDetails\Version\VersionDetailsHeaderViewModel.cs" />
     <Compile Include="WorkspaceDetails\Version\VersionDetailsViewModel.cs" />
-    <Compile Include="Activity\ActivityViewModelFactory.cs" />
-    <Compile Include="Activity\ActivityContentInfo.cs" />
-    <Compile Include="Activity\Converters\ActivityBackgroundBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ActivityBorderBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ActivityIconBrushConverter.cs" />
-    <Compile Include="Activity\Converters\ViewedSizeConverter.cs" />
-    <Compile Include="Activity\IActivityViewModelFactory.cs" />
-    <Compile Include="Activity\IContactRelatedActivityViewModel.cs" />
-    <Compile Include="Activity\IVersionActivityViewModel.cs" />
-    <Compile Include="Activity\VersionActivityViewModel.cs" />
+    <Compile Include="ActivityList\ActivityViewModelFactory.cs" />
+    <Compile Include="ActivityList\Activity\ActivityContentInfo.cs" />
+    <Compile Include="ActivityList\Converters\ActivityBackgroundBrushConverter.cs" />
+    <Compile Include="ActivityList\Converters\ActivityBorderBrushConverter.cs" />
+    <Compile Include="ActivityList\Converters\ActivityIconBrushConverter.cs" />
+    <Compile Include="ActivityList\Converters\ViewedSizeConverter.cs" />
+    <Compile Include="ActivityList\IActivityViewModelFactory.cs" />
+    <Compile Include="ActivityList\Activity\IContactRelatedActivityViewModel.cs" />
+    <Compile Include="ActivityList\Activity\IVersionActivityViewModel.cs" />
+    <Compile Include="ActivityList\Activity\VersionActivityViewModel.cs" />
     <Compile Include="ContactList\Contact\ContactViewModel.cs" />
     <Compile Include="ContactList\ContactViewModelFactory.cs" />
     <Compile Include="ContactList\ContactListViewModel.cs" />
@@ -375,7 +373,6 @@
     <Compile Include="ContactList\IContactListViewModel.cs" />
     <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
-    <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Entities\ContactEntity.cs" />
     <Compile Include="Models\IConversationModel.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
@@ -386,24 +383,20 @@
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Commands\ClippingCommands.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
-    <Compile Include="Framework\Converters\ValuesToCenterPointConverter.cs" />
-    <Compile Include="Framework\Converters\ValueToRadiusConverter.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
-    <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />
     <Compile Include="Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Helpers\NameParser.cs" />
     <Compile Include="Helpers\TextParser.cs" />
     <Compile Include="Helpers\TextPartTypeEnum.cs" />
-    <Compile Include="Notification\IConversationNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\IConversationNotificationViewModel.cs" />
     <Compile Include="Models\ActivityModel.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
-    <Compile Include="Activity\ActivityViewModel.cs" />
-    <Compile Include="Activity\IActivityViewModel.cs" />
+    <Compile Include="ActivityList\Activity\ActivityViewModel.cs" />
+    <Compile Include="ActivityList\Activity\IActivityViewModel.cs" />
     <Compile Include="Entities\PhoneCallEntity.cs" />
-    <Compile Include="Activity\ContactRelatedActivityViewModel.cs" />
+    <Compile Include="ActivityList\Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controls\ExpandableTextBlock.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
     <Compile Include="EventAggregatorMessages\AndroidInstallationCompleteMessage.cs" />
     <Compile Include="EventAggregatorMessages\GetTokenFromUserMessage.cs" />
@@ -433,10 +426,9 @@
     <Compile Include="Entities\SmsMessageEntity.cs" />
     <Compile Include="Entities\SourceType.cs" />
     <Compile Include="Entities\UserEntity.cs" />
-    <Compile Include="Notification\ConversationNotificationViewModelBase.cs" />
-    <Compile Include="Notification\IResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationTypeEnum.cs" />
-    <Compile Include="Notification\ResourceBasedNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\ConversationNotificationViewModelBase.cs" />
+    <Compile Include="NotificationList\Notification\IResourceBasedNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\ResourceBasedNotificationViewModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
@@ -514,12 +506,12 @@
     <Compile Include="Services\Repositories\ISmsMessageRepository.cs" />
     <Compile Include="Services\Repositories\InMemoryRepository.cs" />
     <Compile Include="Services\Repositories\IRepository.cs" />
-    <Compile Include="Services\Repositories\IUpdateInfoRepository.cs" />
+    <Compile Include="Services\Repositories\IUpdateRepository.cs" />
     <Compile Include="Services\Repositories\SmsMessageRepository.cs" />
     <Compile Include="Services\Repositories\RepositoryObservableExtensionMethods.cs" />
     <Compile Include="Services\Repositories\RepositoryMethodEnum.cs" />
     <Compile Include="Services\Repositories\RepositoryOperation.cs" />
-    <Compile Include="Services\Repositories\UpdateInfoRepository.cs" />
+    <Compile Include="Services\Repositories\UpdateRepository.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UpdateFileInfo.cs" />
     <Compile Include="Entities\UpdateEntity.cs" />
@@ -583,6 +575,10 @@
     <Page Include="ContactList\ContactList\NotEmpty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkspaceDetails\Conversation\ConversationHeader\Group.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -668,23 +664,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\ActivityView.xaml">
+    <Page Include="ActivityList\Activity\ActivityView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Call.xaml">
+    <Page Include="ActivityList\Activity\Activity\Call.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Message.xaml">
+    <Page Include="ActivityList\Activity\Activity\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Activity\Activity\Clipping.xaml">
+    <Page Include="ActivityList\Activity\Activity\Clipping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Activity\Activity\Version.xaml">
+    <Page Include="ActivityList\Activity\Activity\Version.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -704,15 +700,15 @@
     <Compile Include="NotificationList\NotificationViewModelFactory.cs" />
     <Compile Include="Loading\AndroidInstallGuide\AndroidInstallGuideViewModel.cs" />
     <Compile Include="Loading\AndroidInstallGuide\IAndroidInstallGuideViewModel.cs" />
-    <Compile Include="Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
-    <Compile Include="Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
-    <Compile Include="Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
-    <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
-    <Compile Include="Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
-    <Compile Include="Notification\ViewModelStatusEnum.cs" />
+    <Compile Include="NotificationList\Notification\ClippingNotification\ClippingNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\ClippingNotification\IClippingNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\HyperlinkNotification\IHyperlinkNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\IncomingSmsNotification\IIncomingSmsNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\IncomingCallNotification\IIncomingCallNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\IncomingCallNotification\IncomingCallNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\HyperlinkNotification\HyperlinkNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\IncomingSmsNotification\IncomingSmsNotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\ViewModelStatusEnum.cs" />
     <Compile Include="Services\WebProxyFactory.cs" />
     <Compile Include="Services\WindowHandleProvider.cs" />
     <Compile Include="Shell\SessionInfo\ConnectionStateEnum.cs" />
@@ -740,8 +736,8 @@
     <Compile Include="Loading\LoadingViewModelStateEnum.cs" />
     <Compile Include="NotificationList\INotificationListViewModel.cs" />
     <Compile Include="NotificationList\NotificationListViewModel.cs" />
-    <Compile Include="Notification\INotificationViewModel.cs" />
-    <Compile Include="Notification\NotificationViewModelBase.cs" />
+    <Compile Include="NotificationList\Notification\INotificationViewModel.cs" />
+    <Compile Include="NotificationList\Notification\NotificationViewModelBase.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ActivationStepBase.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ExecuteResult.cs" />
@@ -821,27 +817,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\ClippingNotification\ClippingNotificationView.xaml">
+    <Page Include="NotificationList\Notification\ClippingNotification\ClippingNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\HyperlinkNotification\HyperlinkNotificationView.xaml">
+    <Page Include="NotificationList\Notification\HyperlinkNotification\HyperlinkNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
+    <Page Include="NotificationList\Notification\IncomingCallNotification\IncomingCallNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\CheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ContentControl.xaml">
+    <Page Include="NotificationList\Notification\IncomingSmsNotification\IncomingSmsNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -849,43 +837,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Fonts.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Image.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\ItemsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Border.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\NumericUpDown.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\PasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\RadioButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ScrollViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ToggleSwitch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -897,51 +849,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\TextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Submenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Shapes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Buttons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\TextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Effects.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\Converters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Labels.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\TransitioningContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1005,10 +917,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ExpandableTextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Workspaces\DetailsConductorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1040,9 +948,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="Resources\Entypo.ttf" />
-    <Resource Include="Resources\segoeuil.ttf" />
-    <Resource Include="Resources\segoeuisl.ttf" />
-    <Resource Include="Resources\seguisb.ttf" />
     <Resource Include="Icon.ico" />
     <Resource Include="Connected.ico" />
     <EmbeddedResource Include="Properties\Resources.pt.resx">
@@ -1149,6 +1054,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Themes\" />
     <Folder Include="WorkspaceDetails\Conversation\Call\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

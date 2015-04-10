@@ -3,7 +3,7 @@
     using System;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Notification;
+    using Omnipaste.NotificationList.Notification;
 
     public interface INotificationViewModelFactory
     {

@@ -50,8 +50,8 @@
             _testScheduler.Start();
 
             testObservable.Messages[0].Value.Kind.Should().Be(NotificationKind.OnNext);
-            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "42" && pc.ContactInfoUniqueId == "123");
-            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "43" && pc.ContactInfoUniqueId == "123");
+            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "42" && pc.ContactUniqueId == "123");
+            testObservable.Messages[0].Value.Value.Should().ContainSingle(pc => pc.UniqueId == "43" && pc.ContactUniqueId == "123");
             testObservable.Messages[1].Value.Kind.Should().Be(NotificationKind.OnCompleted);
         }
 
@@ -173,12 +173,12 @@
 
         private static RemotePhoneCallEntity BuildRemotePhoneCall()
         {
-            return new RemotePhoneCallEntity { UniqueId = "43", ContactInfoUniqueId = "123" };
+            return new RemotePhoneCallEntity { UniqueId = "43", ContactUniqueId = "123" };
         }
 
         private static LocalPhoneCallEntity BuildLocalPhoneCall()
         {
-            return new LocalPhoneCallEntity { UniqueId = "42", ContactInfoUniqueId = "123" };
+            return new LocalPhoneCallEntity { UniqueId = "42", ContactUniqueId = "123" };
         }
     }
 }

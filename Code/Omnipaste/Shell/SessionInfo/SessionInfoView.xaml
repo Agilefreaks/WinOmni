@@ -10,12 +10,12 @@
             </Grid.RowDefinitions>
 
             <Grid>
-                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=UserInfo.Image}"/>
+                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}"/>
                 <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
             </Grid>
 
             <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
-                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="UserInfo_Identifier"/>
+                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="User_Identifier"/>
                 <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}" x:Name="StatusText"/>
             </StackPanel>
         </Grid>

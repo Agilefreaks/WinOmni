@@ -12,9 +12,9 @@ namespace Omnipaste.Services.Providers
         public MergedConversationContext(
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
-            IPhoneCallPresenterFactory phoneCallPresenterFactory,
-            ISmsMessagePresenterFactory smsMessagePresenterFactory)
-            : base(smsMessageRepository, phoneCallRepository, phoneCallPresenterFactory, smsMessagePresenterFactory)
+            IPhoneCallModelFactory phoneCallModelFactory,
+            ISmsMessageModelFactory smsMessageModelFactory)
+            : base(smsMessageRepository, phoneCallRepository, phoneCallModelFactory, smsMessageModelFactory)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Omnipaste.Services.Providers
                 SmsMessageRepository.GetOperationObservable()
                     .OnMethod(method)
                     .Where(o => o.Item is LocalSmsMessageEntity)
-                    .Select(o => SMSMessagePresenterFactory.Create(o.Item))
+                    .Select(o => SmsMessageModelFactory.Create(o.Item))
                     .Merge();
         }
     }

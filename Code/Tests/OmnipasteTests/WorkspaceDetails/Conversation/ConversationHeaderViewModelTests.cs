@@ -101,7 +101,7 @@
         public void Call_Always_InitiatesACall()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactEntity
+            var contactEntity = new ContactEntity
                                   {
                                       PhoneNumbers =
                                           new List<PhoneNumber>
@@ -113,7 +113,7 @@
                                                       }
                                               }
                                   };
-            _subject.Model = new ContactModel(contactInfo);
+            _subject.Model = new ContactModel(contactEntity);
 
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
@@ -125,8 +125,8 @@
         public void Call_WhenCanceled_DoesNotInitiateACall()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
+            _subject.Model = new ContactModel(contactEntity);
 
             _subject.Call();
             _subject.CancelCall();
@@ -139,8 +139,8 @@
         public void Call_WhenCanceled_ChangesStateToNormal()
         {
             const string PhoneNumber = "1234567890";
-            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = PhoneNumber } } };
+            _subject.Model = new ContactModel(contactEntity);
 
             _subject.Call();
             _subject.CancelCall();
@@ -152,8 +152,8 @@
         [Test]
         public void Call_OnCallInitiated_ChangesStateToCalling()
         {
-            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            _subject.Model = new ContactModel(contactEntity);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
@@ -168,8 +168,8 @@
         [Test]
         public void Call_OnInitiated_ChangesStateToCalling()
         {
-            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            _subject.Model = new ContactModel(contactEntity);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));
@@ -189,8 +189,8 @@
         [Test]
         public void Call_AfterCreatingTheCall_CallsPhoneFactoryCreate()
         {
-            var contactInfo = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
-            _subject.Model = new ContactModel(contactInfo);
+            var contactEntity = new ContactEntity { PhoneNumbers = new[] { new PhoneNumber { Number = "1234567890" } } };
+            _subject.Model = new ContactModel(contactEntity);
             var callObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<PhoneCallDto>>(100, Notification.CreateOnNext(new PhoneCallDto())),
                 new Recorded<Notification<PhoneCallDto>>(200, Notification.CreateOnCompleted<PhoneCallDto>()));

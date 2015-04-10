@@ -7,7 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:p="clr-namespace:Omnipaste.Properties"
-             xmlns:framework="clr-namespace:Omnipaste.Framework"
+             xmlns:framework="clr-namespace:OmniUI.Framework;assembly=OmniUI"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>

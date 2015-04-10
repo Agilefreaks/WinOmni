@@ -5,7 +5,6 @@
     using System.Reactive.Linq;
     using Omnipaste.Entities;
     using Omnipaste.Helpers;
-    using Omnipaste.Models;
 
     public class ContactRepository : SecurePermanentRepository<ContactEntity>, IContactRepository
     {

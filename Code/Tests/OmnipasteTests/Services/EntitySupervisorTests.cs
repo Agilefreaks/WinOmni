@@ -35,7 +35,7 @@
 
         private Mock<ISmsMessageCreatedHandler> _mockSmsMessageCreatedHandler;
 
-        private Mock<IUpdateInfoRepository> _mockUpdateInfoRepository;
+        private Mock<IUpdateRepository> _mockUpdateRepository;
 
         private Mock<IUpdaterService> _mockUpdaterService;
 
@@ -61,7 +61,7 @@
             _mockSmsMessageCreatedHandler = new Mock<ISmsMessageCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockContactCreatedHandler = new Mock<IContactCreatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockUpdaterService = new Mock<IUpdaterService> { DefaultValue = DefaultValue.Mock };
-            _mockUpdateInfoRepository = new Mock<IUpdateInfoRepository> { DefaultValue = DefaultValue.Mock };
+            _mockUpdateRepository = new Mock<IUpdateRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactsUpdatedHandler = new Mock<IContactsUpdatedHandler> { DefaultValue = DefaultValue.Mock };
             _mockSmsMessageFactory = new Mock<ISmsMessageFactory> { DefaultValue = DefaultValue.Mock };
             _mockPhoneCallFactory = new Mock<IPhoneCallFactory> { DefaultValue = DefaultValue.Mock };
@@ -72,7 +72,7 @@
                                ClipboardHandler = _mockClipboardHandler.Object,
                                ClippingRepository = _mockClippingRepository.Object,
                                UpdaterService = _mockUpdaterService.Object,
-                               UpdateInfoRepository = _mockUpdateInfoRepository.Object,
+                               UpdateRepository = _mockUpdateRepository.Object,
                                PhoneCallReceivedHandler = _mockPhoneCallReceivedHandler.Object,
                                SmsMessageCreatedHandler = _mockSmsMessageCreatedHandler.Object,
                                ContactCreatedHandler = _mockContactCreatedHandler.Object,
@@ -107,23 +107,23 @@
         }
 
         [Test]
-        public void OnNewUpdateInfo_Always_SotresUpdateInfo()
+        public void OnNewUpdate_Always_StoresUpdate()
         {
             const string UniqueId = "42";
-            var updateInfo = new UpdateEntity { UniqueId = UniqueId };
-            var updateInfoObservable =
+            var updateEntity = new UpdateEntity { UniqueId = UniqueId };
+            var updateObservable =
                 _testScheduler.CreateColdObservable(
-                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateInfo)));
-            _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateInfoObservable);
+                    new Recorded<Notification<UpdateEntity>>(100, Notification.CreateOnNext(updateEntity)));
+            _mockUpdaterService.SetupGet(m => m.UpdateObservable).Returns(updateObservable);
 
             _subject.Start();
-            _testScheduler.Start(() => updateInfoObservable);
+            _testScheduler.Start(() => updateObservable);
 
-            _mockUpdateInfoRepository.Verify(m => m.Save(It.Is<UpdateEntity>(c => c.UniqueId == UniqueId)));
+            _mockUpdateRepository.Verify(m => m.Save(It.Is<UpdateEntity>(c => c.UniqueId == UniqueId)));
         }
 
         [Test]
-        public void OnNewContactInfo_Always_SavesTheContact()
+        public void OnNewContact_Always_SavesTheContact()
         {
             var contact = new ContactDto { FirstName = "first name" };
             var contactObservable =

@@ -10,7 +10,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList;
     using Omnipaste.ClippingList;
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
@@ -89,7 +89,7 @@
                            typeof(ActivationSequenceProvider), typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), typeof(CredentialsMonitor),
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateInfoRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
                            typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(WorkspaceDetailsViewModelFactory),
                            typeof(ActivityViewModelFactory), typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationModelFactory),
                            typeof(ConversationProvider), 

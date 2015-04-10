@@ -25,17 +25,17 @@
 
         public IObservable<ContactEntity> Create(ContactDto contactDto, DateTime? lastActivityTime)
         {
-            var contactInfo = new ContactEntity(contactDto);
+            var contactEntity = new ContactEntity(contactDto);
 
             return
                 _contactRepository.CreateIfNone(
                     _contactRepository.GetByContactIdOrPhoneNumber(contactDto.ContactId, contactDto.PhoneNumbers.First().Number),
-                    c => c.AddPhoneNumber(contactInfo.PhoneNumber).SetContactId(contactInfo.ContactId)
+                    c => c.AddPhoneNumber(contactEntity.PhoneNumber).SetContactId(contactEntity.ContactId)
                 )
                 .Select(
                     ci =>
                         {
-                            var info = lastActivityTime != null ? ci : contactInfo.SetUniqueId(ci.UniqueId);
+                            var info = lastActivityTime != null ? ci : contactEntity.SetUniqueId(ci.UniqueId);
                             return _contactRepository.Save(info.SetLastActivityTime(lastActivityTime ?? ci.LastActivityTime));
                         })
                         .Switch()

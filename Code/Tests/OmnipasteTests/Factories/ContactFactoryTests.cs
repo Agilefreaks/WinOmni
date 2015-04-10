@@ -52,8 +52,8 @@
                     PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto { Number = "123" } },
                     ContactId = 42
                 };
-                var contactInfo = new ContactEntity { UniqueId = "43", LastActivityTime = TimeHelper.UtcNow };
-                _mockContactRepository.Setup(m => m.CreateIfNone(It.IsAny<IObservable<ContactEntity>>(), It.IsAny<Func<ContactEntity, ContactEntity>>())).Returns(Observable.Return(contactInfo));
+                var contactEntity = new ContactEntity { UniqueId = "43", LastActivityTime = TimeHelper.UtcNow };
+                _mockContactRepository.Setup(m => m.CreateIfNone(It.IsAny<IObservable<ContactEntity>>(), It.IsAny<Func<ContactEntity, ContactEntity>>())).Returns(Observable.Return(contactEntity));
 
                 _subject.Create(contactDto).Subscribe();
 
@@ -71,8 +71,8 @@
                     LastName = "Ion",
                     PhoneNumbers = new List<PhoneNumberDto> { new PhoneNumberDto { Number = "123" } }
                 };
-                var contactInfo = new ContactEntity { UniqueId = "43", LastName = "Gheo" };
-                _mockContactRepository.Setup(m => m.CreateIfNone(It.IsAny<IObservable<ContactEntity>>(), It.IsAny<Func<ContactEntity, ContactEntity>>())).Returns(Observable.Return(contactInfo));
+                var contactEntity = new ContactEntity { UniqueId = "43", LastName = "Gheo" };
+                _mockContactRepository.Setup(m => m.CreateIfNone(It.IsAny<IObservable<ContactEntity>>(), It.IsAny<Func<ContactEntity, ContactEntity>>())).Returns(Observable.Return(contactEntity));
 
                 _subject.Create(contactDto, TimeHelper.UtcNow).Subscribe();
 

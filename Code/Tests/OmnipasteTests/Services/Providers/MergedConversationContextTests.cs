@@ -22,9 +22,9 @@
 
         private Mock<IPhoneCallRepository> _mockCallRepository;
 
-        private Mock<IPhoneCallPresenterFactory> _mockPhoneCalllPresenterFactory;
+        private Mock<IPhoneCallModelFactory> _mockPhoneCallModelFactory;
 
-        private Mock<ISmsMessagePresenterFactory> _mockSmsMessagePresenterFactory;
+        private Mock<ISmsMessageModelFactory> _mockSmsMessageModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -34,9 +34,9 @@
 
             _mockMessageRepository = new Mock<ISmsMessageRepository> { DefaultValue = DefaultValue.Mock };
             _mockCallRepository = new Mock<IPhoneCallRepository> { DefaultValue = DefaultValue.Mock };
-            _mockPhoneCalllPresenterFactory = new Mock<IPhoneCallPresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _mockSmsMessagePresenterFactory = new Mock<ISmsMessagePresenterFactory> { DefaultValue = DefaultValue.Mock };
-            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object, _mockPhoneCalllPresenterFactory.Object, _mockSmsMessagePresenterFactory.Object);
+            _mockPhoneCallModelFactory = new Mock<IPhoneCallModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockSmsMessageModelFactory = new Mock<ISmsMessageModelFactory> { DefaultValue = DefaultValue.Mock };
+            _subject = new MergedConversationContext(_mockMessageRepository.Object, _mockCallRepository.Object, _mockPhoneCallModelFactory.Object, _mockSmsMessageModelFactory.Object);
         }
 
         [TearDown]

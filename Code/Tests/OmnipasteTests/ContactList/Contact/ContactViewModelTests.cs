@@ -25,7 +25,7 @@
     {
         private ContactViewModel _subject;
 
-        private ContactModel _contactInfoPresenter;
+        private ContactModel _contactModel;
 
         private ContactEntity _contactEntity;
 
@@ -51,7 +51,7 @@
             SchedulerProvider.Dispatcher = _testScheduler;
 
             _contactEntity = new ContactEntity { FirstName = "test", LastName = "test", IsStarred = false, PhoneNumbers = new[] { new PhoneNumber { Number = "42" } } };
-            _contactInfoPresenter = new ContactModel(_contactEntity);
+            _contactModel = new ContactModel(_contactEntity);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
@@ -62,7 +62,7 @@
             _mockSessionManager.SetupAllProperties();
             _subject = new ContactViewModel(_mockSessionManager.Object)
                            {
-                               Model = _contactInfoPresenter,
+                               Model = _contactModel,
                                ContactRepository = _mockContactRepository.Object,
                                UiRefreshService = _mockUiRefreshService.Object,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
@@ -78,7 +78,7 @@
         }
 
         [Test]
-        public void IsSelected_WhenSessionSelectedContactIsSameAsContactInfoId_ReturnsTrue()
+        public void IsSelected_WhenSessionSelectedContactIsSameAsContactId_ReturnsTrue()
         {
             var messageOperationObservable = _testScheduler.CreateColdObservable(
                 new Recorded<Notification<SessionItemChangeEventArgs>>(
@@ -93,7 +93,7 @@
         }
 
         [Test]
-        public void IsSelected_WhenSessionSelectedContactIsNotSameAsContactInfoId_ReturnsFalse()
+        public void IsSelected_WhenSessionSelectedContactIsNotSameAsContactId_ReturnsFalse()
         {
             _subject.IsSelected = true;
             var messageOperationObservable = _testScheduler.CreateColdObservable(
@@ -113,7 +113,7 @@
         {
             ((IActivate)_subject).Activate();
 
-            _contactInfoPresenter.IsStarred = true;
+            _contactModel.IsStarred = true;
 
             _contactEntity.IsStarred.Should().BeTrue();
         }
@@ -123,7 +123,7 @@
         {
             ((IActivate)_subject).Activate();
 
-            _contactInfoPresenter.IsStarred = true;
+            _contactModel.IsStarred = true;
 
             _mockContactRepository.Verify(m => m.Save(_contactEntity));
         }
@@ -134,7 +134,7 @@
             ((IActivate)_subject).Activate();
             ((IDeactivate)_subject).Deactivate(false);
 
-            _contactInfoPresenter.IsStarred = false;
+            _contactModel.IsStarred = false;
 
             _mockContactRepository.Verify(m => m.Save(It.IsAny<ContactEntity>()), Times.Never());
         }
@@ -153,7 +153,7 @@
         }
 
         [Test]
-        public void ShowDetails_Always_StoresSelectedContactInfoInSession()
+        public void ShowDetails_Always_StoresSelectedContactInSession()
         {
             var mockWorkspace = new Mock<IPeopleWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();

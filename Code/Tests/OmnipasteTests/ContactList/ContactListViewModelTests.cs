@@ -27,7 +27,7 @@
 
         private Mock<IContactRepository> _mockContactRepository;
 
-        private Mock<IContactViewModelFactory> _mockContactInfoViewModelFactory;
+        private Mock<IContactViewModelFactory> _mockContactViewModelFactory;
 
         private TestScheduler _testScheduler;
 
@@ -41,18 +41,18 @@
             SchedulerProvider.Dispatcher = _testScheduler;
             
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
-            _mockContactInfoViewModelFactory = new Mock<IContactViewModelFactory>();
+            _mockContactViewModelFactory = new Mock<IContactViewModelFactory>();
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager.SetupAllProperties();
-            _mockContactInfoViewModelFactory.Setup(
+            _mockContactViewModelFactory.Setup(
                 x => x.Create<IContactViewModel>(It.IsAny<ContactModel>()))
                 .Returns<ContactModel>(
-                    presenter => new ContactViewModel(_mockSessionManager.Object) { Model = presenter });
+                    contactModel => new ContactViewModel(_mockSessionManager.Object) { Model = contactModel });
             
             MoqMockingKernel kernel = new MoqMockingKernel();
             kernel.Bind<IContactListViewModel>().To<ContactListViewModel>();
             kernel.Bind<IContactRepository>().ToConstant(_mockContactRepository.Object);
-            kernel.Bind<IContactViewModelFactory>().ToConstant(_mockContactInfoViewModelFactory.Object);
+            kernel.Bind<IContactViewModelFactory>().ToConstant(_mockContactViewModelFactory.Object);
             _subject = (ContactListViewModel)kernel.Get<IContactListViewModel>();
         }
 

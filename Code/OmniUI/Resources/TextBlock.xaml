@@ -1,0 +1,185 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:notification="clr-namespace:OmniUI.Framework">
+
+    <!-- TextBlock -->
+    <Style TargetType="TextBlock" x:Key="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="LightTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Foreground" Value="{DynamicResource LightTextForegroundBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DarkTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Foreground" Value="{DynamicResource DarkTextForegroundBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="BoldTextBlock" BasedOn="{StaticResource DarkTextBlock}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0, 0, 14, 0" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="LightTitleTextBlock" BasedOn="{StaticResource LightTextBlock}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ClippingTextBlock" BasedOn="{StaticResource DarkTextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="InfoTextStyle">
+        <Setter Property="FontFamily" Value="{DynamicResource HeaderFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource SubHeaderFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="InfoTextStyleCenter" BasedOn="{StaticResource InfoTextStyle}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="DescriptionHeaderStyleTextBlock" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+    </Style>
+
+    <Style x:Key="NotificationTitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">
+        <Setter Property="Text" Value="{Binding Path=Title, Converter={StaticResource ToUpperConverter}}"/>
+        <Setter Property="Margin" Value="0,7,0,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationHeaderFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Clipping}">
+                <Setter Property="Foreground" Value="{DynamicResource ClippingNotificationBrush}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingCall}">
+                <Setter Property="Foreground" Value="{DynamicResource CallNotificationBrush}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.IncomingSMS}">
+                <Setter Property="Foreground" Value="{DynamicResource SMSNotificationBrush}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static notification:NotificationTypeEnum.Link}">
+                <Setter Property="Foreground" Value="{DynamicResource LinkNotificationBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NotificationLine1TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource LightTitleTextBlock}">        
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="WrappingTextBlockStyle">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="DescriptionHeaderTextBlockStyle" BasedOn="{StaticResource HeaderTextBlockStyle}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource LargeFontSize}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="PlaceholderContentStyle" BasedOn="{StaticResource InfoTextStyle}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FontSize" Value="{DynamicResource LargeFontSize}"></Setter>
+        <Setter Property="Margin" Value="0,40,0,0"/>
+    </Style>
+    
+    <Style x:Key="ActivityContentTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource MediumFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="ActivityTimeStampStyle">
+        <Setter Property="FontFamily" Value="{DynamicResource ContentFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ActivityLabelFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ActivityDeviceNameStyle" BasedOn="{StaticResource ActivityTimeStampStyle}">
+        <Setter Property="Margin" Value="7,5,0,5"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ActivityTitleTextBlockStyle" BasedOn="{StaticResource ActivityContentTextStyle}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ActivityContentTextBlockStyle" BasedOn="{StaticResource ActivityContentTextStyle}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0,8"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ActivitySecondaryContentTextBlockStyle" BasedOn="{StaticResource ActivityContentTextBlockStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource ActivitySecondaryContentBrush}"/>
+        <Setter Property="Margin" Value="42,0,0,0"/>
+        <Setter Property="Padding" Value="0,0,0,8"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="TextTrimming" Value="WordEllipsis"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="VersionNumberTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ContentFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NavigationMenuTextBrush}"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="UsernameTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource NavigationMenuTextBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ConnectivityStateTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}"/>
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+</ResourceDictionary>

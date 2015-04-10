@@ -14,8 +14,8 @@
     using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Models;
-    using Omnipaste.Notification;
-    using Omnipaste.Notification.IncomingCallNotification;
+    using Omnipaste.NotificationList.Notification;
+    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
     using OmniUI.Services;
     using PhoneCalls.Resources.v1;
 
@@ -64,15 +64,15 @@
         [Test]
         public void ReplyWithSms_Always_ExecutesComposeSMSCommand()
         {
-            var contactInfoPresenter = new ContactModel(new ContactEntity());
-            _subject.Resource = new RemotePhoneCallModel(new RemotePhoneCallEntity()) { ContactModel = contactInfoPresenter };
+            var contactModel = new ContactModel(new ContactEntity());
+            _subject.Resource = new RemotePhoneCallModel(new RemotePhoneCallEntity()) { ContactModel = contactModel };
             _mockCommandService.Setup(x => x.Execute(It.IsAny<ComposeSMSCommand>())).Returns(Observable.Return(new Unit()));
             var testScheduler = new TestScheduler();
             SchedulerProvider.Dispatcher = testScheduler;
 
             testScheduler.Start(() => _subject.ReplyWithSMS().ToObservable());
 
-            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.Contact == contactInfoPresenter)));
+            _mockCommandService.Verify(x => x.Execute(It.Is<ComposeSMSCommand>(m => m.Contact == contactModel)));
         }
     }
 }

@@ -21,9 +21,9 @@
 
         public abstract SourceType Source { get; }
 
-        public SmsMessageEntity SetContactInfoUniqueId(String contactInfoUniqueId)
+        public SmsMessageEntity SetContactUniqueId(String contactUniqueId)
         {
-            ContactInfoUniqueId = contactInfoUniqueId;
+            ContactUniqueId = contactUniqueId;
             return this;
         }
     }

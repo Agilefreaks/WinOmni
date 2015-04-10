@@ -6,7 +6,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
@@ -30,34 +30,34 @@
         [Test]
         public void Create_WithClipping_SetsTypeToClipping()
         {
-            var activityPresenter = _factory.Create(new ClippingEntity()).Wait();
+            var activityModel = _factory.Create(new ClippingEntity()).Wait();
 
-            activityPresenter.Type.Should().Be(ActivityTypeEnum.Clipping);
+            activityModel.Type.Should().Be(ActivityTypeEnum.Clipping);
         }
 
         [Test]
         public void Create_WithClipping_SetsContent()
         {
-            var activityPresenter = _factory.Create(new ClippingEntity { Content = "some" }).Wait();
+            var activityModel = _factory.Create(new ClippingEntity { Content = "some" }).Wait();
 
-            activityPresenter.Content.Should().Be("some");
+            activityModel.Content.Should().Be("some");
         }
 
         [Test]
         public void Create_WithClippingAndSourceIsCloud_SetsDeviceToCloud()
         {
-            var activityPresenter =
+            var activityModel =
                 _factory.Create(new ClippingEntity { Source = ClippingDto.ClippingSourceEnum.Cloud }).Wait();
 
-            activityPresenter.Device.Should().Be(Resources.FromCloud);
+            activityModel.Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
         public void Create_WithClipping_SetsSourceId()
         {
-            var activityPresenter = _factory.Create(new ClippingEntity { UniqueId = "42" }).Wait();
+            var activityModel = _factory.Create(new ClippingEntity { UniqueId = "42" }).Wait();
 
-            activityPresenter.SourceId.Should().Be("42");
+            activityModel.SourceId.Should().Be("42");
         }
 
         [Test]
@@ -65,9 +65,9 @@
         {
             var localPhoneCall = new LocalPhoneCallEntity();
             SetupContactRepository(localPhoneCall);
-            var activityPresenter = _factory.Create(localPhoneCall).Wait();
+            var activityModel = _factory.Create(localPhoneCall).Wait();
 
-            activityPresenter.Type.Should().Be(ActivityTypeEnum.Call);
+            activityModel.Type.Should().Be(ActivityTypeEnum.Call);
         }
 
         [Test]
@@ -75,9 +75,9 @@
         {
             var localPhoneCall = new LocalPhoneCallEntity();
             SetupContactRepository(localPhoneCall);
-            var activityPresenter = _factory.Create(localPhoneCall).Wait();
+            var activityModel = _factory.Create(localPhoneCall).Wait();
 
-            activityPresenter.Device.Should().Be(Resources.FromLocal);
+            activityModel.Device.Should().Be(Resources.FromLocal);
         }
 
         [Test]
@@ -85,20 +85,20 @@
         {
             var remotePhoneCall = new RemotePhoneCallEntity();
             SetupContactRepository(remotePhoneCall);
-            var activityPresenter = _factory.Create(remotePhoneCall).Wait();
+            var activityModel = _factory.Create(remotePhoneCall).Wait();
 
-            activityPresenter.Device.Should().Be(Resources.FromCloud);
+            activityModel.Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
-        public void Create_WithPhoneCall_SetsContactInfo()
+        public void Create_WithPhoneCall_SetsContact()
         {
             var remotePhoneCall = new RemotePhoneCallEntity();
-            var contactInfo = new ContactEntity();
-            SetupContactRepository(remotePhoneCall, contactInfo);
-            var activityPresenter = _factory.Create(remotePhoneCall).Wait();
+            var contactEntity = new ContactEntity();
+            SetupContactRepository(remotePhoneCall, contactEntity);
+            var activityModel = _factory.Create(remotePhoneCall).Wait();
 
-            activityPresenter.ContactEntity.Should().Be(contactInfo);
+            activityModel.ContactEntity.Should().Be(contactEntity);
         }
 
         [Test]
@@ -106,9 +106,9 @@
         {
             var localSmsMessage = new LocalSmsMessageEntity();
             SetupContactRepository(localSmsMessage);
-            var activityPresenter = _factory.Create(localSmsMessage).Wait();
+            var activityModel = _factory.Create(localSmsMessage).Wait();
 
-            activityPresenter.Type.Should().Be(ActivityTypeEnum.Message);
+            activityModel.Type.Should().Be(ActivityTypeEnum.Message);
         }
 
         [Test]
@@ -116,9 +116,9 @@
         {
             var localSmsMessage = new LocalSmsMessageEntity();
             SetupContactRepository(localSmsMessage);
-            var activityPresenter = _factory.Create(localSmsMessage).Wait();
+            var activityModel = _factory.Create(localSmsMessage).Wait();
 
-            activityPresenter.Device.Should().Be(Resources.FromLocal);
+            activityModel.Device.Should().Be(Resources.FromLocal);
         }
 
         [Test]
@@ -126,20 +126,20 @@
         {
             var remoteSmsMessage = new RemoteSmsMessageEntity();
             SetupContactRepository(remoteSmsMessage);
-            var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
+            var activityModel = _factory.Create(remoteSmsMessage).Wait();
 
-            activityPresenter.Device.Should().Be(Resources.FromCloud);
+            activityModel.Device.Should().Be(Resources.FromCloud);
         }
 
         [Test]
-        public void Create_WithSmsMessage_SetsContactInfo()
+        public void Create_WithSmsMessage_SetsContact()
         {
             var remoteSmsMessage = new RemoteSmsMessageEntity();
-            var contactInfo = new ContactEntity();
-            SetupContactRepository(remoteSmsMessage, contactInfo);
-            var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
+            var contactEntity = new ContactEntity();
+            SetupContactRepository(remoteSmsMessage, contactEntity);
+            var activityModel = _factory.Create(remoteSmsMessage).Wait();
 
-            activityPresenter.ContactEntity.Should().Be(contactInfo);
+            activityModel.ContactEntity.Should().Be(contactEntity);
         }
 
         [Test]
@@ -147,9 +147,9 @@
         {
             var remoteSmsMessage = new RemoteSmsMessageEntity { Content = "something" };
             SetupContactRepository(remoteSmsMessage);
-            var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
+            var activityModel = _factory.Create(remoteSmsMessage).Wait();
 
-            activityPresenter.Content.Should().Be("something");
+            activityModel.Content.Should().Be("something");
         }
 
         [Test]
@@ -157,46 +157,46 @@
         {
             var remoteSmsMessage = new RemoteSmsMessageEntity { Content = null };
             SetupContactRepository(remoteSmsMessage);
-            var activityPresenter = _factory.Create(remoteSmsMessage).Wait();
+            var activityModel = _factory.Create(remoteSmsMessage).Wait();
 
-            activityPresenter.Content.Should().Be(String.Empty);
+            activityModel.Content.Should().Be(String.Empty);
         }
 
         [Test]
-        public void Create_WithUpdateInfo_SetsTypeToVersion()
+        public void Create_WithUpdateEntity_SetsTypeToVersion()
         {
-            var activityPresenter = _factory.Create(new UpdateEntity()).Wait();
-            activityPresenter.Type.Should().Be(ActivityTypeEnum.Version);
+            var activityModel = _factory.Create(new UpdateEntity()).Wait();
+            activityModel.Type.Should().Be(ActivityTypeEnum.Version);
         }
 
         [Test]
-        public void Create_WithUpdateInfoWasInstalled_SetsContentToNewVersionInstalled()
+        public void Create_WithUpdateEntityWasInstalled_SetsContentToNewVersionInstalled()
         {
-            var activityPresenter = _factory.Create(new UpdateEntity { WasInstalled = true }).Wait();
-            activityPresenter.Content.Should().Be(Resources.NewVersionInstalled);
+            var activityModel = _factory.Create(new UpdateEntity { WasInstalled = true }).Wait();
+            activityModel.Content.Should().Be(Resources.NewVersionInstalled);
         }
 
         [Test]
-        public void Create_WithUpdateInfoNotInstalled_SetsContentToNewVersionAvailable()
+        public void Create_WithUpdateEntityNotInstalled_SetsContentToNewVersionAvailable()
         {
-            var activityPresenter = _factory.Create(new UpdateEntity { WasInstalled = false }).Wait();
-            activityPresenter.Content.Should().Be(Resources.NewVersionAvailable);
+            var activityModel = _factory.Create(new UpdateEntity { WasInstalled = false }).Wait();
+            activityModel.Content.Should().Be(Resources.NewVersionAvailable);
         }
 
         [Test]
-        public void Create_WithUpdateInfo_SetsBackingModelToUpdateInfoPresenter()
+        public void Create_WithUpdateEntity_SetsBackingModelToUpdateModel()
         {
-            var updateInfo = new UpdateEntity();
-            var activityPresenter = _factory.Create(updateInfo).Wait();
+            var updateEntity = new UpdateEntity();
+            var activityModel = _factory.Create(updateEntity).Wait();
 
-            activityPresenter.SourceId.Should().Be(updateInfo.UniqueId);            
+            activityModel.SourceId.Should().Be(updateEntity.UniqueId);            
         }
 
         private void SetupContactRepository<T>(T conversationModel, ContactEntity contactEntity = null)
             where T : ConversationEntity
         {
             contactEntity = contactEntity ?? new ContactEntity();
-            _mockContactRepository.Setup(m => m.Get(conversationModel.ContactInfoUniqueId)).Returns(Observable.Return(contactEntity));
+            _mockContactRepository.Setup(m => m.Get(conversationModel.ContactUniqueId)).Returns(Observable.Return(contactEntity));
         }
     }
 }

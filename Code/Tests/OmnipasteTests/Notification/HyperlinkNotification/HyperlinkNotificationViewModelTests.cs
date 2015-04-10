@@ -4,7 +4,7 @@
     using NUnit.Framework;
     using Omnipaste.Entities;
     using Omnipaste.Models;
-    using Omnipaste.Notification.HyperlinkNotification;
+    using Omnipaste.NotificationList.Notification.HyperlinkNotification;
 
     public class HyperlinkNotificationViewModelTests
     {

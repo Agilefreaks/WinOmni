@@ -11,9 +11,9 @@
     {
         protected readonly IPhoneCallRepository PhoneCallRepository;
 
-        protected readonly IPhoneCallPresenterFactory PhoneCallPresenterFactory;
+        protected readonly IPhoneCallModelFactory PhoneCallModelFactory;
 
-        protected readonly ISmsMessagePresenterFactory SMSMessagePresenterFactory;
+        protected readonly ISmsMessageModelFactory SmsMessageModelFactory;
 
         protected readonly ISmsMessageRepository SmsMessageRepository;
 
@@ -26,13 +26,13 @@
         protected ConversationContext(
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
-            IPhoneCallPresenterFactory phoneCallPresenterFactory,
-            ISmsMessagePresenterFactory smsMessagePresenterFactory)
+            IPhoneCallModelFactory phoneCallModelFactory,
+            ISmsMessageModelFactory smsMessageModelFactory)
         {
             SmsMessageRepository = smsMessageRepository;
             PhoneCallRepository = phoneCallRepository;
-            PhoneCallPresenterFactory = phoneCallPresenterFactory;
-            SMSMessagePresenterFactory = smsMessagePresenterFactory;
+            PhoneCallModelFactory = phoneCallModelFactory;
+            SmsMessageModelFactory = smsMessageModelFactory;
         }
 
         #region IConversationContext Members

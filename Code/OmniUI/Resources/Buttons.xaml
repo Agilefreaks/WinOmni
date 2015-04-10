@@ -1,0 +1,261 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:p="clr-namespace:OmniUI.Properties"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Button -->
+    <ControlTemplate x:Key="ShapeButtonControlTemplate" TargetType="Button">
+        <Rectangle x:Name="ShapeRectangle" Fill="{TemplateBinding Foreground}" 
+                   Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+            <Rectangle.OpacityMask>
+                <VisualBrush Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
+            </Rectangle.OpacityMask>
+        </Rectangle>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ShapeRectangle" Property="Fill" Value="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="EmptyButtonTemplate" TargetType="Button">
+        <Border Background="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+    </ControlTemplate>
+
+    <Style x:Key="DialogButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <Style x:Key="PrimaryDialogButton" TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="IsDefault" Value="True" />
+    </Style>
+
+    <Style x:Key="SmartActionButton" TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+        <Setter Property="Visibility" Value="Hidden" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Margin" Value="6" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsMouseOver}" Value="True">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ClippingSmartActionButton" TargetType="Button" BasedOn="{StaticResource SmartActionButton}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsMouseOver}" Value="True">
+                <Setter Property="Visibility" Value="{Binding Path=Model.IsLink, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NotificationHelperButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Foreground" Value="{DynamicResource NotificationHelperButtonBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Padding" Value="8"/>
+    </Style>
+    
+    <Style x:Key="NotificationCloseButton" TargetType="Button" BasedOn="{StaticResource NotificationHelperButtonStyle}">
+        <Setter Property="ToolTip" Value="{x:Static p:Resources.Dismiss}"/>
+    </Style>
+
+    <Style x:Key="NotificationPrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="MinWidth" Value="90"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="{DynamicResource NotificationBackgroundBrush}"/>
+        <Setter Property="Margin" Value="0,5,5,10"/>
+        <Setter Property="FontFamily" Value="{DynamicResource NotificationHeaderFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource NotificationButtonFontSize}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource NotificationPrimaryButtonBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationPrimaryButtonBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Self}, Mode=OneTime}"/>
+                <Setter Property="Foreground" Value="{DynamicResource NotificationBackgroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NotificationSecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource NotificationPrimaryButtonStyle}">
+        <Setter Property="BorderBrush" Value="{DynamicResource NotificationSecondaryButtonBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationSecondaryButtonBrush}"/>
+    </Style>
+
+    <Style x:Key="HyperlinkButtonStyle"  TargetType="Button">
+        <Setter Property="Margin" Value="0,5,5,10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="TextBlock" x:Key="HyperlinkTextBlocStyle">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="FontFamily" Value="{DynamicResource NotificationContentFont}"/>
+                            <Setter Property="FontSize" Value="{DynamicResource NotificationContentFontSize}"/>
+                            <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter Property="TextDecorations" Value="None"/>
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <TextBlock Style="{StaticResource HyperlinkTextBlocStyle}" x:Name="TextBlock">
+                        <Run Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+                    </TextBlock>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" Value="{x:Static TextDecorations.Underline}" TargetName="TextBlock"/>
+                            <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}" TargetName="TextBlock"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="ActiveHyperlinkButtonStyle" TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource NotificationHyperlinkBrush}"/>
+    </Style>
+
+    <Style x:Key="ShapeButtonStyle" TargetType="Button">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{DynamicResource TimeStampBrush}"/>
+        <Setter Property="Tag" Value="{DynamicResource ActivityContentBrush}"/>
+        <Setter Property="Template" Value="{StaticResource ShapeButtonControlTemplate}" />
+    </Style>
+
+    <Style x:Key="ShapeHyperlinkButtonStyle" TargetType="Button" BasedOn="{StaticResource ShapeButtonStyle}">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="Foreground" Value="{DynamicResource NotificationContentBrush}"/>
+        <Setter Property="Tag" Value="{DynamicResource NotificationHyperlinkBrush}"/>
+    </Style>
+
+    <Style x:Key="SideSecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="{DynamicResource SecondaryNavButtonWidth}"/>
+        <Setter Property="Width" Value="{DynamicResource SecondaryNavButtonHeight}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Name="MenuButtonContainer" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{TemplateBinding Background}">
+                        <Rectangle Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Center"
+                                   Fill="{DynamicResource ContentBackgroundBrush}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EmptyButtonStyle" TargetType="Button">
+        <Setter Property="Template" Value="{StaticResource EmptyButtonTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="ShapeButtonWithOuterHighlight" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" x:Name="PART_Circle"
+                                   Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.4">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{DynamicResource thin_circle_icon}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="PART_Glyph" 
+                                   Fill="{TemplateBinding Background}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Circle" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ControlTemplate.Resources>
+                        <system:Double x:Key="InactiveIconOpacity">0.45</system:Double>
+                        <system:Double x:Key="ActiveIconOpacity">1</system:Double>
+                        
+                        <Storyboard x:Key="FadeStoryboard">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Icon" RepeatBehavior="Forever">
+                                <EasingDoubleKeyFrame KeyTime="0" Value="{StaticResource InactiveIconOpacity}"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="{StaticResource ActiveIconOpacity}"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="{StaticResource InactiveIconOpacity}"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <Grid Width="35">
+                        <Border Name="ButtonBackground" Background="{TemplateBinding Background}" Opacity="{TemplateBinding Opacity}"/>
+                        <Rectangle Name="Icon" Fill="{DynamicResource WhiteBrush}" Opacity="{StaticResource InactiveIconOpacity}" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Uniform" Visual="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringToResourceConverter}}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBackground" Property="Background" Value="{DynamicResource WhiteBrush}"/>
+                            <Setter TargetName="ButtonBackground" Property="Opacity" Value="0.35"/>
+                            <Setter TargetName="Icon" Property="Opacity" Value="{StaticResource ActiveIconOpacity}"/>
+                        </Trigger>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource FadeStoryboard}"/>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

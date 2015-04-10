@@ -16,7 +16,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
-    using Omnipaste.Notification;
+    using Omnipaste.NotificationList.Notification;
     using Omnipaste.Services.Repositories;
 
     public class NotificationListViewModel : Conductor<IScreen>.Collection.AllActive, INotificationListViewModel

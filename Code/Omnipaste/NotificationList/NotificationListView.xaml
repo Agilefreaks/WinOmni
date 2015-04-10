@@ -7,9 +7,6 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
         HorizontalContentAlignment="Right">
-    <UserControl.Resources>
-        
-    </UserControl.Resources>
     <Grid>
         <ItemsControl x:Name="Notifications" 
                       Style="{DynamicResource NotificationContainerStyle}"

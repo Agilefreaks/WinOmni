@@ -17,11 +17,11 @@
     using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Models;
-    using Omnipaste.Notification;
-    using Omnipaste.Notification.ClippingNotification;
-    using Omnipaste.Notification.IncomingCallNotification;
-    using Omnipaste.Notification.IncomingSmsNotification;
     using Omnipaste.NotificationList;
+    using Omnipaste.NotificationList.Notification;
+    using Omnipaste.NotificationList.Notification.ClippingNotification;
+    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
+    using Omnipaste.NotificationList.Notification.IncomingSmsNotification;
     using Omnipaste.Services.Repositories;
 
     [TestFixture]

@@ -36,7 +36,7 @@
         }
 
         [Test]
-        public void CreateWithActivityPresenter_WhenActivityIsClipping_ReturnsClippingDetailsViewModel()
+        public void CreateWithActivityModel_WhenActivityIsClipping_ReturnsClippingDetailsViewModel()
         {
             var result = _subject.Create(_activityModelFactory.Create(new ClippingEntity { Content = "test" }).Wait());
 
@@ -44,7 +44,7 @@
         }
 
         [Test]
-        public void CreateWithActivityPresenter_WhenActivityIsClipping_AssignsClippingPresenterOnResult()
+        public void CreateWithActivityModel_WhenActivityIsClipping_AssignsClippingModelOnResult()
         {
             var mockDetailsViewModel = new Mock<IClippingDetailsViewModel>();
             mockDetailsViewModel.SetupAllProperties();
@@ -58,20 +58,20 @@
         }
 
         [Test]
-        public void CreateWithActivityPresenter_WhenActivityIsVersion_ReturnsVersionViewModelDetails()
+        public void CreateWithActivityModel_WhenActivityIsVersion_ReturnsVersionViewModelDetails()
         {
             var mockDetailsViewModel = new Mock<IVersionDetailsViewModel>();
             mockDetailsViewModel.SetupAllProperties();
-            var updateInfo = new UpdateEntity();
+            var updateEntity = new UpdateEntity();
             _mockServiceLocator.Setup(m => m.GetInstance<IVersionDetailsViewModel>()).Returns(mockDetailsViewModel.Object);
 
-            var result = _subject.Create(_activityModelFactory.Create(updateInfo).Wait());
+            var result = _subject.Create(_activityModelFactory.Create(updateEntity).Wait());
 
-            ((UpdateModel)result.Model).BackingEntity.Should().Be(updateInfo);
+            ((UpdateModel)result.Model).BackingEntity.Should().Be(updateEntity);
         }
 
         [Test]
-        public void CreateWithClippingPresenter_Always_ReturnsClippingDetailsViewModel()
+        public void CreateWithClippingModel_Always_ReturnsClippingDetailsViewModel()
         {
             var result = _subject.Create(new ClippingEntity { Content = "test" });
 
@@ -79,7 +79,7 @@
         }
 
         [Test]
-        public void CreateWithClippingPresenter_Always_AssignsClippingPresenterOnResult()
+        public void CreateWithClippingModel_Always_AssignsClippingModelOnResult()
         {
             var mockDetailsViewModel = new Mock<IClippingDetailsViewModel>();
             mockDetailsViewModel.SetupAllProperties();

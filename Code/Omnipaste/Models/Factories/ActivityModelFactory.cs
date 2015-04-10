@@ -2,7 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Services.Repositories;
 
@@ -28,29 +28,29 @@
 
         public IObservable<ActivityModel> Create(ClippingEntity clippingEntity)
         {
-            var activityPresenter = ActivityModel.BeginBuild(clippingEntity)
+            var activityModel = ActivityModel.BeginBuild(clippingEntity)
                 .WithType(ActivityTypeEnum.Clipping)
                 .WithContent(clippingEntity.Content)
                 .WithDevice(clippingEntity.Source)
                 .Build();
-            return Observable.Return(activityPresenter);
+            return Observable.Return(activityModel);
         }
 
         public IObservable<ActivityModel> Create(PhoneCallEntity phoneCallEntity)
         {
-            return _contactRepository.Get(phoneCallEntity.ContactInfoUniqueId).Select(
-                contactInfo => ActivityModel.BeginBuild(phoneCallEntity)
+            return _contactRepository.Get(phoneCallEntity.ContactUniqueId).Select(
+                contactEntity => ActivityModel.BeginBuild(phoneCallEntity)
                            .WithType(ActivityTypeEnum.Call)
-                           .WithContact(contactInfo)
+                           .WithContact(contactEntity )
                            .WithDevice(phoneCallEntity)
                            .Build());
         }
 
         public IObservable<ActivityModel> Create(SmsMessageEntity smsMessageEntity)
         {
-            return _contactRepository.Get(smsMessageEntity.ContactInfoUniqueId).Select(
-                contactInfo => ActivityModel.BeginBuild(smsMessageEntity)
-                    .WithContact(contactInfo)
+            return _contactRepository.Get(smsMessageEntity.ContactUniqueId).Select(
+                contactEntity => ActivityModel.BeginBuild(smsMessageEntity)
+                    .WithContact(contactEntity)
                     .WithType(ActivityTypeEnum.Message)
                     .WithDevice(smsMessageEntity)
                     .WithContent(smsMessageEntity.Content ?? String.Empty)
@@ -59,11 +59,11 @@
 
         public IObservable<ActivityModel> Create(UpdateEntity updateEntity)
         {
-            var activityPresenter = ActivityModel.BeginBuild(updateEntity)
+            var activityModel = ActivityModel.BeginBuild(updateEntity)
                 .WithType(ActivityTypeEnum.Version)
                 .WithContent(updateEntity)
                 .Build();
-            return Observable.Return(activityPresenter);
+            return Observable.Return(activityModel);
         }
     }
 }

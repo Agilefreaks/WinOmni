@@ -2,16 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
                     xmlns:converters1="clr-namespace:OmniUI.Converters;assembly=OmniUI"
-                    xmlns:converters2="clr-namespace:Omnipaste.Activity.Converters">
-    <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
+                    xmlns:converters2="clr-namespace:Omnipaste.ActivityList.Converters">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <converters1:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
-    <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
     <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>
     <converters:InverseStringNullOrEmptyToVisibilityConverter x:Key="InverseStringNullOrEmptyToVisibilityConverter"/>
     <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
     <converters:NonWhiteSpaceStringConverter x:Key="NonWhiteSpaceStringConverter"/>
+    <converters1:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
     <converters2:ViewedSizeConverter x:Key="ViewedSizeConverter"/>
     <converters1:StringToUriConverter x:Key="StringToUriConverter"/>
 </ResourceDictionary>

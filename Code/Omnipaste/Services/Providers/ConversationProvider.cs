@@ -9,34 +9,34 @@
     {
         private readonly IPhoneCallRepository _phoneCallRepository;
 
-        private readonly IPhoneCallPresenterFactory _phoneCallPresenterFactory;
+        private readonly IPhoneCallModelFactory _phoneCallModelFactory;
 
-        private readonly ISmsMessagePresenterFactory _smsMessagePresenterFactory;
+        private readonly ISmsMessageModelFactory _smsMessageModelFactory;
 
         private readonly ISmsMessageRepository _smsMessageRepository;
 
         public ConversationProvider(
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
-            IPhoneCallPresenterFactory phoneCallPresenterFactory,
-            ISmsMessagePresenterFactory smsMessagePresenterFactory)
+            IPhoneCallModelFactory phoneCallModelFactory,
+            ISmsMessageModelFactory smsMessageModelFactory)
         {
             _smsMessageRepository = smsMessageRepository;
             _phoneCallRepository = phoneCallRepository;
-            _phoneCallPresenterFactory = phoneCallPresenterFactory;
-            _smsMessagePresenterFactory = smsMessagePresenterFactory;
+            _phoneCallModelFactory = phoneCallModelFactory;
+            _smsMessageModelFactory = smsMessageModelFactory;
         }
 
         #region IConversationProvider Members
 
         public IConversationContext ForContact(ContactEntity contactEntity)
         {
-            return new ContactConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory, contactEntity);
+            return new ContactConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallModelFactory, _smsMessageModelFactory, contactEntity);
         }
 
         public IConversationContext All()
         {
-            return new MergedConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallPresenterFactory, _smsMessagePresenterFactory);
+            return new MergedConversationContext(_smsMessageRepository, _phoneCallRepository, _phoneCallModelFactory, _smsMessageModelFactory);
         }
 
         #endregion

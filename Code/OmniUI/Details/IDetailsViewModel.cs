@@ -8,9 +8,9 @@
         IModel Model { get; set; }
     }
 
-    public interface IDetailsViewModel<TPresenter> : IDetailsViewModel
-        where TPresenter : IModel
+    public interface IDetailsViewModel<TModel> : IDetailsViewModel
+        where TModel : IModel
     {
-        new TPresenter Model { get; set; }
+        new TModel Model { get; set; }
     }
 }

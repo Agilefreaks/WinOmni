@@ -73,34 +73,34 @@
         [Test]
         public void Execute_ACorrespondingContactViewModelsExistsForTheGivenContact_ShowsDetailsForThatViewModel()
         {
-            var mockContactInfoViewModel = new Mock<IContactViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
+            var mockContactViewModel = new Mock<IContactViewModel>();
+            mockContactViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
             var mockContactListViewModel = new Mock<IContactListViewModel>();
-            var contactInfoViewModels = new List<IContactViewModel> { mockContactInfoViewModel.Object };
-            mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactInfoViewModels);
+            var contactViewModels = new List<IContactViewModel> { mockContactViewModel.Object };
+            mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactViewModels);
             _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute);
 
-            mockContactInfoViewModel.Verify(x => x.ShowDetails(), Times.Once());
+            mockContactViewModel.Verify(x => x.ShowDetails(), Times.Once());
         }
         
         [Test]
         public void Execute_ACorrespondingContactViewModelsDoesNotExistForTheGivenContact_RetriesUntilOneExistsAndShowsDetailsForThatViewModel()
         {
-            var mockContactInfoViewModel = new Mock<IContactViewModel>();
-            mockContactInfoViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
-            var contactInfoViewModels = new List<IContactViewModel> { mockContactInfoViewModel.Object };
+            var mockContactViewModel = new Mock<IContactViewModel>();
+            mockContactViewModel.SetupGet(x => x.Model).Returns(new ContactModel(_contactEntity));
+            var contactViewModels = new List<IContactViewModel> { mockContactViewModel.Object };
             var getContactsCallcount = 0;
             var mockContactListViewModel = new Mock<IContactListViewModel>();
             mockContactListViewModel.Setup(x => x.GetChildren())
-                .Returns(() => getContactsCallcount++ == 0 ? new List<IContactViewModel>() : contactInfoViewModels);
+                .Returns(() => getContactsCallcount++ == 0 ? new List<IContactViewModel>() : contactViewModels);
             _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);
 
             getContactsCallcount.Should().Be(2);
-            mockContactInfoViewModel.Verify(x => x.ShowDetails(), Times.Once());
+            mockContactViewModel.Verify(x => x.ShowDetails(), Times.Once());
         }
     }
 }

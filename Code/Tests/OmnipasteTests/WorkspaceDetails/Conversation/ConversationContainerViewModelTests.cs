@@ -34,10 +34,10 @@
         [Test]
         public void RecepientsSet_Always_SetsRecepientsOnViewModels()
         {
-            var contactInfoPresenters = new ObservableCollection<ContactModel>();
-            _subject.Recipients = contactInfoPresenters;
+            var contactModels = new ObservableCollection<ContactModel>();
+            _subject.Recipients = contactModels;
 
-            _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);
+            _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactModels);
         }
 
         [Test]

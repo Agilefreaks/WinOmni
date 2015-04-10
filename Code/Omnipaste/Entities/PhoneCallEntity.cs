@@ -20,9 +20,9 @@
 
         public string Content { get; set; }
 
-        public PhoneCallEntity SetContactInfoUniqueId(String contactInfoUniqueId)
+        public PhoneCallEntity SetContactUniqueId(String contactUniqueId)
         {
-            ContactInfoUniqueId = contactInfoUniqueId;
+            ContactUniqueId = contactUniqueId;
             return this;
         }
     }

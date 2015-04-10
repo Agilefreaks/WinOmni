@@ -28,11 +28,11 @@
         [Test]
         public void RecepientsSet_Always_SetsRecepientsOnViewModels()
         {
-            var contactInfoPresenters = new ObservableCollection<ContactModel>();
-            _subject.Recipients = contactInfoPresenters;
+            var contactModels = new ObservableCollection<ContactModel>();
+            _subject.Recipients = contactModels;
 
-            _mockConversationHeaderViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);
-            _mockConversationContainerViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);
+            _mockConversationHeaderViewModel.VerifySet(m => m.Recipients = contactModels);
+            _mockConversationContainerViewModel.VerifySet(m => m.Recipients = contactModels);
         }
     }
 }

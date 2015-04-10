@@ -112,11 +112,11 @@
         [Test]
         public void FilteredItems_NoFilterIsApplied_ReturnsAllItems()
         {
-            var clippingPresenter1 = new ClippingModel(new ClippingEntity { Content = "test1" });
-            var clippingPresenter2 = new ClippingModel(new ClippingEntity { Content = "Other" });
+            var clippingModel1 = new ClippingModel(new ClippingEntity { Content = "test1" });
+            var clippingModel2 = new ClippingModel(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel1});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel2});
 
             _subject.FilteredItems.Count.Should().Be(2);
         }
@@ -124,16 +124,16 @@
         [Test]
         public void FilteredItems_WhenFilterTextHasValue_FiltersItemsByContentContainingText()
         {
-            var clippingPresenter1 = new ClippingModel(new ClippingEntity { Content = "test1" });
-            var clippingPresenter2 = new ClippingModel(new ClippingEntity { Content = "Other" });
+            var clippingModel1 = new ClippingModel(new ClippingEntity { Content = "test1" });
+            var clippingModel2 = new ClippingModel(new ClippingEntity { Content = "Other" });
             ((IActivate)_subject).Activate();
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter1});
-            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingPresenter2});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel1});
+            _subject.ActivateItem(new ClippingViewModel(_mockSessionManager.Object) { Model = clippingModel2});
 
             _subject.FilterText = "oth";
 
             _subject.FilteredItems.Count.Should().Be(1);
-            _subject.FilteredItems.Cast<IClippingViewModel>().First().Model.Should().Be(clippingPresenter2);
+            _subject.FilteredItems.Cast<IClippingViewModel>().First().Model.Should().Be(clippingModel2);
         }
 
         [Test]

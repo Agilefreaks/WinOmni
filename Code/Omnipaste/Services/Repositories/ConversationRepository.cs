@@ -52,7 +52,7 @@
             where TLocal : T
             where TRemote : T
         {
-            Func<T, bool> contactFilter = item => item.ContactInfoUniqueId == contactEntity.UniqueId;
+            Func<T, bool> contactFilter = item => item.ContactUniqueId == contactEntity.UniqueId;
             var pattern = base.GetAll<TLocal>(contactFilter).OfType<IEnumerable<T>>().And(base.GetAll<TRemote>(contactFilter));
 
             return Observable.When(pattern.Then((locals, remotes) => locals.Concat(remotes)));

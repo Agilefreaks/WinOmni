@@ -34,7 +34,7 @@ namespace Omnipaste.Factories
                         contact =>
                             {
                                 var phoneCall = (T)Activator.CreateInstance(typeof(T), phoneCallDto);
-                                return _phoneCallRepository.Save((T)phoneCall.SetContactInfoUniqueId(contact.UniqueId));
+                                return _phoneCallRepository.Save((T)phoneCall.SetContactUniqueId(contact.UniqueId));
                             })
                     .Switch()
                     .Select(e => e.Item)

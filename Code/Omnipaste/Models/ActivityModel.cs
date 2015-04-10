@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Clipboard.Dto;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Properties;
     using OmniUI.Entities;

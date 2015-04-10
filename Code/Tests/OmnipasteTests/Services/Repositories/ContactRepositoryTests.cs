@@ -46,8 +46,8 @@
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value;
-            contactInfo.ContactId.Should().Be(42);
+            var contactEntity = result.Messages.First().Value.Value;
+            contactEntity.ContactId.Should().Be(42);
         }
 
         [Test]
@@ -58,20 +58,20 @@
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value;
-            contactInfo.PhoneNumber.Should().Be("123");
+            var contactEntity = result.Messages.First().Value.Value;
+            contactEntity.PhoneNumber.Should().Be("123");
         }
 
         [Test]
-        public void CreateIfNone_WhenTheObservableReturnsAException_CreatesANewContactInfo()
+        public void CreateIfNone_WhenTheObservableReturnsAException_CreatesANewContact()
         {
             var observable = _subject.CreateIfNone(_subject.GetByContactIdOrPhoneNumber(42, "123"), c => c.AddPhoneNumber("123").SetContactId(42)).Select(_ => _subject.GetAll()).Switch();
 
             var result = _testScheduler.Start(() => observable);
 
-            var contactInfo = result.Messages.First().Value.Value.First();
-            contactInfo.PhoneNumber.Should().Be("123");
-            contactInfo.ContactId.Should().Be(42);
+            var contactEntity = result.Messages.First().Value.Value.First();
+            contactEntity.PhoneNumber.Should().Be("123");
+            contactEntity.ContactId.Should().Be(42);
         }
 
         [Test]

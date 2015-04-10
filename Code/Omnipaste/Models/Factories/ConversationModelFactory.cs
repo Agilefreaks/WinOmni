@@ -8,8 +8,8 @@ namespace Omnipaste.Models.Factories
 
     public interface IConversationModelFactory
     {
-        IObservable<TPresenter> Create<TPresenter, TModel>(TModel model)
-            where TPresenter : IConversationModel
+        IObservable<TConversationModel> Create<TConversationModel, TModel>(TModel model)
+            where TConversationModel : IConversationModel
             where TModel : ConversationEntity;
     }
 
@@ -22,12 +22,12 @@ namespace Omnipaste.Models.Factories
             ContactRepository = contactRepository;
         }
 
-        public IObservable<TPresenter> Create<TPresenter, TModel>(TModel model)
-            where TPresenter : IConversationModel
+        public IObservable<TConversationModel> Create<TConversationModel, TModel>(TModel model)
+            where TConversationModel : IConversationModel
             where TModel : ConversationEntity
         {
-            var presenter = (TPresenter)Activator.CreateInstance(typeof(TPresenter), model);
-            return ContactRepository.Get(model.ContactInfoUniqueId).Select(c => (TPresenter)presenter.SetContactModel(new ContactModel(c)));
+            var conversationModel = (TConversationModel)Activator.CreateInstance(typeof(TConversationModel), model);
+            return ContactRepository.Get(model.ContactUniqueId).Select(c => (TConversationModel)conversationModel.SetContactModel(new ContactModel(c)));
         }
     }
 }

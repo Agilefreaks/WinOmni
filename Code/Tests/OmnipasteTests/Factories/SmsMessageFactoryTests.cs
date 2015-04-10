@@ -71,9 +71,9 @@
         public void Create_Always_SavesTheSmsMessage()
         {
             var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
-            var contactInfo = new ContactEntity();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
-            _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable); 
+            var contactEntity = new ContactEntity();
+            var contactObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactEntity)));
+            _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactObservable); 
 
             _scheduler.Start(() => _subject.Create<RemoteSmsMessageEntity>(smsMessageDto));
 
@@ -84,9 +84,9 @@
         public void Create_SaveSuccesful_ReturnsTheSavedMessage()
         {
             var smsMessageDto = new SmsMessageDto { PhoneNumber = "42" };
-            var contactInfo = new ContactEntity();
-            var contactInfoObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactInfo)));
-            _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactInfoObservable);
+            var contactEntity = new ContactEntity();
+            var contactObservable = _scheduler.CreateColdObservable(new Recorded<Notification<ContactEntity>>(100, Notification.CreateOnNext(contactEntity)));
+            _mockContactFactory.Setup(cr => cr.Create(It.IsAny<ContactDto>(), It.IsAny<DateTime>())).Returns(contactObservable);
             var remoteSmsMessage = new RemoteSmsMessageEntity();
             var smsMessageObservable = _scheduler.CreateColdObservable(new Recorded<Notification<RepositoryOperation<RemoteSmsMessageEntity>>>(100, Notification.CreateOnNext(new RepositoryOperation<RemoteSmsMessageEntity>(RepositoryMethodEnum.Changed, remoteSmsMessage))));
             _mockMessageRepository.Setup(mr => mr.Save(It.IsAny<RemoteSmsMessageEntity>())).Returns(smsMessageObservable);

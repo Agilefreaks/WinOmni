@@ -10,7 +10,7 @@
 
         IWorkspaceDetailsViewModel Create(ClippingEntity clippingEntity);
 
-        IWorkspaceDetailsViewModel Create(IEnumerable<ContactModel> contactInfoPresenterList);
+        IWorkspaceDetailsViewModel Create(IEnumerable<ContactModel> contactModelList);
 
         IWorkspaceDetailsViewModel Create(UpdateEntity updateEntity);
 

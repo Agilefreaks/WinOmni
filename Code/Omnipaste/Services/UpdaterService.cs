@@ -396,12 +396,12 @@
 
         private void NotifyNewVersion(bool wasInstalled = false)
         {
-            var updateInfo = new UpdateEntity
+            var updateEntity = new UpdateEntity
                                         {
                                             WasInstalled = wasInstalled,
                                             ReleaseLog = File.Exists(ReleaseLogPath) ? File.ReadAllText(ReleaseLogPath) : string.Empty
                                         };
-            _updateSubject.OnNext(updateInfo);
+            _updateSubject.OnNext(updateEntity);
         }
 
         private int GetUpdateCheckInterval()

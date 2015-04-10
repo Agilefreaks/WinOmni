@@ -29,23 +29,23 @@
         }
 
         [Test]
-        public void Create_WithALocalPhoneCall_ReturnsALocalPhoneCallPresenter()
+        public void Create_WithALocalPhoneCall_ReturnsALocalPhoneCallModel()
         {
             _subject.Create(new LocalPhoneCallEntity()).Wait().Should().BeOfType<LocalPhoneCallModel>();
         }
 
         [Test]
-        public void Create_WithARemotePhoneCall_ReturnsARemotePhoneCallPresenter()
+        public void Create_WithARemotePhoneCall_ReturnsARemotePhoneCallModel()
         {
             _subject.Create(new RemotePhoneCallEntity()).Wait().Should().BeOfType<RemotePhoneCallModel>();
         }
 
         [Test]
-        public void Create_WithAPhoneCall_WillSetTheContactInfoPresenter()
+        public void Create_WithAPhoneCall_WillSetTheContactModel()
         {
-            var phoneCallPresenter = _subject.Create(new RemotePhoneCallEntity()).Wait();
+            var conversationModel = _subject.Create(new RemotePhoneCallEntity()).Wait();
 
-            phoneCallPresenter.ContactModel.BackingEntity.Should().Be(_contactEntity);
+            conversationModel.ContactModel.BackingEntity.Should().Be(_contactEntity);
         }
     }
 }

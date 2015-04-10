@@ -15,10 +15,10 @@ namespace Omnipaste.Services.Providers
         public ContactConversationContext(
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
-            IPhoneCallPresenterFactory phoneCallPresenterFactory,
-            ISmsMessagePresenterFactory smsMessagePresenterFactory,
+            IPhoneCallModelFactory phoneCallModelFactory,
+            ISmsMessageModelFactory smsMessageModelFactory,
             ContactEntity contactEntity)
-            : base(smsMessageRepository, phoneCallRepository, phoneCallPresenterFactory, smsMessagePresenterFactory)
+            : base(smsMessageRepository, phoneCallRepository, phoneCallModelFactory, smsMessageModelFactory)
         {
             _contactEntity = contactEntity;
         }
@@ -27,10 +27,10 @@ namespace Omnipaste.Services.Providers
         {
             return
                 SmsMessageRepository.GetForContact(_contactEntity)
-                    .SelectMany(messages => messages.Select(m => SMSMessagePresenterFactory.Create(m))).Merge()
+                    .SelectMany(messages => messages.Select(m => SmsMessageModelFactory.Create(m))).Merge()
                     .Merge(
                         PhoneCallRepository.GetForContact(_contactEntity)
-                            .SelectMany(calls => calls.Select(c => PhoneCallPresenterFactory.Create(c))).Merge());
+                            .SelectMany(calls => calls.Select(c => PhoneCallModelFactory.Create(c))).Merge());
         }
 
         protected override IObservable<IConversationModel> GetObservableForOperation(RepositoryMethodEnum method)
@@ -39,12 +39,12 @@ namespace Omnipaste.Services.Providers
                 SmsMessageRepository.GetOperationObservable()
                     .OnMethod(method)
                     .ForContact(_contactEntity)
-                    .Select(o => SMSMessagePresenterFactory.Create(o.Item)).Merge()
+                    .Select(o => SmsMessageModelFactory.Create(o.Item)).Merge()
                     .Merge(
                         PhoneCallRepository.GetOperationObservable()
                             .OnMethod(method)
                             .ForContact(_contactEntity)
-                            .Select(o => PhoneCallPresenterFactory.Create(o.Item)).Merge());
+                            .Select(o => PhoneCallModelFactory.Create(o.Item)).Merge());
         }
     }
 }

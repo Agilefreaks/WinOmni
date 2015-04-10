@@ -49,7 +49,7 @@
         public IUpdaterService UpdaterService { get; set; }
 
         [Inject]
-        public IUpdateInfoRepository UpdateInfoRepository { get; set; }
+        public IUpdateRepository UpdateRepository { get; set; }
 
         [Inject]
         public IContactFactory ContactFactory { get; set; }
@@ -86,7 +86,7 @@
             _subscriptions.Add(
                 UpdaterService.UpdateObservable.SubscribeOn(SchedulerProvider.Default)
                     .ObserveOn(SchedulerProvider.Default)
-                    .SubscribeAndHandleErrors(updateInfo => UpdateInfoRepository.Save(updateInfo)));
+                    .SubscribeAndHandleErrors(updateEntity => UpdateRepository.Save(updateEntity)));
 
             _subscriptions.Add(
                 ContactCreatedHandler

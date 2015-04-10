@@ -5,7 +5,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using Microsoft.Practices.ServiceLocation;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Entities;
     using Omnipaste.Models;
     using Omnipaste.WorkspaceDetails.Clipping;
@@ -47,16 +47,16 @@
 
         public IWorkspaceDetailsViewModel Create(ContactEntity contactEntity)
         {
-            var contactInfoPresenter = new ContactModel(contactEntity);
+            var contactModel = new ContactModel(contactEntity);
 
-            return Create(new ObservableCollection<ContactModel> { contactInfoPresenter });
+            return Create(new ObservableCollection<ContactModel> { contactModel });
         }
 
-        public IWorkspaceDetailsViewModel Create(IEnumerable<ContactModel> contactInfoPresenterList)
+        public IWorkspaceDetailsViewModel Create(IEnumerable<ContactModel> contactModelList)
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
-            result.Recipients = (ObservableCollection<ContactModel>)contactInfoPresenterList;
-            result.Model = contactInfoPresenterList.First();
+            result.Recipients = (ObservableCollection<ContactModel>)contactModelList;
+            result.Model = contactModelList.First();
 
             return result;
         }

@@ -5,7 +5,7 @@ namespace Omnipaste.ActivityList
     using System.Linq;
     using System.Reactive.Linq;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Activity;
+    using Omnipaste.ActivityList.Activity;
     using Omnipaste.Helpers;
     using Omnipaste.Models;
     using Omnipaste.Models.Factories;
@@ -24,7 +24,7 @@ namespace Omnipaste.ActivityList
 
         private readonly ISmsMessageRepository _smsMessageRepository;
 
-        private readonly IUpdateInfoRepository _updateInfoRepository;
+        private readonly IUpdateRepository _updateRepository;
 
         private readonly IActivityModelFactory _activityModelFactory;
 
@@ -42,7 +42,7 @@ namespace Omnipaste.ActivityList
             IClippingRepository clippingRepository,
             ISmsMessageRepository smsMessageRepository,
             IPhoneCallRepository phoneCallRepository,
-            IUpdateInfoRepository updateInfoRepository,
+            IUpdateRepository updateRepository,
             IActivityModelFactory activityModelFactory,
             IActivityViewModelFactory activityViewModelFactory)
         {
@@ -50,7 +50,7 @@ namespace Omnipaste.ActivityList
             _smsMessageRepository = smsMessageRepository;
             _phoneCallRepository = phoneCallRepository;
             _activityViewModelFactory = activityViewModelFactory;
-            _updateInfoRepository = updateInfoRepository;
+            _updateRepository = updateRepository;
             _activityModelFactory = activityModelFactory;
             _allowedActivityTypes = ActivityTypeEnum.All;
 
@@ -196,7 +196,7 @@ namespace Omnipaste.ActivityList
                             .SelectMany(
                                 items => items.OfType<RemotePhoneCallEntity>().Select(item => _activityModelFactory.Create(item))).Merge())
                     .Merge(
-                        _updateInfoRepository.GetAll()
+                        _updateRepository.GetAll()
                             .SelectMany(items => items.Select(item => _activityModelFactory.Create(item))).Merge());
         }
 
@@ -215,7 +215,7 @@ namespace Omnipaste.ActivityList
                             .Changed()
                             .Select(ro => _activityModelFactory.Create(ro.Item)).Merge())
                     .Merge(
-                        _updateInfoRepository.GetOperationObservable()
+                        _updateRepository.GetOperationObservable()
                             .Changed()
                             .Select(ro => _activityModelFactory.Create(ro.Item)).Merge());
         }
@@ -225,22 +225,22 @@ namespace Omnipaste.ActivityList
             return
                 _clippingRepository.GetOperationObservable()
                     .Deleted()
-                    .Select(o => GetActivityPresenter(ActivityTypeEnum.Clipping, o.Item.UniqueId))
+                    .Select(o => GetActivityModel(ActivityTypeEnum.Clipping, o.Item.UniqueId))
                     .Merge(
                         _smsMessageRepository.GetOperationObservable()
                             .Deleted()
-                            .Select(o => GetActivityPresenter(ActivityTypeEnum.Message, o.Item.UniqueId)))
+                            .Select(o => GetActivityModel(ActivityTypeEnum.Message, o.Item.UniqueId)))
                     .Merge(
                         _phoneCallRepository.GetOperationObservable<RemotePhoneCallEntity>()
                             .Deleted()
-                            .Select(o => GetActivityPresenter(ActivityTypeEnum.Call, o.Item.UniqueId)))
+                            .Select(o => GetActivityModel(ActivityTypeEnum.Call, o.Item.UniqueId)))
                     .Merge(
-                        _updateInfoRepository.GetOperationObservable()
+                        _updateRepository.GetOperationObservable()
                             .Deleted()
-                            .Select(o => GetActivityPresenter(ActivityTypeEnum.Version, o.Item.UniqueId)));
+                            .Select(o => GetActivityModel(ActivityTypeEnum.Version, o.Item.UniqueId)));
         }
 
-        private ActivityModel GetActivityPresenter(ActivityTypeEnum type, string id)
+        private ActivityModel GetActivityModel(ActivityTypeEnum type, string id)
         {
             return
                 Items.Select(vm => vm.Model)
@@ -267,7 +267,7 @@ namespace Omnipaste.ActivityList
 
         private IActivityViewModel UpdateViewModel(ActivityModel model)
         {
-            var currentModel = GetActivityPresenter(model.Type, model.SourceId);
+            var currentModel = GetActivityModel(model.Type, model.SourceId);
             var activityViewModel = GetViewModel(currentModel);
             if (activityViewModel != null)
             {

@@ -12,25 +12,25 @@
         [Test]
         public void Ctor_WithUserInfo_SetsFirstNameToTheUserInfoFirstName()
         {
-            var userContactInfo = new UserEntity(UserInfo.BeginBuild().WithFirstName("someName").Build());
+            var userEntity = new UserEntity(UserInfo.BeginBuild().WithFirstName("someName").Build());
 
-            userContactInfo.FirstName.Should().Be("someName");
+            userEntity.FirstName.Should().Be("someName");
         }
 
         [Test]
         public void Ctor_WithUserInfo_SetsLastNameToTheUserInfoLastName()
         {
-            var userContactInfo = new UserEntity(UserInfo.BeginBuild().WithLastName("someName").Build());
+            var userEntity = new UserEntity(UserInfo.BeginBuild().WithLastName("someName").Build());
 
-            userContactInfo.LastName.Should().Be("someName");
+            userEntity.LastName.Should().Be("someName");
         }
 
         [Test]
         public void Ctor_WithUserInfo_SetsImageUriToTheUserInfoImageUrl()
         {
-            var userContactInfo = new UserEntity(UserInfo.BeginBuild().WithImageUrl("http://some_url/").Build());
+            var userEntity = new UserEntity(UserInfo.BeginBuild().WithImageUrl("http://some_url/").Build());
 
-            userContactInfo.ImageUri.ToString().Should().Be("http://some_url/");
+            userEntity.ImageUri.ToString().Should().Be("http://some_url/");
         }
 
         [Test]

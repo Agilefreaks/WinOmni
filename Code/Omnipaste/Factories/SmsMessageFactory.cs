@@ -33,7 +33,7 @@
                 contact =>
                     {
                         var smsMessage = (T)Activator.CreateInstance(typeof(T), smsMessageDto);
-                        smsMessage.SetContactInfoUniqueId(contact.UniqueId);
+                        smsMessage.SetContactUniqueId(contact.UniqueId);
                         return _smsMessageRepository.Save(smsMessage);
                     }).Switch().Select(e => e.Item).Cast<T>();
         }

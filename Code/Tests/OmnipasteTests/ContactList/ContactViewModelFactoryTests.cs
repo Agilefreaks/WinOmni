@@ -27,15 +27,15 @@
         [Test]
         public void Create_Always_AssignsModelOnResult()
         {
-            var contactInfoPresenter = new ContactModel(new ContactEntity());
-            var mockContactInfoViewModel = new Mock<IContactViewModel>();
+            var contactModel = new ContactModel(new ContactEntity());
+            var mockContactViewModel = new Mock<IContactViewModel>();
             _mockServiceLocator.Setup(m => m.GetInstance<IContactViewModel>())
-                .Returns(mockContactInfoViewModel.Object);
+                .Returns(mockContactViewModel.Object);
             
-            var result = _subject.Create<IContactViewModel>(contactInfoPresenter);
+            var result = _subject.Create<IContactViewModel>(contactModel);
 
-            result.Should().Be(mockContactInfoViewModel.Object);
-            mockContactInfoViewModel.VerifySet(m => m.Model = contactInfoPresenter);
+            result.Should().Be(mockContactViewModel.Object);
+            mockContactViewModel.VerifySet(m => m.Model = contactModel);
         }
     }
 }
