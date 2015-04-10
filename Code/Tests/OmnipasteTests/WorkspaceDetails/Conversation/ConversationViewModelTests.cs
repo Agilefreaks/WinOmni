@@ -3,7 +3,7 @@
     using System.Collections.ObjectModel;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.WorkspaceDetails.Conversation;
 
     [TestFixture]

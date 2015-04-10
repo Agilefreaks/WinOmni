@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ActivityList
 {
     using Omnipaste.ActivityList.Activity;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public interface IActivityViewModelFactory
     {

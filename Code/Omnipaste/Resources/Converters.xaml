@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Omnipaste.Framework.Converters"
-                    xmlns:converters1="clr-namespace:OmniUI.Converters;assembly=OmniUI"
-                    xmlns:converters2="clr-namespace:Omnipaste.ActivityList.Converters">
+                    xmlns:converters2="clr-namespace:Omnipaste.ActivityList.Converters"
+                    xmlns:converters1="clr-namespace:OmniUI.Framework.Converters;assembly=OmniUI">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:LimitedStringConverter x:Key="LimitedStringConverter" />
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>

@@ -8,9 +8,9 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.Entities;
-    using Omnipaste.Factories;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Entities.Factories;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Resources.v1;
 
@@ -114,14 +114,14 @@
 
         public void Delete()
         {
-            UpdateConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository, true);
+            UpdateConversationItems<PhoneCallEntity>(PhoneCallRepository, true);
             UpdateConversationItems<SmsMessageEntity>(SmsMessageRepository, true);
             State = ConversationHeaderStateEnum.Deleted;
         }
 
         public void UndoDelete()
         {
-            UpdateConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository, false);
+            UpdateConversationItems<PhoneCallEntity>(PhoneCallRepository, false);
             UpdateConversationItems<SmsMessageEntity>(SmsMessageRepository, false);
             State = ConversationHeaderStateEnum.Normal;
         }
@@ -134,7 +134,7 @@
 
         protected override void OnDeactivate(bool close)
         {
-            DeleteConversationItems<Entities.PhoneCallEntity>(PhoneCallRepository);
+            DeleteConversationItems<PhoneCallEntity>(PhoneCallRepository);
             DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
 
             if (Recipients != null)

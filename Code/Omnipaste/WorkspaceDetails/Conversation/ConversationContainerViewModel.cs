@@ -3,7 +3,7 @@
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using Ninject;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.SMSComposer;
 
     public class ConversationContainerViewModel : WorkspaceDetailsContentViewModel<ContactModel>,

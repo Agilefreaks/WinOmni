@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System.Collections.ObjectModel;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public interface IConversationHeaderViewModel : IWorkspaceDetailsHeaderViewModel
     {

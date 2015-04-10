@@ -6,18 +6,18 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.Entities;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.ExtensionMethods;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
-    using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
+    using OmniUI.Framework.ExtensionMethods;
     using OmniUI.Workspace;
 
     public class ContactViewModel : DetailsViewModelBase<ContactModel>, IContactViewModel

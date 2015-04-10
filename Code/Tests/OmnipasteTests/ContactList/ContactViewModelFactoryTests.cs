@@ -6,8 +6,8 @@
     using NUnit.Framework;
     using Omnipaste.ContactList;
     using Omnipaste.ContactList.Contact;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
 
     [TestFixture]
     public class ContactViewModelFactoryTests

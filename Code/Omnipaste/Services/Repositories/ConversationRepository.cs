@@ -5,9 +5,8 @@
     using System.Linq;
     using System.Reactive.Joins;
     using System.Reactive.Linq;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
-    using OmniUI.Entities;
+    using Omnipaste.Framework.Entities;
+    using OmniUI.Framework.Entities;
 
     public abstract class ConversationRepository : SecurePermanentRepository
     {

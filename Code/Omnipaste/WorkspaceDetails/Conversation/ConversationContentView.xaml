@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
+             xmlns:behaviors="clr-namespace:OmniUI.Framework.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 

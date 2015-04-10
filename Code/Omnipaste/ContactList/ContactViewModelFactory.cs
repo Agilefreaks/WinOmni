@@ -1,7 +1,7 @@
 namespace Omnipaste.ContactList
 {
     using Microsoft.Practices.ServiceLocation;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using OmniUI.Details;
 
     public class ContactViewModelFactory : IContactViewModelFactory

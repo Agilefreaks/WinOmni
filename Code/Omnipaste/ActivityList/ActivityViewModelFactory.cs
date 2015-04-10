@@ -2,7 +2,7 @@
 {
     using Ninject;
     using Omnipaste.ActivityList.Activity;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public class ActivityViewModelFactory : IActivityViewModelFactory
     {

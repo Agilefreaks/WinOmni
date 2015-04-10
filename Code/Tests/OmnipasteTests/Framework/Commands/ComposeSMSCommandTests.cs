@@ -9,9 +9,9 @@
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
     using Omnipaste.ContactList.Contact;
-    using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.People;

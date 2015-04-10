@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
-    using Omnipaste.Models;
-    using OmniUI.Entities;
+    using OmniUI.Framework.Entities;
 
     public abstract class BaseRepositroy : IReporsitory
     {

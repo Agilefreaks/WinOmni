@@ -8,8 +8,7 @@
     using Akavache;
     using Akavache.Sqlite3;
     using OmniCommon.Helpers;
-    using Omnipaste.Models;
-    using OmniUI.Entities;
+    using OmniUI.Framework.Entities;
     using Splat;
 
     public class SecurePermanentRepository : BaseRepositroy

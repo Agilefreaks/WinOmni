@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.ActivityList.Activity
 {
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
     using OmniUI.Attributes;
 

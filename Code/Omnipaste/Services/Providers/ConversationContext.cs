@@ -3,8 +3,8 @@
     using System;
     using System.Reactive;
     using System.Reactive.Linq;
-    using Omnipaste.Models;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Models;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     public abstract class ConversationContext : IConversationContext

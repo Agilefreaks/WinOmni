@@ -4,7 +4,7 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
 
     public class ClippingDetailsContentViewModel : WorkspaceDetailsContentViewModel<ClippingModel>, IClippingDetailsContentViewModel

@@ -10,9 +10,9 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ActivityList.Activity;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;

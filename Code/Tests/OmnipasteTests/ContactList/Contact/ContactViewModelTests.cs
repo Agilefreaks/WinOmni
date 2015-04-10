@@ -10,8 +10,8 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.ContactList.Contact;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Properties;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;

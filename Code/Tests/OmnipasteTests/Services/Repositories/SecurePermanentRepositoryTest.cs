@@ -7,7 +7,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
+    using OmnipasteTests.Framework.Helpers;
 
     [TestFixture]
     public class SecurePermanentRepositoryTest : BaseRepositoryTests

@@ -7,14 +7,14 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.ExtensionMethods;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Conversation.Message;
     using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
+    using OmniUI.Framework.Models;
     using OmniUI.List;
-    using OmniUI.Models;
 
     public class ConversationContentViewModel : ListViewModelBase<IConversationModel, IConversationItemViewModel>,
                                                 IConversationContentViewModel

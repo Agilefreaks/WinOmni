@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.ClippingList.Clipping
 {
     using System;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using OmniUI.Details;
 
     public interface IClippingViewModel : IDetailsViewModel<ClippingModel>

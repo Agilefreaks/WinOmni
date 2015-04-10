@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.NotificationList.Notification.ClippingNotification
 {
-    using Omnipaste.Entities;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Properties;
     using OmniUI.Framework;
 

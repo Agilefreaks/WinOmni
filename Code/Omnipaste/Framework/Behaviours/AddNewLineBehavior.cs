@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.Framework.Behaviours
 {
     using System.Windows;
-    using OmniUI.Behaviors;
+    using OmniUI.Framework.Behaviors;
 
     public class AddNewLineBehavior : HotKeyBehavior
     {

@@ -1,9 +1,9 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using OmniCommon.Interfaces;
-    using Omnipaste.DetailsViewModel;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.DetailsViewModel;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
 
     public abstract class ConversationItemViewModel<TModel> : DetailsViewModelWithAutoRefresh<TModel>

@@ -2,7 +2,7 @@ namespace Omnipaste.ClippingList
 {
     using Microsoft.Practices.ServiceLocation;
     using Omnipaste.ClippingList.Clipping;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public class ClippingViewModelFactory : IClippingViewModelFactory
     {

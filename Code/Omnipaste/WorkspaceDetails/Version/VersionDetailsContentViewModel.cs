@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Version
 {
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public class VersionDetailsContentViewModel : WorkspaceDetailsContentViewModel<UpdateModel>, IVersionDetailsContentViewModel
     {

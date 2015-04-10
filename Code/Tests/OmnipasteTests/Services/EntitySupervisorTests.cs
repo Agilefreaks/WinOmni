@@ -12,9 +12,8 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Entities;
-    using Omnipaste.Factories;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Entities.Factories;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using PhoneCalls.Handlers;

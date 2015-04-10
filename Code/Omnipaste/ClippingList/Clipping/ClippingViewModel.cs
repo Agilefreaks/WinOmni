@@ -6,16 +6,16 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ExtensionMethods;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.ExtensionMethods;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.Clippings;
     using OmniUI.Details;
-    using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
+    using OmniUI.Framework.ExtensionMethods;
 
     public class ClippingViewModel : DetailsViewModelBase<ClippingModel>, IClippingViewModel
     {

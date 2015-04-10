@@ -11,9 +11,9 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Entities;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.NotificationList.Notification;
     using Omnipaste.NotificationList.Notification.IncomingCallNotification;
     using OmniUI.Services;

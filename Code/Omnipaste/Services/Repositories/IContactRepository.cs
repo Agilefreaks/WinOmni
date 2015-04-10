@@ -1,8 +1,7 @@
 ﻿namespace Omnipaste.Services.Repositories
 {
     using System;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
 
     public interface IContactRepository : IRepository<ContactEntity>
     {

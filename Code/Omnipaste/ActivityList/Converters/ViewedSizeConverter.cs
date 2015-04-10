@@ -4,7 +4,7 @@
     using System.Globalization;
     using System.Windows.Data;
     using Omnipaste.ActivityList.Activity;
-    using OmniUI.Helpers;
+    using OmniUI.Framework.Helpers;
 
     public class ViewedSizeConverter : IValueConverter
     {

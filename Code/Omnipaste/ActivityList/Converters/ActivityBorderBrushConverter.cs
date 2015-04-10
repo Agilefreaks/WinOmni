@@ -5,8 +5,8 @@
     using System.Windows.Data;
     using System.Windows.Media;
     using Omnipaste.ActivityList.Activity;
-    using Omnipaste.ExtensionMethods;
-    using OmniUI.Helpers;
+    using Omnipaste.Framework.ExtensionMethods;
+    using OmniUI.Framework.Helpers;
 
     public class ActivityBorderBrushConverter : IValueConverter
     {

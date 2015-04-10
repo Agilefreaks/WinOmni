@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.NotificationList.Notification.HyperlinkNotification
 {
-    using Omnipaste.Entities;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Helpers;
     using Omnipaste.NotificationList.Notification.ClippingNotification;
     using Omnipaste.Properties;
     using OmniUI.Framework;

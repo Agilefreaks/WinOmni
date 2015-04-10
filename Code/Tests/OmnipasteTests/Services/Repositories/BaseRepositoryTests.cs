@@ -11,7 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Services.Repositories;
-    using OmnipasteTests.Helpers;
+    using OmnipasteTests.Framework.Helpers;
 
     public abstract class BaseRepositoryTests
     {

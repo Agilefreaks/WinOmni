@@ -265,12 +265,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContactList\Converters\BoolToSelectionModeConverter.cs" />
-    <Compile Include="Factories\ContactFactory.cs" />
-    <Compile Include="Factories\IContactFactory.cs" />
-    <Compile Include="Factories\IPhoneCallFactory.cs" />
-    <Compile Include="Factories\ISmsMessageFactory.cs" />
-    <Compile Include="Factories\PhoneCallFactory.cs" />
-    <Compile Include="Factories\SmsMessageFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\ContactFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\IContactFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\IPhoneCallFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\ISmsMessageFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\PhoneCallFactory.cs" />
+    <Compile Include="Framework\Entities\Factories\SmsMessageFactory.cs" />
     <Compile Include="ClippingList\ClippingFilterTypeEnum.cs" />
     <Compile Include="ClippingList\ClippingListViewModel.cs" />
     <Compile Include="ClippingList\Clipping\ClippingViewModel.cs" />
@@ -284,26 +284,26 @@
     <Compile Include="ContactList\Converters\ContactBackroundBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
-    <Compile Include="Helpers\ApplicationHelper.cs" />
-    <Compile Include="Helpers\IApplicationHelper.cs" />
-    <Compile Include="Helpers\PhoneNumberMatcher.cs" />
-    <Compile Include="Entities\ConversationEntity.cs" />
-    <Compile Include="Entities\LocalPhoneCallEntity.cs" />
-    <Compile Include="Entities\LocalSmsMessageEntity.cs" />
-    <Compile Include="Entities\RemotePhoneCallEntity.cs" />
-    <Compile Include="Entities\RemoteSmsMessageEntity.cs" />
-    <Compile Include="Models\ClippingModel.cs" />
-    <Compile Include="Models\Factories\ActivityModelFactory.cs" />
-    <Compile Include="Models\Factories\ConversationModelFactory.cs" />
-    <Compile Include="Models\Factories\PhoneCallModelFactory.cs" />
-    <Compile Include="Models\Factories\SmsMessageModelFactory.cs" />
-    <Compile Include="Models\LocalPhoneCallModel.cs" />
-    <Compile Include="Models\LocalSmsMessageModel.cs" />
-    <Compile Include="Models\PhoneCallModel.cs" />
-    <Compile Include="Models\RemotePhoneCallModel.cs" />
-    <Compile Include="Models\RemoteSmsMessageModel.cs" />
-    <Compile Include="Models\SmsMessageModel.cs" />
-    <Compile Include="Models\UpdateModel.cs" />
+    <Compile Include="Framework\Helpers\ApplicationHelper.cs" />
+    <Compile Include="Framework\Helpers\IApplicationHelper.cs" />
+    <Compile Include="Framework\Helpers\PhoneNumberMatcher.cs" />
+    <Compile Include="Framework\Entities\ConversationEntity.cs" />
+    <Compile Include="Framework\Entities\LocalPhoneCallEntity.cs" />
+    <Compile Include="Framework\Entities\LocalSmsMessageEntity.cs" />
+    <Compile Include="Framework\Entities\RemotePhoneCallEntity.cs" />
+    <Compile Include="Framework\Entities\RemoteSmsMessageEntity.cs" />
+    <Compile Include="Framework\Models\ClippingModel.cs" />
+    <Compile Include="Framework\Models\Factories\ActivityModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\ConversationModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\PhoneCallModelFactory.cs" />
+    <Compile Include="Framework\Models\Factories\SmsMessageModelFactory.cs" />
+    <Compile Include="Framework\Models\LocalPhoneCallModel.cs" />
+    <Compile Include="Framework\Models\LocalSmsMessageModel.cs" />
+    <Compile Include="Framework\Models\PhoneCallModel.cs" />
+    <Compile Include="Framework\Models\RemotePhoneCallModel.cs" />
+    <Compile Include="Framework\Models\RemoteSmsMessageModel.cs" />
+    <Compile Include="Framework\Models\SmsMessageModel.cs" />
+    <Compile Include="Framework\Models\UpdateModel.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\ResetApplicationState.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\VerifySettings.cs" />
     <Compile Include="Services\ExceptionReporters\CompositeExceptionReporter.cs" />
@@ -371,30 +371,30 @@
     <Compile Include="ContactList\Contact\IContactViewModel.cs" />
     <Compile Include="ContactList\IContactViewModelFactory.cs" />
     <Compile Include="ContactList\IContactListViewModel.cs" />
-    <Compile Include="DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
-    <Compile Include="ExtensionMethods\PropertyExtensions.cs" />
-    <Compile Include="Entities\ContactEntity.cs" />
-    <Compile Include="Models\IConversationModel.cs" />
+    <Compile Include="Framework\DetailsViewModel\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\ExtensionMethods\PropertyExtensions.cs" />
+    <Compile Include="Framework\Entities\ContactEntity.cs" />
+    <Compile Include="Framework\Models\IConversationModel.cs" />
     <Compile Include="EventAggregatorMessages\DismissNotification.cs" />
-    <Compile Include="ExtensionMethods\ActivityTypeExtensions.cs" />
+    <Compile Include="Framework\ExtensionMethods\ActivityTypeExtensions.cs" />
     <Compile Include="WorkspaceDetails\Conversation\ConversationItemViewModel.cs" />
-    <Compile Include="DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Framework\DetailsViewModel\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Framework\Behaviours\AddNewLineBehavior.cs" />
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Commands\ClippingCommands.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
     <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
-    <Compile Include="Helpers\ExternalProcessHelper.cs" />
-    <Compile Include="Helpers\NameParser.cs" />
-    <Compile Include="Helpers\TextParser.cs" />
-    <Compile Include="Helpers\TextPartTypeEnum.cs" />
+    <Compile Include="Framework\Helpers\ExternalProcessHelper.cs" />
+    <Compile Include="Framework\Helpers\NameParser.cs" />
+    <Compile Include="Framework\Helpers\TextParser.cs" />
+    <Compile Include="Framework\Helpers\TextPartTypeEnum.cs" />
     <Compile Include="NotificationList\Notification\IConversationNotificationViewModel.cs" />
-    <Compile Include="Models\ActivityModel.cs" />
+    <Compile Include="Framework\Models\ActivityModel.cs" />
     <Compile Include="ActivityList\ActivityListViewModel.cs" />
     <Compile Include="ActivityList\Activity\ActivityViewModel.cs" />
     <Compile Include="ActivityList\Activity\IActivityViewModel.cs" />
-    <Compile Include="Entities\PhoneCallEntity.cs" />
+    <Compile Include="Framework\Entities\PhoneCallEntity.cs" />
     <Compile Include="ActivityList\Activity\ContactRelatedActivityViewModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EventAggregatorMessages\ActivationFailedMessage.cs" />
@@ -407,7 +407,7 @@
     <Compile Include="EventAggregatorMessages\ShowCreateClippingMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessage.cs" />
     <Compile Include="EventAggregatorMessages\TokenRequestResultMessageStatusEnum.cs" />
-    <Compile Include="ExtensionMethods\ConfigurationContainerExtensions.cs" />
+    <Compile Include="Framework\ExtensionMethods\ConfigurationContainerExtensions.cs" />
     <Compile Include="EventAggregatorMessages\ApplicationClosingMessage.cs" />
     <Compile Include="Framework\Behaviours\AutoSelectTextBehavior.cs" />
     <Compile Include="Framework\Commands\CancelCommandEventArgs.cs" />
@@ -422,14 +422,14 @@
     <Compile Include="Loading\Congratulations\ICongratulationsViewModel.cs" />
     <Compile Include="Loading\CreateClipping\CreateClippingViewModel.cs" />
     <Compile Include="Loading\CreateClipping\ICreateClippingViewModel.cs" />
-    <Compile Include="Entities\ClippingEntity.cs" />
-    <Compile Include="Entities\SmsMessageEntity.cs" />
-    <Compile Include="Entities\SourceType.cs" />
-    <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Framework\Entities\ClippingEntity.cs" />
+    <Compile Include="Framework\Entities\SmsMessageEntity.cs" />
+    <Compile Include="Framework\Entities\SourceType.cs" />
+    <Compile Include="Framework\Entities\UserEntity.cs" />
     <Compile Include="NotificationList\Notification\ConversationNotificationViewModelBase.cs" />
     <Compile Include="NotificationList\Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="NotificationList\Notification\ResourceBasedNotificationViewModel.cs" />
-    <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Framework\Models\ContactModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -514,7 +514,7 @@
     <Compile Include="Services\Repositories\UpdateRepository.cs" />
     <Compile Include="Services\UIRefreshService.cs" />
     <Compile Include="Services\UpdateFileInfo.cs" />
-    <Compile Include="Entities\UpdateEntity.cs" />
+    <Compile Include="Framework\Entities\UpdateEntity.cs" />
     <Compile Include="Services\UrlShortenerService.cs" />
     <Compile Include="Services\WpfDispatcherProvider.cs" />
     <Compile Include="ActivityList\IActivityListViewModel.cs" />
@@ -1054,7 +1054,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Themes\" />
     <Folder Include="WorkspaceDetails\Conversation\Call\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

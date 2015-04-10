@@ -3,7 +3,7 @@
     using System.Windows;
     using FluentAssertions;
     using NUnit.Framework;
-    using OmniUI.Converters;
+    using OmniUI.Framework.Converters;
 
     [TestFixture]
     public class InverseBooleanToVisibilityConverterTests

@@ -14,12 +14,12 @@ namespace Omnipaste.ContactList
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.ContactList.Contact;
-    using Omnipaste.Entities;
-    using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.ExtensionMethods;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using OmniUI.ExtensionMethods;
+    using OmniUI.Framework.ExtensionMethods;
     using OmniUI.List;
     using OmniUI.Workspace;
 

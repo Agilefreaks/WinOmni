@@ -2,9 +2,9 @@ namespace Omnipaste.Services.Providers
 {
     using System;
     using System.Reactive.Linq;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.Services.Repositories;
 
     public class MergedConversationContext : ConversationContext

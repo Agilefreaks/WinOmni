@@ -10,8 +10,8 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Properties;
     using OmniUI.Resources;
 

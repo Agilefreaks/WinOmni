@@ -1,7 +1,7 @@
 ﻿namespace Omnipaste.WorkspaceDetails.Conversation
 {
     using System.Collections.ObjectModel;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.SMSComposer;
 
     public interface IConversationContainerViewModel : IWorkspaceDetailsContentViewModel

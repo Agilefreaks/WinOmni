@@ -3,7 +3,7 @@
     using System;
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Entities;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Services;
     using OmniUI.Attributes;
     using OmniUI.TitleBarItem;

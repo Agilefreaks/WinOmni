@@ -2,8 +2,7 @@
 {
     using System;
     using System.Reactive.Linq;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
 
     public static class RepositoryObservableExtensionMethods
     {

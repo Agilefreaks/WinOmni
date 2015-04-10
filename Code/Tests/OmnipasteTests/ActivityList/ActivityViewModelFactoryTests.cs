@@ -5,8 +5,8 @@
     using NUnit.Framework;
     using Omnipaste.ActivityList;
     using Omnipaste.ActivityList.Activity;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
 
     [TestFixture]
     public class ActivityViewModelFactoryTests

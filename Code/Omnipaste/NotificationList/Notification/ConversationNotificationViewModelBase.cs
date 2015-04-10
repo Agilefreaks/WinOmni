@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using OmniUI.Services;
 
     public abstract class ConversationNotificationViewModelBase : ResourceBasedNotificationViewModel<IConversationModel>,

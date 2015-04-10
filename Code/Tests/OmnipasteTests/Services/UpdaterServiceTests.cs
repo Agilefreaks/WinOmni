@@ -14,8 +14,8 @@
     using OmniCommon.DataProviders;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Entities;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Helpers;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
 

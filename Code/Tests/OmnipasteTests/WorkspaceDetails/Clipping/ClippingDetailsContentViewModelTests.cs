@@ -5,9 +5,9 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails.Clipping;
 

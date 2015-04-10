@@ -4,7 +4,7 @@ namespace Omnipaste.ClippingList.Converters
     using System.Globalization;
     using System.Windows.Data;
     using System.Windows.Media;
-    using OmniUI.Helpers;
+    using OmniUI.Framework.Helpers;
 
     public class ClippingBorderBrushConverter : IValueConverter
     {

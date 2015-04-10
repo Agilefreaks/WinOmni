@@ -1,8 +1,8 @@
 namespace Omnipaste.ActivityList.Activity
 {
     using System;
-    using Omnipaste.DetailsViewModel;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.DetailsViewModel;
+    using Omnipaste.Framework.Models;
 
     public interface IActivityViewModel : IDetailsViewModelWithAutoRefresh<ActivityModel>
     {

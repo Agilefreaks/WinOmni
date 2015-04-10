@@ -1,7 +1,7 @@
 ﻿namespace OmniUI.Details
 {
     using Caliburn.Micro;
-    using OmniUI.Models;
+    using OmniUI.Framework.Models;
 
     public interface IDetailsViewModel : IScreen
     {

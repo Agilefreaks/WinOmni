@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.ContactList
 {
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using OmniUI.Details;
 
     public interface IContactViewModelFactory

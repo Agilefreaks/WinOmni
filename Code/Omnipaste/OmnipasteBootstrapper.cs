@@ -19,7 +19,7 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniDebug;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Helpers;
     using Omnipaste.Services;
     using Omnipaste.Shell;
     using OmniSync;

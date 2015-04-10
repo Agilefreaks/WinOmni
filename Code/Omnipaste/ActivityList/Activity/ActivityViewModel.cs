@@ -7,14 +7,14 @@ namespace Omnipaste.ActivityList.Activity
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.DetailsViewModel;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.DetailsViewModel;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.Activity;
-    using OmniUI.ExtensionMethods;
     using OmniUI.Framework;
+    using OmniUI.Framework.ExtensionMethods;
 
     public class ActivityViewModel : DetailsViewModelWithAutoRefresh<ActivityModel>, IActivityViewModel
     {

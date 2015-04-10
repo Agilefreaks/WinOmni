@@ -2,7 +2,7 @@
 {
     using Caliburn.Micro;
     using OmniUI.Attributes;
-    using OmniUI.Models;
+    using OmniUI.Framework.Models;
 
     [UseView(typeof(DetailsViewWithHeader))]
     public abstract class DetailsViewModelWithHeaderBase<THeader, TContent> : Conductor<IScreen>.Collection.AllActive,

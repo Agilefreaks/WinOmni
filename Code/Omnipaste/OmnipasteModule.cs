@@ -15,9 +15,9 @@
     using Omnipaste.ContactList;
     using Omnipaste.DataProviders;
     using Omnipaste.Dialog;
-    using Omnipaste.Factories;
     using Omnipaste.Framework;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Entities.Factories;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.NotificationList;
     using Omnipaste.Services;
     using Omnipaste.Services.ActivationServiceData;

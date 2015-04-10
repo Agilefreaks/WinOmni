@@ -5,9 +5,9 @@
     using System.Reactive.Linq;
     using Clipboard.Dto;
     using Ninject;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.NotificationList.Notification;
     using Omnipaste.NotificationList.Notification.ClippingNotification;
     using Omnipaste.NotificationList.Notification.HyperlinkNotification;

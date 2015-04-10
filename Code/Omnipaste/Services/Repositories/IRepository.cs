@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Omnipaste.Models;
-    using OmniUI.Entities;
+    using OmniUI.Framework.Entities;
 
     public interface IReporsitory
     {

@@ -1,6 +1,6 @@
 namespace Omnipaste.ActivityList.Activity
 {
-    using Omnipaste.Entities;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Services;
     using OmniUI.Attributes;
 

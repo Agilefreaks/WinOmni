@@ -6,7 +6,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Entities;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Services;
     using Omnipaste.Shell.TitleBar;
 

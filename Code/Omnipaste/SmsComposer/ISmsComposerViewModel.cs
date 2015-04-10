@@ -2,7 +2,7 @@
 {
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
 
     public interface ISMSComposerViewModel : IScreen
     {

@@ -2,7 +2,7 @@
 {
     using Ninject;
     using OmniCommon.ExtensionMethods;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
 
     public class ClippingDetailsHeaderViewModel : WorkspaceDetailsHeaderViewModel<ClippingModel>, IClippingDetailsHeaderViewModel

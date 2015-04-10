@@ -1,8 +1,8 @@
 ﻿namespace Omnipaste.WorkspaceDetails
 {
     using System.Collections.Generic;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
 
     public interface IWorkspaceDetailsViewModelFactory
     {

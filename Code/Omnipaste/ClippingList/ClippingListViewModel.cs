@@ -6,8 +6,8 @@
     using System.Reactive.Linq;
     using Clipboard.Dto;
     using Omnipaste.ClippingList.Clipping;
-    using Omnipaste.ExtensionMethods;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.ExtensionMethods;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services.Repositories;
     using OmniUI.List;
 

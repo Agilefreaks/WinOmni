@@ -11,8 +11,8 @@
     using OmniCommon.Helpers;
     using Omnipaste.ClippingList;
     using Omnipaste.ClippingList.Clipping;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Repositories;
 

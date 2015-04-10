@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:OmniUI.Behaviors;assembly=OmniUI"
              xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:behaviors="clr-namespace:OmniUI.Framework.Behaviors;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource ScreenBorderBrush}" CornerRadius="3" BorderThickness="1" 

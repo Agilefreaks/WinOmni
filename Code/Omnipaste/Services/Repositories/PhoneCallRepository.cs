@@ -2,8 +2,7 @@ namespace Omnipaste.Services.Repositories
 {
     using System;
     using System.Collections.Generic;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
 
     public class PhoneCallRepository : ConversationRepository, IPhoneCallRepository
     {

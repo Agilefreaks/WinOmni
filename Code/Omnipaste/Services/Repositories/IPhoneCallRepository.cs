@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Omnipaste.Entities;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
 
     public interface IPhoneCallRepository : IConversationRepository
     {

@@ -15,7 +15,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.NotificationList.Notification;
     using Omnipaste.Services.Repositories;
 

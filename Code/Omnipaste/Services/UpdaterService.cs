@@ -14,8 +14,8 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Entities;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Helpers;
     using Omnipaste.Services.Providers;
 
     public class UpdaterService : IUpdaterService

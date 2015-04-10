@@ -9,7 +9,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.ContactList;
     using Omnipaste.ContactList.Contact;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
     using Omnipaste.Workspaces.People;

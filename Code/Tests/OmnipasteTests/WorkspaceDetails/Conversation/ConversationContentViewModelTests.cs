@@ -12,9 +12,9 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;

@@ -2,8 +2,7 @@
 {
     using System;
     using OmniCommon.Interfaces;
-    using Omnipaste.DetailsViewModel;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Services;
 
     public class MessageViewModel : ConversationItemViewModel<SmsMessageModel>, IMessageViewModel

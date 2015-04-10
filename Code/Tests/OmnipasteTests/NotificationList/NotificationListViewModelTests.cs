@@ -14,9 +14,8 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Entities;
     using Omnipaste.EventAggregatorMessages;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.NotificationList;
     using Omnipaste.NotificationList.Notification;
     using Omnipaste.NotificationList.Notification.ClippingNotification;

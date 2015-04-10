@@ -8,7 +8,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using OmniCommon.Settings;
-    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Framework.ExtensionMethods;
 
     public class ConfigurationService : IConfigurationService
     {

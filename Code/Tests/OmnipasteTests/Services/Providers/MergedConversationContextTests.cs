@@ -7,7 +7,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Models.Factories;
+    using Omnipaste.Framework.Models.Factories;
     using Omnipaste.Services.Providers;
     using Omnipaste.Services.Repositories;
 

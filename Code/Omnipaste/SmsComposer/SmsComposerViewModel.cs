@@ -8,10 +8,10 @@
     using Ninject;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Entities;
-    using Omnipaste.Factories;
     using Omnipaste.Framework.Commands;
-    using Omnipaste.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Entities.Factories;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Properties;
     using SMS.Resources.v1;
 

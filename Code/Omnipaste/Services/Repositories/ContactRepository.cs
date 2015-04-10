@@ -3,8 +3,8 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using Omnipaste.Entities;
-    using Omnipaste.Helpers;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Helpers;
 
     public class ContactRepository : SecurePermanentRepository<ContactEntity>, IContactRepository
     {
