@@ -147,7 +147,19 @@
             }
         }
 
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationContentViewModel.cs
         private void MarkConversationItemAsViewed(IConversationModel item)
+=======
+        public override void NotifyOfPropertyChange(string propertyName = null)
+        {
+            if (propertyName == "Model")
+            {
+                RefreshConversation();
+            }
+        }
+
+        private void MarkConversationItemAsViewed(IConversationPresenter item)
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationContentViewModel.cs
         {
             item.WasViewed = true;
             _conversationContext.SaveItem(item).SubscribeAndHandleErrors();

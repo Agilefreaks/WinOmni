@@ -38,7 +38,11 @@
             }
         }
 
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationContainerViewModel.cs
         public override ContactModel Model
+=======
+        public override ContactInfoPresenter Model
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationContainerViewModel.cs
         {
             get
             {
@@ -56,6 +60,10 @@
         protected override void OnActivate()
         {
             base.OnActivate();
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationContainerViewModel.cs
+=======
+
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationContainerViewModel.cs
             ConversationContentViewModel.Activate();
             SMSComposer.Activate();
         }
@@ -64,7 +72,11 @@
         {
             ConversationContentViewModel.Deactivate(close);
             SMSComposer.Deactivate(close);
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationContainerViewModel.cs
             
+=======
+
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationContainerViewModel.cs
             base.OnDeactivate(close);
         }
     }

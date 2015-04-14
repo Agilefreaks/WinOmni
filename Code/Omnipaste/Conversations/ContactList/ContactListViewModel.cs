@@ -13,11 +13,17 @@ namespace Omnipaste.Conversations.ContactList
     using Castle.Core.Internal;
     using Ninject;
     using OmniCommon.ExtensionMethods;
+<<<<<<< HEAD:Code/Omnipaste/Conversations/ContactList/ContactListViewModel.cs
     using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.ExtensionMethods;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services.Repositories;
+=======
+    using Omnipaste.ExtensionMethods;
+    using Omnipaste.Presenters;
+    using Omnipaste.Services.Repositories;
+>>>>>>> Fixes selection problems:Code/Omnipaste/ContactList/ContactListViewModel.cs
     using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Framework.ExtensionMethods;
@@ -187,13 +193,23 @@ namespace Omnipaste.Conversations.ContactList
             else if (SelectedContacts.Count == 0 && activeItem != null)
             {
                 HideDetails();
+<<<<<<< HEAD:Code/Omnipaste/Conversations/ContactList/ContactListViewModel.cs
             }                
+=======
+            }
+>>>>>>> Fixes selection problems:Code/Omnipaste/ContactList/ContactListViewModel.cs
         }
 
         protected override bool CanShow(IContactViewModel viewModel)
         {
+<<<<<<< HEAD:Code/Omnipaste/Conversations/ContactList/ContactListViewModel.cs
             var contactModel = viewModel.Model;
             return MatchesFilter(contactModel) && MatchesFilterText(contactModel);
+=======
+            var contactInfoPresenter = viewModel.Model;
+            
+            return MatchesFilter(contactInfoPresenter) && MatchesFilterText(contactInfoPresenter);
+>>>>>>> Fixes selection problems:Code/Omnipaste/ContactList/ContactListViewModel.cs
         }
 
         private void HideDetails()
@@ -285,9 +301,14 @@ namespace Omnipaste.Conversations.ContactList
             {
                 return;
             }
+
             if (args.RemovedItems.Count != 0)
             {
+<<<<<<< HEAD:Code/Omnipaste/Conversations/ContactList/ContactListViewModel.cs
                 UnselectItems(args.RemovedItems.Cast<IContactViewModel>());
+=======
+                UnselectItems(args.RemovedItems.Cast<IContactInfoViewModel>());
+>>>>>>> Fixes selection problems:Code/Omnipaste/ContactList/ContactListViewModel.cs
             }
 
             if (args.AddedItems.Count != 0)
@@ -331,12 +352,21 @@ namespace Omnipaste.Conversations.ContactList
         private void UnselectItems(IEnumerable<IContactViewModel> itemsToUnselect)
         {
             var contactInfoViewModels = itemsToUnselect.Where(i => SelectedContacts.Any(sc => i.Model.UniqueId == sc.UniqueId));
+<<<<<<< HEAD:Code/Omnipaste/Conversations/ContactList/ContactListViewModel.cs
             foreach (var item in contactInfoViewModels)
             {
                 var modelsToRemove = SelectedContacts.Where(c => c.UniqueId == item.Model.UniqueId).ToList();
                 modelsToRemove.ForEach(m => SelectedContacts.Remove(m));
                 IsRefreshing = true;
                 item.IsSelected = false;
+=======
+            foreach (var contactInfoViewModel in contactInfoViewModels)
+            {
+                var modelsToRemove = SelectedContacts.Where(c => c.UniqueId == contactInfoViewModel.Model.UniqueId).ToList();
+                modelsToRemove.ForEach(m => SelectedContacts.Remove(m));
+                IsRefreshing = true;
+                contactInfoViewModel.IsSelected = false;
+>>>>>>> Fixes selection problems:Code/Omnipaste/ContactList/ContactListViewModel.cs
                 IsRefreshing = false;
             }
         }

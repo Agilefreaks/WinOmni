@@ -129,6 +129,7 @@
         protected override void OnActivate()
         {
             State = ConversationHeaderStateEnum.Normal;
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationHeaderViewModel.cs
 
             if (Recipients != null)
             {
@@ -143,6 +144,22 @@
             DeleteConversationItems<PhoneCallEntity>(PhoneCallRepository);
             DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
             
+=======
+
+            if (Recipients != null)
+            {
+                Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            }
+
+            base.OnActivate();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            DeleteConversationItems<Models.PhoneCall>(PhoneCallRepository);
+            DeleteConversationItems<SmsMessage>(SmsMessageRepository);
+
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationHeaderViewModel.cs
             base.OnDeactivate(close);
         }
 
@@ -150,10 +167,17 @@
             object sender,
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationHeaderViewModel.cs
             State = _recipients.Count >= 2
                 ? ConversationHeaderStateEnum.Group
                 : State == ConversationHeaderStateEnum.Group
                     ? ConversationHeaderStateEnum.Normal
+=======
+            State = _recipients.Count >= 2 
+                ? ConversationHeaderStateEnum.Group 
+                : State == ConversationHeaderStateEnum.Group 
+                    ? ConversationHeaderStateEnum.Normal 
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationHeaderViewModel.cs
                     : State;
         }
 
@@ -164,7 +188,11 @@
                 return;
             }
 
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationHeaderViewModel.cs
             repository.GetConversationForContact(Model.BackingEntity)
+=======
+            repository.GetConversationForContact(Model.BackingModel)
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationHeaderViewModel.cs
                 .SubscribeAndHandleErrors(
                     items =>
                     items.Where(c => c.IsDeleted)
@@ -190,7 +218,11 @@
                 return;
             }
 
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationHeaderViewModel.cs
             repository.GetConversationForContact(Model.BackingEntity).SelectMany(
+=======
+            repository.GetConversationForContact(Model.BackingModel).SelectMany(
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationHeaderViewModel.cs
                 items => items.Select(
                     item =>
                         {

@@ -37,7 +37,11 @@
             var contactModels = new ObservableCollection<ContactModel>();
             _subject.Recipients = contactModels;
 
+<<<<<<< HEAD:Code/Tests/OmnipasteTests/Conversations/Conversation/ConversationContainerViewModelTests.cs
             _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactModels);
+=======
+            _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactInfoPresenters);
+>>>>>>> Fixes selection problems:Code/Tests/OmnipasteTests/WorkspaceDetails/Conversation/ConversationContainerViewModelTests.cs
         }
     }
 }
