@@ -15,7 +15,7 @@
     using Omni;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
 
     [TestFixture]

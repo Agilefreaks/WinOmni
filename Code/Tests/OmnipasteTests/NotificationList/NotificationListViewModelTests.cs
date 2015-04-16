@@ -14,14 +14,14 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.NotificationList;
-    using Omnipaste.NotificationList.Notification;
-    using Omnipaste.NotificationList.Notification.ClippingNotification;
-    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
-    using Omnipaste.NotificationList.Notification.IncomingSmsNotification;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.EventAggregatorMessages;
+    using Omnipaste.Framework.Services.Repositories;
+    using Omnipaste.Notifications.NotificationList;
+    using Omnipaste.Notifications.NotificationList.Notification;
+    using Omnipaste.Notifications.NotificationList.Notification.ClippingNotification;
+    using Omnipaste.Notifications.NotificationList.Notification.IncomingCallNotification;
+    using Omnipaste.Notifications.NotificationList.Notification.IncomingSmsNotification;
 
     [TestFixture]
     public class NotificationListViewModelTests

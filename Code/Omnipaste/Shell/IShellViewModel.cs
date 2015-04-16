@@ -2,12 +2,12 @@
 {
     using System;
     using Caliburn.Micro;
-    using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Loading;
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.SideMenu;
-    using OmniUI.Workspace;
+    using OmniUI.Dialog;
+    using OmniUI.Workspaces;
 
     public interface IShellViewModel : IConductActiveItem,
                                        IScreen,

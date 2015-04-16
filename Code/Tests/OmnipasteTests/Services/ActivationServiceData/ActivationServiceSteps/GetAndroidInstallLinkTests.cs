@@ -8,8 +8,8 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class GetAndroidInstallLinkTests

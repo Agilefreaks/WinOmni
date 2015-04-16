@@ -10,12 +10,12 @@
     using Omni;
     using OmniCommon.Helpers;
     using OmniCommon.Settings;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Monitors.Credentials;
-    using Omnipaste.Services.Monitors.Internet;
-    using Omnipaste.Services.Monitors.Power;
-    using Omnipaste.Services.Monitors.ProxyConfiguration;
-    using Omnipaste.Services.Monitors.User;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Monitors.Credentials;
+    using Omnipaste.Framework.Services.Monitors.Internet;
+    using Omnipaste.Framework.Services.Monitors.Power;
+    using Omnipaste.Framework.Services.Monitors.ProxyConfiguration;
+    using Omnipaste.Framework.Services.Monitors.User;
     using OmniSync;
 
     [TestFixture]

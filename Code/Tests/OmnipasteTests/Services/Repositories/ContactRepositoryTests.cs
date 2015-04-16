@@ -11,7 +11,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class ContactRepositoryTests

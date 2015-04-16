@@ -3,7 +3,7 @@
     using System.IO;
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.DataProviders;
+    using Omnipaste.Framework.DataProviders;
 
     public class DPAPIConfigurationContainerTests
     {

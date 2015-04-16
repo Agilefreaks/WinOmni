@@ -9,12 +9,13 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ClippingList;
-    using Omnipaste.ClippingList.Clipping;
+    using Omnipaste.Clippings;
+    using Omnipaste.Clippings.ClippingList;
+    using Omnipaste.Clippings.ClippingList.Clipping;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class ClippingListViewModelTests

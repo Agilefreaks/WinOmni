@@ -14,8 +14,8 @@
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Entities.Factories;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
     using PhoneCalls.Handlers;
     using SMS.Handlers;
 

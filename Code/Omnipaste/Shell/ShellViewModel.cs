@@ -11,18 +11,19 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Dialog;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Activities;
+    using Omnipaste.Framework.EventAggregatorMessages;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Loading;
-    using Omnipaste.NotificationList;
+    using Omnipaste.Notifications.NotificationList;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
     using Omnipaste.Shell.ContextMenu;
     using Omnipaste.Shell.SideMenu;
-    using Omnipaste.Workspaces.Activity;
+    using OmniUI.Dialog;
     using OmniUI.Flyout;
-    using OmniUI.TitleBarItem;
+    using OmniUI.Framework.Services;
+    using OmniUI.Menu.TitleBarItem;
 
     public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {

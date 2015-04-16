@@ -3,15 +3,15 @@
     using System;
     using System.Collections.Generic;
     using Omnipaste.Shell.SessionInfo;
-    using OmniUI.MainMenuEntry;
-    using OmniUI.SecondaryMenuEntry;
+    using OmniUI.Menu.MainItem;
+    using OmniUI.Menu.SecondaryItem;
 
     public interface ISideMenuViewModel : IDisposable
     {
         ISessionInfoViewModel SessionInfoViewModel { get; set; }
 
-        IEnumerable<IMainMenuEntryViewModel> MainMenuViewModels { get; set; }
+        IEnumerable<IMainItemViewModel> MainMenuViewModels { get; set; }
 
-        IEnumerable<ISecondaryMenuEntryViewModel> SecondaryMenuViewModels { get; set; }
+        IEnumerable<ISecondaryItemViewModel> SecondaryMenuViewModels { get; set; }
     }
 }

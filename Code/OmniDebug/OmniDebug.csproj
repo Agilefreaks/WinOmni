@@ -204,7 +204,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugBar\DebugMenuEntryViewModel.cs" />
+    <Compile Include="DebugBar\DebugItemViewModel.cs" />
     <Content Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>

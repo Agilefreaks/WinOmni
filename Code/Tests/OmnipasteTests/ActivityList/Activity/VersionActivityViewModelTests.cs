@@ -2,8 +2,9 @@
 {
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.ActivityList.Activity;
-    using Omnipaste.Services;
+    using Omnipaste.Activities.ActivityList.Activity;
+    using Omnipaste.Framework.Services;
+    using OmniUI.Framework.Services;
 
     [TestFixture]
     public class VersionActivityViewModelTests

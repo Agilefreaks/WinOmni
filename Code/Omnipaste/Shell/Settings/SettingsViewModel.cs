@@ -7,10 +7,10 @@
     using Omni;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
     using OmniUI.Flyout;
 
-    public class SettingsViewModel : FlyoutBaseViewModel, ISettingsViewModel
+    public class SettingsViewModel : FlyoutViewModelBase, ISettingsViewModel
     {
         private readonly IConfigurationService _configurationService;
 

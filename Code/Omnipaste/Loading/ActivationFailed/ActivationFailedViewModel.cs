@@ -4,7 +4,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
 
     public class ActivationFailedViewModel : Screen, IActivationFailedViewModel
     {

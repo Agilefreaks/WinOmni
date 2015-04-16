@@ -7,7 +7,7 @@
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class ConversationModelFactoryTests

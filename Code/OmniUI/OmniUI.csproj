@@ -88,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
+    <Compile Include="Details\DetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Details\IDetailsViewModelWithAutoRefresh.cs" />
+    <Compile Include="Dialog\DialogViewModel.cs" />
+    <Compile Include="Dialog\IDialogViewModel.cs" />
     <Compile Include="Framework\Behaviors\DisposableBehavior.cs" />
     <Compile Include="Framework\Behaviors\HotKeyBehavior.cs" />
     <Compile Include="Framework\Behaviors\HotKeyCommandBehavior.cs" />
@@ -108,7 +112,7 @@
     <Compile Include="Framework\Converters\ValueToRadiusConverter.cs" />
     <Compile Include="Framework\Converters\WhiteSpaceToBooleanConverter.cs" />
     <Compile Include="Details\DetailsViewModelBase.cs" />
-    <Compile Include="Details\DetailsViewModelWithHeaderBase.cs" />
+    <Compile Include="Details\DetailsWithHeaderViewModelBase.cs" />
     <Compile Include="Details\IDetailsViewModel.cs" />
     <Compile Include="Details\IDetailsViewModelWithHeader.cs" />
     <Compile Include="Framework\ExtensionMethods\ScreenExtensionMethods.cs" />
@@ -117,17 +121,18 @@
     <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Framework\ISubscriptionsManager.cs" />
     <Compile Include="Framework\NotificationTypeEnum.cs" />
+    <Compile Include="Framework\Services\IUiRefreshService.cs" />
+    <Compile Include="Framework\Services\UIRefreshService.cs" />
     <Compile Include="Framework\SubscriptionsManager.cs" />
     <Compile Include="Framework\Helpers\IResourceHelper.cs" />
     <Compile Include="Framework\Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Framework\Helpers\ResourceHelper.cs" />
-    <Compile Include="Interfaces\IMenuEntryViewModel.cs" />
+    <Compile Include="Menu\IMenuItemViewModel.cs" />
     <Compile Include="List\IListViewModel.cs" />
     <Compile Include="List\ListViewModelBase.cs" />
     <Compile Include="List\ListViewModelStatusEnum.cs" />
     <Compile Include="Framework\Commands\IObservableCommand.cs" />
     <Compile Include="Framework\Entities\Entity.cs" />
-    <Compile Include="Framework\Entities\IEntity.cs" />
     <Compile Include="Framework\Models\Model.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
@@ -135,24 +140,20 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Resources\IconNames.cs" />
-    <Compile Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml.cs">
-      <DependentUpon>SecondaryMenuEntryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Services\ICommandService.cs" />
-    <Compile Include="TitleBarItem\ITitleBarItemViewModel.cs" />
-    <Compile Include="Workspace\IWorkspaceConductor.cs" />
-    <Compile Include="Workspace\WorkspaceMainMenuEntry.cs" />
-    <Compile Include="Workspace\IDetailsConductorViewModel.cs" />
-    <Compile Include="Workspace\IWorkspace.cs" />
-    <Compile Include="MainMenuEntry\IMainMenuEntryViewModel.cs" />
-    <Compile Include="SecondaryMenuEntry\ISecondaryMenuEntryViewModel.cs" />
+    <Compile Include="Framework\Services\ICommandService.cs" />
+    <Compile Include="Menu\TitleBarItem\ITitleBarItemViewModel.cs" />
+    <Compile Include="Workspaces\DetailsConductorViewModel.cs" />
+    <Compile Include="Workspaces\IWorkspaceConductor.cs" />
+    <Compile Include="Menu\WorkspaceItemViewModel.cs" />
+    <Compile Include="Workspaces\IDetailsConductorViewModel.cs" />
+    <Compile Include="Menu\MainItem\IMainItemViewModel.cs" />
+    <Compile Include="Menu\SecondaryItem\ISecondaryItemViewModel.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="OmniUiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Flyout\FlyoutBaseViewModel.cs" />
-    <Compile Include="Workspace\IMasterDetailsWorkspace.cs" />
-    <Compile Include="Workspace\MasterDetailsWorkspace.cs" />
-    <Compile Include="Workspace\Workspace.cs" />
+    <Compile Include="Flyout\FlyoutViewModelBase.cs" />
+    <Compile Include="Workspaces\IMasterDetailsWorkspace.cs" />
+    <Compile Include="Workspaces\MasterDetailsWorkspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -166,11 +167,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Details\DetailsViewWithHeader.xaml">
+    <Page Include="Details\DetailsWithHeaderView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainMenuEntry\MainMenuEntryView.xaml">
+    <Page Include="Dialog\DialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Menu\MainItem\MainItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,15 +267,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SecondaryMenuEntry\SecondaryMenuEntryView.xaml">
+    <Page Include="Menu\SecondaryItem\SecondaryItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TitleBarItem\TitleBarItemView.xaml">
+    <Page Include="Menu\TitleBarItem\TitleBarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Workspace\WorkspaceView.xaml">
+    <Page Include="Workspaces\DetailsConductorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Workspaces\WorkspaceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

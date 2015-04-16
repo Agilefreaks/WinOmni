@@ -7,7 +7,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
     using Omnipaste.Shell.TitleBar;
 
     [TestFixture]

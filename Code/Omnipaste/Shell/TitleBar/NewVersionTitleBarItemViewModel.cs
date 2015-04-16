@@ -4,10 +4,10 @@
     using Caliburn.Micro;
     using OmniCommon.ExtensionMethods;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
     using OmniUI.Attributes;
-    using OmniUI.TitleBarItem;
     using Omnipaste.Properties;
+    using OmniUI.Menu.TitleBarItem;
 
     [UseView(typeof(TitleBarItemView))]
     public class NewVersionTitleBarItemViewModel : Screen, ITitleBarItemViewModel

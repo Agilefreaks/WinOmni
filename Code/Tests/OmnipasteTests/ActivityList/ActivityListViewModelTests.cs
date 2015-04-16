@@ -11,13 +11,14 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ActivityList;
-    using Omnipaste.ActivityList.Activity;
+    using Omnipaste.Activities.ActivityList;
+    using Omnipaste.Activities.ActivityList.Activity;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
+    using OmniUI.Framework.Services;
 
     [TestFixture]
     public class ActivityListViewModelTests

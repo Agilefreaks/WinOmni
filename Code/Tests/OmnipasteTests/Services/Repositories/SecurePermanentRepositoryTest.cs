@@ -6,7 +6,7 @@
     using System.Reactive.Concurrency;
     using FluentAssertions;
     using NUnit.Framework;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
     using OmnipasteTests.Framework.Helpers;
 
     [TestFixture]

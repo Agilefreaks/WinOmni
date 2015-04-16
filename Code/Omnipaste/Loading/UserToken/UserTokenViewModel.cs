@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using Ninject;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Framework.EventAggregatorMessages;
 
     public class UserTokenViewModel : Screen, IUserTokenViewModel
     {

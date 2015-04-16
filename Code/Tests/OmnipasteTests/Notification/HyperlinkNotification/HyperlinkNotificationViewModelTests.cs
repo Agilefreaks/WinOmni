@@ -3,7 +3,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.NotificationList.Notification.HyperlinkNotification;
+    using Omnipaste.Notifications.NotificationList.Notification.HyperlinkNotification;
 
     public class HyperlinkNotificationViewModelTests
     {

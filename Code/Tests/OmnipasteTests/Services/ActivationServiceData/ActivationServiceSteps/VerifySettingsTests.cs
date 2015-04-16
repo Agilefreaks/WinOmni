@@ -13,7 +13,7 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
     using Refit;
 
     [TestFixture]

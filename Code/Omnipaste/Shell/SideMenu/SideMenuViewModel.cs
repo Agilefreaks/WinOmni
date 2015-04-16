@@ -7,8 +7,8 @@
     using Ninject;
     using OmniCommon.Interfaces;
     using Omnipaste.Shell.SessionInfo;
-    using OmniUI.MainMenuEntry;
-    using OmniUI.SecondaryMenuEntry;
+    using OmniUI.Menu.MainItem;
+    using OmniUI.Menu.SecondaryItem;
 
     public class SideMenuViewModel : ISideMenuViewModel
     {
@@ -16,10 +16,10 @@
         public ISessionInfoViewModel SessionInfoViewModel { get; set; }
 
         [Inject]
-        public IEnumerable<IMainMenuEntryViewModel> MainMenuViewModels { get; set; }
+        public IEnumerable<IMainItemViewModel> MainMenuViewModels { get; set; }
         
         [Inject]
-        public IEnumerable<ISecondaryMenuEntryViewModel> SecondaryMenuViewModels { get; set; }
+        public IEnumerable<ISecondaryItemViewModel> SecondaryMenuViewModels { get; set; }
 
         [Inject]
         public IConfigurationService ConfigurationService { get; set; }

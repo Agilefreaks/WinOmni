@@ -11,7 +11,7 @@
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
     using OmniCommon.Settings;
-    using Omnipaste.Services.Monitors.ProxyConfiguration;
+    using Omnipaste.Framework.Services.Monitors.ProxyConfiguration;
 
     [TestFixture]
     public class ProxyConfigurationMonitorTests

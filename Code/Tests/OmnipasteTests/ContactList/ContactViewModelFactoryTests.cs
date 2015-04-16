@@ -4,8 +4,8 @@
     using Microsoft.Practices.ServiceLocation;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.ContactList;
-    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
 

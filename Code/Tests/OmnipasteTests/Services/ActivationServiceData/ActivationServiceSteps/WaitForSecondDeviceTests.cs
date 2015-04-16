@@ -10,7 +10,7 @@
     using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class WaitForSecondDeviceTests

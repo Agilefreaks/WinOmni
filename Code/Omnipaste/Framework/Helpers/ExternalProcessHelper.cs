@@ -6,7 +6,7 @@
     using Caliburn.Micro;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
 
     public class ExternalProcessHelper : IProcessHelper
     {

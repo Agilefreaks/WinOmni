@@ -7,14 +7,13 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
-    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.People;
     using OmniUI.Framework.Commands;
-    using OmniUI.Workspace;
+    using OmniUI.Workspaces;
 
     public class ComposeSMSCommand : IObservableCommand<Unit>
     {
@@ -40,10 +39,10 @@
         public ContactModel Contact { get; private set; }
 
         [Inject]
-        public IWorkspaceDetailsViewModelFactory DetailsViewModelFactory { get; set; }
+        public IDetailsViewModelFactory DetailsViewModelFactory { get; set; }
 
         [Inject]
-        public IPeopleWorkspace PeopleWorkspace { get; set; }
+        public IConversationWorkspace ConversationWorkspace { get; set; }
 
         [Inject]
         public IShellViewModel ShellViewModel { get; set; }
@@ -76,13 +75,13 @@
 
         private void ActivatePeopleWorkspace()
         {
-            WorkspaceConductor.ActivateItem(PeopleWorkspace);
+            WorkspaceConductor.ActivateItem(ConversationWorkspace);
         }
 
         private IContactViewModel GetCorrespondingViewModel()
         {
             return
-                PeopleWorkspace.MasterScreen.GetChildren()
+                ConversationWorkspace.MasterScreen.GetChildren()
                     .First(item => item.Model.BackingEntity.UniqueId == Contact.UniqueId);
         }
 

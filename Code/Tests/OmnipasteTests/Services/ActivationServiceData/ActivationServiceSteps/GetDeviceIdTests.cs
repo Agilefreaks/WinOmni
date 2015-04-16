@@ -9,7 +9,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class GetDeviceIdTests

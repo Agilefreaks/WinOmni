@@ -7,7 +7,7 @@ namespace Omnipaste.Framework.Entities.Factories
     using Contacts.Models;
     using Ninject;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
     using PhoneCalls.Dto;
 
     public class PhoneCallFactory : IPhoneCallFactory

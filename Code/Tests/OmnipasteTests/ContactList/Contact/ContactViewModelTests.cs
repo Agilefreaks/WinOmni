@@ -9,16 +9,18 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Providers;
+    using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.Properties;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.People;
-    using OmniUI.Workspace;
+    using OmniUI.Details;
+    using OmniUI.Framework.Services;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ContactViewModelTests
@@ -33,7 +35,7 @@
 
         private Mock<IUiRefreshService> _mockUiRefreshService;
 
-        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private TestScheduler _testScheduler;
 
@@ -54,7 +56,7 @@
             _contactModel = new ContactModel(_contactEntity);
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockConversationProvider = new Mock<IConversationProvider>();
             _mockConversation = new Mock<IConversationContext> { DefaultValue = DefaultValue.Mock };
             _mockConversationProvider.Setup(x=> x.ForContact(It.IsAny<ContactEntity>())).Returns(_mockConversation.Object);
@@ -142,20 +144,20 @@
         [Test]
         public void ShowDetails_Always_ActivatesAnActivityDetailsViewModelInItsParentActivityWorkspace()
         {
-            var mockWorkspace = new Mock<IPeopleWorkspace>();
+            var mockWorkspace = new Mock<IConversationWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             _subject.Parent = mockWorkspace.Object;
 
             _subject.ShowDetails();
 
-            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IDetailsViewModelWithHeader>()), Times.Once());
         }
 
         [Test]
         public void ShowDetails_Always_StoresSelectedContactInSession()
         {
-            var mockWorkspace = new Mock<IPeopleWorkspace>();
+            var mockWorkspace = new Mock<IConversationWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
             _subject.Parent = mockWorkspace.Object;

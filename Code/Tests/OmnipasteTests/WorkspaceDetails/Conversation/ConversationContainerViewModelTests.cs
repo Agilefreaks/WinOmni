@@ -3,10 +3,10 @@
     using System.Collections.ObjectModel;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Conversations.Conversation;
+    using Omnipaste.Conversations.Conversation.SMSComposer;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.SMSComposer;
-    using Omnipaste.WorkspaceDetails.Conversation;
 
     [TestFixture]
     public class ConversationContainerViewModelTests

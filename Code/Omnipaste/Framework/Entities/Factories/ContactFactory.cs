@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Reactive.Linq;
     using Contacts.Dto;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
 
     public class ContactFactory : IContactFactory
     {

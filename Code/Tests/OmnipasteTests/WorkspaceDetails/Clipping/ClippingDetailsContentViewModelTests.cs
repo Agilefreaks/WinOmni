@@ -5,11 +5,11 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Clippings.CilppingDetails;
     using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails.Clipping;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class ClippingDetailsContentViewModelTests

@@ -5,18 +5,18 @@
     using Microsoft.Practices.ServiceLocation;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Activities.ActivityDetails.Version;
+    using Omnipaste.Clippings.CilppingDetails;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails;
-    using Omnipaste.WorkspaceDetails.Clipping;
-    using Omnipaste.WorkspaceDetails.Version;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class WorkspaceDetailsViewModelFactoryTests
     {
-        private WorkspaceDetailsViewModelFactory _subject;
+        private DetailsViewModelFactory _subject;
 
         private Mock<IServiceLocator> _mockServiceLocator;
 
@@ -32,7 +32,7 @@
             _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactEntity()));
             _activityModelFactory = new ActivityModelFactory(_mockContactRepository.Object);
 
-            _subject = new WorkspaceDetailsViewModelFactory(_mockServiceLocator.Object);
+            _subject = new DetailsViewModelFactory(_mockServiceLocator.Object);
         }
 
         [Test]

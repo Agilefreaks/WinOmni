@@ -9,7 +9,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.Monitors.Power;
+    using Omnipaste.Framework.Services.Monitors.Power;
 
     [TestFixture]
     public class PowerMonitorTests

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cal="http://www.caliburnproject.org"
                     xmlns:controls="clr-namespace:OmniUI.Controls;assembly=OmniUI"
-                    xmlns:notification="clr-namespace:Omnipaste.NotificationList.Notification">
+                    xmlns:notification="clr-namespace:Omnipaste.Notifications.NotificationList.Notification">
 
     <!--ItemsControl-->
     <Style x:Key="NotificationContainerStyle" BasedOn="{StaticResource {x:Type ItemsControl}}" TargetType="ItemsControl">

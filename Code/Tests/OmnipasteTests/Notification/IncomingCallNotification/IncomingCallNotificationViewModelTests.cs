@@ -14,9 +14,9 @@
     using Omnipaste.Framework.Commands;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.NotificationList.Notification;
-    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
-    using OmniUI.Services;
+    using Omnipaste.Notifications.NotificationList.Notification;
+    using Omnipaste.Notifications.NotificationList.Notification.IncomingCallNotification;
+    using OmniUI.Framework.Services;
     using PhoneCalls.Resources.v1;
 
     [TestFixture]

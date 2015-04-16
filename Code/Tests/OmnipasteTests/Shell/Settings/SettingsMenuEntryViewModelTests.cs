@@ -7,7 +7,7 @@
      [TestFixture]
      public class SettingsMenuEntryViewModelTests
      {
-         private SettingsMenuEntryViewModel _settingsHeaderViewModel;
+         private SettingsItemViewModel _settingsHeaderViewModel;
 
          private Mock<ISettingsViewModel> _mockSettingsViewModel;
 
@@ -15,7 +15,7 @@
          public void SetUp()
          {
              _mockSettingsViewModel = new Mock<ISettingsViewModel>();
-             _settingsHeaderViewModel = new SettingsMenuEntryViewModel(_mockSettingsViewModel.Object);
+             _settingsHeaderViewModel = new SettingsItemViewModel(_mockSettingsViewModel.Object);
          }
 
          [Test]

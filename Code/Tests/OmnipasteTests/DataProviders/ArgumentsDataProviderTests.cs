@@ -5,7 +5,7 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.DataProviders;
+    using Omnipaste.Framework.DataProviders;
 
     public class ArgumentsDataProviderTests
     {

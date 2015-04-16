@@ -8,7 +8,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class WaitForCloudClippingTests

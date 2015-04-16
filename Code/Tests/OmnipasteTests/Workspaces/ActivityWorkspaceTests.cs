@@ -3,9 +3,9 @@
     using Caliburn.Micro;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.ActivityList;
-    using Omnipaste.Workspaces.Activity;
-    using OmniUI.Workspace;
+    using Omnipaste.Activities;
+    using Omnipaste.Activities.ActivityList;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ActivityWorkspaceTests

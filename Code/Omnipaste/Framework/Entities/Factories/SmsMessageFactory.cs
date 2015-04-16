@@ -7,7 +7,7 @@
     using Contacts.Models;
     using Ninject;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
     using SMS.Dto;
 
     public class SmsMessageFactory : ISmsMessageFactory

@@ -3,7 +3,7 @@
     using System;
     using System.Reactive.Linq;
     using Omnipaste.Framework.Entities;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
 
     public interface ISmsMessageModelFactory
     {

@@ -1,6 +1,6 @@
 ﻿namespace Omnipaste.Framework.ExtensionMethods
 {
-    using Omnipaste.ActivityList.Activity;
+    using Omnipaste.Activities.ActivityList.Activity;
 
     public static class ActivityTypeExtensions
     {

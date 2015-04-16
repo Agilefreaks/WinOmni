@@ -6,11 +6,11 @@
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.ActivityList.Activity;
+    using Omnipaste.Activities.ActivityList.Activity;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models.Factories;
+    using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.Properties;
-    using Omnipaste.Services.Repositories;
 
     [TestFixture]
     public class ActivityModelFactoryTests

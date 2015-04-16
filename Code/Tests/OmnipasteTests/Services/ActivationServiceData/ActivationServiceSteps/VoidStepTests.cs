@@ -4,7 +4,7 @@
     using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
 
     [TestFixture]
     public class VoidStepTests

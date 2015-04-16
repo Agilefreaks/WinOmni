@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Omnipaste.Conversations.Conversation.ConversationHeader.Deleted"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource DeletedItemHeaderBackgroundBrush}" Padding="{DynamicResource ActivityHeaderMargin}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Static properties:Resources.ConversationDeleted}" FontFamily="{DynamicResource ActivityContentFont}"
+                   FontSize="{DynamicResource HeaderContentFontSize}" FontStyle="Italic" Foreground="{DynamicResource ConfirmationMessageBrush}"
+                   VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="UndoDelete" DockPanel.Dock="Right" Style="{DynamicResource ShapeButtonWithOuterHighlight}"
+                    Background="{DynamicResource ConfirmationMessageBrush}" Content="{DynamicResource undo_icon}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{DynamicResource StaticContentDecoratorStyle}" Background="{DynamicResource ConfirmationMessageBrush}" />
+    </Grid>
+</UserControl>

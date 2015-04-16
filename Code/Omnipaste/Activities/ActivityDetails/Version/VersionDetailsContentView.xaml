@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Omnipaste.Activities.ActivityDetails.Version.VersionDetailsContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:omnipaste="clr-namespace:Omnipaste"
+             xmlns:behaviours="clr-namespace:Omnipaste.Framework.Behaviours"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+
+        <Style TargetType="FlowDocument" x:Key="DocumentStyle">
+            <Setter Property="FontFamily" Value="{DynamicResource ActivityContentFont}" />
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{DynamicResource ActivityContentBrush}" />
+        </Style>
+
+        <Style x:Key="PageHeader" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="42" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <Style x:Key="SubHeader" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <Style x:Key="SubHeaderSecondary" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <xaml:Markdown x:Key="Markdown"
+                        DocumentStyle="{StaticResource DocumentStyle}"
+                        Heading1Style="{StaticResource PageHeader}"
+                        Heading2Style="{StaticResource SubHeader}"
+                        Heading3Style="{StaticResource SubHeaderSecondary}"/>
+
+        <xaml:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
+
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="True" Margin="20,0,0,0">
+        <RichTextBox DockPanel.Dock="Top" Style="{DynamicResource ActivityContentRichTextBoxStyle}"
+                     Visibility="{Binding Path=WasInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="{x:Static properties:Resources.DiscussRelease}" />
+
+                    <Bold>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.FacebookUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Facebook
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.TwitterUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Twitter
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                        <Hyperlink NavigateUri="{Binding Source={x:Static omnipaste:Constants.UserVoiceUrl}, Converter={StaticResource StringToUriConverter}}">
+                            Uservoice
+                            <i:Interaction.Behaviors>
+                                <behaviours:AutoFollowLinkBehavior/>
+                            </i:Interaction.Behaviors>
+                        </Hyperlink>
+                    </Bold>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <FlowDocumentScrollViewer  HorizontalAlignment="Stretch"
+                                   Margin="5"
+                                   HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                   IsSelectionEnabled="False"
+                                   Document="{Binding Path=ReleaseLog, Converter={StaticResource TextToFlowDocumentConverter}}" />
+    </DockPanel>
+</UserControl>

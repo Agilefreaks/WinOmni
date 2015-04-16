@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using Moq;
     using NUnit.Framework;
-    using Omnipaste.WorkspaceDetails.Clipping;
+    using Omnipaste.Clippings.CilppingDetails;
 
     [TestFixture]
     public class ClippingDetailsViewModelTests

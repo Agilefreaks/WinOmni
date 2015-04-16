@@ -1,7 +1,7 @@
 ﻿namespace OmniUI.Framework.ExtensionMethods
 {
     using Caliburn.Micro;
-    using OmniUI.Workspace;
+    using OmniUI.Workspaces;
 
     public static class ScreenExtensionMethods
     {
@@ -19,9 +19,9 @@
             return parent;
         }
 
-        public static IWorkspace GetParentWorkspace(this IChild child)
+        public static IMasterDetailsWorkspace GetParentWorkspace(this IChild child)
         {
-            return child.GetParentOfType<IWorkspace>();
+            return child.GetParentOfType<IMasterDetailsWorkspace>();
         }
 
         #endregion

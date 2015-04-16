@@ -7,15 +7,15 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
-    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.People;
-    using OmniUI.Workspace;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ComposeSMSCommandTests
@@ -26,9 +26,9 @@
 
         private Mock<IWorkspaceConductor> _mockWorkspaceConductor;
 
-        private Mock<IPeopleWorkspace> _mockPeopleWorkspace;
+        private Mock<IConversationWorkspace> _mockPeopleWorkspace;
 
-        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private Mock<IShellViewModel> _mockShellViewModel;
 
@@ -39,13 +39,13 @@
         {
             _contactEntity = new ContactEntity();
             _mockWorkspaceConductor = new Mock<IWorkspaceConductor>();
-            _mockPeopleWorkspace = new Mock<IPeopleWorkspace> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockPeopleWorkspace = new Mock<IConversationWorkspace> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockShellViewModel = new Mock<IShellViewModel>();
             _subject = new ComposeSMSCommand(new ContactModel(_contactEntity))
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
-                               PeopleWorkspace = _mockPeopleWorkspace.Object,
+                               ConversationWorkspace = _mockPeopleWorkspace.Object,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
                                ShellViewModel = _mockShellViewModel.Object
                            };

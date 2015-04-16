@@ -10,7 +10,7 @@
     using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
-    using Omnipaste.Services;
+    using Omnipaste.Framework.Services;
 
     [TestFixture]
     public class SessionManagerTests

@@ -3,6 +3,19 @@
     using System;
     using OmniCommon.Helpers;
 
+    public interface IEntity
+    {
+        string Id { get; set; }
+
+        bool IsDeleted { get; set; }
+
+        DateTime Time { get; set; }
+
+        string UniqueId { get; set; }
+
+        bool WasViewed { get; set; }
+    }
+
     public abstract class Entity : IEntity
     {
         private DateTime _time;

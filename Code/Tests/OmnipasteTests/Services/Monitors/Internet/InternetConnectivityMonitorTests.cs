@@ -6,7 +6,7 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.Services.Monitors.Internet;
+    using Omnipaste.Framework.Services.Monitors.Internet;
 
     [TestFixture]
     public class InternetConnectivityMonitorTests

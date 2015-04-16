@@ -6,14 +6,15 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ClippingList.Clipping;
+    using Omnipaste.Clippings;
+    using Omnipaste.Clippings.ClippingList.Clipping;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.Clippings;
-    using OmniUI.Workspace;
+    using OmniUI.Details;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ClippingViewModelTests
@@ -24,7 +25,7 @@
 
         private Mock<ISessionManager> _mockSessionManager;
 
-        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private Mock<IClippingRepository> _mockClippingRepository;
 
@@ -38,7 +39,7 @@
             SchedulerProvider.Dispatcher = _testScheduler;
 
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
-            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory>
+            _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory>
                                                {
                                                    DefaultValue =
                                                        DefaultValue.Mock
@@ -119,7 +120,7 @@
 
             _subject.ShowDetails();
 
-            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IDetailsViewModelWithHeader>()), Times.Once());
         }
 
         [Test]

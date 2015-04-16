@@ -11,11 +11,11 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
+    using Omnipaste.Conversations.Conversation;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Entities.Factories;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails.Conversation;
+    using Omnipaste.Framework.Services.Repositories;
     using OmnipasteTests.Framework.Helpers;
     using PhoneCalls.Dto;
     using PhoneCalls.Resources.v1;

@@ -13,7 +13,7 @@
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Entities.Factories;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Repositories;
     using SMS.Dto;
 
     [TestFixture]

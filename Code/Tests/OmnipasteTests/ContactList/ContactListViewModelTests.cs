@@ -12,12 +12,12 @@
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ContactList;
-    using Omnipaste.ContactList.Contact;
+    using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
     using OmniUI.List;
 
     [TestFixture]

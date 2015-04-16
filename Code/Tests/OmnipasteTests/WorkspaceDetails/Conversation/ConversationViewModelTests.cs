@@ -3,8 +3,8 @@
     using System.Collections.ObjectModel;
     using Moq;
     using NUnit.Framework;
+    using Omnipaste.Conversations.Conversation;
     using Omnipaste.Framework.Models;
-    using Omnipaste.WorkspaceDetails.Conversation;
 
     [TestFixture]
     public class ConversationViewModelTests

@@ -8,11 +8,11 @@
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.NotificationList;
-    using Omnipaste.NotificationList.Notification;
-    using Omnipaste.NotificationList.Notification.ClippingNotification;
-    using Omnipaste.NotificationList.Notification.IncomingCallNotification;
-    using Omnipaste.NotificationList.Notification.IncomingSmsNotification;
+    using Omnipaste.Notifications.NotificationList;
+    using Omnipaste.Notifications.NotificationList.Notification;
+    using Omnipaste.Notifications.NotificationList.Notification.ClippingNotification;
+    using Omnipaste.Notifications.NotificationList.Notification.IncomingCallNotification;
+    using Omnipaste.Notifications.NotificationList.Notification.IncomingSmsNotification;
 
     [TestFixture]
     public class NotificationViewModelFactoryTests

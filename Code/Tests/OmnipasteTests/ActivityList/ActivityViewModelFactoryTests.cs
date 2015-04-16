@@ -3,8 +3,8 @@
     using FluentAssertions;
     using Ninject.MockingKernel.Moq;
     using NUnit.Framework;
-    using Omnipaste.ActivityList;
-    using Omnipaste.ActivityList.Activity;
+    using Omnipaste.Activities.ActivityList;
+    using Omnipaste.Activities.ActivityList.Activity;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
 

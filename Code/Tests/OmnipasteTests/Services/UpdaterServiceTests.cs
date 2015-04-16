@@ -16,8 +16,8 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Helpers;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Providers;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Providers;
 
     [TestFixture]
     public class UpdaterServiceTests

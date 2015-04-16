@@ -8,8 +8,8 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services.Providers;
+    using Omnipaste.Framework.Services.Repositories;
 
     [TestFixture]
     public class MergedConversationContextTests

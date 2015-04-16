@@ -10,42 +10,44 @@
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
     using OmniCommon.Settings;
-    using Omnipaste.ActivityList;
-    using Omnipaste.ClippingList;
-    using Omnipaste.ContactList;
-    using Omnipaste.DataProviders;
-    using Omnipaste.Dialog;
+    using Omnipaste.Activities;
+    using Omnipaste.Activities.ActivityList;
+    using Omnipaste.Activities.Mennu;
+    using Omnipaste.Clippings;
+    using Omnipaste.Clippings.ClippingList;
+    using Omnipaste.Clippings.Menu;
+    using Omnipaste.Conversations;
+    using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.Menu;
     using Omnipaste.Framework;
+    using Omnipaste.Framework.DataProviders;
     using Omnipaste.Framework.Entities.Factories;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.NotificationList;
-    using Omnipaste.Services;
-    using Omnipaste.Services.ActivationServiceData;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps;
-    using Omnipaste.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
-    using Omnipaste.Services.ExceptionReporters;
-    using Omnipaste.Services.Monitors.Credentials;
-    using Omnipaste.Services.Monitors.Internet;
-    using Omnipaste.Services.Monitors.Power;
-    using Omnipaste.Services.Monitors.ProxyConfiguration;
-    using Omnipaste.Services.Monitors.User;
-    using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.ActivationServiceData;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps;
+    using Omnipaste.Framework.Services.ActivationServiceData.ActivationServiceSteps.ProxyDetection;
+    using Omnipaste.Framework.Services.ExceptionReporters;
+    using Omnipaste.Framework.Services.Monitors.Credentials;
+    using Omnipaste.Framework.Services.Monitors.Internet;
+    using Omnipaste.Framework.Services.Monitors.Power;
+    using Omnipaste.Framework.Services.Monitors.ProxyConfiguration;
+    using Omnipaste.Framework.Services.Monitors.User;
+    using Omnipaste.Framework.Services.Providers;
+    using Omnipaste.Framework.Services.Repositories;
+    using Omnipaste.Notifications.NotificationList;
     using Omnipaste.Shell;
     using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.TitleBar;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.Activity;
-    using Omnipaste.Workspaces.Clippings;
-    using Omnipaste.Workspaces.NewMessage;
-    using Omnipaste.Workspaces.People;
     using OmniUI;
+    using OmniUI.Dialog;
     using OmniUI.Flyout;
-    using OmniUI.MainMenuEntry;
-    using OmniUI.SecondaryMenuEntry;
-    using OmniUI.TitleBarItem;
-    using OmniUI.Workspace;
+    using OmniUI.Menu.MainItem;
+    using OmniUI.Menu.SecondaryItem;
+    using OmniUI.Menu.TitleBarItem;
+    using OmniUI.Workspaces;
 
     public class OmnipasteModule : ModuleBase
     {
@@ -62,12 +64,12 @@
             Kernel.Bind<IArgumentsDataProvider>().To<ArgumentsDataProvider>();
 
             Kernel.Bind<IFlyoutViewModel>().ToMethod(context => context.Kernel.Get<ISettingsViewModel>());
-            Kernel.Bind<IMainMenuEntryViewModel>().To<ActivityMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<PeopleMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<ClippingsMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<IMainMenuEntryViewModel>().To<NewMessageMainMenuEntryViewModel>().InSingletonScope();
-            Kernel.Bind<ISecondaryMenuEntryViewModel>()
-                .ToMethod(context => context.Kernel.Get<SettingsMenuEntryViewModel>());
+            Kernel.Bind<IMainItemViewModel>().To<ActivityItemViewModel>().InSingletonScope();
+            Kernel.Bind<IMainItemViewModel>().To<PeopleItemViewModel>().InSingletonScope();
+            Kernel.Bind<IMainItemViewModel>().To<ClippingsItemViewModel>().InSingletonScope();
+            Kernel.Bind<IMainItemViewModel>().To<NewMessageItemViewModel>().InSingletonScope();
+            Kernel.Bind<ISecondaryItemViewModel>()
+                .ToMethod(context => context.Kernel.Get<SettingsItemViewModel>());
             Kernel.Bind<ITitleBarItemViewModel>().To<NewVersionTitleBarItemViewModel>().InSingletonScope();
 
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
@@ -90,7 +92,7 @@
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), typeof(CredentialsMonitor),
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
                            typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
-                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(PeopleWorkspace), typeof(ClippingsWorkspace), typeof(WorkspaceDetailsViewModelFactory),
+                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(ConversationWorkspace), typeof(ClippingsWorkspace), typeof(DetailsViewModelFactory),
                            typeof(ActivityViewModelFactory), typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationModelFactory),
                            typeof(ConversationProvider), 
                            typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)

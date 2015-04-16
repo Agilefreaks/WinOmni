@@ -25,9 +25,9 @@
         new T BackingEntity { get; set; }
     }
 
-    public class Model : PropertyChangedBase, IModel
+    public abstract class Model : PropertyChangedBase, IModel
     {
-        public Model(IEntity backingEntity)
+        protected Model(IEntity backingEntity)
         {
             BackingEntity = backingEntity;
         }
@@ -102,10 +102,10 @@
         #endregion
     }
 
-    public class Model<T> : Model, IModel<T>
+    public abstract class Model<T> : Model, IModel<T>
         where T : Entity
     {
-        public Model(T backingEntity)
+        protected Model(T backingEntity)
             : base(backingEntity)
         {
             BackingEntity = backingEntity;

@@ -9,15 +9,17 @@
     using Moq;
     using NUnit.Framework;
     using OmniCommon.Helpers;
-    using Omnipaste.ActivityList.Activity;
+    using Omnipaste.Activities;
+    using Omnipaste.Activities.ActivityList.Activity;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Repositories;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using Omnipaste.Workspaces.Activity;
-    using OmniUI.Workspace;
+    using OmniUI.Details;
+    using OmniUI.Framework.Services;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ActivityViewModelTests
@@ -28,7 +30,7 @@
 
         private TestScheduler _testScheduler;
 
-        private Mock<IWorkspaceDetailsViewModelFactory> _mockDetailsViewModelFactory;
+        private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
         private Mock<ISessionManager> _mockSessionManager;
 
@@ -42,7 +44,7 @@
             _mockUiRefreshService = new Mock<IUiRefreshService> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository = new Mock<IContactRepository> { DefaultValue = DefaultValue.Mock };
             _mockContactRepository.Setup(m => m.Get(It.IsAny<string>())).Returns(Observable.Return(new ContactEntity()));
-            _mockDetailsViewModelFactory = new Mock<IWorkspaceDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
+            _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockSessionManager = new Mock<ISessionManager> { DefaultValue = DefaultValue.Mock };
             _activityModelFactory = new ActivityModelFactory(_mockContactRepository.Object);
 
@@ -132,7 +134,7 @@
 
             _subject.ShowDetails();
 
-            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IWorkspaceDetailsViewModel>()), Times.Once());
+            mockDetailsConductor.Verify(x => x.ActivateItem(It.IsAny<IDetailsViewModelWithHeader>()), Times.Once());
         }
 
         [Test]
@@ -157,7 +159,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IDetailsViewModelWithHeader>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey])
@@ -178,7 +180,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IDetailsViewModelWithHeader>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             _mockSessionManager.SetupGet(m => m[ActivityViewModel.SessionSelectionKey])
@@ -199,7 +201,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IDetailsViewModelWithHeader>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);
@@ -219,7 +221,7 @@
             var mockWorkspace = new Mock<IActivityWorkspace>();
             var mockDetailsConductor = new Mock<IDetailsConductorViewModel>();
             mockWorkspace.SetupGet(x => x.DetailsConductor).Returns(mockDetailsConductor.Object);
-            var mockActivityDetailsViewModel = new Mock<IWorkspaceDetailsViewModel>();
+            var mockActivityDetailsViewModel = new Mock<IDetailsViewModelWithHeader>();
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ActivityModel>()))
                 .Returns(mockActivityDetailsViewModel.Object);
             mockActivityDetailsViewModel.SetupGet(x => x.IsActive).Returns(false);

@@ -12,15 +12,16 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.EventAggregatorMessages;
+    using Omnipaste.Conversations.Conversation;
+    using Omnipaste.Conversations.Conversation.Message;
+    using Omnipaste.Conversations.Conversation.PhoneCall;
     using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Framework.Models;
-    using Omnipaste.Services;
-    using Omnipaste.Services.Providers;
-    using Omnipaste.Services.Repositories;
-    using Omnipaste.WorkspaceDetails.Conversation;
-    using Omnipaste.WorkspaceDetails.Conversation.Message;
-    using Omnipaste.WorkspaceDetails.Conversation.PhoneCall;
+    using Omnipaste.Framework.Services;
+    using Omnipaste.Framework.Services.Providers;
+    using Omnipaste.Framework.Services.Repositories;
+    using OmniUI.Framework.Services;
 
     [TestFixture]
     public class ConversationContentViewModelTests
