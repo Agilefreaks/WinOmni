@@ -1,9 +1,9 @@
-﻿﻿namespace OmnipasteTests.Shell.SettingsHeader
+﻿﻿namespace OmnipasteTests.Shell.Settings
  {
      using Moq;
      using NUnit.Framework;
      using Omnipaste.Shell.Settings;
-     
+
      [TestFixture]
      public class SettingsMenuEntryViewModelTests
      {

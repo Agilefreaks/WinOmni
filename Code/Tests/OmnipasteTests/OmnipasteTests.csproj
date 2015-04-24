@@ -143,28 +143,27 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsHeaderViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationContainerViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationContentViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationHeaderViewModelTests.cs" />
-    <Compile Include="ActivityList\ActivityListViewModelTests.cs" />
-    <Compile Include="ActivityList\ActivityViewModelFactoryTests.cs" />
-    <Compile Include="ActivityList\Activity\ActivityViewModelTests.cs" />
-    <Compile Include="ActivityList\Activity\VersionActivityViewModelTests.cs" />
-    <Compile Include="ClippingList\ClippingListViewModelTests.cs" />
-    <Compile Include="ClippingList\ClippingViewModelFactoryTests.cs" />
-    <Compile Include="ClippingList\Clipping\ClippingViewModelTests.cs" />
-    <Compile Include="ContactList\ContactViewModelFactoryTests.cs" />
-    <Compile Include="ContactList\Contact\ContactViewModelTests.cs" />
-    <Compile Include="ContactList\ContactListViewModelTests.cs" />
+    <Compile Include="Clippings\ClippingDetails\ClippingDetailsHeaderViewModelTests.cs" />
+    <Compile Include="Clippings\ClippingDetails\ClippingDetailsViewModelTests.cs" />
+    <Compile Include="Conversations\Conversation\ConversationContainerViewModelTests.cs" />
+    <Compile Include="Conversations\Conversation\ConversationContentViewModelTests.cs" />
+    <Compile Include="Conversations\Conversation\ConversationHeaderViewModelTests.cs" />
+    <Compile Include="Activities\ActivityList\ActivityListViewModelTests.cs" />
+    <Compile Include="Activities\ActivityList\ActivityViewModelFactoryTests.cs" />
+    <Compile Include="Activities\ActivityList\Activity\ActivityViewModelTests.cs" />
+    <Compile Include="Activities\ActivityList\Activity\VersionActivityViewModelTests.cs" />
+    <Compile Include="Clippings\ClippingList\ClippingListViewModelTests.cs" />
+    <Compile Include="Clippings\ClippingList\ClippingViewModelFactoryTests.cs" />
+    <Compile Include="Clippings\ClippingList\Clipping\ClippingViewModelTests.cs" />
+    <Compile Include="Conversations\ContactList\ContactViewModelFactoryTests.cs" />
+    <Compile Include="Conversations\ContactList\Contact\ContactViewModelTests.cs" />
+    <Compile Include="Conversations\ContactList\ContactListViewModelTests.cs" />
     <Compile Include="Framework\ExtensionMethods\PropertyExtensionMethodsTests.cs" />
     <Compile Include="Framework\Entities\Factories\ContactFactoryTests.cs" />
     <Compile Include="Framework\Entities\Factories\PhoneCallFactoryTests.cs" />
     <Compile Include="Framework\Entities\Factories\SmsMessageFactoryTests.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommandTests.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommandTests.cs" />
-    <Compile Include="Framework\Converters\InverseBooleanToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringToResourceConverterTests.cs" />
     <Compile Include="Framework\Helpers\NameParserTests.cs" />
     <Compile Include="Framework\Helpers\PhoneNumberMatcherTests.cs" />
@@ -175,8 +174,8 @@
     <Compile Include="Framework\Entities\RemoteSmsMessageEntityTests.cs" />
     <Compile Include="Framework\Entities\LocalSmsMessageEntityTests.cs" />
     <Compile Include="Framework\Entities\SmsMessageEntityTests.cs" />
-    <Compile Include="DataProviders\ArgumentsDataProviderTests.cs" />
-    <Compile Include="DataProviders\DPAPIConfigurationContainerTests.cs" />
+    <Compile Include="Framework\DataProviders\ArgumentsDataProviderTests.cs" />
+    <Compile Include="Framework\DataProviders\DPAPIConfigurationContainerTests.cs" />
     <Compile Include="Framework\Converters\HumanizedStringConverterTests.cs" />
     <Compile Include="Framework\Converters\InverseStringNullOrEmptyToVisibilityConverterTests.cs" />
     <Compile Include="Framework\Converters\StringNullOrEmptyToVisibilityConverterTests.cs" />
@@ -185,10 +184,10 @@
     <Compile Include="Loading\UserTokenViewModelTests.cs" />
     <Compile Include="Framework\Entities\ContactEntityTests.cs" />
     <Compile Include="Framework\Entities\UserEntityTests.cs" />
-    <Compile Include="NotificationList\NotificationListViewModelTests.cs" />
-    <Compile Include="NotificationList\NotificationViewModelFactoryTests.cs" />
-    <Compile Include="Notification\HyperlinkNotification\HyperlinkNotificationViewModelTests.cs" />
-    <Compile Include="Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
+    <Compile Include="Notifications\NotificationList\NotificationListViewModelTests.cs" />
+    <Compile Include="Notifications\NotificationList\NotificationViewModelFactoryTests.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\HyperlinkNotification\HyperlinkNotificationViewModelTests.cs" />
+    <Compile Include="Notifications\NotificationList\Notification\IncomingCallNotification\IncomingCallNotificationViewModelTests.cs" />
     <Compile Include="Framework\Models\ActivityModelTests.cs" />
     <Compile Include="Framework\Models\Factories\ActivityModelFactoryTests.cs" />
     <Compile Include="Framework\Models\Factories\ConversationModelFactoryTests.cs" />
@@ -244,11 +243,11 @@
     <Compile Include="Shell\Settings\SettingsViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Shell\TitleBar\NewVersionTitleBarItemViewModelTests.cs" />
-    <Compile Include="SMSComposer\SMSComposerViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Clipping\ClippingDetailsContentViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\Conversation\ConversationViewModelTests.cs" />
-    <Compile Include="WorkspaceDetails\WorkspaceDetailsViewModelFactoryTests.cs" />
-    <Compile Include="Workspaces\ActivityWorkspaceTests.cs" />
+    <Compile Include="Conversations\Conversation\SMSComposer\SMSComposerViewModelTests.cs" />
+    <Compile Include="Clippings\ClippingDetails\ClippingDetailsContentViewModelTests.cs" />
+    <Compile Include="Conversations\Conversation\ConversationViewModelTests.cs" />
+    <Compile Include="Framework\DetailsViewModelFactoryTests.cs" />
+    <Compile Include="Activities\ActivityWorkspaceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

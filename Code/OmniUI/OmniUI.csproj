@@ -101,7 +101,7 @@
     <Compile Include="Framework\Behaviors\VisibleOnTruncationBehavior.cs" />
     <Compile Include="Framework\Behaviors\MultipleContentButton.cs" />
     <Compile Include="Controls\ExpandableTextBlock.cs" />
-    <Compile Include="Framework\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NegativeThicknessConverter.cs" />
     <Compile Include="Framework\Converters\NullableToBooleanConverter.cs" />
     <Compile Include="Framework\Converters\ScrollPositionToVisibilityConverter.cs" />

@@ -12,7 +12,7 @@
     using OmniCommon.Settings;
     using Omnipaste.Activities;
     using Omnipaste.Activities.ActivityList;
-    using Omnipaste.Activities.Mennu;
+    using Omnipaste.Activities.Menu;
     using Omnipaste.Clippings;
     using Omnipaste.Clippings.ClippingList;
     using Omnipaste.Clippings.Menu;

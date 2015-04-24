@@ -8,9 +8,8 @@
     <converters:HumanizedStringConverter x:Key="HumanizedStringConverter"/>
     <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>
     <converters:InverseStringNullOrEmptyToVisibilityConverter x:Key="InverseStringNullOrEmptyToVisibilityConverter"/>
-    <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+    <converters1:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
     <converters:NonWhiteSpaceStringConverter x:Key="NonWhiteSpaceStringConverter"/>
-    <converters1:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
     <converters1:StringToResourceConverter x:Key="StringToResourceConverter"/>
     <converters2:ViewedSizeConverter x:Key="ViewedSizeConverter"/>
     <converters1:StringToUriConverter x:Key="StringToUriConverter"/>

@@ -376,7 +376,6 @@
     <Compile Include="Framework\Behaviours\TextProcessingBehavior.cs" />
     <Compile Include="Framework\Commands\ClippingCommands.cs" />
     <Compile Include="Framework\Commands\SimulateClippingCommand.cs" />
-    <Compile Include="Framework\Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Framework\Converters\NonWhiteSpaceStringConverter.cs" />
     <Compile Include="Framework\Helpers\ExternalProcessHelper.cs" />
     <Compile Include="Framework\Helpers\NameParser.cs" />
@@ -527,7 +526,7 @@
     <Compile Include="Framework\Services\Monitors\Power\SystemPowerHelper.cs" />
     <Compile Include="Framework\Services\UpdaterService.cs" />
     <Compile Include="Conversations\Conversation\SMSComposer\ISMSComposerViewModel.cs" />
-    <Compile Include="Activities\Mennu\ActivityItemViewModel.cs" />
+    <Compile Include="Activities\Menu\ActivityItemViewModel.cs" />
     <Compile Include="Conversations\Conversation\SMSComposer\SMSComposerViewModel.cs" />
     <Compile Include="Activities\ActivityWorkspace.cs" />
     <Compile Include="Clippings\ClippingsWorkspace.cs" />
