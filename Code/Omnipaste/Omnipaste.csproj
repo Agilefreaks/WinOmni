@@ -945,10 +945,14 @@
     <Resource Include="Disconnected.ico" />
     <Resource Include="Resources\WindowsIcons-license.txt" />
     <Resource Include="Resources\Entypo-license.txt" />
-    <Content Include="Settings\debug.config" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
+    <None Include="Settings\debug.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Settings\debug.config.example" Condition=" $(Configuration) == 'debug' OR $(Configuration) == 'Debug'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="Settings\release.config" Condition=" $(Configuration) == 'release' OR $(Configuration) == 'Release'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
