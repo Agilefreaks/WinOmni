@@ -56,7 +56,7 @@ namespace Omnipaste.Conversations.ContactList
                 }
 
                 _pendingContact = value;
-                NotifyOfPropertyChange(() => _pendingContact);
+                NotifyOfPropertyChange();
             }
         }
 
