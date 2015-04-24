@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Conversations.Conversation
 {
     using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
     using Ninject;
     using Omnipaste.Conversations.Conversation.SMSComposer;
     using Omnipaste.Framework.Models;
@@ -34,10 +33,21 @@
                 }
 
                 _recipients = value;
-                _recipients.CollectionChanged -= RecipientsOnCollectionChanged;
-                _recipients.CollectionChanged += RecipientsOnCollectionChanged;
                 SMSComposer.Recipients = _recipients;
                 NotifyOfPropertyChange(() => Recipients);
+            }
+        }
+
+        public override ContactModel Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                ConversationContentViewModel.Model = value;
             }
         }
 
@@ -46,7 +56,6 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            ConversationContentViewModel.Model = Model;
             ConversationContentViewModel.Activate();
             SMSComposer.Activate();
         }
@@ -55,22 +64,8 @@
         {
             ConversationContentViewModel.Deactivate(close);
             SMSComposer.Deactivate(close);
-            if (_recipients != null)
-            {
-                _recipients.CollectionChanged -= RecipientsOnCollectionChanged;
-            }
+            
             base.OnDeactivate(close);
-        }
-
-        private void RecipientsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            var initialModel = ConversationContentViewModel.Model;
-            ConversationContentViewModel.Model = _recipients.Count >= 2 ? null : Model;
-
-            if (initialModel != ConversationContentViewModel.Model)
-            {
-                ConversationContentViewModel.RefreshConversation();
-            }
         }
     }
 }

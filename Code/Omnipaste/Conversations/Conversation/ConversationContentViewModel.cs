@@ -73,6 +73,14 @@
             OnInitialize();
         }
 
+        public override void NotifyOfPropertyChange(string propertyName = null)
+        {
+            if (propertyName == "Model")
+            {
+                RefreshConversation();
+            }
+        }
+
         protected override void OnInitialize()
         {
             _conversationContext = Model != null

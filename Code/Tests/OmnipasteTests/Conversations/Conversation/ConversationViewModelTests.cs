@@ -4,6 +4,7 @@
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Conversations.Conversation;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
 
     [TestFixture]
@@ -33,6 +34,33 @@
 
             _mockConversationHeaderViewModel.VerifySet(m => m.Recipients = contactModels);
             _mockConversationContainerViewModel.VerifySet(m => m.Recipients = contactModels);
+        }
+
+        [Test]
+        public void RecipientsCollectionChanged_WhenThereIsOnlyOneItem_SetsModelWithTheItemInTheCollection()
+        {
+            var contactInfoPresenter = new ContactModel(new ContactEntity());
+            var contactInfoPresenters = new ObservableCollection<ContactModel>();
+            _subject.Recipients = contactInfoPresenters;
+
+            _subject.Activate();
+            contactInfoPresenters.Add(contactInfoPresenter);
+
+            _mockConversationHeaderViewModel.VerifySet(vm => vm.Model = contactInfoPresenter);
+            _mockConversationContainerViewModel.VerifySet(vm => vm.Model = contactInfoPresenter);
+        }
+
+        [Test]
+        public void RecepientsCollectionChanged_WhenMoreOrTwo_SetsModelToNull()
+        {
+            _subject.Recipients = new ObservableCollection<ContactModel>();
+
+            _subject.Activate();
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+
+            _mockConversationHeaderViewModel.VerifySet(m => m.Model = null);
+            _mockConversationContainerViewModel.VerifySet(m => m.Model = null);
         }
     }
 }

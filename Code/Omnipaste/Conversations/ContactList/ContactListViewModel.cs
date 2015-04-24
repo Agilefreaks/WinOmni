@@ -164,6 +164,11 @@ namespace Omnipaste.Conversations.ContactList
                     return;
                 }
 
+                if (_selectedContacts != null)
+                {
+                    _selectedContacts.CollectionChanged -= SelectedContactsCollectionChanged;
+                }
+
                 _selectedContacts = value;
                 _selectedContacts.CollectionChanged += SelectedContactsCollectionChanged;
                 NotifyOfPropertyChange(() => SelectedContacts);
@@ -172,25 +177,17 @@ namespace Omnipaste.Conversations.ContactList
 
         public void SelectedContactsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-                if (CanSelectMultipleItems)
-                {
-                    if (e.Action == NotifyCollectionChangedAction.Add && SelectedContacts.Count == 1)
-                    {
-                        ShowDetails();
-                    }
-                    else if (e.Action == NotifyCollectionChangedAction.Remove && SelectedContacts.Count == 0)
-                    {
-                        HideDetails();
-                    }
-                }
-                else
-                {
-                    if (SelectedContacts.Count == 1)
-                    {
-                        ShowDetails();
-                    }
-                }
-                
+            var detailsConductorViewModel = this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor;
+            var activeItem = detailsConductorViewModel.ActiveItem;
+
+            if (SelectedContacts.Count == 1 && activeItem == null)
+            {
+                ShowDetails();
+            }
+            else if (SelectedContacts.Count == 0 && activeItem != null)
+            {
+                HideDetails();
+            }                
         }
 
         protected override bool CanShow(IContactViewModel viewModel)
@@ -230,7 +227,7 @@ namespace Omnipaste.Conversations.ContactList
         {
             var contactViewModel = UpdateViewModel(model) ?? _contactViewModelFactory.Create<IContactViewModel>(model);
 
-            if (model.Identifier == PendingContact.Identifier)
+            if (model.UniqueId == PendingContact.UniqueId)
             {
                 SelectedContacts.Add(contactViewModel.Model);
 
@@ -290,7 +287,6 @@ namespace Omnipaste.Conversations.ContactList
             }
             if (args.RemovedItems.Count != 0)
             {
-                args.RemovedItems.Cast<IContactViewModel>().ForEach(i => i.IsSelected = false);
                 UnselectItems(args.RemovedItems.Cast<IContactViewModel>());
             }
 
@@ -298,7 +294,9 @@ namespace Omnipaste.Conversations.ContactList
             {
                 if (!CanSelectMultipleItems)
                 {
+                    IsRefreshing = true;
                     Items.Where(i => SelectedContacts.Any(c => c.UniqueId == i.Model.UniqueId)).ForEach(i => i.IsSelected = false);
+                    IsRefreshing = false;
                     SelectedContacts.Clear();
                 }
 
@@ -332,11 +330,14 @@ namespace Omnipaste.Conversations.ContactList
 
         private void UnselectItems(IEnumerable<IContactViewModel> itemsToUnselect)
         {
-            var contactModels =
-                SelectedContacts.Where(sc => itemsToUnselect.Any(i => i.Model.UniqueId == sc.UniqueId)).ToList();
-            foreach (var item in contactModels)
+            var contactInfoViewModels = itemsToUnselect.Where(i => SelectedContacts.Any(sc => i.Model.UniqueId == sc.UniqueId));
+            foreach (var item in contactInfoViewModels)
             {
-                SelectedContacts.Remove(item);
+                var modelsToRemove = SelectedContacts.Where(c => c.UniqueId == item.Model.UniqueId).ToList();
+                modelsToRemove.ForEach(m => SelectedContacts.Remove(m));
+                IsRefreshing = true;
+                item.IsSelected = false;
+                IsRefreshing = false;
             }
         }
 

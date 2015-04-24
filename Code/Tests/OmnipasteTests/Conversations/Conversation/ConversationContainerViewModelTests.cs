@@ -39,17 +39,5 @@
 
             _mockSmsComposerViewModel.VerifySet(m => m.Recipients = contactModels);
         }
-
-        [Test]
-        public void Recepients_WhenMoreOrTwo_SetsModelToNullOnConversationContentViewModel()
-        {
-            _subject.Recipients = new ObservableCollection<ContactModel>();
-            
-            _subject.Activate();
-            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
-            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
-
-            _mockConversationContentViewModel.VerifySet(m => m.Model = null);
-        }
     }
 }

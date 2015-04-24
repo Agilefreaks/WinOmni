@@ -82,7 +82,6 @@
 
                 _recipients = value;
                 RecipientsOnCollectionChanged(_recipients, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                Recipients.CollectionChanged += RecipientsOnCollectionChanged;
                 NotifyOfPropertyChange(() => Recipients);
             }
         }
@@ -130,6 +129,12 @@
         protected override void OnActivate()
         {
             State = ConversationHeaderStateEnum.Normal;
+
+            if (Recipients != null)
+            {
+                Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            }
+
             base.OnActivate();
         }
 
@@ -137,12 +142,7 @@
         {
             DeleteConversationItems<PhoneCallEntity>(PhoneCallRepository);
             DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
-
-            if (Recipients != null)
-            {
-                Recipients.CollectionChanged -= RecipientsOnCollectionChanged;
-            }
-
+            
             base.OnDeactivate(close);
         }
 
@@ -150,11 +150,20 @@
             object sender,
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            State = _recipients.Count >= 2 ? ConversationHeaderStateEnum.Group : State;
+            State = _recipients.Count >= 2
+                ? ConversationHeaderStateEnum.Group
+                : State == ConversationHeaderStateEnum.Group
+                    ? ConversationHeaderStateEnum.Normal
+                    : State;
         }
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
         {
+            if (Model == null)
+            {
+                return;
+            }
+
             repository.GetConversationForContact(Model.BackingEntity)
                 .SubscribeAndHandleErrors(
                     items =>
@@ -176,6 +185,11 @@
 
         private void UpdateConversationItems(IConversationRepository repository, bool isDeleted)
         {
+            if (Model == null)
+            {
+                return;
+            }
+
             repository.GetConversationForContact(Model.BackingEntity).SelectMany(
                 items => items.Select(
                     item =>

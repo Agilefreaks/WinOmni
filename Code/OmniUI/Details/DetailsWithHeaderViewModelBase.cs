@@ -22,7 +22,7 @@
 
         public THeader HeaderViewModel { get; private set; }
 
-        public IModel Model
+        public virtual IModel Model
         {
             get
             {
