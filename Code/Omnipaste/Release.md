@@ -1,4 +1,12 @@
-﻿**Version 1.5.4 (02.04.2015)**
+﻿**Version 1.5.5 (24.04.2015)**
+
+**Bug fixes:**
+
+- Fixes contacts selection problem on the New Message screen
+
+----------
+
+**Version 1.5.4 (02.04.2015)**
 
 **Bug fixes:**
 
