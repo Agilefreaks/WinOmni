@@ -1,4 +1,10 @@
-﻿**Version 1.5.5 (24.04.2015)**
+﻿**Version 1.5.6 (3.05.2015)**
+
+**Certificate update**
+
+----------
+
+**Version 1.5.5 (24.04.2015)**
 
 **Bug fixes:**
 
