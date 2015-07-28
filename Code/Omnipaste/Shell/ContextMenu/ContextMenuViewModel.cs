@@ -79,7 +79,7 @@
             }
         }
 
-        // Todo: add Pause property to bind to the view
+        public bool Pause { get; set; }
 
         public BalloonNotificationInfo BalloonInfo
         {
