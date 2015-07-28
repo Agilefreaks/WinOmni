@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Omni;
@@ -128,6 +129,10 @@
         {
             _statusObserver.Dispose();
             _userObserver.Dispose();
+        }
+
+        public void ShowUserProfile()
+        {
         }
 
         #endregion
