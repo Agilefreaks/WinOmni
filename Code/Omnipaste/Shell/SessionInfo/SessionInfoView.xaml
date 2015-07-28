@@ -1,6 +1,8 @@
 ﻿<UserControl x:Class="Omnipaste.Shell.SessionInfo.SessionInfoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
     <Border Style="{DynamicResource SideUserInfoBorderStyle}">
         <Grid>
@@ -10,13 +12,20 @@
             </Grid.RowDefinitions>
 
             <Grid>
-                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}"/>
+                <Button Cursor="Hand" x:Name="ShowUserProfile">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
             </Grid>
 
             <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
-                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="User_Identifier"/>
+                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="User_Identifier" HorizontalAlignment="Stretch" Margin="25,0"/>
                 <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}" x:Name="StatusText"/>
+
             </StackPanel>
         </Grid>
     </Border>

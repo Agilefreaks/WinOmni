@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Caliburn.Micro;
+    using Ninject;
     using Omni;
     using OmniCommon;
     using OmniCommon.ExtensionMethods;
@@ -12,40 +13,38 @@
     using OmniCommon.Models;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
+    using Omnipaste.Profile;
     using Omnipaste.Properties;
     using OmniUI.Resources;
+    using OmniUI.Workspaces;
 
     public class SessionInfoViewModel : Screen, ISessionInfoViewModel
     {
-        #region Fields
-
-        private readonly Dictionary<ConnectionStateEnum, string> _icons;
-
-        private readonly Dictionary<ConnectionStateEnum, string> _statusTexts;
-
-        private readonly IDisposable _statusObserver;
-
-        private readonly IDisposable _userObserver;
-
-        private ConnectionStateEnum _state;
-
-        private ContactModel _user;
-
-        #endregion
-
         #region Constructors and Destructors
 
         public SessionInfoViewModel(IOmniService omniService, IConfigurationService configurationService)
         {
             _statusTexts = new Dictionary<ConnectionStateEnum, string>
-                            {
-                                { ConnectionStateEnum.Connected, Resources.Connected },
-                                { ConnectionStateEnum.Disconnected, Resources.Disconnected }
-                            };
+                               {
+                                   {
+                                       ConnectionStateEnum.Connected,
+                                       Resources.Connected
+                                   },
+                                   {
+                                       ConnectionStateEnum.Disconnected,
+                                       Resources.Disconnected
+                                   }
+                               };
             _icons = new Dictionary<ConnectionStateEnum, string>
                          {
-                             { ConnectionStateEnum.Connected, IconNames.Connected },
-                             { ConnectionStateEnum.Disconnected, IconNames.Disconnected }
+                             {
+                                 ConnectionStateEnum.Connected,
+                                 IconNames.Connected
+                             },
+                             {
+                                 ConnectionStateEnum.Disconnected,
+                                 IconNames.Disconnected
+                             }
                          };
             _statusObserver =
                 omniService.StatusChangedObservable.SubscribeOn(SchedulerProvider.Default)
@@ -64,6 +63,31 @@
                     UpdateUserInfo,
                     observeScheduler: SchedulerProvider.Dispatcher);
         }
+
+        #endregion
+
+        #region Methods
+
+        private void UpdateUserInfo(UserInfo userInfo)
+        {
+            User = new ContactModel(new UserEntity(userInfo));
+        }
+
+        #endregion
+
+        #region Fields
+
+        private readonly Dictionary<ConnectionStateEnum, string> _icons;
+
+        private readonly Dictionary<ConnectionStateEnum, string> _statusTexts;
+
+        private readonly IDisposable _statusObserver;
+
+        private readonly IDisposable _userObserver;
+
+        private ConnectionStateEnum _state;
+
+        private ContactModel _user;
 
         #endregion
 
@@ -120,6 +144,12 @@
             }
         }
 
+        [Inject]
+        public IWorkspaceConductor WorkspaceConductor { get; set; }
+
+        [Inject]
+        public IProfileWorkspace ProfileWorkspace { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -130,13 +160,9 @@
             _userObserver.Dispose();
         }
 
-        #endregion
-
-        #region Methods
-
-        private void UpdateUserInfo(UserInfo userInfo)
-        {
-            User = new ContactModel(new UserEntity(userInfo));
+        public void ShowUserProfile()
+        { 
+            WorkspaceConductor.ActivateItem(ProfileWorkspace);
         }
 
         #endregion
