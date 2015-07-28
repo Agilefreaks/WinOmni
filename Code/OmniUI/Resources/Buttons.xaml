@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:p="clr-namespace:OmniUI.Properties"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <!-- Button -->
     <ControlTemplate x:Key="ShapeButtonControlTemplate" TargetType="Button">
