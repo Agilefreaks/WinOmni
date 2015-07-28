@@ -43,5 +43,7 @@
         public static string OmnipasteCredentials = "OmnipasteCredentials";
 
         public static string EnableLogging = "EnableLogging";
+
+        public static string PauseNotifications = "PauseNotifications";
     }
 }

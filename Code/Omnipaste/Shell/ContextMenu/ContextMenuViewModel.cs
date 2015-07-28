@@ -52,6 +52,8 @@
 
         private string _iconSource;
 
+        private bool _pause;
+
         #endregion
 
         #region Public Properties
@@ -75,6 +77,19 @@
                     return;
                 }
                 ApplicationService.AutoStart = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool Pause
+        {
+            get
+            {
+                return ConfigurationService.PauseNotifications;
+            }
+            set
+            {
+                ConfigurationService.PauseNotifications = value;
                 NotifyOfPropertyChange();
             }
         }
