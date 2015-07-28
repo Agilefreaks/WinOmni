@@ -9,10 +9,12 @@
         #region Public Properties
 
         bool AutoStart { get; set; }
-        
+
         string IconSource { get; set; }
 
         string TooltipText { get; }
+
+        bool Pause { get; set; }
 
         #endregion
 

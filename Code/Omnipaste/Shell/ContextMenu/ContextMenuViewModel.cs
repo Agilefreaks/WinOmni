@@ -7,6 +7,7 @@
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -75,6 +76,23 @@
                     return;
                 }
                 ApplicationService.AutoStart = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool Pause
+        {
+            get
+            {
+                return ConfigurationService.PauseNotifications;
+            }
+            set
+            {
+                if (value.Equals(ConfigurationService.PauseNotifications))
+                {
+                    return;
+                }
+                ConfigurationService.PauseNotifications = value;
                 NotifyOfPropertyChange();
             }
         }

@@ -12,16 +12,6 @@
 
     public class ConfigurationService : IConfigurationService
     {
-        #region Fields
-
-        private readonly IConfigurationContainer _configurationContainer;
-
-        private readonly Subject<SettingsChangedData> _settingsChangedSubject;
-
-        private bool _deviceIdChanged;
-
-        #endregion
-
         #region Constructors and Destructors
 
         public ConfigurationService(IConfigurationContainer configurationContainer)
@@ -30,6 +20,28 @@
             _configurationContainer = configurationContainer;
             _deviceIdChanged = false;
         }
+
+        #endregion
+
+        #region Public Indexers
+
+        public string this[string key]
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings[key];
+            }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private readonly IConfigurationContainer _configurationContainer;
+
+        private readonly Subject<SettingsChangedData> _settingsChangedSubject;
+
+        private bool _deviceIdChanged;
 
         #endregion
 
@@ -45,7 +57,8 @@
             set
             {
                 _configurationContainer.SetObject(ConfigurationProperties.ProxyConfiguration, value);
-                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
+                _settingsChangedSubject.OnNext(
+                    new SettingsChangedData(ConfigurationProperties.ProxyConfiguration, ProxyConfiguration));
             }
         }
 
@@ -85,7 +98,10 @@
             get
             {
                 bool result;
-                result = !bool.TryParse(_configurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled), out result) || result;
+                result =
+                    !bool.TryParse(
+                        _configurationContainer.GetValue(ConfigurationProperties.SMSSuffixEnabled),
+                        out result) || result;
                 return result;
             }
             set
@@ -127,7 +143,8 @@
             set
             {
                 _configurationContainer.SetObject(ConfigurationProperties.DeviceKeyPair, value);
-                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.DeviceKeyPair, DeviceKeyPair));
+                _settingsChangedSubject.OnNext(
+                    new SettingsChangedData(ConfigurationProperties.DeviceKeyPair, DeviceKeyPair));
             }
         }
 
@@ -210,15 +227,21 @@
             }
         }
 
-        #endregion
-
-        #region Public Indexers
-
-        public string this[string key]
+        public bool PauseNotifications
         {
             get
             {
-                return ConfigurationManager.AppSettings[key];
+                bool value;
+                value =
+                    !bool.TryParse(
+                        _configurationContainer.GetValue(ConfigurationProperties.PauseNotifications),
+                        out value) || value;
+                return value;
+            }
+            set
+            {
+                _configurationContainer.SetValue(ConfigurationProperties.PauseNotifications, value.ToString());
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.PauseNotifications, value));
             }
         }
 
@@ -230,7 +253,8 @@
         {
             _configurationContainer.SetValue(ConfigurationProperties.AccessToken, omnipasteCredentials.AccessToken);
             _configurationContainer.SetValue(ConfigurationProperties.RefreshToken, omnipasteCredentials.RefreshToken);
-            _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
+            _settingsChangedSubject.OnNext(
+                new SettingsChangedData(ConfigurationProperties.OmnipasteCredentials, omnipasteCredentials));
         }
 
         public void ClearSettings()

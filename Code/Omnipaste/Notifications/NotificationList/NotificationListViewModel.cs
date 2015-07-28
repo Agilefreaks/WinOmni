@@ -12,8 +12,10 @@
     using Castle.Core.Internal;
     using Clipboard.Dto;
     using Ninject;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using OmniCommon.Interfaces;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Framework.Services.Repositories;
@@ -121,44 +123,64 @@
         [Inject]
         public IWindowManager WindowManager { get; set; }
 
+        [Inject]
+        public IConfigurationService ConfigurationService { get; set; }
+
         #endregion
 
         #region Methods
+
+        public void UpdateNotificationSubscriptions(bool pauseNotifications)
+        {
+            if (pauseNotifications)
+            {
+                DisableSubscribers();
+            }
+            else
+            {
+                EnableSubcribers();
+            }
+        }
 
         protected override void OnActivate()
         {
             base.OnActivate();
 
-            CreateNotificationsFromIncomingClippings();
-            CreateNotificationsFromIncomingMessages();
-            CreateNotificationsFromIncomingCalls();
+            UpdateNotificationSubscriptions(ConfigurationService.PauseNotifications);
+
+            ConfigurationService.SettingsChangedObservable.Where(
+                data => data.SettingName == ConfigurationProperties.PauseNotifications)
+                .Subscribe(scd => UpdateNotificationSubscriptions(Convert.ToBoolean(scd.NewValue)));
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
 
-            if (_clippingsSubscription != null)
-            {
-                _clippingsSubscription.Dispose();
-                _clippingsSubscription = null;
-            }
+            DisableSubscribers();
+        }
 
-            if (_callSubscription != null)
-            {
-                _callSubscription.Dispose();
-                _callSubscription = null;
-            }
+        private void DisableSubscribers()
+        {
+            DisableNotificationsFromIncomingClippings();
+            DisableNotificationsFromIncomingMessages();
+            DisableNotificationsFromIncomingCalls();
+        }
 
-            if (_messageSubscription != null)
-            {
-                _messageSubscription.Dispose();
-                _messageSubscription = null;
-            }
+        private void EnableSubcribers()
+        {
+            CreateNotificationsFromIncomingClippings();
+            CreateNotificationsFromIncomingMessages();
+            CreateNotificationsFromIncomingCalls();
         }
 
         private void CreateNotificationsFromIncomingClippings()
         {
+            if (_clippingsSubscription != null)
+            {
+                return;
+            }
+
             _clippingsSubscription =
                 _clippingRepository.GetOperationObservable()
                     .Changed()
@@ -172,6 +194,11 @@
 
         private void CreateNotificationsFromIncomingMessages()
         {
+            if (_messageSubscription != null)
+            {
+                return;
+            }
+
             _messageSubscription =
                 _smsMessageRepository.GetOperationObservable()
                     .Changed()
@@ -181,13 +208,16 @@
                     .Select(item => NotificationViewModelFactory.Create(item))
                     .Switch()
                     .ObserveOn(SchedulerProvider.Dispatcher)
-                    .SubscribeAndHandleErrors(
-                        message =>
-                        Notifications.Add(message));
+                    .SubscribeAndHandleErrors(message => Notifications.Add(message));
         }
 
         private void CreateNotificationsFromIncomingCalls()
         {
+            if (_callSubscription != null)
+            {
+                return;
+            }
+
             _callSubscription =
                 _phoneCallRepository.GetOperationObservable()
                     .Changed()
@@ -218,6 +248,33 @@
             var notificationViewModel = (INotificationViewModel)sender;
             notificationViewModel.Deactivated -= OnNotificationDeactivated;
             Notifications.Remove(notificationViewModel);
+        }
+
+        private void DisableNotificationsFromIncomingCalls()
+        {
+            if (_callSubscription != null)
+            {
+                _callSubscription.Dispose();
+                _callSubscription = null;
+            }
+        }
+
+        private void DisableNotificationsFromIncomingMessages()
+        {
+            if (_messageSubscription != null)
+            {
+                _messageSubscription.Dispose();
+                _messageSubscription = null;
+            }
+        }
+
+        private void DisableNotificationsFromIncomingClippings()
+        {
+            if (_clippingsSubscription != null)
+            {
+                _clippingsSubscription.Dispose();
+                _clippingsSubscription = null;
+            }
         }
 
         #endregion

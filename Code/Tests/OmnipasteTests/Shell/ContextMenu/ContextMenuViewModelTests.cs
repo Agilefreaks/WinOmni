@@ -17,6 +17,7 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
+    using SQLitePCL;
 
     [TestFixture]
     public class ContextMenuViewModelTests
@@ -130,6 +131,14 @@
             _subject.AutoStart = false;
 
             _mockApplicationService.VerifySet(x => x.AutoStart = false, Times.Once);
+        }
+
+        [Test]
+        public void SetPause_Always_SetsConfigurationServiceProperty()
+        {
+             _subject.Pause = true;
+
+            _mockConfigurationService.VerifySet(mock => mock.PauseNotifications = true, Times.Once);
         }
 
         #endregion

@@ -12,5 +12,7 @@
         double Height { get; set; }
 
         void Show();
+
+        void UpdateNotificationSubscriptions(bool pauseNotifications);
     }
 }

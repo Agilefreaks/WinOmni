@@ -6,6 +6,12 @@
 
     public interface IConfigurationService
     {
+        #region Public Indexers
+
+        string this[string key] { get; }
+
+        #endregion
+
         #region Public Properties
 
         string AccessToken { get; }
@@ -43,11 +49,12 @@
 
         bool LoggingEnabled { get; }
 
-        #endregion
-
-        #region Public Indexers
-
-        string this[string key] { get; }
+        bool PauseNotifications
+        {
+            set; get;
+        }
+        
+        // Todo: Add the PauseNotification to the interface also
 
         #endregion
 
