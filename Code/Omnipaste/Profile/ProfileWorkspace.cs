@@ -1,7 +1,6 @@
 ﻿namespace Omnipaste.Profile
 {
     using Caliburn.Micro;
-    using Ninject;
     using Omnipaste.Profile.UserProfile;
     using OmniUI.Attributes;
     using OmniUI.Workspaces;
@@ -9,13 +8,9 @@
     [UseView(typeof(WorkspaceView))]
     public class ProfileWorkspace : Conductor<IScreen>.Collection.AllActive, IProfileWorkspace
     {
-        [Inject]
+        // TODO: fix this property
         public IUserProfileViewModel UserProfileViewModel { get; set; }
 
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            ActivateItem(UserProfileViewModel);
-        }
+        // TODO: override OnActivate and activate the user profile
     }
 }

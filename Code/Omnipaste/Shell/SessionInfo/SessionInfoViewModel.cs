@@ -162,7 +162,7 @@
 
         public void ShowUserProfile()
         {
-            WorkspaceConductor.ActivateItem(ProfileWorkspace);
+            // TODO: add code here to make the spec pass
         }
 
         #endregion
