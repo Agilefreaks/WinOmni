@@ -23,7 +23,8 @@
             <ContextMenu>
                 <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" IsCheckable="True"
                           IsChecked="{Binding Path=Data.AutoStart, Mode=TwoWay, Source={StaticResource Proxy}}" />
-                <!-- Todo: Add MenuItem for Pause -->
+                <MenuItem Header="Pause" IsCheckable="True"
+                          IsChecked="{Binding Path=Data.Pause, Mode=TwoWay, Source={StaticResource Proxy}}" />
                 <Separator />
                 <MenuItem Header="{x:Static p:Resources.ButtonExit}" cal:Message.Attach="Exit" />
             </ContextMenu>

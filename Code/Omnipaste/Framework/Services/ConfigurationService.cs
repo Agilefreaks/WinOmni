@@ -219,7 +219,13 @@
             }
         }
 
-        public IObservable<SettingsChangedData> SettingsChangedObservable => _settingsChangedSubject;
+        public IObservable<SettingsChangedData> SettingsChangedObservable
+        {
+            get
+            {
+                return _settingsChangedSubject;
+            }
+        }
 
         // TODO: Add PauseNotification property
 
