@@ -49,7 +49,7 @@
 
         bool LoggingEnabled { get; }
 
-        bool PauseNotifications { get; set; }
+        // Todo: Add the PauseNotification to the interface also
 
         #endregion
 

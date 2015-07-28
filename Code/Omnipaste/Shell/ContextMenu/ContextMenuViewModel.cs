@@ -81,18 +81,7 @@
             }
         }
 
-        public bool Pause
-        {
-            get
-            {
-                return ConfigurationService.PauseNotifications;
-            }
-            set
-            {
-                ConfigurationService.PauseNotifications = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        // Todo: add Pause property to bind to the view
 
         public BalloonNotificationInfo BalloonInfo
         {

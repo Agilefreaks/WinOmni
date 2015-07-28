@@ -221,21 +221,7 @@
 
         public IObservable<SettingsChangedData> SettingsChangedObservable => _settingsChangedSubject;
 
-        public bool PauseNotifications
-        {
-            get
-            {
-                bool result;
-                return bool.TryParse(_configurationContainer.GetValue(ConfigurationProperties.PauseNotifications), out result) && result;
-            }
-
-            set
-            {
-                _configurationContainer.SetValue(ConfigurationProperties.PauseNotifications, value.ToString());
-                _settingsChangedSubject.OnNext(
-                    new SettingsChangedData(ConfigurationProperties.PauseNotifications, value));
-            }
-        }
+        // TODO: Add PauseNotification property
 
         #endregion
 

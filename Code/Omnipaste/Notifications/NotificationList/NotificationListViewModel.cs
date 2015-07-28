@@ -136,9 +136,9 @@
 
             EnableSubcribers();
 
-            ConfigurationService.SettingsChangedObservable.Where(
-                data => data.SettingName == ConfigurationProperties.PauseNotifications)
-                .Subscribe(data => UpdateNotificationSubscriptions((bool)data.NewValue));
+            // Todo: add the subscriber to the above code
+            ConfigurationService.SettingsChangedObservable
+                .Where(data => data.SettingName == ConfigurationProperties.PauseNotifications);
         }
 
         protected override void OnDeactivate(bool close)
@@ -150,14 +150,7 @@
 
         private void UpdateNotificationSubscriptions(bool pauseNotifications)
         {
-            if (pauseNotifications)
-            {
-                DisableSubscribers();
-            }
-            else
-            {
-                EnableSubcribers();
-            }
+            // Todo: Add the code to calculate pauseNotification
         }
 
         private void DisableSubscribers()
