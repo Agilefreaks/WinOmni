@@ -11,14 +11,20 @@
             </Grid.RowDefinitions>
 
             <Grid>
-                <!-- TODO: make this a button -->
-                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}" />
+                <Button Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}" />
+                        </ControlTemplate>
+                    </Button.Template>     
+                </Button>
                 <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
             </Grid>
 
             <StackPanel Grid.Row="1" Style="{DynamicResource SideUserInfoStackPanelStyle}">
-                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="User_Identifier"/>
+                <TextBlock Style="{DynamicResource UsernameTextBlockStyle}" x:Name="User_Identifier" HorizontalAlignment="Stretch" Margin="25,0"/>
                 <TextBlock Style="{DynamicResource ConnectivityStateTextBlockStyle}" x:Name="StatusText"/>
+
             </StackPanel>
         </Grid>
     </Border>
