@@ -36,11 +36,11 @@
     using Omnipaste.Framework.Services.Providers;
     using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.Notifications.NotificationList;
+    using Omnipaste.Profile;
     using Omnipaste.Shell;
     using Omnipaste.Shell.SessionInfo;
     using Omnipaste.Shell.Settings;
     using Omnipaste.Shell.TitleBar;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI;
     using OmniUI.Dialog;
     using OmniUI.Flyout;
@@ -91,8 +91,8 @@
                            typeof(ActivationSequenceProvider), typeof(WebProxyFactory), typeof(SystemPowerHelper),
                            typeof(InternetConnectivityMonitor), typeof(PowerMonitor), typeof(UserMonitor), typeof(CredentialsMonitor),
                            typeof(ProxyConfigurationMonitor), typeof(ConnectivitySupervisor), typeof(EntitySupervisor),
-                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateRepository), typeof(SmsMessageRepository), typeof(ActivityWorkspace),
-                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(ConversationWorkspace), typeof(ClippingsWorkspace), typeof(DetailsViewModelFactory),
+                           typeof(EntitySupervisor), typeof(ClippingRepository), typeof(PhoneCallRepository), typeof(ContactRepository), typeof(UpdateRepository), typeof(SmsMessageRepository),
+                           typeof(ActivityWorkspace), typeof(NewMessageWorkspace), typeof(ConversationWorkspace), typeof(ClippingsWorkspace), typeof(DetailsViewModelFactory), typeof(ProfileWorkspace),
                            typeof(ActivityViewModelFactory), typeof(ContactViewModelFactory), typeof(ClippingViewModelFactory), typeof(ConversationModelFactory),
                            typeof(ConversationProvider), 
                            typeof(SmsMessageFactory), typeof(PhoneCallFactory), typeof(ContactFactory), typeof(ActivityModelFactory), typeof(PhoneCallModelFactory), typeof(SmsMessageModelFactory)

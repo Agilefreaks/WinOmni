@@ -14,8 +14,10 @@
     using OmniCommon.Models;
     using OmniCommon.Settings;
     using Omnipaste.Framework.Models;
+    using Omnipaste.Profile;
     using Omnipaste.Shell.SessionInfo;
     using OmniUI.Framework.Helpers;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class SessionInfoViewModelTests
@@ -71,6 +73,20 @@
 
             _subject.User.Should().NotBe(oldUserInfo);
             _subject.User.Identifier.Should().Be("Test Last");
+        }
+
+        [Test]
+        public void ShowUserProfile_Always_ActivatesProfileWorkspaceInWorkspaceConductor()
+        {
+            var profileWorkspace = new Mock<IProfileWorkspace>();
+            var workspaceConductor = new Mock<IWorkspaceConductor>();
+
+            _subject.ProfileWorkspace = profileWorkspace.Object;
+            _subject.WorkspaceConductor = workspaceConductor.Object;
+
+            _subject.ShowUserProfile();
+
+            workspaceConductor.Verify(mock => mock.ActivateItem(profileWorkspace.Object), Times.Once);
         }
     }
 }

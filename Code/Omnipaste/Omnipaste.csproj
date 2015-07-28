@@ -422,6 +422,13 @@
     <Compile Include="Notifications\NotificationList\Notification\IResourceBasedNotificationViewModel.cs" />
     <Compile Include="Notifications\NotificationList\Notification\ResourceBasedNotificationViewModel.cs" />
     <Compile Include="Framework\Models\ContactModel.cs" />
+    <Compile Include="Profile\IProfileWorkspace.cs" />
+    <Compile Include="Profile\ProfileWorkspace.cs" />
+    <Compile Include="Profile\UserProfile\IUserProfileViewModel.cs" />
+    <Compile Include="Profile\UserProfile\UserProfileView.xaml.cs">
+      <DependentUpon>UserProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profile\UserProfile\UserProfileViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -559,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Conversations\ContactList\ContactList\NotEmpty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Profile\UserProfile\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
