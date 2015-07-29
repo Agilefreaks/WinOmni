@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing.Text;
     using System.Reactive.Linq;
     using Caliburn.Micro;
     using Ninject;
@@ -162,6 +163,7 @@
 
         public void ShowUserProfile()
         {
+            WorkspaceConductor.ActivateItem(ProfileWorkspace);
         }
 
         #endregion

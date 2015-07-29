@@ -86,7 +86,7 @@
 
             _subject.ShowUserProfile();
 
-            // Todo: Add verification step
+            workspaceConductor.Verify(wc => wc.ActivateItem(profileWorkspace.Object));
         }
     }
 }
