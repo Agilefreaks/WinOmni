@@ -17,6 +17,7 @@
     using OmniCommon.Interfaces;
     using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Shell.ContextMenu;
+    using SQLitePCL;
 
     [TestFixture]
     public class ContextMenuViewModelTests
@@ -130,6 +131,15 @@
             _subject.AutoStart = false;
 
             _mockApplicationService.VerifySet(x => x.AutoStart = false, Times.Once);
+        }
+
+        [Test]
+        public void SetPause_Always_SetsConfigurationServiceProperty()
+        {
+            // Todo: uncommnet this once the pause property has been added
+            // _subject.Pause = true;
+
+            // Todo: verify that the PauseNotifications property is set to true
         }
 
         #endregion

@@ -3,6 +3,7 @@
     using System;
     using System.Reactive;
     using System.Reactive.Linq;
+    using System.Reflection.Emit;
     using Caliburn.Micro;
     using Clipboard.Dto;
     using FluentAssertions;
@@ -14,6 +15,7 @@
     using NUnit.Framework;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Framework.Services.Repositories;
@@ -103,6 +105,8 @@
 
         private Mock<IEventAggregator> _mockEventAggregator;
 
+        private Mock<IConfigurationService> _mockConfigurationService;
+
         private PhoneCallEntity _incommingPhoneCallEntity;
 
         private PhoneCallEntity _viewedPhoneCallEntity;
@@ -133,6 +137,9 @@
             _mockingKernel.Bind<INotificationViewModelFactory>().ToConstant(_mockNotificationViewModelFactory.Object);
             _mockEventAggregator = new Mock<IEventAggregator>();
             _mockingKernel.Bind<IEventAggregator>().ToConstant(_mockEventAggregator.Object);
+            _mockConfigurationService = new Mock<IConfigurationService>();
+            _mockConfigurationService.SetupGet(mock => mock.SettingsChangedObservable).Returns(Observable.Empty<SettingsChangedData>());
+            _mockingKernel.Bind<IConfigurationService>().ToConstant(_mockConfigurationService.Object);
 
             _subject = _mockingKernel.Get<INotificationListViewModel>();
         }
@@ -226,6 +233,21 @@
             _subject.Handle(new DismissNotification(42));
 
             mockNotification.Verify(m => m.Dismiss(), Times.Never());
+        }
+
+        [Test]
+        public void UpdateNotificationSubscriptions_WhenPauseNotificationIsTrue_ItWillDisableNotifications()
+        {
+            var incomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemoteSmsMessageEntity>()))
+                .Returns(Observable.Return(incomingSmsNotificationViewModel.Object));
+            _mockMessageRepository.Setup(m => m.GetOperationObservable()).Returns(_testableMessagesObservable);
+
+            _subject.Activate();
+            _subject.UpdateNotificationSubscriptions(true);
+            _testScheduler.Start();
+
+            _subject.Notifications.Should().BeEmpty();
         }
     }
 }

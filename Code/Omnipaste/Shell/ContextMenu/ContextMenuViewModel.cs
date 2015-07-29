@@ -52,8 +52,6 @@
 
         private string _iconSource;
 
-        private bool _pause;
-
         #endregion
 
         #region Public Properties

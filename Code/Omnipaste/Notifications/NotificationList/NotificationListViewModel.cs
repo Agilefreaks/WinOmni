@@ -130,6 +130,11 @@
 
         #region Methods
 
+        public void UpdateNotificationSubscriptions(bool pauseNotifications)
+        {
+            // Todo: Add the code to actually do notification pause
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -146,11 +151,6 @@
             base.OnDeactivate(close);
 
             DisableSubscribers();
-        }
-
-        private void UpdateNotificationSubscriptions(bool pauseNotifications)
-        {
-            // Todo: Add the code to calculate pauseNotification
         }
 
         private void DisableSubscribers()
