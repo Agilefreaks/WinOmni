@@ -30,7 +30,7 @@
 
             var userProfileViewModel = new UserProfileViewModel(_mockIConfigurationService.Object, _mockDevicesApi.Object);
 
-            userProfileViewModel.User.Should().NotBeNull();
+            // Todo: add the verification thath the user is not null
         }
 
         [Test]
