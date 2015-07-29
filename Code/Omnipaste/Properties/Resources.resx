@@ -451,4 +451,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
   <data name="GroupMessage" xml:space="preserve">
     <value>+ New message</value>
   </data>
+  <data name="ContextMenuPause" xml:space="preserve">
+    <value>Pause notifications</value>
+  </data>
 </root>

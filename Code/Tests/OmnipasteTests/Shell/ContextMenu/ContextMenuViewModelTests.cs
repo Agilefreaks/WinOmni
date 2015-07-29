@@ -136,10 +136,9 @@
         [Test]
         public void SetPause_Always_SetsConfigurationServiceProperty()
         {
-            // Todo: uncommnet this once the pause property has been added
-            // _subject.Pause = true;
+             _subject.Pause = true;
 
-            // Todo: verify that the PauseNotifications property is set to true
+            _mockConfigurationService.VerifySet(mock => mock.PauseNotifications = true, Times.Once);
         }
 
         #endregion

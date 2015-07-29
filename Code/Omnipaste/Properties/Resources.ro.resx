@@ -451,4 +451,7 @@ Poți chiar să-l copiezi pe Facebook. Posibilitățile sunt nenumărate.</value
   <data name="GroupMessage" xml:space="preserve">
     <value>+ Mesaj nou</value>
   </data>
+  <data name="ContextMenuPause" xml:space="preserve">
+    <value>Buton de pauza</value>
+  </data>
 </root>

@@ -14,7 +14,7 @@
 
         string TooltipText { get; }
 
-        // Todo: Add property to the interface
+        bool Pause { get; set; }
 
         #endregion
 

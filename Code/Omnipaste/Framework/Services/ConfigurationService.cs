@@ -227,7 +227,22 @@
             }
         }
 
-        // TODO: Add PauseNotification property
+        public bool PauseNotifications
+        {
+            get
+            {
+                bool value;
+                value =
+                    !bool.TryParse(
+                        _configurationContainer.GetValue(ConfigurationProperties.PauseNotifications),
+                        out value) || value;
+                return value;
+            }
+            set
+            {
+                _configurationContainer.SetValue(ConfigurationProperties.PauseNotifications, value.ToString());
+            }
+        }
 
         #endregion
 

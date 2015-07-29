@@ -451,6 +451,15 @@ namespace Omnipaste.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause notifications.
+        /// </summary>
+        public static string ContextMenuPause {
+            get {
+                return ResourceManager.GetString("ContextMenuPause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop Synchronization.
         /// </summary>
         public static string ContextMenuStopSync {

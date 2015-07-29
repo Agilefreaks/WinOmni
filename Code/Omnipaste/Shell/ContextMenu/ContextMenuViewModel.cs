@@ -7,6 +7,7 @@
     using Caliburn.Micro;
     using Ninject;
     using Omni;
+    using OmniCommon;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
@@ -79,7 +80,22 @@
             }
         }
 
-        public bool Pause { get; set; }
+        public bool Pause
+        {
+            get
+            {
+                return ConfigurationService.PauseNotifications;
+            }
+            set
+            {
+                if (value.Equals(ConfigurationService.PauseNotifications))
+                {
+                    return;
+                }
+                ConfigurationService.PauseNotifications = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public BalloonNotificationInfo BalloonInfo
         {

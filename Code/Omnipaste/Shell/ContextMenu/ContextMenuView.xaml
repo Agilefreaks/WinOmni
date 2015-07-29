@@ -23,7 +23,7 @@
             <ContextMenu>
                 <MenuItem Header="{x:Static p:Resources.ContextMenuAutoStart}" IsCheckable="True"
                           IsChecked="{Binding Path=Data.AutoStart, Mode=TwoWay, Source={StaticResource Proxy}}" />
-                <MenuItem Header="Pause" IsCheckable="True"
+                <MenuItem Header="{x:Static p:Resources.ContextMenuPause}" IsCheckable="True"
                           IsChecked="{Binding Path=Data.Pause, Mode=TwoWay, Source={StaticResource Proxy}}" />
                 <Separator />
                 <MenuItem Header="{x:Static p:Resources.ButtonExit}" cal:Message.Attach="Exit" />
