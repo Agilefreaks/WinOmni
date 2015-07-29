@@ -162,7 +162,6 @@
 
         public void ShowUserProfile()
         {
-            // TODO: add code here to make the spec pass
         }
 
         #endregion
