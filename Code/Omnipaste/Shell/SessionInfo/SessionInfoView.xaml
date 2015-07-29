@@ -11,13 +11,8 @@
             </Grid.RowDefinitions>
 
             <Grid>
-                <Button x:Name="ShowUserProfile" Cursor="Hand">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}" />
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+                <!-- TODO: make this a button -->
+                <Control Style="{DynamicResource SideUserImageStyle}" Tag="{Binding Path=User.Image}" />
                 <ContentControl Style="{DynamicResource SideConnectivityContentStyle}" Content="{Binding Path=Icon, Converter={StaticResource StringToResourceConverter}}" ToolTip="{Binding StatusText}"/>
             </Grid>
 
