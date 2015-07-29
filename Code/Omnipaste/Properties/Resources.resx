@@ -136,7 +136,7 @@
     <value>Click Here</value>
   </data>
   <data name="UserTokenLabel1" xml:space="preserve">
-    <value>To connect your devices, you need an authorization code. </value>
+    <value>To connect your devicesApi, you need an authorization code. </value>
   </data>
   <data name="UserTokenLabel2" xml:space="preserve">
     <value>Click here to get your authorization code from the Omnipaste website.</value>
@@ -154,7 +154,7 @@
     <value>Next, we need to install Omnipaste on your Android device. Please use this link to install the application from Google Play:</value>
   </data>
   <data name="AndroidInstallGuideLabel4" xml:space="preserve">
-    <value>We'll wait for you to do that and once you install the app, your devices will be automatically linked together, allowing you to copy-paste and receive notifications between them.</value>
+    <value>We'll wait for you to do that and once you install the app, your devicesApi will be automatically linked together, allowing you to copy-paste and receive notifications between them.</value>
   </data>
   <data name="LoadingLabel" xml:space="preserve">
     <value>Loading ...</value>
@@ -331,10 +331,10 @@
     <value>Disconnected</value>
   </data>
   <data name="CongratulationsContent" xml:space="preserve">
-    <value>You can now copy and paste text across devices. Try that now by copying some text from your Android device</value>
+    <value>You can now copy and paste text across devicesApi. Try that now by copying some text from your Android device</value>
   </data>
   <data name="CongratulationsHeader" xml:space="preserve">
-    <value>Congratulations, your devices are now linked.</value>
+    <value>Congratulations, your devicesApi are now linked.</value>
   </data>
   <data name="SampleLocalClipping" xml:space="preserve">
     <value>This is how a local clipping looks like</value>
@@ -342,7 +342,7 @@
   <data name="ClippingListEmptyContent" xml:space="preserve">
     <value>To add some, copy a text the way you usually do. 
 The text will automatically appear here.
-You will be able to paste it on your other devices that are connected on Omnipaste.
+You will be able to paste it on your other devicesApi that are connected on Omnipaste.
 For more information, check out our video below.</value>
   </data>
   <data name="CreateClippingFooter" xml:space="preserve">
@@ -353,7 +353,7 @@ You can even paste it on Facebook. The possibilities are endless.</value>
     <value>Go ahead and copy the following text (right click and select copy) :</value>
   </data>
   <data name="CreateClippingSample" xml:space="preserve">
-    <value>I just installed Omnipaste, the service that links my devices.</value>
+    <value>I just installed Omnipaste, the service that links my devicesApi.</value>
   </data>
   <data name="Activity" xml:space="preserve">
     <value>Activity</value>

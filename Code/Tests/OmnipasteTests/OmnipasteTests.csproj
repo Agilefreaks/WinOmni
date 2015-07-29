@@ -194,6 +194,7 @@
     <Compile Include="Framework\Models\Factories\PhoneCallModelFactoryTests.cs" />
     <Compile Include="Framework\Models\Factories\SmsMessageModelFactoryTests.cs" />
     <Compile Include="Profile\ProfileWorkspaceTests.cs" />
+    <Compile Include="Profile\UserProfile\UserProfileViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationSequenceProviderTests.cs" />
     <Compile Include="Services\ActivationServiceData\ActivationServiceSteps\AddSampleClippingTests.cs" />
