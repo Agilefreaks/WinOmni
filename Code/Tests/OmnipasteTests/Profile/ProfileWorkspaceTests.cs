@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.Profile
 {
     using System.Linq;
-    using System.Reactive.Subjects;
     using Caliburn.Micro;
     using FluentAssertions;
     using Moq;

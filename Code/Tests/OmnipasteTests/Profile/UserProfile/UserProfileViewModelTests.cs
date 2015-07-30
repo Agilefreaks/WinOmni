@@ -30,7 +30,7 @@
 
             var userProfileViewModel = new UserProfileViewModel(_mockIConfigurationService.Object, _mockDevicesApi.Object);
 
-            // Todo: add the verification thath the user is not null
+            userProfileViewModel.User.Should().NotBeNull();
         }
 
         [Test]
@@ -39,7 +39,7 @@
             _mockIConfigurationService.SetupGet(mock => mock.UserInfo).Returns(new UserInfo());
 
             var userProfileViewModel = new UserProfileViewModel(_mockIConfigurationService.Object, _mockDevicesApi.Object);
-
+ 
             userProfileViewModel.Devices.Should().NotBeNull();
         }
     }

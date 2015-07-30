@@ -25,7 +25,7 @@
         {
             User = new ContactModel(new UserEntity(configurationService.UserInfo));
             _devicesApi = devicesApi;
-            // Todo: initialize the devices collection
+            Devices = new BindableCollection<DeviceDto>();
         }
 
         public IObservableCollection<DeviceDto> Devices
@@ -58,15 +58,18 @@
         {
             base.OnInitialize();
 
-            // Todo: Add the subscription that will call the GetDevices Method
-            _devicesApi.GetAll().SubscribeOn(SchedulerProvider.Default).ObserveOn(SchedulerProvider.Dispatcher);
+            _subscription =
+                _devicesApi.GetAll()
+                    .SubscribeOn(SchedulerProvider.Default)
+                    .ObserveOn(SchedulerProvider.Dispatcher)
+                    .Subscribe(GetDevices);
         }
 
         protected override void OnDeactivate(bool close)
         {
             if (close)
             {
-                // Todo: clear subscrpiton
+                _subscription.Dispose();
             }
 
             base.OnDeactivate(close);
@@ -74,7 +77,7 @@
 
         private void GetDevices(List<DeviceDto> deviceDtos)
         {
-            // Todo: Add devices in the observable collection
+            Devices.AddRange(deviceDtos);
         }
     }
 }
