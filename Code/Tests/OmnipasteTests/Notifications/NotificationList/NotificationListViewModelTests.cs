@@ -249,5 +249,21 @@
 
             _subject.Notifications.Should().BeEmpty();
         }
+
+        [Test]
+        public void OnActivate_WhenPauseNotificationIsTrue_ItWillDisableNotifications()
+        {
+            _mockConfigurationService.SetupGet(m => m.PauseNotifications).Returns(true);
+
+            var incomingSmsNotificationViewModel = new Mock<IIncomingSmsNotificationViewModel>();
+            _mockNotificationViewModelFactory.SetupSequence(f => f.Create(It.IsAny<RemoteSmsMessageEntity>()))
+                .Returns(Observable.Return(incomingSmsNotificationViewModel.Object));
+            _mockMessageRepository.Setup(m => m.GetOperationObservable()).Returns(_testableMessagesObservable);
+
+            _subject.Activate();
+            _testScheduler.Start();
+
+            _subject.Notifications.Should().BeEmpty();
+        }
     }
 }
