@@ -6,6 +6,7 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Windows;
     using System.Windows.Controls.Primitives;
     using Caliburn.Micro;
@@ -16,6 +17,7 @@
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
+    using OmniCommon.Settings;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.EventAggregatorMessages;
     using Omnipaste.Framework.Services.Repositories;
@@ -132,18 +134,23 @@
 
         public void UpdateNotificationSubscriptions(bool pauseNotifications)
         {
-            // Todo: Add the code to actually do notification pause
+            if (pauseNotifications.Equals(true))
+            {
+                DisableSubscribers();
+            }
+            else
+            {
+                EnableSubcribers();
+            }
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
 
-            EnableSubcribers();
-
-            // Todo: add the subscriber to the above code
-            ConfigurationService.SettingsChangedObservable
-                .Where(data => data.SettingName == ConfigurationProperties.PauseNotifications);
+            ConfigurationService.SettingsChangedObservable.Where(
+                data => data.SettingName == ConfigurationProperties.PauseNotifications)
+                .Subscribe(scd => UpdateNotificationSubscriptions(Convert.ToBoolean(scd.NewValue)));
         }
 
         protected override void OnDeactivate(bool close)

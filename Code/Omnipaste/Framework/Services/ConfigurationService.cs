@@ -241,6 +241,7 @@
             set
             {
                 _configurationContainer.SetValue(ConfigurationProperties.PauseNotifications, value.ToString());
+                _settingsChangedSubject.OnNext(new SettingsChangedData(ConfigurationProperties.PauseNotifications, value));
             }
         }
 
