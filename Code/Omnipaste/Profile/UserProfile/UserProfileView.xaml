@@ -13,7 +13,7 @@
         <ItemsControl ItemsSource="{Binding Path=Devices}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <!-- Todo: Add TextBlock that binds the text to the Name property  -->
+                    <TextBlock Text="{Binding Path=Name}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
