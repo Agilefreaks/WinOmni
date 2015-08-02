@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Height="150" Padding="18,42,18,37">
+        <Border Height="{DynamicResource ListBorderHeight}" Padding="{DynamicResource ListBorderPadding}">
             <StackPanel>
                 <DockPanel VerticalAlignment="Center">
                     <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />
@@ -33,7 +33,7 @@
                 </DockPanel>
             </StackPanel>
         </Border>
-        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
+        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="{DynamicResource ListBorderThickness}">
             <ScrollViewer>
                 <i:Interaction.Behaviors>
                     <behaviors:ScrollBehavior Collection="{Binding Path=FilteredItems}" ScrollDirection="Top" />

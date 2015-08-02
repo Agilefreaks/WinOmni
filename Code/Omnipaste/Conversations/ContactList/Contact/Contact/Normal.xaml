@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Control  Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" />
+        <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Model.Image}" />
     </Grid>
 </UserControl>
