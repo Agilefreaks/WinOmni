@@ -37,8 +37,8 @@
                 </DockPanel>
             </StackPanel>
         </Border>
-        
-        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="1,0,1,1">
+
+        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}" BorderThickness="{DynamicResource ListBorderThickness}">
             <ContentControl cal:View.Context="{Binding Path=Status}" cal:View.Model="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </Grid>

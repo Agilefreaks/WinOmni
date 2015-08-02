@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
@@ -12,6 +11,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <Border Height="{DynamicResource ListBorderHeight}" Padding="{DynamicResource ListBorderPadding}">
             <StackPanel>
                 <TextBlock x:Name="User_Identifier"
@@ -25,17 +25,51 @@
 
             </StackPanel>
         </Border>
+
+        <Border Grid.Row="1" Style="{DynamicResource ListScreenContainerStyle}"
+                BorderThickness="{DynamicResource ListBorderThickness}">
+            <ListView SelectionMode="Single"
+                      ItemsSource="{Binding Path=Devices, Mode=OneWay}"
+                      Style="{StaticResource VirtualisedMetroListView}"
+                      BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl cal:View.Model="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <Grid>
+                                        <Border BorderThickness="0,1,0,1"
+                                                BorderBrush="{StaticResource PassiveUiElementsBrush}" />
+                                        <Border
+                                            Background="Transparent"
+                                            Opacity="0.05" />
+
+                                        <Border Style="{DynamicResource ListItemBorderStyle}">
+                                            <ContentControl Grid.Column="1"
+                                                            Style="{DynamicResource FadingContentControlStyle}"
+                                                            VerticalAlignment="Center">
+                                                <TextBlock
+                                                    Text="{Binding Path=Name, Converter={StaticResource NonWhiteSpaceStringConverter}}"
+                                                    MaxHeight="{DynamicResource MediumFontLineHeight}"
+                                                    FontSize="{DynamicResource MediumFontSize}"
+                                                    FontFamily="{DynamicResource ActivityContentFont}"
+                                                    TextTrimming="None" TextWrapping="NoWrap" />
+                                            </ContentControl>
+                                        </Border>
+                                    </Grid>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Border>
     </Grid>
-    <!--    <StackPanel>-->
-    <!--        <TextBlock>Hi there, you made it this far, congrats!</TextBlock>-->
-    <!--        <TextBlock x:Name="User_Identifier" />-->
-    <!---->
-    <!--        <ItemsControl ItemsSource="{Binding Path=Devices}">-->
-    <!--            <ItemsControl.ItemTemplate>-->
-    <!--                <DataTemplate>-->
-    <!--                    <TextBlock Text="{Binding Path=Name}"/>-->
-    <!--                </DataTemplate>-->
-    <!--            </ItemsControl.ItemTemplate>-->
-    <!--        </ItemsControl>-->
-    <!--    </StackPanel>-->
 </UserControl>
