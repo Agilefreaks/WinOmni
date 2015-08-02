@@ -31,7 +31,6 @@ code/packages/*
 code/deploy/*
 code/Omnipaste/Uninstall.*
 code/Omnipaste/omnipaste-setup.*
-code/Omnipaste/Settings/debug.config
 
 !code/.nuget/nuget.exe
 !tools/**/*.exe
