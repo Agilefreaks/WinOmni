@@ -4,16 +4,20 @@
     using System.Collections.Generic;
     using System.Reactive.Linq;
     using Caliburn.Micro;
+    using Omni;
     using OmniApi.Dto;
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Omnipaste.Framework.Entities;
-    using Omnipaste.Framework.Models;
+    using Framework.Entities;
+    using Framework.Models;
+    using Shell.SessionInfo;
 
     public class UserProfileViewModel : Screen, IUserProfileViewModel
     {
         private readonly IDevices _devicesApi;
+
+        private readonly IOmniService _omniService;
 
         private IObservableCollection<DeviceDto> _devices;
 
@@ -21,10 +25,14 @@
 
         private ContactModel _user;
 
-        public UserProfileViewModel(IConfigurationService configurationService, IDevices devicesApi)
+        public UserProfileViewModel(
+            IConfigurationService configurationService,
+            IDevices devicesApi,
+            IOmniService omniService)
         {
             User = new ContactModel(new UserEntity(configurationService.UserInfo));
             _devicesApi = devicesApi;
+            _omniService = omniService;
             Devices = new BindableCollection<DeviceDto>();
         }
 
@@ -51,6 +59,17 @@
             {
                 _user = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public string StatusText
+        {
+            get
+            {
+                ConnectionStateEnum connectionState = _omniService.State == OmniServiceStatusEnum.Started
+                                                          ? ConnectionStateEnum.Connected
+                                                          : ConnectionStateEnum.Disconnected;
+                return connectionState.ToResourceString();
             }
         }
 
