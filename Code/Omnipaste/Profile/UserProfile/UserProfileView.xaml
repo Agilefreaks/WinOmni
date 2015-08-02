@@ -4,18 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:properties="clr-namespace:Omnipaste.Properties"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <TextBlock>Hi there, you made it this far, congrats!</TextBlock>
-        <TextBlock x:Name="User_Identifier" />
+    <Grid HorizontalAlignment="Left" Style="{DynamicResource MasterListContainerStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Height="{DynamicResource ListBorderHeight}" Padding="{DynamicResource ListBorderPadding}">
+            <StackPanel>
+                <TextBlock x:Name="User_Identifier"
+                           Foreground="{DynamicResource ActivityContentBrush}"
+                           FontFamily="{DynamicResource HeaderTitleFont}"
+                           FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap"
+                           VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35" />
+                <TextBlock x:Name="StatusText" Margin="0,16,0,0"
+                           FontSize="{DynamicResource FilterButtonFontSize}"
+                           FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
 
-        <ItemsControl ItemsSource="{Binding Path=Devices}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Name}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+    <!--    <StackPanel>-->
+    <!--        <TextBlock>Hi there, you made it this far, congrats!</TextBlock>-->
+    <!--        <TextBlock x:Name="User_Identifier" />-->
+    <!---->
+    <!--        <ItemsControl ItemsSource="{Binding Path=Devices}">-->
+    <!--            <ItemsControl.ItemTemplate>-->
+    <!--                <DataTemplate>-->
+    <!--                    <TextBlock Text="{Binding Path=Name}"/>-->
+    <!--                </DataTemplate>-->
+    <!--            </ItemsControl.ItemTemplate>-->
+    <!--        </ItemsControl>-->
+    <!--    </StackPanel>-->
 </UserControl>

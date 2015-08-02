@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Height="150" Padding="18,42,18,37">
+        <Border Height="{DynamicResource ListBorderHeight}" Padding="{DynamicResource ListBorderPadding}">
             <StackPanel>
                 <DockPanel VerticalAlignment="Center">
                     <TextBox x:Name="FilterText" DockPanel.Dock="Right" Style="{DynamicResource FilterTextBoxStyle}" Width="250" />

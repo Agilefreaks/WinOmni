@@ -24,17 +24,6 @@
 
         public SessionInfoViewModel(IOmniService omniService, IConfigurationService configurationService)
         {
-            _statusTexts = new Dictionary<ConnectionStateEnum, string>
-                               {
-                                   {
-                                       ConnectionStateEnum.Connected,
-                                       Resources.Connected
-                                   },
-                                   {
-                                       ConnectionStateEnum.Disconnected,
-                                       Resources.Disconnected
-                                   }
-                               };
             _icons = new Dictionary<ConnectionStateEnum, string>
                          {
                              {
@@ -79,8 +68,6 @@
 
         private readonly Dictionary<ConnectionStateEnum, string> _icons;
 
-        private readonly Dictionary<ConnectionStateEnum, string> _statusTexts;
-
         private readonly IDisposable _statusObserver;
 
         private readonly IDisposable _userObserver;
@@ -97,7 +84,7 @@
         {
             get
             {
-                return _statusTexts[State];
+                return State.ToResourceString();
             }
         }
 
@@ -161,7 +148,7 @@
         }
 
         public void ShowUserProfile()
-        { 
+        {
             WorkspaceConductor.ActivateItem(ProfileWorkspace);
         }
 

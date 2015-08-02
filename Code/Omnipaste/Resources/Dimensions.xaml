@@ -23,4 +23,7 @@
     <system:Double x:Key="DefaultScrollThumbSize">6</system:Double>
     
     <Thickness x:Key="ActivityHeaderMargin">22,0</Thickness>
+
+    <Thickness x:Key="ListBorderPadding">18,42,18,37</Thickness>
+    <system:Double x:Key="ListBorderHeight">150</system:Double>
 </ResourceDictionary>
