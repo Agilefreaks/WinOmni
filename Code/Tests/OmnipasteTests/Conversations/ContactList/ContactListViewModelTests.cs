@@ -18,7 +18,10 @@
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services;
     using Omnipaste.Framework.Services.Repositories;
+    using OmniUI.Details;
+    using OmniUI.Framework.ExtensionMethods;
     using OmniUI.List;
+    using OmniUI.Workspaces;
 
     [TestFixture]
     public class ContactListViewModelTests
@@ -81,6 +84,36 @@
             _testScheduler.Start();
 
             _subject.Items.Count.Should().Be(contacts.Count);
+        }
+
+        [Test]
+        public void Activate_WhenCanSelectMultipleItems_WillShowDetails()
+        {
+            _subject.CanSelectMultipleItems = true;
+
+            var mockDetailsWorkSpace = new Mock<IMasterDetailsWorkspace>();
+            var mockDetailsConductorViewModel = new Mock<IDetailsConductorViewModel>();
+            mockDetailsWorkSpace.SetupGet(mock => mock.DetailsConductor).Returns(mockDetailsConductorViewModel.Object);
+            _subject.DetailsWorkspace = mockDetailsWorkSpace.Object;
+
+            ((IActivate)_subject).Activate();
+
+            mockDetailsConductorViewModel.Verify(mock => mock.ActivateItem(It.IsAny<IDetailsViewModelWithHeader>()));
+        } 
+
+        [Test]
+        public void Activate_WhenCanSelectMultipleItemsIsFalse_WillNotShowDetails()
+        {
+            _subject.CanSelectMultipleItems = false;
+
+            var mockDetailsWorkSpace = new Mock<IMasterDetailsWorkspace>();
+            var mockDetailsConductorViewModel = new Mock<IDetailsConductorViewModel>();
+            mockDetailsWorkSpace.SetupGet(mock => mock.DetailsConductor).Returns(mockDetailsConductorViewModel.Object);
+            _subject.DetailsWorkspace = mockDetailsWorkSpace.Object;
+
+            ((IActivate)_subject).Activate();
+
+            mockDetailsConductorViewModel.Verify(mock => mock.ActivateItem(It.IsAny<IDetailsViewModelWithHeader>()), Times.Never);
         }
 
         [Test]

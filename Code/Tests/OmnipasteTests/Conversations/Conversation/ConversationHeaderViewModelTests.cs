@@ -86,15 +86,57 @@
         }
 
         [Test]
+        public void Recipients_WhenAdded_ItWillCreateANewInstanceOfTokenizer()
+        {
+            _subject.Recipients = new ObservableCollection<ContactModel>();
+
+            // Todo: Verify that RecepientsTokenizer is not null, https://github.com/dennisdoomen/fluentassertions/wiki#nullable-types
+        }
+
+        [Test]
+        public void OnRecepients_WhenNone_WillChangeStateToEdit()
+        {
+            _subject.Recipients = new ObservableCollection<ContactModel>();
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Edit);
+        }
+
+        [Test]
         public void OnRecepientAdded_WhenMoreThanTwo_WillChangeState()
         {
+            _subject.Recipients = new ObservableCollection<ContactModel>()
+                                      {
+                                          new ContactModel(new ContactEntity())
+                                      };
+
+            ((IActivate)_subject).Activate();
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
+        }
+
+        [Test]
+        public void OnRecepientAdded_WillCallTokenize()
+        {
+            var mockTokenizer = new Mock<IRecepientsTokenizer>();
+            _subject.RecepientsTokenizer = mockTokenizer.Object;
             _subject.Recipients = new ObservableCollection<ContactModel>();
 
             ((IActivate)_subject).Activate();
             _subject.Recipients.Add(new ContactModel(new ContactEntity()));
-            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
 
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
+            mockTokenizer.Verify(m => m.Tokenize());
+        }
+
+        [Test]
+        public void OnTokenizedRecipients_Changed_WillCallTokenizeWithTheNewString()
+        {
+            var mockTokenizer = new Mock<IRecepientsTokenizer>();
+            _subject.RecepientsTokenizer = mockTokenizer.Object;
+
+            _subject.TokenizedRecipients = "recipient";
+
+            mockTokenizer.Verify(m => m.Tokenize("recipient"));
         }
 
         [Test]

@@ -19,7 +19,6 @@ namespace Omnipaste.Conversations.ContactList
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.WorkspaceDetails;
-    using OmniUI.Details;
     using OmniUI.Framework.ExtensionMethods;
     using OmniUI.List;
     using OmniUI.Workspaces;
@@ -28,13 +27,37 @@ namespace Omnipaste.Conversations.ContactList
     {
         private readonly IContactViewModelFactory _contactViewModelFactory;
 
-        private bool _showStarred;
+        private bool _canSelectMultipleItems;
 
         private string _filterText;
 
-        private bool _canSelectMultipleItems;
-        
         private ContactModel _pendingContact;
+
+        private ObservableCollection<ContactModel> _selectedContacts;
+
+        private bool _showStarred;
+
+        private IMasterDetailsWorkspace _detailsWorkspace;
+
+        public ContactListViewModel(
+            IContactRepository contactRepository,
+            IContactViewModelFactory contactViewModelFactory)
+        {
+            ContactRepository = contactRepository;
+            _contactViewModelFactory = contactViewModelFactory;
+
+            FilteredItems.SortDescriptions.Add(
+                new SortDescription(
+                    PropertyExtensions.GetPropertyName<IContactViewModel, DateTime?>(vm => vm.LastActivityTime),
+                    ListSortDirection.Descending));
+
+            FilteredItems.SortDescriptions.Add(
+                new SortDescription(
+                    PropertyExtensions.GetPropertyName<IContactViewModel, string>(vm => vm.Identifier),
+                    ListSortDirection.Ascending));
+
+            SelectedContacts = new ObservableCollection<ContactModel>();
+        }
 
         public IContactRepository ContactRepository { get; set; }
 
@@ -45,8 +68,7 @@ namespace Omnipaste.Conversations.ContactList
         {
             get
             {
-                return _pendingContact
-                       ?? (_pendingContact = new ContactModel(new ContactEntity()));
+                return _pendingContact ?? (_pendingContact = new ContactModel(new ContactEntity()));
             }
             set
             {
@@ -60,31 +82,37 @@ namespace Omnipaste.Conversations.ContactList
             }
         }
 
-        public ContactListViewModel(
-            IContactRepository contactRepository,
-            IContactViewModelFactory contactViewModelFactory)
-        {
-            ContactRepository = contactRepository;
-            _contactViewModelFactory = contactViewModelFactory;
-
-            FilteredItems.SortDescriptions.Add(
-                new SortDescription(
-                    PropertyExtensions.GetPropertyName<IContactViewModel, DateTime?>(vm => vm.LastActivityTime),
-                    ListSortDirection.Descending));
-            
-            FilteredItems.SortDescriptions.Add(
-                new SortDescription(
-                    PropertyExtensions.GetPropertyName<IContactViewModel, string>(vm => vm.Identifier),
-                    ListSortDirection.Ascending));
-
-            SelectedContacts = new ObservableCollection<ContactModel>();
-        }
-
         public override int MaxItemCount
         {
             get
             {
                 return 0;
+            }
+        }
+
+        public bool IsRefreshing { get; set; }
+
+        public ObservableCollection<ContactModel> SelectedContacts
+        {
+            get
+            {
+                return _selectedContacts;
+            }
+            set
+            {
+                if (_selectedContacts == value)
+                {
+                    return;
+                }
+
+                if (_selectedContacts != null)
+                {
+                    _selectedContacts.CollectionChanged -= SelectedContactsCollectionChanged;
+                }
+
+                _selectedContacts = value;
+                _selectedContacts.CollectionChanged += SelectedContactsCollectionChanged;
+                NotifyOfPropertyChange(() => SelectedContacts);
             }
         }
 
@@ -127,8 +155,6 @@ namespace Omnipaste.Conversations.ContactList
             }
         }
 
-        public bool IsRefreshing { get; set; }
-
         public bool CanSelectMultipleItems
         {
             get
@@ -147,31 +173,36 @@ namespace Omnipaste.Conversations.ContactList
             }
         }
 
-        private ObservableCollection<ContactModel> _selectedContacts;
-
-        private IDetailsViewModelWithHeader _detailsViewModel;
-
-        public ObservableCollection<ContactModel> SelectedContacts
+        public IMasterDetailsWorkspace DetailsWorkspace
         {
             get
             {
-                return _selectedContacts;
+                return _detailsWorkspace ?? this.GetParentOfType<IMasterDetailsWorkspace>();
             }
             set
             {
-                if (_selectedContacts == value)
-                {
-                    return;
-                }
+                _detailsWorkspace = value;
+            }
+        }
 
-                if (_selectedContacts != null)
-                {
-                    _selectedContacts.CollectionChanged -= SelectedContactsCollectionChanged;
-                }
+        public override void RefreshItems()
+        {
+            base.RefreshItems();
 
-                _selectedContacts = value;
-                _selectedContacts.CollectionChanged += SelectedContactsCollectionChanged;
-                NotifyOfPropertyChange(() => SelectedContacts);
+            Status = FilteredItems.Count == 0 && !ShowStarred
+                         ? ListViewModelStatusEnum.EmptyFilter
+                         : ListViewModelStatusEnum.NotEmpty;
+            NotifyOfPropertyChange(() => SelectedContacts);
+        }
+
+        public override void NotifyOfPropertyChange(string propertyName = null)
+        {
+            base.NotifyOfPropertyChange(propertyName);
+
+            if (propertyName == "FilterText")
+            {
+                var phoneNumber = Regex.Replace(FilterText, "[^+0-9]", "");
+                PendingContact.PhoneNumber = phoneNumber;
             }
         }
 
@@ -187,7 +218,48 @@ namespace Omnipaste.Conversations.ContactList
             else if (SelectedContacts.Count == 0 && activeItem != null)
             {
                 HideDetails();
-            }                
+            }
+        }
+
+        public void SelectionChanged(SelectionChangedEventArgs args)
+        {
+            if (IsRefreshing)
+            {
+                return;
+            }
+            if (args.RemovedItems.Count != 0)
+            {
+                UnselectItems(args.RemovedItems.Cast<IContactViewModel>());
+            }
+
+            if (args.AddedItems.Count != 0)
+            {
+                if (!CanSelectMultipleItems)
+                {
+                    IsRefreshing = true;
+                    Items.Where(i => SelectedContacts.Any(c => c.UniqueId == i.Model.UniqueId))
+                        .ForEach(i => i.IsSelected = false);
+                    IsRefreshing = false;
+                    SelectedContacts.Clear();
+                }
+
+                SelectItems(args.AddedItems.Cast<IContactViewModel>());
+            }
+        }
+
+        public void AddPendingContact()
+        {
+            ContactRepository.Save(PendingContact.ContactEntity).SubscribeAndHandleErrors();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            if (CanSelectMultipleItems)
+            {
+                ShowDetails();
+            }
         }
 
         protected override bool CanShow(IContactViewModel viewModel)
@@ -196,31 +268,15 @@ namespace Omnipaste.Conversations.ContactList
             return MatchesFilter(contactModel) && MatchesFilterText(contactModel);
         }
 
-        private void HideDetails()
-        {
-            var detailsConductorViewModel = this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor;
-            var activeItem = detailsConductorViewModel.ActiveItem;
-            detailsConductorViewModel.DeactivateItem(activeItem, true);
-        }
-
-        private void ShowDetails()
-        {
-            _detailsViewModel = DetailsViewModelFactory.Create(SelectedContacts);
-
-            this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor.ActivateItem(_detailsViewModel);
-        }
-
         protected override IObservable<ContactModel> GetFetchItemsObservable()
         {
             return
-                ContactRepository.GetAll()
-                    .SelectMany(contacts => contacts.Select(contact => new ContactModel(contact)));
+                ContactRepository.GetAll().SelectMany(contacts => contacts.Select(contact => new ContactModel(contact)));
         }
 
         protected override IObservable<ContactModel> GetItemChangedObservable()
         {
-            return ContactRepository.GetOperationObservable().Changed()
-                .Select(o => new ContactModel(o.Item));
+            return ContactRepository.GetOperationObservable().Changed().Select(o => new ContactModel(o.Item));
         }
 
         protected override IContactViewModel ChangeViewModel(ContactModel model)
@@ -236,6 +292,19 @@ namespace Omnipaste.Conversations.ContactList
             }
 
             return contactViewModel;
+        }
+
+        private void HideDetails()
+        {
+            var detailsConductorViewModel = this.GetParentOfType<IMasterDetailsWorkspace>().DetailsConductor;
+            var activeItem = detailsConductorViewModel.ActiveItem;
+            detailsConductorViewModel.DeactivateItem(activeItem, true);
+        }
+
+        private void ShowDetails()
+        {
+            var detailsViewModel = DetailsViewModelFactory.Create(SelectedContacts);
+            DetailsWorkspace.DetailsConductor.ActivateItem(detailsViewModel);
         }
 
         private IContactViewModel UpdateViewModel(ContactModel obj)
@@ -258,12 +327,13 @@ namespace Omnipaste.Conversations.ContactList
 
         private bool MatchesFilterText(ContactModel model)
         {
-            bool matchesFilterText = false;
+            var matchesFilterText = false;
 
             try
             {
                 matchesFilterText = (model != null)
-                                    && (string.IsNullOrWhiteSpace(FilterText) || IsMatch(FilterText, model.BackingEntity.Name)
+                                    && (string.IsNullOrWhiteSpace(FilterText)
+                                        || IsMatch(FilterText, model.BackingEntity.Name)
                                         || model.BackingEntity.PhoneNumbers.Any(pn => IsMatch(FilterText, pn.Number)));
             }
             catch (Exception e)
@@ -279,58 +349,10 @@ namespace Omnipaste.Conversations.ContactList
             return !ShowStarred || model.IsStarred;
         }
 
-        public void SelectionChanged(SelectionChangedEventArgs args)
-        {
-            if (IsRefreshing)
-            {
-                return;
-            }
-            if (args.RemovedItems.Count != 0)
-            {
-                UnselectItems(args.RemovedItems.Cast<IContactViewModel>());
-            }
-
-            if (args.AddedItems.Count != 0)
-            {
-                if (!CanSelectMultipleItems)
-                {
-                    IsRefreshing = true;
-                    Items.Where(i => SelectedContacts.Any(c => c.UniqueId == i.Model.UniqueId)).ForEach(i => i.IsSelected = false);
-                    IsRefreshing = false;
-                    SelectedContacts.Clear();
-                }
-
-                SelectItems(args.AddedItems.Cast<IContactViewModel>());
-            }
-        }
-
-        public override void RefreshItems()
-        {
-            base.RefreshItems();
-
-            Status = FilteredItems.Count == 0 && !ShowStarred ? ListViewModelStatusEnum.EmptyFilter : ListViewModelStatusEnum.NotEmpty;
-            NotifyOfPropertyChange(() => SelectedContacts);
-        }
-
-        public override void NotifyOfPropertyChange(string propertyName = null)
-        {
-            base.NotifyOfPropertyChange(propertyName);
-
-            if (propertyName == "FilterText")
-            {
-                var phoneNumber = Regex.Replace(FilterText, "[^+0-9]", "");
-                PendingContact.PhoneNumber = phoneNumber;
-            }
-        }
-
-        public void AddPendingContact()
-        {
-            ContactRepository.Save(PendingContact.ContactEntity).SubscribeAndHandleErrors();
-        }
-
         private void UnselectItems(IEnumerable<IContactViewModel> itemsToUnselect)
         {
-            var contactInfoViewModels = itemsToUnselect.Where(i => SelectedContacts.Any(sc => i.Model.UniqueId == sc.UniqueId));
+            var contactInfoViewModels =
+                itemsToUnselect.Where(i => SelectedContacts.Any(sc => i.Model.UniqueId == sc.UniqueId));
             foreach (var item in contactInfoViewModels)
             {
                 var modelsToRemove = SelectedContacts.Where(c => c.UniqueId == item.Model.UniqueId).ToList();

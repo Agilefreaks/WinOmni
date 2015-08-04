@@ -15,8 +15,7 @@
     using OmniUI.Details;
     using PhoneCalls.Resources.v1;
 
-    public class ConversationHeaderViewModel : DetailsViewModelBase<ContactModel>,
-                                               IConversationHeaderViewModel
+    public class ConversationHeaderViewModel : DetailsViewModelBase<ContactModel>, IConversationHeaderViewModel
     {
         protected static TimeSpan CallingDuration = TimeSpan.FromSeconds(5);
 
@@ -27,6 +26,10 @@
         private ObservableCollection<ContactModel> _recipients;
 
         private ConversationHeaderStateEnum _state;
+
+        private string _tokenizedRecipients;
+
+        private IRecepientsTokenizer _recepientsTokenizer;
 
         [Inject]
         public IPhoneCallFactory PhoneCallFactory { get; set; }
@@ -40,6 +43,22 @@
         [Inject]
         public IPhoneCalls PhoneCalls { get; set; }
 
+        public IRecepientsTokenizer RecepientsTokenizer
+        {
+            get
+            {
+                return _recepientsTokenizer;
+            }
+            set
+            {
+                if (_recepientsTokenizer != null)
+                {
+                    return;
+                }
+                _recepientsTokenizer = value;
+            }
+        }
+
         public TimeSpan ProgressDuration
         {
             get
@@ -47,46 +66,6 @@
                 return DelayCallDuration;
             }
         }
-
-        #region IConversationHeaderViewModel Members
-
-        public ConversationHeaderStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                if (value == _state)
-                {
-                    return;
-                }
-                _state = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public ObservableCollection<ContactModel> Recipients
-        {
-            get
-            {
-                return _recipients;
-            }
-            set
-            {
-                if (Equals(value, _recipients))
-                {
-                    return;
-                }
-
-                _recipients = value;
-                RecipientsOnCollectionChanged(_recipients, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                NotifyOfPropertyChange(() => Recipients);
-            }
-        }
-
-        #endregion
 
         public void Call()
         {
@@ -128,12 +107,8 @@
 
         protected override void OnActivate()
         {
-            State = ConversationHeaderStateEnum.Normal;
-
-            if (Recipients != null)
-            {
-                Recipients.CollectionChanged += RecipientsOnCollectionChanged;
-            }
+            Recipients = Recipients ?? new ObservableCollection<ContactModel>();
+            Recipients.CollectionChanged += RecipientsOnCollectionChanged;
 
             base.OnActivate();
         }
@@ -142,7 +117,7 @@
         {
             DeleteConversationItems<PhoneCallEntity>(PhoneCallRepository);
             DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
-            
+
             base.OnDeactivate(close);
         }
 
@@ -150,11 +125,26 @@
             object sender,
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            State = _recipients.Count >= 2
-                ? ConversationHeaderStateEnum.Group
-                : State == ConversationHeaderStateEnum.Group
-                    ? ConversationHeaderStateEnum.Normal
-                    : State;
+           // RecepientsTokenizer.Tokenize(TokenizedRecipients);
+
+            if (State == ConversationHeaderStateEnum.Edit)
+            {
+                return;
+            }
+
+            if (_recipients.Count >= 2)
+            {
+                State = ConversationHeaderStateEnum.Group;
+            }
+            else if (_recipients.Count == 0)
+            {
+                State = ConversationHeaderStateEnum.Edit;
+            }
+            else if (State == ConversationHeaderStateEnum.Group)
+            {
+                State = ConversationHeaderStateEnum.Normal;
+            }
+            
         }
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
@@ -198,5 +188,62 @@
                             return repository.Save(item);
                         })).Switch().SubscribeAndHandleErrors();
         }
+
+        #region IConversationHeaderViewModel Members
+
+        public ConversationHeaderStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+                _state = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public ObservableCollection<ContactModel> Recipients
+        {
+            get
+            {
+                return _recipients;
+            }
+            set
+            {
+                if (Equals(value, _recipients))
+                {
+                    return;
+                }
+
+                _recipients = value;
+                RecepientsTokenizer = new RecepientsTokenizer(_recipients);
+                RecipientsOnCollectionChanged(
+                    _recipients,
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string TokenizedRecipients
+        {
+            get
+            {
+                return _tokenizedRecipients;
+            }
+            set
+            {
+                _tokenizedRecipients = value;
+                RecepientsTokenizer.Tokenize(_tokenizedRecipients);
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
     }
 }

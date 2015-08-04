@@ -10,6 +10,8 @@
         
         Deleted,
 
-        Group
+        Group,
+
+        Edit
     }
 }

@@ -58,7 +58,7 @@
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
             result.Recipients = (ObservableCollection<ContactModel>)contactModelList;
-            result.Model = contactModelList.First();
+            result.Model = contactModelList.FirstOrDefault();
 
             return result;
         }

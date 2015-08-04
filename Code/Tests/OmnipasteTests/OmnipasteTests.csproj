@@ -158,6 +158,7 @@
     <Compile Include="Conversations\ContactList\ContactViewModelFactoryTests.cs" />
     <Compile Include="Conversations\ContactList\Contact\ContactViewModelTests.cs" />
     <Compile Include="Conversations\ContactList\ContactListViewModelTests.cs" />
+    <Compile Include="Conversations\Conversation\RecepientsTokenizerTests.cs" />
     <Compile Include="Framework\ExtensionMethods\PropertyExtensionMethodsTests.cs" />
     <Compile Include="Framework\Entities\Factories\ContactFactoryTests.cs" />
     <Compile Include="Framework\Entities\Factories\PhoneCallFactoryTests.cs" />
