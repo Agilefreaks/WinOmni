@@ -9,9 +9,9 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Helpers;
     using OmniCommon.Interfaces;
-    using Framework.Entities;
-    using Framework.Models;
-    using Shell.SessionInfo;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
+    using Omnipaste.Shell.SessionInfo;
 
     public class UserProfileViewModel : Screen, IUserProfileViewModel
     {
@@ -66,10 +66,11 @@
         {
             get
             {
-                ConnectionStateEnum connectionState = _omniService.State == OmniServiceStatusEnum.Started
-                                                          ? ConnectionStateEnum.Connected
-                                                          : ConnectionStateEnum.Disconnected;
-                return connectionState.ToResourceString();
+                // Todo: Add code to get connection state
+                // if omniService state is Started then the state is connected otherwise is disconnected
+                // use ConnectionStateEnum
+                // replace the return with the found state .ToResourceString()
+                return "";
             }
         }
 
