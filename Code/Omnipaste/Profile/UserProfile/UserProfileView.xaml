@@ -11,6 +11,22 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-    </Grid>
 
+        <Border Height="{DynamicResource ListBorderHeight}" Padding="{DynamicResource ListBorderPadding}">
+            <StackPanel>
+                <TextBlock x:Name="Identifier"
+                       Foreground="{DynamicResource ActivityContentBrush}"                 
+                       FontFamily="{DynamicResource HeaderTitleFont}" 
+                       FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap" 
+                       VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35" />
+                <TextBlock x:Name="Status" 
+                       Text="I'm the status"
+                       Margin="0,16,0,0" 
+                       FontSize="{DynamicResource FilterButtonFontSize}" 
+                       FontFamily="{DynamicResource ContentFont}" Foreground="{DynamicResource LabelBrush}" />
+
+            </StackPanel>
+        </Border>
+
+    </Grid>
 </UserControl>

@@ -7,6 +7,8 @@
     using OmniApi.Resources.v1;
     using OmniCommon.Interfaces;
     using OmniCommon.Models;
+    using Omnipaste.Framework.Entities;
+    using Omnipaste.Framework.Models;
     using Omnipaste.Profile.UserProfile;
 
     [TestFixture]
@@ -50,6 +52,19 @@
                 _mockOmniService.Object);
 
             userProfileViewModel.User.Should().NotBeNull();
+        }
+
+        [Test]
+        public void Identifier_Always_ProxiesToUserIdentifier()
+        {
+            var userProfileViewModel = new UserProfileViewModel(
+                _mockIConfigurationService.Object,
+                _mockDevicesApi.Object,
+                _mockOmniService.Object);
+             
+            userProfileViewModel.User = new ContactModel(new ContactEntity { FirstName = "Ionica", LastName = "din Deal" });
+
+            userProfileViewModel.Identifier.Should().Be("Ionica din Deal");
         }
     }
 }

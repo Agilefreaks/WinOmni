@@ -74,6 +74,14 @@
             }
         }
 
+        public string Identifier
+        {
+            get
+            { 
+               return User.Identifier;
+            }
+        }
+
         protected override void OnInitialize()
         {
             base.OnInitialize();
