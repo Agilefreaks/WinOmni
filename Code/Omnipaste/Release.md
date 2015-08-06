@@ -1,4 +1,11 @@
-﻿**Version 1.5.6 (3.05.2015)**
+﻿**Version 1.5.7 (8.06.2015)**
+
+**Improvements:**
+
+- Adds user profile, you can now click on image to see connected devices, thanks to Iulia and Ana.
+- Adds Pause context menu, to pause notifications.
+
+**Version 1.5.6 (3.05.2015)**
 
 **Certificate update**
 
