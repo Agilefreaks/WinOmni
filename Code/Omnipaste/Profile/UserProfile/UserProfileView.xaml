@@ -19,7 +19,7 @@
                        FontFamily="{DynamicResource HeaderTitleFont}" 
                        FontSize="{DynamicResource HeaderTitleFontSize}" TextWrapping="Wrap" 
                        VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="35" />
-                <TextBlock x:Name="Status" 
+                <TextBlock x:Name="StatusText" 
                        Text="I'm the status"
                        Margin="0,16,0,0" 
                        FontSize="{DynamicResource FilterButtonFontSize}" 

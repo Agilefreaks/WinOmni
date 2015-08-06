@@ -66,11 +66,8 @@
         {
             get
             {
-                // Todo: Add code to get connection state
-                // if omniService state is Started then the state is connected otherwise is disconnected
-                // use ConnectionStateEnum
-                // replace the return with the found state .ToResourceString()
-                return "";
+                ConnectionStateEnum result = _omniService.State == OmniServiceStatusEnum.Started ? ConnectionStateEnum.Connected : ConnectionStateEnum.Disconnected;
+                return result.ToResourceString();
             }
         }
 

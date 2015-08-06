@@ -66,5 +66,31 @@
 
             userProfileViewModel.Identifier.Should().Be("Ionica din Deal");
         }
+
+        [Test]
+        public void StatusText_WhenOmniServiceStatusIsStarted_ShouldBeConnected()
+        {
+            var userProfileViewModel = new UserProfileViewModel(
+                _mockIConfigurationService.Object,
+                _mockDevicesApi.Object,
+                _mockOmniService.Object);
+
+            _mockOmniService.SetupGet(mock => mock.State).Returns(OmniServiceStatusEnum.Started);
+
+            userProfileViewModel.StatusText.Should().Be("Connected");
+        }
+
+        [Test]
+        public void StatusText_WhenOmniServiceStatusIsStoped_ShouldBeDisconnected()
+        {
+            var userProfileViewModel = new UserProfileViewModel(
+               _mockIConfigurationService.Object,
+               _mockDevicesApi.Object,
+               _mockOmniService.Object);
+
+            _mockOmniService.SetupGet(mock => mock.State).Returns(OmniServiceStatusEnum.Stopped);
+
+            userProfileViewModel.StatusText.Should().Be("Disconnected");
+        } 
     }
 }
