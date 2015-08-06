@@ -6,7 +6,11 @@
     using Omnipaste.Framework.Models;
     using OmniUI.Attributes;
     using OmniUI.Details;
+<<<<<<< HEAD:Code/Omnipaste/Conversations/Conversation/ConversationViewModel.cs
     using OmniUI.Framework.Models;
+=======
+    using OmniUI.Presenters;
+>>>>>>> Fixes selection problems:Code/Omnipaste/WorkspaceDetails/Conversation/ConversationViewModel.cs
 
     [UseView(typeof(DetailsWithHeaderView))]
     public class ConversationViewModel : DetailsWithHeaderViewModelBase<IDetailsViewModel, IDetailsViewModel>, IConversationViewModel
@@ -47,6 +51,20 @@
             }
         }
 
+        public override IPresenter Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                HeaderViewModel.Model = value;
+                ContentViewModel.Model = value;
+            }
+        }
+
         public ConversationViewModel(
             IConversationHeaderViewModel headerViewModel,
             IConversationContainerViewModel contentViewModel)
@@ -79,6 +97,11 @@
             }
             else
             {
+                if (Recipients != null)
+                {
+                    Recipients.CollectionChanged -= RecipientsCollectionChanged;
+                }
+
                 base.OnDeactivate(close);
             }
         }

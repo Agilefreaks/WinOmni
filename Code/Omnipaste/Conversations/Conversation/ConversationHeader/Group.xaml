@@ -31,7 +31,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <Control  Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20"/>
-                                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" />
+                                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{Binding Path=Identifier}" Style="{DynamicResource ActivityContentTextStyle}" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
