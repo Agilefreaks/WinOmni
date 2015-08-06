@@ -451,4 +451,7 @@ Até poderá colar este texto no Facebook. Existem inúmeras possibilidades.</va
   <data name="GroupMessage" xml:space="preserve">
     <value>+ Nova mensagem</value>
   </data>
+  <data name="ContextMenuPause" xml:space="preserve">
+    <value>Pause notificações</value>
+  </data>
 </root>
