@@ -41,7 +41,8 @@
 
         public string Tokenize()
         {
-            return string.Join("; ", _recipients.Select(recipient => recipient.PhoneNumber));
+            // Todo: implement method
+            throw new NotImplementedException("");
         }
 
         private bool RecipientAlreadyAdded(string number)

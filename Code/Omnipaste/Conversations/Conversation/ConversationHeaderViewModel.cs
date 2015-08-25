@@ -127,7 +127,7 @@
         {
             if (State == ConversationHeaderStateEnum.Edit)
             {
-                TokenizedRecipients = RecepientsTokenizer.Tokenize();
+                // Todo: set TokenizedRecipients
                 return;
             }
 
