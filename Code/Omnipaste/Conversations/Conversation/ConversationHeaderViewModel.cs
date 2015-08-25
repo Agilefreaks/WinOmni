@@ -125,10 +125,9 @@
             object sender,
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-           // RecepientsTokenizer.Tokenize(TokenizedRecipients);
-
             if (State == ConversationHeaderStateEnum.Edit)
             {
+                TokenizedRecipients = RecepientsTokenizer.Tokenize();
                 return;
             }
 
@@ -144,7 +143,6 @@
             {
                 State = ConversationHeaderStateEnum.Normal;
             }
-            
         }
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
@@ -239,7 +237,6 @@
             set
             {
                 _tokenizedRecipients = value;
-                RecepientsTokenizer.Tokenize(_tokenizedRecipients);
                 NotifyOfPropertyChange();
             }
         }

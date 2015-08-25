@@ -21,7 +21,7 @@
         {
            _recipients.Clear();
 
-            if (String.IsNullOrEmpty(tokens))
+            if (string.IsNullOrEmpty(tokens))
             {
                 return;
             }
@@ -41,7 +41,7 @@
 
         public string Tokenize()
         {
-            return "";
+            return string.Join("; ", _recipients.Select(recipient => recipient.PhoneNumber));
         }
 
         private bool RecipientAlreadyAdded(string number)

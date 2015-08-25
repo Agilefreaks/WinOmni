@@ -53,7 +53,7 @@
         [Test]
         public void Tokenize_WithAnElementThatsAlreadyInRecepients_WillNotAddItAgain()
         {
-            var recipients = new ObservableCollection<ContactModel> { new ContactModel(new ContactEntity() { PhoneNumbers = new List<PhoneNumber> { new PhoneNumber("42") } }) };
+            var recipients = new ObservableCollection<ContactModel> { BuildContactModel() };
             IRecepientsTokenizer subject = new RecepientsTokenizer(recipients);
 
             subject.Tokenize("42; 43");
@@ -85,6 +85,38 @@
 
             recipients.Count.Should().Be(1);
             recipients.First().PhoneNumber.Should().Be("42");
+        }
+
+        [Test]
+        public void Tokenize_WhenNoRecepients_WillReturnAnEmptyString()
+        {
+            var recipients = new ObservableCollection<ContactModel>();
+            IRecepientsTokenizer subject = new RecepientsTokenizer(recipients);
+
+            subject.Tokenize().Should().BeEmpty();
+        }
+
+        [Test]
+        public void Tokenize_WithARecepient_WillReturnTheStringWithThePhoneNumber()
+        {
+            var recipients = new ObservableCollection<ContactModel> { BuildContactModel() };
+            IRecepientsTokenizer subject = new RecepientsTokenizer(recipients);
+
+            subject.Tokenize().Should().Be("42");
+        }
+
+        [Test]
+        public void Tokenize_WithMultipleRecipients_WillReturnTheStringWithPhoneNumbers()
+        {
+            var recipients = new ObservableCollection<ContactModel> { BuildContactModel(), BuildContactModel("43") };
+            IRecepientsTokenizer subject = new RecepientsTokenizer(recipients);
+
+            subject.Tokenize().Should().Be("42; 43");
+        }
+
+        private static ContactModel BuildContactModel(string phoneNumber = "42")
+        {
+            return new ContactModel(new ContactEntity() { PhoneNumbers = new List<PhoneNumber> { new PhoneNumber(phoneNumber) } });
         }
     }
 }
