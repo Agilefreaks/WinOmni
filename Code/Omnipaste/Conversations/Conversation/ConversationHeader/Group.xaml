@@ -29,9 +29,13 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Control  Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20"/>
-                                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                                <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20" Margin="0,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" 
+                                           Margin="0,0,5,0"/>
+                                <Button x:Name="Delete" Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="20" Height="20"
+                                        Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"
+                                        Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
