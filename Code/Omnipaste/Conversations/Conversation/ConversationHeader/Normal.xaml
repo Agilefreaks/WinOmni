@@ -51,7 +51,8 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <TextBlock x:Name="Model_Identifier" Style="{DynamicResource ActivityContentTextStyle}" FontFamily="{DynamicResource ContentFont}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="Model_Identifier" Style="{DynamicResource ActivityContentTextStyle}" FontFamily="{DynamicResource ContentFont}" 
+                               VerticalAlignment="Center"/>
                     <TextBlock x:Name="Model_PhoneNumber" Style="{DynamicResource ActivityContentTextStyle}" FontFamily="{DynamicResource ContentFont}" 
                                VerticalAlignment="Center" Opacity="0"/>
                 </Grid>

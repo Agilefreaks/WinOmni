@@ -105,6 +105,11 @@
             State = ConversationHeaderStateEnum.Normal;
         }
 
+        public void RemoveRecipient(ContactModel contact)
+        {
+            Recipients.Remove(contact);
+        }
+
         protected override void OnActivate()
         {
             Recipients = Recipients ?? new ObservableCollection<ContactModel>();

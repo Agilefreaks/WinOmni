@@ -321,6 +321,18 @@
             message.IsDeleted.Should().BeFalse();
         }
 
+        [Test]
+        public void RemoveRecipient_Always_RemovesTheGivenRecipientFromTheRecipientsCollection()
+        {
+            _subject.Recipients = new ObservableCollection<ContactModel>();
+            var contact = new ContactModel(new ContactEntity());
+            _subject.Recipients.Add(contact);
+
+            _subject.RemoveRecipient(contact);
+
+            _subject.Recipients.Contains(contact).Should().BeFalse();
+        }
+
         private void SetupSaveCallObservable()
         {
             var saveObservable =
