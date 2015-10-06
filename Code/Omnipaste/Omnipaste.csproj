@@ -583,10 +583,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Conversations\Conversation\ConversationHeader\Group.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Clippings\CilppingDetails\ClippingDetailsHeader\Deleted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -631,7 +627,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Conversations\Conversation\ConversationHeader\Normal.xaml">
+    <Page Include="Conversations\Conversation\ConversationHeader\ReadOnlyl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

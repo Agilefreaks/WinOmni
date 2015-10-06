@@ -69,20 +69,7 @@
         {
             _subject = new ConversationHeaderViewModel();
 
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
-        }
-
-        [Test]
-        public void OnRecepients_WhenMoreThanTwo_WillChangeState()
-        {
-            _subject.Recipients = new ObservableCollection<ContactModel>
-                                      {
-                                          new ContactModel(new ContactEntity()),
-                                          new ContactModel(new ContactEntity())
-                                      };
-
-
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
+            _subject.State.Should().Be(ConversationHeaderStateEnum.ReadOnly);
         }
 
         [Test]
@@ -91,41 +78,6 @@
             _subject.Recipients = new ObservableCollection<ContactModel>();
 
             // Todo: Verify that RecepientsTokenizer is not null, https://github.com/dennisdoomen/fluentassertions/wiki#nullable-types
-        }
-
-        [Test]
-        public void OnRecepients_WhenNone_WillChangeStateToEdit()
-        {
-            _subject.Recipients = new ObservableCollection<ContactModel>();
-
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Edit);
-        }
-
-        [Test]
-        public void OnRecepientAdded_WhenMoreThanTwo_WillChangeState()
-        {
-            _subject.Recipients = new ObservableCollection<ContactModel>()
-                                      {
-                                          new ContactModel(new ContactEntity())
-                                      };
-
-            ((IActivate)_subject).Activate();
-            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
-
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Group);
-        }
-
-        [Test]
-        public void OnRecepientAdded_WillCallTokenize()
-        {
-            var mockTokenizer = new Mock<IRecepientsTokenizer>();
-            _subject.RecepientsTokenizer = mockTokenizer.Object;
-            _subject.Recipients = new ObservableCollection<ContactModel>();
-
-            ((IActivate)_subject).Activate();
-            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
-
-            mockTokenizer.Verify(m => m.Tokenize());
         }
 
         [Test]
@@ -188,7 +140,7 @@
             _subject.CancelCall();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
 
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+            _subject.State.Should().Be(ConversationHeaderStateEnum.ReadOnly);
         }
 
         [Test]
@@ -225,7 +177,7 @@
             _subject.Call();
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+            _subject.State.Should().Be(ConversationHeaderStateEnum.ReadOnly);
         }
 
         [Test]
@@ -288,7 +240,7 @@
         {
             _subject.UndoDelete();
 
-            _subject.State.Should().Be(ConversationHeaderStateEnum.Normal);
+            _subject.State.Should().Be(ConversationHeaderStateEnum.ReadOnly);
         }
 
         [Test]

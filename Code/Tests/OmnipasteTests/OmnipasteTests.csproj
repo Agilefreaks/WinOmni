@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="Clippings\ClippingDetails\ClippingDetailsHeaderViewModelTests.cs" />
     <Compile Include="Clippings\ClippingDetails\ClippingDetailsViewModelTests.cs" />
+    <Compile Include="Conversations\ConversationWorkspaceTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationContainerViewModelTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationContentViewModelTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationHeaderViewModelTests.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Conversations\ContactList\Contact\ContactViewModelTests.cs" />
     <Compile Include="Conversations\ContactList\ContactListViewModelTests.cs" />
     <Compile Include="Conversations\Conversation\RecepientsTokenizerTests.cs" />
+    <Compile Include="Conversations\NewMessageWorkspaceTests.cs" />
     <Compile Include="Framework\ExtensionMethods\PropertyExtensionMethodsTests.cs" />
     <Compile Include="Framework\Entities\Factories\ContactFactoryTests.cs" />
     <Compile Include="Framework\Entities\Factories\PhoneCallFactoryTests.cs" />

@@ -2,15 +2,13 @@
 {
     public enum ConversationHeaderStateEnum
     {
-        Normal,
+        ReadOnly,
 
         InitiatingCall,
 
         Calling,
         
         Deleted,
-
-        Group,
 
         Edit
     }

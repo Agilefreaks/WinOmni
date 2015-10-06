@@ -6,12 +6,12 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Framework.ExtensionMethods;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services;
     using Omnipaste.Framework.Services.Repositories;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Framework;
     using OmniUI.Framework.ExtensionMethods;

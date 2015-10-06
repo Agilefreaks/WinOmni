@@ -1,6 +1,6 @@
-﻿namespace Omnipaste.WorkspaceDetails
+﻿namespace Omnipaste.Framework
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using OmniUI.Details;
@@ -11,7 +11,7 @@
 
         IDetailsViewModelWithHeader Create(ClippingEntity clippingEntity);
 
-        IDetailsViewModelWithHeader Create(IEnumerable<ContactModel> contactModelList);
+        IDetailsViewModelWithHeader Create(ObservableCollection<ContactModel> contactModelList);
 
         IDetailsViewModelWithHeader Create(UpdateEntity updateEntity);
 

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
     using Ninject;
@@ -78,7 +77,7 @@
                     .Select(phoneCallDto => PhoneCallFactory.Create<LocalPhoneCallEntity>(phoneCallDto))
                     .Switch()
                     .Delay(CallingDuration, SchedulerProvider.Default)
-                    .Do(_ => State = ConversationHeaderStateEnum.Normal)
+                    .Do(_ => State = ConversationHeaderStateEnum.ReadOnly)
                     .SubscribeAndHandleErrors();
 
             State = ConversationHeaderStateEnum.InitiatingCall;
@@ -88,7 +87,7 @@
         {
             DisposeCallSubscription();
 
-            State = ConversationHeaderStateEnum.Normal;
+            State = ConversationHeaderStateEnum.ReadOnly;
         }
 
         public void Delete()
@@ -102,7 +101,7 @@
         {
             UpdateConversationItems(PhoneCallRepository, false);
             UpdateConversationItems(SmsMessageRepository, false);
-            State = ConversationHeaderStateEnum.Normal;
+            State = ConversationHeaderStateEnum.ReadOnly;
         }
 
         public void RemoveRecipient(ContactModel contact)
@@ -113,8 +112,6 @@
         protected override void OnActivate()
         {
             Recipients = Recipients ?? new ObservableCollection<ContactModel>();
-            Recipients.CollectionChanged += RecipientsOnCollectionChanged;
-
             base.OnActivate();
         }
 
@@ -124,32 +121,6 @@
             DeleteConversationItems<SmsMessageEntity>(SmsMessageRepository);
 
             base.OnDeactivate(close);
-        }
-
-        private void RecipientsOnCollectionChanged(
-            object sender,
-            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-           // RecepientsTokenizer.Tokenize(TokenizedRecipients);
-
-            if (State == ConversationHeaderStateEnum.Edit)
-            {
-                return;
-            }
-
-            if (_recipients.Count >= 2)
-            {
-                State = ConversationHeaderStateEnum.Group;
-            }
-            else if (_recipients.Count == 0)
-            {
-                State = ConversationHeaderStateEnum.Edit;
-            }
-            else if (State == ConversationHeaderStateEnum.Group)
-            {
-                State = ConversationHeaderStateEnum.Normal;
-            }
-            
         }
 
         private void DeleteConversationItems<T>(IConversationRepository repository) where T : ConversationEntity
@@ -228,9 +199,6 @@
 
                 _recipients = value;
                 RecepientsTokenizer = new RecepientsTokenizer(_recipients);
-                RecipientsOnCollectionChanged(
-                    _recipients,
-                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 NotifyOfPropertyChange();
             }
         }

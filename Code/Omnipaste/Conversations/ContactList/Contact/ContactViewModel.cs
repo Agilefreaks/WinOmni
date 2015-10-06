@@ -6,6 +6,7 @@
     using Ninject;
     using OmniCommon.ExtensionMethods;
     using OmniCommon.Helpers;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.ExtensionMethods;
@@ -14,7 +15,6 @@
     using Omnipaste.Framework.Services.Providers;
     using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.Properties;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Framework;
     using OmniUI.Framework.ExtensionMethods;

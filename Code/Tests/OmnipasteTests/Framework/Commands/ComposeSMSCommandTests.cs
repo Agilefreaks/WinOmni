@@ -10,11 +10,11 @@
     using Omnipaste.Conversations;
     using Omnipaste.Conversations.ContactList;
     using Omnipaste.Conversations.ContactList.Contact;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Commands;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Workspaces;
 
     [TestFixture]
