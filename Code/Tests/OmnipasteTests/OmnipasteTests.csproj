@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="Clippings\ClippingDetails\ClippingDetailsHeaderViewModelTests.cs" />
     <Compile Include="Clippings\ClippingDetails\ClippingDetailsViewModelTests.cs" />
+    <Compile Include="Conversations\ConversationWorkspaceTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationContainerViewModelTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationContentViewModelTests.cs" />
     <Compile Include="Conversations\Conversation\ConversationHeaderViewModelTests.cs" />

@@ -21,9 +21,21 @@
             <DockPanel VerticalAlignment="Center" LastChildFill="True">
                 <TextBlock Text="{x:Static properties:Resources.GroupMessageRecipientsLabel}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center" DockPanel.Dock="Left" />
-                <TextBox Margin="13,0,0,0" 
-                         Text="{Binding Path=TokenizedRecipients, UpdateSourceTrigger=PropertyChanged}" 
-                         Tag="{Binding Path=Recipients}" />
+                <ItemsControl ItemsSource="{Binding Path=Recipients}" Margin="13,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Control  Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20"/>
+                                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </DockPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
