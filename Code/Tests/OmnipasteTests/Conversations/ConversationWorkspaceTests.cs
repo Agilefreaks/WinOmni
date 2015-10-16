@@ -7,9 +7,9 @@
     using NUnit.Framework;
     using Omnipaste.Conversations;
     using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Workspaces;
 
@@ -66,7 +66,7 @@
         {
             _mockDetailsConductor.SetupGet(x => x.ActiveItem).Returns(null);
             var mockDetailsViewModel = new Mock<IDetailsViewModelWithHeader>();
-            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<IEnumerable<ContactModel>>())).Returns(mockDetailsViewModel.Object);
+            _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ObservableCollection<ContactModel>>())).Returns(mockDetailsViewModel.Object);
             var observableCollection = new ObservableCollection<ContactModel>();
             _mockContactListViewModel.SetupGet(x => x.SelectedContacts).Returns(observableCollection);
             ((IActivate)_subject).Activate();

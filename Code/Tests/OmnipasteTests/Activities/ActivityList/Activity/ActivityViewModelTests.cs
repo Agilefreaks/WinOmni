@@ -11,12 +11,12 @@
     using OmniCommon.Helpers;
     using Omnipaste.Activities;
     using Omnipaste.Activities.ActivityList.Activity;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Models.Factories;
     using Omnipaste.Framework.Services;
     using Omnipaste.Framework.Services.Repositories;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Framework.Services;
     using OmniUI.Workspaces;

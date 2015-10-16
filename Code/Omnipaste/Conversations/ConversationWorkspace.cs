@@ -4,8 +4,8 @@
     using Caliburn.Micro;
     using Ninject;
     using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Framework;
     using Omnipaste.Properties;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Attributes;
     using OmniUI.Workspaces;
 

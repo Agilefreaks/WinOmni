@@ -11,13 +11,13 @@
     using OmniCommon.Helpers;
     using Omnipaste.Conversations;
     using Omnipaste.Conversations.ContactList.Contact;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services;
     using Omnipaste.Framework.Services.Providers;
     using Omnipaste.Framework.Services.Repositories;
     using Omnipaste.Properties;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Framework.Services;
     using OmniUI.Workspaces;

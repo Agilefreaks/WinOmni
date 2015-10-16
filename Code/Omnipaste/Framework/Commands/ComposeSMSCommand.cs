@@ -11,7 +11,6 @@
     using Omnipaste.Conversations.ContactList.Contact;
     using Omnipaste.Framework.Models;
     using Omnipaste.Shell;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Framework.Commands;
     using OmniUI.Workspaces;
 

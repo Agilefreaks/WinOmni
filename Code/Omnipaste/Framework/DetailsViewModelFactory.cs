@@ -11,7 +11,6 @@
     using Omnipaste.Conversations.Conversation;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
 
     public class DetailsViewModelFactory : IDetailsViewModelFactory
@@ -54,10 +53,10 @@
             return Create(new ObservableCollection<ContactModel> { contactModel });
         }
 
-        public IDetailsViewModelWithHeader Create(IEnumerable<ContactModel> contactModelList)
+        public IDetailsViewModelWithHeader Create(ObservableCollection<ContactModel> contactModelList)
         {
             var result = _serviceLocator.GetInstance<IConversationViewModel>();
-            result.Recipients = (ObservableCollection<ContactModel>)contactModelList;
+            result.Recipients = contactModelList;
             result.Model = contactModelList.FirstOrDefault();
 
             return result;

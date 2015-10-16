@@ -8,11 +8,11 @@
     using OmniCommon.Helpers;
     using Omnipaste.Clippings;
     using Omnipaste.Clippings.ClippingList.Clipping;
+    using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services;
     using Omnipaste.Framework.Services.Repositories;
-    using Omnipaste.WorkspaceDetails;
     using OmniUI.Details;
     using OmniUI.Workspaces;
 
