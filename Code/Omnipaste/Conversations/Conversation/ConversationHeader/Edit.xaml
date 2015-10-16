@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:properties="clr-namespace:Omnipaste.Properties"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -29,9 +30,14 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Control  Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20"/>
-                                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                                <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20" Margin="0,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" 
+                                           Margin="0,0,5,0"/>
+                                <Button x:Name="RemoveRecipient" Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="20" Height="20"
+                                        Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"
+                                        Margin="0,0,5,0" ToolTip="{x:Static properties:Resources.Remove}"
+                                        cal:Message.Attach="RemoveRecipient($dataContext)"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
