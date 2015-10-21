@@ -2,54 +2,43 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
-    using Castle.Core.Internal;
     using Framework.Entities;
     using Framework.Models;
+    using OmniUI.Controls;
 
     public class RecepientsTokenizer : IRecepientsTokenizer
     {
-        private readonly ObservableCollection<ContactModel> _recipients;
+        public const string TokenSeparator = " ";
 
-        public RecepientsTokenizer(ObservableCollection<ContactModel> recipients)
+        public ITokenizeResult Tokenize(string text)
         {
-            _recipients = recipients;
-        }
-
-        public void Tokenize(string tokens)
-        {
-           _recipients.Clear();
-
-            if (String.IsNullOrEmpty(tokens))
+            var result = new TokenizeResult { NonTokenizedText = text };
+            if (string.IsNullOrEmpty(text) || !text.Contains(TokenSeparator))
             {
-                return;
+                return result;
             }
 
-            var splitTokens = tokens.Split(new[] { ";" }, StringSplitOptions.None);
+            var tokens = new List<ContactModel>();
+            while (result.NonTokenizedText.Contains(TokenSeparator))
+            {
+                var tokenEndIndex = result.NonTokenizedText.IndexOf(TokenSeparator, StringComparison.Ordinal);
+                var tokenText = result.NonTokenizedText.Substring(0, tokenEndIndex);
+                var trimmedText = tokenText.Trim();
+                if(trimmedText != string.Empty && tokens.All(token => token.PhoneNumber != trimmedText))
+                {
+                    tokens.Add(BuildContactModel(trimmedText));
+                }
 
-            splitTokens.ForEach(
-                token =>
-                    {
-                        var trimmedToken = token.Trim();
-                        if (!RecipientAlreadyAdded(trimmedToken))
-                        {
-                            _recipients.Add(BuildContactModel(trimmedToken));
-                        }
-                    });
+                result.NonTokenizedText = result.NonTokenizedText.Substring(tokenEndIndex + 1);
+            }
+
+            result.Tokens = tokens;
+
+            return result;
         }
 
-        public string Tokenize()
-        {
-            return "";
-        }
-
-        private bool RecipientAlreadyAdded(string number)
-        {
-            return _recipients.Any(contactModel => contactModel.PhoneNumber.Equals(number));
-        }
-
-        private ContactModel BuildContactModel(string number)
+        private static ContactModel BuildContactModel(string number)
         {
             return
                 new ContactModel(

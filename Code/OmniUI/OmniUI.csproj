@@ -88,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UseViewAttribute.cs" />
+    <Compile Include="Controls\ITokenizeResult.cs" />
+    <Compile Include="Controls\TokenizeResult.cs" />
+    <Compile Include="Controls\TokenizingControl.cs" />
     <Compile Include="Details\DetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Details\IDetailsViewModelWithAutoRefresh.cs" />
     <Compile Include="Dialog\DialogViewModel.cs" />
