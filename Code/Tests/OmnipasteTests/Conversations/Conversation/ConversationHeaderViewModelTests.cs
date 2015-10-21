@@ -81,17 +81,6 @@
         }
 
         [Test]
-        public void OnTokenizedRecipients_Changed_WillCallTokenizeWithTheNewString()
-        {
-            var mockTokenizer = new Mock<IRecepientsTokenizer>();
-            _subject.RecepientsTokenizer = mockTokenizer.Object;
-
-            _subject.TokenizedRecipients = "recipient";
-
-            mockTokenizer.Verify(m => m.Tokenize("recipient"));
-        }
-
-        [Test]
         public void Call_Always_InitiatesACall()
         {
             const string PhoneNumber = "1234567890";

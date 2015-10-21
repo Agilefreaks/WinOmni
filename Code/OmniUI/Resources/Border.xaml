@@ -106,4 +106,14 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="MaxWidth" Value="{DynamicResource NarrowContainerWidth}"/>
     </Style>
+    
+    <Style x:Key="RecipientsBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Margin" Value="13,0"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ScreenBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="MaxHeight" Value="82"/>
+    </Style>
 </ResourceDictionary>

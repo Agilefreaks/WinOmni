@@ -11,6 +11,7 @@
     using Omnipaste.Framework.Entities.Factories;
     using Omnipaste.Framework.Models;
     using Omnipaste.Framework.Services.Repositories;
+    using OmniUI.Controls;
     using OmniUI.Details;
     using PhoneCalls.Resources.v1;
 
@@ -26,9 +27,7 @@
 
         private ConversationHeaderStateEnum _state;
 
-        private string _tokenizedRecipients;
-
-        private IRecepientsTokenizer _recepientsTokenizer;
+        private readonly IRecepientsTokenizer _recepientsTokenizer;
 
         [Inject]
         public IPhoneCallFactory PhoneCallFactory { get; set; }
@@ -42,19 +41,19 @@
         [Inject]
         public IPhoneCalls PhoneCalls { get; set; }
 
-        public IRecepientsTokenizer RecepientsTokenizer
+        public Func<string, ITokenizeResult> Tokenizer
         {
             get
             {
-                return _recepientsTokenizer;
+                return TokenizeText;
             }
-            set
+        }
+
+        public Func<object, string> TokenTextConvertor
+        {
+            get
             {
-                if (_recepientsTokenizer != null)
-                {
-                    return;
-                }
-                _recepientsTokenizer = value;
+                return ContactTokenConverter;
             }
         }
 
@@ -64,6 +63,11 @@
             {
                 return DelayCallDuration;
             }
+        }
+
+        public ConversationHeaderViewModel()
+        {
+            _recepientsTokenizer = new RecepientsTokenizer();
         }
 
         public void Call()
@@ -165,6 +169,17 @@
                         })).Switch().SubscribeAndHandleErrors();
         }
 
+        private ITokenizeResult TokenizeText(string text)
+        {
+            return _recepientsTokenizer.Tokenize(text);
+        }
+
+        private string ContactTokenConverter(object token)
+        {
+            var contactModel = token as ContactModel;
+            return contactModel != null ? contactModel.PhoneNumber : string.Empty;
+        }
+
         #region IConversationHeaderViewModel Members
 
         public ConversationHeaderStateEnum State
@@ -198,21 +213,6 @@
                 }
 
                 _recipients = value;
-                RecepientsTokenizer = new RecepientsTokenizer(_recipients);
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public string TokenizedRecipients
-        {
-            get
-            {
-                return _tokenizedRecipients;
-            }
-            set
-            {
-                _tokenizedRecipients = value;
-                RecepientsTokenizer.Tokenize(_tokenizedRecipients);
                 NotifyOfPropertyChange();
             }
         }

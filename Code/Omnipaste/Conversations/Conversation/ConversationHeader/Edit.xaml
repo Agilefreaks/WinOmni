@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:properties="clr-namespace:Omnipaste.Properties"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:controls="clr-namespace:OmniUI.Controls;assembly=OmniUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -22,26 +23,23 @@
             <DockPanel VerticalAlignment="Center" LastChildFill="True">
                 <TextBlock Text="{x:Static properties:Resources.GroupMessageRecipientsLabel}" Margin="13,0,0,0" Style="{DynamicResource ActivityContentTextStyle}" 
                        Foreground="{DynamicResource LabelBrush}" VerticalAlignment="Center" DockPanel.Dock="Left" />
-                <ItemsControl ItemsSource="{Binding Path=Recipients}" Margin="13,0,0,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
-                                <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20" Margin="0,0,5,0"/>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" 
-                                           Margin="0,0,5,0"/>
-                                <Button x:Name="RemoveRecipient" Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="20" Height="20"
-                                        Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"
-                                        Margin="0,0,5,0" ToolTip="{x:Static properties:Resources.Remove}"
-                                        cal:Message.Attach="RemoveRecipient($dataContext)"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <Border Style="{DynamicResource RecipientsBorderStyle}">
+                    <controls:TokenizingControl SelectedItems="{Binding Path=Recipients}" Tokenizer="{Binding Path=Tokenizer}">
+                        <controls:TokenizingControl.TokenTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                                    <Control Style="{DynamicResource ImageInCircle}" Tag="{Binding Path=Image}" Height="20" Width="20" Margin="0,0,5,0"/>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Path=Identifier}" FontFamily="{DynamicResource ContentFont}" 
+                                                           Margin="0,0,5,0"/>
+                                    <Button x:Name="RemoveRecipient" Style="{DynamicResource ShapeButtonWithOuterHighlight}" Width="20" Height="20"
+                                            Background="{DynamicResource ActivityContentBrush}" Content="{DynamicResource delete_icon}"
+                                            Margin="0,0,5,0" ToolTip="{x:Static properties:Resources.Remove}"
+                                            cal:Message.Attach="RemoveRecipient($dataContext)"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:TokenizingControl.TokenTemplate>
+                    </controls:TokenizingControl>
+                </Border>
             </DockPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
