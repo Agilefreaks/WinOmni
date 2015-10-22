@@ -28,6 +28,7 @@
         <ResourceDictionary Source="Submenu.xaml"/>
         <ResourceDictionary Source="ToggleSwitch.xaml"/>
         <ResourceDictionary Source="TransitioningContentControl.xaml"/>
+        <ResourceDictionary Source="TokenizingControl.xaml"/>
         <ResourceDictionary Source="../Controls/ExpandableTextBlock.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 

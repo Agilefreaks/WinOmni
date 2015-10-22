@@ -41,6 +41,7 @@
             Tokenizer = DefaultTokenMathcer;
             SelectedItems = new List<object>();
             IsUndoEnabled = false;
+            IsDocumentEnabled = true;
         }
 
         public Func<string, ITokenizeResult> Tokenizer
