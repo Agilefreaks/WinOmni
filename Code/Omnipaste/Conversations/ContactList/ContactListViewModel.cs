@@ -3,6 +3,7 @@ namespace Omnipaste.Conversations.ContactList
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
@@ -52,6 +53,7 @@ namespace Omnipaste.Conversations.ContactList
                     ListSortDirection.Ascending));
 
             SelectedContacts = new ObservableCollection<ContactModel>();
+            SelectedContacts.CollectionChanged += OnSelectedContactsChanged;
         }
 
         public IContactRepository ContactRepository { get; set; }
@@ -182,20 +184,23 @@ namespace Omnipaste.Conversations.ContactList
             {
                 return;
             }
+
             if (args.RemovedItems.Count != 0)
             {
                 UnselectItems(args.RemovedItems.Cast<IContactViewModel>());
             }
 
-            if (args.AddedItems.Count != 0)
+            if (args.AddedItems.Count == 0)
             {
-                if (!CanSelectMultipleItems)
-                {
-                    ClearItemSelection();
-                }
-
-                SelectItems(args.AddedItems.Cast<IContactViewModel>());
+                return;
             }
+
+            if (!CanSelectMultipleItems)
+            {
+                ClearSelection();
+            }
+
+            SelectItems(args.AddedItems.Cast<IContactViewModel>());
         }
 
         public void AddPendingContact()
@@ -227,7 +232,7 @@ namespace Omnipaste.Conversations.ContactList
             {
                 if (!CanSelectMultipleItems)
                 {
-                    ClearItemSelection();
+                    ClearSelection();
                 }
 
                 SelectItems(new[] { contactViewModel });
@@ -238,12 +243,17 @@ namespace Omnipaste.Conversations.ContactList
             return contactViewModel;
         }
 
-        private IContactViewModel UpdateViewModel(ContactModel obj)
+        private static bool IsMatch(string filter, string value)
         {
-            var viewModel = Items.FirstOrDefault(vm => vm.Model.ContactEntity.UniqueId == obj.ContactEntity.UniqueId);
+            return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
+        }
+
+        private IContactViewModel UpdateViewModel(ContactModel contact)
+        {
+            var viewModel = GetViewModelForContact(contact);
             if (viewModel != null)
             {
-                viewModel.Model = obj;
+                viewModel.Model = contact;
                 FilteredItems.EditItem(viewModel);
                 FilteredItems.CommitEdit();
             }
@@ -251,9 +261,34 @@ namespace Omnipaste.Conversations.ContactList
             return viewModel;
         }
 
-        private static bool IsMatch(string filter, string value)
+        private void OnSelectedContactsChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
         {
-            return (CultureInfo.CurrentCulture.CompareInfo.IndexOf(value, filter, CompareOptions.IgnoreCase) > -1);
+            if (eventArgs.Action == NotifyCollectionChangedAction.Reset)
+            {
+                Items.ForEach(item => item.IsSelected = false);
+            }
+            else
+            {
+                var dataSets = new[]
+                               {
+                                   new { Collection = eventArgs.OldItems, ItemsSelected = false },
+                                   new { Collection = eventArgs.NewItems, ItemsSelected = true }
+                               };
+                foreach (var dataSet in dataSets)
+                {
+                    if (dataSet.Collection == null)
+                    {
+                        continue;
+                    }
+
+                    var contacts = dataSet.Collection.OfType<ContactModel>();
+                    var viewModels = contacts.Select(GetViewModelForContact);
+                    foreach (var viewModel in viewModels.Where(viewModel => viewModel != null))
+                    {
+                        viewModel.IsSelected = dataSet.ItemsSelected;
+                    }
+                }
+            }
         }
 
         private bool MatchesFilterText(ContactModel model)
@@ -278,6 +313,11 @@ namespace Omnipaste.Conversations.ContactList
         private bool MatchesFilter(ContactModel model)
         {
             return !ShowStarred || model.IsStarred;
+        }
+
+        private IContactViewModel GetViewModelForContact(ContactModel contact)
+        {
+            return Items.FirstOrDefault(vm => vm.Model.ContactEntity.UniqueId == contact.ContactEntity.UniqueId);
         }
 
         private void UnselectItems(IEnumerable<IContactViewModel> itemsToUnselect)
@@ -305,7 +345,7 @@ namespace Omnipaste.Conversations.ContactList
             IsRefreshing = false;
         }
 
-        private void ClearItemSelection()
+        private void ClearSelection()
         {
             IsRefreshing = true;
             Items.Where(i => SelectedContacts.Any(c => c.UniqueId == i.Model.UniqueId)).ForEach(i => i.IsSelected = false);

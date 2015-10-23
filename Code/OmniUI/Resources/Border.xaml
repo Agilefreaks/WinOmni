@@ -25,7 +25,7 @@
         <Setter Property="Margin" Value="7,0,0,0"/>
     </Style>
     
-    <Style x:Key="ActivityBackgroundBorder" TargetType="Border" BasedOn="{StaticResource ActivityContainerBaseBorder}">    
+    <Style x:Key="ActivityBackgroundBorder" TargetType="Border" BasedOn="{StaticResource ActivityContainerBaseBorder}">
         <Setter Property="Opacity" Value="0.05"/>
     </Style>
 
