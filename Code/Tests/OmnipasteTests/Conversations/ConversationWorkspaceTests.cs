@@ -1,12 +1,13 @@
 ﻿namespace OmnipasteTests.Conversations
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
+    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Conversations;
     using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.Conversation;
     using Omnipaste.Framework;
     using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
@@ -16,7 +17,7 @@
     [TestFixture]
     public class ConversationWorkspaceTests
     {
-        private ConversationWorkspace _subject;
+        private IConversationWorkspace _subject;
 
         private Mock<IContactListViewModel> _mockContactListViewModel;
 
@@ -41,7 +42,7 @@
             _mockDetailsConductor.SetupGet(x => x.ActiveItem).Returns(activeDetails);
             var observableCollection = new ObservableCollection<ContactModel> { new ContactModel(new ContactEntity()) };
             _mockContactListViewModel.SetupGet(x => x.SelectedContacts).Returns(observableCollection);
-            ((IActivate)_subject).Activate();
+            _subject.Activate();
 
             observableCollection.Clear();
 
@@ -54,7 +55,7 @@
             _mockDetailsConductor.SetupGet(x => x.ActiveItem).Returns(null);
             var observableCollection = new ObservableCollection<ContactModel>();
             _mockContactListViewModel.SetupGet(x => x.SelectedContacts).Returns(observableCollection);
-            ((IActivate)_subject).Activate();
+            _subject.Activate();
 
             observableCollection.Add(new ContactModel(new ContactEntity()));
 
@@ -69,11 +70,40 @@
             _mockDetailsViewModelFactory.Setup(x => x.Create(It.IsAny<ObservableCollection<ContactModel>>())).Returns(mockDetailsViewModel.Object);
             var observableCollection = new ObservableCollection<ContactModel>();
             _mockContactListViewModel.SetupGet(x => x.SelectedContacts).Returns(observableCollection);
-            ((IActivate)_subject).Activate();
+            _subject.Activate();
 
             observableCollection.Add(new ContactModel(new ContactEntity()));
 
             _mockDetailsConductor.Verify(x => x.ActivateItem(mockDetailsViewModel.Object));
+        }
+
+        [Test]
+        public void Deactivate_AConversationViewModelIsInTheDeletedState_ClosesTheConversation()
+        {
+            var mockConversationViewModel = new Mock<IConversationViewModel>();
+            _mockDetailsConductor.Setup(x => x.ActiveItem).Returns(mockConversationViewModel.Object);
+            _mockContactListViewModel.Setup(x => x.SelectedContacts).Returns(new ObservableCollection<ContactModel>());
+            _subject.Activate();
+            mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            _mockDetailsConductor.Verify(x => x.DeactivateItem(mockConversationViewModel.Object, true));
+        }
+
+        [Test]
+        public void Deactivate_AConversationViewModelIsInTheDeletedState_ClearsTheCurrentContactSelection()
+        {
+            var contacts = new ObservableCollection<ContactModel> { new ContactModel(new ContactEntity()) };
+            var mockConversationViewModel = new Mock<IConversationViewModel>();
+            _mockDetailsConductor.Setup(x => x.ActiveItem).Returns(mockConversationViewModel.Object);
+            _mockContactListViewModel.Setup(x => x.SelectedContacts).Returns(contacts);
+            _subject.Activate();
+            mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            contacts.Count.Should().Be(0);
         }
     }
 }

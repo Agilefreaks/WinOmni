@@ -26,7 +26,7 @@
 
         private Mock<IWorkspaceConductor> _mockWorkspaceConductor;
 
-        private Mock<IConversationWorkspace> _mockPeopleWorkspace;
+        private Mock<IConversationWorkspace> _mockConversationWorkspace;
 
         private Mock<IDetailsViewModelFactory> _mockDetailsViewModelFactory;
 
@@ -39,13 +39,13 @@
         {
             _contactEntity = new ContactEntity();
             _mockWorkspaceConductor = new Mock<IWorkspaceConductor>();
-            _mockPeopleWorkspace = new Mock<IConversationWorkspace> { DefaultValue = DefaultValue.Mock };
+            _mockConversationWorkspace = new Mock<IConversationWorkspace> { DefaultValue = DefaultValue.Mock };
             _mockDetailsViewModelFactory = new Mock<IDetailsViewModelFactory> { DefaultValue = DefaultValue.Mock };
             _mockShellViewModel = new Mock<IShellViewModel>();
             _subject = new ComposeSMSCommand(new ContactModel(_contactEntity))
                            {
                                WorkspaceConductor = _mockWorkspaceConductor.Object,
-                               ConversationWorkspace = _mockPeopleWorkspace.Object,
+                               ConversationWorkspace = _mockConversationWorkspace.Object,
                                DetailsViewModelFactory = _mockDetailsViewModelFactory.Object,
                                ShellViewModel = _mockShellViewModel.Object
                            };
@@ -67,7 +67,7 @@
         {
             _testScheduler.Start(_subject.Execute);
 
-            _mockWorkspaceConductor.Verify(x => x.ActivateItem(_mockPeopleWorkspace.Object));
+            _mockWorkspaceConductor.Verify(x => x.ActivateItem(_mockConversationWorkspace.Object));
         }
 
         [Test]
@@ -78,7 +78,7 @@
             var mockContactListViewModel = new Mock<IContactListViewModel>();
             var contactViewModels = new List<IContactViewModel> { mockContactViewModel.Object };
             mockContactListViewModel.Setup(x => x.GetChildren()).Returns(contactViewModels);
-            _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
+            _mockConversationWorkspace.SetupGet(x => x.ContactListViewModel).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute);
 
@@ -95,7 +95,7 @@
             var mockContactListViewModel = new Mock<IContactListViewModel>();
             mockContactListViewModel.Setup(x => x.GetChildren())
                 .Returns(() => getContactsCallcount++ == 0 ? new List<IContactViewModel>() : contactViewModels);
-            _mockPeopleWorkspace.SetupGet(x => x.MasterScreen).Returns(mockContactListViewModel.Object);
+            _mockConversationWorkspace.SetupGet(x => x.ContactListViewModel).Returns(mockContactListViewModel.Object);
 
             _testScheduler.Start(_subject.Execute, TimeSpan.FromSeconds(1).Ticks);
 

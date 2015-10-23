@@ -123,6 +123,7 @@
     <Compile Include="Framework\BindingProxy.cs" />
     <Compile Include="Framework\CheckboxHelper.cs" />
     <Compile Include="Framework\ISubscriptionsManager.cs" />
+    <Compile Include="Framework\Models\IModel.cs" />
     <Compile Include="Framework\NotificationTypeEnum.cs" />
     <Compile Include="Framework\Services\IUiRefreshService.cs" />
     <Compile Include="Framework\Services\UIRefreshService.cs" />

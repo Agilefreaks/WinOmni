@@ -1,8 +1,9 @@
 ﻿namespace Omnipaste.Conversations.Conversation
 {
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
-    using Caliburn.Micro;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using OmniUI.Attributes;
     using OmniUI.Details;
@@ -40,47 +41,70 @@
                     return;
                 }
 
+                UpdateRecipientsHooks(_recipients, value);
                 _recipients = value;
-                ((IConversationHeaderViewModel)HeaderViewModel).Recipients = _recipients;
-                ((IConversationContainerViewModel)ContentViewModel).Recipients = _recipients;
+                ConversationHeaderViewModel.Recipients = _recipients;
+                ConversationContainerViewModel.Recipients = _recipients;
                 NotifyOfPropertyChange(() => Recipients);
             }
         }
+
+        public IConversationHeaderViewModel ConversationHeaderViewModel { get; private set; }
+
+        public IConversationContainerViewModel ConversationContainerViewModel { get; private set; }
+
+        public ConversationViewModelStateEnum State { get; set; }
 
         public ConversationViewModel(
             IConversationHeaderViewModel headerViewModel,
             IConversationContainerViewModel contentViewModel)
             : base(headerViewModel, contentViewModel)
         {
+            ConversationHeaderViewModel = headerViewModel;
+            ConversationContainerViewModel = contentViewModel;
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-
-            if (Recipients != null)
+            if (Recipients == null)
+            {
+                Recipients = new ObservableCollection<ContactModel>();
+            }
+            else
             {
                 Recipients.CollectionChanged += RecipientsCollectionChanged;
             }
         }
 
-        private void RecipientsCollectionChanged(
-            object sender,
-            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            Model = _recipients.Count == 1 ? _recipients.First() : null;
-        }
-
         protected override void OnDeactivate(bool close)
         {
-            if (((IConversationHeaderViewModel)HeaderViewModel).State == ConversationHeaderStateEnum.Deleted && !close)
+            if (Recipients != null)
             {
-                ((IConductor)Parent).DeactivateItem(this, true);
+                Recipients.CollectionChanged -= RecipientsCollectionChanged;
             }
-            else
+            State = ConversationHeaderViewModel.State == ConversationHeaderStateEnum.Deleted
+                        ? ConversationViewModelStateEnum.Deleted
+                        : ConversationViewModelStateEnum.Normal;
+            base.OnDeactivate(close);
+        }
+
+        private void UpdateRecipientsHooks(INotifyCollectionChanged oldValue, INotifyCollectionChanged newValue)
+        {
+            if (oldValue != null)
             {
-                base.OnDeactivate(close);
+                oldValue.CollectionChanged -= RecipientsCollectionChanged;
             }
+
+            if (newValue != null && IsActive)
+            {
+                newValue.CollectionChanged += RecipientsCollectionChanged;
+            }
+        }
+
+        private void RecipientsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Model = _recipients.Count == 1 ? _recipients.First() : new ContactModel(new ContactEntity());
         }
     }
 }
