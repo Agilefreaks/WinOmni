@@ -155,19 +155,43 @@
                 return;
             }
 
-            var paragraph = Document.Blocks.OfType<Paragraph>().First() ?? CreateDefaultParagraph();
+            var paragraph = Document.Blocks.OfType<Paragraph>().FirstOrDefault() ?? CreateDefaultParagraph();
             RemoveTokenElements(eventArgs.OldItems, paragraph);
             AddTokenElements(eventArgs.NewItems, paragraph);
         }
 
-        private void OnTokenTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTokenTextChanged(object sender, TextChangedEventArgs eventArgs)
         {
             if (_isUpdatingText)
             {
                 return;
             }
 
+            DeselectOldItems();
             UpdateTokens();
+        }
+
+        private void DeselectOldItems()
+        {
+            var selectedItemsList = SelectedItems as IList;
+            var paragraph = Document.Blocks.OfType<Paragraph>().FirstOrDefault();
+            if (selectedItemsList == null || paragraph == null)
+            {
+                return;
+            }
+
+            var existingTokens =
+                paragraph.Inlines.OfType<InlineUIContainer>()
+                    .Where(container => container.Child is ContentPresenter)
+                    .Select(container => container.Child)
+                    .OfType<ContentPresenter>()
+                    .Select(contentPresenter => contentPresenter.Content)
+                    .ToList();
+            var deletedTokens = selectedItemsList.Cast<object>().Where(item => !existingTokens.Contains(item)).ToList();
+            foreach (var item in deletedTokens)
+            {
+                selectedItemsList.Remove(item);
+            }
         }
 
         private void UpdateTokens()
@@ -189,7 +213,6 @@
             }
 
             _isUpdatingTokens = false;
-
         }
 
         private Paragraph CreateDefaultParagraph()
