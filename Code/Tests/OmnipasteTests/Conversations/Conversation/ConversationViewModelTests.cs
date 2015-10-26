@@ -97,5 +97,15 @@
             _mockConversationHeaderViewModel.VerifySet(m => m.Model = null, Times.Never);
             _mockConversationContainerViewModel.VerifySet(m => m.Model = null, Times.Never);
         }
+
+        [Test]
+        public void Activate_RecipientsHasNotBeenSet_SetRecipientsToAnEmptyCollection()
+        {
+            _subject.Recipients = null;
+            
+            _subject.Activate();
+
+            _subject.Recipients.Count.Should().Be(0);
+        }
     }
 }

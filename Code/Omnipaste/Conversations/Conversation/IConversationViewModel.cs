@@ -8,6 +8,6 @@
     {
         ObservableCollection<ContactModel> Recipients { get; set; }
 
-        ConversationViewModelStateEnum State { get; }
+        ConversationViewModelStateEnum State { get; set; }
     }
 }

@@ -3,6 +3,7 @@
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using Omnipaste.Framework.Entities;
     using Omnipaste.Framework.Models;
     using OmniUI.Attributes;
     using OmniUI.Details;
@@ -42,8 +43,8 @@
 
                 UpdateRecipientsHooks(_recipients, value);
                 _recipients = value;
-                ((IConversationHeaderViewModel)HeaderViewModel).Recipients = _recipients;
-                ((IConversationContainerViewModel)ContentViewModel).Recipients = _recipients;
+                ConversationHeaderViewModel.Recipients = _recipients;
+                ConversationContainerViewModel.Recipients = _recipients;
                 NotifyOfPropertyChange(() => Recipients);
             }
         }
@@ -52,7 +53,7 @@
 
         public IConversationContainerViewModel ConversationContainerViewModel { get; private set; }
 
-        public ConversationViewModelStateEnum State { get; private set; }
+        public ConversationViewModelStateEnum State { get; set; }
 
         public ConversationViewModel(
             IConversationHeaderViewModel headerViewModel,
@@ -66,9 +67,9 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            if (Recipients != null)
+            if (Recipients == null)
             {
-                Recipients.CollectionChanged += RecipientsCollectionChanged;
+                Recipients = new ObservableCollection<ContactModel>();
             }
         }
 
