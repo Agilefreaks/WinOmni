@@ -1,6 +1,8 @@
 ﻿namespace OmnipasteTests.Conversations.Conversation
 {
     using System.Collections.ObjectModel;
+    using Caliburn.Micro;
+    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using Omnipaste.Conversations.Conversation;
@@ -20,10 +22,18 @@
         public void Setup()
         {
 
-            _mockConversationContainerViewModel =  new Mock<IConversationContainerViewModel> { DefaultValue = DefaultValue.Mock };
-            _mockConversationHeaderViewModel = new Mock<IConversationHeaderViewModel> { DefaultValue = DefaultValue.Mock };
+            _mockConversationContainerViewModel = new Mock<IConversationContainerViewModel>
+                                                      {
+                                                          DefaultValue = DefaultValue.Mock
+                                                      };
+            _mockConversationHeaderViewModel = new Mock<IConversationHeaderViewModel>
+                                                   {
+                                                       DefaultValue = DefaultValue.Mock
+                                                   };
 
-            _subject = new ConversationViewModel(_mockConversationHeaderViewModel.Object, _mockConversationContainerViewModel.Object);
+            _subject = new ConversationViewModel(
+                _mockConversationHeaderViewModel.Object,
+                _mockConversationContainerViewModel.Object);
         }
 
         [Test]
@@ -61,6 +71,31 @@
 
             _mockConversationHeaderViewModel.VerifySet(m => m.Model = null);
             _mockConversationContainerViewModel.VerifySet(m => m.Model = null);
+        }
+
+        [Test]
+        public void OnDeactivate_HeaderStateIsDeleted_SetsOwnStateToDeleted()
+        {
+            _subject.Activate();
+            _mockConversationHeaderViewModel.Setup(x => x.State).Returns(ConversationHeaderStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            _subject.State.Should().Be(ConversationViewModelStateEnum.Deleted);
+        }
+
+        [Test]
+        public void RecepientsCollectionChanged_WhenTwoOrMoreRecipientAreSelectedAndViewModelWasDeactivated_DoesNotModifyModel()
+        {
+            _subject.Recipients = new ObservableCollection<ContactModel>();
+            _subject.Activate();
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+            _subject.Deactivate(false);
+
+            _subject.Recipients.Add(new ContactModel(new ContactEntity()));
+
+            _mockConversationHeaderViewModel.VerifySet(m => m.Model = null, Times.Never);
+            _mockConversationContainerViewModel.VerifySet(m => m.Model = null, Times.Never);
         }
     }
 }

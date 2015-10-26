@@ -4,6 +4,7 @@
     using Caliburn.Micro;
     using Ninject;
     using Omnipaste.Conversations.ContactList;
+    using Omnipaste.Conversations.Conversation;
     using Omnipaste.Framework;
     using Omnipaste.Properties;
     using OmniUI.Attributes;
@@ -17,7 +18,7 @@
         public ConversationWorkspace(IContactListViewModel masterScreen, IDetailsConductorViewModel detailsConductor)
             : base(masterScreen, detailsConductor)
         {
-            MasterScreen = masterScreen;
+            ContactListViewModel = masterScreen;
         }
 
         #endregion
@@ -32,7 +33,7 @@
             }
         }
 
-        public new IContactListViewModel MasterScreen { get; private set; }
+        public IContactListViewModel ContactListViewModel { get; private set; }
 
         [Inject]
         public IDetailsViewModelFactory DetailsViewModelFactory { get; set; }
@@ -42,19 +43,20 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            MasterScreen.SelectedContacts.CollectionChanged += SelectedContactsCollectionChanged;
+            ContactListViewModel.SelectedContacts.CollectionChanged += SelectedContactsCollectionChanged;
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
-            MasterScreen.SelectedContacts.CollectionChanged -= SelectedContactsCollectionChanged;
+            ContactListViewModel.SelectedContacts.CollectionChanged -= SelectedContactsCollectionChanged;
+            HandleDeletedConversation();
         }
 
         private void SelectedContactsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var activeItemExists = DetailsConductor.ActiveItem != null;
-            var itemIsSelected = MasterScreen.SelectedContacts.Count == 1;
+            var itemIsSelected = ContactListViewModel.SelectedContacts.Count == 1;
             if (itemIsSelected && !activeItemExists)
             {
                 ShowDetails();
@@ -68,12 +70,22 @@
 
         private void ShowDetails()
         {
-            DetailsConductor.ActivateItem(DetailsViewModelFactory.Create(MasterScreen.SelectedContacts));
+            DetailsConductor.ActivateItem(DetailsViewModelFactory.Create(ContactListViewModel.SelectedContacts));
         }
 
         private void HideDetails()
         {
             DetailsConductor.DeactivateItem(DetailsConductor.ActiveItem, true);
+        }
+
+        private void HandleDeletedConversation()
+        {
+            var conversationViewModel = DetailsConductor.ActiveItem as IConversationViewModel;
+            if (conversationViewModel != null && conversationViewModel.State == ConversationViewModelStateEnum.Deleted)
+            {
+                ContactListViewModel.SelectedContacts.Clear();
+                DetailsConductor.DeactivateItem(conversationViewModel, true);
+            }
         }
 
         #region Explicit Interface Properties

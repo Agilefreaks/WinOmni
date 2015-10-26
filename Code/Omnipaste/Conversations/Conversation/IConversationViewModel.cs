@@ -7,5 +7,7 @@
     public interface IConversationViewModel : IDetailsViewModelWithHeader
     {
         ObservableCollection<ContactModel> Recipients { get; set; }
+
+        ConversationViewModelStateEnum State { get; }
     }
 }

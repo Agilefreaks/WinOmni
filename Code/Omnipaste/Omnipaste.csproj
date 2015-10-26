@@ -265,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversations\ContactList\Converters\BoolToSelectionModeConverter.cs" />
+    <Compile Include="Conversations\Conversation\ConversationViewModelStateEnum.cs" />
     <Compile Include="Conversations\Conversation\IRecepientsTokenizer.cs" />
     <Compile Include="Conversations\Conversation\RecepientsTokenizer.cs" />
     <Compile Include="Framework\Entities\Factories\ContactFactory.cs" />

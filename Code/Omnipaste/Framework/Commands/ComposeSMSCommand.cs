@@ -80,7 +80,7 @@
         private IContactViewModel GetCorrespondingViewModel()
         {
             return
-                ConversationWorkspace.MasterScreen.GetChildren()
+                ConversationWorkspace.ContactListViewModel.GetChildren()
                     .First(item => item.Model.BackingEntity.UniqueId == Contact.UniqueId);
         }
 
