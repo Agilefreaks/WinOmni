@@ -4,27 +4,6 @@
     using Caliburn.Micro;
     using OmniUI.Framework.Entities;
 
-    public interface IModel
-    {
-        IEntity BackingEntity { get; set; }
-
-        string Id { get; set; }
-
-        bool IsDeleted { get; set; }
-
-        DateTime Time { get; set; }
-
-        string UniqueId { get; set; }
-
-        bool WasViewed { get; set; }
-    }
-
-    public interface IModel<T> : IModel
-        where T : Entity
-    {
-        new T BackingEntity { get; set; }
-    }
-
     public abstract class Model : PropertyChangedBase, IModel
     {
         protected Model(IEntity backingEntity)

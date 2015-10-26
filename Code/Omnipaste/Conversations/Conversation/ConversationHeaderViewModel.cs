@@ -108,12 +108,6 @@
             Recipients.Remove(contact);
         }
 
-        protected override void OnActivate()
-        {
-            Recipients = Recipients ?? new ObservableCollection<ContactModel>();
-            base.OnActivate();
-        }
-
         protected override void OnDeactivate(bool close)
         {
             DeleteConversationItems<PhoneCallEntity>(PhoneCallRepository);
