@@ -263,6 +263,23 @@
         }
 
         [Test]
+        public void UndoDelete_StateBeforeDeleteWasEdit_RestoresState()
+        {
+            var message = new TestSmsMessageEntity { UniqueId = "42", IsDeleted = true };
+            var getMessageObservable =
+                _testScheduler.CreateColdObservable(
+                    new Recorded<Notification<IEnumerable<SmsMessageEntity>>>(100, Notification.CreateOnNext(new List<SmsMessageEntity> { message }.AsEnumerable())));
+            _mockMessageRepository.Setup(m => m.GetConversationForContact(It.IsAny<ContactEntity>())).Returns(getMessageObservable);
+            _subject.State = ConversationHeaderStateEnum.Edit;
+            _subject.Delete();
+
+            _subject.UndoDelete();
+            _testScheduler.AdvanceBy(1000);
+
+            _subject.State.Should().Be(ConversationHeaderStateEnum.Edit);
+        }
+
+        [Test]
         public void RemoveRecipient_Always_RemovesTheGivenRecipientFromTheRecipientsCollection()
         {
             _subject.Recipients = new ObservableCollection<ContactModel>();

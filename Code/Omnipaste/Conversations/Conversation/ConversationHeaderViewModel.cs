@@ -29,6 +29,8 @@
 
         private readonly IRecepientsTokenizer _recepientsTokenizer;
 
+        private ConversationHeaderStateEnum _stateBeforeDelete;
+
         [Inject]
         public IPhoneCallFactory PhoneCallFactory { get; set; }
 
@@ -45,15 +47,7 @@
         {
             get
             {
-                return TokenizeText;
-            }
-        }
-
-        public Func<object, string> TokenTextConvertor
-        {
-            get
-            {
-                return ContactTokenConverter;
+                return _recepientsTokenizer.Tokenize;
             }
         }
 
@@ -98,6 +92,7 @@
         {
             UpdateConversationItems(PhoneCallRepository, true);
             UpdateConversationItems(SmsMessageRepository, true);
+            _stateBeforeDelete = State;
             State = ConversationHeaderStateEnum.Deleted;
         }
 
@@ -105,7 +100,7 @@
         {
             UpdateConversationItems(PhoneCallRepository, false);
             UpdateConversationItems(SmsMessageRepository, false);
-            State = ConversationHeaderStateEnum.ReadOnly;
+            State = _stateBeforeDelete;
         }
 
         public void RemoveRecipient(ContactModel contact)
@@ -167,17 +162,6 @@
                             item.IsDeleted = isDeleted;
                             return repository.Save(item);
                         })).Switch().SubscribeAndHandleErrors();
-        }
-
-        private ITokenizeResult TokenizeText(string text)
-        {
-            return _recepientsTokenizer.Tokenize(text);
-        }
-
-        private string ContactTokenConverter(object token)
-        {
-            var contactModel = token as ContactModel;
-            return contactModel != null ? contactModel.PhoneNumber : string.Empty;
         }
 
         #region IConversationHeaderViewModel Members
