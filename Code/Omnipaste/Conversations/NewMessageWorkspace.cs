@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Reactive.Linq;
@@ -50,12 +51,30 @@
         {
             base.OnActivate();
             MasterScreen.SelectedContacts.CollectionChanged += OnSelectedContactsChanged;
+            if (DetailsConductor.ActiveItem == null)
+            {
+                DetailsConductor.ActivateItem(_conversationHeaderViewModel);
+            }
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
             MasterScreen.SelectedContacts.CollectionChanged -= OnSelectedContactsChanged;
+            HandleDeletedConversation();
+        }
+
+        private void HandleDeletedConversation()
+        {
+            if (ConversationViewModel.State != ConversationViewModelStateEnum.Deleted)
+            {
+                return;
+            }
+
+            MasterScreen.SelectedContacts.Clear();
+            _conversationHeaderViewModel.State = ConversationHeaderStateEnum.Edit;
+            ConversationViewModel.Recipients = new ObservableCollection<ContactModel>();
+            ConversationViewModel.State = ConversationViewModelStateEnum.Normal;
         }
 
         private void CreateClearContactsSubscription()

@@ -100,7 +100,7 @@
 
         private void RecipientsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Model = _recipients.Count == 1 ? _recipients.First() : null;
+            Model = _recipients.Count == 1 ? _recipients.First() : new ContactModel(new ContactEntity());
         }
     }
 }

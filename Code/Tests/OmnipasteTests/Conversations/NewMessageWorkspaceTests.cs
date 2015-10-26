@@ -16,7 +16,7 @@
     [TestFixture]
     public class NewMessageWorkspaceTests
     {
-        private NewMessageWorkspace _subject;
+        private INewMessageWorkspace _subject;
 
         private Mock<IContactListViewModel> _mockContactListViewModel;
 
@@ -74,6 +74,53 @@
             _selectedContacts.Add(contactModel);
 
             _mockConversationHeaderViewModel.Object.Recipients.Contains(contactModel).Should().BeTrue();
+        }
+
+        [Test]
+        public void Deactivate_TheConversationModelIsInTheDeletedState_ClearsTheSelectedContacts()
+        {
+            var contactCollection = new ObservableCollection<ContactModel>();
+            _mockContactListViewModel.Setup(x => x.SelectedContacts).Returns(contactCollection);
+            contactCollection.Add(new ContactModel(new ContactEntity()));
+            _subject.Activate();
+            _mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            contactCollection.Count.Should().Be(0);
+        }
+
+        [Test]
+        public void Deactivate_TheConversationModelIsInTheDeletedState_SetsTheConversationHeaderInEditMode()
+        {
+            _subject.Activate();
+            _mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            _mockConversationHeaderViewModel.VerifySet(x => x.State = ConversationHeaderStateEnum.Edit);
+        }
+
+        [Test]
+        public void Deactivate_TheConversationModelIsInTheDeletedState_SetsRecipientsToAnEmptyCollection()
+        {
+            _subject.Activate();
+            _mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            _mockConversationViewModel.VerifySet(x => x.Recipients = It.IsAny<ObservableCollection<ContactModel>>());
+        }
+
+        [Test]
+        public void Deactivate_TheConversationModelIsInTheDeletedState_SetsTheStateOfTheConversationViewModelToNormal()
+        {
+            _subject.Activate();
+            _mockConversationViewModel.Setup(x => x.State).Returns(ConversationViewModelStateEnum.Deleted);
+
+            _subject.Deactivate(false);
+
+            _mockConversationViewModel.VerifySet(x => x.State = ConversationViewModelStateEnum.Normal);
         }
     }
 }
