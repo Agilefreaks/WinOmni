@@ -83,14 +83,13 @@
             {
                 observer.OnNext(new HttpResponseMessage(HttpStatusCode.Unauthorized));
                 observer.OnCompleted();
-                
+
                 return Disposable.Empty;
             });
-            var createBadRequestException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
-            createBadRequestException.Wait();
+            var badRequestException = CreateApiRequestException(HttpStatusCode.BadRequest);
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
-                new Recorded<Notification<TokenDto>>(100, Notification.CreateOnError<TokenDto>(createBadRequestException.Result)));
-            
+                new Recorded<Notification<TokenDto>>(100, Notification.CreateOnError<TokenDto>(badRequestException)));
+
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable));
@@ -108,18 +107,17 @@
 
                 return Disposable.Empty;
             });
-            var createBadRequestException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
-            createBadRequestException.Wait();
+            var badRequestException = CreateApiRequestException(HttpStatusCode.BadRequest);
             var oAuth2RefreshObservable = _scheduler.CreateColdObservable(
                 new Recorded<Notification<TokenDto>>(100,
-                    Notification.CreateOnError<TokenDto>(createBadRequestException.Result)));
+                    Notification.CreateOnError<TokenDto>(badRequestException)));
 
             _mockOAuth2.Setup(m => m.Refresh(It.IsAny<string>())).Returns(oAuth2RefreshObservable);
 
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable)).Messages.Should()
                 .Contain(
                     m =>
-                    m.Value.Kind == NotificationKind.OnError && m.Value.Exception == createBadRequestException.Result);
+                    m.Value.Kind == NotificationKind.OnError && m.Value.Exception == badRequestException);
         }
 
         [Test]
@@ -146,6 +144,16 @@
             _scheduler.Start(() => _subject.Handle(resourceRequestObservable));
 
             callCount.Should().Be(2);
+        }
+
+        private static ApiException CreateApiRequestException(HttpStatusCode statusCode)
+        {
+            var createBadRequestException = ApiException.Create(
+                new Uri("http://someUri.com"),
+                HttpMethod.Get,
+                new HttpResponseMessage(statusCode));
+            createBadRequestException.Wait();
+            return createBadRequestException.Result;
         }
     }
 }
