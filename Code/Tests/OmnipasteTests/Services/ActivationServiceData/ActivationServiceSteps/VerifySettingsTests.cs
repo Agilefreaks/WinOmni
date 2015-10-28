@@ -1,5 +1,6 @@
 ﻿namespace OmnipasteTests.Services.ActivationServiceData.ActivationServiceSteps
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -73,9 +74,8 @@
         {
             const string DeviceId = "42";
             _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
-            var createNotFoundException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.NotFound));
-            createNotFoundException.Wait();
-            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(createNotFoundException.Result, _testScheduler));
+            var notFoundException = CreateApiRequestException(HttpStatusCode.NotFound);
+            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(notFoundException, _testScheduler));
 
             var testObserver = _testScheduler.Start(() => _subject.Execute());
 
@@ -88,14 +88,23 @@
         {
             const string DeviceId = "42";
             _mockConfigurationService.Setup(m => m.DeviceId).Returns(DeviceId);
-            var createNotFoundException = ApiException.Create(new HttpResponseMessage(HttpStatusCode.BadRequest));
-            createNotFoundException.Wait();
-            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(createNotFoundException.Result, _testScheduler));
+            var badRequestException = CreateApiRequestException(HttpStatusCode.BadRequest);
+            _mockDevices.Setup(m => m.Get(DeviceId)).Returns(Observable.Throw<DeviceDto>(badRequestException, _testScheduler));
 
             var testObserver = _testScheduler.Start(() => _subject.Execute());
 
             testObserver.Messages.First().Value.Kind.Should().Be(NotificationKind.OnError);
-            testObserver.Messages.First().Value.Exception.Should().Be(createNotFoundException.Result);
+            testObserver.Messages.First().Value.Exception.Should().Be(badRequestException);
+        }
+
+        private static ApiException CreateApiRequestException(HttpStatusCode statusCode)
+        {
+            var createNotFoundException = ApiException.Create(
+                new Uri("http://someUrl.com"),
+                HttpMethod.Get,
+                new HttpResponseMessage(statusCode));
+            createNotFoundException.Wait();
+            return createNotFoundException.Result;
         }
     }
 }

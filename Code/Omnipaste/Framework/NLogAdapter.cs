@@ -2,7 +2,7 @@
 {
     using System;
     using NLog;
-    using OmniCommon.Interfaces;
+    using ILogger = OmniCommon.Interfaces.ILogger;
 
     public class NLogAdapter : ILogger
     {
