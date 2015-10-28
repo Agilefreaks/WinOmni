@@ -71,6 +71,10 @@
             {
                 Recipients = new ObservableCollection<ContactModel>();
             }
+            else
+            {
+                Recipients.CollectionChanged += RecipientsCollectionChanged;
+            }
         }
 
         protected override void OnDeactivate(bool close)

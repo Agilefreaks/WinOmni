@@ -1,7 +1,6 @@
 ﻿namespace OmnipasteTests.Conversations.Conversation
 {
     using System.Collections.ObjectModel;
-    using Caliburn.Micro;
     using FluentAssertions;
     using Moq;
     using NUnit.Framework;
@@ -61,7 +60,7 @@
         }
 
         [Test]
-        public void RecepientsCollectionChanged_WhenMoreOrTwo_SetsModelToNull()
+        public void RecepientsCollectionChanged_WhenMoreOrTwo_SetsModelToANewContactModel()
         {
             _subject.Recipients = new ObservableCollection<ContactModel>();
 
@@ -69,8 +68,8 @@
             _subject.Recipients.Add(new ContactModel(new ContactEntity()));
             _subject.Recipients.Add(new ContactModel(new ContactEntity()));
 
-            _mockConversationHeaderViewModel.VerifySet(m => m.Model = null);
-            _mockConversationContainerViewModel.VerifySet(m => m.Model = null);
+            _mockConversationHeaderViewModel.VerifySet(m => m.Model = It.Is<ContactModel>(model => model.PhoneNumber == string.Empty));
+            _mockConversationContainerViewModel.VerifySet(m => m.Model = It.Is<ContactModel>(model => model.PhoneNumber == string.Empty));
         }
 
         [Test]

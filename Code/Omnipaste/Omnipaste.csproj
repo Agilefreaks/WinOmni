@@ -286,6 +286,7 @@
     <Compile Include="Conversations\ContactList\Converters\ContactBorderBrushConverter.cs" />
     <Compile Include="Conversations\ContactList\Converters\ContactBackroundBrushConverter.cs" />
     <Compile Include="Framework\Commands\ComposeSMSCommand.cs" />
+    <Compile Include="Framework\Models\IActivityModelBuilder.cs" />
     <Compile Include="Framework\NLogAdapter.cs" />
     <Compile Include="Framework\Helpers\ApplicationHelper.cs" />
     <Compile Include="Framework\Helpers\IApplicationHelper.cs" />

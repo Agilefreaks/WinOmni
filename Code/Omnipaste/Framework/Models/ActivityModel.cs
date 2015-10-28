@@ -116,23 +116,4 @@
             return new ActivityModel(entity);
         }
     }
-
-    public interface IActivityModelBuilder
-    {
-        IActivityModelBuilder WithContact(ContactEntity contactEntity);
-
-        IActivityModelBuilder WithType(ActivityTypeEnum type);
-
-        IActivityModelBuilder WithContent(String content);
-
-        IActivityModelBuilder WithContent(UpdateEntity update);
-
-        IActivityModelBuilder WithDevice(ClippingDto.ClippingSourceEnum clippingSourceEnum);
-
-        IActivityModelBuilder WithDevice(PhoneCallEntity phoneCallEntity);
-
-        IActivityModelBuilder WithDevice(SmsMessageEntity smsMessageEntity);
-
-        ActivityModel Build();
-    }
 }
