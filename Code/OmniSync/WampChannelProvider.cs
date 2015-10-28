@@ -40,7 +40,7 @@
 
         public IWampChannel<JToken> GetChannel()
         {
-            var webSocket = new WebSocket(_omniSyncUrl, "wamp") { Proxy = CreateProxy() };
+            var webSocket = new WebSocket(_omniSyncUrl, "wamp", WebSocketVersion.None) { Proxy = CreateProxy() };
             return _wampChannelFactory.CreateChannel(webSocket);
         }
 
